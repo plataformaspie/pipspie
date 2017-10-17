@@ -44,9 +44,6 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('proyectos', 'ModuloPdes\DashboardController@proyectos');
               Route::get('presupuesto', 'ModuloPdes\DashboardController@presupuesto');
               Route::get('indicadoresclasificados', 'ModuloPdes\DashboardController@indicadoresClasificados');
-              Route::get('adolfo', 'ModuloPdes\DashboardController@adolfo');
-              Route::get('cristhian', 'ModuloPdes\DashboardController@cristhian');
-              Route::get('marcelo', 'ModuloPdes\DashboardController@marcelo');
           }
       );
       Route::group(
