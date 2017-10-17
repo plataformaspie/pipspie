@@ -1,0 +1,111 @@
+#wrapperjqxgridResultado
+{
+  z-index: 0 !important;
+}
+
+#wrapperjqxgridProceso
+{
+  z-index: 0 !important;
+}
+#wrapperjqxgridProducto
+{
+  z-index: 0 !important;
+}
+
+.amcharts-export-menu-top-right {
+  top: 10px;
+  right: 0;
+}
+.amcharts-chart-div a {display:none !important;}
+
+
+  .block {
+    /*margin-bottom: 30px;*/
+    margin-bottom: 15px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 2px rgba(0, 0, 0, 0.01);
+    box-shadow: 0 2px rgba(0, 0, 0, 0.01);
+  }
+  .block .block,
+  .side-content .block {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  .block.block-opt-refresh {
+    position: relative;
+  }
+  .block.block-opt-refresh > .block-header {
+    opacity: .25;
+  }
+  .block.block-opt-refresh > .block-content {
+    opacity: .15;
+  }
+
+  .block.block-opt-refresh:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    color: #646464;
+    font-family: Simple-Line-Icons;
+    font-size: 18px;
+    text-align: center;
+    z-index: 2;
+    content: "\e09a";
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+  }
+  .gly-rotate-90 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.containertipoimg {
+    position: relative;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
+.containertipoimg:hover .image {
+  opacity: 0.3;
+}
+
+.containertipoimg:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  font-weight: bold;
+  color: #5c6175;
+  font-size: 12px;
+  padding: 16px 32px;
+  cursor:pointer; cursor: hand;
+}
+.imgsel {
+  margin-right: 3px;
+  border: 2px dashed #de6b36;
+}
