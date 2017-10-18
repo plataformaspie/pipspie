@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ModuloAdministracion;
+namespace App\Http\Controllers\ModuloEntidades;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -20,7 +20,7 @@ class DashboardController extends Controller
       }
 
 
-      $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 3 ORDER BY m.orden ASC");
+      $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 2 ORDER BY m.orden ASC");
       $this->menus = array();
       foreach ($sql as $mn) {
 
@@ -41,6 +41,6 @@ class DashboardController extends Controller
   }
   public function index()
   {
-    return view('ModuloAdministracion.dashboard');
+    return view('ModuloEntidades.dashboard');
   }
 }

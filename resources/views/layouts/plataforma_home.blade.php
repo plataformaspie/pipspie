@@ -87,7 +87,7 @@
                                         <!-- /input-group -->
                     </li>
 
-                    <li class=" m-t-10">--Subsistema de Planificación</li>
+                    {{-- <li class=" m-t-10">--Subsistema de Planificación</li> --}}
 
                     {{-- <li>
                       <a id="modulopdes" href="{{ url('modulopdes/indicadores')}}" class="waves-effect"><img src="{{ asset('img/pdes-logo.png') }}" width="100" alt="home" /><span class="hide-menu" >MODULO PDES</span></a>
@@ -96,7 +96,7 @@
                     @foreach($modulos as $m)
                       <li class="">
                             <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect">
-                              <img src="{{ asset('img/pdes-logo.png') }}" width="100" alt="home" />
+                              <img src="{{ asset('img/'.$m["icono"]) }}" width="100" alt="home" />
                               <span class="hide-menu" >{{ $m["titulo"] }}</span>
                           </a>
                       </li>

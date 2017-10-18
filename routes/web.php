@@ -21,15 +21,31 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
-          array('prefix' => 'administration'),
+          array('prefix' => 'moduloadministracion'),
           function() {
               Route::get('dashboard', 'ModuloAdministracion\DashboardController@index');
           }
       );
       Route::group(
-          array('prefix' => 'administration/ajax'),
+          array('prefix' => 'moduloadministracion/ajax'),
           function() {
               Route::get('prueba', 'ModuloAdministracion\DashboardController@index');
+          }
+      );
+});
+
+
+Route::group(['middleware' => 'auth'],function(){
+      Route::group(
+          array('prefix' => 'moduloentidades'),
+          function() {
+              Route::get('dashboard', 'ModuloEntidades\DashboardController@index');
+          }
+      );
+      Route::group(
+          array('prefix' => 'moduloentidades/ajax'),
+          function() {
+              Route::get('prueba', 'ModuloEntidades\DashboardController@index');
           }
       );
 });
