@@ -754,7 +754,7 @@
                                           valor: parseInt(d.valor, 10)
                                       });
                                   });
-                                  GRaficarDatos(chartData,dataRecord.nombre,unidad);
+                                  GRaficarDatos(chartData,"Indicador: "+dataRecord.nombre+"\n(expresado en N° de personas)",unidad);
 
 
                                 },

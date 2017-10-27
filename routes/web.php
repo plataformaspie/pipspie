@@ -17,7 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('home', 'HomeController@index')->name('home');
+Route::get('siep/dashboard', 'HomeController@siepRedirect');
 
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
@@ -34,7 +35,6 @@ Route::group(['middleware' => 'auth'],function(){
       );
 });
 
-
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'moduloentidades'),
@@ -50,7 +50,20 @@ Route::group(['middleware' => 'auth'],function(){
       );
 });
 
-
+Route::group(['middleware' => 'auth'],function(){
+      Route::group(
+          array('prefix' => 'modulopriorizacion'),
+          function() {
+              Route::get('dashboard', 'ModuloPriorizacion\DashboardController@index');
+          }
+      );
+      Route::group(
+          array('prefix' => 'modulopriorizacion/ajax'),
+          function() {
+              Route::get('cargarhijos', 'ModuloPriorizacion\DashboardController@cargarHijos');
+          }
+      );
+});
 
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
@@ -60,6 +73,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('proyectos', 'ModuloPdes\DashboardController@proyectos');
               Route::get('presupuesto', 'ModuloPdes\DashboardController@presupuesto');
               Route::get('indicadoresclasificados', 'ModuloPdes\DashboardController@indicadoresClasificados');
+              Route::get('tablerosiep', 'ModuloPdes\DashboardController@tableroSiep');
           }
       );
       Route::group(

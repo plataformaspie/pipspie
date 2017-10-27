@@ -1,15 +1,30 @@
-html {
+/*html {
   background-color: transparent;
-  /*background: url(http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg) no-repeat center center fixed;*/
+  background: url(http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg) no-repeat center center fixed;
   background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%,rgba(0,0,0,.65) 100%),url(https://i.pinimg.com/originals/59/81/ee/5981eefa7be7f10ddfd67e1015d9ddf5.jpg) no-repeat top center fixed;
 
-  /*background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%,rgba(0,0,0,.65) 100%),url(http://cdn.traveler.es/uploads/images/thumbs/201343/las_candidatas_a_ser_una_de_las_siete_ciudades_maravilla_70701627_1200x797.jpg) no-repeat top center fixed;*/
+  background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%,rgba(0,0,0,.65) 100%),url(http://cdn.traveler.es/uploads/images/thumbs/201343/las_candidatas_a_ser_una_de_las_siete_ciudades_maravilla_70701627_1200x797.jpg) no-repeat top center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   overflow: hidden;
 
+}*/
+
+html {
+    background-color: transparent;
+    /*background: url(http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg) no-repeat center center fixed;*/
+    background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%,rgba(0,0,0,.65) 100%),url(https://previews.123rf.com/images/luzitanija/luzitanija1503/luzitanija150300048/37176500-bolivia-map-on-a-vintage-bolivian-flag-background-Stock-Photo.jpg) no-repeat fixed center top / cover;
+    background-repeat: repeat-y;
+    background-position: center top;
+
+      /*background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%,rgba(0,0,0,.65) 100%),url(http://cdn.traveler.es/uploads/images/thumbs/201343/las_candidatas_a_ser_una_de_las_siete_ciudades_maravilla_70701627_1200x797.jpg) no-repeat top center fixed;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
 }
 
 img{

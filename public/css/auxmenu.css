@@ -43,7 +43,8 @@
   background:#08a0e4;
 }
 
-.menu ul {display: none;
+.menu ul {
+display: none;
 margin: 0;
 padding: 0;
 width: 180px;
@@ -53,7 +54,8 @@ left: 0px;
 background: #ffffff;
 }
 
-.menu ul li {display:block;
+.menu ul li {
+display:block;
 float: none;
 background:none;
 margin:0;
@@ -101,7 +103,7 @@ color:#797979;
 
 
 /*@media (min-width: 768px) and (max-width: 979px) {  PANTALLA EN RANGO*/
-@media (min-width: 992px){
+@media (min-width: 980px){
 
   /*.mainWrap{width:768px;}
   .menu ul {top:37px;}
@@ -112,7 +114,7 @@ color:#797979;
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 979px) {
 
 .mainWrap{width:auto;padding:50px 20px;}
 

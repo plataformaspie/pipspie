@@ -38,7 +38,7 @@
     @yield('header')
 </head>
 
-<body class="fix-sidebar fix-header ">
+<body class="fix-sidebar">
     <!-- Preloader -->
     <div class="preloader">
         <div class="cssload-speeding-wheel"></div>
@@ -117,28 +117,9 @@
           <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
               <div class="row">
                 <div class="col-lg-12">
-                  {{-- <header>
-                    <input type="checkbox" id="btn-menu">
-                    <label for="btn-menu" class="ti-menu"></label>
-                    <nav class="menu">
-                      <ul>
-                        <li><a href="#"><i class="fa fa-cogs"></i> Dashboard</a></li>
-                        <li class="submenu"><a href="#"><i class="fa fa-cogs"></i> Indicadores <span class="icon-arrow-down"></span></a>
-                          <ul>
-                            <li><a href="#">Sub menu</a></li>
-                            <li><a href="#">Sub menu</a></li>
-                          </ul>
-                        </li>
-                        <li class="submenu"><a href="#"><i class="fa fa-cogs"></i> Proyectos<span class="icon-arrow-down"></span></a>
-                          <ul>
-                            <li><a href="#">Sub menu</a></li>
-                            <li><a href="#">Sub menu</a></li>
-                          </ul>
-                        </li>
-                        <li><a href="#"><i class="fa fa-cogs"></i> Presupuesto</a></li>
-                      </ul>
-                    </nav>
-                  </header> --}}
+
+
+
                 </div>
               </div>
 
