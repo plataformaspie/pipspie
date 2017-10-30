@@ -22,7 +22,7 @@
   <div class="col-lg-12 col-md-12">
       <div class="">
             <div class="row">
-                <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                   <div class="white-box analytics-info p-10">
                       <div class="message-center">
                           <a href="javascript:void(0);" class="detallar" aria-controls="1">
@@ -34,7 +34,7 @@
                       </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="white-box analytics-info p-10">
                         <div class="message-center">
                           <a href="javascript:void(0);" class="detallar" aria-controls="2">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                   <div class="white-box analytics-info p-10">
                       <div class="message-center">
                         <a href="javascript:void(0);" class="detallar" aria-controls="3">
@@ -58,7 +58,7 @@
                       </div>
                   </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                   <div class="white-box center p-10">
                       <div class="message-center">
                         <a href="javascript:void(0);" class="detallar" aria-controls="4">
@@ -70,7 +70,7 @@
                       </div>
                   </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
                     <div class="white-box analytics-info p-10">
                         <div class="message-center">
                           <a href="javascript:void(0);" class="detallar" aria-controls="5">
@@ -90,7 +90,7 @@
 <div id="opciones-hijos" style="display:none;">
   <div class="row" >
     <div id="titulo-hijo" class="col-lg-12 col-md-12" style="height: 66px;">
-
+          
     </div>
   </div>
 

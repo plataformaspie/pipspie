@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('totalespresupuestodetalle', 'ModuloPdes\DashboardController@totalesPresupuestoDetalle');
               Route::get('graficapresupuestoall', 'ModuloPdes\DashboardController@graficaPresupuestoAll');
               Route::get('listadatospdes', 'ModuloPdes\DashboardController@listaDatosPdes');
+              Route::get('detallepilares', 'ModuloPdes\PilaresController@detallePilares');
 
           }
       );

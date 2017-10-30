@@ -72,4 +72,13 @@ class PilaresController extends Controller
         return \Response::json($html);
     }
   }
+
+  public function detallePilares(Request $request)
+  {
+
+   if($request->ajax()) {
+        $pilares = Pilares::orderBy('cod_p','asc')->get();
+        return \Response::json($pilares);
+    }
+  }
 }
