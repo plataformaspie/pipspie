@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('presupuesto', 'ModuloPdes\DashboardController@presupuesto');
               Route::get('indicadoresclasificados', 'ModuloPdes\DashboardController@indicadoresClasificados');
               Route::get('tablerosiep', 'ModuloPdes\DashboardController@tableroSiep');
+              Route::get('participacion', 'ModuloPdes\DashboardController@participacion');
           }
       );
       Route::group(

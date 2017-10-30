@@ -235,39 +235,6 @@
 </div>
 
 
-
-
-  {{--
-
-
-  <div class="row">
-
-      <div id="contenido_datos" class="col-lg-4 col-md-12">
-          <div class="white-box p-10">
-              <div style="height: 450px;">
-                  <h3 class="box-title"> lista de indicadores <b id="resultado_lita_resultado"></b></h3>
-
-
-
-              </div>
-          </div>
-      </div>
-
-      <div id="contenido_detalle" class="col-lg-8 col-md-12 block ">
-          <div class="white-box p-10 block-content">
-              <div style="height: 500px;">
-                <div id="chartdiv"></div>
-
-              </div>
-          </div>
-      </div>
-
-  </div> --}}
-
-
-
-
-
 @endsection
 
 

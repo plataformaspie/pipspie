@@ -1405,4 +1405,10 @@ class DashboardController extends Controller
     }
 
 
+    public function participacion()
+    {
+      return view('ModuloPdes.participacion');
+    }
+
+
 }

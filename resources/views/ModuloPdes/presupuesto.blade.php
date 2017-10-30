@@ -244,7 +244,7 @@
       <div id="contenido_datos" class="col-lg-4 col-md-12">
           <div class="white-box p-10">
               <div style="height: 450px;">
-                  <h3 class="box-title"> lista de proyectos <b id="resultado_lita_resultado"></b>
+                  <h3 class="box-title"> Listado datos PDES <b id="resultado_lita_resultado"></b>
 
                   </h3>
                   <div id='jqxNavigationBar'>
