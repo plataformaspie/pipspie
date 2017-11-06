@@ -26,7 +26,7 @@ class InstitucionController extends Controller
         }
 
 
-        $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 1 ORDER BY m.orden ASC");
+        $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 2 ORDER BY m.orden ASC");
         $this->menus = array();
         foreach ($sql as $mn) {
 
