@@ -1,9 +1,7 @@
 @extends('layouts.plataforma')
 
 @section('header')
-
 @endsection
-
 
 @section('content')
 HOLAMUNDO ENTIDADES

@@ -40,12 +40,18 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'moduloentidades'),
           function() {
               Route::get('dashboard', 'ModuloEntidades\DashboardController@index');
+              Route::get('instituciones', 'ModuloEntidades\InstitucionController@index');
+
+              //Route::resource('instituciones', 'ModuloEntidades\InstitucionController');
+              
+
           }
       );
       Route::group(
           array('prefix' => 'moduloentidades/ajax'),
           function() {
-              Route::get('prueba', 'ModuloEntidades\DashboardController@index');
+              Route::get('instituciones/obtenertodas', 'ModuloEntidades\InstitucionController@getInstituciones');
+              Route::post('instituciones/crud', 'ModuloEntidades\InstitucionController@crudInstitucion');
           }
       );
 });
