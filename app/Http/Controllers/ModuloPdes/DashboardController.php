@@ -1411,4 +1411,20 @@ class DashboardController extends Controller
     }
 
 
+    public function datosGraficaParticipacion(Request $request)
+    {
+      if($request->ajax()) {
+
+        $participacion = \DB::table('spie_participacion_niveles_gobierno_competencia')
+                       ->where(' pnv.id_pilar', $request->pilar)
+                       ->get();
+        foreach ($participacion as $par) {
+
+        }
+
+
+        return \Response::json(array('cols'=>$chkCols,'rows'=>$chkRows,'dim'=>$chkDim,'dimval'=>$chkDimVal));
+      }
+    }
+
 }

@@ -78,6 +78,18 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'dbentreparentesys' => [
+            'driver' => 'pgsql',
+            'host' => env('DBENTREPARENTESYS_HOST', '127.0.0.1'),
+            'port' => env('DBENTREPARENTESYS_PORT', '5432'),
+            'database' => env('DBENTREPARENTESYS_DATABASE', 'forge'),
+            'username' => env('DBENTREPARENTESYS_USERNAME', 'forge'),
+            'password' => env('DBENTREPARENTESYS_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),

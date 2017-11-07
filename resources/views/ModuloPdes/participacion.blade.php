@@ -4,6 +4,16 @@
   <link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
   <link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
   <link rel="stylesheet" href="{{ asset('css/visores.css') }}" type="text/css" />
+  <style>
+  #chartdiv1 {
+    width: 100%;
+    height: 450px;
+  }
+  #chartdiv2 {
+    width: 100%;
+    height: 450px;
+  }
+  </style>
 @endsection
 
 
@@ -136,7 +146,8 @@
 
             <div class="white-box p-10 block-content">
 
-                  <div id="chartdiv"></div>
+                  <div id="chartdiv1"></div>
+                  <div id="chartdiv2"></div>
 
             </div>
 
@@ -260,14 +271,43 @@
      });
 
 
-   $("#jqxgrid").bind('rowclick', function(event) {
+   $("#jqxgridPilares").bind('rowclick', function(event) {
      var args = event.args;
      var row = args.rowindex;
-     var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+     var dataRecord = $("#jqxgridPilares").jqxGrid('getrowdata', row);
      var id = dataRecord.id;
 
 
 
+     $.ajax({
+             url: "{{url("/modulopdes/ajax/datosgraficaparticipacion")}}",
+             data: {'pilar':id},
+             type: "GET",
+             dataType: 'json',
+             success: function(date){
+               chartData = [];
+               var unidad = "";
+               date.forEach(function(d, i) {
+                   unidad = d.unidad;
+                   chartData.push({
+                       datacolumn: d.titulo,
+                       valor: parseInt(d.valor, 10)
+                   });
+               });
+               GRaficarDatos(chartData,'PRESUPUESTO PROGRAMADO',unidad);
+
+             },
+             error:function(data){
+               console("Error recuperar los datos.");
+             }
+     });
+
+
+
+
+
+    graficarDatos(1,datos,"GRAFICA 1", "%");
+    graficarDatos(2,datos,"GRAFICA 2", "%");
 
 
    });

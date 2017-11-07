@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'modulopriorizacion/ajax'),
           function() {
               Route::get('cargarhijos', 'ModuloPriorizacion\DashboardController@cargarHijos');
+              Route::get('generardatos', 'ModuloPriorizacion\DashboardController@generarDatos');
           }
       );
 });
@@ -109,6 +110,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('graficapresupuestoall', 'ModuloPdes\DashboardController@graficaPresupuestoAll');
               Route::get('listadatospdes', 'ModuloPdes\DashboardController@listaDatosPdes');
               Route::get('detallepilares', 'ModuloPdes\PilaresController@detallePilares');
+              Route::get('datosgraficaparticipacion', 'ModuloPdes\DashboardController@datosGraficaParticipacion');
 
           }
       );
