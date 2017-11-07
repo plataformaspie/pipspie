@@ -98,7 +98,7 @@ class DashboardController extends Controller
                         </h3>
                     </div>
                     <ul class="list-group">
-                        <a href="#" class="list-group-item">Desempleo</a>
+                        <a href="javascript:configurarDatos(\'v_ve0003_p_desempleo\')" class="list-group-item">Desempleo</a>
                         <a href="#" class="list-group-item">Empleo Informal</a>
                     </ul>
                     <div class="panel-heading" style="background: #D9EDF7; padding: 0 5px;">
@@ -107,8 +107,8 @@ class DashboardController extends Controller
                         </h3>
                     </div>
                     <ul class="list-group">
-                        <a href="#" class="list-group-item">Pobreza Extrema</a>
-                        <a href="#" class="list-group-item">Pobreza Moderada</a>
+                        <a href="javascript:configurarDatos(\'v_ve0001_p_pobreza_extrema\')"  class="list-group-item">Pobreza Extrema</a>
+                        <a href="javascript:configurarDatos(\'v_ve0002_p_pobreza_moderada\')" class="list-group-item">Pobreza Moderada</a>
                         <a href="#" class="list-group-item">Desigualdad</a>
                         <a href="#" class="list-group-item">Desnutrición Crónica</a>
                     </ul>
@@ -353,5 +353,21 @@ class DashboardController extends Controller
 
 
     }
+  }
+
+  public function generarDatos(Request $request)
+  {
+      if($request->ajax()) {
+
+
+          $datos = \DB::connection('dbestadistica')
+                    ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
+                              FROM ".$request->vista."
+                              GROUP BY dimension
+                              ORDER BY dimension ASC");
+          return \Response::json($datos);
+
+
+      }
   }
 }

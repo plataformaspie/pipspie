@@ -3,6 +3,7 @@
 @section('header')
   <link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
   <link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
+  <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
   <link rel="stylesheet" href="{{ asset('css/visores.css') }}" type="text/css" />
   <style>
   #chartdiv {
@@ -90,7 +91,7 @@
 <div id="opciones-hijos" style="display:none;">
   <div class="row" >
     <div id="titulo-hijo" class="col-lg-12 col-md-12" style="height: 66px;">
-          
+
     </div>
   </div>
 
@@ -226,7 +227,8 @@
             <div class="white-box p-10 block-content">
                 <div style="height: 500px;">
                   <div id="chartdiv"></div>
-
+                  <div id="separador"><hr/></div>
+                  <div id="jqxgrid"></div>
                 </div>
             </div>
 
@@ -244,6 +246,12 @@
   <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxbuttons.js') }}"></script>
   <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxscrollbar.js') }}"></script>
   <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxlistbox.js') }}"></script>
+
+
+  <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+  <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
   <script type="text/javascript">
   function activarMenu(id,aux){
@@ -372,6 +380,92 @@
       $('#opciones-padre').show();
       $('#opciones-hijos').hide();
   }
+
+
+  function configurarDatos(ele){
+    $.ajax({
+            url: "{{url("/modulopriorizacion/ajax/generardatos")}}",
+            data: {'vista':ele},
+            type: "GET",
+            dataType: 'json',
+            success: function(date){
+              chartData = [];
+              var unidad = "";
+              date.forEach(function(d, i) {
+                  unidad = d.unidad;
+                  chartData.push({
+                      dimension: d.dimension,
+                      valor: parseInt(d.valor, 10)
+                  });
+              });
+              graficarVariable(chartData,'PRESUPUESTO PROGRAMADO');
+
+
+            },
+            error:function(data){
+              console("Error recuperar los datos.");
+            }
+    });
+  }
+
+
+  function graficarVariable(data,title){
+
+    var chart = AmCharts.makeChart("chartdiv", {
+        "type": "serial",
+        "theme": "light",
+        "marginRight": 80,
+        "autoMarginOffset": 20,
+        "marginTop": 7,
+        "dataProvider": data,
+        "valueAxes": [{
+            "axisAlpha": 0.2,
+            "dashLength": 1,
+            "position": "left"
+        }],
+        "mouseWheelZoomEnabled": true,
+        "graphs": [{
+            "id": "g1",
+            "balloonText": "[[value]]",
+            "bullet": "round",
+            "bulletBorderAlpha": 1,
+            "bulletColor": "#FFFFFF",
+            "hideBulletsCount": 50,
+            "title": "red line",
+            "valueField": "valor",
+            "useLineColorForBulletBorder": true,
+            "balloon":{
+                "drop":true
+            }
+        }],
+        "chartScrollbar": {
+            "autoGridCount": true,
+            "graph": "g1",
+            "scrollbarHeight": 40
+        },
+        "chartCursor": {
+           "limitToGraph":"g1"
+        },
+        "categoryField": "dimension",
+        "categoryAxis": {
+            "parseDates": true,
+            "axisColor": "#DADADA",
+            "dashLength": 1,
+            "minorGridEnabled": true
+        },
+        "export": {
+            "enabled": true
+        }
+    });
+    chart.addListener("rendered", zoomChart);
+    zoomChart();
+  }
+
+  function zoomChart() {
+    // different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
+    chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
+  }
+
 
   </script>
 @endpush
