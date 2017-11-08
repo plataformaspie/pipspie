@@ -72,7 +72,8 @@ class InstitucionController extends Controller
         $crudRegs=0;
         $data = [
             'nombre'=>$request->nombre,
-            'dependede_id'=>(int)$request->dependede_id,
+            'categoriaid'=>$request->categoriaid,
+            'dependede_id'=>$request->dependede_id,
             'codigo'=>$request->codigo,
             'sigla'=>$request->sigla,
             'direccion'=>$request->direccion,
@@ -178,5 +179,9 @@ class InstitucionController extends Controller
             'listaInstituciones' => $inst,
             'estado'=> 'ok',
         ]);
+    }
+    public function getCategorias(){
+        $categorias=\DB::select("select id,nombre from spie_categoriasinstitucionales order by nombre");
+        return response()->json(['categorias'=>$categorias,'listado'=>'ok']);
     }
 }
