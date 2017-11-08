@@ -36,8 +36,12 @@
                     <input type="text" id="nombre" required="true" placeholder="Nombre de la Institucion" class="form-control"/>
                 </div>
                  <div class="form-group">
-                    <label for="nombre">Depende de</label>
-                    <select id="dependede_id" class="form-control"><option value="0">Independiente</option></select>
+                    <label for="nombre">Categoria</label>
+                    <select id="categoriaid" class="form-control"><option value="0">Seleccione...</option></select>
+                </div>                
+                 <div class="form-group">
+                    <label for="nombre">Tuicion de</label>
+                    <select id="dependede_id" class="form-control"></select>
                 </div>
                 <div class="form-group">
                     <label for="codigo">Codigo</label>
@@ -79,6 +83,14 @@
                     <label for="institucion">Institucion</label>
                     <input type="text" id="updatenombre" required placeholder="Nombre de la Institucion" class="form-control"/>
                 </div>
+                 <div class="form-group">
+                    <label for="nombre">Categoria</label>
+                    <select id="updatecategoriaid" class="form-control"></select>
+                </div>                 
+                 <div class="form-group">
+                    <label for="nombre">Tuicion de</label>
+                    <select id="updatedependede_id" class="form-control"></select>
+                </div>                
                 <div class="form-group">
                     <label for="codigo">Codigo</label>
                     <input type="text" id="updatecodigo" required placeholder="Codigo" class="form-control"/>
@@ -119,6 +131,14 @@
                     <div id="shownombre"></div>
                 </div>
                 <div class="form-group">
+                    <label>Categoria</label> 
+                    <div id="showcategoria"></div>
+                </div>                 
+                <div class="form-group">
+                    <label>Tuicion de</label> 
+                    <div id="showdependede"></div>
+                </div>                
+                <div class="form-group">
                     <label>Codigo</label>
                     <div id="showcodigo"></div>
                 </div>
@@ -153,7 +173,14 @@
                     <label>Institucion</label> 
                     <div id="removenombre"></div>
                 </div>
- 
+                 <div class="form-group">
+                    <label>Categoria</label> 
+                    <div id="removecategoria"></div>
+                </div>                
+                 <div class="form-group">
+                    <label>Tuicion de</label> 
+                    <div id="removedependede"></div>
+                </div> 
                 <div class="form-group">
                     <label>Codigo</label>
                     <div id="removecodigo"></div>
@@ -208,9 +235,21 @@
     //$("#jqxNavigationBar").jqxNavigationBar({ width: '100%', height: 400});
     // prepare the data
     var listaInstGlobal=null;
+    var categorias=null;
     $.get("/moduloentidades/ajax/instituciones/obtenertodas", function(respuesta){
         var listaInst = respuesta.listaInstituciones;        
         listaInstGlobal=listaInst;
+
+        listaInstGlobal.sort(function(a,b){
+          a = a.nombre;
+          b = b.nombre;
+          if(a > b) {
+            return 1;
+          } else if (a < b) {
+            return -1;
+          }
+          return 0;
+        });
         var source =
             {
                 datatype: "json",
@@ -256,10 +295,10 @@
                   {text:'Acciones', datafield:'id', cellsrenderer: setAcciones,width:"115px"}, //columna adicional
                 ]
             });
-    })
-    
-
-
+    });
+    $.get("/moduloentidades/ajax/instituciones/categorias",function(data){
+        categorias=data.categorias;
+    });
 
     //$('#events').jqxPanel({ width: 300, height: 80});
     $("#gridMain").on("sort", function (event) {
@@ -283,19 +322,60 @@
         $("#updatesigla").val(event.args.row.bounddata.sigla);
         $("#updatedireccion").val(event.args.row.bounddata.direccion);
         $("#updatelocalidad").val(event.args.row.bounddata.localidad);
+        $("#updatecategoria").val('');
 
         $("#shownombre").html(event.args.row.bounddata.nombre);
         $("#showcodigo").html(event.args.row.bounddata.codigo);                
         $("#showsigla").html(event.args.row.bounddata.sigla);
         $("#showdireccion").html(event.args.row.bounddata.direccion);
         $("#showlocalidad").html(event.args.row.bounddata.localidad);  
-
+        $("#showcategoria").html('');  
         
         $("#removenombre").html(event.args.row.bounddata.nombre);
         $("#removecodigo").html(event.args.row.bounddata.codigo);
         $("#removesigla").html(event.args.row.bounddata.sigla);
         $("#removedireccion").html(event.args.row.bounddata.direccion);
         $("#removelocalidad").html(event.args.row.bounddata.localidad); 
+        var tuicionID=0;    
+        var categoriaID=0;
+        var options="";    
+        for(i=0;i<listaInstGlobal.length;i++){                  
+            if(listaInstGlobal[i].id==event.args.row.bounddata.id){
+                tuicionID=listaInstGlobal[i].dependede_id;
+                categoriaID=listaInstGlobal[i].categoriaid;     
+            }
+        }
+        
+        $("#removedependede").html("");
+        $("#showdependede").html("");  
+        $("#updatedependede_id").html(""); 
+        $("#updatedependede_id").append('<option value="0">Seleccione ...[]</option>');       
+        for(i=0;i<listaInstGlobal.length;i++){    
+            options+='<option value="'+listaInstGlobal[i].id+'"';
+            if(listaInstGlobal[i].id==tuicionID){
+                $("#removedependede").html(listaInstGlobal[i].nombre);
+                $("#showdependede").html(listaInstGlobal[i].nombre); 
+                options+=" selected";
+            }
+            options+='>'+listaInstGlobal[i].nombre+'</option>';
+        }   
+        $("#updatedependede_id").append(options);            
+
+        $("#updatecategoriaid").html("");       
+        options='<option value="0">Seleccione ...</option>';
+        for(i=0;i<categorias.length;i++){    
+            options+='<option value="'+categorias[i].id+'"';
+            if(categorias[i].id==categoriaID){
+                $("#removecategoria").html(categorias[i].nombre);
+                $("#showcategoria").html(categorias[i].nombre); 
+                options+=" selected";
+            }
+            options+='>'+categorias[i].nombre+'</option>';
+        }   
+        $("#updatecategoriaid").append(options); 
+
+
+
         //console.log(event.args.originalEvent.target.id);
 
         //event.args.originalEvent.target.className
@@ -347,10 +427,16 @@
                 $("#task").val('create');
                 //llenar combo    
                 //console.log(listaInstGlobal.sortcolumn[1]);            
+                $("#dependede_id").html('');
+                $("#dependede_id").append('<option value="0">Seleccione ...[]</option>');
                 for(i=0;i<listaInstGlobal.length;i++){  
                     $("#dependede_id").append('<option value="'+listaInstGlobal[i].id+'">'+listaInstGlobal[i].nombre+'</option>');
                 }
-                
+                $("#categoriaid").html('');
+                $("#categoriaid").append('<option value="0">Seleccione ...</option>');
+                for(i=0;i<categorias.length;i++){  
+                    $("#categoriaid").append('<option value="'+categorias[i].id+'">'+categorias[i].nombre+'</option>');
+                }                
             });
             $("#insertar").click(function(){
 
@@ -377,6 +463,8 @@
             $("#actualizar").click(function(){
                 var institucion = {
                     'nombre' : $("#updatenombre").val(),
+                    'categoriaid':$("#updatecategoriaid").val(),
+                    'dependede_id':$("#updatedependede_id").val(),
                     'codigo':$("#updatecodigo").val(),
                     'sigla':$("#updatesigla").val(),
                     'direccion':$("#updatedireccion").val(),
@@ -388,7 +476,13 @@
 
                 //institucion.sigla = $("#sigla").val();
 
-                $.post('/moduloentidades/ajax/instituciones/crud', institucion, function(respuesta){
+                $.post('/moduloentidades/ajax/instituciones/crud', institucion, function(respuesta){                    
+                    $("#updatecategoriaid").val('');
+                    $("#updatedependede_id").val('');
+                    $("#updatecodigo").val('');
+                    $("#updatesigla").val('');
+                    $("#updatedireccion").val('');
+                    $("#updatelocalidad").val('');                    
                     $("#update_record_modal").modal("hide");
                 });
             });
