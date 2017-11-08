@@ -90,6 +90,16 @@
   -ms-transform: translate(-50%, -50%)
 }
 
+.filt {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
 .containertipoimg:hover .image {
   opacity: 0.3;
 }
@@ -97,6 +107,11 @@
 .containertipoimg:hover .middle {
   opacity: 1;
 }
+
+.containertipoimg:hover .filt {
+  opacity: 1;
+}
+
 
 .text {
   font-weight: bold;

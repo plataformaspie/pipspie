@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('instituciones', 'ModuloEntidades\InstitucionController@index');
 
               //Route::resource('instituciones', 'ModuloEntidades\InstitucionController');
-              
+
 
           }
       );
@@ -68,7 +68,11 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'modulopriorizacion/ajax'),
           function() {
               Route::get('cargarhijos', 'ModuloPriorizacion\DashboardController@cargarHijos');
-              Route::get('generardatos', 'ModuloPriorizacion\DashboardController@generarDatos');
+              Route::get('configurarfiltrovariable', 'ModuloPriorizacion\DashboardController@configurarFiltroVariable');
+              Route::get('generardatosVE0001', 'ModuloPriorizacion\DashboardController@generarDatosVE0001');
+              Route::get('generardatosVE0003', 'ModuloPriorizacion\DashboardController@generarDatosVE0003');
+              Route::get('generardatosVE0002', 'ModuloPriorizacion\DashboardController@generarDatosVE0002');
+              Route::get('obtenerDatosFiltro', 'ModuloPriorizacion\DashboardController@obtenerDatosFiltro');
           }
       );
 });

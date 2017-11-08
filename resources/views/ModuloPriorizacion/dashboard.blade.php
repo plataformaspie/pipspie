@@ -115,7 +115,7 @@
                      <li role="presentation" class="nav-item">
                        <a href="javascript:void(0);" class="nav-link panel-menu" aria-controls="m-p-detalles">
                          <span class="visible-xs"><i class="fa fa-info-circle"></i></span>
-                         <span class="hidden-xs"><i class="fa fa-info-circle"></i> Detalles</span>
+                         <span class="hidden-xs"><i class="fa fa-info-circle"></i> Filtro Avanzado</span>
                        </a>
                      </li>
                      <li role="presentation" class="nav-item">
@@ -142,19 +142,9 @@
                 <div role="tabpanel" class="tab-pane" id="m-p-detalles">
                   <div class="stats-row m-0">
                       <div class="stat-item containertipoimg">
-                        Sector:<br/>
-                        Institucion:<br/>
-                        Lugar:<br/>
-                        Inicio:<br/>
-                        Fin:
+                        Filtros desactivados
                       </div>
-                      <div class="stat-item containertipoimg">
-                        Estado:<br/>
-                        Presupuesto Programado:<br/>
-                        Presupuesto Reprogramado:<br/>
-                        Presupuesto Efectuado:<br/>
-                        Fin:
-                      </div>
+
                   </div>
 
                 </div>
@@ -179,7 +169,7 @@
                             <div class="text">Usar</div>
                           </div>
                       </div>
-                      <div class="stat-item containertipoimg">
+                      <div class="stat-item containertipoimg hide">
                           <img name="pie" src="{{ asset('img/icon-graf/8.png') }}" alt="8" class="image">
                           <div class="middle">
                             <div class="text">Usar</div>
@@ -196,15 +186,7 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane" id="m-p-filtros" aria-expanded="true">
-                  <div class="row">
-                      <div class="col-lg-6">
 
-                      </div>
-                      <div class="col-lg-6">
-
-
-                      </div>
-                  </div>
                 </div>
 
             </div>
@@ -275,6 +257,10 @@
       break;
     }
   }
+
+
+  var chart;
+  var filtroSel;
   $(document).ready(function(){
     activarMenu('x','mp-9');
     menuModulosHideShow(1)
@@ -374,33 +360,321 @@
     }
 
 
+
+    $('.middle').click(function() {
+
+          $(".image").removeClass('imgsel');
+          $(this).siblings('img').addClass('imgsel');
+          var type = $(this).siblings('img').attr('name');
+          switch (type) {
+            case 'line':
+              for(i=0;i < filtroSel;i++){
+                chart.graphs[i].type = 'line';
+                chart.graphs[i].bullet = 'round';
+                chart.graphs[i].lineAlpha = 2;
+                chart.graphs[i].fillAlphas = 0;
+              }
+
+              chart.rotate = false;
+              chart.validateNow();
+              break;
+            case 'area':
+              for(i=0;i < filtroSel;i++){
+                chart.graphs[i].type = 'line';
+                chart.graphs[i].bullet = 'round';
+                chart.graphs[i].lineAlpha = 1;
+                chart.graphs[i].fillAlphas = 0.3;
+              }
+
+              chart.rotate = false;
+              chart.validateNow();
+              break;
+            case 'column':
+              for(i=0;i < filtroSel;i++){
+                chart.graphs[i].type = 'column';
+                chart.graphs[i].lineAlpha = 2;
+                chart.graphs[i].fillAlphas = 1;
+              }
+
+              chart.rotate = false;
+              chart.validateNow();
+            break;
+            case 'serial':
+              for(i=0;i < filtroSel;i++){
+                chart.graphs[i].type = 'column';
+                chart.graphs[i].lineAlpha = 2;
+                chart.graphs[i].fillAlphas = 1;
+              }
+              //chart.valueAxes.stackType = 'regular';
+              chart.rotate = true;
+              chart.validateNow();
+            break;
+            case 'pie':
+
+            AmCharts.makeChart("chartdiv",
+                  {
+                    "type": "pie",
+                    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                    "titleField": "dimension",
+                    "valueField": "valor",
+                    "allLabels": [],
+                    "balloon": {},
+                    "legend": {
+                      "enabled": true,
+                      "align": "center",
+                      "markerType": "circle",
+                      "valueText": "",
+                    },
+                    "titles": [],
+                    "dataProvider":chartData
+                  }
+                );
+              return;
+          }
+
+    });
+
+
+
+
   });
 
+function operador(ele){
+      var operador = $(ele).val();
+
+ }
+function filtDepto(ele,vista,campo,nivel,title){
+  filtroSel = 9;
+$('#contenido_detalle').toggleClass('block-opt-refresh');
+  if($('input:radio[name=operador]:checked').val() == 'null'){
+    var operador = null;
+    var simbolo = " ";
+    var subtitle = "(Expresado en número de personas)";
+  }else{
+    var operador = true;
+    var simbolo = "%";
+    var subtitle = "(Expresado en porcentaje)";
+  }
+
+  $(".image").removeClass('imgsel');
+  $(ele).siblings('img').addClass('imgsel');
+  $.ajax({
+          url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+          data: {'variableEstadistica':vista,'campo':campo,'nivel':nivel,'porcentaje': operador},
+          type: "GET",
+          dataType: 'json',
+          success: function(date){
+                graficaDepartamento(date,title,simbolo,subtitle);
+          },
+          error:function(data){
+            console("Error recuperar los datos.");
+          }
+  });
+
+}
+
+function filtUrbRu(ele,vista,campo,nivel,title){
+  filtroSel = 2;
+$('#contenido_detalle').toggleClass('block-opt-refresh');
+if($('input:radio[name=operador]:checked').val() == 'null'){
+  var operador = null;
+  var simbolo = " ";
+  var subtitle = "(Expresado en número de personas)";
+}else{
+  var operador = true;
+  var simbolo = "%";
+  var subtitle = "(Expresado en porcentaje)";
+}
+  $(".image").removeClass('imgsel');
+  $(ele).siblings('img').addClass('imgsel');
+  $.ajax({
+          url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+          data: {'variableEstadistica':vista,'campo':campo,'nivel':nivel,'porcentaje':operador},
+          type: "GET",
+          dataType: 'json',
+          success: function(date){
+                graficaUrbRu(date,title,simbolo,subtitle);
+          },
+          error:function(data){
+            console("Error recuperar los datos.");
+          }
+  });
+
+}
+
+function filtGenero(ele,vista,campo,nivel,title){
+  filtroSel = 2;
+  $('#contenido_detalle').toggleClass('block-opt-refresh');
+  if($('input:radio[name=operador]:checked').val() == 'null'){
+    var operador = null;
+    var simbolo = " ";
+    var subtitle = "(Expresado en número de personas)";
+  }else{
+    var operador = true;
+    var simbolo = "%";
+    var subtitle = "(Expresado en porcentaje)";
+  }
+
+        $(".image").removeClass('imgsel');
+        $(ele).siblings('img').addClass('imgsel');
+        $.ajax({
+                url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+                data: {'variableEstadistica':vista,'campo':campo,'nivel':nivel,'porcentaje':operador},
+                type: "GET",
+                dataType: 'json',
+                success: function(date){
+                      graficaGenero(date,title,simbolo,subtitle);
+                },
+                error:function(data){
+                  console("Error recuperar los datos.");
+                }
+        });
+
+}
+
+function filtPex(ele,vista,campo,nivel,title){
+  filtroSel = 3;
+  $('#contenido_detalle').toggleClass('block-opt-refresh');
+  if($('input:radio[name=operador]:checked').val() == 'null'){
+    var operador = null;
+    var simbolo = " ";
+    var subtitle = "(Expresado en número de personas)";
+  }else{
+    var operador = true;
+    var simbolo = "%";
+    var subtitle = "(Expresado en porcentaje)";
+  }
+  $(".image").removeClass('imgsel');
+  $(ele).siblings('img').addClass('imgsel');
+  $.ajax({
+          url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+          data: {'variableEstadistica':vista,'campo':campo,'nivel':nivel,'porcentaje':operador},
+          type: "GET",
+          dataType: 'json',
+          success: function(date){
+                graficaPex(date,title,simbolo,subtitle);
+          },
+          error:function(data){
+            console("Error recuperar los datos.");
+          }
+  });
+
+}
+function filtPmo(ele,vista,campo,nivel,title){
+  filtroSel = 3;
+  $('#contenido_detalle').toggleClass('block-opt-refresh');
+  if($('input:radio[name=operador]:checked').val() == 'null'){
+    var operador = null;
+    var simbolo = " ";
+    var subtitle = "(Expresado en número de personas)";
+  }else{
+    var operador = true;
+    var simbolo = "%";
+    var subtitle = "(Expresado en porcentaje)";
+  }
+  $(".image").removeClass('imgsel');
+  $(ele).siblings('img').addClass('imgsel');
+  $.ajax({
+          url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+          data: {'variableEstadistica':vista,'campo':campo,'nivel':nivel,'porcentaje':operador},
+          type: "GET",
+          dataType: 'json',
+          success: function(date){
+                graficaPmo(date,title,simbolo,subtitle);
+          },
+          error:function(data){
+            console("Error recuperar los datos.");
+          }
+  });
+
+}
+function filtDesem(ele,vista,campo,nivel,title){
+  filtroSel = 3;
+  $('#contenido_detalle').toggleClass('block-opt-refresh');
+  if($('input:radio[name=operador]:checked').val() == 'null'){
+    var operador = null;
+    var simbolo = " ";
+    var subtitle = "(Expresado en número de personas)";
+  }else{
+    var operador = true;
+    var simbolo = "%";
+    var subtitle = "(Expresado en porcentaje)";
+  }
+  $(".image").removeClass('imgsel');
+  $(ele).siblings('img').addClass('imgsel');
+  $.ajax({
+          url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+          data: {'variableEstadistica':vista,'campo':campo,'nivel':nivel,'porcentaje':operador},
+          type: "GET",
+          dataType: 'json',
+          success: function(date){
+                graficaDesem(date,title,simbolo,subtitle);
+          },
+          error:function(data){
+            console("Error recuperar los datos.");
+          }
+  });
+
+}
   function back(){
       $('#opciones-padre').show();
       $('#opciones-hijos').hide();
   }
 
+function configurarFiltros(ele){
 
-  function configurarDatos(ele){
+  var cod = ele.substr(0,8);
+  $("#m-p-filtros").html("");
+  $.ajax({
+          url: "{{url("/modulopriorizacion/ajax/configurarfiltrovariable")}}",
+          data: {'cod':cod},
+          type: "GET",
+          dataType: 'json',
+          success: function(date){
+            $("#m-p-filtros").html(date);
+
+
+          },
+          error:function(data){
+            console("Error recuperar los datos.");
+          }
+  });
+}
+  function configurarDatosVE0001(ele){
+    filtroSel = 1;
+    $('#contenido_detalle').toggleClass('block-opt-refresh');
+    configurarFiltros(ele);
+    // $.ajax({
+    //         url: "{{url("/modulopriorizacion/ajax/generardatosVE0001")}}",
+    //         data: {'vista':ele},
+    //         type: "GET",
+    //         dataType: 'json',
+    //         success: function(date){
+    //           chartData = [];
+    //           var unidad = "";
+    //           date.forEach(function(d, i) {
+    //               unidad = d.unidad;
+    //               chartData.push({
+    //                   dimension: d.dimension,
+    //                   valor: parseInt(d.valor, 10)
+    //               });
+    //           });
+    //           graficarVariable(chartData,'POBREZA EXTREMA');
+    //
+    //
+    //         },
+    //         error:function(data){
+    //           console("Error recuperar los datos.");
+    //         }
+    // });
+
     $.ajax({
-            url: "{{url("/modulopriorizacion/ajax/generardatos")}}",
-            data: {'vista':ele},
+            url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+            data: {'variableEstadistica':ele,'campo':null,'nivel': 'POBRE EXTREMO','porcentaje': null},
             type: "GET",
             dataType: 'json',
             success: function(date){
-              chartData = [];
-              var unidad = "";
-              date.forEach(function(d, i) {
-                  unidad = d.unidad;
-                  chartData.push({
-                      dimension: d.dimension,
-                      valor: parseInt(d.valor, 10)
-                  });
-              });
-              graficarVariable(chartData,'PRESUPUESTO PROGRAMADO');
-
-
+                graficarVariable(date,'POBREZA EXTREMA');
             },
             error:function(data){
               console("Error recuperar los datos.");
@@ -408,16 +682,114 @@
     });
   }
 
+  function configurarDatosVE0002(ele){
+    filtroSel = 1;
+    $('#contenido_detalle').toggleClass('block-opt-refresh');
+    configurarFiltros(ele);
+    // $.ajax({
+    //         url: "{{url("/modulopriorizacion/ajax/generardatosVE0002")}}",
+    //         data: {'vista':ele},
+    //         type: "GET",
+    //         dataType: 'json',
+    //         success: function(date){
+    //           chartData = [];
+    //           var unidad = "";
+    //           date.forEach(function(d, i) {
+    //               unidad = d.unidad;
+    //               chartData.push({
+    //                   dimension: d.dimension,
+    //                   valor: parseInt(d.valor, 10)
+    //               });
+    //           });
+    //           graficarVariable(chartData,'POBREZA MODERADA');
+    //
+    //
+    //         },
+    //         error:function(data){
+    //           console("Error recuperar los datos.");
+    //         }
+    // });
+    $.ajax({
+            url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+            data: {'variableEstadistica':ele,'campo':null,'nivel': 'POBRE','porcentaje': null},
+            type: "GET",
+            dataType: 'json',
+            success: function(date){
+                graficarVariable(date,'POBREZA MODERADA');
+            },
+            error:function(data){
+              console("Error recuperar los datos.");
+            }
+    });
+  }
+
+  function configurarDatosVE0003(ele){
+    filtroSel = 1;
+    $('#contenido_detalle').toggleClass('block-opt-refresh');
+    configurarFiltros(ele);
+    // $.ajax({
+    //         url: "{{url("/modulopriorizacion/ajax/generardatosVE0003")}}",
+    //         data: {'vista':ele},
+    //         type: "GET",
+    //         dataType: 'json',
+    //         success: function(date){
+    //           chartData = [];
+    //           var unidad = "";
+    //           date.forEach(function(d, i) {
+    //               unidad = d.unidad;
+    //               chartData.push({
+    //                   dimension: d.dimension,
+    //                   valor: parseInt(d.valor, 10)
+    //               });
+    //           });
+    //           graficarVariable(chartData,'DESEMPLEO');
+    //
+    //
+    //         },
+    //         error:function(data){
+    //           console("Error recuperar los datos.");
+    //         }
+    // });
+    $.ajax({
+            url: "{{url("/modulopriorizacion/ajax/obtenerDatosFiltro")}}",
+            data: {'variableEstadistica':ele,'campo':null,'nivel': 'DESOCUPADO','porcentaje': null},
+            type: "GET",
+            dataType: 'json',
+            success: function(date){
+                graficarVariable(date,'DESEMPLEO');
+            },
+            error:function(data){
+              console("Error recuperar los datos.");
+            }
+    });
+  }
+  function iniGrafica(){
+    var ini = [{
+      "dimension": "-",
+      "valor": 0,
+      "color": "#FF0F00"
+    }];
+    graficarVariable(ini,'-');
+  }
 
   function graficarVariable(data,title){
-
-    var chart = AmCharts.makeChart("chartdiv", {
+  $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
         "type": "serial",
         "theme": "light",
         "marginRight": 80,
         "autoMarginOffset": 20,
         "marginTop": 7,
         "dataProvider": data,
+        "titles": [
+           {
+             "id": "Title-1",
+             "size": 15,
+             "text": title
+           },{
+             "text": "(Expresado en número de personas)"
+           }
+         ],
         "valueAxes": [{
             "axisAlpha": 0.2,
             "dashLength": 1,
@@ -426,7 +798,7 @@
         "mouseWheelZoomEnabled": true,
         "graphs": [{
             "id": "g1",
-            "balloonText": "[[value]]",
+            "balloonText": "<b>[[category]]</b>\n [[value]]",
             "bullet": "round",
             "bulletBorderAlpha": 1,
             "bulletColor": "#FFFFFF",
@@ -446,9 +818,9 @@
         "chartCursor": {
            "limitToGraph":"g1"
         },
-        "categoryField": "dimension",
+        "categoryField": "gestion",
         "categoryAxis": {
-            "parseDates": true,
+            //"parseDates": true,
             "axisColor": "#DADADA",
             "dashLength": 1,
             "minorGridEnabled": true
@@ -458,7 +830,441 @@
         }
     });
     chart.addListener("rendered", zoomChart);
-    zoomChart();
+    //zoomChart();
+  }
+
+  function graficaGenero(data,title,simbolo,subtitle){
+    $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
+            	"type": "serial",
+            	"categoryField": "gestion",
+            	"dataDateFormat": "YYYY",
+            	"theme": "default",
+            	"categoryAxis": {
+            		"minPeriod": "YYYY",
+            		"parseDates": true
+            	},
+            	"chartCursor": {
+            		"enabled": true,
+            		"animationDuration": 0,
+            		"categoryBalloonDateFormat": "YYYY"
+            	},
+            	"chartScrollbar": {
+            		"enabled": true
+            	},
+            	"trendLines": [],
+            	"graphs": [
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>HOMBRE</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-1",
+            			"title": "HOMBRE",
+            			"valueField": "HOMBRE"
+            		},
+            		{
+            			"bullet": "square",
+                  "balloonText": "<b>MUJER</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-2",
+            			"title": "MUJER",
+            			"valueField": "MUJER"
+            		}
+            	],
+            	"guides": [],
+            	"valueAxes": [
+            		{
+            			"id": "ValueAxis-1",
+            			"title": "VALORES"
+            		}
+            	],
+            	"allLabels": [],
+            	"balloon": {},
+            	"legend": {
+            		"enabled": true,
+            		"useGraphSettings": true
+            	},
+            	"titles": [
+            		{
+            			"id": "Title-1",
+            			"size": 15,
+            			"text": title,
+
+            		},{
+                  "text":subtitle
+                }
+            	],
+            	"dataProvider": data
+            });
+  }
+
+
+  function graficaDepartamento(data,title,simbolo,subtitle){
+    $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
+            	"type": "serial",
+            	"categoryField": "gestion",
+            	"dataDateFormat": "YYYY",
+            	"theme": "default",
+            	"categoryAxis": {
+            		"minPeriod": "YYYY",
+            		"parseDates": true
+            	},
+            	"chartCursor": {
+            		"enabled": true,
+            		"animationDuration": 0,
+            		"categoryBalloonDateFormat": "YYYY"
+            	},
+            	"chartScrollbar": {
+            		"enabled": true
+            	},
+            	"trendLines": [],
+            	"graphs": [
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>CHUQUISACA</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-1",
+            			"title": "CHUQUISACA",
+            			"valueField": "CHUQUISACA"
+            		},
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>LA PAZ</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-2",
+            			"title": "LA PAZ",
+            			"valueField": "LA PAZ"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>COCHABAMBA</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-3",
+            			"title": "COCHABAMBA",
+            			"valueField": "COCHABAMBA"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>ORURO</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-4",
+            			"title": "ORURO",
+            			"valueField": "ORURO"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>POTOS\u00cd</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-5",
+            			"title": "POTOS\u00cd",
+            			"valueField": "POTOS\u00cd"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>TARIJA</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-6",
+            			"title": "TARIJA",
+            			"valueField": "TARIJA"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>SANTA CRUZ</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-7",
+            			"title": "SANTA CRUZ",
+            			"valueField": "SANTA CRUZ"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>BENI</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-8",
+            			"title": "BENI",
+            			"valueField": "BENI"
+            		},{
+            			"bullet": "round",
+                  "balloonText": "<b>PANDO</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-9",
+            			"title": "PANDO",
+            			"valueField": "PANDO"
+            		}
+            	],
+            	"guides": [],
+            	"valueAxes": [
+            		{
+            			"id": "ValueAxis-1",
+            			"title": "Valore"
+            		}
+            	],
+            	"allLabels": [],
+            	"balloon": {},
+            	"legend": {
+            		"enabled": true,
+            		"useGraphSettings": true
+            	},
+            	"titles": [
+            		{
+            			"id": "Title-1",
+            			"size": 15,
+            			"text": title
+            		},{
+                  "text":subtitle
+                }
+            	],
+            	"dataProvider": data
+            });
+  }
+
+  function graficaUrbRu(data,title,simbolo,subtitle){
+    $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
+            	"type": "serial",
+            	"categoryField": "gestion",
+            	"dataDateFormat": "YYYY",
+            	"theme": "default",
+            	"categoryAxis": {
+            		"minPeriod": "YYYY",
+            		"parseDates": true
+            	},
+            	"chartCursor": {
+            		"enabled": true,
+            		"animationDuration": 0,
+            		"categoryBalloonDateFormat": "YYYY"
+            	},
+            	"chartScrollbar": {
+            		"enabled": true
+            	},
+            	"trendLines": [],
+            	"graphs": [
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>\u00c1REA RURAL</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-1",
+            			"title": "\u00c1REA RURAL",
+            			"valueField": "\u00c1REA RURAL"
+            		},
+            		{
+            			"bullet": "square",
+                  "balloonText": "<b>\u00c1REA URBANA</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-2",
+            			"title": "\u00c1REA URBANA",
+            			"valueField": "\u00c1REA URBANA"
+            		}
+            	],
+            	"guides": [],
+            	"valueAxes": [
+            		{
+            			"id": "ValueAxis-1",
+            			"title": "Valores"
+            		}
+            	],
+            	"allLabels": [],
+            	"balloon": {},
+            	"legend": {
+            		"enabled": true,
+            		"useGraphSettings": true
+            	},
+            	"titles": [
+            		{
+            			"id": "Title-1",
+            			"size": 15,
+            			"text": title
+            		},{
+                  "text":subtitle
+                }
+            	],
+            	"dataProvider": data
+            });
+  }
+
+
+  function graficaPex(data,title,simbolo,subtitle){
+    $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
+            	"type": "serial",
+            	"categoryField": "gestion",
+            	"theme": "default",
+            	"categoryAxis": {
+                "dashLength": 1,
+                "minorGridEnabled": true
+            	},
+            	"chartCursor": {
+            		"enabled": true,
+            		"animationDuration": 0
+            	},
+            	"chartScrollbar": {
+            		"enabled": true
+            	},
+            	"trendLines": [],
+            	"graphs": [
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>NO POBRE EXTREMO</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-1",
+            			"title": "NO POBRE EXTREMO",
+            			"valueField": "NO POBRE EXTREMO"
+            		},
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>POBRE EXTREMO</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-2",
+            			"title": "POBRE EXTREMO",
+            			"valueField": "POBRE EXTREMO"
+            		},
+            		{
+            			"bullet": "round",
+                  "balloonText": "<b>SIN IDENTIFICAR</b>:[[value]] "+simbolo,
+            			"id": "AmGraph-3",
+            			"title": "SIN IDENTIFICAR",
+            			"valueField": "otros"
+            		}
+            	],
+            	"guides": [],
+            	"valueAxes": [
+            		{
+            			"id": "ValueAxis-1",
+            			"title": "Valores"
+            		}
+            	],
+            	"allLabels": [],
+            	"balloon": {},
+            	"legend": {
+            		"enabled": true,
+            		"useGraphSettings": true
+            	},
+            	"titles": [
+            		{
+            			"id": "Title-1",
+            			"size": 15,
+            			"text": title
+            		},{
+                  "text":subtitle
+                }
+            	],
+            	"dataProvider": data
+            });
+  }
+
+
+  function graficaPmo(data,title,simbolo,subtitle){
+    $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
+              "type": "serial",
+              "categoryField": "gestion",
+              "theme": "default",
+              "categoryAxis": {
+                "dashLength": 1,
+                "minorGridEnabled": true
+              },
+              "chartCursor": {
+                "enabled": true,
+                "animationDuration": 0
+              },
+              "chartScrollbar": {
+                "enabled": true
+              },
+              "trendLines": [],
+              "graphs": [
+                {
+                  "bullet": "round",
+                  "balloonText": "<b>NO POBRE</b>:[[value]] "+simbolo,
+                  "id": "AmGraph-1",
+                  "title": "NO POBRE",
+                  "valueField": "NO POBRE"
+                },
+                {
+                  "bullet": "round",
+                  "balloonText": "<b>POBRE</b>:[[value]] "+simbolo,
+                  "id": "AmGraph-2",
+                  "title": "POBRE",
+                  "valueField": "POBRE"
+                },
+                {
+                  "bullet": "round",
+                  "balloonText": "<b>SIN IDENTIFICAR</b>:[[value]] "+simbolo,
+                  "id": "AmGraph-3",
+                  "title": "SIN IDENTIFICAR",
+                  "valueField": "otros"
+                }
+              ],
+              "guides": [],
+              "valueAxes": [
+                {
+                  "id": "ValueAxis-1",
+                  "title": "Valores"
+                }
+              ],
+              "allLabels": [],
+              "balloon": {},
+              "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+              },
+              "titles": [
+                {
+                  "id": "Title-1",
+                  "size": 15,
+                  "text": title
+                },{
+                  "text":subtitle
+                }
+              ],
+              "dataProvider": data
+            });
+  }
+
+
+  function graficaDesem(data,title,simbolo,subtitle){
+    $('#contenido_detalle').removeClass('block-opt-refresh');
+    chart = AmCharts.makeChart("chartdiv", {
+              "type": "serial",
+              "categoryField": "gestion",
+              "theme": "default",
+              "categoryAxis": {
+                "dashLength": 1,
+                "minorGridEnabled": true
+              },
+              "chartCursor": {
+                "enabled": true,
+                "animationDuration": 0
+              },
+              "chartScrollbar": {
+                "enabled": true
+              },
+              "trendLines": [],
+              "graphs": [
+                {
+                  "bullet": "round",
+                  "balloonText": "<b>OCUPADO</b>:[[value]] "+simbolo,
+                  "id": "AmGraph-1",
+                  "title": "OCUPADO",
+                  "valueField": "OCUPADO"
+                },
+                {
+                  "bullet": "round",
+                  "balloonText": "<b>DESOCUPADO</b>:[[value]] "+simbolo,
+                  "id": "AmGraph-2",
+                  "title": "DESOCUPADO",
+                  "valueField": "DESOCUPADO"
+                },
+                {
+                  "bullet": "round",
+                  "balloonText": "<b>SIN IDENTIFICAR</b>:[[value]] "+simbolo,
+                  "id": "AmGraph-3",
+                  "title": "SIN IDENTIFICAR",
+                  "valueField": "otros"
+                }
+              ],
+              "guides": [],
+              "valueAxes": [
+                {
+                  "id": "ValueAxis-1",
+                  "title": "Valores"
+                }
+              ],
+              "allLabels": [],
+              "balloon": {},
+              "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+              },
+              "titles": [
+                {
+                  "id": "Title-1",
+                  "size": 15,
+                  "text": title
+                },{
+                  "text":subtitle
+                }
+              ],
+              "dataProvider": data
+            });
   }
 
   function zoomChart() {
