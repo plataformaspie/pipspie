@@ -87,6 +87,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('indicadoresclasificados', 'ModuloPdes\DashboardController@indicadoresClasificados');
               Route::get('tablerosiep', 'ModuloPdes\DashboardController@tableroSiep');
               Route::get('participacion', 'ModuloPdes\DashboardController@participacion');
+              Route::get('gestionproyectos', 'ModuloPdes\GestionProyectosController@index');
           }
       );
       Route::group(
@@ -118,5 +119,18 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('datosgraficaparticipacion', 'ModuloPdes\DashboardController@datosGraficaParticipacion');
 
           }
+      );
+      //  RUTAS DE GESTION DE PROYECTOS_PDES ///////////////////////////////////
+      Route::group(
+        array('prefix' => 'api/modulopdes' ),
+        function() {              
+          Route::get('proyectosgestion',      'ModuloPdes\GestionProyectosController@listarProyectosPdesAsociados');
+          Route::post('proyectosgestion',     'ModuloPdes\GestionProyectosController@insertar');
+          Route::get('proyectosgestion/{id}', 'ModuloPdes\GestionProyectosController@obtieneProyecto');
+          Route::get('proyectosgestion/listar/resultados',   'ModuloPdes\GestionProyectosController@listarResultados');
+          Route::get('proyectosgestion/listar/sisinweb',      'ModuloPdes\GestionProyectosController@listarsisinweb');
+          Route::get('proyectosgestion/listar/instituciones', 'ModuloPdes\GestionProyectosController@listarInstituciones');
+          Route::get('proyectosgestion/listar/sectores',      'ModuloPdes\GestionProyectosController@listarSectores');
+        }
       );
 });
