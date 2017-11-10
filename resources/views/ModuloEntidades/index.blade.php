@@ -56,10 +56,10 @@
                     <label for="direccion">Direccion</label>
                     <input type="text" id="direccion" required="true" placeholder="Direccion" class="form-control"/>
                 </div>                
-                 <div class="form-group">
-                    <label for="localidad">Localidad</label>
-                    <input type="text" id="localidad" required="true" placeholder="Localidad o Ciudad" class="form-control"/>
-                </div>
+                <div class="form-group">
+                    <label for="region">Localidad</label>
+                    <select id="region_id" class="form-control"/></select>
+                </div>                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -104,10 +104,11 @@
                     <label for="direccion">Direccion</label>
                     <input type="text" id="updatedireccion" required placeholder="direccion" class="form-control"/>
                 </div>
-                 <div class="form-group">
-                    <label for="localidad">Ciudad o Localidad</label>
-                    <input type="text" id="updatelocalidad" required placeholder="Ciudad o Localidad" class="form-control"/>
-                </div>                
+
+                <div class="form-group">
+                    <label for="region">Localidad</label>
+                    <select id="updateregion_id" class="form-control"/></select>
+                </div>                               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -152,8 +153,8 @@
                 </div>
                 <div class="form-group">
                     <label>Ciudad o Localidad</label>
-                    <div id="showlocalidad"></div>
-                </div>
+                    <div id="showregion"></div>
+                </div>                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -193,10 +194,10 @@
                  <div class="form-group">
                     <label>Direccion</label>
                     <div id="removedireccion"></div>
-                </div>
+                </div>            
                 <div class="form-group">
                     <label>Ciudad o Localidad</label>
-                    <div id="removelocalidad"></div>
+                    <div id="removeregion"></div>
                 </div>
 
             </div>
@@ -236,6 +237,7 @@
     // prepare the data
     var listaInstGlobal=null;
     var categorias=null;
+    var regiones=null;
     $.get("/moduloentidades/ajax/instituciones/obtenertodas", function(respuesta){
         var listaInst = respuesta.listaInstituciones;        
         listaInstGlobal=listaInst;
@@ -259,7 +261,6 @@
                     {name: 'sigla',type:'string'},
                     {name: 'codigo',type:'integer'},
                     {name: 'direccion',type:'string'},
-                    {name: 'localidad',type:'string'}
                 ],
 
                 id: 'entidades',
@@ -291,7 +292,6 @@
                   {text:'Sigla',datafield:'sigla',width:80},
                   {text:'Codigo',datafield:'codigo',width:80},
                   {text:'Direccion',datafield:'direccion',width:80},
-                  {text:'Localidad',datafield:'localidad',width:80},
                   {text:'Acciones', datafield:'id', cellsrenderer: setAcciones,width:"115px"}, //columna adicional
                 ]
             });
@@ -299,7 +299,9 @@
     $.get("/moduloentidades/ajax/instituciones/categorias",function(data){
         categorias=data.categorias;
     });
-
+    $.get("/moduloentidades/ajax/instituciones/regiones",function(data){
+        regiones=data.regiones;
+    });
     //$('#events').jqxPanel({ width: 300, height: 80});
     $("#gridMain").on("sort", function (event) {
         $("#events").jqxPanel('clearcontent');
@@ -321,28 +323,29 @@
         $("#updatecodigo").val(event.args.row.bounddata.codigo);
         $("#updatesigla").val(event.args.row.bounddata.sigla);
         $("#updatedireccion").val(event.args.row.bounddata.direccion);
-        $("#updatelocalidad").val(event.args.row.bounddata.localidad);
         $("#updatecategoria").val('');
 
         $("#shownombre").html(event.args.row.bounddata.nombre);
         $("#showcodigo").html(event.args.row.bounddata.codigo);                
         $("#showsigla").html(event.args.row.bounddata.sigla);
         $("#showdireccion").html(event.args.row.bounddata.direccion);
-        $("#showlocalidad").html(event.args.row.bounddata.localidad);  
         $("#showcategoria").html('');  
         
         $("#removenombre").html(event.args.row.bounddata.nombre);
         $("#removecodigo").html(event.args.row.bounddata.codigo);
         $("#removesigla").html(event.args.row.bounddata.sigla);
         $("#removedireccion").html(event.args.row.bounddata.direccion);
-        $("#removelocalidad").html(event.args.row.bounddata.localidad); 
+
         var tuicionID=0;    
         var categoriaID=0;
+        var regionID=0;
+
         var options="";    
         for(i=0;i<listaInstGlobal.length;i++){                  
             if(listaInstGlobal[i].id==event.args.row.bounddata.id){
                 tuicionID=listaInstGlobal[i].dependede_id;
-                categoriaID=listaInstGlobal[i].categoriaid;     
+                categoriaID=listaInstGlobal[i].categoriaid;
+                regionID=listaInstGlobal[i].region_id;     
             }
         }
         
@@ -374,7 +377,18 @@
         }   
         $("#updatecategoriaid").append(options); 
 
-
+        $("#updateregion_id").html("");       
+        options='<option value="0">Seleccione ...</option>';
+        for(i=0;i<regiones.length;i++){    
+            options+='<option value="'+regiones[i].id+'"';
+            if(regiones[i].id==categoriaID){
+                $("#removeregion").html(regiones[i].nombre);
+                $("#showregion").html(regiones[i].nombre); 
+                options+=" selected";
+            }
+            options+='>'+regiones[i].nombre+'</option>';
+        }   
+        $("#updateregion_id").append(options); 
 
         //console.log(event.args.originalEvent.target.id);
 
@@ -423,7 +437,6 @@
                 $("#codigo").val('');
                 $("#sigla").val('');
                 $("#direccion").val('');
-                $("#localidad").val('');
                 $("#task").val('create');
                 //llenar combo    
                 //console.log(listaInstGlobal.sortcolumn[1]);            
@@ -436,18 +449,27 @@
                 $("#categoriaid").append('<option value="0">Seleccione ...</option>');
                 for(i=0;i<categorias.length;i++){  
                     $("#categoriaid").append('<option value="'+categorias[i].id+'">'+categorias[i].nombre+'</option>');
-                }                
+                }  
+
+                $("#region_id").html('');
+                $("#region_id").append('<option value="0">Seleccione ...</option>');
+                for(i=0;i<regiones.length;i++){  
+                    $("#region_id").append('<option value="'+regiones[i].id+'">'+regiones[i].nombre+'</option>');
+                }
+
+
             });
             $("#insertar").click(function(){
 
                 var institucion = {
                     'id':$("#id").val(),
                     'nombre':$("#nombre").val(),
+                    'categoriaid':$("#categoriaid").val(),
                     'dependede_id':$("#dependede_id").val(),
                     'codigo':$("#codigo").val(),
                     'sigla':$("#sigla").val(),
                     'direccion':$("#direccion").val(),
-                    'localidad':$("#localidad").val(),
+                    'region_id':$("#region_id").val(),
                     'task':$("#task").val(),
                     '_token': $('input[name=_token]').val()
                 };
@@ -465,10 +487,10 @@
                     'nombre' : $("#updatenombre").val(),
                     'categoriaid':$("#updatecategoriaid").val(),
                     'dependede_id':$("#updatedependede_id").val(),
+                    'region_id':$("#updateregion_id").val(),
                     'codigo':$("#updatecodigo").val(),
                     'sigla':$("#updatesigla").val(),
                     'direccion':$("#updatedireccion").val(),
-                    'localidad':$("#updatelocalidad").val(),
                     'id':$("#id").val(),
                     'task':$("#task").val(),
                     '_token': $('input[name=_token]').val()                    
@@ -481,8 +503,7 @@
                     $("#updatedependede_id").val('');
                     $("#updatecodigo").val('');
                     $("#updatesigla").val('');
-                    $("#updatedireccion").val('');
-                    $("#updatelocalidad").val('');                    
+                    $("#updatedireccion").val('');                
                     $("#update_record_modal").modal("hide");
                 });
             });
@@ -492,7 +513,6 @@
                     'codigo':'',
                     'sigla':'',
                     'direccion':'',
-                    'localidad':'',
                     'id':$("#id").val(),
                     'task':$("#task").val(),
                     '_token': $('input[name=_token]').val()                    
