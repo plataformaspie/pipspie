@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('instituciones/obtenertodas', 'ModuloEntidades\InstitucionController@getInstituciones');
               Route::post('instituciones/crud', 'ModuloEntidades\InstitucionController@crudInstitucion');
               Route::get('instituciones/categorias','ModuloEntidades\InstitucionController@getCategorias');
+              Route::get('instituciones/regiones','ModuloEntidades\InstitucionController@getRegiones');
           }
       );
 });

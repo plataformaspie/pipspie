@@ -77,7 +77,7 @@ class InstitucionController extends Controller
             'codigo'=>$request->codigo,
             'sigla'=>$request->sigla,
             'direccion'=>$request->direccion,
-            'localidad'=>$request->localidad,
+            'region_id'=>$request->region_id,
             'updated_at'=>date("Y-m-d h:i:s")
         ];
         if($request->task=='create'){
@@ -183,5 +183,11 @@ class InstitucionController extends Controller
     public function getCategorias(){
         $categorias=\DB::select("select id,nombre from spie_categoriasinstitucionales order by nombre");
         return response()->json(['categorias'=>$categorias,'listado'=>'ok']);
+    }
+    public function getRegiones(){
+        $regiones=\DB::select("SELECT r3.id, r1.nombre_comun || ' - ' || r3.nombre_comun as nombre 
+FROM (SELECT id, codigo_numerico, nombre_comun, substring(codigo_numerico, 1,2) as codigo_numerico_n1 FROM regiones   WHERE categoria = 'NIVEL_3') r3,(SELECT id, codigo_numerico, nombre_comun FROM regiones WHERE categoria = 'NIVEL_1') r1 WHERE r1.codigo_numerico = r3.codigo_numerico_n1 order by r1.nombre_comun,r3.nombre_comun");
+        return response()->json(['regiones'=>$regiones,'listado'=>'ok']);
+
     }
 }
