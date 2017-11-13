@@ -150,14 +150,12 @@
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.sort.js')}}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.filter.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.selection.js') }}"></script>
-<!--<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.pager.js') }}"></script>-->
+{{-- <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.pager.js') }}"></script> --}}
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.columnsresize.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxnavigationbar.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcombobox.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxpanel.js')}}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcheckbox.js')}}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxvalidator.js')}}"></script>
-
 
 <script type="text/javascript" src="{{ asset('plugins/bower_components/select2/dist/js/select2.min.js')}}"></script>
 <!-- <script type="text/javascript" src="{{ asset('plugins/highlight.js')}}"></script> -->
@@ -178,6 +176,31 @@ jQuery.fn.extend({
 <script>
 $(function () 
 {
+    function activarMenu(id,aux){
+        $('#'+id).addClass('active');
+        $('#'+aux).addClass('activeaux');
+    }
+
+    function menuModulosHideShow(ele){
+        //1 hide
+        //2 show
+        switch (ele) {
+          case 1:
+          $("body").addClass("content-wrapper")
+          $(".open-close i").removeClass('icon-arrow-left-circle');
+          $(".sidebar").css("overflow", "inherit").parent().css("overflow", "visible");
+          break;
+          case 2:
+          $("body").removeClass('content-wrapper');
+          $(".open-close i").addClass('icon-arrow-left-circle');
+          $(".logo span").show();
+          break;
+      }
+  }
+
+  activarMenu('mod-1','mp-4');
+  menuModulosHideShow(1);
+
     var cnf = {
         theme: 'light', //'light', // 'darkblue';
         theme_dark: 'darkblue',
