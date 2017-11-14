@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3" for="form_codigo">Código</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="form_codigo" placeholder="código">
+                            <input type="text" class="form-control" id="form_codigo" placeholder="código" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -374,6 +374,58 @@ $(function ()
             this.validarForm('hide');
             $("#form_proyecto").modal();
         },
+        // iniciarResultadosPDES: function() {
+        //     // $.get(cnf.urlBase + '/proyectosgestion/listar/resultados', function(res){
+        //         // resultados = res.datos;
+        //         // datos = [];
+        //         // 
+        //         // 
+        //         // 
+        //         // for(i = 0; i < resultados.length; i++)
+        //         // {
+        //         //     op = resultados[i];
+        //         //     datos.push({
+        //         //         'id' : op.id_r,
+        //         //         'text': op.descripcion_pmr
+        //         //     })
+
+
+        //             // html = '<option value="' + op.id_r + '" > ' + op.descripcion_pmr + '</option> ';
+        //             // ctxForm.resultados.append(html);                    
+        //         // }
+        //         ctxForm.resultados.select2({
+        //             ajax: {
+        //                 url: cnf.urlBase +  '/proyectosgestion/listar/resultados',
+        //                 dataType: 'json',
+        //                 delay: 250,
+        //                 data: function (params) {
+        //                     var query = {
+        //                         search: params.term,
+        //                         type: 'public'
+        //                     }
+        //                       return query;
+        //                 },
+
+        //             },
+        //             minimumInputLength:4,                    
+        //             placeholder: 'Seleccione el/los resultados',
+        //             // data: datos,
+        //             dropdownParent: $('#form_proyecto'),
+        //             cache: false,
+        //             // allowClear:true,
+        //             // language: "es",
+        //             formatResult: function (val) {
+        //                 return "<div title ='" + val.text + "'>" +val.text + "</div>"
+        //             },
+        //             formatSelection: function (val) {
+        //                 return "<div title ='" + val.text + "'>" +val.text.substr(0,20) + '...' + "</div>"
+        //             },
+        //         });
+
+        //     // })
+        // },
+
+        
         iniciarResultadosPDES: function() {
             $.get(cnf.urlBase + '/proyectosgestion/listar/resultados', function(res){
                 resultados = res.datos;
@@ -384,13 +436,13 @@ $(function ()
                     allowClear:true,
                     language: "es",
                     formatSelection: function (val) {
-                        return  val.text.substr(0,15) + '...';
+                        return "<div title ='" + val.text + "'>" +val.text.substr(0,20) + '...' + "</div>"
                     },
                 });
                 for(i = 0; i < resultados.length; i++)
                 {
                     op = resultados[i];
-                    html = '<option value="' + op.id_r + '"> ' + op.descripcion_pmr + '</option> ';
+                    html = '<option value="' + op.id_r + '" > ' + op.descripcion_pmr + '</option> ';
                     ctxForm.resultados.append(html);                    
                 }
             })
@@ -404,14 +456,18 @@ $(function ()
                     cache: false,
                     allowClear:true,
                     language: "es",
+                    formatResult: function (val) {
+                        return "<div>" +val.text + "</div>"
+                    },
                     formatSelection: function (val) {
-                        return  val.text.substr(0,15) + '...';
+                        return  "<div title ='" + val.text + "'>" +val.text.substr(0,25) + '...' + "</div>"
                     },
                 })
                 for(i=0; i < sisinweb.length; i++)
                 {
                     op = sisinweb[i];
-                    html = '<option value="' + op.id + '"> ' + op.nombre_proyecto + '</option> ';
+                    opcionNombre = op.cod_accion_plan + '- '+ op.nombre_proyecto //+ ' --<b> CODIGO:</b> ' + op.codigo_sisin + ' -- ' + op.depto  + ' - ' + op.prov + ' - '  + op.mun;
+                    html = '<option value="' + op.id + '" > ' + opcionNombre + '</option> ';
                     ctxForm.sisinweb.append(html);
                 }
             })

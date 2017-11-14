@@ -138,10 +138,7 @@ Route::group(['middleware' => 'auth'],function(){
           Route::get('proyectosgestion',      'ModuloPdes\GestionProyectosController@listarProyectosPdesAsociados');
           Route::post('proyectosgestion',     'ModuloPdes\GestionProyectosController@insertar');
           Route::get('proyectosgestion/{id}', 'ModuloPdes\GestionProyectosController@obtieneProyecto');
-          Route::get('proyectosgestion/listar/resultados',    'ModuloPdes\GestionProyectosController@listarResultados');
-          Route::get('proyectosgestion/listar/sisinweb',      'ModuloPdes\GestionProyectosController@listarsisinweb');
-          Route::get('proyectosgestion/listar/instituciones', 'ModuloPdes\GestionProyectosController@listarInstituciones');
-          Route::get('proyectosgestion/listar/sectores',      'ModuloPdes\GestionProyectosController@listarSectores');
-        }
+          Route::get('proyectosgestion/listar/{op}',      'ModuloPdes\GestionProyectosController@listar'); // op:['sectores','instituciones','sisinweb','resultados']
+		  }
       );
 });

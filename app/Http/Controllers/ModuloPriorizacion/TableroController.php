@@ -41,10 +41,37 @@ class TableroController extends Controller
 
     public function menusTablero()
     {
-        $user= \Auth::user();
-        // $menus = \DB->table('dash_menu')->
+        $user = \Auth::user();
+        $id_rol = $user->id_rol;
+        $menus = collect(\DB::select("SELECT m.id, m.cod_num, m.cod_str, m.nombre, m.descripcion, 
+                                m.nivel, m.tipo, m.orden FROM  dash_menu m, dash_menu_rol mr 
+                                WHERE m.id = mr.id_dash_menu  AND mr.id_rol = $id_rol AND m.activo 
+                                ORDER BY orden
+                                "));
 
-        return response()->json($user);
+        $listaMenu = $menus->where('nivel',1)->sortBy('id');
+
+        foreach ($listaMenu as $nivel1) {
+            $codigo = $nivel1->cod_str;
+            $niveles2 = $menus->where('nivel', '2')->filter(function($item, $key) use ($codigo){
+                return (substr($item->cod_str, 0, 2) == $codigo);
+            })->sortBy('orden');
+            $nivel1->hijos = $niveles2;
+            foreach ($niveles2 as $nivel2) {
+                $cod2 = $nivel2->cod_str;
+                $niveles3 =  $menus->where('nivel', '3')->filter(function($item, $key) use ($cod2){
+                    return (substr($item->cod_str, 0, 4) == $cod2);
+                })->sortBy('orden');
+                $nivel2->hijos = $niveles3;
+            }
+
+        }
+                   
+        return response()->json([
+            'usr' => $user,
+            'menus'=> $listaMenu,
+            // 'dash_menu' => $menus
+        ]);
     }
 
 

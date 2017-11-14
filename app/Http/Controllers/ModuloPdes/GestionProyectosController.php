@@ -178,50 +178,103 @@ class GestionProyectosController extends Controller
         ]);
     }
 
-    public function listarSectores()
+    // public function listarSectores()
+    // {
+    //     $sectores = \DB::table('spie_proyectos_pdes')->select('sector')->distinct()->orderBy('sector')->get();
+    //     return response()->json([
+    //         'mensaje'=>'Sectores',
+    //         'estado'=>'ok',
+    //         'datos' => $sectores]);
+    // } 
+
+    // public function listarResultados(Request $request)
+    // {
+
+    //     $resultados = \DB::select("SELECT r.id as id_r, p.cod_p, m.cod_m, r.cod_r, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r) as cod_pmr, 
+    //         r.descripcion, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r||' - '|| r.descripcion) as  descripcion_pmr 
+    //         FROM spie_pilares p, spie_metas m, spie_resultados r 
+    //         WHERE p.id = m.pilar AND m.id = r.meta 
+    //         ORDER BY p.cod_p, m.cod_m, r.cod_r");
+    //     return response()->json([
+    //         'mensaje'=>'Resultados',
+    //         'estado'=>'ok',
+    //         'datos' => $resultados
+    //     ]);
+    // }
+
+    // public function listarsisinweb()
+    // {                 
+    //     $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan 
+    //         FROM sisin_web s order by s.nombre_proyecto");
+    //     return response()->json([
+    //         'mensaje'=>'Proyectos_SISINWEB',
+    //         'estado'=>'ok',
+    //         'datos' => $sisin
+    //     ]);
+    // }
+
+    // public function listarInstituciones()
+    // {              
+    //     $instituciones = \DB::select("SELECT s.id, s.nombre, s.codigo, s.sigla, (s.codigo || ' - ' || s.nombre) as descripcion
+    //         FROM spie_instituciones s order by s.codigo");
+    //     return response()->json([
+    //         'mensaje'=>'Instituciones',
+    //         'estado'=>'ok',
+    //         'datos' => $instituciones
+    //     ]);  
+    // }
+
+    /*------------------------------------
+    op:['sectores','instituciones','sisinweb','resultados']
+    */
+    public function listar($op)
     {
-        $sectores = \DB::table('spie_proyectos_pdes')->select('sector')->distinct()->orderBy('sector')->get();
-        return response()->json([
-            'mensaje'=>'Sectores',
-            'estado'=>'ok',
-            'datos' => $sectores]);
-    } 
+        $op = strtolower($op);
+        if(str_contains('sectores', $op))
+        {
+            $sectores = \DB::table('spie_proyectos_pdes')->select('sector')->distinct()->orderBy('sector')->get();
+            return response()->json([
+                'mensaje'=>'Sectores',
+                'estado'=>'ok',
+                'datos' => $sectores]);
+        }
 
-    public function listarResultados(Request $request)
-    {
+        if(str_contains('resultados', $op))
+        {
+            $resultados = \DB::select("SELECT r.id as id_r, p.cod_p, m.cod_m, r.cod_r, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r) as cod_pmr, 
+                r.descripcion, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r||' - '|| r.descripcion) as  descripcion_pmr 
+                FROM spie_pilares p, spie_metas m, spie_resultados r 
+                WHERE p.id = m.pilar AND m.id = r.meta 
+                ORDER BY p.cod_p, m.cod_m, r.cod_r");
+            return response()->json([
+                'mensaje'=>'Resultados',
+                'estado'=>'ok',
+                'datos' => $resultados
+            ]);
+        }
+        if(str_contains('instituciones', $op))
+        {
+            $instituciones = \DB::select("SELECT s.id, s.nombre, s.codigo, s.sigla, (s.codigo || ' - ' || s.nombre) as descripcion
+                FROM spie_instituciones s order by s.codigo");
+            return response()->json([
+                'mensaje'=>'Instituciones',
+                'estado'=>'ok',
+                'datos' => $instituciones
+            ]); 
+        }
+        if(str_contains('sisinweb', $op))
+        {
+            $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan, 
+                s.codigo_sisin , s.depto, s.prov, s.mun
+                FROM sisin_web s order by s.nombre_proyecto");
+            return response()->json([
+                'mensaje'=>'Proyectos_SISINWEB',
+                'estado'=>'ok',
+                'datos' => $sisin
+            ]); 
 
-        $resultados = \DB::select("SELECT r.id as id_r, p.cod_p, m.cod_m, r.cod_r, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r) as cod_pmr, 
-            r.descripcion, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r||' - '|| r.descripcion) as  descripcion_pmr 
-            FROM spie_pilares p, spie_metas m, spie_resultados r 
-            WHERE p.id = m.pilar AND m.id = r.meta 
-            ORDER BY p.cod_p, m.cod_m, r.cod_r");
-        return response()->json([
-            'mensaje'=>'Resultados',
-            'estado'=>'ok',
-            'datos' => $resultados
-        ]);
-    }
+        }
 
-    public function listarsisinweb()
-    {                 
-        $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan 
-            FROM sisin_web s order by s.nombre_proyecto");
-        return response()->json([
-            'mensaje'=>'Proyectos_SISINWEB',
-            'estado'=>'ok',
-            'datos' => $sisin
-        ]);
-    }
-
-    public function listarInstituciones()
-    {              
-        $instituciones = \DB::select("SELECT s.id, s.nombre, s.codigo, s.sigla, (s.codigo || ' - ' || s.nombre) as descripcion
-            FROM spie_instituciones s order by s.codigo");
-        return response()->json([
-            'mensaje'=>'Instituciones',
-            'estado'=>'ok',
-            'datos' => $instituciones
-        ]);  
     }
 
 }
