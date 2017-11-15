@@ -23,7 +23,7 @@
 @section('content')
 <div class="container-fluid">      
     </div>
-        <div class="row mb10 ">
+        <div class="row mb10">
             <div class="col-sm-12 bg-white">
             <h3 class="">Gestión de Proyectos</h3>
             </div>

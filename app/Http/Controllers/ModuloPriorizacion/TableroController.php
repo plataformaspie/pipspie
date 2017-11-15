@@ -43,192 +43,42 @@ class TableroController extends Controller
     {
         $user = \Auth::user();
         $id_rol = $user->id_rol;
-        $menus = collect(\DB::select("SELECT m.id, m.cod_num, m.cod_str, m.nombre, m.descripcion, 
+        $listaMenus = collect(\DB::select("SELECT m.id, m.cod_num, m.cod_str, m.nombre, m.descripcion, 
                                 m.nivel, m.tipo, m.orden FROM  dash_menu m, dash_menu_rol mr 
                                 WHERE m.id = mr.id_dash_menu  AND mr.id_rol = $id_rol AND m.activo 
                                 ORDER BY orden
                                 "));
 
-        $listaMenu = $menus->where('nivel',1)->sortBy('id');
-
-        foreach ($listaMenu as $nivel1) {
+        $nodosMenu = $listaMenus->where('nivel',1)->sortBy('orden')->values();
+        // $nodosMenu = $listaMenus->filter(function($item, $key){
+        //     if ($item->nivel == 1) 
+        //         return [ (string)$item->cod_str => $item];
+        // });
+        // return response()->json($nodosMenu);
+        foreach ($nodosMenu as $nivel1) {
             $codigo = $nivel1->cod_str;
-            $niveles2 = $menus->where('nivel', '2')->filter(function($item, $key) use ($codigo){
+            $niveles2 = $listaMenus->where('nivel', '2')->filter(function($item, $key) use ($codigo){
                 return (substr($item->cod_str, 0, 2) == $codigo);
-            })->sortBy('orden');
+            })->sortBy('orden')->values();
+
             $nivel1->hijos = $niveles2;
             foreach ($niveles2 as $nivel2) {
                 $cod2 = $nivel2->cod_str;
-                $niveles3 =  $menus->where('nivel', '3')->filter(function($item, $key) use ($cod2){
+                $niveles3 =  $listaMenus->where('nivel', '3')->filter(function($item, $key) use ($cod2){
                     return (substr($item->cod_str, 0, 4) == $cod2);
-                })->sortBy('orden');
+                })->sortBy('orden')->values();
+
                 $nivel2->hijos = $niveles3;
             }
 
         }
                    
         return response()->json([
-            'usr' => $user,
-            'menus'=> $listaMenu,
-            // 'dash_menu' => $menus
+            'mensaje' => 'ok',
+            'nodosMenu'=> $nodosMenu,
+            'listaMenu' => $listaMenus,
         ]);
     }
-
-
-
-    public function configurarFiltroVariable(Request $request)
-    {
-        if($request->ajax()) {
-
-            switch ($request->cod) {
-              case 'v_ve0001':
-                    $html = '<div class="stats-row m-0">
-                                <div class="stat-item containertipoimg">
-                                    <img name="r_departamento" src="/img/icon-graf/r_departamento.png" alt="11" class="image">
-                                    <div class="filt" onclick="filtDepto(this,\'v_ve0001_p_pobreza_extrema\',\'r_departamento\',\'POBRE EXTREMO\', \'POBRE EXTREMO x DEPARTAMENRO\');">
-                                      <div class="text">Departamentos</div>
-                                    </div>
-                                </div>
-                                <div class="stat-item containertipoimg">
-                                    <img name="r_urbano_rural" src="/img/icon-graf/r_urbano_rural.png" alt="1" class="image">
-                                    <div class="filt" onclick="filtUrbRu(this,\'v_ve0001_p_pobreza_extrema\',\'r_urbano_rural\',\'POBRE EXTREMO\', \'POBRE EXTREMO x URBANO-RURAL\');">
-                                      <div class="text">Urbano_Rural</div>
-                                    </div>
-                                </div>
-                                <div class="stat-item containertipoimg">
-                                    <img name="genero" src="/img/icon-graf/genero.png" alt="3" class="image">
-                                    <div class="filt" onclick="filtGenero(this,\'v_ve0001_p_pobreza_extrema\',\'genero\',\'POBRE EXTREMO\', \'POBRE EXTREMO x GÉNERO\');">
-                                      <div class="text">Genero</div>
-                                    </div>
-                                </div>
-                                <div class="stat-item containertipoimg">
-                                    <img name="pobreza_extrema" src="/img/icon-graf/pex.png" alt="3" class="image">
-                                    <div class="filt" onclick="filtPex(this,\'v_ve0001_p_pobreza_extrema\',\'pobreza_extrema\',\' \', \'POBREZA EXTREMA\');">
-                                      <div class="text">POBREZA</div>
-                                    </div>
-                                </div>
-                                <div class="stat-item" style="float: right;">
-                                    <label><input type="radio" name="operador" onclick="operador(this);" value="null" checked>Número</label><br/>
-                                    <label><input type="radio" name="operador" onclick="operador(this);" value="true" >Porcentaje</label>
-                                </div>
-                          </div>';
-                break;
-              case 'v_ve0002':
-                    $html = '<div class="stats-row m-0">
-                        <div class="stat-item containertipoimg">
-                            <img name="r_departamento" src="/img/icon-graf/r_departamento.png" alt="11" class="image">
-                            <div class="filt" onclick="filtDepto(this,\'v_ve0002_p_pobreza_moderada\',\'r_departamento\',\'POBRE\', \'POBREZA MODERADA x DEPARTAMENRO\');">
-                              <div class="text">Departamentos</div>
-                            </div>
-                        </div>
-                        <div class="stat-item containertipoimg">
-                            <img name="r_urbano_rural" src="/img/icon-graf/r_urbano_rural.png" alt="1" class="image">
-                            <div class="filt" onclick="filtUrbRu(this,\'v_ve0002_p_pobreza_moderada\',\'r_urbano_rural\',\'POBRE\', \'POBREZA MODERADA x URBANO-RURAL\');">
-                              <div class="text">Urbano_Rural</div>
-                            </div>
-                        </div>
-                        <div class="stat-item containertipoimg">
-                            <img name="genero" src="/img/icon-graf/genero.png" alt="3" class="image">
-                            <div class="filt" onclick="filtGenero(this,\'v_ve0002_p_pobreza_moderada\',\'genero\',\'POBRE\', \'POBREZA MODERADA x GÉNERO\');">
-                              <div class="text">Genero</div>
-                            </div>
-                        </div>
-                        <div class="stat-item containertipoimg">
-                            <img name="pobreza_moderada" src="/img/icon-graf/pmo.png" alt="3" class="image">
-                            <div class="filt" onclick="filtPmo(this,\'v_ve0002_p_pobreza_moderada\',\'pobreza_moderada\',\' \', \'POBREZA MODERADA\');">
-                              <div class="text">POBREZA</div>
-                            </div>
-                        </div>
-                        <div class="stat-item" style="float: right;">
-                          <label><input type="radio" name="operador" onclick="operador(this);" value="null" checked>Número</label><br/>
-                          <label><input type="radio" name="operador" onclick="operador(this);" value="true" >Porcentaje</label>
-                        </div>
-
-                    </div>';
-              break;
-              case 'v_ve0003':
-                    $html = '<div class="stats-row m-0">
-                        <div class="stat-item containertipoimg">
-                            <img name="r_departamento" src="/img/icon-graf/r_departamento.png" alt="11" class="image">
-                            <div class="filt" onclick="filtDepto(this,\'v_ve0003_p_desempleo\',\'r_departamento\',\'DESOCUPADO\', \'DESEMPLEO x DEPARTAMENRO\');">
-                              <div class="text">Departamentos</div>
-                            </div>
-                        </div>
-                        <div class="stat-item containertipoimg">
-                            <img name="r_urbano_rural" src="/img/icon-graf/r_urbano_rural.png" alt="1" class="image">
-                            <div class="filt" onclick="filtUrbRu(this,\'v_ve0003_p_desempleo\',\'r_urbano_rural\',\'DESOCUPADO\', \'DESEMPLEO x URBANO-RURAL\');">
-                              <div class="text">Urbano_Rural</div>
-                            </div>
-                        </div>
-                        <div class="stat-item containertipoimg">
-                            <img name="genero" src="/img/icon-graf/genero.png" alt="3" class="image">
-                            <div class="filt" onclick="filtGenero(this,\'v_ve0003_p_desempleo\',\'genero\',\'DESOCUPADO\', \'DESEMPLEO x GÉNERO\');">
-                              <div class="text">Genero</div>
-                            </div>
-                        </div>
-                        <div class="stat-item containertipoimg">
-                            <img name="po_pd" src="/img/icon-graf/desem.png" alt="3" class="image">
-                            <div class="filt" onclick="filtDesem(this,\'v_ve0003_p_desempleo\',\'po_pd\',\' \', \'DESEMPLEO\');">
-                              <div class="text">DESEMPLEO</div>
-                            </div>
-                        </div>
-                        <div class="stat-item" style="float: right;">
-                            <label><input type="radio" name="operador" onclick="operador(this);" value="null" checked>Número</label><br/>
-                            <label><input type="radio" name="operador" onclick="operador(this);" value="true" >Porcentaje</label>
-                        </div>
-
-                    </div>';
-              break;
-              default:
-                $html="";
-              break;
-            }
-            return \Response::json($html);
-        }
-    }
-
-    public function generarDatosVE0001(Request $request)
-    {
-        if($request->ajax()) {
-            $datos = \DB::connection('dbentreparentesys')
-                      ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
-                                FROM ".$request->vista."
-                                WHERE pobreza_extrema = 'POBRE EXTREMO'
-                                GROUP BY dimension
-                                ORDER BY dimension ASC");
-            return \Response::json($datos);
-        }
-    }
-
-    public function generarDatosVE0002(Request $request)
-    {
-        if($request->ajax()) {
-            $datos = \DB::connection('dbentreparentesys')
-                      ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
-                                FROM ".$request->vista."
-                                WHERE pobreza_moderada = 'POBRE'
-                                GROUP BY dimension
-                                ORDER BY dimension ASC");
-            return \Response::json($datos);
-        }
-    }
-
-    public function generarDatosVE0003(Request $request)
-    {
-        if($request->ajax()) {
-            $datos = \DB::connection('dbentreparentesys')
-                      ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
-                                FROM ".$request->vista."
-                                WHERE po_pd = 'DESOCUPADO'
-                                GROUP BY dimension
-                                ORDER BY dimension ASC");
-            return \Response::json($datos);
-        }
-    }
-
-
-
-
 
 
 

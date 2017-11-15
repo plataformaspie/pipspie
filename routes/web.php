@@ -82,8 +82,12 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('generardatosVE0003', 'ModuloPriorizacion\DashboardController@generarDatosVE0003');
               Route::get('generardatosVE0002', 'ModuloPriorizacion\DashboardController@generarDatosVE0002');
               Route::get('obtenerDatosFiltro', 'ModuloPriorizacion\DashboardController@obtenerDatosFiltro');
-
-              Route::get('itemstablero', 'ModuloPriorizacion\tableroController@menusTablero');
+          }
+      );
+      Route::group(
+          array('prefix' => 'api/modulopriorizacion'),
+          function() {
+              Route::get('menustablero', 'ModuloPriorizacion\tableroController@menusTablero');
           }
       );
 });
