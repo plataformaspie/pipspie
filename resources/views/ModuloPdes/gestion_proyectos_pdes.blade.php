@@ -23,7 +23,7 @@
 @section('content')
 <div class="container-fluid">      
     </div>
-        <div class="row mb10 ">
+        <div class="row mb10">
             <div class="col-sm-12 bg-white">
             <h3 class="">Gestión de Proyectos</h3>
             </div>
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3" for="form_codigo">Código</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="form_codigo" placeholder="código">
+                            <input type="text" class="form-control" id="form_codigo" placeholder="código" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -150,14 +150,12 @@
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.sort.js')}}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.filter.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.selection.js') }}"></script>
-<!--<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.pager.js') }}"></script>-->
+{{-- <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.pager.js') }}"></script> --}}
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.columnsresize.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxnavigationbar.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcombobox.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxpanel.js')}}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcheckbox.js')}}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxvalidator.js')}}"></script>
-
 
 <script type="text/javascript" src="{{ asset('plugins/bower_components/select2/dist/js/select2.min.js')}}"></script>
 <!-- <script type="text/javascript" src="{{ asset('plugins/highlight.js')}}"></script> -->
@@ -178,6 +176,31 @@ jQuery.fn.extend({
 <script>
 $(function () 
 {
+    function activarMenu(id,aux){
+        $('#'+id).addClass('active');
+        $('#'+aux).addClass('activeaux');
+    }
+
+    function menuModulosHideShow(ele){
+        //1 hide
+        //2 show
+        switch (ele) {
+          case 1:
+          $("body").addClass("content-wrapper")
+          $(".open-close i").removeClass('icon-arrow-left-circle');
+          $(".sidebar").css("overflow", "inherit").parent().css("overflow", "visible");
+          break;
+          case 2:
+          $("body").removeClass('content-wrapper');
+          $(".open-close i").addClass('icon-arrow-left-circle');
+          $(".logo span").show();
+          break;
+      }
+  }
+
+  activarMenu('mod-1','mp-4');
+  menuModulosHideShow(1);
+
     var cnf = {
         theme: 'light', //'light', // 'darkblue';
         theme_dark: 'darkblue',
@@ -351,6 +374,58 @@ $(function ()
             this.validarForm('hide');
             $("#form_proyecto").modal();
         },
+        // iniciarResultadosPDES: function() {
+        //     // $.get(cnf.urlBase + '/proyectosgestion/listar/resultados', function(res){
+        //         // resultados = res.datos;
+        //         // datos = [];
+        //         // 
+        //         // 
+        //         // 
+        //         // for(i = 0; i < resultados.length; i++)
+        //         // {
+        //         //     op = resultados[i];
+        //         //     datos.push({
+        //         //         'id' : op.id_r,
+        //         //         'text': op.descripcion_pmr
+        //         //     })
+
+
+        //             // html = '<option value="' + op.id_r + '" > ' + op.descripcion_pmr + '</option> ';
+        //             // ctxForm.resultados.append(html);                    
+        //         // }
+        //         ctxForm.resultados.select2({
+        //             ajax: {
+        //                 url: cnf.urlBase +  '/proyectosgestion/listar/resultados',
+        //                 dataType: 'json',
+        //                 delay: 250,
+        //                 data: function (params) {
+        //                     var query = {
+        //                         search: params.term,
+        //                         type: 'public'
+        //                     }
+        //                       return query;
+        //                 },
+
+        //             },
+        //             minimumInputLength:4,                    
+        //             placeholder: 'Seleccione el/los resultados',
+        //             // data: datos,
+        //             dropdownParent: $('#form_proyecto'),
+        //             cache: false,
+        //             // allowClear:true,
+        //             // language: "es",
+        //             formatResult: function (val) {
+        //                 return "<div title ='" + val.text + "'>" +val.text + "</div>"
+        //             },
+        //             formatSelection: function (val) {
+        //                 return "<div title ='" + val.text + "'>" +val.text.substr(0,20) + '...' + "</div>"
+        //             },
+        //         });
+
+        //     // })
+        // },
+
+        
         iniciarResultadosPDES: function() {
             $.get(cnf.urlBase + '/proyectosgestion/listar/resultados', function(res){
                 resultados = res.datos;
@@ -361,13 +436,13 @@ $(function ()
                     allowClear:true,
                     language: "es",
                     formatSelection: function (val) {
-                        return  val.text.substr(0,15) + '...';
+                        return "<div title ='" + val.text + "'>" +val.text.substr(0,20) + '...' + "</div>"
                     },
                 });
                 for(i = 0; i < resultados.length; i++)
                 {
                     op = resultados[i];
-                    html = '<option value="' + op.id_r + '"> ' + op.descripcion_pmr + '</option> ';
+                    html = '<option value="' + op.id_r + '" > ' + op.descripcion_pmr + '</option> ';
                     ctxForm.resultados.append(html);                    
                 }
             })
@@ -381,14 +456,18 @@ $(function ()
                     cache: false,
                     allowClear:true,
                     language: "es",
+                    formatResult: function (val) {
+                        return "<div>" +val.text + "</div>"
+                    },
                     formatSelection: function (val) {
-                        return  val.text.substr(0,15) + '...';
+                        return  "<div title ='" + val.text + "'>" +val.text.substr(0,25) + '...' + "</div>"
                     },
                 })
                 for(i=0; i < sisinweb.length; i++)
                 {
                     op = sisinweb[i];
-                    html = '<option value="' + op.id + '"> ' + op.nombre_proyecto + '</option> ';
+                    opcionNombre = op.cod_accion_plan + '- '+ op.nombre_proyecto //+ ' --<b> CODIGO:</b> ' + op.codigo_sisin + ' -- ' + op.depto  + ' - ' + op.prov + ' - '  + op.mun;
+                    html = '<option value="' + op.id + '" > ' + opcionNombre + '</option> ';
                     ctxForm.sisinweb.append(html);
                 }
             })

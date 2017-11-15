@@ -232,4 +232,5 @@ return [
         //'Html' => Collective\Html\HtmlFacade::class,
     ],
 
+    'urlBase'=>'v',
 ];

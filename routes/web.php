@@ -20,6 +20,13 @@ Auth::routes();
 Route::get('home', 'HomeController@index')->name('home');
 Route::get('siep/dashboard', 'HomeController@siepRedirect');
 
+/* -----------------------------------------------------------------------------
+| Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro 
+| omitir .blase.php y debe ser separado por puntos ej. modulopdes.dashboard
+*/
+Route::get(Config::get('app.urlBase') . '/{vista}', 'VistaController@index')->middleware('auth');
+
+
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'moduloadministracion'),
@@ -63,6 +70,7 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'modulopriorizacion'),
           function() {
               Route::get('dashboard', 'ModuloPriorizacion\DashboardController@index');
+              Route::get('tablero', 'ModuloPriorizacion\TableroController@index');
           }
       );
       Route::group(
@@ -74,6 +82,12 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('generardatosVE0003', 'ModuloPriorizacion\DashboardController@generarDatosVE0003');
               Route::get('generardatosVE0002', 'ModuloPriorizacion\DashboardController@generarDatosVE0002');
               Route::get('obtenerDatosFiltro', 'ModuloPriorizacion\DashboardController@obtenerDatosFiltro');
+          }
+      );
+      Route::group(
+          array('prefix' => 'api/modulopriorizacion'),
+          function() {
+              Route::get('menustablero', 'ModuloPriorizacion\tableroController@menusTablero');
           }
       );
 });
@@ -128,10 +142,7 @@ Route::group(['middleware' => 'auth'],function(){
           Route::get('proyectosgestion',      'ModuloPdes\GestionProyectosController@listarProyectosPdesAsociados');
           Route::post('proyectosgestion',     'ModuloPdes\GestionProyectosController@insertar');
           Route::get('proyectosgestion/{id}', 'ModuloPdes\GestionProyectosController@obtieneProyecto');
-          Route::get('proyectosgestion/listar/resultados',   'ModuloPdes\GestionProyectosController@listarResultados');
-          Route::get('proyectosgestion/listar/sisinweb',      'ModuloPdes\GestionProyectosController@listarsisinweb');
-          Route::get('proyectosgestion/listar/instituciones', 'ModuloPdes\GestionProyectosController@listarInstituciones');
-          Route::get('proyectosgestion/listar/sectores',      'ModuloPdes\GestionProyectosController@listarSectores');
-        }
+          Route::get('proyectosgestion/listar/{op}',      'ModuloPdes\GestionProyectosController@listar'); // op:['sectores','instituciones','sisinweb','resultados']
+		  }
       );
 });
