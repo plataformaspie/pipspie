@@ -32,6 +32,38 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'moduloadministracion'),
           function() {
               Route::get('dashboard', 'ModuloAdministracion\DashboardController@index');
+              
+              Route::get('abm_usuarios', 'ModuloAdministracion\AbmUsuariosController@index');
+              Route::get('listausers', 'ModuloAdministracion\AbmUsuariosController@listarUsers');
+              Route::get('listaroles_usu', 'ModuloAdministracion\AbmUsuariosController@listarRoles');
+              Route::get('listausers2', 'ModuloAdministracion\AbmUsuariosController@listarUsers2');
+              Route::post('guardarusuario', 'ModuloAdministracion\AbmUsuariosController@guardarUsuario');
+              Route::post('borrarusuario', 'ModuloAdministracion\AbmUsuariosController@borrarUsuario');
+              Route::get('autocompletarinst', 'ModuloAdministracion\AbmUsuariosController@autocompletarInstitucion');
+
+              Route::get('abm_modulos', 'ModuloAdministracion\AbmModulosController@index');
+              Route::get('listamodulos', 'ModuloAdministracion\AbmModulosController@listarModulos');
+              Route::post('guardarmodulo', 'ModuloAdministracion\AbmModulosController@guardarModulo');
+              Route::post('borrarmodulo', 'ModuloAdministracion\AbmModulosController@borrarModulo');
+
+              Route::get('abm_menus', 'ModuloAdministracion\AbmMenusController@index');
+              Route::get('listamenus', 'ModuloAdministracion\AbmMenusController@listarMenus');
+              Route::get('listamenus2', 'ModuloAdministracion\AbmMenusController@listarMenus2');  
+              Route::get('listamodulos_mnu', 'ModuloAdministracion\AbmMenusController@listarModulos');  
+              Route::post('guardarmenu', 'ModuloAdministracion\AbmMenusController@guardarMenu');
+              Route::post('borrarmenu', 'ModuloAdministracion\AbmMenusController@borrarMenu');
+
+              Route::get('abm_roles', 'ModuloAdministracion\AbmRolesController@index');
+              Route::get('listaroles', 'ModuloAdministracion\AbmRolesController@listarRoles');
+              Route::get('listaroles2', 'ModuloAdministracion\AbmRolesController@listarRoles2');
+              Route::get('listamenus_rol', 'ModuloAdministracion\AbmRolesController@listarMenus_rol');
+              Route::get('listamodulos_rol', 'ModuloAdministracion\AbmRolesController@listarModulos_rol');
+              Route::post('listamenusroles', 'ModuloAdministracion\AbmRolesController@listarMenusRoles');
+              Route::post('listamodulosroles', 'ModuloAdministracion\AbmRolesController@listarModulosRoles');
+              Route::post('guardarrol', 'ModuloAdministracion\AbmRolesController@guardarRol');
+              Route::post('borrarrol', 'ModuloAdministracion\AbmRolesController@borrarRol');
+              Route::post('guardarmenusroles', 'ModuloAdministracion\AbmRolesController@guardarMenusRoles');
+              Route::post('guardarmodulosroles', 'ModuloAdministracion\AbmRolesController@guardarModulosRoles');
           }
       );
       Route::group(
