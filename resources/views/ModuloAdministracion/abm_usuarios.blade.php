@@ -13,13 +13,13 @@
   <div class="container">
     <h2>Listado de Usuarios</h2>
     <div id='jqxWidget'>
-        <div id="grid2">
+        <div id="UsuariosGrid">
         </div>
 
 
-       <div id="form-msg" style="width: 800px"></div>
-       <iframe id="form-iframe" name="form-iframe" class="clase-iframe" frameborder="0"></iframe>
-       <div id="popupWindow">
+       <div id="mensajesUsuarios" style="width: 800px; min-height:20px;"></div>
+
+       <div id="popupUsuario">
           <div>Usuario</div>
           <div style="overflow: hidden;">
             <div id="mensajes"></div>
@@ -154,25 +154,26 @@
   <style type="text/css">
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
-      background-color: #d87165;
-      opacity: 0.7;
+      background-color: #de857b;
+      opacity: 0.85;
     }
+
     .jqx-validator-hint-arrow{ /* creamos otro rombo */  
       margin: 3px 0px 0px 0px;
       width: 8px; 
       height: 8px; 
       border: 1px solid; 
-      border-top-color: #d87165;
-      border-right-color: #d87165;
+      border-top-color: #de857b;
+      border-right-color: #de857b;
       border-bottom-color: #DEABA0;
       border-left-color: #DEABA0;
-      background: #d87165;
+      background: #de857b;
       -webkit-transform: rotate(45deg);
       -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       -o-transform: rotate(45deg);
       transform: rotate(45deg);
-      opacity: 0.7;
+      opacity: 0.85;
     }
 
     .jqx-validator-hint-arrow img {display: none;} /* ya no mostramos el rombo del validador*/ 
@@ -231,7 +232,7 @@ $(document).ready(function () {
             { name: 'rol', type: 'string' }, 
             { name: 'id_institucion', type: 'int' }, 
             { name: 'institucion_label', type: 'string' }, 
-            { name: 'permisos_abm', type: 'string'},
+            { name: 'permisos_abm',  type: 'bool' },
             { name: 'cargo', type: 'string'},
             { name: 'carnet', type: 'string'},
             { name: 'telefono', type: 'string'}
@@ -291,7 +292,7 @@ $(document).ready(function () {
     rolesAdapter.dataBind(); //  var recordsRoles = dataAdapter.getrecords();
 */
 
-    $("#grid2").jqxGrid(
+    $("#UsuariosGrid").jqxGrid(
     {
         width: 800,
         source: dataAdapter,
@@ -306,7 +307,7 @@ $(document).ready(function () {
         columnsresize: true,
 
         ready: function () {
-            // $("#grid2").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
+            // $("#UsuariosGrid").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
         },
         showtoolbar: true,
         rendertoolbar: function (statusbar) {
@@ -357,22 +358,22 @@ $(document).ready(function () {
                     $("#cargoInput").val('');
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#UsuariosGrid").offset();
+                    var anchoTabla = $("#UsuariosGrid").width();
+                    var anchoPopup = $("#popupUsuario").width(); 
+                    var altoPopup = $("#popupUsuario").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(100+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupUsuario").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupUsuario").jqxWindow('open');
                     Global_nuevo=true;
             });
 
             modifButton.click(function (event) {
                 if (Global_editrow > -1) {
                     // get the clicked row's data and initialize the input fields.
-                    var dataRecord = $("#grid2").jqxGrid('getrowdata', Global_editrow);
+                    var dataRecord = $("#UsuariosGrid").jqxGrid('getrowdata', Global_editrow);
                     $("#idInput").val(dataRecord.id);
                     $("#realNameInput").val(dataRecord.name);
                     $("#emailInput").val(dataRecord.email);
@@ -397,22 +398,22 @@ $(document).ready(function () {
                     $("#cargoInput").val(dataRecord.cargo);
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#UsuariosGrid").offset();
+                    var anchoTabla = $("#UsuariosGrid").width();
+                    var anchoPopup = $("#popupUsuario").width(); 
+                    var altoPopup = $("#popupUsuario").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupUsuario").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupUsuario").jqxWindow('open');
                 }
             });
 
             deleteButton.click(function (event) {
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                var offsetTabla = $("#grid2").offset();
-                var anchoTabla = $("#grid2").width();
+                var offsetTabla = $("#UsuariosGrid").offset();
+                var anchoTabla = $("#UsuariosGrid").width();
                 var anchoPopup = $("#popupDeleteConfirm").width(); 
                 var altoPopup = $("#popupDeleteConfirm").height();
                 var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
@@ -422,10 +423,10 @@ $(document).ready(function () {
                 $("#popupDeleteConfirm").jqxWindow('open');
 
 /*   Este codigo ya esta en el boton de confirmacion de boprrado                
-                var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-                var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-                var id = $("#grid2").jqxGrid('getrowid', selectedrowindex);
-                $("#grid2").jqxGrid('deleterow', id);
+                var selectedrowindex = $("#UsuariosGrid").jqxGrid('getselectedrowindex');
+                var rowscount = $("#UsuariosGrid").jqxGrid('getdatainformation').rowscount;
+                var id = $("#UsuariosGrid").jqxGrid('getrowid', selectedrowindex);
+                $("#UsuariosGrid").jqxGrid('deleterow', id);
                 disableDelButtonAndAnothers();
 
                 var parametros = { "id" : id,
@@ -436,10 +437,10 @@ $(document).ready(function () {
                   url: "./borrarusuario",
                   data: parametros,
                   success: function(datos){
-                    $("#form-msg").html(datos);
+                    $("#mensajesUsuarios").html(datos);
                   },
                   error: function(result) {
-                    $("#form-msg").html(result.responseText);
+                    $("#mensajesUsuarios").html(result.responseText);
                   }
                 });
 */
@@ -447,24 +448,25 @@ $(document).ready(function () {
 
             reloadButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $('#grid2').jqxGrid('updatebounddata','data');
+                $('#UsuariosGrid').jqxGrid('updatebounddata','data');
             });
 
             searchButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $("#grid2").jqxGrid('showfilterrow', true);
+                $("#UsuariosGrid").jqxGrid('showfilterrow', true);
 
-                var filter = $("#grid2").jqxGrid('filterable');
-                $("#grid2").jqxGrid('filterable', !filter); // sw
+                var filter = $("#UsuariosGrid").jqxGrid('filterable');
+                $("#UsuariosGrid").jqxGrid('filterable', !filter); // sw
+                $("#UsuariosGrid").jqxGrid('clearfilters');
 
             });
 
             excelButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'xls', 'Usuarios');
+                $("#UsuariosGrid").jqxGrid('exportdata', 'xls', 'Usuarios');
             });
 
             pdfButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'pdf', 'Usuarios');
+                $("#UsuariosGrid").jqxGrid('exportdata', 'pdf', 'Usuarios');
             });
 
         },
@@ -479,7 +481,7 @@ $(document).ready(function () {
                   { text: 'Nombre Completo', dataField: 'name', width: 200 },
                   { text: 'Email', dataField: 'email', width: 200 },
                   { text: 'Usuario', dataField: 'username', width: 150 },
-                  { text: 'Rol', datafield: 'id_rol', displayField: 'rol', width: 150 },
+                  { text: 'Rol', dataField: 'rol', filtertype: 'checkedlist', width: 150 },
 /*                    {
                         text: 'Rol', datafield: 'id_rol', displayField: 'rol', width: 150  
 
@@ -500,7 +502,7 @@ $(document).ready(function () {
                         }
                     },                  
 */                    
-                  { text: 'Permisos ABM', datafield: 'permisos_abm', columntype: 'checkbox', cellsalign: 'center', align: 'center' }
+                  { text: 'Permisos ABM', datafield: 'permisos_abm', columntype: 'checkbox', filtertype: 'bool', cellsalign: 'center', align: 'center' }
                 ],
 
         theme: Tema
@@ -508,7 +510,7 @@ $(document).ready(function () {
 
 
 
-    $('#grid2').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
+    $('#UsuariosGrid').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
           var args = event.args;
           var boundIndex = args.rowindex;
           var visibleIndex = args.visibleindex;
@@ -544,13 +546,13 @@ $(document).ready(function () {
     function disableDelButtonAndAnothers(){
         if (deleteButton !== undefined) deleteButton.jqxButton({disabled: true });
         if (modifButton !== undefined) modifButton.jqxButton({disabled: true });
-        var index = $("#grid2").jqxGrid('getselectedrowindex');
-        $('#grid2').jqxGrid('unselectrow', index);
-        $("#form-msg").html('');
+        var index = $("#UsuariosGrid").jqxGrid('getselectedrowindex');
+        $('#UsuariosGrid').jqxGrid('unselectrow', index);
+        $("#mensajesUsuarios").html('');
         Global_editrow = -1;
     };
    
-    $('#grid2').on('rowselect', function (event) { 
+    $('#UsuariosGrid').on('rowselect', function (event) { 
           var args = event.args;
           var rowBoundIndex = args.rowindex;
           var rowData = args.row;
@@ -563,18 +565,18 @@ $(document).ready(function () {
           }
 
           Global_editrow = rowBoundIndex;
-          $("#form-msg").html("");             
+          $("#mensajesUsuarios").html("");             
     });   
 
-    $('#grid2').on('filter', function (event) {
+    $('#UsuariosGrid').on('filter', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('pagechanged', function (event) {
+    $('#UsuariosGrid').on('pagechanged', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
+    $('#UsuariosGrid').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
         disableDelButtonAndAnothers();
     });   
 
@@ -671,15 +673,15 @@ $(document).ready(function () {
 
     $("#permisos_abm").jqxCheckBox({ width: 120, height: 25, theme: Tema });   
     // initialize the popup window and buttons.
-    $("#popupWindow").jqxWindow({
+    $("#popupUsuario").jqxWindow({
         width: 370, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.1, theme: Tema         
     });
 
-    $("#popupWindow").on('open', function () {
+    $("#popupUsuario").on('open', function () {
         //$("#name").jqxInput('selectAll');
     });
 
-    $("#popupWindow").on('close', function () {
+    $("#popupUsuario").on('close', function () {
         Global_nuevo=false;
         $('#form').jqxValidator('hide');
     });
@@ -709,17 +711,17 @@ $(document).ready(function () {
                     
 
 
-                  //$("#grid2").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
+                  //$("#UsuariosGrid").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
 
                   Global_row = row;
               } else {
                   var row = { name: $("#realNameInput").val(), email: $("#emailInput").val(), username: $("#userInput").val(),
                               id_rol: itemCB.value, rol: itemCB.label, id_institucion: $("#id_institucion").val(), institucion_label: $("#institucion_label").val(), permisos_abm: $("#permisos_abm").jqxCheckBox('checked'), carnet: $("#carnetInput").val(), telefono: $("#telefonoInput").val(), cargo: $("#cargoInput").val()
                   };
-                  var rowID = $('#grid2').jqxGrid('getrowid', Global_editrow);
-                  $('#grid2').jqxGrid('updaterow', rowID, row);
+                  var rowID = $('#UsuariosGrid').jqxGrid('getrowid', Global_editrow);
+                  $('#UsuariosGrid').jqxGrid('updaterow', rowID, row);
               }
-              $("#popupWindow").jqxWindow('hide');
+              $("#popupUsuario").jqxWindow('hide');
             }
          }
           
@@ -749,21 +751,21 @@ $(document).ready(function () {
         if ( tipo_result == 'ID' ) {
           var ID = data.substring(3,data.indexOf("\n")) ;
           var mensaje = data.substring(data.indexOf("\n")+1, data.length-1);  
-          $("#form-msg").html(mensaje);      
+          $("#mensajesUsuarios").html(mensaje);      
 
           Global_row.id = parseInt(ID);
-          //$('#grid2').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
-           $("#grid2").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
+          //$('#UsuariosGrid').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
+           $("#UsuariosGrid").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
 
         } else {
-          $("#form-msg").html(data);   
+          $("#mensajesUsuarios").html(data);   
               
         }
       });
 
       // evento: si hubo algun error
       posting.error(function( data ) {
-          $("#form-msg").html(data.responseText);   
+          $("#mensajesUsuarios").html(data.responseText);   
       });
 
     });
@@ -791,7 +793,7 @@ $(document).ready(function () {
                 noResults: '',
                 results: function() {
                     $("ul.ui-autocomplete").css({ 'width':'400px', 'height':'250px', 'overflow': 'auto', 'white-space': 'nowrap' });
-                    $('ul.ui-autocomplete').css( "z-index",  '' + ($('#popupWindow').css("z-index")+1));
+                    $('ul.ui-autocomplete').css( "z-index",  '' + ($('#popupUsuario').css("z-index")+1));
                 }
         },
         autoFocus: true
@@ -820,13 +822,13 @@ $(document).ready(function () {
     $('#popupDeleteConfirm').on('open', function (event) { $('#cancelDelete').focus(); }); // no esta funcando :(
         
     $("#okDelete").click(function () {
-        var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-        var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-        var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+        var selectedrowindex = $("#UsuariosGrid").jqxGrid('getselectedrowindex');
+        var rowscount = $("#UsuariosGrid").jqxGrid('getdatainformation').rowscount;
+        var idRow = $("#UsuariosGrid").jqxGrid('getrowid', selectedrowindex);
 
-        var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+        var dataRecord = $("#UsuariosGrid").jqxGrid('getrowdata', selectedrowindex);
 
-        $("#grid2").jqxGrid('deleterow', idRow);
+        $("#UsuariosGrid").jqxGrid('deleterow', idRow);
         disableDelButtonAndAnothers();
 
         var parametros = { "id" : dataRecord.id,
@@ -838,10 +840,10 @@ $(document).ready(function () {
             url: "./borrarusuario",
             data: parametros,
             success: function(datos){
-                $("#form-msg").html(datos);
+                $("#mensajesUsuarios").html(datos);
             },
             error: function(result) {
-                $("#form-msg").html(result.responseText);
+                $("#mensajesUsuarios").html(result.responseText);
             }
         });
     });

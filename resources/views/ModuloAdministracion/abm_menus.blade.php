@@ -11,17 +11,19 @@
   <div class="container">
     <h2>Listado de Menús</h2>
     <div id='jqxWidget'>
-        <div id="grid2">
+        <div id="MenusGrid">
+        </div>
+       <div id="mensajesMenus" style="width: 800px; min-height:20px;"></div>
+
+        <h4>Listado de Submenús</h4>
+        <div id="SubMenusGrid">
         </div>
 
-
-       <div id="form-msg" style="width: 800px"></div>
-       <iframe id="form-iframe" name="form-iframe" class="clase-iframe" frameborder="0"></iframe>
-       <div id="popupWindow">
+       <div id="popupMenu">
           <div>Menú</div>
           <div style="overflow: hidden;">
             <div id="mensajes"></div>
-            <form class="form" id="form" target="form-iframe"  method="post" action="guardarmenu" >
+            <form id="formMenu" target="iframeInexistente"  method="post" action="guardarmenu" >
                 <table class="tabla-ventana">
                     <tr>
                         <td align="right" style="color:#000000; width: 40%;">Título del Menú:</td>
@@ -69,7 +71,7 @@
             </form>
           </div>
        </div>
-    </div>
+    </div> <!-- jqxWidget -->
 
 
     <div id="popupDeleteConfirm">
@@ -85,6 +87,74 @@
           <div style="float: right; margin-top: 15px;">
               <input type="button" id="okDelete" value="OK" style="margin-right: 10px" />
               <input type="button" id="cancelDelete" value="Cancelar" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="popupSubmenu">
+        <div>Submenú</div>
+        <div style="overflow: hidden;">
+          <div id="mensajes"></div>
+          <form id="formSubmenu" target="iframeInexistente"  method="post" action="guardarsubmenu" >
+              <table class="tabla-ventana">
+                  <tr>
+                      <td align="right" style="color:#000000; width: 40%;">Título del Submenú:</td>
+                      <td><input name="titulo" type="text" id="tituloInputSM" /></td>
+                      <input type="hidden" name="id" id="idInputSM" value="">
+                      <input type="hidden" name="id_menu" id="id_menuInputSM" value="">
+                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                  </tr>
+                  <tr>
+                      <td align="right" style="color:#000000">Descripción:</td>
+                      <td><input name="descripcion" type="text" id="descripcionInputSM" /></td>
+                  </tr>
+                  <tr>
+                      <td align="right" style="color:#000000">Url:</td>
+                      <td><input name="url" type="text" id="urlInputSM" /></td>
+                  </tr>
+                  <tr>
+                      <td align="right" style="color:#000000">Ícono:</td>
+                      <td><input name="icono" type="text" id="iconoInputSM" /></td>
+                  </tr>
+                  <tr>
+                      <td align="right" style="color:#000000">Tipo Menú:</td>
+                      <td><input name="tipo_menu" type="text" id="tipo_menuInputSM" /></td>
+                  </tr>
+                  <tr>
+                      <td align="right" style="color:#000000">Orden:</td>
+                      <td align="left"><div name="orden"  id="ordenNumberInputSM"></div></td>
+                  </tr> 
+                  <tr>
+                      <td align="right" style="color:#000000">Activo:</td>
+                      <td align="left"><div name="activo"  id="activoCheckBoxSM"></div></td>
+                  </tr>
+                  <tr>
+                      <td align="right"></td>
+                      <td style="padding-top: 10px;" align="right">
+                          <input style="margin-right: 5px;" type="button" id="SaveSM" value="Guardar" />
+                          <input id="CancelSM" type="button" value="Cerrar" />
+                      </td>
+                  </tr>
+              </table>
+          </form>
+        </div>
+    </div>
+
+    <div id="popupDeleteConfirmSM">
+      <div>
+          <img width="14" height="14" src="../../images/help.png" alt="" />
+          ¿Borrar Datos?
+      </div>
+      <div>
+        <div>
+            ¿Realmente desea borrar el Registro?, una vez borrados los datos no es posible deshacer la acción, para borrar presione el boton "OK", para cancelar el borrado precione "Cancelar".
+        </div>
+        <div>
+          <div style="float: right; margin-top: 15px;">
+              <input type="button" id="okDeleteSM" value="OK" style="margin-right: 10px" />
+              <input type="button" id="cancelDeleteSM" value="Cancelar" />
           </div>
         </div>
       </div>
@@ -134,74 +204,84 @@
   <style type="text/css">
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
-      background-color: #d87165;
-      opacity: 0.7;
+      background-color: #de857b;
+      opacity: 0.85;
     }
+
     .jqx-validator-hint-arrow{ /* creamos otro rombo */  
       margin: 3px 0px 0px 0px;
       width: 8px; 
       height: 8px; 
       border: 1px solid; 
-      border-top-color: #d87165;
-      border-right-color: #d87165;
+      border-top-color: #de857b;
+      border-right-color: #de857b;
       border-bottom-color: #DEABA0;
       border-left-color: #DEABA0;
-      background: #d87165;
+      background: #de857b;
       -webkit-transform: rotate(45deg);
       -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       -o-transform: rotate(45deg);
       transform: rotate(45deg);
-      opacity: 0.7;
+      opacity: 0.85;
     }
 
     .jqx-validator-hint-arrow img {display: none;} /* ya no mostramos el rombo del validador*/ 
-       .text-input-popup
-        {
-            height: 23px;
-            width: 150px;
-        }    
+    
+    .text-input-popup {
+        height: 23px;
+        width: 150px;
+    }    
     
     .clase-iframe {
-            border: none;
-            clear: both;
-            /*display: none;*/
-            height: 50px;
-            width: 100px;
+        border: none;
+        clear: both;
+        /*display: none;*/
+        height: 50px;
+        width: 100px;
     } 
+
     .tabla-ventana {
       width:100%;
     } 
+
     .tabla-ventana td {
       padding: 3px 0px 3px 2px;
     }     
+
+    .jqx-fill-state-fred-ui-start{
+      border-color: #77d5f7; 
+      background: #0078ae url(../jqwidgets5.4.0/jqwidgets/styles/images/start/ui-bg_glass_45_0078ae_1x400.png) 50% 50% repeat-x; 
+      font-family: Verdana,Arial,sans-serif; 
+      font-style: normal; 
+      font-size: 12px; 
+      font-weight: normal; 
+      color: #ffffff;
+    }
+
+    .jqx-fill-state-fred-ui-start:hover{
+      border-color: #448dae;
+      background: #79c9ec url(../jqwidgets5.4.0/jqwidgets/styles/images/start/ui-bg_glass_75_79c9ec_1x400.png) 50% 50% repeat-x; 
+      font-weight: normal; 
+      color: #026890;
+    }
+
+
   </style>
 
 <script type="text/javascript">
 
 // ==================================================================================================
 
-/*
-id
-descripcion
-url
-activo
-titulo
-icono
-tipo_menu
-orden
-id_modulo
-created_at
-updated_at
-*/
-
+var Global_offsetFila = 0;  // en este caso tiene que ser global para todo el html
+var Global_offsetFilaSM = 0;  // en este caso tiene que ser global para todo el html
+var Global_rowSM;
+var Global_rowIndexSM = -1;
 
 $(document).ready(function () {
 
     var Tema = 'ui-start';
-    var Global_editrow = -1;
-    var Global_nuevo = false;
-    var Global_offsetFila = 0;
+    var Global_rowIndex = -1;
     var modifButton;
     var deleteButton;
     var Registros;
@@ -214,7 +294,7 @@ $(document).ready(function () {
             { name: 'id', type: 'string' },
             { name: 'descripcion', type: 'string' },
             { name: 'url', type: 'string' },
-            { name: 'activo', type: 'string' },
+            { name: 'activo', type: 'bool' },
             { name: 'titulo', type: 'string' },
             { name: 'icono', type: 'string' },
             { name: 'tipo_menu', type: 'string' },
@@ -240,7 +320,7 @@ $(document).ready(function () {
 
     var dataAdapter = new $.jqx.dataAdapter(source);
 
-    $("#grid2").jqxGrid(
+    $("#MenusGrid").jqxGrid(
     {
         width: 1000,
         source: dataAdapter,
@@ -255,7 +335,7 @@ $(document).ready(function () {
         columnsresize: true,
 
         ready: function () {
-            // $("#grid2").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
+            // $("#MenusGrid").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
         },
         showtoolbar: true,
         rendertoolbar: function (statusbar) {
@@ -288,7 +368,7 @@ $(document).ready(function () {
             addButton.click(function (event) {
 
                     // get the clicked row's data and initialize the input fields.
-                    $("#idInput").val('');
+                    $("#idInput").val(0); 
                     $("#tituloInput").val('');
                     $("#descripcionInput").val('');
                     $("#urlInput").val('');
@@ -300,23 +380,22 @@ $(document).ready(function () {
 
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#MenusGrid").offset();
+                    var anchoTabla = $("#MenusGrid").width();
+                    var anchoPopup = $("#popupMenu").width(); 
+                    var altoPopup = $("#popupMenu").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(100+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupMenu").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
-                    Global_nuevo=true;
+                    $("#popupMenu").jqxWindow('open');
             });
 
             modifButton.click(function (event) {
-                if (Global_editrow > -1) {
+                if (Global_rowIndex > -1) {
 
                     // get the clicked row's data and initialize the input fields.
-                    var dataRecord = $("#grid2").jqxGrid('getrowdata', Global_editrow);
+                    var dataRecord = $("#MenusGrid").jqxGrid('getrowdata', Global_rowIndex);
                     $("#idInput").val(dataRecord.id);
                     $("#tituloInput").val(dataRecord.titulo);
                     $("#descripcionInput").val(dataRecord.descripcion);
@@ -329,22 +408,22 @@ $(document).ready(function () {
 
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#MenusGrid").offset();
+                    var anchoTabla = $("#MenusGrid").width();
+                    var anchoPopup = $("#popupMenu").width(); 
+                    var altoPopup = $("#popupMenu").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupMenu").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupMenu").jqxWindow('open');
                 }
             });
 
             deleteButton.click(function (event) {
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                var offsetTabla = $("#grid2").offset();
-                var anchoTabla = $("#grid2").width();
+                var offsetTabla = $("#MenusGrid").offset();
+                var anchoTabla = $("#MenusGrid").width();
                 var anchoPopup = $("#popupDeleteConfirm").width(); 
                 var altoPopup = $("#popupDeleteConfirm").height();
                 var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
@@ -354,13 +433,13 @@ $(document).ready(function () {
                 $("#popupDeleteConfirm").jqxWindow('open');
 
 /*   Este codigo ya esta en el boton de confirmacion de boprrado                
-                var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-                var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-                var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+                var selectedrowindex = $("#MenusGrid").jqxGrid('getselectedrowindex');
+                var rowscount = $("#MenusGrid").jqxGrid('getdatainformation').rowscount;
+                var idRow = $("#MenusGrid").jqxGrid('getrowid', selectedrowindex);
 
-                var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+                var dataRecord = $("#MenusGrid").jqxGrid('getrowdata', selectedrowindex);
 
-                $("#grid2").jqxGrid('deleterow', idRow);
+                $("#MenusGrid").jqxGrid('deleterow', idRow);
                 disableDelButtonAndAnothers();
 
                 var parametros = { "id" : dataRecord.id,
@@ -371,10 +450,10 @@ $(document).ready(function () {
                   url: "./borrarmenu",
                   data: parametros,
                   success: function(datos){
-                    $("#form-msg").html(datos);
+                    $("#mensajesMenus").html(datos);
                   },
                   error: function(result) {
-                    $("#form-msg").html(result.responseText);
+                    $("#mensajesMenus").html(result.responseText);
                   }
                 });
 */
@@ -382,42 +461,49 @@ $(document).ready(function () {
 
             reloadButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $('#grid2').jqxGrid('updatebounddata','data');
+                $('#MenusGrid').jqxGrid('updatebounddata','data');
             });
 
             searchButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $("#grid2").jqxGrid('showfilterrow', true);
+                $("#MenusGrid").jqxGrid('showfilterrow', true);
 
-                var filter = $("#grid2").jqxGrid('filterable');
-                $("#grid2").jqxGrid('filterable', !filter); // sw
+                var filter = $("#MenusGrid").jqxGrid('filterable');
+                $("#MenusGrid").jqxGrid('filterable', !filter); // sw
+                $("#MenusGrid").jqxGrid('clearfilters');
 
             });
 
             excelButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'xls', 'Menus');
+                $("#MenusGrid").jqxGrid('exportdata', 'xls', 'Menus');
             });
 
             pdfButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'pdf', 'Menus');
+                $("#MenusGrid").jqxGrid('exportdata', 'pdf', 'Menus');
             });
 
         },
         columns: [
-            { text: 'Nombre Menú', dataField: 'titulo', width: 180 },
-            { text: 'Url', dataField: 'url', width: 200 },
-            { text: 'Descripción', dataField: 'descripcion', width: 150 },
-            { text: 'Ícono', dataField: 'icono', width: 100 },
-            { text: 'Tipo', dataField: 'tipo_menu', width: 80 },
-            { text: 'Orden', dataField: 'orden', width: 60, cellsalign: 'center' },
-            { text: 'Módulo', datafield: 'id_modulo', displayField: 'modulo', width: 150 },            
-            { text: 'Estado', dataField: 'activo', cellsalign: 'center' }
+            { text: 'Nombre Menú', dataField: 'titulo', width: 175, filtertype: 'input' },
+            { text: 'Url', dataField: 'url', width: 195 },
+            { text: 'Descripción', dataField: 'descripcion', width: 145 },
+            { text: 'Ícono', dataField: 'icono', width: 95 },
+            { text: 'Tipo', dataField: 'tipo_menu', width: 75, filtertype: 'checkedlist' },
+            { text: 'Orden', dataField: 'orden', width: 55, cellsalign: 'center' },
+            { text: 'Módulo', datafield: 'modulo', width: 145, filtertype: 'checkedlist' },            
+            { text: 'Estado', dataField: 'activo', columntype: 'checkbox', filtertype: 'bool', cellsalign: 'center' },
+            { text: '<i class="glyphicon glyphicon-th-list"></i>', columntype: 'custom', datafield: 'id', width: 36, cellsalign: 'center', filterable: false,
+                    cellsrenderer: function (row, columnfield, value, defaulthtml, columnproperties) {
+                        return "<button onClick='abriryconfigurarPopupSubmenu(" + value + ",-1);' type='button' title='Adicionar Submenú' id='btnAddSubmenu' class='jqx-rc-all-ui-start jqx-button jqx-button-ui-start jqx-fill-state-fred-ui-start' style='margin-top: 2px; margin-left: 4px; height: 25px; width: 25px; padding: 0px 0px 0px 1px;'><i class='glyphicon glyphicon-plus'></i></button>";
+                    }, 
+            }                    
+
         ],
         theme: Tema
     });
 
 
-    $('#grid2').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
+    $('#MenusGrid').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
           var args = event.args;
           var boundIndex = args.rowindex;
           var visibleIndex = args.visibleindex;
@@ -453,13 +539,13 @@ $(document).ready(function () {
     function disableDelButtonAndAnothers(){
         if (deleteButton !== undefined) deleteButton.jqxButton({disabled: true });
         if (modifButton !== undefined) modifButton.jqxButton({disabled: true });
-        var index = $("#grid2").jqxGrid('getselectedrowindex');
-        $('#grid2').jqxGrid('unselectrow', index);
-        $("#form-msg").html('');
-        Global_editrow = -1;
+        var index = $("#MenusGrid").jqxGrid('getselectedrowindex');
+        $('#MenusGrid').jqxGrid('unselectrow', index);
+        $("#mensajesMenus").html('');
+        Global_rowIndex = -1;
     };
    
-    $('#grid2').on('rowselect', function (event) { 
+    $('#MenusGrid').on('rowselect', function (event) { 
           var args = event.args;
           var rowBoundIndex = args.rowindex;
           var rowData = args.row;
@@ -471,21 +557,109 @@ $(document).ready(function () {
             alert('faltan cargar datos...'); // es importante por que evita errores cuando los datos no esta bien cargados
           }
 
-          Global_editrow = rowBoundIndex;
-          $("#form-msg").html("");             
+          Global_rowIndex = rowBoundIndex;
+          $("#mensajesMenus").html("");             
     });   
 
-    $('#grid2').on('filter', function (event) {
+    $('#MenusGrid').on('filter', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('pagechanged', function (event) {
+    $('#MenusGrid').on('pagechanged', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
+    $('#MenusGrid').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
         disableDelButtonAndAnothers();
     });   
+
+//===========================================
+//===== Desde aqui el Detalle: Submenus ===== 
+//===========================================
+
+    var url = "./listasubmenus";
+    // preparacion de los datos
+    var Global_dataFieldsSubmenus = [
+            { name: 'id', type: 'string' },
+            { name: 'descripcion', type: 'string' },
+            { name: 'url', type: 'string' },
+            { name: 'activo', type: 'string' },
+            { name: 'titulo', type: 'string' },
+            { name: 'icono', type: 'string' },
+            { name: 'tipo_menu', type: 'string' },
+            { name: 'orden', type: 'int' },
+            { name: 'id_menu', type: 'int' }
+    ];
+
+    var sourceSubmenus = {
+        datatype: "json",
+        datafields: Global_dataFieldsSubmenus,
+        id: 'id',
+        url: url
+    };
+
+    var dataAdapterSubmenus = new $.jqx.dataAdapter(sourceSubmenus);
+
+    dataAdapterSubmenus.dataBind();
+
+    $("#SubMenusGrid").jqxGrid(
+    {
+        width: 1000,
+        //source: dataAdapterSubmenus,
+        autoheight: true,
+        keyboardnavigation: false,
+        columns: [
+            { text: 'Nombre Submenú', dataField: 'titulo', width: 180 },
+            { text: 'Url', dataField: 'url', width: 250 },
+            { text: 'Descripción', dataField: 'descripcion', width: 200 },
+            { text: 'Ícono', dataField: 'icono', width: 100 },
+            { text: 'Tipo', dataField: 'tipo_menu', width: 80 },
+            { text: 'Orden', dataField: 'orden', width: 60, cellsalign: 'center' },
+            { text: 'Estado', dataField: 'activo', cellsalign: 'center' },
+            { text: 'Acción', columntype: 'custom', datafield: 'id', width: 62, cellsalign: 'center',
+                    cellsrenderer: function (row, columnfield, value, defaulthtml, columnproperties) {
+                        return "<button onClick='abriryconfigurarPopupSubmenu(0," + row + ");' type='button' title='Editar Submenú' id='btnEditSubmenu' class='jqx-rc-all-ui-start jqx-button jqx-button-ui-start jqx-fill-state-fred-ui-start' style='margin-top: 2px; margin-left: 5px; height: 25px; width: 25px; padding: 0px 0px 0px 1px;'><i class='glyphicon glyphicon-pencil'></i></button><button onClick='abrirPopupBorrar(" + row + ");' type='button' title='Borrar Submenú' id='btnDelSubmenu' class='jqx-rc-all-ui-start jqx-button jqx-button-ui-start jqx-fill-state-fred-ui-start' style='margin-top: 2px; margin-left: 3px; height: 25px; width: 25px; padding: 0px 0px 0px 1px;'><i class='glyphicon glyphicon-remove'></i></button>";
+                    }, 
+            }                    
+        ],
+        localization: getLocalization('es'),
+        theme: Tema
+    });
+
+    $('#SubMenusGrid').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
+          Global_offsetFilaSM = parseInt(event.args.row.top);
+    });  
+
+    $('#SubMenusGrid').on('rowselect', function (event) { 
+        Global_rowIndexSM = event.args.rowindex;
+        //$("#mensajesMenus").html("");             
+    }); 
+
+    $("#MenusGrid").on('rowselect', function (event) {  // Esto hace el Master/Detalle
+        var padreID = event.args.row.id;  // id padre
+        var records = new Array();
+        var length = dataAdapterSubmenus.records.length;
+        for (var i = 0; i < length; i++) {
+            var record = dataAdapterSubmenus.records[i];
+            if (record.id_menu == padreID) {
+                records[records.length] = record;
+            }
+        }
+        var dataSource = {
+            datafields: Global_dataFieldsSubmenus,
+            localdata: records
+        }        
+        var adapter = new $.jqx.dataAdapter(dataSource);
+   
+        // update data source.
+        $("#SubMenusGrid").jqxGrid({ source: adapter });
+    });
+
+
+//===========================================
+//===== Hasta aqui el Detalle: Submenus ===== 
+//===========================================
+
 
 
 //===========================================
@@ -539,19 +713,15 @@ $(document).ready(function () {
     $("#activoCheckBox").jqxCheckBox({ width: 120, height: 25, theme: Tema });   
 
     // initialize validator.
-    $('#form').jqxValidator({
+    $('#formMenu').jqxValidator({
                // hintType: 'label',
                 animationDuration: 500, // milisegundos
                 theme: Tema,    
       rules: [
-        { input: '#tituloInput', message: '¡El Nombre del Módulo es necesario!', action: 'keyup, blur', rule: 'required' },
-
+        { input: '#tituloInput', message: '¡El Nombre del Menú es necesario!', action: 'keyup, blur', rule: 'required' },
         { input: '#descripcionInput', message: '¡La Descripción es necesaria!', action: 'keyup, blur', rule: 'required' },
-  //      { input: '#descripcionInput', message: 'El Descripción debe contener solo letras!', action: 'keyup', rule: 'notNumber' },
         { input: '#descripcionInput', message: '¡Debe contener entre 3 y 100 caracteres!', action: 'keyup', rule: 'length=3,100' },
-
         { input: '#urlInput', message: '¡El Url es necesario!', action: 'keyup, blur', rule: 'required' },
-
         { input: '#urlInput', message: '¡La Url es necesaria!', action: 'keyup, blur', rule: 'required' },
         { input: '#iconoInput', message: '¡El Ícono es necesario!', action: 'keyup, blur', rule: 'required' },
         { input: '#tipo_menuInput', message: '¡El Tipo es necesario!', action: 'keyup, blur', rule: 'required' },        
@@ -568,17 +738,16 @@ $(document).ready(function () {
     });
 
     // initialize the popup window and buttons.
-    $("#popupWindow").jqxWindow({
+    $("#popupMenu").jqxWindow({
         width: 450, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.1, theme: Tema         
     });
 
-    $("#popupWindow").on('open', function () {
+    $("#popupMenu").on('open', function () {
         //$("#name").jqxInput('selectAll');
     });
 
-    $("#popupWindow").on('close', function () {
-        Global_nuevo=false;
-        $('#form').jqxValidator('hide');
+    $("#popupMenu").on('close', function () {
+        $('#formMenu').jqxValidator('hide');
     });
 
  
@@ -588,44 +757,44 @@ $(document).ready(function () {
     var Global_row;
     $("#Save").click(function () {
 
-        if (Global_editrow >= 0 || Global_nuevo) {
+     //   if (Global_rowIndex >= 0 || Global_nuevo) {
 
           var validationResult = function (isValid) {
             if (isValid) {
-              $("#form").submit();
+              $("#formMenu").submit();
 
               var selIndex = $('#id_moduloComboBox').jqxComboBox('selectedIndex');
               var itemMO = $("#id_moduloComboBox").jqxComboBox('getItem', selIndex ); 
 
-              if (Global_nuevo) {
+              if ( $("#idInput").val()=='0' ) { // Nuevo
 
                   var row = { id:0, titulo: $("#tituloInput").val(), descripcion: $("#descripcionInput").val(), url: $("#urlInput").val(), icono: $("#iconoInput").val(), tipo_menu: $("#tipo_menuInput").val(), orden: $('#ordenNumberInput').jqxNumberInput('getDecimal'), id_modulo: itemMO.value, modulo: itemMO.label, activo: $("#activoCheckBox").jqxCheckBox('checked')
                   };
                   
                   // YA NO SE LO AÑADE AQUI POR QUE CAUSA PROBLEMAS POR QUE NO TIENE ID AUN   
-                  //$("#grid2").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
+                  //$("#MenusGrid").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
 
                   Global_row = row;
-              } else {
+              } else {  // Modificacion
 
                   var row = { titulo: $("#tituloInput").val(), descripcion: $("#descripcionInput").val(), url: $("#urlInput").val(), icono: $("#iconoInput").val(), tipo_menu: $("#tipo_menuInput").val(), orden: $('#ordenNumberInput').jqxNumberInput('getDecimal'), id_modulo: itemMO.value, modulo: itemMO.label, activo: $("#activoCheckBox").jqxCheckBox('checked')
                   };
 
-                  var rowID = $('#grid2').jqxGrid('getrowid', Global_editrow);
-                  $('#grid2').jqxGrid('updaterow', rowID, row);
+                  var rowID = $('#MenusGrid').jqxGrid('getrowid', Global_rowIndex);
+                  $('#MenusGrid').jqxGrid('updaterow', rowID, row);
               }
-              $("#popupWindow").jqxWindow('hide');
+              $("#popupMenu").jqxWindow('hide');
             }
          }
           
-          $('#form').jqxValidator('validate', validationResult);
+          $('#formMenu').jqxValidator('validate', validationResult);
 
-        }
+    //    }
 
     });
 
     // adjuntamos un manejador del submit al form
-    $("#form").submit(function(event) {
+    $("#formMenu").submit(function(event) {
 
       // Detenemos el envio normal del form
       event.preventDefault();
@@ -644,21 +813,21 @@ $(document).ready(function () {
         if ( tipo_result == 'ID' ) {
           var ID = data.substring(3,data.indexOf("\n")) ;
           var mensaje = data.substring(data.indexOf("\n")+1, data.length-1);  
-          $("#form-msg").html(mensaje);      
+          $("#mensajesMenus").html(mensaje);      
 
           Global_row.id = parseInt(ID);  
-          //$('#grid2').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
+          //$('#MenusGrid').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
 
-          $("#grid2").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
+          $("#MenusGrid").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
 
         } else {
-          $("#form-msg").html(data);   
+          $("#mensajesMenus").html(data);   
         }
       });
 
       // evento: si hubo algun error
       posting.error(function( data ) {
-          $("#form-msg").html(data.responseText);   
+          $("#mensajesMenus").html(data.responseText);   
       });
 
     });
@@ -686,13 +855,13 @@ $(document).ready(function () {
     $('#popupDeleteConfirm').on('open', function (event) { $('#cancelDelete').focus(); }); // no esta funcando :(
         
     $("#okDelete").click(function () {
-        var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-        var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-        var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+        var selectedrowindex = $("#MenusGrid").jqxGrid('getselectedrowindex');
+        var rowscount = $("#MenusGrid").jqxGrid('getdatainformation').rowscount;
+        var idRow = $("#MenusGrid").jqxGrid('getrowid', selectedrowindex);
 
-        var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+        var dataRecord = $("#MenusGrid").jqxGrid('getrowdata', selectedrowindex);
 
-        $("#grid2").jqxGrid('deleterow', idRow);
+        $("#MenusGrid").jqxGrid('deleterow', idRow);
         disableDelButtonAndAnothers();
 
         var parametros = { "id" : dataRecord.id,
@@ -704,10 +873,10 @@ $(document).ready(function () {
             url: "./borrarmenu",
             data: parametros,
             success: function(datos){
-                $("#form-msg").html(datos);
+                $("#mensajesMenus").html(datos);
             },
             error: function(result) {
-                $("#form-msg").html(result.responseText);
+                $("#mensajesMenus").html(result.responseText);
             }
         });
     });
@@ -716,8 +885,286 @@ $(document).ready(function () {
 //===================================================================
 
 
+//=======================================================
+//===== Desde aqui la ventana de Pop-up del Submenu ===== 
+//=======================================================
+    // initialize the input fields.
+    // $("#name").jqxInput({ width: 150, height: 23, theme: Tema }); // no funca :(((
+
+    $("#tituloInputSM").jqxInput({ theme: Tema });
+    $("#tituloInputSM").width(240);
+    $("#tituloInputSM").height(23);
+
+    $("#descripcionInputSM").jqxInput({ theme: Tema });
+    $("#descripcionInputSM").width(240);
+    $("#descripcionInputSM").height(23);
+
+    $("#urlInputSM").jqxInput({ theme: Tema });
+    $("#urlInputSM").width(240);
+    $("#urlInputSM").height(23);
+
+    $("#iconoInputSM").jqxInput({ theme: Tema });
+    $("#iconoInputSM").width(240);
+    $("#iconoInputSM").height(23);
+
+    $("#tipo_menuInputSM").jqxInput({ theme: Tema });
+    $("#tipo_menuInputSM").width(240);
+    $("#tipo_menuInputSM").height(23);
+
+    $("#ordenNumberInputSM").jqxNumberInput({spinMode: 'simple', width: 50, height: 23, min: 0, decimalDigits: 0, digits: 2, spinButtons: false, theme: Tema , promptChar: ' '});
+
+    $("#activoCheckBoxSM").jqxCheckBox({ width: 120, height: 25, theme: Tema });   
+
+    // initialize validator.
+    $('#formSubmenu').jqxValidator({
+               // hintType: 'label',
+                animationDuration: 500, // milisegundos
+                theme: Tema,    
+      rules: [
+        { input: '#tituloInputSM', message: '¡El Nombre del Submenú es necesario!', action: 'keyup, blur', rule: 'required' },
+        { input: '#descripcionInputSM', message: '¡La Descripción es necesaria!', action: 'keyup, blur', rule: 'required' },
+        { input: '#descripcionInputSM', message: '¡Debe contener entre 3 y 100 caracteres!', action: 'keyup', rule: 'length=3,100' },
+        { input: '#urlInputSM', message: '¡El Url es necesario!', action: 'keyup, blur', rule: 'required' },
+        { input: '#urlInputSM', message: '¡La Url es necesaria!', action: 'keyup, blur', rule: 'required' },
+        { input: '#iconoInputSM', message: '¡El Ícono es necesario!', action: 'keyup, blur', rule: 'required' },
+        { input: '#tipo_menuInputSM', message: '¡El Tipo es necesario!', action: 'keyup, blur', rule: 'required' }
+
+      ]
+    });
+
+    // initialize the popup window and buttons.
+    $("#popupSubmenu").jqxWindow({
+        width: 450, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#CancelSM"), modalOpacity: 0.1, theme: Tema         
+    });
+
+    $("#popupSubmenu").on('open', function () {
+        //$("#name").jqxInput('selectAll');
+    });
+
+    $("#popupSubmenu").on('close', function () {
+        $('#formSubmenu').jqxValidator('hide');
+    });
+
+ 
+    $("#CancelSM").jqxButton({ width: 70, theme: Tema });
+    $("#SaveSM").jqxButton({ width: 70, theme: Tema });
+    // update the edited row when the user clicks the 'Save' button.
+
+    $("#SaveSM").click(function () { 
+
+          var validationResult = function (isValid) {
+            if (isValid) {
+              $("#formSubmenu").submit();
+
+              if ( $("#idInputSM").val() == '0' ) {
+
+                  var row = { id:0, titulo: $("#tituloInputSM").val(), descripcion: $("#descripcionInputSM").val(), url: $("#urlInputSM").val(), icono: $("#iconoInputSM").val(), tipo_menu: $("#tipo_menuInputSM").val(), orden: $('#ordenNumberInputSM').jqxNumberInput('getDecimal'), id_menu: $("#id_menuInputSM").val(), activo: $("#activoCheckBoxSM").jqxCheckBox('checked')
+                  };
+                  
+                  // YA NO SE LO AÑADE AQUI POR QUE CAUSA PROBLEMAS POR QUE NO TIENE ID AUN   
+                  //$("#MenusGrid").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
+
+                  Global_rowSM = row;
+              } else {
+
+                  var row = { id: $("#idInputSM").val(), 
+                              titulo: $("#tituloInputSM").val(), descripcion: $("#descripcionInputSM").val(), url: $("#urlInputSM").val(), icono: $("#iconoInputSM").val(), tipo_menu: $("#tipo_menuInputSM").val(), orden: $('#ordenNumberInputSM').jqxNumberInput('getDecimal'), id_menu: $("#id_menuInputSM").val(), activo: $("#activoCheckBoxSM").jqxCheckBox('checked')
+                  };
+
+                  var rowID = $('#SubMenusGrid').jqxGrid('getrowid', Global_rowIndexSM);
+                  $('#SubMenusGrid').jqxGrid('updaterow', rowID, row);
+
+                  // Remplazamos registro a la lista temporal de submenus
+                  var length = dataAdapterSubmenus.records.length;
+                  for (var i = 0; i < length; i++) {
+                      var record = dataAdapterSubmenus.records[i];
+                      if (record.id == row.id) {
+                          dataAdapterSubmenus.records[i] = row;
+                          break;
+                      }
+                  }
+
+              }
+              $("#popupSubmenu").jqxWindow('hide');
+            }
+         }
+          
+          $('#formSubmenu').jqxValidator('validate', validationResult);
+
+    });
+
+    // adjuntamos un manejador del submit al form
+    $("#formSubmenu").submit(function(event) {
+
+      // Detenemos el envio normal del form
+      event.preventDefault();
+
+      // optenemos el atributo action del from ( <form action=""> )
+      var $form = $( this ), url = $form.attr( 'action' );
+
+      var parametros = $(this).serialize(); // serializamos los datos del form
+
+      // Enviamos los datos usando post
+      var posting = $.post( url, parametros );
+
+      // evento: cuando los resultados son devueltos
+      posting.done(function( data ) {
+        var tipo_result = data.substring(0,2);
+        if ( tipo_result == 'ID' ) {
+          var ID = data.substring(3,data.indexOf("\n")) ;
+          var mensaje = data.substring(data.indexOf("\n")+1, data.length-1);  
+          $("#mensajesMenus").html(mensaje);      
+
+          Global_rowSM.id = parseInt(ID);  
+          //$('#SubMenusGrid').jqxGrid('updaterow', 0, Global_rowSM); // buscamos al que le pusimos 0 por ID
+
+          $("#SubMenusGrid").jqxGrid('addrow', null, Global_rowSM); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
+
+          // Adicionamos a la lista temporal de submenus
+          var length = dataAdapterSubmenus.records.length;
+          dataAdapterSubmenus.records[length] = Global_rowSM;
+
+        } else {
+          $("#mensajesMenus").html(data);   
+        }
+      });
+
+      // evento: si hubo algun error
+      posting.error(function( data ) {
+          $("#mensajesMenus").html(data.responseText);   
+      });
+
+    });
+
+//=======================================================
+//===== Hasta aqui la ventana de Pop-up del Submenu ===== 
+//=======================================================
+
+
+//===========================================================================
+//===== Desde aqui la ventana de Confirmacion de borrado Pop-up Submenu ===== 
+//===========================================================================
+    $('#popupDeleteConfirmSM').jqxWindow({
+        position: { x: 50, y: 50},
+        theme: Tema,
+        maxHeight: 160, maxWidth: 280, minHeight: 30, minWidth: 250, height: 155, width: 270,
+        resizable: false, isModal: true, autoOpen: false, modalOpacity: 0.3,
+        okButton: $('#okDeleteSM'), cancelButton: $('#cancelDeleteSM'),
+        initContent: function () {
+            $('#okDeleteSM').jqxButton({ width: '65px', theme: Tema });
+            $('#cancelDeleteSM').jqxButton({ width: '65px', theme: Tema });
+            
+        }
+    }); 
+    $('#popupDeleteConfirmSM').on('open', function (event) { $('#cancelDeleteSM').focus(); }); // no esta funcando :(
+        
+    $("#okDeleteSM").click(function () {
+        var selectedrowindex = $("#SubMenusGrid").jqxGrid('getselectedrowindex');
+        var rowscount = $("#SubMenusGrid").jqxGrid('getdatainformation').rowscount;
+        var idRow = $("#SubMenusGrid").jqxGrid('getrowid', selectedrowindex);
+
+        var dataRecord = $("#SubMenusGrid").jqxGrid('getrowdata', selectedrowindex);
+
+        $("#SubMenusGrid").jqxGrid('deleterow', idRow);
+
+        // Eliminamos registro a la lista temporal de submenus
+        var length = dataAdapterSubmenus.records.length;
+        for (var i = 0; i < length; i++) {
+            var record = dataAdapterSubmenus.records[i];
+            if (record.id == dataRecord.id) {
+                dataAdapterSubmenus.records.splice(i, 1);
+                break;
+            }
+        }
+
+        disableDelButtonAndAnothers();
+
+        var parametros = { "id" : dataRecord.id,
+                       "_token" : "{{ csrf_token() }}"
+        };                
+        
+        $.ajax({
+            type: "POST",
+            url: "./borrarsubmenu",
+            data: parametros,
+            success: function(datos){
+                $("#mensajesMenus").html(datos);
+            },
+            error: function(result) {
+                $("#mensajesMenus").html(result.responseText);
+            }
+        });
+    });
+//===========================================================================
+//===== Hasta aqui la ventana de Confirmacion de borrado Pop-up Submenu ===== 
+//===========================================================================
+
 
 });  // FIN: $(document).ready(function () {
+
+
+    function abriryconfigurarPopupSubmenu(idPadre,editRow){
+
+        if ( editRow < 0 ) {  // Nuevo
+            // get the clicked row's data and initialize the input fields.
+            $("#idInputSM").val(0);
+            $("#id_menuInputSM").val(idPadre);
+            $("#tituloInputSM").val('');
+            $("#descripcionInputSM").val('');
+            $("#urlInputSM").val('');
+            $("#iconoInputSM").val('');
+            $("#tipo_menuInputSM").val(''); 
+            $('#ordenNumberInputSM').jqxNumberInput('clear');
+            $("#activoCheckBoxSM").jqxCheckBox({ checked: false });                 
+
+            // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
+            var offsetTabla = $("#MenusGrid").offset();
+            var anchoTabla = $("#MenusGrid").width();
+            var anchoPopup = $("#popupSubmenu").width(); 
+            var altoPopup = $("#popupSubmenu").height();
+            var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
+            var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
+        } else { // Edicion/modificar
+            // get the clicked row's data and initialize the input fields.
+            var dataRecord = $("#SubMenusGrid").jqxGrid('getrowdata', editRow);
+            $("#idInputSM").val(dataRecord.id);
+            $("#id_menuInputSM").val(dataRecord.id_menu);
+            $("#tituloInputSM").val(dataRecord.titulo);
+            $("#descripcionInputSM").val(dataRecord.descripcion);
+            $("#urlInputSM").val(dataRecord.url);
+            $("#iconoInputSM").val(dataRecord.icono);
+            $("#tipo_menuInputSM").val(dataRecord.tipo_menu); 
+            $('#ordenNumberInputSM').val(dataRecord.orden); 
+            $("#activoCheckBoxSM").jqxCheckBox({ checked: (dataRecord.activo.toString() === "true") }); // aveces dataRecord.activo es objeto
+
+            // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
+            var offsetTabla = $("#SubMenusGrid").offset();
+            var anchoTabla = $("#SubMenusGrid").width();
+            var anchoPopup = $("#popupSubmenu").width(); 
+            var altoPopup = $("#popupSubmenu").height();
+            var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
+            var posicionYpopup = parseInt(Global_offsetFilaSM+offsetTabla.top+80) - parseInt(altoPopup/2);
+        }
+        
+        $("#popupSubmenu").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+        // show the popup window.
+        $("#popupSubmenu").jqxWindow('open');
+    }
+
+    function abrirPopupBorrar(Row) {
+        // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
+        var offsetTabla = $("#SubMenusGrid").offset();
+        var anchoTabla = $("#SubMenusGrid").width();
+        var anchoPopup = $("#popupDeleteConfirmSM").width();
+        var altoPopup = $("#popupDeleteConfirmSM").height();
+        var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
+        var posicionYpopup = parseInt(Global_offsetFilaSM+offsetTabla.top+80) - parseInt(altoPopup/2);
+        $("#popupDeleteConfirmSM").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+        // show the popup window.
+        $("#popupDeleteConfirmSM").jqxWindow('open');
+
+    }
+
 // ==================================================================================================
 
 
