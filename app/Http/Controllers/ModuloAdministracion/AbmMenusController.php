@@ -59,7 +59,7 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       if ( intval($id) > 0 ) {
           $affected = \DB::update('UPDATE menus SET descripcion = ?, url = ?, activo = ?, titulo = ?, icono = ?, tipo_menu = ?, orden = ?, id_modulo = ?, updated_at = ? WHERE id = ?', [$descripcion, $url, $activo, $titulo, $icono, $tipo_menu, $orden, $id_modulo, $updated_at, $id]);
           echo "Se actualizó satisfactoriamente ($affected)...<br/>";
-      } elseif( $id == '' ) {
+      } elseif( $id == '0' ) {
           \DB::insert('insert into menus (descripcion, url, activo, titulo, icono, tipo_menu, orden, id_modulo, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)', [$descripcion, $url, $activo, $titulo, $icono, $tipo_menu, $orden, $id_modulo, $created_at]);
           $lastInsertId = app('db')->getPdo()->lastInsertId();
           echo "ID=$lastInsertId\nSe guardó satisfactoriamente ($lastInsertId)...<br/>";
@@ -68,11 +68,55 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       }
       
   }
+
   public function borrarMenu(Request $request)
   {
    
       $id = $request->input('id');
       $affected = \DB::delete('delete from menus where id = ?', [$id]);
+      echo "Se borro satisfactoriamente ($affected)...<br/>";
+  }  
+
+  public function listarSubmenus(Request $request) {
+//      if($request->ajax()) {
+          $smenus = \DB::select("SELECT id, titulo, url, descripcion, activo, icono, tipo_menu, orden, id_menu FROM sub_menus ORDER BY titulo ASC");
+          return \Response::json($smenus);
+//      }
+  }
+
+ public function guardarSubmenu(Request $request)
+  {
+   
+      $id = $request->input('id');
+      $descripcion = $request->input('descripcion');
+      $url = $request->input('url');
+      $activo = ($request->input('activo')? $request->input('activo'):'false');
+      $titulo = $request->input('titulo');
+      $icono = $request->input('icono');
+      $tipo_menu = $request->input('tipo_menu');
+      $orden = $request->input('orden');
+      $id_menu = $request->input('id_menu');
+      $created_at = date('Y-m-d H:i:s');
+      $updated_at = date('Y-m-d H:i:s');
+
+      if ( intval($id) > 0 ) {
+          $affected = \DB::update('UPDATE sub_menus SET descripcion = ?, url = ?, activo = ?, titulo = ?, icono = ?, tipo_menu = ?, orden = ?, id_menu = ?, updated_at = ? WHERE id = ?', [$descripcion, $url, $activo, $titulo, $icono, $tipo_menu, $orden, $id_menu, $updated_at, $id]);
+          echo "Se actualizó satisfactoriamente ($affected)...<br/>";
+      } elseif( $id == '0' ) {
+          \DB::insert('insert into sub_menus (descripcion, url, activo, titulo, icono, tipo_menu, orden, id_menu, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)', [$descripcion, $url, $activo, $titulo, $icono, $tipo_menu, $orden, $id_menu, $created_at]);
+          $lastInsertId = app('db')->getPdo()->lastInsertId();
+          echo "ID=$lastInsertId\nSe guardó satisfactoriamente ($lastInsertId)...<br/>";
+      } else {
+          echo "No se guardó nada :(<br/>";
+      }
+      
+  }
+  
+  public function borrarSubmenu(Request $request)
+  {
+   
+      $id = $request->input('id');
+      $affected = \DB::delete('delete from sub_menus where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
   }  
 

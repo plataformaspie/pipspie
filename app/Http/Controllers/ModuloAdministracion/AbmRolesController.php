@@ -57,7 +57,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
   public function listarMenus_rol(Request $request)
   {
    //if($request->ajax()) {
-        $menus = \DB::select("SELECT id, titulo || ' (' || url  || ')' as menu FROM menus ORDER BY url, titulo ASC");
+        $menus = \DB::select("SELECT id, titulo || ' (' || url  || ') [' || (select count(*) from sub_menus as SM where M.id=SM.id_menu) || ']' as menu FROM menus AS M ORDER BY url, titulo ASC");
         return \Response::json($menus);
    // }
   }

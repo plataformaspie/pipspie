@@ -11,13 +11,12 @@
   <div class="container">
     <h2>Listado de Roles</h2>
     <div id='jqxWidget2'>
-        <div id="grid2">
+        <div id="RolesGrid">
         </div>
 
+       <div id="mensajesRoles" style="width: 800px; min-height:20px;"></div>
 
-       <div id="form-msg" style="width: 800px"></div>
-       <iframe id="form-iframe" name="form-iframe" class="clase-iframe" frameborder="0"></iframe>
-       <div id="popupWindow">
+       <div id="popupRol">
           <div>Rol</div>
           <div style="overflow: hidden;">
             <div id="mensajes"></div>
@@ -65,7 +64,7 @@
     </div>
 
 
-    <div id="popupWindowMenus">
+    <div id="popupRolMenus">
         <div>Menus</div>
         <div style="overflow: hidden;">
           <div id="mensajesMenus"></div>
@@ -78,7 +77,7 @@
     </div>
 
 
-    <div id="popupWindowModulos">
+    <div id="popupRolModulos">
         <div>Módulos</div>
         <div style="overflow: hidden;">
           <div id="mensajesModulos"></div>
@@ -135,25 +134,26 @@
   <style type="text/css">
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
-      background-color: #d87165;
-      opacity: 0.7;
+      background-color: #de857b;
+      opacity: 0.85;
     }
+
     .jqx-validator-hint-arrow{ /* creamos otro rombo */  
       margin: 3px 0px 0px 0px;
       width: 8px; 
       height: 8px; 
       border: 1px solid; 
-      border-top-color: #d87165;
-      border-right-color: #d87165;
+      border-top-color: #de857b;
+      border-right-color: #de857b;
       border-bottom-color: #DEABA0;
       border-left-color: #DEABA0;
-      background: #d87165;
+      background: #de857b;
       -webkit-transform: rotate(45deg);
       -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       -o-transform: rotate(45deg);
       transform: rotate(45deg);
-      opacity: 0.7;
+      opacity: 0.85;
     }
 
     .jqx-validator-hint-arrow img {display: none;} /* ya no mostramos el rombo del validador*/ 
@@ -218,7 +218,7 @@ $(document).ready(function () {
 
     var dataAdapter = new $.jqx.dataAdapter(source);
 
-    $("#grid2").jqxGrid(
+    $("#RolesGrid").jqxGrid(
     {
         width: 800,
         source: dataAdapter,
@@ -233,7 +233,7 @@ $(document).ready(function () {
         columnsresize: true,
 
         ready: function () {
-            // $("#grid2").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
+            // $("#RolesGrid").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
         },
         showtoolbar: true,
         rendertoolbar: function (statusbar) {
@@ -272,15 +272,15 @@ $(document).ready(function () {
 
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#RolesGrid").offset();
+                    var anchoTabla = $("#RolesGrid").width();
+                    var anchoPopup = $("#popupRol").width(); 
+                    var altoPopup = $("#popupRol").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(100+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupRol").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupRol").jqxWindow('open');
                     Global_nuevo=true;
             });
 
@@ -288,29 +288,29 @@ $(document).ready(function () {
                 if (Global_editrow > -1) {
 
                     // get the clicked row's data and initialize the input fields.
-                    var dataRecord = $("#grid2").jqxGrid('getrowdata', Global_editrow);
+                    var dataRecord = $("#RolesGrid").jqxGrid('getrowdata', Global_editrow);
                     $("#idInput").val(dataRecord.id);
                     $("#rolInput").val(dataRecord.rol);
                     $("#descripcionInput").val(dataRecord.descripcion);
 
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#RolesGrid").offset();
+                    var anchoTabla = $("#RolesGrid").width();
+                    var anchoPopup = $("#popupRol").width(); 
+                    var altoPopup = $("#popupRol").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupRol").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupRol").jqxWindow('open');
                 }
             });
 
             deleteButton.click(function (event) {
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                var offsetTabla = $("#grid2").offset();
-                var anchoTabla = $("#grid2").width();
+                var offsetTabla = $("#RolesGrid").offset();
+                var anchoTabla = $("#RolesGrid").width();
                 var anchoPopup = $("#popupDeleteConfirm").width(); 
                 var altoPopup = $("#popupDeleteConfirm").height();
                 var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
@@ -320,13 +320,13 @@ $(document).ready(function () {
                 $("#popupDeleteConfirm").jqxWindow('open');
 
 /*   Este codigo ya esta en el boton de confirmacion de boprrado                
-                var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-                var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-                var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+                var selectedrowindex = $("#RolesGrid").jqxGrid('getselectedrowindex');
+                var rowscount = $("#RolesGrid").jqxGrid('getdatainformation').rowscount;
+                var idRow = $("#RolesGrid").jqxGrid('getrowid', selectedrowindex);
 
-                var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+                var dataRecord = $("#RolesGrid").jqxGrid('getrowdata', selectedrowindex);
 
-                $("#grid2").jqxGrid('deleterow', idRow);
+                $("#RolesGrid").jqxGrid('deleterow', idRow);
                 disableDelButtonAndAnothers();
 
                 var parametros = { "id" : dataRecord.id,
@@ -337,10 +337,10 @@ $(document).ready(function () {
                   url: "./borrarrol",
                   data: parametros,
                   success: function(datos){
-                    $("#form-msg").html(datos);
+                    $("#mensajesRoles").html(datos);
                   },
                   error: function(result) {
-                    $("#form-msg").html(result.responseText);
+                    $("#mensajesRoles").html(result.responseText);
                   }
                 });
 */                
@@ -348,38 +348,39 @@ $(document).ready(function () {
 
             reloadButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $('#grid2').jqxGrid('updatebounddata','data');
+                $('#RolesGrid').jqxGrid('updatebounddata','data');
             });
 
             searchButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $("#grid2").jqxGrid('showfilterrow', true);
+                $("#RolesGrid").jqxGrid('showfilterrow', true);
 
-                var filter = $("#grid2").jqxGrid('filterable');
-                $("#grid2").jqxGrid('filterable', !filter); // sw
+                var filter = $("#RolesGrid").jqxGrid('filterable');
+                $("#RolesGrid").jqxGrid('filterable', !filter); // sw
+                $("#RolesGrid").jqxGrid('clearfilters');
 
             });
 
             excelButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'xls', 'Rol');
+                $("#RolesGrid").jqxGrid('exportdata', 'xls', 'Rol');
             });
 
             pdfButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'pdf', 'Rol');
+                $("#RolesGrid").jqxGrid('exportdata', 'pdf', 'Rol');
             });
 
         },
         columns: [
-            { text: 'Rol', dataField: 'rol', width: 200 },
+            { text: 'Rol', dataField: 'rol', width: 200, filtertype: 'input'  },
             { text: 'Descripción', dataField: 'descripcion'},
-            { text: 'Editar Menús', datafield: 'Edit', width: 100, columntype: 'button', 
+            { text: 'Editar Menús', datafield: 'Edit', width: 100, columntype: 'button', filterable: false, 
                 cellsrenderer: function () {
                     return "Menús";
                 }, 
                 buttonclick: function (row) {  //abrira un popup cuando se haga click
                     editrow = row;
 
-                    var dataRecord = $("#grid2").jqxGrid('getrowdata', editrow);
+                    var dataRecord = $("#RolesGrid").jqxGrid('getrowdata', editrow);
                   
                     var parametros = {  "id_rol" : dataRecord.id, // 3
                                       "_token" : "{{ csrf_token() }}"
@@ -401,29 +402,29 @@ $(document).ready(function () {
                             });
                         },
                         error: function(result) {
-                            $("#form-msg").html(result.responseText);
+                            $("#mensajesRoles").html(result.responseText);
                         }
                     });
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindowMenus").width(); 
-                    var altoPopup = $("#popupWindowMenus").height();
+                    var offsetTabla = $("#RolesGrid").offset();
+                    var anchoTabla = $("#RolesGrid").width();
+                    var anchoPopup = $("#popupRolMenus").width(); 
+                    var altoPopup = $("#popupRolMenus").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindowMenus").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupRolMenus").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindowMenus").jqxWindow('open');
+                    $("#popupRolMenus").jqxWindow('open');
                 }
             },
-            { text: 'Editar Módulos', datafield: 'Edit2', width: 100, columntype: 'button', 
+            { text: 'Editar Módulos', datafield: 'Edit2', width: 100, columntype: 'button', filterable: false, 
                 cellsrenderer: function () {
                     return "Módulos";
                 }, 
                 buttonclick: function (row) {  //abrira un popup cuando se haga click
                     editrow = row;
 
-                    var dataRecord = $("#grid2").jqxGrid('getrowdata', editrow);
+                    var dataRecord = $("#RolesGrid").jqxGrid('getrowdata', editrow);
                   
                     var parametros = {  "id_rol" : dataRecord.id, // 3
                                       "_token" : "{{ csrf_token() }}"
@@ -444,19 +445,19 @@ $(document).ready(function () {
                             });
                         },
                         error: function(result) {
-                            $("#form-msg").html(result.responseText);
+                            $("#mensajesRoles").html(result.responseText);
                         }
                     });
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindowModulos").width(); 
-                    var altoPopup = $("#popupWindowModulos").height();
+                    var offsetTabla = $("#RolesGrid").offset();
+                    var anchoTabla = $("#RolesGrid").width();
+                    var anchoPopup = $("#popupRolModulos").width(); 
+                    var altoPopup = $("#popupRolModulos").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindowModulos").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupRolModulos").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindowModulos").jqxWindow('open');
+                    $("#popupRolModulos").jqxWindow('open');
                 }
             }
         ],
@@ -464,7 +465,7 @@ $(document).ready(function () {
     });
 
 
-    $('#grid2').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
+    $('#RolesGrid').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
           var args = event.args;
           var boundIndex = args.rowindex;
           var visibleIndex = args.visibleindex;
@@ -500,13 +501,13 @@ $(document).ready(function () {
     function disableDelButtonAndAnothers(){
         if (deleteButton !== undefined) deleteButton.jqxButton({disabled: true });
         if (modifButton !== undefined) modifButton.jqxButton({disabled: true });
-        var index = $("#grid2").jqxGrid('getselectedrowindex');
-        $('#grid2').jqxGrid('unselectrow', index);
-        $("#form-msg").html('');
+        var index = $("#RolesGrid").jqxGrid('getselectedrowindex');
+        $('#RolesGrid').jqxGrid('unselectrow', index);
+        $("#mensajesRoles").html('');
         Global_editrow = -1;
     };
    
-    $('#grid2').on('rowselect', function (event) { 
+    $('#RolesGrid').on('rowselect', function (event) { 
           var args = event.args;
           var rowBoundIndex = args.rowindex;
           var rowData = args.row;
@@ -519,18 +520,18 @@ $(document).ready(function () {
           }
 
           Global_editrow = rowBoundIndex;
-          $("#form-msg").html("");             
+          $("#mensajesRoles").html("");             
     });   
 
-    $('#grid2').on('filter', function (event) {
+    $('#RolesGrid').on('filter', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('pagechanged', function (event) {
+    $('#RolesGrid').on('pagechanged', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
+    $('#RolesGrid').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
         disableDelButtonAndAnothers();
     });   
 
@@ -566,15 +567,15 @@ $(document).ready(function () {
     });
 
     // initialize the popup window and buttons.
-    $("#popupWindow").jqxWindow({
+    $("#popupRol").jqxWindow({
         width: 350, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.1, theme: Tema         
     });
 
-    $("#popupWindow").on('open', function () {
+    $("#popupRol").on('open', function () {
         //$("#name").jqxInput('selectAll');
     });
 
-    $("#popupWindow").on('close', function () {
+    $("#popupRol").on('close', function () {
         Global_nuevo=false;
         $('#form').jqxValidator('hide');
     });
@@ -597,17 +598,17 @@ $(document).ready(function () {
                   var row = { id:0, rol: $("#rolInput").val(), descripcion: $("#descripcionInput").val() };
                   
                   // YA NO SE LO AÑADE AQUI POR QUE CAUSA PROBLEMAS POR QUE NO TIENE ID AUN   
-                  //$("#grid2").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
+                  //$("#RolesGrid").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
 
                   Global_row = row;
               } else {
 
                   var row = { rol: $("#rolInput").val(), descripcion: $("#descripcionInput").val() };
 
-                  var rowID = $('#grid2').jqxGrid('getrowid', Global_editrow);
-                  $('#grid2').jqxGrid('updaterow', rowID, row);
+                  var rowID = $('#RolesGrid').jqxGrid('getrowid', Global_editrow);
+                  $('#RolesGrid').jqxGrid('updaterow', rowID, row);
               }
-              $("#popupWindow").jqxWindow('hide');
+              $("#popupRol").jqxWindow('hide');
             }
          }
           
@@ -637,21 +638,21 @@ $(document).ready(function () {
         if ( tipo_result == 'ID' ) {
           var ID = data.substring(3,data.indexOf("\n")) ;
           var mensaje = data.substring(data.indexOf("\n")+1, data.length-1);  
-          $("#form-msg").html(mensaje);      
+          $("#mensajesRoles").html(mensaje);      
 
           Global_row.id = parseInt(ID);  
-          //$('#grid2').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
+          //$('#RolesGrid').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
 
-          $("#grid2").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
+          $("#RolesGrid").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
 
         } else {
-          $("#form-msg").html(data);   
+          $("#mensajesRoles").html(data);   
         }
       });
 
       // evento: si hubo algun error
       posting.error(function( data ) {
-          $("#form-msg").html(data.responseText);   
+          $("#mensajesRoles").html(data.responseText);   
       });
 
     });
@@ -679,13 +680,13 @@ $(document).ready(function () {
     $('#popupDeleteConfirm').on('open', function (event) { $('#cancelDelete').focus(); }); // no esta funcando :(
         
     $("#okDelete").click(function () {
-        var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-        var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-        var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+        var selectedrowindex = $("#RolesGrid").jqxGrid('getselectedrowindex');
+        var rowscount = $("#RolesGrid").jqxGrid('getdatainformation').rowscount;
+        var idRow = $("#RolesGrid").jqxGrid('getrowid', selectedrowindex);
 
-        var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+        var dataRecord = $("#RolesGrid").jqxGrid('getrowdata', selectedrowindex);
 
-        $("#grid2").jqxGrid('deleterow', idRow);
+        $("#RolesGrid").jqxGrid('deleterow', idRow);
         disableDelButtonAndAnothers();
 
         var parametros = { "id" : dataRecord.id,
@@ -697,10 +698,10 @@ $(document).ready(function () {
             url: "./borrarrol",
             data: parametros,
             success: function(datos){
-                $("#form-msg").html(datos);
+                $("#mensajesRoles").html(datos);
             },
             error: function(result) {
-                $("#form-msg").html(result.responseText);
+                $("#mensajesRoles").html(result.responseText);
             }
         });
     });
@@ -741,7 +742,7 @@ $("#SaveMenus").click(function () {
         info[i] = items[i].value;
     }
     
-    var parametros = {  "id_rol" : $('#grid2').jqxGrid('getrowid', Global_editrow), // 3
+    var parametros = {  "id_rol" : $('#RolesGrid').jqxGrid('getrowid', Global_editrow), // 3
                         "_token" : "{{ csrf_token() }}",
                         "ids_menus": info
                       };
@@ -750,18 +751,18 @@ $("#SaveMenus").click(function () {
 
     // evento: cuando los resultados son devueltos
     posting.done(function( data ) {
-        $("#form-msg").html(data);   
+        $("#mensajesRoles").html(data);   
     });
 
     // evento: si hubo algun error
     posting.error(function( data ) {
-        $("#form-msg").html(data.responseText);   
+        $("#mensajesRoles").html(data.responseText);   
     });
 
-    $("#popupWindowMenus").jqxWindow('hide');
+    $("#popupRolMenus").jqxWindow('hide');
 });
 
-$("#popupWindowMenus").jqxWindow({
+$("#popupRolMenus").jqxWindow({
     width: 520, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#CancelMenus"), modalOpacity: 0.1, theme: Tema         
 });
 //=================================================
@@ -802,7 +803,7 @@ $("#SaveModulos").click(function () {
         info[i] = items[i].value;
     }
     
-    var parametros = {  "id_rol" : $('#grid2').jqxGrid('getrowid', Global_editrow), // 3
+    var parametros = {  "id_rol" : $('#RolesGrid').jqxGrid('getrowid', Global_editrow), // 3
                         "_token" : "{{ csrf_token() }}",
                         "ids_modulos": info
                       };
@@ -811,18 +812,18 @@ $("#SaveModulos").click(function () {
 
     // evento: cuando los resultados son devueltos
     posting.done(function( data ) {
-        $("#form-msg").html(data);   
+        $("#mensajesRoles").html(data);   
     });
 
     // evento: si hubo algun error
     posting.error(function( data ) {
-        $("#form-msg").html(data.responseText);   
+        $("#mensajesRoles").html(data.responseText);   
     });
 
-    $("#popupWindowModulos").jqxWindow('hide');
+    $("#popupRolModulos").jqxWindow('hide');
 });
 
-$("#popupWindowModulos").jqxWindow({
+$("#popupRolModulos").jqxWindow({
     width: 520, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#CancelModulos"), modalOpacity: 0.1, theme: Tema         
 });
 //===================================================

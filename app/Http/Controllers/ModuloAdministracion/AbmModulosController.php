@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\ModuloAdministracion;
 
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\ModuloAdministracion\Modulos;
 
@@ -59,6 +62,46 @@ class AbmModulosController extends Controller
       $affected = \DB::delete('delete from modulos where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
   }  
+
+  public function get_image(Request $request){
+
+      $name = '';
+      
+      $image = request()->file('imagen_modulo'); // lo mismo: $image = Input::file('imagen_modulo');
+/*
+        $validator = $this->validate($request, [
+            'imagen_modulo' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+*/
+      $validator = \Validator::make(
+            [
+                'image' => $image,
+                'format'   => $image->getClientOriginalExtension()
+            ],[
+                'image' => 'required',
+                'format'   => 'in:png,gif,jpeg,jpg' 
+            ]
+        );
+
+      if ($validator->fails()) {
+          $url_imagen = "uploads/invalid.png";
+          $status = 'ERROR';
+      } else {
+          $Extencion = $image->getClientOriginalExtension();
+          //$NombreArchivo = $image->getClientOriginalName();
+          date_default_timezone_set('America/La_Paz');  // por si acaso no esta configurado          
+          $NombreArchivo = date("Y") . date("m") . date("d") . "_" . date("G")  . date("i")   . date("s") . "." . $Extencion;
+          $file_dir = $request->file('imagen_modulo')->storeAs('uploads', $NombreArchivo, 'public_images_folder' ); // public_images_folder esta en filesystems.php
+
+          $url_imagen = $file_dir; //$image->getRealPath() ;
+          $status = 'OK';
+      }
+
+
+      $data = array('url_imagen' =>  $url_imagen, 'status' => $status);
+      echo json_encode($data);
+
+  }
 
 
 // ======================================================================================================

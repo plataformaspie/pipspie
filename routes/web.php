@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'moduloadministracion'),
           function() {
               Route::get('dashboard', 'ModuloAdministracion\DashboardController@index');
-              
+
               Route::get('abm_usuarios', 'ModuloAdministracion\AbmUsuariosController@index');
               Route::get('listausers', 'ModuloAdministracion\AbmUsuariosController@listarUsers');
               Route::get('listaroles_usu', 'ModuloAdministracion\AbmUsuariosController@listarRoles');
@@ -45,6 +45,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listamodulos', 'ModuloAdministracion\AbmModulosController@listarModulos');
               Route::post('guardarmodulo', 'ModuloAdministracion\AbmModulosController@guardarModulo');
               Route::post('borrarmodulo', 'ModuloAdministracion\AbmModulosController@borrarModulo');
+              Route::post('imagenupload', 'ModuloAdministracion\AbmModulosController@get_image');
+
 
               Route::get('abm_menus', 'ModuloAdministracion\AbmMenusController@index');
               Route::get('listamenus', 'ModuloAdministracion\AbmMenusController@listarMenus');
@@ -52,6 +54,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listamodulos_mnu', 'ModuloAdministracion\AbmMenusController@listarModulos');  
               Route::post('guardarmenu', 'ModuloAdministracion\AbmMenusController@guardarMenu');
               Route::post('borrarmenu', 'ModuloAdministracion\AbmMenusController@borrarMenu');
+              Route::get('listasubmenus', 'ModuloAdministracion\AbmMenusController@listarSubmenus');
+              Route::post('guardarsubmenu', 'ModuloAdministracion\AbmMenusController@guardarSubmenu');
+              Route::post('borrarsubmenu', 'ModuloAdministracion\AbmMenusController@borrarSubmenu');
 
               Route::get('abm_roles', 'ModuloAdministracion\AbmRolesController@index');
               Route::get('listaroles', 'ModuloAdministracion\AbmRolesController@listarRoles');

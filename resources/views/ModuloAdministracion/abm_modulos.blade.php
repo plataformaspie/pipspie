@@ -11,13 +11,12 @@
   <div class="container">
     <h2>Listado de Módulos</h2>
     <div id='jqxWidget'>
-        <div id="grid2">
+        <div id="ModulosGrid">
         </div>
 
+       <div id="mensajesModulos" style="width: 800px; min-height:20px;"></div>
 
-       <div id="form-msg" style="width: 800px"></div>
-       <iframe id="form-iframe" name="form-iframe" class="clase-iframe" frameborder="0"></iframe>
-       <div id="popupWindow">
+       <div id="popupModulo">
           <div>Módulo</div>
           <div style="overflow: hidden;">
             <div id="mensajes"></div>
@@ -38,28 +37,42 @@
                         <td><input name="url" type="text" id="urlInput" /></td>
                     </tr>
                     <tr>
-                        <td align="right" style="color:#000000">Ícono:</td>
-                        <td><input name="icono" type="text" id="iconoInput" /></td>
-                    </tr>
-                    <tr>
                         <td align="right" style="color:#000000">Tipo Menú:</td>
                         <td><input name="tipo_menu" type="text" id="tipo_menuInput" /></td>
                     </tr>
                     <tr>
-                        <td align="right" style="color:#000000">Orden:</td>
-                        <td align="left"><div name="orden"  id="ordenNumberInput"></div></td>
-                    </tr> 
-                    <tr>
-                        <td align="right" style="color:#000000">Activo:</td>
-                        <td align="left"><div name="activo"  id="activoCheckBox"></div></td>
+                        <td align="right" style="color:#000000">Ícono:</td>
+                        <td><input name="icono" type="text" id="iconoInput" /></td>
                     </tr>
-                    <!--tr>
-                        <input type="file" id="imagen" name="imagen" />
-                    </tr-->
+                    <tr>
+                      <td colspan="2">
+                        <table style="width: 100%;">
+                          <tr>
+                            <td align="right" style="color:#000000; width: 40%;">Orden:</td>
+                            <td><div name="orden"  id="ordenNumberInput"></div></td>
+                            <td rowspan="3">
+                              <img id="imagenCargada" src="" alt="Imagen No Cargada" width="106" height="81">
+                              <input type="file" id="image_uploads" accept="image/x-png, image/gif, image/jpeg, image/jpg" />
+                              <label for="image_uploads" class="jqx-rc-all-ui-start jqx-button jqx-button-ui-start jqx-fill-state-fred-ui-start labelUpload">Cargar imagen</label>                              
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="right" style="color:#000000">Activo:</td>
+                            <td><div name="activo"  id="activoCheckBox"></div></td>
+                          </tr>
+                          <tr>
+                            <td align="right" style="color:#000000">&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                    </tr>
                     <tr>
                         <td align="right"></td>
                         <td style="padding-top: 10px;" align="right">
-                            <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
+                            <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />                            
                             <input id="Cancel" type="button" value="Cerrar" />
                         </td>
                     </tr>
@@ -134,25 +147,26 @@
   <style type="text/css">
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
-      background-color: #d87165;
-      opacity: 0.7;
+      background-color: #de857b;
+      opacity: 0.85;
     }
+
     .jqx-validator-hint-arrow{ /* creamos otro rombo */  
       margin: 3px 0px 0px 0px;
       width: 8px; 
       height: 8px; 
       border: 1px solid; 
-      border-top-color: #d87165;
-      border-right-color: #d87165;
+      border-top-color: #de857b;
+      border-right-color: #de857b;
       border-bottom-color: #DEABA0;
       border-left-color: #DEABA0;
-      background: #d87165;
+      background: #de857b;
       -webkit-transform: rotate(45deg);
       -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       -o-transform: rotate(45deg);
       transform: rotate(45deg);
-      opacity: 0.7;
+      opacity: 0.85;
     }
 
     .jqx-validator-hint-arrow img {display: none;} /* ya no mostramos el rombo del validador*/ 
@@ -174,7 +188,43 @@
     } 
     .tabla-ventana td {
       padding: 3px 0px 3px 2px;
-    }     
+    }   
+
+    #image_uploads{
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+    }
+
+    .labelUpload {
+        padding: 5px 10px;
+        font-size: 10px !important;
+    }
+  
+
+    #imagenCargada{
+        background-color: #D0D0D0;
+        border-color: #C0C0C0 #E0E0E0 #E0E0E0 #C0C0C0;
+        border-width: 3px;
+        border-style: solid;
+    }
+
+    .jqx-fill-state-fred-ui-start{
+      border-color: #77d5f7; 
+      background: #0078ae url(../jqwidgets5.4.0/jqwidgets/styles/images/start/ui-bg_glass_45_0078ae_1x400.png) 50% 50% repeat-x; 
+      font-family: Verdana,Arial,sans-serif; 
+      font-style: normal; 
+      font-size: 12px; 
+      font-weight: normal; 
+      color: #ffffff;
+    }
+
+    .jqx-fill-state-fred-ui-start:hover{
+      border-color: #448dae;
+      background: #79c9ec url(../jqwidgets5.4.0/jqwidgets/styles/images/start/ui-bg_glass_75_79c9ec_1x400.png) 50% 50% repeat-x; 
+      font-weight: normal; 
+      color: #026890;
+    }
   </style>
 
 <script type="text/javascript">
@@ -199,7 +249,7 @@ $(document).ready(function () {
             { name: 'id', type: 'string' },
             { name: 'descripcion', type: 'string' },
             { name: 'url', type: 'string' },
-            { name: 'activo', type: 'string' },
+            { name: 'activo', type: 'bool' },
             { name: 'titulo', type: 'string' },
             { name: 'icono', type: 'string' },
             { name: 'tipo_menu', type: 'string' },
@@ -222,7 +272,7 @@ $(document).ready(function () {
 
     var dataAdapter = new $.jqx.dataAdapter(source);
 
-    $("#grid2").jqxGrid(
+    $("#ModulosGrid").jqxGrid(
     {
         width: 1000,
         source: dataAdapter,
@@ -237,7 +287,7 @@ $(document).ready(function () {
         columnsresize: true,
 
         ready: function () {
-            // $("#grid2").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
+            // $("#ModulosGrid").jqxGrid('sortby', 'name', 'asc'); ya no es necesario, se hace desde la BD
         },
         showtoolbar: true,
         rendertoolbar: function (statusbar) {
@@ -277,19 +327,19 @@ $(document).ready(function () {
                     $("#iconoInput").val('');
                     $("#tipo_menuInput").val(''); 
                     $('#ordenNumberInput').jqxNumberInput('clear');
-                    $("#activoCheckBox").jqxCheckBox({ checked: false });                 
-
+                    $("#activoCheckBox").jqxCheckBox({ checked: false });    
+                    $('#imagenCargada').attr('src', '../img/uploads/no-image.png');
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#ModulosGrid").offset();
+                    var anchoTabla = $("#ModulosGrid").width();
+                    var anchoPopup = $("#popupModulo").width(); 
+                    var altoPopup = $("#popupModulo").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(100+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupModulo").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupModulo").jqxWindow('open');
                     Global_nuevo=true;
             });
 
@@ -297,7 +347,7 @@ $(document).ready(function () {
                 if (Global_editrow > -1) {
 
                     // get the clicked row's data and initialize the input fields.
-                    var dataRecord = $("#grid2").jqxGrid('getrowdata', Global_editrow);
+                    var dataRecord = $("#ModulosGrid").jqxGrid('getrowdata', Global_editrow);
                     $("#idInput").val(dataRecord.id);
                     $("#tituloInput").val(dataRecord.titulo);
                     $("#descripcionInput").val(dataRecord.descripcion);
@@ -306,25 +356,25 @@ $(document).ready(function () {
                     $("#tipo_menuInput").val(dataRecord.tipo_menu); 
                     $('#ordenNumberInput').val(dataRecord.orden); 
                     $("#activoCheckBox").jqxCheckBox({ checked: (dataRecord.activo.toString() === "true") }); // aveces dataRecord.activo es objeto
-
+                    $('#imagenCargada').attr('src', '../img/' + dataRecord.icono);
 
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                    var offsetTabla = $("#grid2").offset();
-                    var anchoTabla = $("#grid2").width();
-                    var anchoPopup = $("#popupWindow").width(); 
-                    var altoPopup = $("#popupWindow").height();
+                    var offsetTabla = $("#ModulosGrid").offset();
+                    var anchoTabla = $("#ModulosGrid").width();
+                    var anchoPopup = $("#popupModulo").width(); 
+                    var altoPopup = $("#popupModulo").height();
                     var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
                     var posicionYpopup = parseInt(Global_offsetFila+offsetTabla.top+80) - parseInt(altoPopup/2);
-                    $("#popupWindow").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
+                    $("#popupModulo").jqxWindow({ position: { x: posicionXpopup, y: posicionYpopup } });
                     // show the popup window.
-                    $("#popupWindow").jqxWindow('open');
+                    $("#popupModulo").jqxWindow('open');
                 }
             });
 
             deleteButton.click(function (event) {
                     // optiene la posision donde se desplegara la ventana pop-up en funcion de la fila y centro de la tabla.
-                var offsetTabla = $("#grid2").offset();
-                var anchoTabla = $("#grid2").width();
+                var offsetTabla = $("#ModulosGrid").offset();
+                var anchoTabla = $("#ModulosGrid").width();
                 var anchoPopup = $("#popupDeleteConfirm").width(); 
                 var altoPopup = $("#popupDeleteConfirm").height();
                 var posicionXpopup = parseInt(offsetTabla.left) + parseInt(anchoTabla/2) - parseInt(anchoPopup/2);
@@ -334,13 +384,13 @@ $(document).ready(function () {
                 $("#popupDeleteConfirm").jqxWindow('open');
 
 /*   Este codigo ya esta en el boton de confirmacion de boprrado                
-                var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-                var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-                var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+                var selectedrowindex = $("#ModulosGrid").jqxGrid('getselectedrowindex');
+                var rowscount = $("#ModulosGrid").jqxGrid('getdatainformation').rowscount;
+                var idRow = $("#ModulosGrid").jqxGrid('getrowid', selectedrowindex);
 
-                var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+                var dataRecord = $("#ModulosGrid").jqxGrid('getrowdata', selectedrowindex);
 
-                $("#grid2").jqxGrid('deleterow', idRow);
+                $("#ModulosGrid").jqxGrid('deleterow', idRow);
                 disableDelButtonAndAnothers();
 
                 var parametros = { "id" : dataRecord.id,
@@ -351,10 +401,10 @@ $(document).ready(function () {
                   url: "./borrarmodulo",
                   data: parametros,
                   success: function(datos){
-                    $("#form-msg").html(datos);
+                    $("#mensajesModulos").html(datos);
                   },
                   error: function(result) {
-                    $("#form-msg").html(result.responseText);
+                    $("#mensajesModulos").html(result.responseText);
                   }
                 });
 */
@@ -362,42 +412,43 @@ $(document).ready(function () {
 
             reloadButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $('#grid2').jqxGrid('updatebounddata','data');
+                $('#ModulosGrid').jqxGrid('updatebounddata','data');
             });
 
             searchButton.click(function (event) {
                 disableDelButtonAndAnothers();
-                $("#grid2").jqxGrid('showfilterrow', true);
+                $("#ModulosGrid").jqxGrid('showfilterrow', true);
 
-                var filter = $("#grid2").jqxGrid('filterable');
-                $("#grid2").jqxGrid('filterable', !filter); // sw
+                var filter = $("#ModulosGrid").jqxGrid('filterable');
+                $("#ModulosGrid").jqxGrid('filterable', !filter); // sw
+                $("#ModulosGrid").jqxGrid('clearfilters');
 
             });
 
             excelButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'xls', 'Modulos');
+                $("#ModulosGrid").jqxGrid('exportdata', 'xls', 'Modulos');
             });
 
             pdfButton.click(function (event) {
-                $("#grid2").jqxGrid('exportdata', 'pdf', 'Modulos');
+                $("#ModulosGrid").jqxGrid('exportdata', 'pdf', 'Modulos');
             });
 
         },
         columns: [
-            { text: 'Nombre Módulo', dataField: 'titulo', width: 200 },
+            { text: 'Nombre Módulo', dataField: 'titulo', width: 200, filtertype: 'input' },
             { text: 'Url', dataField: 'url', width: 250 },
             { text: 'Descripción', dataField: 'descripcion', width: 200 },
             { text: 'Ícono', dataField: 'icono', width: 150 },
             { text: 'Tipo', dataField: 'tipo_menu', width: 60 },
             { text: 'Orden', dataField: 'orden', width: 60, cellsalign: 'center' },
-            { text: 'Estado', dataField: 'activo', cellsalign: 'center' }
+            { text: 'Estado', dataField: 'activo', columntype: 'checkbox', filtertype: 'bool', cellsalign: 'center' }
         ],
         theme: Tema
     });
 
 
 
-    $('#grid2').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
+    $('#ModulosGrid').on('rowclick', function (event) { // solo para obtener la coordenada Y de la fila
           var args = event.args;
           var boundIndex = args.rowindex;
           var visibleIndex = args.visibleindex;
@@ -433,13 +484,13 @@ $(document).ready(function () {
     function disableDelButtonAndAnothers(){
         if (deleteButton !== undefined) deleteButton.jqxButton({disabled: true });
         if (modifButton !== undefined) modifButton.jqxButton({disabled: true });
-        var index = $("#grid2").jqxGrid('getselectedrowindex');
-        $('#grid2').jqxGrid('unselectrow', index);
-        $("#form-msg").html('');
+        var index = $("#ModulosGrid").jqxGrid('getselectedrowindex');
+        $('#ModulosGrid').jqxGrid('unselectrow', index);
+        $("#mensajesModulos").html('');
         Global_editrow = -1;
     };
    
-    $('#grid2').on('rowselect', function (event) { 
+    $('#ModulosGrid').on('rowselect', function (event) { 
           var args = event.args;
           var rowBoundIndex = args.rowindex;
           var rowData = args.row;
@@ -452,18 +503,18 @@ $(document).ready(function () {
           }
 
           Global_editrow = rowBoundIndex;
-          $("#form-msg").html("");             
+          $("#mensajesModulos").html("");             
     });   
 
-    $('#grid2').on('filter', function (event) {
+    $('#ModulosGrid').on('filter', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('pagechanged', function (event) {
+    $('#ModulosGrid').on('pagechanged', function (event) {
         disableDelButtonAndAnothers();
     });   
 
-    $('#grid2').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
+    $('#ModulosGrid').on('sort', function (event) {  // esta evento se ejecuta antes que los botones esten creados 
         disableDelButtonAndAnothers();
     });   
 
@@ -503,31 +554,27 @@ $(document).ready(function () {
 
     // initialize validator.
     $('#form').jqxValidator({
-               // hintType: 'label',
-                animationDuration: 500, // milisegundos
-                theme: Tema,    
-      rules: [
-        { input: '#tituloInput', message: '¡El Nombre del Módulo es necesario!', action: 'keyup, blur', rule: 'required' },
-
-        { input: '#descripcionInput', message: '¡La Descripción es necesaria!', action: 'keyup, blur', rule: 'required' },
-  //      { input: '#descripcionInput', message: 'El Descripción debe contener solo letras!', action: 'keyup', rule: 'notNumber' },
-        { input: '#descripcionInput', message: '¡Debe contener entre 3 y 100 caracteres!', action: 'keyup', rule: 'length=3,100' },
-
-        { input: '#urlInput', message: '¡El Url es necesario!', action: 'keyup, blur', rule: 'required' }
-
-      ]
+        // hintType: 'label',
+        animationDuration: 500, // milisegundos
+        theme: Tema,    
+        rules: [
+          { input: '#tituloInput', message: '¡El Nombre del Módulo es necesario!', action: 'keyup, blur', rule: 'required' },
+          { input: '#descripcionInput', message: '¡La Descripción es necesaria!', action: 'keyup, blur', rule: 'required' },
+          { input: '#descripcionInput', message: '¡Debe contener entre 3 y 100 caracteres!', action: 'keyup', rule: 'length=3,100' },
+          { input: '#urlInput', message: '¡La Url es necesaria!', action: 'keyup, blur', rule: 'required' }
+        ]
     });
 
     // initialize the popup window and buttons.
-    $("#popupWindow").jqxWindow({
+    $("#popupModulo").jqxWindow({
         width: 450, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.1, theme: Tema         
     });
 
-    $("#popupWindow").on('open', function () {
+    $("#popupModulo").on('open', function () {
         //$("#name").jqxInput('selectAll');
     });
 
-    $("#popupWindow").on('close', function () {
+    $("#popupModulo").on('close', function () {
         Global_nuevo=false;
         $('#form').jqxValidator('hide');
     });
@@ -550,7 +597,7 @@ $(document).ready(function () {
                   };
                   
                   // YA NO SE LO AÑADE AQUI POR QUE CAUSA PROBLEMAS POR QUE NO TIENE ID AUN   
-                  //$("#grid2").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
+                  //$("#ModulosGrid").jqxGrid('addrow', null, row); // no tiene aun ID... se lo pondra cuando el sumit (asincrono) nos devuelva la respuesta
 
                   Global_row = row;
               } else {
@@ -558,10 +605,10 @@ $(document).ready(function () {
                   var row = { titulo: $("#tituloInput").val(), descripcion: $("#descripcionInput").val(), url: $("#urlInput").val(), icono: $("#iconoInput").val(), tipo_menu: $("#tipo_menuInput").val(), orden: $('#ordenNumberInput').jqxNumberInput('getDecimal'), activo: $("#activoCheckBox").jqxCheckBox('checked')
                   };
 
-                  var rowID = $('#grid2').jqxGrid('getrowid', Global_editrow);
-                  $('#grid2').jqxGrid('updaterow', rowID, row);
+                  var rowID = $('#ModulosGrid').jqxGrid('getrowid', Global_editrow);
+                  $('#ModulosGrid').jqxGrid('updaterow', rowID, row);
               }
-              $("#popupWindow").jqxWindow('hide');
+              $("#popupModulo").jqxWindow('hide');
             }
          }
           
@@ -591,21 +638,21 @@ $(document).ready(function () {
         if ( tipo_result == 'ID' ) {
           var ID = data.substring(3,data.indexOf("\n")) ;
           var mensaje = data.substring(data.indexOf("\n")+1, data.length-1);  
-          $("#form-msg").html(mensaje);      
+          $("#mensajesModulos").html(mensaje);      
 
           Global_row.id = parseInt(ID);  
-          //$('#grid2').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
+          //$('#ModulosGrid').jqxGrid('updaterow', 0, Global_row); // buscamos al que le pusimos 0 por ID
 
-          $("#grid2").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
+          $("#ModulosGrid").jqxGrid('addrow', null, Global_row); // aqui nomas va tiene que ser la insercion al grip del registro, una vez que tenemos el ID
 
         } else {
-          $("#form-msg").html(data);   
+          $("#mensajesModulos").html(data);   
         }
       });
 
       // evento: si hubo algun error
       posting.error(function( data ) {
-          $("#form-msg").html(data.responseText);   
+          $("#mensajesModulos").html(data.responseText);   
       });
 
     });
@@ -633,13 +680,13 @@ $(document).ready(function () {
     $('#popupDeleteConfirm').on('open', function (event) { $('#cancelDelete').focus(); }); // no esta funcando :(
         
     $("#okDelete").click(function () {
-        var selectedrowindex = $("#grid2").jqxGrid('getselectedrowindex');
-        var rowscount = $("#grid2").jqxGrid('getdatainformation').rowscount;
-        var idRow = $("#grid2").jqxGrid('getrowid', selectedrowindex);
+        var selectedrowindex = $("#ModulosGrid").jqxGrid('getselectedrowindex');
+        var rowscount = $("#ModulosGrid").jqxGrid('getdatainformation').rowscount;
+        var idRow = $("#ModulosGrid").jqxGrid('getrowid', selectedrowindex);
 
-        var dataRecord = $("#grid2").jqxGrid('getrowdata', selectedrowindex);
+        var dataRecord = $("#ModulosGrid").jqxGrid('getrowdata', selectedrowindex);
 
-        $("#grid2").jqxGrid('deleterow', idRow);
+        $("#ModulosGrid").jqxGrid('deleterow', idRow);
         disableDelButtonAndAnothers();
 
         var parametros = { "id" : dataRecord.id,
@@ -651,13 +698,43 @@ $(document).ready(function () {
             url: "./borrarmodulo",
             data: parametros,
             success: function(datos){
-                $("#form-msg").html(datos);
+                $("#mensajesModulos").html(datos);
             },
             error: function(result) {
-                $("#form-msg").html(result.responseText);
+                $("#mensajesModulos").html(result.responseText);
             }
         });
     });
+
+
+    $( "#image_uploads" ).change(function() {
+        var formElement = document.getElementById('image_uploads');
+        var formData = new FormData();
+        formData.append('_token', '{{ csrf_token() }}');
+        formData.append('imagen_modulo', formElement.files[0]);
+
+        $('#imagenCargada').attr('src', '../images/loader.gif');
+
+        $.ajax({
+            url:    './imagenupload',
+            type:   'POST',
+            data:   formData,
+            cache:  false,
+            dataType: 'json',
+            processData: false,
+            contentType: false, 
+            success: function(data){
+                $('#imagenCargada').attr('src', '../img/' + data.url_imagen);
+                if ( data.status == 'OK' ) {
+                    $("#iconoInput").val(data.url_imagen);
+                }
+            },
+            error: function(result) {
+                $('#imagenCargada').attr('src', '');
+                $('#mensajesModulos').html(result.responseText);
+            }
+        });
+    });    
 //===================================================================
 //===== Hasta aqui la ventana de Confirmacion de borrado Pop-up ===== 
 //===================================================================
