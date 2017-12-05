@@ -176,10 +176,12 @@ Route::group(['middleware' => 'auth'],function(){
       Route::group(
         array('prefix' => 'api/modulopdes' ),
         function() {              
-          Route::get('proyectosgestion',      'ModuloPdes\GestionProyectosController@listarProyectosPdesAsociados');
-          Route::post('proyectosgestion',     'ModuloPdes\GestionProyectosController@insertar');
-          Route::get('proyectosgestion/{id}', 'ModuloPdes\GestionProyectosController@obtieneProyecto');
-          Route::get('proyectosgestion/listar/{op}',      'ModuloPdes\GestionProyectosController@listar'); // op:['sectores','instituciones','sisinweb','resultados']
+              Route::get('gestionproyectos',      'ModuloPdes\GestionProyectosController@listarProyectosPdesAsociados');
+              Route::post('gestionproyectos',     'ModuloPdes\GestionProyectosController@insertar');
+              Route::get('gestionproyectos/{id}', 'ModuloPdes\GestionProyectosController@obtieneProyecto');
+              Route::get('gestionproyectos/listar/{op}',      'ModuloPdes\GestionProyectosController@listar'); // op:['sectores','instituciones','sisinweb','resultados']
+              Route::get('gestionproyectos/buscar/sisin',      'ModuloPdes\GestionProyectosController@buscarSisin'); 
+              Route::get('gestionproyectos/sp/obtener_proyecto_sp/{codigo}',      'ModuloPdes\GestionProyectosController@obtenerProyectoSP');
 		  }
       );
 });
