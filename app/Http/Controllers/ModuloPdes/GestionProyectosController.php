@@ -113,12 +113,9 @@ class GestionProyectosController extends Controller
         ]);
     }
 
-
-
-
     public function listarProyectosPdesAsociados()
     {
-        $proyectosRes = collect(\DB::select("SELECT p.id as id_proyecto, p.nombre_proyecto, p.codigo, p.sector, p.costo_total, p.responsable,
+        $proyectosRes = collect(\DB::select("SELECT p.id as id_proyecto, p.nombre_proyecto, p.codigo, p.sector, trim(to_char(p.costo_total,'999G999G999G999D99')) as costo_total, p.responsable,
                             pi.cod_p, pi.descripcion as desc_p, m.cod_m, m.descripcion as desc_m, r.cod_r, r.descripcion as desc_r, r.id as id_r,
                             pi.cod_p||'.'||m.cod_m||'.'||r.cod_r as cod_pmr
                             FROM spie_proyectos_pdes p 
@@ -132,15 +129,15 @@ class GestionProyectosController extends Controller
 
         $proyectosSisin = collect(\DB::select("SELECT pry.id as id_proyecto, --pry.nombre_proyecto, pry.codigo, pry.costo_total,
                             s.id as id_sisinweb, s.nombre_proyecto as sw_nombre_proyecto, s.codigo_sisin as sw_codigo, s.entidad as sw_entidad, 
-                            s.n_pilar as sw_cod_p, s.n_meta as sw_cod_m, s.n_resultado as sw_cod_r, 
-                            s.n_pilar||'.'||s.n_meta||'.'||s.n_resultado  as sw_cod_pmr,
-                            s.monto_presupuestado as sw_monto_presupuestado, s.depto as sw_depto, s.prov as sw_prov, s.mun as sw_mun  
+                            s.cod_accion_plan as sw_cod_pmra,  trim(to_char(s.monto_presupuestado,'999G999G999G999D99')) as sw_monto_presupuestado, 
+                            s.depto as sw_depto, s.prov as sw_prov, s.mun as sw_mun  
                             FROM spie_proyectos_pdes pry, spie_proyectos_pdes_sisinweb ps, sisin_web s 
                             WHERE pry.id = ps.id_proyecto_pdes 
                             AND ps.id_sisinweb = s.id"));
 
         $proyectoSisinGroup = $proyectosSisin->groupBy('id_proyecto');
 
+       
         $respuesta = array();
         foreach ($proyectosResGroup as $keyP => $valP) 
         {
@@ -153,8 +150,19 @@ class GestionProyectosController extends Controller
             $sisinAsoc = ($existeProySisin) ? $proyectoSisinGroup[$id_proyectoPDES] : [];
 
             $proy = $valP[0];  
-            //TODO optimizar la respuesta de salida de los ResultadosAsoc  para que no ocupe tanto espacio           
-            $resultadosAsoc = $valP[0]->cod_r == null ? [] : $valP; 
+
+            $resultadosAsoc = $valP->map(function($item){
+                return ['id_proyecto'=> $item->id_proyecto,
+                        'cod_p' => $item->cod_p,
+                        'desc_p' => $item->desc_p,
+                        'cod_m' => $item->cod_m,
+                        'desc_m' => $item->desc_m,
+                        'cod_r' => $item->cod_r,
+                        'desc_r' => $item->desc_r,
+                        'id_r' => $item->id_r,
+                        'cod_pmr' => $item->cod_pmr
+                    ];
+            }); 
             $item = [
                 'id'                =>  $proy->id_proyecto,
                 'nombre_proyecto'   =>  $proy->nombre_proyecto,
@@ -178,51 +186,90 @@ class GestionProyectosController extends Controller
         ]);
     }
 
-    // public function listarSectores()
-    // {
-    //     $sectores = \DB::table('spie_proyectos_pdes')->select('sector')->distinct()->orderBy('sector')->get();
-    //     return response()->json([
-    //         'mensaje'=>'Sectores',
-    //         'estado'=>'ok',
-    //         'datos' => $sectores]);
-    // } 
+    public function obtenerProyectoSP($codigoDemanda)
+    {
+        $proyectoSP = collect(\DB::connection('dbsp')->select("SELECT  id, sector, codigo, nombre_proyecto, format(total_costo,2) as total_costo
+                                    FROM proyectos where estado = 1 AND  codigo = {$codigoDemanda} "))->first();
 
-    // public function listarResultados(Request $request)
-    // {
+        $contextoProyecto = array();
+        $ctxProyecto = collect(\DB::connection('dbsp')->select("SELECT distinct
+                                p.cod_p, m.cod_m, r.cod_r, a.cod_a, 
+                                pr.codigo, pr.nombre_proyecto, r.descripcion AS desc_r, a.descripcion AS desc_a,
+                                concat(p.cod_p,'.',m.cod_m,'.',r.cod_r,'.',a.cod_a) AS cod_pmra,
+                                ai.id as id_accion, ai.sisin,
+                                 e.nombre as ejecutor, sb.nombre as responsable
+                                FROM
+                                pilar AS p
+                                JOIN meta AS m ON m.pilar = p.id
+                                JOIN resultado AS r ON r.meta = m.id
+                                JOIN acciones AS a ON a.resultado = r.id
+                                LEFT JOIN accion AS ai ON ai.accion = a.id AND ai.estado = 1 AND ai.tipo <> 1
+                                LEFT JOIN entidad AS e ON ai.entidad = e.id
+                                LEFT JOIN entidad_responsable AS er ON er.accion = ai.id
+                                LEFT JOIN sub_entidad AS sb ON er.entidad_responsable = sb.id
+                                LEFT JOIN proyectos as pr ON ai.proyecto = pr.id 
+                                WHERE pr.codigo = {$codigoDemanda}"));
 
-    //     $resultados = \DB::select("SELECT r.id as id_r, p.cod_p, m.cod_m, r.cod_r, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r) as cod_pmr, 
-    //         r.descripcion, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r||' - '|| r.descripcion) as  descripcion_pmr 
-    //         FROM spie_pilares p, spie_metas m, spie_resultados r 
-    //         WHERE p.id = m.pilar AND m.id = r.meta 
-    //         ORDER BY p.cod_p, m.cod_m, r.cod_r");
-    //     return response()->json([
-    //         'mensaje'=>'Resultados',
-    //         'estado'=>'ok',
-    //         'datos' => $resultados
-    //     ]);
-    // }
 
-    // public function listarsisinweb()
-    // {                 
-    //     $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan 
-    //         FROM sisin_web s order by s.nombre_proyecto");
-    //     return response()->json([
-    //         'mensaje'=>'Proyectos_SISINWEB',
-    //         'estado'=>'ok',
-    //         'datos' => $sisin
-    //     ]);
-    // }
+        /*
+        un proyecto puede estar en mas de un pmra, solo tiene un ejecutor y puede tener varios responsables, 
+        por lo tanto se hace un groupBy por la tabla accion que es el vinculante, y se transforman las collectiones resultantes
+         */
+        if($ctxProyecto->count() > 0)
+        {
+            $groups = $ctxProyecto->groupBy('id_accion')->values();
+            $transfomadoPMRAA = $groups->map(function($items){
+                $item = $items->first();
+                $pmraa = new \stdClass();
+                $pmraa->id_accion = $item->id_accion;
+                $pmraa->cod_p = $item->cod_p;
+                $pmraa->cod_m = $item->cod_m;
+                $pmraa->cod_r = $item->cod_r;
+                $pmraa->cod_a = $item->cod_a;
+                $pmraa->desc_r = $item->desc_r;
+                $pmraa->desc_a = $item->desc_a;
+                $pmraa->cod_pmra = $item->cod_pmra;
+                $pmraa->sisin = $item->sisin;
+                $pmraa->ejecutor = $item->ejecutor;               
+                $responsables = $items->reduce(function($carry, $item){
+                    if($carry == null)
+                        $carry = array();
+                    $carry[] = $item->responsable;    
+                    return $carry;
+                });
+                $pmraa->responsables = $responsables;
 
-    // public function listarInstituciones()
-    // {              
-    //     $instituciones = \DB::select("SELECT s.id, s.nombre, s.codigo, s.sigla, (s.codigo || ' - ' || s.nombre) as descripcion
-    //         FROM spie_instituciones s order by s.codigo");
-    //     return response()->json([
-    //         'mensaje'=>'Instituciones',
-    //         'estado'=>'ok',
-    //         'datos' => $instituciones
-    //     ]);  
-    // }
+                return $pmraa;
+            });
+            $proyectoSP->contextoProyecto = $transfomadoPMRAA;
+        }
+
+        $mensaje = ($proyectoSP  == null) ? 'No existe el Proyecto en SP' : 'ok';
+        return response()->json([ 
+            'estado'=>'ok',
+            'mensaje'=> $mensaje,
+            'data' => $proyectoSP
+        ]) ;
+    }
+
+
+
+    public function buscarSisin(Request $params)
+    {    
+        $term = $params->term;
+        $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra,
+            s.codigo_sisin, s.depto, s.prov, s.mun, s.monto_presupuestado 
+            FROM sisin_web s 
+            WHERE  s.nombre_proyecto || ' ' || s.entidad || ' ' || s.sector || ' ' || s.cod_accion_plan || ' ' || s.codigo_sisin || ' ' || s.depto || ' ' || s.prov  || ' ' || s.mun || ' ' || s.monto_presupuestado  
+            ilike '%{$term}%'
+            order by s.nombre_proyecto");
+
+        return response()->json([
+            'mensaje'=>'Proyectos_SISINWEB',
+            'estado'=>'ok',
+            'datos' => $sisin
+        ]);
+    }
 
     /*------------------------------------
     op:['sectores','instituciones','sisinweb','resultados']

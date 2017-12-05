@@ -49,10 +49,11 @@
             <div class="col-md-4">
                 <div class="panel " id="sel_panel" style="min-height: 100%; max-height: 600px;  overflow-y: scroll; ">
                     <div class="panel panel-heading bg-dark-dark">Detalle Proyecto/programa PDES</div>
-                    <div class="panel panel-body p-10"  style="font-size: 11px; color: #1D181FFF">
+                    <div class="panel panel-body p-10 "  style="font-size: 11px; color: #000">
                         <div class="col-sm-12 bg-primary-dark" id="sel_sup"></div>
+                        {{-- <div class="col-sm-12 bg-primary-light" id="sel_sup2"></div> --}}
                         <div class="col-sm-12 bg-info-light" id="sel_inf"></div>
-                        <div class="col-sm-12 bg-warning-light" id="sel_inf2"></div>
+                        <div class="col-sm-12 bg-warning" id="sel_inf2"></div>
                     </div> 
                 </div>
             </div>
@@ -67,9 +68,9 @@
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-dark-dark">
+            <div class="modal-header bg-dark-light">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title bg-dark-dark" id="form_titulo">Proyecto</h4>
+                <h4 class="modal-title bg-dark-light" id="form_titulo">Proyecto</h4>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal" role="form">
@@ -118,8 +119,9 @@
                     <div class="form-group">
                         <label class="control-label col-md-3" for="form_sisinweb">Proyecto SISIN asociado</label>
                         <div class="col-md-9">
-                             <select id="form_sisinweb" multiple="">
-                            </select>
+                             <input id="form_sisinweb">
+                            {{--  <select id="form_sisinweb" multiple="">
+                            </select> --}}
                         </div>
                     </div>
                 </div>
@@ -156,9 +158,11 @@
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcombobox.js') }}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxpanel.js')}}"></script>
 <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcheckbox.js')}}"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/globalization/globalize.js"></script>
+<script type="text/javascript" src="/js/jqwidgets-localization.js"></script>
 
 <script type="text/javascript" src="{{ asset('plugins/bower_components/select2/dist/js/select2.min.js')}}"></script>
-<!-- <script type="text/javascript" src="{{ asset('plugins/highlight.js')}}"></script> -->
+<script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
 <script type="text/javascript">
 jQuery.fn.extend({
@@ -176,33 +180,8 @@ jQuery.fn.extend({
 <script>
 $(function () 
 {
-    function activarMenu(id,aux){
-        $('#'+id).addClass('active');
-        $('#'+aux).addClass('activeaux');
-    }
-
-    function menuModulosHideShow(ele){
-        //1 hide
-        //2 show
-        switch (ele) {
-          case 1:
-          $("body").addClass("content-wrapper")
-          $(".open-close i").removeClass('icon-arrow-left-circle');
-          $(".sidebar").css("overflow", "inherit").parent().css("overflow", "visible");
-          break;
-          case 2:
-          $("body").removeClass('content-wrapper');
-          $(".open-close i").addClass('icon-arrow-left-circle');
-          $(".logo span").show();
-          break;
-      }
-  }
-
-  activarMenu('mod-1','mp-4');
-  menuModulosHideShow(1);
-
     var cnf = {
-        theme: 'light', //'light', // 'darkblue';
+        theme: 'energyblue', //'light', // 'darkblue';
         theme_dark: 'darkblue',
         urlBase: '/api/modulopdes',
         alerta:{
@@ -221,7 +200,7 @@ $(function ()
 
         llenarLista : function(){
             $("#jqxNavBarList").jqxNavigationBar({theme: cnf.theme_dark, width: '100%', height: 600});
-            $.get(cnf.urlBase + '/proyectosgestion', function (resp)
+            $.get(cnf.urlBase + '/gestionproyectos', function (resp)
             {
                 ctxList.listaProyectos = resp.datos;
                 ctxList.source = {
@@ -234,7 +213,7 @@ $(function ()
                         {name: 'nombre_proyecto', type: 'string'},
                         {name: 'sector', type: 'string'},
                         {name: 'responsable', type: 'string'},
-                        {name: 'costo_total', type: 'numeric'},
+                        {name: 'costo_total', type: 'string'},
                         {name: 'resultados_count', type: 'integer'},
                         {name: 'sisinweb_count', type: 'integer'},
                     ],
@@ -259,8 +238,9 @@ $(function ()
                         });  
                     },
                     theme: cnf.theme,
-                    width: '95%',
+                    width: '99%',
                     source: dataAdapter,
+                    localization: getLocalization('es'),
                     autoheight: true,
                     sortable: true,
                     filterable: true,
@@ -270,11 +250,11 @@ $(function ()
                     enabletooltips: true,
                     columns: [
                         // {text: 'id', datafield: 'id', sortable: false},
-                        {text: 'codigo', datafield: 'codigo', cellsalign: 'right'},
+                        {text: 'codigo', datafield: 'codigo', cellsalign: 'right', width: 80},
                         {text: 'nombre Proyecto', datafield: 'nombre_proyecto', width: '50%'},
                         {text: 'Sector', datafield: 'sector', },
                         {text: 'Responsable', datafield: 'responsable', },
-                        {text: 'Costo ', datafield: 'costo_total', cellsformat: 'D', cellsalign: 'right'},
+                        {text: 'Costo ', datafield: 'costo_total', cellsformat: 'f', cellsalign: 'right'},
                         {text: 'Result.', datafield: 'resultados_count', cellsalign: 'center', cellsrenderer: rendererCount, width: 50},
                         {text: 'Sisin', datafield: 'sisinweb_count', cellsalign: 'center', cellsrenderer : rendererCount, width: 50},
                         {text: ' ', datafield: 'id', cellsrenderer: rendererEdit, width: 30},
@@ -283,7 +263,7 @@ $(function ()
             });
         },
         refreshLista : function(idElemSel){
-            $.get(cnf.urlBase + "/proyectosgestion", function (resp)
+            $.get(cnf.urlBase + "/gestionproyectos", function (resp)
             {
                 ctxList.listaProyectos = resp.datos;
                 ctxList.source.localdata = ctxList.listaProyectos;
@@ -295,17 +275,16 @@ $(function ()
                 }
             })
         },
-        highlight: function(texto) {
-            $('.jqx-grid-content').resaltar(texto);
-        },
-        highlightReset: function(){
-            $('.jqx-grid-content').find('span.highlight').each(function () {
-                $(this).replaceWith(function () {
-                    return $(this).text();
-                });
-            });
-        }
-
+        // highlight: function(texto) {
+        //     $('.jqx-grid-content').resaltar(texto);
+        // },
+        // highlightReset: function(){
+        //     $('.jqx-grid-content').find('span.highlight').each(function () {
+        //         $(this).replaceWith(function () {
+        //             return $(this).text();
+        //         });
+        //     });
+        // }
     }
 
     var ctxForm = {
@@ -333,7 +312,7 @@ $(function ()
                 nombre_proyecto: this.nombre_proyecto.val(),
                 sector: this.sector.val(),
                 codigo: this.codigo.val(),
-                costo_total: this.costo_total.val(),
+                costo_total:  this.costo_total.val().trim().replace(/\./, '').replace(/,/,'.'),
                 responsable: this.responsable.val(),
                 resultados: this.resultados.val(),
                 sisinweb: this.sisinweb.val()
@@ -359,10 +338,31 @@ $(function ()
 
             if(objproyecto.sisinweb.length > 0)
             {
-                var sisinWebIds = [];
+                ctxForm.sisinweb.val('');
+                options = [];
                 for(i=0;i<objproyecto.sisinweb.length; i++)
-                    sisinWebIds.push(objproyecto.sisinweb[i].id_sisinweb);
-                ctxForm.sisinweb.select2('val', sisinWebIds);
+                {
+                    obj = objproyecto.sisinweb[i];
+                    text = obj.sw_cod_pmra + '-' + obj.sw_nombre_proyecto + '<br><b>cod_sisin: </b>' + obj.sw_codigo 
+                                    + ' <b>Monto presupuestado: </b>' + obj.sw_monto_presupuestado + '<br><b>entidad: </b>' + obj.sw_entidad 
+                                    + '<br>' + obj.sw_depto + ' - ' + obj.sw_prov + ' - '+ obj.sw_mun ;
+                    id = obj.id_sisinweb;
+                    var newOption = {id: id, text: text }; // new Option(text, id, true, true);
+                    options.push(newOption);
+
+                    // ctxForm.sisinweb.append(newOption);
+                }
+
+                ctxForm.sisinweb.data().select2.updateSelection(options);
+                // ctxForm.sisinweb.val(options);
+                // ctxForm.sisinweb.trigger('change');
+    // Append it to the select
+    
+
+                // var sisinWebIds = [];
+                // for(i=0;i<objproyecto.sisinweb.length; i++)
+                //     sisinWebIds.push(objproyecto.sisinweb[i].id_sisinweb);
+                // ctxForm.sisinweb.select2('val', sisinWebIds);
             }
         },
         mostrarForm: function (objSel = null) {            
@@ -371,63 +371,12 @@ $(function ()
             else  {
                 this.setObjProyecto(objSel);
             }
-            this.validarForm('hide');
+            this.validarForm();
             $("#form_proyecto").modal();
         },
-        // iniciarResultadosPDES: function() {
-        //     // $.get(cnf.urlBase + '/proyectosgestion/listar/resultados', function(res){
-        //         // resultados = res.datos;
-        //         // datos = [];
-        //         // 
-        //         // 
-        //         // 
-        //         // for(i = 0; i < resultados.length; i++)
-        //         // {
-        //         //     op = resultados[i];
-        //         //     datos.push({
-        //         //         'id' : op.id_r,
-        //         //         'text': op.descripcion_pmr
-        //         //     })
-
-
-        //             // html = '<option value="' + op.id_r + '" > ' + op.descripcion_pmr + '</option> ';
-        //             // ctxForm.resultados.append(html);                    
-        //         // }
-        //         ctxForm.resultados.select2({
-        //             ajax: {
-        //                 url: cnf.urlBase +  '/proyectosgestion/listar/resultados',
-        //                 dataType: 'json',
-        //                 delay: 250,
-        //                 data: function (params) {
-        //                     var query = {
-        //                         search: params.term,
-        //                         type: 'public'
-        //                     }
-        //                       return query;
-        //                 },
-
-        //             },
-        //             minimumInputLength:4,                    
-        //             placeholder: 'Seleccione el/los resultados',
-        //             // data: datos,
-        //             dropdownParent: $('#form_proyecto'),
-        //             cache: false,
-        //             // allowClear:true,
-        //             // language: "es",
-        //             formatResult: function (val) {
-        //                 return "<div title ='" + val.text + "'>" +val.text + "</div>"
-        //             },
-        //             formatSelection: function (val) {
-        //                 return "<div title ='" + val.text + "'>" +val.text.substr(0,20) + '...' + "</div>"
-        //             },
-        //         });
-
-        //     // })
-        // },
-
         
         iniciarResultadosPDES: function() {
-            $.get(cnf.urlBase + '/proyectosgestion/listar/resultados', function(res){
+            $.get(cnf.urlBase + '/gestionproyectos/listar/resultados', function(res){
                 resultados = res.datos;
                 ctxForm.resultados.select2({
                     placeholder: 'Seleccione el/los resultados',
@@ -448,14 +397,37 @@ $(function ()
             })
         },
         iniciarProyectosSisinweb: function() {
-            $.get(cnf.urlBase + '/proyectosgestion/listar/sisinweb', function(res){
-                sisinweb = res.datos;
+
                 ctxForm.sisinweb.select2({
-                    placeholder: 'Seleccione proyecto SISIN-WEB',
-                    dropdownParent: $('#form_proyecto'),
-                    cache: false,
-                    allowClear:true,
-                    language: "es",
+                    placeholder: 'Seleccione proyecto SISIN - WEB',
+                    // dropdownParent: $('#form_proyecto'),
+                    minimumInputLength:4,
+                    multiple: true,
+                    ajax:{
+                        url: cnf.urlBase + '/gestionproyectos/buscar/sisin',
+                        dataType: 'json',
+                        type: 'GET',
+                        data: function (params) {
+                            console.log(params)
+                            return {
+                                term: params, // search term
+                            };
+                        },
+                        results: function (data) {
+                            console.log(data);
+                            var items = data.datos.map(function(obj){
+                                return { 
+                                    'id': obj.id, 
+                                    'text' : obj.cod_pmra + '-' + obj.nombre_proyecto + '<br><b>cod_sisin: </b>' + obj.codigo_sisin 
+                                    + ' <b>Monto presupuestado: </b>' + obj.monto_presupuestado + '<br><b>entidad: </b>' + obj.entidad 
+                                    + '<br>' + obj.depto + ' - ' + obj.prov + ' - '+ obj.mun 
+                                }
+                            })
+                            return { results : items};
+                        },
+                    },
+
+                    // language: "es",
                     formatResult: function (val) {
                         return "<div>" +val.text + "</div>"
                     },
@@ -463,17 +435,36 @@ $(function ()
                         return  "<div title ='" + val.text + "'>" +val.text.substr(0,25) + '...' + "</div>"
                     },
                 })
-                for(i=0; i < sisinweb.length; i++)
-                {
-                    op = sisinweb[i];
-                    opcionNombre = op.cod_accion_plan + '- '+ op.nombre_proyecto //+ ' --<b> CODIGO:</b> ' + op.codigo_sisin + ' -- ' + op.depto  + ' - ' + op.prov + ' - '  + op.mun;
-                    html = '<option value="' + op.id + '" > ' + opcionNombre + '</option> ';
-                    ctxForm.sisinweb.append(html);
-                }
-            })
+
+       
         },
+        // iniciarProyectosSisinweb: function() {
+        //     $.get(cnf.urlBase + '/gestionproyectos/listar/sisinweb', function(res){
+        //         sisinweb = res.datos;
+        //         ctxForm.sisinweb.select2({
+        //             placeholder: 'Seleccione proyecto SISIN-WEB',
+        //             dropdownParent: $('#form_proyecto'),
+        //             cache: false,
+        //             allowClear:true,
+        //             language: "es",
+        //             formatResult: function (val) {
+        //                 return "<div>" +val.text + "</div>"
+        //             },
+        //             formatSelection: function (val) {
+        //                 return  "<div title ='" + val.text + "'>" +val.text.substr(0,25) + '...' + "</div>"
+        //             },
+        //         })
+        //         for(i=0; i < sisinweb.length; i++)
+        //         {
+        //             op = sisinweb[i];
+        //             opcionNombre = op.cod_accion_plan + '- '+ op.nombre_proyecto //+ ' --<b> CODIGO:</b> ' + op.codigo_sisin + ' -- ' + op.depto  + ' - ' + op.prov + ' - '  + op.mun;
+        //             html = '<option value="' + op.id + '" > ' + opcionNombre + '</option> ';
+        //             ctxForm.sisinweb.append(html);
+        //         }
+        //     })
+        // },
         iniciarSectores: function(){
-            $.get(cnf.urlBase + '/proyectosgestion/listar/sectores', function(res){
+            $.get(cnf.urlBase + '/gestionproyectos/listar/sectores', function(res){
                 var sectores = res.datos;
                 for(i=0; i < sectores.length; i++)
                 {
@@ -493,7 +484,7 @@ $(function ()
             })
         },
         iniciarInstituciones: function(){
-            $.get(cnf.urlBase + '/proyectosgestion/listar/instituciones', function(res){
+            $.get(cnf.urlBase + '/gestionproyectos/listar/instituciones', function(res){
                 var instituciones = res.datos;
                 for(var i=0; i < instituciones.length; i++)
                 {
@@ -513,33 +504,30 @@ $(function ()
 
             })
         },
-        validarForm : function(op=''){
-            if(op=='') {
-                ctxForm.validarForm('hide');
-                var i = 0;
-                function htmlOnError(obj, mensaje){
-                    if(obj.siblings('.validacion_error').length == 0)
-                    {
-                        valError = $('<small  class="bg-danger-dark block pl10 validacion_error" >' + mensaje + '</small>');
-                        obj.parent().append(valError).hide().slideDown(400);
-                        obj.parent().addClass('has-error');
-                    }
-                    i++;
-                }
-                //////////// REGLAS DE VALIDACION
-                if(ctxForm.nombre_proyecto.val() == '') { htmlOnError(ctxForm.nombre_proyecto, 'El Nombre del proyecto es requerido.'); }
-                if(ctxForm.codigo.val() == '') { htmlOnError(ctxForm.codigo, 'El Código es requerido.'); } 
-                if(isNaN(ctxForm.codigo.val())) { htmlOnError(ctxForm.codigo, 'El Código debe contener unicamente números.'); } 
-                if(ctxForm.sector.val() == '') { htmlOnError(ctxForm.sector, 'El Sector no puede ser vacío.'); } 
-                if(isNaN(ctxForm.costo_total.val())) { htmlOnError(ctxForm.costo_total, 'El Costo total no es un numero valido.'); } 
-                $(".validacion_error").show(300);
-                return (i==0);
-            }
-            if(op=='hide')
-            {
+        validarForm : function(proyectoObj = null){
                 $("#form_proyecto small.validacion_error").remove();
                 $("#form_proyecto div").removeClass('has-error');
-            }
+                var i = 0;
+                if(proyectoObj)
+                {                     
+                    function htmlOnError(obj, mensaje){
+                        if(obj.siblings('.validacion_error').length == 0)
+                        {
+                            valError = $('<small  class="bg-danger-dark block pl10 validacion_error" >' + mensaje + '</small>');
+                            obj.parent().append(valError).hide().slideDown(400);
+                            obj.parent().addClass('has-error');
+                        }
+                        i++;
+                    }
+                    //////////// REGLAS DE VALIDACION
+                    if(proyectoObj.nombre_proyecto == '') { htmlOnError(ctxForm.nombre_proyecto, 'El Nombre del proyecto es requerido.'); }
+                    if(proyectoObj.codigo == '') { htmlOnError(ctxForm.codigo, 'El Código es requerido.'); } 
+                    if(isNaN(proyectoObj.codigo)) { htmlOnError(ctxForm.codigo, 'El Código debe contener unicamente números.'); } 
+                    if(proyectoObj.sector == '') { htmlOnError(ctxForm.sector, 'El Sector no puede ser vacío.'); } 
+                    if(isNaN(proyectoObj.costo_total)) { htmlOnError(ctxForm.costo_total, 'El Costo total no es un numero valido.'); } 
+                    $(".validacion_error").show(300);
+                }
+                return (i==0);
         }
 
     };
@@ -547,68 +535,132 @@ $(function ()
     var ctxElem = {
         panel : $("#sel_panel"),
         sup : $("#sel_sup"),
+        // sup2 : $("#sel_sup2"),
         inf : $("#sel_inf"),
         inf2 : $("#sel_inf2"),
-        htmlGen: function(){
-            var htmlSup = function(){
-                var objSel = ctxList.objSel;
-                return '<h4>Proyecto: <button id="sel_btn_editar" class="btn btn-xs btn-primary pull-right"><span> editar </span><i class="fa fa-pencil "></i></button></h4>' 
-                + '<div><h5 class="bg-primary-dark">' + objSel.nombre_proyecto +'</h5>'
-                + 'ID: ' + objSel.id + '</div>'  
-                + '<ul class="list-group bg-white m-2">'
-                + '<li class="list-group-item">'
-                + '<div><b>Código</b>: ' +  objSel.codigo 
-                + '</br><b>Sector: </b>' +  objSel.sector  
-                + '</br><b>Responsable: </b>' +  objSel.responsable  
-                + '</br><b>Costo total: </b>' +  objSel.costo_total  
-                + '</div></li>'
-                + '</ul>';
-            };
-            var htmlInf = function() { 
-                var objSel = ctxList.objSel;
-                badgeColor = objSel.resultados_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;         
-                var htmlInf = '<b>Resultados asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.resultados_count + '</span>';
-                if(objSel.resultados_count > 0)
-                {
-                    htmlInf += '<ul class="list-group bg-white m-2">';
-                    for (var i = 0; i < objSel.resultados.length; i++) {
-                        var r = objSel.resultados[i];
-                        htmlInf += '<li class="list-group-item">'
-                        + '<div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ', ( ' + r.cod_pmr + ' )</b>'   
-                        + '<br><b>Descripción R: </b>' + r.desc_r 
-                        + '<br><b>Código R: </b>' + r.cod_r      
-                        + '</div></li>';
-                    }
-                    htmlInf += '</ul>'
-                };
-                return htmlInf
-            };
-            var htmlInf2 = function(){
-                var objSel = ctxList.objSel;
-                badgeColor = objSel.sisinweb_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;  
-                var htmlInf2 = '<b>Proyectos SISINWEB asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.sisinweb_count + '</span>';
-                if(objSel.sisinweb_count > 0)
-                {
-                    htmlInf2 += '<ul class="list-group bg-white m-2">';
-                    for (var i = 0; i < objSel.sisinweb.length; i++) {
-                        var sw = objSel.sisinweb[i];
-                        htmlInf2 += '<li class="list-group-item">'
-                        + '<div><b> Nombre proy. SISINWEB: ' + sw.sw_nombre_proyecto + '</b>'
-                        + '</br><b>Codigo sisinweb: ' + sw.sw_codigo +'</b>'
-                        + '</br>Pilar: ' + sw.sw_cod_p + ', Meta: ' + sw.sw_cod_m + ', Resultado: ' + sw.sw_cod_r + ', ('+ sw.cod_pmr + ')</b>'     
-                        + '</br>Entidad: ' + sw.sw_entidad 
-                        + '</br>Monto presupuestado: ' + sw.sw_monto_presupuestado  
-                        + '</br>Lugar: ' + sw.sw_depto + ', ' + sw.sw_prov + ', ' + sw.sw_mun       
-                        + '</div></li>';
-                    }
-                    htmlInf2 += '</ul>'
-                };
-                return htmlInf2
-            }
+        htmlGen: function(datosSP){
+            if(datosSP == null)
+            { 
+                var htmlSup = function(){
+                    var objSel = ctxList.objSel;
+                    var htmlsup = '<h4>Proyecto PDES: <button id="sel_btn_editar" class="btn btn-xs btn-primary pull-right"><span> editar </span><i class="fa fa-pencil "></i></button></h4>'
+                    +'<div><h5 class="bg-primary-dark">' + objSel.nombre_proyecto + '</h5>'
+                    +'ID: ' + objSel.id + ' </div>' 
+                    +'<div class="bg-white" style="color: #333"> '
+                    +'    <ul class="list-group m-2">'
+                    +'        <li class="list-group-item">'
+                    +'            <div><b>Código</b>: ' +  objSel.codigo 
+                    +'            </br><b>Sector: </b>' +  objSel.sector  
+                    +'            </br><b>Responsable: </b>' +  objSel.responsable  
+                    +'            </br><b>Costo total: </b>' +  objSel.costo_total  
+                    +'            </div> '
+                    +'        </li> '
+                    +'    </ul>';
 
-            ctxElem.sup.html(htmlSup());
-            ctxElem.inf.html(htmlInf());
-            ctxElem.inf2.html(htmlInf2());
+                    badgeColor = objSel.resultados_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;         
+                    htmlsup += '<h5>Resultados asociados <span class="badge ' + badgeColor + ' pull-right">'+ objSel.resultados_count + '</span></h5>';
+                    if(objSel.resultados_count > 0)
+                    {
+                        htmlsup += '<ul class="list-group m-2">';
+                        for (var i = 0; i < objSel.resultados.length; i++) {
+                            var r = objSel.resultados[i];
+                            htmlsup += '<li class="list-group-item">'
+                                        +'<div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ' ( ' + r.cod_pmr + ' )</b>'
+                                        +'    <br><b>Resultado: </b>' + r.desc_r 
+                                        +'</div>'
+                                    +'</li>';
+                        }
+                        htmlsup += '</ul>'
+                        +'</div>';
+                    };
+                    return htmlsup
+                };
+                var htmlInf2 = function(){
+                    var objSel = ctxList.objSel;
+                    badgeColor = objSel.sisinweb_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;  
+                    var htmlInf2 = '<h5><b>Proyectos SISINWEB asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.sisinweb_count + '</span></h5>';
+                    if(objSel.sisinweb_count > 0)
+                    {
+                        htmlInf2 += '<ul class="list-group bg-white m-2" style="color: #333">';
+                        for (var i = 0; i < objSel.sisinweb.length; i++) {
+                            var sw = objSel.sisinweb[i];
+                            htmlInf2 += '<li class="list-group-item">'
+                            + '<div><b> Nombre proy. SISINWEB: ' + sw.sw_nombre_proyecto + '</b>'
+                            + '</br><b>Codigo sisinweb: ' + sw.sw_codigo +'</b>'
+                            + '</br>Pilar: ' + sw.sw_cod_p + ', Meta: ' + sw.sw_cod_m + ', Resultado: ' + sw.sw_cod_r + ', ('+ sw.cod_pmr + ')</b>'     
+                            + '</br>Entidad: ' + sw.sw_entidad 
+                            + '</br>Monto presupuestado: ' + sw.sw_monto_presupuestado  
+                            + '</br>Lugar: ' + sw.sw_depto + ', ' + sw.sw_prov + ', ' + sw.sw_mun       
+                            + '</div></li>';
+                        }
+                        htmlInf2 += '</ul>'
+                    };
+                    return htmlInf2
+                }
+
+                ctxElem.sup.html(htmlSup());
+                // ctxElem.sup2.html(htmlSup2());                
+                ctxElem.inf2.html(htmlInf2());
+            }
+            else{
+                ctxElem.inf.html('');
+                var htmlinf ='<h5><b>Proyecto SP: </b></h5>' ;
+                var htmlInf = function(){
+                    if(datosSP.mensaje != 'ok')
+                    {
+                        htmlinf += '<div class="bg-white" style="color: #111"><b>' + datosSP.mensaje + '</b></div>';
+                    }
+                    else
+                    { 
+                        proyectoSP = datosSP.data;
+                        htmlinf+= '<div><h5 class="bg-info-light">' + proyectoSP.nombre_proyecto +'</h5></div>'
+                        + '<div class="bg-white" style="color: #333">'
+                        + '     <ul class="list-group m-2">'
+                        + '         <li class="list-group-item">'
+                        + '         <div><b>Código</b>: ' +  proyectoSP.codigo 
+                        + '         </br><b>Sector: </b>' +  proyectoSP.sector  
+                        + '         </br><b>Costo total: </b>' +  proyectoSP.total_costo  
+                        + '         </div></li>'
+                        + '     </ul>';
+
+                        if(proyectoSP.contextoProyecto)
+                        { 
+                            badgeColor = cnf.alerta.positivo;         
+                            htmlinf += '<h5>Resultados asociados <span class="badge ' + badgeColor + ' pull-right">'+ proyectoSP.contextoProyecto.length + '</span></h5>'
+                            +'<ul class="list-group m-2">';
+                            for (var i = 0; i < proyectoSP.contextoProyecto.length; i++) {
+                                var r = proyectoSP.contextoProyecto[i];
+                            // responsables = 
+                            htmlinf += '<li class="list-group-item">'
+                            +'      <div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ', Accion: ' + r.cod_a + ', ( ' + r.cod_pmra + ' )</b>'
+                            +'          <br><b>Resultado: </b>' + r.desc_r 
+                            +'          <br><b>Accion: </b>' + r.desc_a
+                            +'      </div>'
+                            +'      <div>'
+                            +'          <b>Entidad Ejecutora: </b>' + r.ejecutor 
+                            +'          <br><b>Entidades Responsables: </b>' 
+                            +'          <ul>'
+                            +       r.responsables.reduce(function(anterior, item){
+                                return anterior + '<li>' + item + '</li>';
+                            },'') 
+                            +'          </ul>'
+                            +'      </div>'
+                            +'</li>';                        }
+                            htmlinf += '</ul>';
+                        }
+                        else
+                        {
+                            badgeColor = cnf.alerta.cero;         
+                            htmlinf += '<div class=" m-2"><b>Resultados asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ 0 + '</span></div>';
+                        }
+
+                        htmlinf += '</div>' ;
+                    }
+                    return htmlinf
+
+                };
+                ctxElem.inf.html(htmlInf());
+            }
         },
     };
 
@@ -635,6 +687,10 @@ $(function ()
     ctxList.grid.on('rowselect', function (event) {
         index = event.args.rowindex;
         ctxList.objSel = ctxList.listaProyectos[index];
+        $.get(cnf.urlBase + '/gestionproyectos/sp/obtener_proyecto_sp/' + ctxList.objSel.codigo, function(res){
+            ctxElem.htmlGen(res);
+        })
+
         ctxElem.htmlGen();
     });
 
@@ -648,14 +704,14 @@ $(function ()
         }
     });    
 
-    ctxList.grid.on('filter', function (event) {
-        ctxList.highlightReset();
-        var filtros = $(".jqx-grid-cell-filter-row input");
-        if(filtros[1].value != '')
-        {
-            ctxList.highlight(filtros[1].value)   // indice 1 es donde esta el filtro de la columna nombre_proyecto
-        }
-    }); 
+    // ctxList.grid.on('filter', function (event) {
+    //     ctxList.highlightReset();
+    //     var filtros = $(".jqx-grid-cell-filter-row input");
+    //     if(filtros[1].value != '')
+    //     {
+    //         ctxList.highlight(filtros[1].value)   // indice 1 es donde esta el filtro de la columna nombre_proyecto
+    //     }
+    // }); 
 
     // al hacer click sobre el boton editar del elemento seleccionado //////////////////////////////
     ctxElem.panel.on('click', '#sel_btn_editar', function(){
@@ -669,10 +725,10 @@ $(function ()
     // Al hacer click en el boton guardar de la ventana MOdal /////////////////////////////////////////////////
     ctxForm.btnguardar.click(function () {
         var proyecto = ctxForm.getObjProyecto();
-        if(ctxForm.validarForm()) 
+        if(ctxForm.validarForm(proyecto)) 
         {
             proyecto._token =  $('input[name=_token]').val();
-            $.post(cnf.urlBase + '/proyectosgestion', proyecto, function () {
+            $.post(cnf.urlBase + '/gestionproyectos', proyecto, function () {
                 ctxList.refreshLista(proyecto.id);
             }); 
         }
@@ -682,5 +738,37 @@ $(function ()
 
 
 });
+</script>
+
+<script type="text/javascript">
+$(function()
+{
+    function activarMenu(id,aux){
+        $('#'+id).addClass('active');
+        $('#'+aux).addClass('activeaux');
+    }
+
+    function menuModulosHideShow(ele){
+        //1 hide
+        //2 show
+        switch (ele) {
+            case 1:
+            $("body").addClass("content-wrapper")
+            $(".open-close i").removeClass('icon-arrow-left-circle');
+            $(".sidebar").css("overflow", "inherit").parent().css("overflow", "visible");
+            break;
+            case 2:
+            $("body").removeClass('content-wrapper');
+            $(".open-close i").addClass('icon-arrow-left-circle');
+            $(".logo span").show();
+            break;
+        }
+    }
+
+    activarMenu('mod-1','mp-4');
+    menuModulosHideShow(1);
+
+})
+
 </script>
 @endpush
