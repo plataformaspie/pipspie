@@ -47,7 +47,11 @@ class GestionProyectosController extends Controller
         return view('ModuloPdes.gestion_proyectos_pdes');
     }
 
-
+    /**
+     * Funcion ara insertar y actualizar, Mediante POST
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function insertar(Request $request)
     {
         $estado = '';
@@ -141,8 +145,7 @@ class GestionProyectosController extends Controller
         $respuesta = array();
         foreach ($proyectosResGroup as $keyP => $valP) 
         {
-            $id_proyectoPDES = $keyP;
- 
+            $id_proyectoPDES = $keyP; 
             $existeProySisin =  $proyectoSisinGroup->contains(function($item, $key) use ($id_proyectoPDES){
                 return $key == $id_proyectoPDES;
             });
@@ -234,7 +237,8 @@ class GestionProyectosController extends Controller
                 $responsables = $items->reduce(function($carry, $item){
                     if($carry == null)
                         $carry = array();
-                    $carry[] = $item->responsable;    
+                    if($item->responsable != null)
+                        $carry[] = $item->responsable;    
                     return $carry;
                 });
                 $pmraa->responsables = $responsables;
@@ -252,17 +256,34 @@ class GestionProyectosController extends Controller
         ]) ;
     }
 
-
-
+    /**-------------------------------------------------------------------------------------------
+    |   Funcion que obtiene los proyectos sisinweb segun la busqueda en varios campos de la tabla. 
+    |   Usada en la busqueda ajax de la APP
+    |   $params->term para buscar una coincidencia con un termino, $params->id_proyecto_pdes para buscar proyectos sisin asociados a u proyecto_pdes
+     */
     public function buscarSisin(Request $params)
-    {    
-        $term = $params->term;
-        $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra,
-            s.codigo_sisin, s.depto, s.prov, s.mun, s.monto_presupuestado 
-            FROM sisin_web s 
-            WHERE  s.nombre_proyecto || ' ' || s.entidad || ' ' || s.sector || ' ' || s.cod_accion_plan || ' ' || s.codigo_sisin || ' ' || s.depto || ' ' || s.prov  || ' ' || s.mun || ' ' || s.monto_presupuestado  
-            ilike '%{$term}%'
-            order by s.nombre_proyecto");
+    {   
+        $sisin = [];
+        if($params->term)
+        { 
+            $term = $params->term;
+            $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra,
+
+                s.codigo_sisin, s.depto, s.prov, s.mun, s.monto_presupuestado 
+                FROM sisin_web s 
+                WHERE  s.nombre_proyecto || ' ' || s.entidad || ' ' || s.sector || ' ' || s.cod_accion_plan || ' ' || s.codigo_sisin || ' ' || s.depto || ' ' || s.prov  || ' ' || s.mun || ' ' || s.monto_presupuestado  
+                ilike '%{$term}%'
+                order by s.nombre_proyecto");
+        }
+        if($params->id_proyecto_pdes)
+        {
+            $id_proyecto_pdes = $params->id_proyecto_pdes;
+            $sisin = \DB::select("SELECT s.id, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra,
+                n_pilar as cod_p, n_meta as cod_m, n_resultado as cod_r, n_accion as cod_a,
+                s.codigo_sisin, s.depto, s.prov, s.mun, s.monto_presupuestado 
+                FROM sisin_web s, spie_proyectos_pdes_sisinweb ps 
+                WHERE s.id = ps.id_sisinweb AND ps.id_proyecto_pdes = {$params->id_proyecto_pdes} ");
+        }
 
         return response()->json([
             'mensaje'=>'Proyectos_SISINWEB',
@@ -271,8 +292,10 @@ class GestionProyectosController extends Controller
         ]);
     }
 
-    /*------------------------------------
-    op:['sectores','instituciones','sisinweb','resultados']
+    /*---------------------------------------------------------
+    |   Funcion que devuelve lista segun la Op que se envie, mediante GET.
+    |   Usada para cargar los combos de la aplicacion
+    |   op:['sectores','instituciones','sisinweb','resultados']
     */
     public function listar($op)
     {
