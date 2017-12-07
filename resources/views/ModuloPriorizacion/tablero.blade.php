@@ -206,48 +206,14 @@ $(function(){
         nodoSel : {},  // elemento menu  nodo seleccionado
         varEstActual : {},    // objeto JSON VariableEstadisticaActual del nodoSel.configuracion 
         collection : [],
-        dataPivot : {
-            all : [],
-            fil : []
-        },
-        dataGraph : [],
-        obtenerNodo :  function(cod_str){
-            interacciones = cod_str.length / 2;
-            var elem = {};
-            arr = ctxG.nodos;
-            for(i = 0 ; i< interacciones; i++ ) {
-                elem = arr.find(function(item){                  
-                    return  (item.cod_str == cod_str.substring(0, item.nivel * 2 ))
-                });
-                if(elem.cod_str == cod_str)
-                    return elem;
-
-                if(elem && elem.hijos && elem.hijos.length > 0)
-                    arr = elem.hijos;
-            }
-            return null;
-
-        },
-        tranformarDatos: function(data, columns, rows)
-        {      
-            
-//TODO : REALIZAR LA TRANSFORMACION DE LOS DATOS CELL COLUMNAS Y ROWS PARA VISUALIZAR EN GRAFICO
-            // var datos = _.chain(data)
-            //     .groupBy('gestion')
-            //     .map(function(onosObjects, index){
-            //         var newELem = {};
-            //         _.each(onosObjects, function(obj){
-            //             for(key in obj)
-            //             {
-            //                 newELem[obj.dimension] = obj.valor;
-            //                 newELem['gestion'] = obj.gestion;
-            //             }
-            //         })
-            //         return newELem;
-            //     }).value(); 
-            // console.log(datos);
-            // return datos;
-        }
+        instanciaPivotGrid : {},
+        pivot: {
+            dataAll:[],
+            data : [], // Datos del pivot  en formato collection 
+            dataGraph : [],
+            dimColumna : [],
+            dimFila : [],
+        },   
     }
 
     /*-----------------------------------------------------------------------
@@ -326,7 +292,24 @@ $(function(){
                 $("#menuDetalle a.nodo_menu").removeClass(cnf.m.activoSub);
                 $("#menuDetalle #" + elem.cod_str).addClass(cnf.m.activoSub);
             }
-        }
+        },
+        obtenerNodo :  function(cod_str){
+            interacciones = cod_str.length / 2;
+            var elem = {};
+            arr = ctxG.nodos;
+            for(i = 0 ; i< interacciones; i++ ) {
+                elem = arr.find(function(item){                  
+                    return  (item.cod_str == cod_str.substring(0, item.nivel * 2 ))
+                });
+                if(elem.cod_str == cod_str)
+                    return elem;
+
+                if(elem && elem.hijos && elem.hijos.length > 0)
+                    arr = elem.hijos;
+            }
+            return null;
+
+        },
     }
 
     /*-----------------------------------------------------------------------
@@ -374,7 +357,9 @@ $(function(){
             }
             return objVE;
         },
-        graficar: function(data)   {
+        graficar: function()   {
+            data = ctxG.pivot.dataGraph;
+            console.log(data);
             tituloChart = ctxG.varEstActual.variable_estadistica;
             unidad = ctxG.varEstActual.porcentaje  ? ' (expresado en porcentaje) ' : ' (expresado en ' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') '
             subtituloChart = (ctxG.varEstActual.campo == '') ? unidad : 'Por ' + ctxG.varEstActual.campo_titulo + unidad;
@@ -524,11 +509,24 @@ $(function(){
                         hightLightItem( event.chart.graphs[event.dataItem.index], 2 );
                     });
                 });
-        },
-        getDatosGrafico: function(data){
+        },        
+        mostrarData: function(collection){
+            ctxPvt.pivotear(collection);
+            ctxC.graficar();
 
         },
-        getElementosDePivot : function(collection, set_predefinido){
+        obtenerData: function(objRequest){
+            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){
+                ctxG.collection = res.collection;
+                ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
+                ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
+                ctxC.mostrarData(ctxG.collection);
+            })
+        },
+    };
+
+    var ctxPvt = {
+        getConfigDePivot : function(collection, set_predefinido){
             var fields = [];
             var columnas = [];
             var filas = [];
@@ -564,7 +562,7 @@ $(function(){
             return { fields: fields, columns: columnas, rows: filas, filters: filtros};
         },
         pivotear: function(collection) {            
-            var pivotElems = ctxC.getElementosDePivot(collection, ctxG.varEstActual.set_predefinido);
+            var pivotElems = ctxPvt.getConfigDePivot(collection, ctxG.varEstActual.set_predefinido);
             var source = {
                 localdata: collection, // los datos en el formato que requiere el pivot son del tipo collection, array de objetos similares
                 datatype: "json",
@@ -609,28 +607,19 @@ $(function(){
                     localization: getLocalization('es')
                 });
                 var instanciaPivotGrid = $('#divPivotGrid').jqxPivotGrid('getInstance'); 
-                // instanciaPivotGrid.refresh();
                 return instanciaPivotGrid;
             }
             var pivotGridInstancia =  pivotGrid(dataAdapter, pivotSettings);
-            var valuesAll = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
-            console.log(valuesAll);
+            ctxG.pivot.dataAll = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
+
             if(pivotElems.filters.length > 0)
             {
                 pivotSettings.filters = pivotElems.filters;
                 pivotGridInstancia =  pivotGrid(dataAdapter, pivotSettings);
             }
             pivotGridInstancia.refresh();
-            var valuesPivot = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
-            var columns = pivotGridInstancia._pivotColumns.items;
-            var rows = pivotGridInstancia._pivotRows.items;
-            console.log(valuesPivot);
-            console.log(columns);
-            console.log(rows);
-
-            ctxG.tranformarDatos(valuesPivot, columns, rows);
-
-
+            ctxG.pivotGridInstancia = pivotGridInstancia;     
+            ctxPvt.tranformarDatosDePivot();
 
             $('#divPivotGridDesigner').jqxPivotDesigner(
             {
@@ -639,25 +628,61 @@ $(function(){
             });
             var pivotDesignerInstance =  $('#divPivotGridDesigner').jqxPivotDesigner('getInstance');
             pivotDesignerInstance.refresh();
-
-
-
         },
-        mostrarData: function(collection){
-            ctxC.pivotear(collection);
-            // ctxC.graficar();
+        tranformarDatosDePivot: function()
+        {   
+            datos = [];
+            var cellValuesObj = ctxG.pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue; //Contiene los valores de las celdas como un obj
+            var pivotColumns = ctxG.pivotGridInstancia._pivotColumns.items;
+            var pivotRows = ctxG.pivotGridInstancia._pivotRows.items;   
 
-        },
-        obtenerData: function(objRequest){
-            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){
-                ctxG.collection = res.collection;
-                ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
-                ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
-                ctxC.mostrarData(ctxG.collection);
+            datosPivotObj = _.chain(cellValuesObj).map(function(item, key){ item.key = key; return item}).sortBy('key').value(); // transforma el obj a una lista ordenada por su key (key mantiene el orden ) 
+            ctxG.pivot.dimColumna = pivotColumns[0].adapterItem.boundField.dataField;
+            ctxG.pivot.dimFila = pivotRows[0].adapterItem.boundField.dataField;
+            columnas = pivotColumns.map(function(col){
+                return col.adapterItem.text;
+            });
+            filas = pivotRows.map(function(row){
+                return row.adapterItem.text;
             })
+            
+            k = 0;
+            for(i=0; i< columnas.length; i++){ 
+                for(j=0; j<filas.length; j++)
+                {
+                    item = {};
+                    item[ctxG.pivot.dimColumna] = columnas[i];
+                    item[ctxG.pivot.dimFila] = filas[j];
+                    item['valor'] = datosPivotObj[k].value;
+                    datos.push(item);
+                    k++;
+                }
+            }
+            ctxG.pivot.data = datos;
+            ctxPvt.transformarDatosParaGrafico(datos);
+            return datos;
         },
-
-    };
+        transformarDatosParaGrafico: function()
+        {
+            datosGraph = [];
+            if(ctxG.pivot.data.length > 0)
+            {
+                datosGraph = _.chain(ctxG.pivot.data)
+                .groupBy(ctxG.pivot.dimColumna)
+                .map(function(el, k){
+                    elemNew = {};
+                    _.each(el, function(item){
+                        elemNew[ctxG.pivot.dimColumna] = item[ctxG.pivot.dimColumna];
+                        elemNew[item[ctxG.pivot.dimFila]] = item.valor;
+                        return true;
+                    })
+                    return elemNew;
+                }).value();
+            }
+            ctxG.pivot.dataGraph = datosGraph;
+            return datosGraph;
+        }
+    }
 
     ctxM.creaMenuBaseHtml();
 
@@ -667,7 +692,7 @@ $(function(){
 
     $("#menuPrincipal, #menuDetalle").on('click', 'a.nodo_menu', function(event){
         str_cod = $(this).attr('id');
-        ctxG.nodoSel = ctxG.obtenerNodo(str_cod);
+        ctxG.nodoSel = ctxM.obtenerNodo(str_cod);
         ctxM.activarElem(ctxG.nodoSel);
         if(ctxG.nodoSel.nivel == 1)
         {
@@ -699,35 +724,6 @@ $(function(){
         ctxC.mostrarData(ctxG.collection);
     });
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////// establecer predefinido de pruebas de dev
-///////////////////      "010202" "010205""010205"
-// $.get('/api/modulopriorizacion/menustablero', function(res){
-//     ctxG.nodoSel = ctxG.obtenerNodo('010205');
-//     ctxM.activarElem(ctxG.nodoSel);
-
-//     ctxG.varEstActual = jQuery.parseJSON(ctxG.nodoSel.configuracion);//  JSON.parse( ctxG.nodoSel.configuracion );
-//     ctxG.varEstActual.campo =  '';
-//     ctxG.varEstActual.campo_titulo = '';
-//     ctxG.varEstActual.porcentaje =  false;
-//     ctxC.tituloGrafico.html('<h4>' + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4><b>' + ctxG.varEstActual.variable_estadistica + '</b>');
-//     ctxC.tituloDatos.html('Datos para ' +ctxG.varEstActual.variable_estadistica);
-//     ctxC.cargarHTMLCalculosPredefinidos(ctxG.varEstActual);
-
-//     objRequest = ctxC.crearRequest(ctxG.varEstActual);
-//     ctxC.obtenerData(objRequest);
-
-
-
-
-// })
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 })
 
