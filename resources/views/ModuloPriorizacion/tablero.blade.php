@@ -159,8 +159,6 @@
 
 {{-- *********************  MAIN APP ************************ --}}
 <script type="text/javascript">
-$(function(){  
-
     /*-----------------------------------------------------------------------
      *      cnf variables de configuracion  del modulo, como coleres, iconos y otros
      */
@@ -356,10 +354,170 @@ $(function(){
                 // _token : $('input[name=_token]').val(),
             }
             return objVE;
+        },      
+        mostrarData: function(collection){
+            ctxPiv.cargarPivot(collection);
+            ctxGra.graficar();
+
         },
+        obtenerData: function(objRequest){
+            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){
+                ctxG.collection = res.collection;
+                ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
+                ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
+                ctxC.mostrarData(ctxG.collection);
+            })
+        },
+    };
+
+    /*-----------------------------------------------------------------------
+     *      ctxPiv variable que contiene el contexto del Pivot  
+     */
+    var ctxPiv = {
+        getConfigDePivot : function(collection, set_predefinido){
+            var fields = [];
+            var columnas = [];
+            var filas = [];
+            var filtros = [];
+
+            if(collection.length > 0)
+                fields = _.chain(collection).first().map(function(value, key){
+                    return {name: key, type : (key == 'valor') ? 'number' : 'string' }
+                }).value();
+
+            columnas = _.map(set_predefinido.x, function(item){
+                return {dataField : item};
+            });
+            filas = _.map(set_predefinido.y, function(item){
+                return {dataField : item};
+            });
+
+            filtros = _.map(set_predefinido.filtros, 
+                function(item){                    
+                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
+                    _datafield =  condicion[0];
+                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
+                    filtro = {
+                        dataField: _datafield,
+                        filterFunction: function(value){
+                            if(_values.indexOf(value.toString()) == -1)
+                                return true;
+                            return false;
+                        }
+                    };
+                    return filtro;
+            });
+            return { fields: fields, columns: columnas, rows: filas, filters: filtros};
+        },
+        cargarPivot: function() {            
+            var pivotElems = ctxPiv.getConfigDePivot(ctxG.collection, ctxG.varEstActual.set_predefinido);
+            var source = {
+                localdata: ctxG.collection, // los datos en el formato que requiere el pivot son del tipo collection, array de objetos similares
+                datatype: "json",
+                datafields: pivotElems.fields
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            dataAdapter.dataBind();
+
+            var pivotSettings = {
+                        pivotValuesOnRows: false,
+                        columns: pivotElems.columns,/* [{ dataField: 'gestion'}], */
+                        rows: pivotElems.rows,/* [{ dataField: 'r_departamento'}], */
+                        filters: [],
+                        /*  Ejemplo de filtro, cuando la condicion es true se filtra, se excluye, 
+                            en el caso se quiere solo los valores de 2013 y 2015, por lo tanto la comparacion es , si no esta en el array se excluye                        
+                            filters: [
+                            {
+                                dataField: 'gestion',
+                                filterFunction: function (value) {
+                                    if (['2013', '2015'].indexOf(value.toString()) == -1)
+                                        return true;
+                                    return false;
+                                }
+                            },
+                        */
+                        values: [
+                            { dataField: 'valor', 'function': 'sum', text: 'cantidad'},
+                        ]
+                    };
+
+            
+            function implementaPivotGrid(dataAdapter, pivotSettings)
+            {
+                var pivotDataSource = new $.jqx.pivot(dataAdapter, pivotSettings);
+                $('#divPivotGrid').jqxPivotGrid(
+                {
+                    source: pivotDataSource,
+                    treeStyleRows: true,
+                    autoResize: true,
+                    // theme: cnf.c.themePivot,
+                    multipleSelectionEnabled: true,
+                    localization: getLocalization('es')
+                });
+                var instanciaPivotGrid = $('#divPivotGrid').jqxPivotGrid('getInstance'); 
+                return instanciaPivotGrid;
+            }
+            var pivotGridInstancia =  implementaPivotGrid(dataAdapter, pivotSettings);
+            ctxG.pivot.dataAll = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
+
+            if(pivotElems.filters.length > 0)
+            {
+                pivotSettings.filters = pivotElems.filters;
+                pivotGridInstancia =  implementaPivotGrid(dataAdapter, pivotSettings);
+            }
+            pivotGridInstancia.refresh();
+            ctxG.pivotGridInstancia = pivotGridInstancia;     
+            ctxPiv.tranformarDatosDePivot();
+
+            $('#divPivotGridDesigner').jqxPivotDesigner(
+            {
+                type: 'pivotGrid',
+                target: pivotGridInstancia
+            });
+            var pivotDesignerInstance =  $('#divPivotGridDesigner').jqxPivotDesigner('getInstance');
+            pivotDesignerInstance.refresh();
+        },
+        tranformarDatosDePivot: function()     {   
+            datos = [];
+            var cellValuesObj = ctxG.pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue; //Contiene los valores de las celdas como un obj
+            var pivotColumns = ctxG.pivotGridInstancia._pivotColumns.items;
+            var pivotRows = ctxG.pivotGridInstancia._pivotRows.items;   
+
+            datosPivotObj = _.chain(cellValuesObj).map(function(item, key){ item.key = key; return item}).sortBy('key').value(); // transforma el obj a una lista ordenada por su key (key mantiene el orden ) 
+            ctxG.pivot.dimColumna = pivotColumns.length > 0 ?  pivotColumns[0].adapterItem.boundField.dataField : 'cantidad'; 
+            ctxG.pivot.dimFila = pivotRows.length > 0 ?  pivotRows[0].adapterItem.boundField.dataField : 'cantidad';
+            columnas = pivotColumns.map(function(col){
+                return col.adapterItem.text;
+            });
+            filas = pivotRows.map(function(row){
+                return row.adapterItem.text;
+            })
+            
+            k = 0;
+            for(i=0; i< columnas.length; i++){ 
+                for(j=0; j<filas.length; j++)
+                {
+                    item = {};
+                    item[ctxG.pivot.dimColumna] = columnas[i];
+                    item[ctxG.pivot.dimFila] = filas[j];
+                    item['valor'] = datosPivotObj[k].value;
+                    datos.push(item);
+                    k++;
+                }
+            }
+            ctxG.pivot.data = datos;
+            console.log(datos);
+            ctxGra.transformarDatosParaGrafico(datos);
+            return datos;
+        },       
+    }
+
+    /*-----------------------------------------------------------------------
+     *      ctxGra variable que contiene el contexto del grafico  
+     */
+    var ctxGra = {
         graficar: function()   {
             data = ctxG.pivot.dataGraph;
-            console.log(data);
             tituloChart = ctxG.varEstActual.variable_estadistica;
             unidad = ctxG.varEstActual.porcentaje  ? ' (expresado en porcentaje) ' : ' (expresado en ' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') '
             subtituloChart = (ctxG.varEstActual.campo == '') ? unidad : 'Por ' + ctxG.varEstActual.campo_titulo + unidad;
@@ -368,7 +526,7 @@ $(function(){
             {
                 for(key in data[0])  //Si existen elemntos se recorren los indices (key) del primer elemento. ej data[0] = { hombre:12, mujer:11, gestion:2015 }
                 {
-                    if(key != 'gestion')
+                    if(key != ctxG.pivot.dimColumna)
                     {
                         var graph = {
                             id: key,
@@ -451,7 +609,7 @@ $(function(){
                         oneBalloonOnly: true,
                         graphBulletSize:1,
                     },
-                    categoryField: "gestion",
+                    categoryField: ctxG.pivot.dimColumna,
                     "categoryAxis": {
                         "axisColor": "#DADADA",
                         "dashLength": 1,
@@ -509,159 +667,7 @@ $(function(){
                         hightLightItem( event.chart.graphs[event.dataItem.index], 2 );
                     });
                 });
-        },        
-        mostrarData: function(collection){
-            ctxPvt.pivotear(collection);
-            ctxC.graficar();
-
-        },
-        obtenerData: function(objRequest){
-            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){
-                ctxG.collection = res.collection;
-                ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
-                ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
-                ctxC.mostrarData(ctxG.collection);
-            })
-        },
-    };
-
-    var ctxPvt = {
-        getConfigDePivot : function(collection, set_predefinido){
-            var fields = [];
-            var columnas = [];
-            var filas = [];
-            var filtros = [];
-
-            if(collection.length > 0)
-                fields = _.chain(collection).first().map(function(value, key){
-                    return {name: key, type : (key == 'valor') ? 'number' : 'string' }
-                }).value();
-
-            columnas = _.map(set_predefinido.x, function(item){
-                return {dataField : item};
-            });
-            filas = _.map(set_predefinido.y, function(item){
-                return {dataField : item};
-            });
-
-            filtros = _.map(set_predefinido.filtros, 
-                function(item){                    
-                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
-                    _datafield =  condicion[0];
-                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
-                    filtro = {
-                        dataField: _datafield,
-                        filterFunction: function(value){
-                            if(_values.indexOf(value.toString()) == -1)
-                                return true;
-                            return false;
-                        }
-                    };
-                    return filtro;
-            });
-            return { fields: fields, columns: columnas, rows: filas, filters: filtros};
-        },
-        pivotear: function(collection) {            
-            var pivotElems = ctxPvt.getConfigDePivot(collection, ctxG.varEstActual.set_predefinido);
-            var source = {
-                localdata: collection, // los datos en el formato que requiere el pivot son del tipo collection, array de objetos similares
-                datatype: "json",
-                datafields: pivotElems.fields
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-            dataAdapter.dataBind();
-
-            var pivotSettings = {
-                        pivotValuesOnRows: false,
-                        columns: pivotElems.columns,/* [{ dataField: 'gestion'}], */
-                        rows: pivotElems.rows,/* [{ dataField: 'r_departamento'}], */
-                        filters: [],
-                        /*  Ejemplo de filtro, cuando la condicion es true se filtra, se excluye, 
-                            en el caso se quiere solo los valores de 2013 y 2015, por lo tanto la comparacion es , si no esta en el array se excluye                        
-                            filters: [
-                            {
-                                dataField: 'gestion',
-                                filterFunction: function (value) {
-                                    if (['2013', '2015'].indexOf(value.toString()) == -1)
-                                        return true;
-                                    return false;
-                                }
-                            },
-                        */
-                        values: [
-                            { dataField: 'valor', 'function': 'sum', text: 'cantidad'},
-                        ]
-                    };
-
-            
-            function pivotGrid(dataAdapter, pivotSettings)
-            {
-                var pivotDataSource = new $.jqx.pivot(dataAdapter, pivotSettings);
-                $('#divPivotGrid').jqxPivotGrid(
-                {
-                    source: pivotDataSource,
-                    treeStyleRows: true,
-                    autoResize: true,
-                    // theme: cnf.c.themePivot,
-                    multipleSelectionEnabled: true,
-                    localization: getLocalization('es')
-                });
-                var instanciaPivotGrid = $('#divPivotGrid').jqxPivotGrid('getInstance'); 
-                return instanciaPivotGrid;
-            }
-            var pivotGridInstancia =  pivotGrid(dataAdapter, pivotSettings);
-            ctxG.pivot.dataAll = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
-
-            if(pivotElems.filters.length > 0)
-            {
-                pivotSettings.filters = pivotElems.filters;
-                pivotGridInstancia =  pivotGrid(dataAdapter, pivotSettings);
-            }
-            pivotGridInstancia.refresh();
-            ctxG.pivotGridInstancia = pivotGridInstancia;     
-            ctxPvt.tranformarDatosDePivot();
-
-            $('#divPivotGridDesigner').jqxPivotDesigner(
-            {
-                type: 'pivotGrid',
-                target: pivotGridInstancia
-            });
-            var pivotDesignerInstance =  $('#divPivotGridDesigner').jqxPivotDesigner('getInstance');
-            pivotDesignerInstance.refresh();
-        },
-        tranformarDatosDePivot: function()
-        {   
-            datos = [];
-            var cellValuesObj = ctxG.pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue; //Contiene los valores de las celdas como un obj
-            var pivotColumns = ctxG.pivotGridInstancia._pivotColumns.items;
-            var pivotRows = ctxG.pivotGridInstancia._pivotRows.items;   
-
-            datosPivotObj = _.chain(cellValuesObj).map(function(item, key){ item.key = key; return item}).sortBy('key').value(); // transforma el obj a una lista ordenada por su key (key mantiene el orden ) 
-            ctxG.pivot.dimColumna = pivotColumns[0].adapterItem.boundField.dataField;
-            ctxG.pivot.dimFila = pivotRows[0].adapterItem.boundField.dataField;
-            columnas = pivotColumns.map(function(col){
-                return col.adapterItem.text;
-            });
-            filas = pivotRows.map(function(row){
-                return row.adapterItem.text;
-            })
-            
-            k = 0;
-            for(i=0; i< columnas.length; i++){ 
-                for(j=0; j<filas.length; j++)
-                {
-                    item = {};
-                    item[ctxG.pivot.dimColumna] = columnas[i];
-                    item[ctxG.pivot.dimFila] = filas[j];
-                    item['valor'] = datosPivotObj[k].value;
-                    datos.push(item);
-                    k++;
-                }
-            }
-            ctxG.pivot.data = datos;
-            ctxPvt.transformarDatosParaGrafico(datos);
-            return datos;
-        },
+        },  
         transformarDatosParaGrafico: function()
         {
             datosGraph = [];
@@ -683,6 +689,15 @@ $(function(){
             return datosGraph;
         }
     }
+
+    function funcionDespuesDePivotear(){
+        ctxPiv.tranformarDatosDePivot();
+        ctxGra.graficar();
+    }
+</script>
+
+<script>
+$(function(){
 
     ctxM.creaMenuBaseHtml();
 
@@ -724,9 +739,7 @@ $(function(){
         ctxC.mostrarData(ctxG.collection);
     });
 
-
-})
-
+});
 </script>
 
 
