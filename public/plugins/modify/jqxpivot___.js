@@ -478,17 +478,17 @@
                 var d = a.jqx.pivot.prototype._defaultFunctions.sum(b);
                 return d / c
             },
-            product: function(b) {
-                var d = 0;
-                for (var c = 0; c < b.length; c++) {
-                    if (c == 0) {
-                        d = b[c]
-                    } else {
-                        d *= b[c]
-                    }
-                }
-                return d
-            }
+            // product: function(b) {
+            //     var d = 0;
+            //     for (var c = 0; c < b.length; c++) {
+            //         if (c == 0) {
+            //             d = b[c]
+            //         } else {
+            //             d *= b[c]
+            //         }
+            //     }
+            //     return d
+            // }
         },
         getCellValue: function(e, d) {
             var f = this._getCellValueFromDataSource(e, d);
