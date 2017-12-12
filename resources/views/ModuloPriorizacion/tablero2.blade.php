@@ -9,6 +9,12 @@
 
 <link rel="stylesheet" href="/plugins/amcharts3.21.8/plugins/export/export.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/visores.css" type="text/css" />
+
+
+
+<!-- PivotTable.js libs from ../dist -->
+<link rel="stylesheet" type="text/css" href="/plugins/pivottable/dist/pivot.css">
+
 <link rel="stylesheet" href="/plugins/bower_components/bootstrap-urban-master/urban.css" type="text/css" />
 <style>
 
@@ -71,12 +77,15 @@
 .jqx-pivotgrid{
     background-color: #fff;
 }
+
+.pvtTotal, .pvtTotalLabel, .pvtGrandTotal {display: none}
 </style>
 @endsection
 
 
 @section('content')
 <div class='container-fluid'>
+    T2
     <div class=row>
     
         <div class="col-md-3">
@@ -92,8 +101,18 @@
         <div id="contenido" class="col-md-9 ">
             <div id="contenedorPredefinidos" class="row stats-row m-0 bg-white p-3" >
             </div>
-            <div class="row m-0">              
 
+
+
+
+            <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 400px;">
+                <div id="pvtTable"></div>                
+            </div>
+
+
+
+
+            <div class="row m-0">
                 <div id="contenedorDatos" style="height: 1000px; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
 
                     <div class="">
@@ -157,6 +176,9 @@
 
 <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
+<script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/plugins/pivottable/dist/pivot.js"></script>
+<script type="text/javascript" src="/plugins/pivottable/dist/pivot.es.js"></script>
 {{-- *********************  MAIN APP ************************ --}}
 <script type="text/javascript">
     /*-----------------------------------------------------------------------
@@ -211,7 +233,6 @@
             dataGraph : [],
             dimColumna : [],
             dimFila : [],
-            total: {}
         },   
     }
 
@@ -359,6 +380,7 @@
         mostrarData: function(collection){
             ctxPiv.cargarPivot(collection);
             ctxGra.graficar();
+            ctxPiv.pivottable();
 
         },
         obtenerData: function(objRequest){
@@ -441,6 +463,7 @@
                             { dataField: 'valor', 'function': 'sum', text: 'cantidad'},
                         ]
                     };
+
             
             function implementaPivotGrid(dataAdapter, pivotSettings)
             {
@@ -507,31 +530,36 @@
             }
             ctxG.pivot.data = datos;
             ctxGra.transformarDatosParaGrafico(datos);
-            ctxPiv.obtenerTotales();
             return datos;
-        },
-        obtenerTotales: function(){
-            var t_cols = {},  t_filas = {};
-            
-            var t_ = {};
-            dimCol = ctxG.pivot.dimColumna;
-            dimFil = ctxG.pivot.dimFila;
-            // console.log(ctxG);
-            // for(i=0; i< ctxG.collection.length; i++)
-            // {
-            //     item = ctxG.collection[i];
-            //      t_cols[item[dimCol]] = ( isNaN( t_cols[item[dimCol]])  ? 0 : t_cols[item[dimCol]]) + Number(item.valor );
-            //     t_filas[item[dimFil]] = ( isNaN(t_filas[item[dimFil]]) ? 0 : t_filas[item[dimFil]] ) + Number(item.valor); 
+        },   
 
-            // }
-            _.each(ctxG.collection, function(item){
-                t_cols[item[dimCol]] = ( isNaN( t_cols[item[dimCol]])  ? 0 : t_cols[item[dimCol]]) + Number(item.valor );
-                t_filas[item[dimFil]] = ( isNaN(t_filas[item[dimFil]]) ? 0 : t_filas[item[dimFil]] ) + Number(item.valor); 
-            });
-            console.log(t_cols);
-            console.log(t_filas);
-
-        },       
+        pivottable: function()
+        {
+            $("#pvtTable").pivotUI(ctxG.collection, {
+                cols: ['getion'], rows:['r_departamento'],
+                aggregator: "intSum",
+                vals: ["valor"],
+                onRefresh: function(config, o) {
+                    console.log(config);
+                    console.log(o);
+                    // var config_copy = JSON.parse(JSON.stringify(config));
+                    // //delete some values which are functions
+                    // delete config_copy["aggregators"];
+                    // delete config_copy["renderers"];
+                    // //delete some bulky default values
+                    // delete config_copy["rendererOptions"];
+                    // delete config_copy["localeStrings"];
+                    // $("#output").text(JSON.stringify(config_copy, undefined, 2));
+                }
+                
+                // derivedAttributes: {
+                //     "Age Bin": derivers.bin("Age", 10),
+                //     "Gender Imbalance": function(mp) {
+                //         return mp["Gender"] == "Male" ? 1 : -1;
+                //     }
+                // }
+            }, false, "es");
+        }    
     }
 
     /*-----------------------------------------------------------------------
@@ -539,6 +567,7 @@
      */
     var ctxGra = {
         graficar: function()   {
+            console.log(ctxG.pivot);
             data = ctxG.pivot.dataGraph;
             tituloChart = ctxG.varEstActual.variable_estadistica;
             unidad = ctxG.varEstActual.porcentaje  ? ' (expresado en porcentaje) ' : ' (expresado en ' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') '

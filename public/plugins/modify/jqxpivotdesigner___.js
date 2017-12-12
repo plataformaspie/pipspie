@@ -92,46 +92,46 @@ License: https://jqwidgets.com/license/
             var localizedStrings = this.target ? this.target._localizedStrings : {};
             switch (str) {
                 case "fields":
-                    return localizedStrings.fieldslabel || "Pivot Fields";
+                    return localizedStrings.fieldslabel || "Campos pivot";
                     break;
                 case "calculation":
-                    return localizedStrings.calculation || "Calculation";
+                    return localizedStrings.calculation || "Calculo";
                     break;
                 case "filters":
-                    return localizedStrings.filterslabel || "Filters";
+                    return localizedStrings.filterslabel || "Filtros";
                     break;
                 case "rows":
-                    return localizedStrings.rowslabel || "Rows";
+                    return localizedStrings.rowslabel || "Filas";
                     break;
                 case "columns":
-                    return localizedStrings.columnslabel || "Columns";
+                    return localizedStrings.columnslabel || "Columnas";
                     break;
                 case "values":
-                    return localizedStrings.valueslabel || "Values";
+                    return localizedStrings.valueslabel || "Valor";
                     break;
                 case "of":
-                    return localizedStrings.of || "of";
+                    return localizedStrings.of || "de";
                     break;
                 case "to":
-                    return localizedStrings.to || "to";
+                    return localizedStrings.to || "a";
                     break;
                 case "move":
-                    return localizedStrings.move || "Move";
+                    return localizedStrings.move || "Mover";
                     break;
                 case "remove":
-                    return localizedStrings.remove || "Remove";
+                    return localizedStrings.remove || "Quitar";
                     break;
                 case "count":
-                    return localizedStrings.count || "Count";
+                    return localizedStrings.count || "Contar";
                     break;
                 case "sum":
-                    return localizedStrings.sum || "Sum";
+                    return localizedStrings.sum || "Sumar";
                     break;
                 case "average":
-                    return localizedStrings.avgerage || "Average";
+                    return localizedStrings.avgerage || "Promedio";
                     break;
                 case "product":
-                    return localizedStrings.product || "Product";
+                    return localizedStrings.product || "Producto";
                     break;
                 case "min":
                     return localizedStrings.min || "Min";
