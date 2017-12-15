@@ -101,10 +101,12 @@
                         <table>
                             <tr>
                                 <td class='align-top'>
-                                   <div id="divPivotGridDesigner" class=""  style="height: 400px; width: 200px;"></div> 
+                                   <div id="divPivotGridDesigner" class=""  style="height: 450px; width: 250px;"></div> 
                                 </td>
                                 <td class='align-top'>
-                                    <div id="divPivotGrid" class="ml15"  style="height: 400px;  background-color: white;"></div>
+                                    <div style="height: 500px; width: 750px;  background-color: white; overflow: scroll;" >
+                                        <div id="divPivotGrid" class="ml15"  style="height: 400px;  background-color: white;" ></div>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -211,7 +213,7 @@
             dataGraph : [],
             dimColumna : [],
             dimFila : [],
-            total: {}
+            total: 0, t_cols : {}, t_filas : {}, total_p : 0, tp_cols : {}, tp_filas: {},
         },   
     }
 
@@ -439,7 +441,8 @@
                         */
                         values: [
                             { dataField: 'valor', 'function': 'sum', text: 'cantidad'},
-                        ]
+                        ],
+                        customAggregationFunctions : funcionesAgregacion,
                     };
             
             function implementaPivotGrid(dataAdapter, pivotSettings)
@@ -482,7 +485,6 @@
             var cellValuesObj = ctxG.pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue; //Contiene los valores de las celdas como un obj
             var pivotColumns = ctxG.pivotGridInstancia._pivotColumns.items;
             var pivotRows = ctxG.pivotGridInstancia._pivotRows.items;   
-
             datosPivotObj = _.chain(cellValuesObj).map(function(item, key){ item.key = key; return item}).sortBy('key').value(); // transforma el obj a una lista ordenada por su key (key mantiene el orden ) 
             ctxG.pivot.dimColumna = pivotColumns.length > 0 ?  pivotColumns[0].adapterItem.boundField.dataField : 'cantidad'; 
             ctxG.pivot.dimFila = pivotRows.length > 0 ?  pivotRows[0].adapterItem.boundField.dataField : 'cantidad';
@@ -506,31 +508,35 @@
                 }
             }
             ctxG.pivot.data = datos;
-            ctxGra.transformarDatosParaGrafico(datos);
+            ctxGra.transformarDatosParaGrafico();
             ctxPiv.obtenerTotales();
-            return datos;
+            // console.log(ctxG)
         },
         obtenerTotales: function(){
-            var t_cols = {},  t_filas = {};
-            
-            var t_ = {};
+            var t_cols = {},  t_filas = {}, tp_cols = {}, tp_filas = {};            
+            total = ctxG.pivot;
             dimCol = ctxG.pivot.dimColumna;
             dimFil = ctxG.pivot.dimFila;
-            // console.log(ctxG);
-            // for(i=0; i< ctxG.collection.length; i++)
-            // {
-            //     item = ctxG.collection[i];
-            //      t_cols[item[dimCol]] = ( isNaN( t_cols[item[dimCol]])  ? 0 : t_cols[item[dimCol]]) + Number(item.valor );
-            //     t_filas[item[dimFil]] = ( isNaN(t_filas[item[dimFil]]) ? 0 : t_filas[item[dimFil]] ) + Number(item.valor); 
-
-            // }
             _.each(ctxG.collection, function(item){
                 t_cols[item[dimCol]] = ( isNaN( t_cols[item[dimCol]])  ? 0 : t_cols[item[dimCol]]) + Number(item.valor );
                 t_filas[item[dimFil]] = ( isNaN(t_filas[item[dimFil]]) ? 0 : t_filas[item[dimFil]] ) + Number(item.valor); 
             });
-            console.log(t_cols);
-            console.log(t_filas);
+            total.t_cols = t_cols;
+            total.t_filas = t_filas;
+            total.total = Object.keys(t_cols).reduce(function(total, key){
+                return total + t_cols[key];
+            }, 0);
 
+            /* Totales Sumas parciales */
+            _.each(ctxG.pivot.data, function(item){
+                tp_cols[item[dimCol]] = ( isNaN( tp_cols[item[dimCol]])  ? 0 : tp_cols[item[dimCol]]) + Number(item.valor );
+                tp_filas[item[dimFil]] = ( isNaN(tp_filas[item[dimFil]]) ? 0 : tp_filas[item[dimFil]] ) + Number(item.valor); 
+            });
+            total.tp_cols = tp_cols;
+            total.tp_filas = tp_filas;
+            total.total_p =  Object.keys(tp_cols).reduce(function(total, key){
+                return total + tp_cols[key];
+            }, 0);
         },       
     }
 
@@ -711,10 +717,26 @@
             return datosGraph;
         }
     }
+    var $i = 0;
+    var funcionesAgregacion = {
+        '%_part_col': function(values, columns, rows){
+            sum = values.reduce(function(total, val){
+                return total + val;
+            }, 0);
+
+
+            console.log(values);
+            console.log(sum);
+            console.log(ctxG.pivot); 
+            return 3;
+
+        }
+    }
 
     function funcionDespuesDePivotear(){
         ctxPiv.tranformarDatosDePivot();
         ctxGra.graficar();
+        console.log(ctxG.pivot);
     }
 </script>
 

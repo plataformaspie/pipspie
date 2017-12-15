@@ -432,8 +432,62 @@
             });
             return { fields: fields, columns: columnas, rows: filas, filters: filtros};
         },
+        getConfigParaPivotT : function(set_predefinido){
+            var fields = [];
+            var columnas = [];
+            var filas = [];
+            var filtros = [];
+
+            columnas = set_predefinido.x;
+            filas = set_predefinido.y;
+            filtros = _.map(set_predefinido.filtros, 
+                function(item){                    
+                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
+                    _datafield =  condicion[0];
+                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
+                    filtro = {
+                        dataField: _datafield,
+                        filterFunction: function(value){
+                            if(_values.indexOf(value.toString()) == -1)
+                                return true;
+                            return false;
+                        }
+                    };
+                    return filtro;
+            });
+            return { fields: fields, columns: columnas, rows: filas, filters: filtros};
+        },
+        pivottable: function()
+        {
+            var pivotElems = ctxPiv.getConfigParaPivotT(ctxG.varEstActual.set_predefinido);
+            $("#pvtTable").pivotUI(ctxG.collection, {
+                cols: pivotElems.columns, rows: pivotElems.rows,
+                // aggregatorName: "intSum",
+                // vals: ["valor"],
+                onRefresh: function(config, o) {
+                    console.log(config);
+                    console.log(o);
+                    // var config_copy = JSON.parse(JSON.stringify(config));
+                    // //delete some values which are functions
+                    // delete config_copy["aggregators"];
+                    // delete config_copy["renderers"];
+                    // //delete some bulky default values
+                    // delete config_copy["rendererOptions"];
+                    // delete config_copy["localeStrings"];
+                    // $("#output").text(JSON.stringify(config_copy, undefined, 2));
+                }
+                
+                // derivedAttributes: {
+                //     "Age Bin": derivers.bin("Age", 10),
+                //     "Gender Imbalance": function(mp) {
+                //         return mp["Gender"] == "Male" ? 1 : -1;
+                //     }
+                // }
+            }, false, "es");
+        }, 
         cargarPivot: function() {            
             var pivotElems = ctxPiv.getConfigDePivot(ctxG.collection, ctxG.varEstActual.set_predefinido);
+            console.log(pivotElems)
             var source = {
                 localdata: ctxG.collection, // los datos en el formato que requiere el pivot son del tipo collection, array de objetos similares
                 datatype: "json",
@@ -533,33 +587,7 @@
             return datos;
         },   
 
-        pivottable: function()
-        {
-            $("#pvtTable").pivotUI(ctxG.collection, {
-                cols: ['getion'], rows:['r_departamento'],
-                aggregator: "intSum",
-                vals: ["valor"],
-                onRefresh: function(config, o) {
-                    console.log(config);
-                    console.log(o);
-                    // var config_copy = JSON.parse(JSON.stringify(config));
-                    // //delete some values which are functions
-                    // delete config_copy["aggregators"];
-                    // delete config_copy["renderers"];
-                    // //delete some bulky default values
-                    // delete config_copy["rendererOptions"];
-                    // delete config_copy["localeStrings"];
-                    // $("#output").text(JSON.stringify(config_copy, undefined, 2));
-                }
-                
-                // derivedAttributes: {
-                //     "Age Bin": derivers.bin("Age", 10),
-                //     "Gender Imbalance": function(mp) {
-                //         return mp["Gender"] == "Male" ? 1 : -1;
-                //     }
-                // }
-            }, false, "es");
-        }    
+           
     }
 
     /*-----------------------------------------------------------------------

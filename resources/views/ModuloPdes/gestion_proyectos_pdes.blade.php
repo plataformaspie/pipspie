@@ -31,14 +31,14 @@
         <div class="row">
             <div id="contenido_proys" class="col-md-8">
                 <div class="box white-box p-10">
-                    <h3 class="box-title"> Lista de proyectos PDES 
+                    <h3 class="box-title"> Lista de proyectos PDES <b><span id="cantidad_proyectos"></span></b>
                         <button id="btnAgregarEditar" class="btn btn-primary  waves-effect waves-light pull-right"  >  <!-- data-toggle="modal" data-target="#form_proyecto"  --> 
                             <i class="fa fa-plus m-l-5"></i><span> Agregar Proyecto</span> 
                         </button>
                     </h3>
                     <div id='jqxNavBarList'>
                         <div>
-                            <b> </b>
+                            <b></b>
                         </div>
                         <div>
                             <div id="gridP"> </div>
@@ -62,7 +62,7 @@
 
 <!--=========================================================================================================================== -->
 <!--====                                                                FORM                                        =========== -->
-<!--====                                                                                                           =========== -->
+<!--====                                                                                                            =========== -->
 
 <form id="form_proyecto" class="modal fadein " role="dialog">
     <div class="modal-dialog modal-lg">
@@ -152,7 +152,6 @@
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.sort.js"></script>
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.filter.js"></script>
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.selection.js"></script>
-{{-- <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.pager.js') }}"></script> --}}
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.columnsresize.js"></script>
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxnavigationbar.js"></script>
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcombobox.js"></script>
@@ -196,6 +195,7 @@ $(function ()
         objSel: null, //objeto seleccionado
         source : {},
         btnAgregar: $("#btnAgregarEditar"),
+        cantidad_proyectos: $("#cantidad_proyectos"),
         grid : $("#gridP"),
 
         llenarLista : function(){
@@ -209,6 +209,7 @@ $(function ()
                     //url: ''
                     datafields: [
                         {name: 'id', type: 'string'},
+                        {name: 'cod_pm', type: 'string'},
                         {name: 'codigo', type: 'string'},
                         {name: 'nombre_proyecto', type: 'string'},
                         {name: 'sector', type: 'string'},
@@ -234,7 +235,7 @@ $(function ()
                 ctxList.grid.jqxGrid(
                 {
                     ready: function () {   
-                        $(".jqx-grid-content").css({"z-index": "100", 'font-size':'10px'
+                        $(".jqx-grid-content").css({"z-index": "100", 'font-size':'9px'
                         });  
                     },
                     theme: cnf.theme,
@@ -250,8 +251,9 @@ $(function ()
                     enabletooltips: true,
                     columns: [
                         // {text: 'id', datafield: 'id', sortable: false},
-                        {text: 'codigo', datafield: 'codigo', cellsalign: 'right', width: 80},
-                        {text: 'nombre Proyecto', datafield: 'nombre_proyecto', width: '50%'},
+                        {text: 'P.M.', datafield: 'cod_pm', width: 35},
+                        {text: 'Cód dem', datafield: 'codigo', cellsalign: 'right', width: 80},
+                        {text: 'Proyecto PDES', datafield: 'nombre_proyecto', width: '50%'},
                         {text: 'Sector', datafield: 'sector', },
                         {text: 'Responsable', datafield: 'responsable', },
                         {text: 'Costo ', datafield: 'costo_total', cellsformat: 'f', cellsalign: 'right'},
@@ -260,6 +262,7 @@ $(function ()
                         {text: ' ', datafield: 'id', cellsrenderer: rendererEdit, width: 30},
                         ]
                     });
+                ctxList.cantidad_proyectos = ctxList.listaProyectos.length;
             });
         },
         refreshLista : function(idElemSel){
@@ -336,18 +339,21 @@ $(function ()
                 ctxForm.resultados.select2('val', resultadosIds);
             }                
 
-            if(objproyecto.sisinweb.length > 0)
+            if(objproyecto.sisinweb_count > 0)
             {
-                ctxForm.sisinweb.val('');
-                options = objproyecto.sisinweb.map(function(item){
-                    return {
-                        id : item.id_sisinweb,
-                        text:  item.sw_cod_pmra + '-' + item.sw_nombre_proyecto + '<br><b>cod_sisin: </b>' + item.sw_codigo 
-                                    + ' <b>Monto presupuestado: </b>' + item.sw_monto_presupuestado + '<br><b>entidad: </b>' + item.sw_entidad 
-                                    + '<br>' + item.sw_depto + ' - ' + item.sw_prov + ' - '+ item.sw_mun 
-                    }
+                $.get(cnf.urlBase + '/gestionproyectos/buscar/sisin', {'id_proyecto_pdes': objproyecto.id}, function(res){
+                    ctxForm.sisinweb.val('');
+
+                    options = res.datos.map(function(item){
+                        return {
+                            id : item.codigo_sisin,
+                            text:  item.cod_pmra + '-' + item.nombre_proyecto + '<br><b>cod_sisin: </b>' + item.codigo_sisin 
+                            + ' <b>Monto presupuestado: </b>' + item.monto_presupuestado + '<br><b>entidad: </b>' + item.entidad 
+                            + '<br>' + item.depto + ' - ' + item.prov + ' - '+ item.mun 
+                        }
+                    })
+                    ctxForm.sisinweb.data().select2.updateSelection(options);
                 })
-                ctxForm.sisinweb.data().select2.updateSelection(options);
             }
         },
         mostrarForm: function (objSel = null) {            
@@ -391,19 +397,17 @@ $(function ()
                         dataType: 'json',
                         type: 'GET',
                         data: function (params) {
-                            console.log(params)
                             return {
                                 term: params, // search term
                             };
                         },
                         results: function (data) {
-                            console.log(data);
                             var items = data.datos.map(function(obj){
                                 return { 
-                                    'id': obj.id, 
+                                    'id': obj.codigo_sisin, 
                                     'text' : obj.cod_pmra + '-' + obj.nombre_proyecto + '<br><b>cod_sisin: </b>' + obj.codigo_sisin 
-                                    + ' <b>Monto presupuestado: </b>' + obj.monto_presupuestado + '<br><b>entidad: </b>' + obj.entidad 
-                                    + '<br>' + obj.depto + ' - ' + obj.prov + ' - '+ obj.mun 
+                                    + /*' <b>Monto presupuestado: </b>' + obj.monto_presupuestado +*/ '<br><b>entidad: </b>' + obj.entidad + '<br><b>sector: </b>' + obj.sector
+                                    /*+ '<br>' + obj.depto + ' - ' + obj.prov + ' - '+ obj.mun */
                                 }
                             })
                             return { results : items};
@@ -501,24 +505,26 @@ $(function ()
                 +'<div class="bg-white" style="color: #333"> '
                 +'    <ul class="list-group m-2">'
                 +'        <li class="list-group-item">'
+                +'            </br><b>PILAR ' + objSel.cod_p + '</b>: ' + objSel.desc_p  
+                +'            </br><b>META ' + objSel.cod_m + '</b>: ' + objSel.desc_m  
                 +'            <div><b>Código</b>: ' +  objSel.codigo 
                 +'            </br><b>Sector: </b>' +  objSel.sector  
                 +'            </br><b>Responsable: </b>' +  objSel.responsable  
-                +'            </br><b>Costo total: </b>' +  objSel.costo_total  
+                +'            </br><b>Costo total: </b>' +  objSel.costo_total   
                 +'            </div> '
                 +'        </li> '
                 +'    </ul>';
 
                 badgeColor = objSel.resultados_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;         
-                htmlsup += '<h5>Resultados asociados <span class="badge ' + badgeColor + ' pull-right">'+ objSel.resultados_count + '</span></h5>';
+                htmlsup += '<h5 class="p-10 "<b>Resultados asociados </b><span class="badge ' + badgeColor + ' pull-right">'+ objSel.resultados_count + '</span></h5>';
                 if(objSel.resultados_count > 0)
                 {
                     htmlsup += '<ul class="list-group m-2">';
                     for (var i = 0; i < objSel.resultados.length; i++) {
                         var r = objSel.resultados[i];
                         htmlsup += '<li class="list-group-item">'
-                        +'<div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ' ( ' + r.cod_pmr + ' )</b>'
-                        +'    <br><b>Resultado: </b>' + r.desc_r 
+                        +'<div><b> Pilar ' + objSel.cod_p + ', Meta ' + objSel.cod_m + ', Resultado ' + r.cod_r + ' ( ' + r.cod_pmr + ' )</b>'
+                        +'    <br><b>Resultado '  + r.cod_r  +': </b> ' + r.desc_r 
                         +'</div>'
                         +'</li>';
                     }
@@ -528,7 +534,8 @@ $(function ()
                 ctxElem.sup.html(htmlsup); 
             };
             var htmlInf = function(){
-                var htmlinf ='<h5><b>Proyecto SP: </b></h5>' ;
+                var badgeCountPullRight = '';
+                var htmlinf ='<h5 class="p10"><b>Pilar, Meta, Res, Accion de Proyecto en SP </b>  $badgeCountPullRight </h5>' ;
                 ctxElem.inf.html(htmlinf);
                 $.get(cnf.urlBase + '/gestionproyectos/sp/obtener_proyecto_sp/' + ctxList.objSel.codigo, function(res){
                     var proyectoSP = res.data;
@@ -538,22 +545,23 @@ $(function ()
                     }
                     else
                     { 
-                        // proyectoSP = datosSP.data;
-                        htmlinf+= '<div><h5 class="bg-info-light">' + proyectoSP.nombre_proyecto +'</h5></div>'
-                        + '<div class="bg-white" style="color: #333">'
-                        + '     <ul class="list-group m-2">'
-                        + '         <li class="list-group-item">'
-                        + '         <div><b>Código</b>: ' +  proyectoSP.codigo 
-                        + '         </br><b>Sector: </b>' +  proyectoSP.sector  
-                        + '         </br><b>Costo total: </b>' +  proyectoSP.total_costo  
-                        + '         </div></li>'
-                        + '     </ul>';
+                        // htmlinf+= '<div><h5 class="bg-info-light">' + proyectoSP.nombre_proyecto +'</h5></div>'
+                        // + '<div class="bg-white" style="color: #333">';
+                        // + '     <ul class="list-group m-2">'
+                        // + '         <li class="list-group-item">'
+                        // + '         <div><b>Código</b>: ' +  proyectoSP.codigo 
+                        // + '         </br><b>Sector: </b>' +  proyectoSP.sector  
+                        // + '         </br><b>Costo total: </b>' +  proyectoSP.total_costo  
+                        // + '         </div></li>'
+                        // + '     </ul>';
 
                         if(proyectoSP.contextoProyecto)
                         { 
-                            badgeColor = cnf.alerta.positivo;         
-                            htmlinf += '<h5>Resultados asociados <span class="badge ' + badgeColor + ' pull-right">'+ proyectoSP.contextoProyecto.length + '</span></h5>'
-                            +'<ul class="list-group m-2">';
+                            badgeColor = cnf.alerta.positivo;  
+                            badgeCountPullRight = '<span class="badge ' + badgeColor + ' pull-right">'+ proyectoSP.contextoProyecto.length + '</span> ';      
+                            htmlinf += 
+                                '<div class="bg-white" style="color: #333">'
+                                +'<ul class="list-group m-2">';
                             for (var i = 0; i < proyectoSP.contextoProyecto.length; i++) {
                                 var r = proyectoSP.contextoProyecto[i];
                                 // responsables = 
@@ -577,10 +585,11 @@ $(function ()
                         else
                         {
                             badgeColor = cnf.alerta.cero;         
-                            htmlinf += '<div class=" m-2"><b>Resultados asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ 0 + '</span></div>';
+                            badgeCountPullRight = '<span class="badge ' + badgeColor + ' pull-right">'+ 0 + '</span> ';  
                         }
 
                         htmlinf += '</div>' ;
+                        htmlinf = htmlinf.replace('$badgeCountPullRight', badgeCountPullRight);
                         ctxElem.inf.html(htmlinf);
                     }
                 });
@@ -590,24 +599,36 @@ $(function ()
             var htmlInf2 = function(){
                 var objSel = ctxList.objSel;
                 badgeColor = objSel.sisinweb_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;  
-                var htmlInf2 = '<h5><b>Proyectos SISINWEB asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.sisinweb_count + '</span></h5>';
+                var htmlInf2 = '<h5 class="p10"><b>Proyectos SISINWEB vinculados con el proyecto </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.sisinweb_count + '</span></h5>';
                 ctxElem.inf2.html(htmlInf2);
                 if(objSel.sisinweb_count > 0)
                 {
-                   $.get(cnf.urlBase + '/gestionproyectos/buscar/sisin', {'id_proyecto_pdes': objSel.id}, function(res){
+                    $.get(cnf.urlBase + '/gestionproyectos/buscar/sisin', {'id_proyecto_pdes': objSel.id}, function(res){
                         htmlInf2 += '<ul class="list-group bg-white m-2" style="color: #333">';
-                        for (var i = 0; i < res.datos.length; i++) {
-                            var sw = res.datos[i];
+
+                        sisingroup = _.chain(res.datos).groupBy(function(item){ return item.codigo_sisin}).values().value();
+                        for (var i = 0; i < sisingroup.length; i++) {
+                            var sw = sisingroup[i][0];
                             htmlInf2 += '<li class="list-group-item">'
-                            + '<div><b> Nombre proy. SISINWEB: ' + sw.nombre_proyecto + '</b>'
-                            + '</br><b>Codigo sisinweb: ' + sw.codigo +'</b>'
-                            + '</br>Pilar: ' + sw.cod_p + ', Meta: ' + sw.cod_m + ', Resultado: ' + sw.cod_r + ', Accion: '+ sw.cod_a + ' ('+ sw.cod_pmra + ')</b>'     
-                            + '</br>Entidad: ' + sw.entidad 
-                            + '</br>Monto presupuestado: ' + sw.monto_presupuestado  
-                            + '</br>Lugar: ' + sw.depto + ', ' + sw.prov + ', ' + sw.mun       
-                            + '</div></li>';
+                            + '<div><h5 clas="bg-warning-light"><b>Codigo sisin: ' + sw.codigo_sisin +'</b></h5>'
+                            + '<b> Nombre proy. SISIN: ' + sw.nombre_proyecto + '</b>'
+                            + '</br>Pilar: ' + sw.cod_p + ', Meta: ' + sw.cod_m + ', Resultado: ' + sw.cod_r + ', Accion: '+ sw.cod_a + ' ('+ sw.cod_pmra + ')</b>'
+                            + '</br><b>Proyecto por lugares y presupuesto </b> <span class="badge bg-default">' + sisingroup[i].length + '</span>' 
+                            + '</div>';
+
+                            var desagregados = _.reduce(sisingroup[i], function(anterior, item){
+                               return anterior  + '<div>'
+                                                + '     </br>Entidad: ' + item.entidad 
+                                                + '     </br>Monto presupuestado: ' + item.monto_presupuestado  
+                                                + '     </br>Lugar: ' + item.depto + ', ' + item.prov + ', ' + item.mun       
+                                                + '</div>';
+
+                            }, '');
+                            console.log(desagregados);
+                            htmlInf2 += desagregados;
+
                         }
-                        htmlInf2 += '</ul>'
+                        htmlInf2 += '</li></ul>'
                         ctxElem.inf2.html(htmlInf2);
                     });
                };
@@ -644,11 +665,6 @@ $(function ()
         index = event.args.rowindex;
         ctxList.objSel = ctxList.listaProyectos[index];
         ctxElem.htmlGen();
-        // $.get(cnf.urlBase + '/gestionproyectos/sp/obtener_proyecto_sp/' + ctxList.objSel.codigo, function(res){
-        //     ctxElem.htmlGen(res);
-        // })
-
-        // ctxElem.htmlGen();
     });
 
     // al hacer click sobre una celda compara si es sobre el boton editar luego muestra el formulario modal con el elemento //////////////////////
