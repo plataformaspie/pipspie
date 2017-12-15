@@ -489,6 +489,13 @@
             //     }
             //     return d
             // }
+            /*
+            |   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            |   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            |   FUNCIONES AGREGADAS 
+            |
+             */
+            // porcentaje_participacion_col : porcent_participacion_col(),
         },
         getCellValue: function(e, d) {
             var f = this._getCellValueFromDataSource(e, d);
@@ -952,3 +959,5 @@
         }
     }
 })(jqxBaseFramework);
+
+
