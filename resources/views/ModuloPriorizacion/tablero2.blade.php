@@ -1,20 +1,16 @@
 @extends('layouts.plataforma')
 
 @section('header')
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.base.css" type="text/css" />
+{{-- <link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.light.css" type="text/css"/>
 <link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.darkblue.css" type="text/css"/>
 <link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.energyblue.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.ui-overcast.css" type="text/css"/>
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.ui-overcast.css" type="text/css"/> --}}
 
 <link rel="stylesheet" href="/plugins/amcharts3.21.8/plugins/export/export.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/visores.css" type="text/css" />
 
-
-
-<!-- PivotTable.js libs from ../dist -->
-<link rel="stylesheet" type="text/css" href="/plugins/pivottable/dist/pivot.css">
-
+<link rel="stylesheet" type="text/css" href="/plugins/modify/pivot___.css">
 <link rel="stylesheet" href="/plugins/bower_components/bootstrap-urban-master/urban.css" type="text/css" />
 <style>
 
@@ -102,36 +98,29 @@
             <div id="contenedorPredefinidos" class="row stats-row m-0 bg-white p-3" >
             </div>
 
-
-
-
-            <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 400px;">
-                <div id="pvtTable"></div>                
-            </div>
-
-
-
-
             <div class="row m-0">
                 <div id="contenedorDatos" style="height: 1000px; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
 
                     <div class="">
                         <div id=tituloDatos></div>
-                        <table>
-                            <tr>
-                                <td class='align-top'>
-                                   <div id="divPivotGridDesigner" class=""  style="height: 400px; width: 200px;"></div> 
-                                </td>
-                                <td class='align-top'>
-                                    <div id="divPivotGrid" class="ml15"  style="height: 400px;  background-color: white;"></div>
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 400px;">
+                            <div id="pvtTable"></div>                
+                        </div>
                     </div>
+
                     <div id="separador"><hr/></div>
+                    
                     <div>
                         <div id="tituloGrafico"></div>
-                        <div id="chartdiv"></div>
+
+                        <select id="opcionesGrafico" onchange="ctxGra.graficarH(this);" >
+                            <option value="line">Linea</option>
+                            <option value="column">Columna</option>                            
+                            <option value="bar">Barras</option>                            
+                            <option value="area">Area</option>
+                            <option value="pie" >Dona</option>
+                        </select>
+                        <div id="container" style="font-family: arial; width: 90%; min-height: 600px; max-height: auto; margin: 0 auto"></div>
                     </div>
                 </div>
             </div>
@@ -143,42 +132,23 @@
 @endsection
 
 @push('script-head')
-
 <script src="/plugins/amcharts3.21.8/amcharts.js"></script>
 <script src="/plugins/amcharts3.21.8/serial.js"></script>
 <script src="/plugins/amcharts3.21.8/plugins/export/export.min.js"></script>
 <script src="/plugins/amcharts3.21.8/themes/light.js"></script>
 
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcore.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdata.js"></script> 
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxbuttons.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxscrollbar.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxmenu.js"></script>
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivot.js"></script> 
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivotgrid.js"></script> --}}
+{{-- <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-3d.js"></script> --}}
+<script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
+<script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
 
-
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcheckbox.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxinput.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxwindow.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxlistbox.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdropdownlist.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdragdrop.js"></script>
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivot.js"></script>  --}}
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivotgrid.js"></script> --}}
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivotdesigner.js"></script> --}}
-<script type="text/javascript" src="/plugins/modify/jqxpivot___.js"></script> 
-<script type="text/javascript" src="/plugins/modify/jqxpivotgrid___.js"></script>
-<script type="text/javascript" src="/plugins/modify/jqxpivotdesigner___.js"></script>
-
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/globalization/globalize.js"></script>
-<script type="text/javascript" src="/js/jqwidgets-localization.js"></script>
+<script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
+<script type="text/javascript" src="/plugins/pivottable/dist/pivot.es.js"></script>
 
 <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
-<script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/plugins/pivottable/dist/pivot.js"></script>
-<script type="text/javascript" src="/plugins/pivottable/dist/pivot.es.js"></script>
+
 {{-- *********************  MAIN APP ************************ --}}
 <script type="text/javascript">
     /*-----------------------------------------------------------------------
@@ -226,14 +196,14 @@
         nodoSel : {},  // elemento menu  nodo seleccionado
         varEstActual : {},    // objeto JSON VariableEstadisticaActual del nodoSel.configuracion 
         collection : [],
-        instanciaPivotGrid : {},
-        pivot: {
-            dataAll:[],
+        pivotInstancia:{},
+        pivot:{
             data : [], // Datos del pivot  en formato collection 
             dataGraph : [],
             dimColumna : [],
             dimFila : [],
-        },   
+            total: 0, t_cols : {}, t_filas : {}, total_p : 0, tp_cols : {}, tp_filas: {},
+        },
     }
 
     /*-----------------------------------------------------------------------
@@ -378,13 +348,11 @@
             return objVE;
         },      
         mostrarData: function(collection){
-            ctxPiv.cargarPivot(collection);
-            ctxGra.graficar();
             ctxPiv.pivottable();
-
+            ctxGra.graficarH();
         },
         obtenerData: function(objRequest){
-            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){
+            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){                
                 ctxG.collection = res.collection;
                 ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
                 ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
@@ -397,42 +365,7 @@
      *      ctxPiv variable que contiene el contexto del Pivot  
      */
     var ctxPiv = {
-        getConfigDePivot : function(collection, set_predefinido){
-            var fields = [];
-            var columnas = [];
-            var filas = [];
-            var filtros = [];
-
-            if(collection.length > 0)
-                fields = _.chain(collection).first().map(function(value, key){
-                    return {name: key, type : (key == 'valor') ? 'number' : 'string' }
-                }).value();
-
-            columnas = _.map(set_predefinido.x, function(item){
-                return {dataField : item};
-            });
-            filas = _.map(set_predefinido.y, function(item){
-                return {dataField : item};
-            });
-
-            filtros = _.map(set_predefinido.filtros, 
-                function(item){                    
-                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
-                    _datafield =  condicion[0];
-                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
-                    filtro = {
-                        dataField: _datafield,
-                        filterFunction: function(value){
-                            if(_values.indexOf(value.toString()) == -1)
-                                return true;
-                            return false;
-                        }
-                    };
-                    return filtro;
-            });
-            return { fields: fields, columns: columnas, rows: filas, filters: filtros};
-        },
-        getConfigParaPivotT : function(set_predefinido){
+        configParaPivotT : function(set_predefinido){
             var fields = [];
             var columnas = [];
             var filas = [];
@@ -459,22 +392,16 @@
         },
         pivottable: function()
         {
-            var pivotElems = ctxPiv.getConfigParaPivotT(ctxG.varEstActual.set_predefinido);
+            var pivotElems = ctxPiv.configParaPivotT(ctxG.varEstActual.set_predefinido);
             $("#pvtTable").pivotUI(ctxG.collection, {
                 cols: pivotElems.columns, rows: pivotElems.rows,
                 // aggregatorName: "intSum",
                 // vals: ["valor"],
-                onRefresh: function(config, o) {
-                    console.log(config);
-                    console.log(o);
-                    // var config_copy = JSON.parse(JSON.stringify(config));
-                    // //delete some values which are functions
-                    // delete config_copy["aggregators"];
-                    // delete config_copy["renderers"];
-                    // //delete some bulky default values
-                    // delete config_copy["rendererOptions"];
-                    // delete config_copy["localeStrings"];
-                    // $("#output").text(JSON.stringify(config_copy, undefined, 2));
+                onRefresh: function(p) {
+                    ctxG.pivotInstancia = p;
+                    ctxPiv.trnDatosDePivot();
+                    ctxGra.graficarH();
+                    console.log(ctxG)
                 }
                 
                 // derivedAttributes: {
@@ -484,295 +411,141 @@
                 //     }
                 // }
             }, false, "es");
+            
+
         }, 
-        cargarPivot: function() {            
-            var pivotElems = ctxPiv.getConfigDePivot(ctxG.collection, ctxG.varEstActual.set_predefinido);
-            console.log(pivotElems)
-            var source = {
-                localdata: ctxG.collection, // los datos en el formato que requiere el pivot son del tipo collection, array de objetos similares
-                datatype: "json",
-                datafields: pivotElems.fields
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-            dataAdapter.dataBind();
-
-            var pivotSettings = {
-                        pivotValuesOnRows: false,
-                        columns: pivotElems.columns,/* [{ dataField: 'gestion'}], */
-                        rows: pivotElems.rows,/* [{ dataField: 'r_departamento'}], */
-                        filters: [],
-                        /*  Ejemplo de filtro, cuando la condicion es true se filtra, se excluye, 
-                            en el caso se quiere solo los valores de 2013 y 2015, por lo tanto la comparacion es , si no esta en el array se excluye                        
-                            filters: [
-                            {
-                                dataField: 'gestion',
-                                filterFunction: function (value) {
-                                    if (['2013', '2015'].indexOf(value.toString()) == -1)
-                                        return true;
-                                    return false;
-                                }
-                            },
-                        */
-                        values: [
-                            { dataField: 'valor', 'function': 'sum', text: 'cantidad'},
-                        ]
-                    };
-
-            
-            function implementaPivotGrid(dataAdapter, pivotSettings)
-            {
-                var pivotDataSource = new $.jqx.pivot(dataAdapter, pivotSettings);
-                $('#divPivotGrid').jqxPivotGrid(
+        trnDatosDePivot: function(){
+            var tree = ctxG.pivotInstancia.pivotData.tree;
+            dim_columna = ctxG.pivotInstancia.cols.join(' - ');
+            dim_fila = ctxG.pivotInstancia.rows.join(' - ');
+            ctxG.pivot.data = [];
+            for (row in tree){
+                for(col in tree[row])
                 {
-                    source: pivotDataSource,
-                    treeStyleRows: true,
-                    autoResize: true,
-                    // theme: cnf.c.themePivot,
-                    multipleSelectionEnabled: true,
-                    localization: getLocalization('es')
-                });
-                var instanciaPivotGrid = $('#divPivotGrid').jqxPivotGrid('getInstance'); 
-                return instanciaPivotGrid;
-            }
-            var pivotGridInstancia =  implementaPivotGrid(dataAdapter, pivotSettings);
-            ctxG.pivot.dataAll = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
-
-            if(pivotElems.filters.length > 0)
-            {
-                pivotSettings.filters = pivotElems.filters;
-                pivotGridInstancia =  implementaPivotGrid(dataAdapter, pivotSettings);
-            }
-            pivotGridInstancia.refresh();
-            ctxG.pivotGridInstancia = pivotGridInstancia;     
-            ctxPiv.tranformarDatosDePivot();
-
-            $('#divPivotGridDesigner').jqxPivotDesigner(
-            {
-                type: 'pivotGrid',
-                target: pivotGridInstancia
-            });
-            var pivotDesignerInstance =  $('#divPivotGridDesigner').jqxPivotDesigner('getInstance');
-            pivotDesignerInstance.refresh();
-        },
-        tranformarDatosDePivot: function()     {   
-            datos = [];
-            var cellValuesObj = ctxG.pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue; //Contiene los valores de las celdas como un obj
-            var pivotColumns = ctxG.pivotGridInstancia._pivotColumns.items;
-            var pivotRows = ctxG.pivotGridInstancia._pivotRows.items;   
-
-            datosPivotObj = _.chain(cellValuesObj).map(function(item, key){ item.key = key; return item}).sortBy('key').value(); // transforma el obj a una lista ordenada por su key (key mantiene el orden ) 
-            ctxG.pivot.dimColumna = pivotColumns.length > 0 ?  pivotColumns[0].adapterItem.boundField.dataField : 'cantidad'; 
-            ctxG.pivot.dimFila = pivotRows.length > 0 ?  pivotRows[0].adapterItem.boundField.dataField : 'cantidad';
-            columnas = pivotColumns.map(function(col){
-                return col.adapterItem.text;
-            });
-            filas = pivotRows.map(function(row){
-                return row.adapterItem.text;
-            })
-            
-            k = 0;
-            for(i=0; i< columnas.length; i++){ 
-                for(j=0; j<filas.length; j++)
-                {
-                    item = {};
-                    item[ctxG.pivot.dimColumna] = columnas[i];
-                    item[ctxG.pivot.dimFila] = filas[j];
-                    item['valor'] = datosPivotObj[k].value;
-                    datos.push(item);
-                    k++;
+                    var item = {};  
+                    arg =   tree[row][col];                   
+                    item['valor'] =arg.value();
+                    item[dim_columna] = col;
+                    item[dim_fila] = row;
+                    ctxG.pivot.data.push(item); 
                 }
             }
-            ctxG.pivot.data = datos;
-            ctxGra.transformarDatosParaGrafico(datos);
-            return datos;
-        },   
+            ctxG.pivot.dimColumna = dim_columna;
+            ctxG.pivot.dimFila = dim_fila;
+            ctxPiv.obtenerTotales();
+            ctxGra.transformarDatosParaGrafico();
+            
+        },
+        obtenerTotales: function(){
+            var t_cols = {},  t_filas = {}, tp_cols = {}, tp_filas = {};            
+            total = ctxG.pivot;
+            dimCol = ctxG.pivot.dimColumna;
+            dimFil = ctxG.pivot.dimFila;
+            _.each(ctxG.collection, function(item){
+                t_cols[item[dimCol]] = ( isNaN( t_cols[item[dimCol]])  ? 0 : t_cols[item[dimCol]]) + Number(item.valor );
+                t_filas[item[dimFil]] = ( isNaN(t_filas[item[dimFil]]) ? 0 : t_filas[item[dimFil]] ) + Number(item.valor); 
+            });
+            total.t_cols = t_cols;
+            total.t_filas = t_filas;
+            total.total = Object.keys(t_cols).reduce(function(total, key){
+                return total + t_cols[key];
+            }, 0);
 
-           
+            /* Totales Sumas parciales */
+            _.each(ctxG.pivot.data, function(item){
+                tp_cols[item[dimCol]] = ( isNaN( tp_cols[item[dimCol]])  ? 0 : tp_cols[item[dimCol]]) + Number(item.valor );
+                tp_filas[item[dimFil]] = ( isNaN(tp_filas[item[dimFil]]) ? 0 : tp_filas[item[dimFil]] ) + Number(item.valor); 
+            });
+            total.tp_cols = tp_cols;
+            total.tp_filas = tp_filas;
+            total.total_p =  Object.keys(tp_cols).reduce(function(total, key){
+                return total + tp_cols[key];
+            }, 0);
+        }, 
     }
 
     /*-----------------------------------------------------------------------
      *      ctxGra variable que contiene el contexto del grafico  
      */
     var ctxGra = {
-        graficar: function()   {
-            console.log(ctxG.pivot);
-            data = ctxG.pivot.dataGraph;
+        transformarDatosParaGrafico: function()
+        {
+            var datosGraph = {};
+            var pivotData = ctxG.pivotInstancia.pivotData;
+            var pivot = ctxG.pivot;
+            datosGraph.categorias = pivotData.colKeys.map(function(cat, key){
+                return cat.join(' - ');
+            });
+            
+            datosGraph.series = _.chain(pivot.data).groupBy(function(item){
+                return item[pivot.dimFila]
+            }).map(function(setDatos, key){
+                serie = {};
+                serie.name = key;
+                serie.data = setDatos.map(function(elem){
+                    return elem.valor;
+                });
+                return serie;
+            }).value();
+            
+            ctxG.pivot.dataGraph = datosGraph;
+
+        },
+        graficarH : function(){
+
             tituloChart = ctxG.varEstActual.variable_estadistica;
             unidad = ctxG.varEstActual.porcentaje  ? ' (expresado en porcentaje) ' : ' (expresado en ' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') '
             subtituloChart = (ctxG.varEstActual.campo == '') ? unidad : 'Por ' + ctxG.varEstActual.campo_titulo + unidad;
-            var graphs = [];
-            if(data.length > 0)
-            {
-                for(key in data[0])  //Si existen elemntos se recorren los indices (key) del primer elemento. ej data[0] = { hombre:12, mujer:11, gestion:2015 }
-                {
-                    if(key != ctxG.pivot.dimColumna)
-                    {
-                        var graph = {
-                            id: key,
-                            title: key,
-                            valueField: key,
-                            // labelText: "[[percents]] %",
-                            // "labelPosition": "inside",
-                            type: 'smoothedLine',
-                            balloonText: key + ": <b>[[value]]</b><br><b>[[percents]] % </b>",
-                            balloon : {
-                                adjustBorderColor: false,                                
-                                color: "#333",
-                                borderColor : '#000',
-                                borderAlpha: 0.2,
-                                borderThickness: 0,
-                                cornerRadius: 5,
-                                fillColor : '#fff',
-                                fillAlpha:0.2,
-                                shadowColor: '#000',
-                                fontSize : 10,
-                                animationDuration: 0.7,
-                            },
-                            bullet: "round",
-                            bulletBorderAlpha: 1,
-                            hideBulletsCount: 50,
-                            useLineColorForBulletBorder: true,     
-                            lineThickness : 3,
-                            lineAlpha: 0.8,                     
-                        };
-                        graphs.push(graph);
-                    }
+            var tipo = $("#opcionesGrafico").val();
+            var chart = {
+                type: tipo,
+                options3d: {
+                    enabled: true,
+                    alpha: 30
                 }
-            }
-
-            chart = AmCharts.makeChart("chartdiv", {
-                    type: "serial",
-                    theme: "light",
-                    addClassNames: true,
-                    marginRight: 80,
-                    autoMarginOffset: 20,
-                    marginTop: 7,
-                    graphs: graphs,
-                    dataProvider: data,
-                    // startEffect : 'easeOutSine',
-                    // startDuration: 1.5,
-                    // sequencedAnimation: false, 
-                    titles: [
-                            {
-                                color : "#333",
-                                size: 11,
-                                text: tituloChart,
-                                // "align": "right",
-                                // x: 40, y:30,
-                            },
-                            {
-                                color : "#333",
-                                size: 10,
-                                text: subtituloChart,
-                                bold: false,
-                            }
-                    ],
-                   "valueAxes": [{
-                        "axisAlpha": 0.5,
-                        "dashLength": 1,
-                        "position": "left"
-                    }],
-                    "mouseWheelZoomEnabled": false,
-                    // "chartScrollbar": {
-                    //     "autoGridCount": true,
-                    //     "scrollbarHeight": 40
-                    // },
-                    legend: {
-                        useGraphSettings: true,
-                        borderColor: "#aaa",
-                        borderAlpha: 0.8,
-                        horizontalGap: 10,
-                        align: 'center'
-                    },
-                    chartCursor: {
-                        oneBalloonOnly: true,
-                        graphBulletSize:1,
-                    },
-                    categoryField: ctxG.pivot.dimColumna,
-                    "categoryAxis": {
-                        "axisColor": "#DADADA",
-                        "dashLength": 1,
-                        "minorGridEnabled": true
-                    },
-                    "export": {
-                        "enabled": true
-                    }
-                });
-                // chart.addListener("rendered", zoomChart);
-                // zoomChart(data);
-                
-                // function zoomChart(data) {
-                //     chart.zoomToIndexes(data.length - 40, data.length - 1);
-                // }
-
-                chart.timeout;
-                chart.addListener( "rollOverGraph", function( event ) {
-                    hightLightItem( event.graph, 'in' );
-                } );
-                chart.addListener( "rollOutGraph", function( event ) {
-                    hightLightItem( event.graph, 'out' );
-                } );
-
-                function hightLightItem( graph, op ) {
-                    var className = "amcharts-graph-" + graph.id;
-                    var items = document.getElementsByClassName( className );
-                    if ( undefined === items )
-                        return;
-                    for ( var x in items ) {
-                        if ( "object" !== typeof items[x] )
-                            continue;
-                        var path = items[x].getElementsByTagName( "path" )[ 0 ];
-                        if ( undefined !== path )
-                        {
-                            if(op == 'in')
-                            {
-                               path.style.strokeWidth = 4; 
-                               path.style.strokeOpacity = 1;
-                            }
-                            if(op == 'out')
-                            {
-                                path.style.strokeWidth = 3; 
-                                path.style.strokeOpacity = 0.8;
-                            }                            
-                        }
-                    }
+            };
+            var title = {
+              text: tituloChart   
+            };   
+            var subtitle = {
+                text: subtituloChart
+            };  
+            var xAxis= {
+                categories: ctxG.pivot.dataGraph.categorias
+            };
+            var yAxis= {
+                title: {
+                    text: ''
                 }
-                chart.addListener("init", function () {
-                    chart.legend.addListener("rollOverItem", function (event) {
-                        hightLightItem( event.chart.graphs[event.dataItem.index], 4 );
-                    });
+            };
+            var plotOptions = {
+                pie: {
+                    innerSize: 100,
+                    depth: 45
+                },
+                column: {
+                    depth: 40,
+                    stacking: true,
+                    grouping: false,
+                    groupZPadding: 10
+                }
+            };
 
-                    chart.legend.addListener("rollOutItem", function (event) {
-                        hightLightItem( event.chart.graphs[event.dataItem.index], 2 );
-                    });
-                });
-        },  
-        transformarDatosParaGrafico: function()
-        {
-            datosGraph = [];
-            if(ctxG.pivot.data.length > 0)
-            {
-                datosGraph = _.chain(ctxG.pivot.data)
-                .groupBy(ctxG.pivot.dimColumna)
-                .map(function(el, k){
-                    elemNew = {};
-                    _.each(el, function(item){
-                        elemNew[ctxG.pivot.dimColumna] = item[ctxG.pivot.dimColumna];
-                        elemNew[item[ctxG.pivot.dimFila]] = item.valor;
-                        return true;
-                    })
-                    return elemNew;
-                }).value();
-            }
-            ctxG.pivot.dataGraph = datosGraph;
-            return datosGraph;
+            var series = ctxG.pivot.dataGraph.series;
+
+            var json = {};   
+            json.chart = chart; 
+            json.title = title;       
+            json.subtitle = subtitle; 
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.plotOptions = plotOptions; 
+            json.series = series;   
+            $('#container').highcharts(json);
+
         }
     }
 
-    function funcionDespuesDePivotear(){
-        ctxPiv.tranformarDatosDePivot();
-        ctxGra.graficar();
-    }
 </script>
 
 <script>
@@ -801,8 +574,8 @@ $(function(){
             ctxG.varEstActual.campo_titulo = '';
             ctxG.varEstActual.porcentaje =  false;
             ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[0]; // por defecto el primero
-            ctxC.tituloGrafico.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
-            ctxC.tituloDatos.html('Datos para ' +ctxG.varEstActual.variable_estadistica);
+            ctxC.tituloDatos.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
+            ctxC.tituloGrafico.html( 'Datos para ' + ctxG.varEstActual.variable_estadistica);
             ctxC.cargarHTMLCalculosPredefinidos(ctxG.varEstActual);
             objRequest = ctxC.crearRequest(ctxG.varEstActual);
             ctxC.obtenerData(objRequest);
@@ -819,6 +592,7 @@ $(function(){
     });
 
 });
+
 </script>
 
 

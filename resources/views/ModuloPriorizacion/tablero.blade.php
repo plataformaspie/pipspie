@@ -736,7 +736,7 @@
     function funcionDespuesDePivotear(){
         ctxPiv.tranformarDatosDePivot();
         ctxGra.graficar();
-        console.log(ctxG.pivot);
+        // console.log(ctxG.pivot);
     }
 </script>
 
