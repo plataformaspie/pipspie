@@ -2,17 +2,17 @@
 
 @section('header')
 
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.base.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.light.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.darkblue.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.arctic.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.energyblue.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.dark.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.shinyblack.css') }}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('jqwidgets4.4.0/jqwidgets/styles/jqx.ui-start.css') }}" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.light.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.darkblue.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.arctic.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.dark.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.shinyblack.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.ui-start.css" type="text/css" />
 
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap-urban-master/urban.css') }}" type="text/css"/>
-<link rel="stylesheet" href="{{ asset('plugins/bower_components/select2/dist/css/select2.min.css') }}" type="text/css"/>
+<link rel="stylesheet" href="/plugins/bower_components/bootstrap-urban-master/urban.css" type="text/css"/>
+<link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 
 <style>
 .highlight { background-color: yellow }
@@ -31,14 +31,14 @@
         <div class="row">
             <div id="contenido_proys" class="col-md-8">
                 <div class="box white-box p-10">
-                    <h3 class="box-title"> Lista de proyectos PDES 
+                    <h3 class="box-title"> Lista de proyectos PDES <b><span id="cantidad_proyectos"></span></b>
                         <button id="btnAgregarEditar" class="btn btn-primary  waves-effect waves-light pull-right"  >  <!-- data-toggle="modal" data-target="#form_proyecto"  --> 
                             <i class="fa fa-plus m-l-5"></i><span> Agregar Proyecto</span> 
                         </button>
                     </h3>
                     <div id='jqxNavBarList'>
                         <div>
-                            <b> </b>
+                            <b></b>
                         </div>
                         <div>
                             <div id="gridP"> </div>
@@ -62,7 +62,7 @@
 
 <!--=========================================================================================================================== -->
 <!--====                                                                FORM                                        =========== -->
-<!--====                                                                                                           =========== -->
+<!--====                                                                                                            =========== -->
 
 <form id="form_proyecto" class="modal fadein " role="dialog">
     <div class="modal-dialog modal-lg">
@@ -140,28 +140,27 @@
 
 
 @push('script-head')
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcore.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxdata.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxbuttons.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxscrollbar.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxmenu.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxlistbox.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxdropdownlist.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxradiobutton.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.sort.js')}}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.filter.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.selection.js') }}"></script>
-{{-- <script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.pager.js') }}"></script> --}}
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxgrid.columnsresize.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxnavigationbar.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcombobox.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxpanel.js')}}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets4.4.0/jqwidgets/jqxcheckbox.js')}}"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxmenu.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxlistbox.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdropdownlist.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxradiobutton.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.sort.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.filter.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.selection.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxgrid.columnsresize.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxnavigationbar.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcombobox.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpanel.js"></script>
+<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcheckbox.js"></script>
 <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/globalization/globalize.js"></script>
 <script type="text/javascript" src="/js/jqwidgets-localization.js"></script>
 
-<script type="text/javascript" src="{{ asset('plugins/bower_components/select2/dist/js/select2.min.js')}}"></script>
+<script type="text/javascript" src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
 <script type="text/javascript">
@@ -196,6 +195,7 @@ $(function ()
         objSel: null, //objeto seleccionado
         source : {},
         btnAgregar: $("#btnAgregarEditar"),
+        cantidad_proyectos: $("#cantidad_proyectos"),
         grid : $("#gridP"),
 
         llenarLista : function(){
@@ -209,6 +209,7 @@ $(function ()
                     //url: ''
                     datafields: [
                         {name: 'id', type: 'string'},
+                        {name: 'cod_pm', type: 'string'},
                         {name: 'codigo', type: 'string'},
                         {name: 'nombre_proyecto', type: 'string'},
                         {name: 'sector', type: 'string'},
@@ -234,7 +235,7 @@ $(function ()
                 ctxList.grid.jqxGrid(
                 {
                     ready: function () {   
-                        $(".jqx-grid-content").css({"z-index": "100", 'font-size':'10px'
+                        $(".jqx-grid-content").css({"z-index": "100", 'font-size':'9px'
                         });  
                     },
                     theme: cnf.theme,
@@ -250,8 +251,9 @@ $(function ()
                     enabletooltips: true,
                     columns: [
                         // {text: 'id', datafield: 'id', sortable: false},
-                        {text: 'codigo', datafield: 'codigo', cellsalign: 'right', width: 80},
-                        {text: 'nombre Proyecto', datafield: 'nombre_proyecto', width: '50%'},
+                        {text: 'P.M.', datafield: 'cod_pm', width: 35},
+                        {text: 'Cód dem', datafield: 'codigo', cellsalign: 'right', width: 80},
+                        {text: 'Proyecto PDES', datafield: 'nombre_proyecto', width: '50%'},
                         {text: 'Sector', datafield: 'sector', },
                         {text: 'Responsable', datafield: 'responsable', },
                         {text: 'Costo ', datafield: 'costo_total', cellsformat: 'f', cellsalign: 'right'},
@@ -260,6 +262,7 @@ $(function ()
                         {text: ' ', datafield: 'id', cellsrenderer: rendererEdit, width: 30},
                         ]
                     });
+                ctxList.cantidad_proyectos = ctxList.listaProyectos.length;
             });
         },
         refreshLista : function(idElemSel){
@@ -312,7 +315,7 @@ $(function ()
                 nombre_proyecto: this.nombre_proyecto.val(),
                 sector: this.sector.val(),
                 codigo: this.codigo.val(),
-                costo_total:  this.costo_total.val().trim().replace(/\./, '').replace(/,/,'.'),
+                costo_total:  this.costo_total.val().trim().replace(/\./g, '').replace(/,/,'.'),
                 responsable: this.responsable.val(),
                 resultados: this.resultados.val(),
                 sisinweb: this.sisinweb.val()
@@ -336,33 +339,21 @@ $(function ()
                 ctxForm.resultados.select2('val', resultadosIds);
             }                
 
-            if(objproyecto.sisinweb.length > 0)
+            if(objproyecto.sisinweb_count > 0)
             {
-                ctxForm.sisinweb.val('');
-                options = [];
-                for(i=0;i<objproyecto.sisinweb.length; i++)
-                {
-                    obj = objproyecto.sisinweb[i];
-                    text = obj.sw_cod_pmra + '-' + obj.sw_nombre_proyecto + '<br><b>cod_sisin: </b>' + obj.sw_codigo 
-                                    + ' <b>Monto presupuestado: </b>' + obj.sw_monto_presupuestado + '<br><b>entidad: </b>' + obj.sw_entidad 
-                                    + '<br>' + obj.sw_depto + ' - ' + obj.sw_prov + ' - '+ obj.sw_mun ;
-                    id = obj.id_sisinweb;
-                    var newOption = {id: id, text: text }; // new Option(text, id, true, true);
-                    options.push(newOption);
+                $.get(cnf.urlBase + '/gestionproyectos/buscar/sisin', {'id_proyecto_pdes': objproyecto.id}, function(res){
+                    ctxForm.sisinweb.val('');
 
-                    // ctxForm.sisinweb.append(newOption);
-                }
-
-                ctxForm.sisinweb.data().select2.updateSelection(options);
-                // ctxForm.sisinweb.val(options);
-                // ctxForm.sisinweb.trigger('change');
-    // Append it to the select
-    
-
-                // var sisinWebIds = [];
-                // for(i=0;i<objproyecto.sisinweb.length; i++)
-                //     sisinWebIds.push(objproyecto.sisinweb[i].id_sisinweb);
-                // ctxForm.sisinweb.select2('val', sisinWebIds);
+                    options = res.datos.map(function(item){
+                        return {
+                            id : item.codigo_sisin,
+                            text:  item.cod_pmra + '-' + item.nombre_proyecto + '<br><b>cod_sisin: </b>' + item.codigo_sisin 
+                            + ' <b>Monto presupuestado: </b>' + item.monto_presupuestado + '<br><b>entidad: </b>' + item.entidad 
+                            + '<br>' + item.depto + ' - ' + item.prov + ' - '+ item.mun 
+                        }
+                    })
+                    ctxForm.sisinweb.data().select2.updateSelection(options);
+                })
             }
         },
         mostrarForm: function (objSel = null) {            
@@ -382,7 +373,6 @@ $(function ()
                     placeholder: 'Seleccione el/los resultados',
                     dropdownParent: $('#form_proyecto'),
                     cache: false,
-                    allowClear:true,
                     language: "es",
                     formatSelection: function (val) {
                         return "<div title ='" + val.text + "'>" +val.text.substr(0,20) + '...' + "</div>"
@@ -397,7 +387,6 @@ $(function ()
             })
         },
         iniciarProyectosSisinweb: function() {
-
                 ctxForm.sisinweb.select2({
                     placeholder: 'Seleccione proyecto SISIN - WEB',
                     // dropdownParent: $('#form_proyecto'),
@@ -408,19 +397,17 @@ $(function ()
                         dataType: 'json',
                         type: 'GET',
                         data: function (params) {
-                            console.log(params)
                             return {
                                 term: params, // search term
                             };
                         },
                         results: function (data) {
-                            console.log(data);
                             var items = data.datos.map(function(obj){
                                 return { 
-                                    'id': obj.id, 
+                                    'id': obj.codigo_sisin, 
                                     'text' : obj.cod_pmra + '-' + obj.nombre_proyecto + '<br><b>cod_sisin: </b>' + obj.codigo_sisin 
-                                    + ' <b>Monto presupuestado: </b>' + obj.monto_presupuestado + '<br><b>entidad: </b>' + obj.entidad 
-                                    + '<br>' + obj.depto + ' - ' + obj.prov + ' - '+ obj.mun 
+                                    + /*' <b>Monto presupuestado: </b>' + obj.monto_presupuestado +*/ '<br><b>entidad: </b>' + obj.entidad + '<br><b>sector: </b>' + obj.sector
+                                    /*+ '<br>' + obj.depto + ' - ' + obj.prov + ' - '+ obj.mun */
                                 }
                             })
                             return { results : items};
@@ -434,35 +421,8 @@ $(function ()
                     formatSelection: function (val) {
                         return  "<div title ='" + val.text + "'>" +val.text.substr(0,25) + '...' + "</div>"
                     },
-                })
-
-       
+                })       
         },
-        // iniciarProyectosSisinweb: function() {
-        //     $.get(cnf.urlBase + '/gestionproyectos/listar/sisinweb', function(res){
-        //         sisinweb = res.datos;
-        //         ctxForm.sisinweb.select2({
-        //             placeholder: 'Seleccione proyecto SISIN-WEB',
-        //             dropdownParent: $('#form_proyecto'),
-        //             cache: false,
-        //             allowClear:true,
-        //             language: "es",
-        //             formatResult: function (val) {
-        //                 return "<div>" +val.text + "</div>"
-        //             },
-        //             formatSelection: function (val) {
-        //                 return  "<div title ='" + val.text + "'>" +val.text.substr(0,25) + '...' + "</div>"
-        //             },
-        //         })
-        //         for(i=0; i < sisinweb.length; i++)
-        //         {
-        //             op = sisinweb[i];
-        //             opcionNombre = op.cod_accion_plan + '- '+ op.nombre_proyecto //+ ' --<b> CODIGO:</b> ' + op.codigo_sisin + ' -- ' + op.depto  + ' - ' + op.prov + ' - '  + op.mun;
-        //             html = '<option value="' + op.id + '" > ' + opcionNombre + '</option> ';
-        //             ctxForm.sisinweb.append(html);
-        //         }
-        //     })
-        // },
         iniciarSectores: function(){
             $.get(cnf.urlBase + '/gestionproyectos/listar/sectores', function(res){
                 var sectores = res.datos;
@@ -477,10 +437,8 @@ $(function ()
                     placeholder: 'Seleccione sector',
                     dropdownParent: $('#form_proyecto'),
                     cache: false,
-                    // allowClear:true,
                     // language: "es",
                 })
-
             })
         },
         iniciarInstituciones: function(){
@@ -498,7 +456,6 @@ $(function ()
                     placeholder: 'Entidad responsable',
                     dropdownParent: $('#form_proyecto'),
                     cache: false,
-                    // allowClear:true,
                     // language: "es",
                 });
 
@@ -538,129 +495,149 @@ $(function ()
         // sup2 : $("#sel_sup2"),
         inf : $("#sel_inf"),
         inf2 : $("#sel_inf2"),
-        htmlGen: function(datosSP){
-            if(datosSP == null)
-            { 
-                var htmlSup = function(){
-                    var objSel = ctxList.objSel;
-                    var htmlsup = '<h4>Proyecto PDES: <button id="sel_btn_editar" class="btn btn-xs btn-primary pull-right"><span> editar </span><i class="fa fa-pencil "></i></button></h4>'
-                    +'<div><h5 class="bg-primary-dark">' + objSel.nombre_proyecto + '</h5>'
-                    +'ID: ' + objSel.id + ' </div>' 
-                    +'<div class="bg-white" style="color: #333"> '
-                    +'    <ul class="list-group m-2">'
-                    +'        <li class="list-group-item">'
-                    +'            <div><b>Código</b>: ' +  objSel.codigo 
-                    +'            </br><b>Sector: </b>' +  objSel.sector  
-                    +'            </br><b>Responsable: </b>' +  objSel.responsable  
-                    +'            </br><b>Costo total: </b>' +  objSel.costo_total  
-                    +'            </div> '
-                    +'        </li> '
-                    +'    </ul>';
 
-                    badgeColor = objSel.resultados_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;         
-                    htmlsup += '<h5>Resultados asociados <span class="badge ' + badgeColor + ' pull-right">'+ objSel.resultados_count + '</span></h5>';
-                    if(objSel.resultados_count > 0)
-                    {
-                        htmlsup += '<ul class="list-group m-2">';
-                        for (var i = 0; i < objSel.resultados.length; i++) {
-                            var r = objSel.resultados[i];
-                            htmlsup += '<li class="list-group-item">'
-                                        +'<div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ' ( ' + r.cod_pmr + ' )</b>'
-                                        +'    <br><b>Resultado: </b>' + r.desc_r 
-                                        +'</div>'
-                                    +'</li>';
-                        }
-                        htmlsup += '</ul>'
-                        +'</div>';
-                    };
-                    return htmlsup
+        htmlGen: function(){
+            var htmlSup = function(){
+                var objSel = ctxList.objSel;
+                var htmlsup = '<h4>Proyecto PDES: <button id="sel_btn_editar" class="btn btn-xs btn-primary pull-right"><span> editar </span><i class="fa fa-pencil "></i></button></h4>'
+                +'<div><h5 class="bg-primary-dark">' + objSel.nombre_proyecto + '</h5>'
+                +'ID: ' + objSel.id + ' </div>' 
+                +'<div class="bg-white" style="color: #333"> '
+                +'    <ul class="list-group m-2">'
+                +'        <li class="list-group-item">'
+                +'            </br><b>PILAR ' + objSel.cod_p + '</b>: ' + objSel.desc_p  
+                +'            </br><b>META ' + objSel.cod_m + '</b>: ' + objSel.desc_m  
+                +'            <div><b>Código</b>: ' +  objSel.codigo 
+                +'            </br><b>Sector: </b>' +  objSel.sector  
+                +'            </br><b>Responsable: </b>' +  objSel.responsable  
+                +'            </br><b>Costo total: </b>' +  objSel.costo_total   
+                +'            </div> '
+                +'        </li> '
+                +'    </ul>';
+
+                badgeColor = objSel.resultados_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;         
+                htmlsup += '<h5 class="p-10 "<b>Resultados asociados </b><span class="badge ' + badgeColor + ' pull-right">'+ objSel.resultados_count + '</span></h5>';
+                if(objSel.resultados_count > 0)
+                {
+                    htmlsup += '<ul class="list-group m-2">';
+                    for (var i = 0; i < objSel.resultados.length; i++) {
+                        var r = objSel.resultados[i];
+                        htmlsup += '<li class="list-group-item">'
+                        +'<div><b> Pilar ' + objSel.cod_p + ', Meta ' + objSel.cod_m + ', Resultado ' + r.cod_r + ' ( ' + r.cod_pmr + ' )</b>'
+                        +'    <br><b>Resultado '  + r.cod_r  +': </b> ' + r.desc_r 
+                        +'</div>'
+                        +'</li>';
+                    }
+                    htmlsup += '</ul>'
+                    +'</div>';
                 };
-                var htmlInf2 = function(){
-                    var objSel = ctxList.objSel;
-                    badgeColor = objSel.sisinweb_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;  
-                    var htmlInf2 = '<h5><b>Proyectos SISINWEB asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.sisinweb_count + '</span></h5>';
-                    if(objSel.sisinweb_count > 0)
+                ctxElem.sup.html(htmlsup); 
+            };
+            var htmlInf = function(){
+                var badgeCountPullRight = '';
+                var htmlinf ='<h5 class="p10"><b>Pilar, Meta, Res, Accion de Proyecto en SP </b>  $badgeCountPullRight </h5>' ;
+                ctxElem.inf.html(htmlinf);
+                $.get(cnf.urlBase + '/gestionproyectos/sp/obtener_proyecto_sp/' + ctxList.objSel.codigo, function(res){
+                    var proyectoSP = res.data;
+                    if(res.mensaje != 'ok')
                     {
-                        htmlInf2 += '<ul class="list-group bg-white m-2" style="color: #333">';
-                        for (var i = 0; i < objSel.sisinweb.length; i++) {
-                            var sw = objSel.sisinweb[i];
-                            htmlInf2 += '<li class="list-group-item">'
-                            + '<div><b> Nombre proy. SISINWEB: ' + sw.sw_nombre_proyecto + '</b>'
-                            + '</br><b>Codigo sisinweb: ' + sw.sw_codigo +'</b>'
-                            + '</br>Pilar: ' + sw.sw_cod_p + ', Meta: ' + sw.sw_cod_m + ', Resultado: ' + sw.sw_cod_r + ', ('+ sw.cod_pmr + ')</b>'     
-                            + '</br>Entidad: ' + sw.sw_entidad 
-                            + '</br>Monto presupuestado: ' + sw.sw_monto_presupuestado  
-                            + '</br>Lugar: ' + sw.sw_depto + ', ' + sw.sw_prov + ', ' + sw.sw_mun       
-                            + '</div></li>';
-                        }
-                        htmlInf2 += '</ul>'
-                    };
-                    return htmlInf2
-                }
-
-                ctxElem.sup.html(htmlSup());
-                // ctxElem.sup2.html(htmlSup2());                
-                ctxElem.inf2.html(htmlInf2());
-            }
-            else{
-                ctxElem.inf.html('');
-                var htmlinf ='<h5><b>Proyecto SP: </b></h5>' ;
-                var htmlInf = function(){
-                    if(datosSP.mensaje != 'ok')
-                    {
-                        htmlinf += '<div class="bg-white" style="color: #111"><b>' + datosSP.mensaje + '</b></div>';
+                        htmlinf += '<div class="bg-white" style="color: #111"><b>' + res.mensaje + '</b></div>';
                     }
                     else
                     { 
-                        proyectoSP = datosSP.data;
-                        htmlinf+= '<div><h5 class="bg-info-light">' + proyectoSP.nombre_proyecto +'</h5></div>'
-                        + '<div class="bg-white" style="color: #333">'
-                        + '     <ul class="list-group m-2">'
-                        + '         <li class="list-group-item">'
-                        + '         <div><b>Código</b>: ' +  proyectoSP.codigo 
-                        + '         </br><b>Sector: </b>' +  proyectoSP.sector  
-                        + '         </br><b>Costo total: </b>' +  proyectoSP.total_costo  
-                        + '         </div></li>'
-                        + '     </ul>';
+                        // htmlinf+= '<div><h5 class="bg-info-light">' + proyectoSP.nombre_proyecto +'</h5></div>'
+                        // + '<div class="bg-white" style="color: #333">';
+                        // + '     <ul class="list-group m-2">'
+                        // + '         <li class="list-group-item">'
+                        // + '         <div><b>Código</b>: ' +  proyectoSP.codigo 
+                        // + '         </br><b>Sector: </b>' +  proyectoSP.sector  
+                        // + '         </br><b>Costo total: </b>' +  proyectoSP.total_costo  
+                        // + '         </div></li>'
+                        // + '     </ul>';
 
                         if(proyectoSP.contextoProyecto)
                         { 
-                            badgeColor = cnf.alerta.positivo;         
-                            htmlinf += '<h5>Resultados asociados <span class="badge ' + badgeColor + ' pull-right">'+ proyectoSP.contextoProyecto.length + '</span></h5>'
-                            +'<ul class="list-group m-2">';
+                            badgeColor = cnf.alerta.positivo;  
+                            badgeCountPullRight = '<span class="badge ' + badgeColor + ' pull-right">'+ proyectoSP.contextoProyecto.length + '</span> ';      
+                            htmlinf += 
+                                '<div class="bg-white" style="color: #333">'
+                                +'<ul class="list-group m-2">';
                             for (var i = 0; i < proyectoSP.contextoProyecto.length; i++) {
                                 var r = proyectoSP.contextoProyecto[i];
-                            // responsables = 
-                            htmlinf += '<li class="list-group-item">'
-                            +'      <div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ', Accion: ' + r.cod_a + ', ( ' + r.cod_pmra + ' )</b>'
-                            +'          <br><b>Resultado: </b>' + r.desc_r 
-                            +'          <br><b>Accion: </b>' + r.desc_a
-                            +'      </div>'
-                            +'      <div>'
-                            +'          <b>Entidad Ejecutora: </b>' + r.ejecutor 
-                            +'          <br><b>Entidades Responsables: </b>' 
-                            +'          <ul>'
-                            +       r.responsables.reduce(function(anterior, item){
-                                return anterior + '<li>' + item + '</li>';
-                            },'') 
-                            +'          </ul>'
-                            +'      </div>'
-                            +'</li>';                        }
-                            htmlinf += '</ul>';
+                                // responsables = 
+                                htmlinf += '<li class="list-group-item">'
+                                +'      <div><b> Pilar: ' + r.cod_p + ', Meta: ' + r.cod_m + ', Resultado: ' + r.cod_r + ', Accion: ' + r.cod_a + ', ( ' + r.cod_pmra + ' )</b>'
+                                +'          <br><b>Resultado: </b>' + r.desc_r 
+                                +'          <br><b>Accion: </b>' + r.desc_a
+                                +'      </div>'
+                                +'      <div>'
+                                +'          <b>Entidad Ejecutora: </b>' + r.ejecutor 
+                                +'          <br><b>Entidades Responsables: </b>' 
+                                +'          <ul>'
+                                +       r.responsables.reduce(function(anterior, item){
+                                    return anterior + '<li>' + item + '</li>';
+                                },'') 
+                                +'          </ul>'
+                                +'      </div>'
+                                +'</li>';                        }
+                                htmlinf += '</ul>';
                         }
                         else
                         {
                             badgeColor = cnf.alerta.cero;         
-                            htmlinf += '<div class=" m-2"><b>Resultados asociados </b> <span class="badge ' + badgeColor + ' pull-right">'+ 0 + '</span></div>';
+                            badgeCountPullRight = '<span class="badge ' + badgeColor + ' pull-right">'+ 0 + '</span> ';  
                         }
 
                         htmlinf += '</div>' ;
+                        htmlinf = htmlinf.replace('$badgeCountPullRight', badgeCountPullRight);
+                        ctxElem.inf.html(htmlinf);
                     }
-                    return htmlinf
+                });
+                
 
-                };
-                ctxElem.inf.html(htmlInf());
+            };    
+            var htmlInf2 = function(){
+                var objSel = ctxList.objSel;
+                badgeColor = objSel.sisinweb_count > 0   ? cnf.alerta.positivo : cnf.alerta.cero;  
+                var htmlInf2 = '<h5 class="p10"><b>Proyectos SISINWEB vinculados con el proyecto </b> <span class="badge ' + badgeColor + ' pull-right">'+ objSel.sisinweb_count + '</span></h5>';
+                ctxElem.inf2.html(htmlInf2);
+                if(objSel.sisinweb_count > 0)
+                {
+                    $.get(cnf.urlBase + '/gestionproyectos/buscar/sisin', {'id_proyecto_pdes': objSel.id}, function(res){
+                        htmlInf2 += '<ul class="list-group bg-white m-2" style="color: #333">';
+
+                        sisingroup = _.chain(res.datos).groupBy(function(item){ return item.codigo_sisin}).values().value();
+                        for (var i = 0; i < sisingroup.length; i++) {
+                            var sw = sisingroup[i][0];
+                            htmlInf2 += '<li class="list-group-item">'
+                            + '<div><h5 clas="bg-warning-light"><b>Codigo sisin: ' + sw.codigo_sisin +'</b></h5>'
+                            + '<b> Nombre proy. SISIN: ' + sw.nombre_proyecto + '</b>'
+                            + '</br>Pilar: ' + sw.cod_p + ', Meta: ' + sw.cod_m + ', Resultado: ' + sw.cod_r + ', Accion: '+ sw.cod_a + ' ('+ sw.cod_pmra + ')</b>'
+                            + '</br><b>Proyecto por lugares y presupuesto </b> <span class="badge bg-default">' + sisingroup[i].length + '</span>' 
+                            + '</div>';
+
+                            var desagregados = _.reduce(sisingroup[i], function(anterior, item){
+                               return anterior  + '<div>'
+                                                + '     </br>Entidad: ' + item.entidad 
+                                                + '     </br>Monto presupuestado: ' + item.monto_presupuestado  
+                                                + '     </br>Lugar: ' + item.depto + ', ' + item.prov + ', ' + item.mun       
+                                                + '</div>';
+
+                            }, '');
+                            console.log(desagregados);
+                            htmlInf2 += desagregados;
+
+                        }
+                        htmlInf2 += '</li></ul>'
+                        ctxElem.inf2.html(htmlInf2);
+                    });
+               };
+                // return htmlInf2
             }
+
+            htmlSup();
+            htmlInf()
+            htmlInf2(); 
         },
     };
 
@@ -687,10 +664,6 @@ $(function ()
     ctxList.grid.on('rowselect', function (event) {
         index = event.args.rowindex;
         ctxList.objSel = ctxList.listaProyectos[index];
-        $.get(cnf.urlBase + '/gestionproyectos/sp/obtener_proyecto_sp/' + ctxList.objSel.codigo, function(res){
-            ctxElem.htmlGen(res);
-        })
-
         ctxElem.htmlGen();
     });
 
@@ -725,12 +698,13 @@ $(function ()
     // Al hacer click en el boton guardar de la ventana MOdal /////////////////////////////////////////////////
     ctxForm.btnguardar.click(function () {
         var proyecto = ctxForm.getObjProyecto();
+        console.log(proyecto)
         if(ctxForm.validarForm(proyecto)) 
         {
             proyecto._token =  $('input[name=_token]').val();
-            $.post(cnf.urlBase + '/gestionproyectos', proyecto, function () {
-                ctxList.refreshLista(proyecto.id);
-            }); 
+            // $.post(cnf.urlBase + '/gestionproyectos', proyecto, function () {
+            //     ctxList.refreshLista(proyecto.id);
+            // }); 
         }
         else
             return false;
