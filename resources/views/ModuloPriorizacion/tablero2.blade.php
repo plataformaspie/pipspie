@@ -378,24 +378,24 @@
             ctxC.tituloGrafico.html( '');
         },
         mostrarPantallas: function(op){
-            $("#divTitulo a").removeClass('disabled');
-            $("#btn_" + op).addClass('disabled'); 
-            if(op == 'grafico')
-            {                
-                $("#contenedorDatos").show();
-                $("#divGrafico").show();
-                $("#divDatos").hide();
-            }
-            else if (op=='tabla')
-            {
-                $("#contenedorDatos").show();
-                $("#divGrafico").hide();
-                $("#divDatos").show();
-            }
-            else
-            {
-                $("#contenedorDatos").hide();
-            }
+            // $("#divTitulo a").removeClass('disabled');
+            // $("#btn_" + op).addClass('disabled'); 
+            // if(op == 'grafico')
+            // {                
+            //     $("#contenedorDatos").show();
+            //     $("#divGrafico").show();
+            //     $("#divDatos").hide();
+            // }
+            // else if (op=='tabla')
+            // {
+            //     $("#contenedorDatos").show();
+            //     $("#divGrafico").hide();
+            //     $("#divDatos").show();
+            // }
+            // else
+            // {
+            //     $("#contenedorDatos").hide();
+            // }
         }
 
     };
