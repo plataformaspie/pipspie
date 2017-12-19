@@ -8,80 +8,86 @@
 @endsection
 
 @section('content')
-  <div class="container">
-    <h2>Listado de Módulos</h2>
-    <div id='jqxWidget'>
-        <div id="ModulosGrid">
-        </div>
+  <div class="container" id="miContenedor"> 
 
-       <div id="mensajesModulos" style="width: 800px; min-height:20px;"></div>
 
-       <div id="popupModulo">
-          <div>Módulo</div>
-          <div style="overflow: hidden;">
-            <div id="mensajes"></div>
-            <form class="form" id="form" target="form-iframe"  method="post" action="guardarmodulo" >
-                <table class="tabla-ventana">
-                    <tr>
-                        <td align="right" style="color:#000000; width: 40%;">Nombre del Módulo:</td>
-                        <td><input name="titulo" type="text" id="tituloInput" /></td>
-                        <input type="hidden" name="id" id="idInput" value="">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Descripción:</td>
-                        <td><input name="descripcion" type="text" id="descripcionInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Url:</td>
-                        <td><input name="url" type="text" id="urlInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Tipo Menú:</td>
-                        <td><input name="tipo_menu" type="text" id="tipo_menuInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Ícono:</td>
-                        <td><input name="icono" type="text" id="iconoInput" /></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                        <table style="width: 100%;">
-                          <tr>
-                            <td align="right" style="color:#000000; width: 40%;">Orden:</td>
-                            <td><div name="orden"  id="ordenNumberInput"></div></td>
-                            <td rowspan="3">
-                              <img id="imagenCargada" src="" alt="Imagen No Cargada" width="106" height="81">
-                              <input type="file" id="image_uploads" accept="image/x-png, image/gif, image/jpeg, image/jpg" />
-                              <label for="image_uploads" class="jqx-rc-all-ui-start jqx-button jqx-button-ui-start jqx-fill-state-fred-ui-start labelUpload">Cargar imagen</label>                              
-                            </td>
-                          </tr>
-                          <tr>
-                            <td align="right" style="color:#000000">Activo:</td>
-                            <td><div name="activo"  id="activoCheckBox"></div></td>
-                          </tr>
-                          <tr>
-                            <td align="right" style="color:#000000">&nbsp;</td>
-                            <td>&nbsp;</td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                    </tr>
-                    <tr>
-                        <td align="right"></td>
-                        <td style="padding-top: 10px;" align="right">
-                            <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />                            
-                            <input id="Cancel" type="button" value="Cerrar" />
-                        </td>
-                    </tr>
+    <div style="width: 1000px; height: 100%; margin-left: auto; margin-right: auto;"> <!-- Centrador --> 
+      <h2>Listado de Módulos</h2>
 
-                </table>
-            </form>
-          </div>
+      <div id="ModulosGrid">
+      </div>
+
+      <div id="mensajesModulos" style="width: 1000px; min-height:20px;"></div>
+
+    </div> <!-- Centrador --> 
+
+
+    <div id="popupModulo" style="min-height: 346px;">
+       <div>Módulo</div>
+       <div style="overflow: hidden; min-height: 310px;">
+         <div id="mensajes"></div>
+         <form class="form" id="form" target="form-iframe"  method="post" action="guardarmodulo" >
+             <table class="tabla-ventana">
+                 <tr>
+                     <td align="right" style="color:#000000; width: 40%;">Nombre del Módulo:</td>
+                     <td><input name="titulo" type="text" id="tituloInput" /></td>
+                     <input type="hidden" name="id" id="idInput" value="">
+                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Descripción:</td>
+                     <td><input name="descripcion" type="text" id="descripcionInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Url:</td>
+                     <td><input name="url" type="text" id="urlInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Tipo Menú:</td>
+                     <td><input name="tipo_menu" type="text" id="tipo_menuInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Ícono:</td>
+                     <td><input name="icono" type="text" id="iconoInput" /></td>
+                 </tr>
+                 <tr>
+                   <td colspan="2">
+                     <table style="width: 100%;">
+                       <tr>
+                         <td align="right" style="color:#000000; width: 40%;">Orden:</td>
+                         <td><div name="orden"  id="ordenNumberInput"></div></td>
+                         <td rowspan="3">
+                           <img id="imagenCargada" src="" alt="Imagen No Cargada" width="106" height="81">
+                           <input type="file" id="image_uploads" accept="image/x-png, image/gif, image/jpeg, image/jpg" />
+                           <label for="image_uploads" class="jqx-rc-all-ui-start jqx-button jqx-button-ui-start jqx-fill-state-fred-ui-start labelUpload">Cargar imagen</label>                              
+                         </td>
+                       </tr>
+                       <tr>
+                         <td align="right" style="color:#000000">Activo:</td>
+                         <td><div name="activo"  id="activoCheckBox"></div></td>
+                       </tr>
+                       <tr>
+                         <td align="right" style="color:#000000">&nbsp;</td>
+                         <td>&nbsp;</td>
+                       </tr>
+                     </table>
+                   </td>
+                 </tr>
+                 <tr>
+                 </tr>
+                 <tr>
+                     <td align="right"></td>
+                     <td style="padding-top: 10px;" align="right">
+                         <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />                            
+                         <input id="Cancel" type="button" value="Cerrar" />
+                     </td>
+                 </tr>
+
+             </table>
+         </form>
        </div>
     </div>
+
 
     <div id="popupDeleteConfirm">
       <div>
@@ -101,7 +107,7 @@
       </div>
     </div>
 
-  </div>
+  </div> <!--  id="miContenedor" -->
 @endsection
 
 
@@ -145,6 +151,33 @@
   <script type="text/javascript" src="{{ asset('jqwidgets5.4.0/jqwidgets/jqxfileupload.js') }}"></script>
 
   <style type="text/css">
+
+    html, body, #wrapper, .container-fluid {
+      height:100% !important;
+      padding: 0 0 0 0 !important;
+    }
+
+    #page-wrapper{
+      height: calc(100% - 60px) !important;
+      /*min-height: calc(100% - 160px) !important; - 60px -60px (100 80 60) cabecera y piede pagina*/
+    }
+
+    ul {
+      margin: 0 !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0 !important;
+      padding: 10px 0 !important;
+    }
+
+    #miContenedor { /* para que en los celulares salga mas optimizada la pantalla */
+      overflow:auto; 
+      width: 100% !important; 
+      /*height:calc(100% - 42px);*/
+      min-height:calc(100% - 60px);
+    }
+
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
       background-color: #de857b;
@@ -225,6 +258,16 @@
       font-weight: normal; 
       color: #026890;
     }
+
+
+    #pagerModulosGrid > div{
+        width: 400px !important;
+    }
+
+    .container{
+        width: 100% !important; /* para que en los celulares salga mas optimizada la pantalla */
+    }
+
   </style>
 
 <script type="text/javascript">
@@ -724,7 +767,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false, 
             success: function(data){
-                $('#imagenCargada').attr('src', '../img/' + data.url_imagen);
+                $('#imagenCargada').attr('src', '../img/' + data.url_imagen_tmp);
                 if ( data.status == 'OK' ) {
                     $("#iconoInput").val(data.url_imagen);
                 }

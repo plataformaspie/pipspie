@@ -44,6 +44,10 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
   public function guardarMenu(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $descripcion = $request->input('descripcion');
       $url = $request->input('url');
@@ -72,6 +76,10 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
   public function borrarMenu(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $affected = \DB::delete('delete from menus where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
@@ -87,6 +95,10 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
  public function guardarSubmenu(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $descripcion = $request->input('descripcion');
       $url = $request->input('url');
@@ -115,6 +127,10 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
   public function borrarSubmenu(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $affected = \DB::delete('delete from sub_menus where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";

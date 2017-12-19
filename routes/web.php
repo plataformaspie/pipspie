@@ -47,7 +47,6 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('borrarmodulo', 'ModuloAdministracion\AbmModulosController@borrarModulo');
               Route::post('imagenupload', 'ModuloAdministracion\AbmModulosController@get_image');
 
-
               Route::get('abm_menus', 'ModuloAdministracion\AbmMenusController@index');
               Route::get('listamenus', 'ModuloAdministracion\AbmMenusController@listarMenus');
               Route::get('listamenus2', 'ModuloAdministracion\AbmMenusController@listarMenus2');  
@@ -69,6 +68,14 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('borrarrol', 'ModuloAdministracion\AbmRolesController@borrarRol');
               Route::post('guardarmenusroles', 'ModuloAdministracion\AbmRolesController@guardarMenusRoles');
               Route::post('guardarmodulosroles', 'ModuloAdministracion\AbmRolesController@guardarModulosRoles');
+
+              Route::get('abm_dashmenu', 'ModuloAdministracion\AbmDashMenuController@index');
+              Route::get('listadashmenu', 'ModuloAdministracion\AbmDashMenuController@listarDashMenu');
+              Route::get('listadashconfigs', 'ModuloAdministracion\AbmDashMenuController@listarDashConfigs');  
+              Route::post('guardardashmenu', 'ModuloAdministracion\AbmDashMenuController@guardarDashMenu');
+              Route::post('borrardashmenu', 'ModuloAdministracion\AbmDashMenuController@borrarDashMenu');
+
+              
           }
       );
       Route::group(

@@ -8,71 +8,73 @@
 @endsection
 
 @section('content')
-  <div class="container">
-    <h2>Listado de Menús</h2>
-    <div id='jqxWidget'>
+  <div class="container" id="miContenedor"> 
+
+    <div style="width: 1000px; height: 100%; margin-left: auto; margin-right: auto;"> <!-- Centrador --> 
+
+        <h2>Listado de Menús</h2>
         <div id="MenusGrid">
         </div>
-       <div id="mensajesMenus" style="width: 800px; min-height:20px;"></div>
+        <div id="mensajesMenus" style="width: 1000px; min-height:20px;"></div>
 
         <h4>Listado de Submenús</h4>
         <div id="SubMenusGrid">
         </div>
 
-       <div id="popupMenu">
-          <div>Menú</div>
-          <div style="overflow: hidden;">
-            <div id="mensajes"></div>
-            <form id="formMenu" target="iframeInexistente"  method="post" action="guardarmenu" >
-                <table class="tabla-ventana">
-                    <tr>
-                        <td align="right" style="color:#000000; width: 40%;">Título del Menú:</td>
-                        <td><input name="titulo" type="text" id="tituloInput" /></td>
-                        <input type="hidden" name="id" id="idInput" value="">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Descripción:</td>
-                        <td><input name="descripcion" type="text" id="descripcionInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Url:</td>
-                        <td><input name="url" type="text" id="urlInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Ícono:</td>
-                        <td><input name="icono" type="text" id="iconoInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Tipo Menú:</td>
-                        <td><input name="tipo_menu" type="text" id="tipo_menuInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Modulo:</td>
-                        <td align="left"><div name="id_modulo"  id="id_moduloComboBox"></div></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Orden:</td>
-                        <td align="left"><div name="orden"  id="ordenNumberInput"></div></td>
-                    </tr> 
-                    <tr>
-                        <td align="right" style="color:#000000">Activo:</td>
-                        <td align="left"><div name="activo"  id="activoCheckBox"></div></td>
-                    </tr>
-                    <tr>
-                        <td align="right"></td>
-                        <td style="padding-top: 10px;" align="right">
-                            <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
-                            <input id="Cancel" type="button" value="Cerrar" />
-                        </td>
-                    </tr>
+    </div> <!-- Centrador --> 
 
-                </table>
-            </form>
-          </div>
+    <div id="popupMenu">
+       <div>Menú</div>
+       <div style="overflow: hidden;">
+         <div id="mensajes"></div>
+         <form id="formMenu" target="iframeInexistente"  method="post" action="guardarmenu" >
+             <table class="tabla-ventana">
+                 <tr>
+                     <td align="right" style="color:#000000; width: 40%;">Título del Menú:</td>
+                     <td><input name="titulo" type="text" id="tituloInput" /></td>
+                     <input type="hidden" name="id" id="idInput" value="">
+                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Descripción:</td>
+                     <td><input name="descripcion" type="text" id="descripcionInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Url:</td>
+                     <td><input name="url" type="text" id="urlInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Ícono:</td>
+                     <td><input name="icono" type="text" id="iconoInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Tipo Menú:</td>
+                     <td><input name="tipo_menu" type="text" id="tipo_menuInput" /></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Modulo:</td>
+                     <td align="left"><div name="id_modulo"  id="id_moduloComboBox"></div></td>
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Orden:</td>
+                     <td align="left"><div name="orden"  id="ordenNumberInput"></div></td>
+                 </tr> 
+                 <tr>
+                     <td align="right" style="color:#000000">Activo:</td>
+                     <td align="left"><div name="activo"  id="activoCheckBox"></div></td>
+                 </tr>
+                 <tr>
+                     <td align="right"></td>
+                     <td style="padding-top: 10px;" align="right">
+                         <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
+                         <input id="Cancel" type="button" value="Cerrar" />
+                     </td>
+                 </tr>
+
+             </table>
+         </form>
        </div>
-    </div> <!-- jqxWidget -->
-
+    </div>
 
     <div id="popupDeleteConfirm">
       <div>
@@ -161,7 +163,7 @@
     </div>
 
 
-  </div>
+  </div> <!--  id="miContenedor" -->
 @endsection
 
 @push('script-head')
@@ -202,6 +204,34 @@
   <script type="text/javascript" src="{{ asset('jqwidgets5.4.0/jqwidgets/jqxvalidator.js') }}"></script>
 
   <style type="text/css">
+
+    html, body, #wrapper, .container-fluid {
+      height:100% !important;
+      padding: 0 0 0 0 !important;
+    }
+
+    #page-wrapper{
+      height: calc(100% - 60px) !important;
+      /*min-height: calc(100% - 160px) !important; - 60px -60px (100 80 60) cabecera y piede pagina*/
+    }
+
+    ul {
+      margin: 0 !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0 !important;
+      padding: 10px 0 !important;
+    }
+
+    #miContenedor { /* para que en los celulares salga mas optimizada la pantalla */
+      overflow:auto; 
+      width: 100% !important; 
+      /*height:calc(100% - 42px);*/
+      min-height:calc(100% - 60px);
+    }
+
+
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
       background-color: #de857b;
@@ -266,6 +296,13 @@
       color: #026890;
     }
 
+    .container{
+        width: 100% !important; /* para que en los celulares salga mas optimizada la pantalla */
+    }
+
+    #pagerMenusGrid > div{
+        width: 400px !important;
+    }
 
   </style>
 

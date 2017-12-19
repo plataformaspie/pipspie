@@ -72,6 +72,10 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
 
   public function guardarRol(Request $request)
   {
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $rol = $request->input('rol');
       $descripcion = $request->input('descripcion');
@@ -90,6 +94,10 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
 
   public function guardarMenusRoles(Request $request)
   {
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id_rol = $request->input('id_rol');
       $ids_menus = $request->input('ids_menus');
       $tam = sizeof($ids_menus);
@@ -105,6 +113,10 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
 
   public function guardarModulosRoles(Request $request)
   {
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id_rol = $request->input('id_rol');
       $ids_modulos = $request->input('ids_modulos');
       $tam = sizeof($ids_modulos);
@@ -120,6 +132,10 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
 
   public function borrarRol(Request $request)
   {
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
 
       $affected1 = \DB::delete('delete from roles_menu where id_rol = ?', [$id]);
