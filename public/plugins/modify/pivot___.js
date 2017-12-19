@@ -854,8 +854,10 @@ _a_ = function() {
                 x = ref2[n];
                 rowKey.push((ref3 = record[x]) != null ? ref3 : "null");
             }
-            flatRowKey = rowKey.join(String.fromCharCode(0));
-            flatColKey = colKey.join(String.fromCharCode(0));
+            flatRowKey = rowKey.join('-');
+            flatColKey = colKey.join('-');
+            // flatRowKey = rowKey.join(String.fromCharCode(0));
+            // flatColKey = colKey.join(String.fromCharCode(0));
             this.allTotal.push(record);
             if (rowKey.length !== 0) {
                 if (!this.rowTotals[flatRowKey]) {
@@ -884,8 +886,10 @@ _a_ = function() {
 
         PivotData.prototype.getAggregator = function(rowKey, colKey) {
             var agg, flatColKey, flatRowKey;
-            flatRowKey = rowKey.join(String.fromCharCode(0));
-            flatColKey = colKey.join(String.fromCharCode(0));
+            flatRowKey = rowKey.join('-');
+            flatColKey = colKey.join('-');
+            // flatRowKey = rowKey.join(String.fromCharCode(0));
+            // flatColKey = colKey.join(String.fromCharCode(0));
             if (rowKey.length === 0 && colKey.length === 0) {
                 agg = this.allTotal;
             } else if (rowKey.length === 0) {

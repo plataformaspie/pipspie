@@ -40,6 +40,25 @@ class TableroController extends Controller
         return view('ModuloPriorizacion.tablero');
     }
 
+        public function index2()
+    {
+        $this->user= \Auth::user();
+        $rol = (int) $this->user->id_rol;
+        $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
+        $this->modulos = array();
+        foreach ($sql as $mn) {
+            array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html));
+        }
+        $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 5  AND activo = true ORDER BY m.orden ASC");
+        $this->menus = array();
+        foreach ($sql as $mn) {
+            $submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = ".$mn->id."  AND activo = true ORDER BY orden ASC");
+            array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'submenus' => $submenu));
+        }
+        \View::share(['modulos'=> $this->modulos,'menus'=>$this->menus]);
+        return view('ModuloPriorizacion.tablero2');
+    }
+
     public function menusTablero()
     {
         $user = \Auth::user();
@@ -162,6 +181,29 @@ class TableroController extends Controller
                     'metas'     => $metasPeriodo,
                     'query'     => $query
         ]);
+
+    }
+
+
+    public function datosIndicadoresMeta(Request $req)
+    {
+        $id_indicador = $req->id_indicador;
+        $indicadores = \DB::select("SELECT nombre,  linea_base_gestion, linea_base_valor, linea_base_unidad, 
+                                    linea_base_descripcion, meta_gestion, meta_valor, frecuencia
+                                    FROM spie_indicadores i
+                                    WHERE  i.estado AND i.id = {$id_indicador} ");
+        $existeIndicador = count($indicadores);
+
+        $metasIndicador = \DB::select("SELECT  fecha, EXTRACT(YEAR FROM fecha) as gestion, meta_del_periodo, variacion_programada, variacion_acumulada
+                                        FROM spie_indicadores_metas im
+                                        WHERE im.id_indicador = {$id_indicador}  ");
+
+        return response()->json([
+            'mensaje' => $existeIndicador ? 'ok' : 'no_existe',
+            'indicador'=> $indicadores[0],
+            'metasIndicador' => $metasIndicador,
+        ]);
+
 
     }
 }

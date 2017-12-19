@@ -74,14 +74,13 @@
     background-color: #fff;
 }
 
-.pvtTotal, .pvtTotalLabel, .pvtGrandTotal {display: none}
+/*.pvtTotal, .pvtTotalLabel, .pvtGrandTotal {display: none}*/
 </style>
 @endsection
 
 
 @section('content')
 <div class='container-fluid'>
-    T2
     <div class=row>
     
         <div class="col-md-3">
@@ -99,19 +98,11 @@
             </div>
 
             <div class="row m-0">
-                <div id="contenedorDatos" style="height: 1000px; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
+                <div id="contenedorDatos" style="min-height: 1000px; max-height: auto; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
 
-                    <div class="">
-                        <div id=tituloDatos></div>
-                        <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 400px;">
-                            <div id="pvtTable"></div>                
-                        </div>
-                    </div>
-
-                    <div id="separador"><hr/></div>
-                    
-                    <div>
-                        <div id="tituloGrafico"></div>
+                    <div id="divTitulo"></div>
+                    <div id='divGrafico'>
+                        <div id="tituloGrafico" class="mb15"></div>
 
                         <select id="opcionesGrafico" onchange="ctxGra.graficarH(this);" >
                             <option value="line">Linea</option>
@@ -120,7 +111,16 @@
                             <option value="area">Area</option>
                             <option value="pie" >Dona</option>
                         </select>
-                        <div id="container" style="font-family: arial; width: 90%; min-height: 600px; max-height: auto; margin: 0 auto"></div>
+                        <div id="divChart" style="font-family: arial; width: 90%; min-height: 600px; margin: 0 auto"></div>
+                    </div>
+
+                    <div id="separador"><hr/></div>
+
+                    <div id='divDatos' class="">
+                        <div id=tituloDatos class="mb15"></div>
+                        <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 600px;padding: 2px">
+                            <div id="pvtTable"></div>                
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,23 +128,16 @@
     </div>
 </div>
 
-
 @endsection
 
 @push('script-head')
-<script src="/plugins/amcharts3.21.8/amcharts.js"></script>
-<script src="/plugins/amcharts3.21.8/serial.js"></script>
-<script src="/plugins/amcharts3.21.8/plugins/export/export.min.js"></script>
-<script src="/plugins/amcharts3.21.8/themes/light.js"></script>
-
-{{-- <script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/highcharts-3d.js"></script> --}}
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
+<script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
 
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
-<script type="text/javascript" src="/plugins/pivottable/dist/pivot.es.js"></script>
+<script type="text/javascript" src="/plugins/modify/pivot___.es.js"></script>
 
 <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
@@ -175,6 +168,7 @@
                 'imagen_por_default':'/img/icon-graf/3.png',
                 'imagen_por_default_1':'/img/icon-graf/1.png',
                 'imagen_por_default_2':'/img/icon-graf/2.png',
+                'imagen_por_default_3':'/img/icon-graf/3.png',
                 'imagen_por_default_4':'/img/icon-graf/4.png',
                 'imagen_por_default_5':'/img/icon-graf/5.png',
                 'imagen_por_default_6':'/img/icon-graf/6.png',
@@ -196,6 +190,7 @@
         nodoSel : {},  // elemento menu  nodo seleccionado
         varEstActual : {},    // objeto JSON VariableEstadisticaActual del nodoSel.configuracion 
         collection : [],
+        indicadorActual: {},
         pivotInstancia:{},
         pivot:{
             data : [], // Datos del pivot  en formato collection 
@@ -308,6 +303,7 @@
     var ctxC = {
         contenedorPredefinidos: $("#contenedorPredefinidos"),
         contenedorDatos : $("#contenedorDatos"),
+        titulo: $("#divTitulo"),
         tituloGrafico: $("#tituloGrafico"),
         tituloDatos: $("#tituloDatos"),
         cargarHTMLCalculosPredefinidos: function(variableEst){
@@ -340,7 +336,6 @@
                 campo_agregacion: varEst.campo_agregacion,
                 campo_defecto: varEst.campo_defecto,
                 condicion_sql: varEst.condicion_sql,
-                campo: varEst.campo,
                 campos_disponibles: varEst.campos_disponibles,
                 porcentaje: varEst.porcentaje ? true : null,
                 // _token : $('input[name=_token]').val(),
@@ -351,68 +346,77 @@
             ctxPiv.pivottable();
             ctxGra.graficarH();
         },
-        obtenerData: function(objRequest){
+        obtenerData: function(varEst){
+            objRequest = ctxC.crearRequest(varEst);
             $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){                
                 ctxG.collection = res.collection;
                 ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
                 ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
-                ctxC.mostrarData(ctxG.collection);
+                $.get('/api/modulopriorizacion/datosIndicadoresMeta', {id_indicador : ctxG.varEstActual.id_indicador}, function(r){
+                    if(r.mensaje=='ok')
+                    {
+                        ctxG.indicadorActual = r.indicador;
+                        ctxG.indicadorActual.metas = r.metasIndicador
+                    }
+                    else
+                        ctxG.indicadorActual = {};
+                    ctxC.mostrarData(ctxG.collection);
+                } )
+                
             })
         },
+        actualizaTitulos: function(){
+            ctxC.titulo.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
+            ctxC.tituloDatos.html('');
+            ctxC.tituloGrafico.html( '');
+        },
+        mostrarPantallas: function(visible){
+
+        }
+
     };
 
     /*-----------------------------------------------------------------------
      *      ctxPiv variable que contiene el contexto del Pivot  
      */
     var ctxPiv = {
+        pivotTable: $("#pvtTable"),
         configParaPivotT : function(set_predefinido){
-            var fields = [];
-            var columnas = [];
-            var filas = [];
-            var filtros = [];
-
-            columnas = set_predefinido.x;
-            filas = set_predefinido.y;
-            filtros = _.map(set_predefinido.filtros, 
-                function(item){                    
-                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
-                    _datafield =  condicion[0];
-                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
-                    filtro = {
-                        dataField: _datafield,
-                        filterFunction: function(value){
-                            if(_values.indexOf(value.toString()) == -1)
-                                return true;
-                            return false;
-                        }
-                    };
-                    return filtro;
-            });
-            return { fields: fields, columns: columnas, rows: filas, filters: filtros};
+            var config = {}
+            config.columns = set_predefinido.x;
+            config.rows = set_predefinido.y;
+            config.inclusions = _.chain(set_predefinido.filtros)
+                                .map(function(item){                    
+                                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
+                                    _datafield =  condicion[0];
+                                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
+                                    filtro = {};
+                                    filtro[_datafield] = _values        
+                                    return filtro;
+                                }).reduce(function(carry, item){
+                                    return $.extend(true, carry, item);                                
+                                }, {}).value();
+            config.aggregatorName = set_predefinido.agregacion || "Suma de enteros";
+            config.vals = ["valor"];           
+            return config;
         },
         pivottable: function()
         {
-            var pivotElems = ctxPiv.configParaPivotT(ctxG.varEstActual.set_predefinido);
-            $("#pvtTable").pivotUI(ctxG.collection, {
-                cols: pivotElems.columns, rows: pivotElems.rows,
-                // aggregatorName: "intSum",
-                // vals: ["valor"],
+            var pivotConfig = ctxPiv.configParaPivotT(ctxG.varEstActual.set_predefinido);
+            ctxPiv.pivotTable.pivotUI(ctxG.collection, {
+                cols: pivotConfig.columns, 
+                rows: pivotConfig.rows,
+                aggregatorName: pivotConfig.aggregatorName,
+                vals: pivotConfig.vals,
+                inclusions: pivotConfig.inclusions,
                 onRefresh: function(p) {
                     ctxG.pivotInstancia = p;
                     ctxPiv.trnDatosDePivot();
                     ctxGra.graficarH();
+                    // ctxC.actualizaTitulos();
                     console.log(ctxG)
                 }
-                
-                // derivedAttributes: {
-                //     "Age Bin": derivers.bin("Age", 10),
-                //     "Gender Imbalance": function(mp) {
-                //         return mp["Gender"] == "Male" ? 1 : -1;
-                //     }
-                // }
-            }, false, "es");
-            
-
+            }, true, "es");
         }, 
         trnDatosDePivot: function(){
             var tree = ctxG.pivotInstancia.pivotData.tree;
@@ -471,8 +475,9 @@
         transformarDatosParaGrafico: function()
         {
             var datosGraph = {};
-            var pivotData = ctxG.pivotInstancia.pivotData;
+            var pivotData = ctxG.pivotInstancia.pivotData;            
             var pivot = ctxG.pivot;
+            var factorPorcentual = ctxG.pivotInstancia.aggregatorName[0] == '%' ? 100 : 1;
             datosGraph.categorias = pivotData.colKeys.map(function(cat, key){
                 return cat.join(' - ');
             });
@@ -482,20 +487,25 @@
             }).map(function(setDatos, key){
                 serie = {};
                 serie.name = key;
-                serie.data = setDatos.map(function(elem){
-                    return elem.valor;
+                serie.data = setDatos.map(function(elem){  
+                    var num;
+                    if(ctxG.pivotInstancia.aggregatorName[0] == "%")                
+                        num =  parseFloat((Math.round( elem.valor * 100 * 10 )/10 ).toString()) ;
+                    else 
+                        num = elem.valor;
+                    console.log(num)
+                    return num;
                 });
                 return serie;
             }).value();
-            
             ctxG.pivot.dataGraph = datosGraph;
 
         },
-        graficarH : function(){
-
+        graficarH : function()
+        {
             tituloChart = ctxG.varEstActual.variable_estadistica;
-            unidad = ctxG.varEstActual.porcentaje  ? ' (expresado en porcentaje) ' : ' (expresado en ' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') '
-            subtituloChart = (ctxG.varEstActual.campo == '') ? unidad : 'Por ' + ctxG.varEstActual.campo_titulo + unidad;
+            unidadMedida = ctxG.varEstActual.porcentaje  ? ' (porcentaje) ' : '(' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') ';
+            subtituloChart = ctxG.pivot.dimFila + ' vs. ' + ctxG.pivot.dimColumna;
             var tipo = $("#opcionesGrafico").val();
             var chart = {
                 type: tipo,
@@ -515,7 +525,7 @@
             };
             var yAxis= {
                 title: {
-                    text: ''
+                    text: unidadMedida
                 }
             };
             var plotOptions = {
@@ -541,7 +551,7 @@
             json.yAxis = yAxis;
             json.plotOptions = plotOptions; 
             json.series = series;   
-            $('#container').highcharts(json);
+            $('#divChart').highcharts(json);
 
         }
     }
@@ -569,27 +579,26 @@ $(function(){
         }
         else
         {
-            ctxG.varEstActual = jQuery.parseJSON(ctxG.nodoSel.configuracion);// JSON.parse( ctxG.nodoSel.configuracion );
-            ctxG.varEstActual.campo =  '';
-            ctxG.varEstActual.campo_titulo = '';
+            ctxG.varEstActual = jQuery.parseJSON(ctxG.nodoSel.configuracion);
+            ctxG.varEstActual.campo_tituloPredef = '';
             ctxG.varEstActual.porcentaje =  false;
             ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[0]; // por defecto el primero
-            ctxC.tituloDatos.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
-            ctxC.tituloGrafico.html( 'Datos para ' + ctxG.varEstActual.variable_estadistica);
-            ctxC.cargarHTMLCalculosPredefinidos(ctxG.varEstActual);
-            objRequest = ctxC.crearRequest(ctxG.varEstActual);
-            ctxC.obtenerData(objRequest);
+            ctxC.actualizaTitulos();
+            ctxC.cargarHTMLCalculosPredefinidos(ctxG.varEstActual);            
+            ctxC.obtenerData(ctxG.varEstActual);
         }
     }); 
 
     ctxC.contenedorPredefinidos.on('click', '.item_campo_predefinido', function(e){
         index =  $(this).attr('id');
-        ctxG.varEstActual.campo_titulo =  $(this).attr('title');
+        ctxG.varEstActual.campo_tituloPredef =  $(this).attr('title');
         ctxG.varEstActual.porcentaje =  false;
         ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[index];
-        ctxC.tituloDatos.html('Datos para ' + ctxG.varEstActual.variable_estadistica +' por ' + ctxG.varEstActual.campo_titulo );
+        ctxC.actualizaTitulos();
         ctxC.mostrarData(ctxG.collection);
     });
+
+
 
 });
 
