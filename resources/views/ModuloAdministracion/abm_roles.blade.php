@@ -8,42 +8,45 @@
 @endsection
 
 @section('content')
-  <div class="container">
-    <h2>Listado de Roles</h2>
-    <div id='jqxWidget2'>
+  <div class="container" id="miContenedor"> 
+    <div style="width: 800px; height: 100%; margin-left: auto; margin-right: auto;"> <!-- Centrador --> 
+        <h2>Listado de Roles</h2>
+
         <div id="RolesGrid">
         </div>
 
-       <div id="mensajesRoles" style="width: 800px; min-height:20px;"></div>
+        <div id="mensajesRoles" style="width: 800px; min-height:20px;"></div>
 
-       <div id="popupRol">
-          <div>Rol</div>
-          <div style="overflow: hidden;">
-            <div id="mensajes"></div>
-            <form class="form" id="form" target="form-iframe"  method="post" action="guardarrol" >
-                <table class="tabla-ventana">
-                    <tr>
-                        <td align="right" style="color:#000000; width: 40%;">Rol:</td>
-                        <td><input name="rol" type="text" id="rolInput" /></td>
-                        <input type="hidden" name="id" id="idInput" value="">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Descripción:</td>
-                        <td><input name="descripcion" type="text" id="descripcionInput" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="padding-top: 10px;" align="right">
-                            <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
-                            <input id="Cancel" type="button" value="Cerrar" />
-                        </td>
-                    </tr>
+    </div> <!-- Centrador --> 
 
-                </table>
-            </form>
-          </div>
+
+    <div id="popupRol">
+       <div>Rol</div>
+       <div style="overflow: hidden;">
+         <div id="mensajes"></div>
+         <form class="form" id="form" target="form-iframe"  method="post" action="guardarrol" >
+             <table class="tabla-ventana">
+                 <tr>
+                     <td align="right" style="color:#000000; width: 40%;">Rol:</td>
+                     <td><input name="rol" type="text" id="rolInput" /></td>
+                     <input type="hidden" name="id" id="idInput" value="">
+                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                 </tr>
+                 <tr>
+                     <td align="right" style="color:#000000">Descripción:</td>
+                     <td><input name="descripcion" type="text" id="descripcionInput" /></td>
+                 </tr>
+                 <tr>
+                     <td colspan="2" style="padding-top: 10px;" align="right">
+                         <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
+                         <input id="Cancel" type="button" value="Cerrar" />
+                     </td>
+                 </tr>
+
+             </table>
+         </form>
        </div>
-    </div>
+    </div>       
 
     <div id="popupDeleteConfirm">
       <div>
@@ -63,7 +66,6 @@
       </div>
     </div>
 
-
     <div id="popupRolMenus">
         <div>Menus</div>
         <div style="overflow: hidden;">
@@ -75,7 +77,6 @@
           </div>
         </div>
     </div>
-
 
     <div id="popupRolModulos">
         <div>Módulos</div>
@@ -89,9 +90,7 @@
         </div>
     </div>
 
-
-
-  </div>
+  </div> <!-- id="miContenedor" -->
 @endsection
 
 @push('script-head')
@@ -132,6 +131,33 @@
   <script type="text/javascript" src="{{ asset('jqwidgets5.4.0/jqwidgets/jqxvalidator.js') }}"></script>
 
   <style type="text/css">
+
+    html, body, #wrapper, .container-fluid {
+      height:100% !important;
+      padding: 0 0 0 0 !important;
+    }
+
+    #page-wrapper{
+      height: calc(100% - 60px) !important;
+      /*min-height: calc(100% - 160px) !important; - 60px -60px (100 80 60) cabecera y piede pagina*/
+    }
+
+    ul {
+      margin: 0 !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0 !important;
+      padding: 10px 0 !important;
+    }
+
+    #miContenedor { /* para que en los celulares salga mas optimizada la pantalla */
+      overflow:auto; 
+      width: 100% !important; 
+      /*height:calc(100% - 42px);*/
+      min-height:calc(100% - 60px);
+    }
+
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
       background-color: #de857b;
@@ -176,6 +202,15 @@
     .tabla-ventana td {
       padding: 3px 0px 3px 2px;
     } 
+
+    .container{
+        width: 100% !important; /* para que en los celulares salga mas optimizada la pantalla */
+    }    
+    
+    #pagerRolesGrid > div{
+        width: 400px !important;
+    }    
+
   </style>
 
 <script type="text/javascript">

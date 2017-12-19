@@ -31,7 +31,11 @@ class AbmModulosController extends Controller
 
   public function guardarModulo(Request $request)
   {
-   
+    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $descripcion = $request->input('descripcion');
       $url = $request->input('url');
@@ -44,23 +48,32 @@ class AbmModulosController extends Controller
       $updated_at = date('Y-m-d H:i:s');
 
       if ( intval($id) > 0 ) {
-          $affected = \DB::update('UPDATE modulos SET descripcion = ?, url = ?, activo = ?, titulo = ?, icono = ?, tipo_menu = ?, orden = ?, updated_at = ? WHERE id = ?', [$descripcion, $url, $activo, $titulo, $icono, $tipo_menu, $orden, $updated_at, $id]);
+          $affected = \DB::update('UPDATE modulos SET descripcion = ?, url = ?, activo = ?, titulo = ?, icono = ?, tipo_menu = ?, orden = ?, updated_at = ? WHERE id = ?', [$descripcion, $url, $activo, $titulo,  $icono, $tipo_menu, $orden, $updated_at, $id]);
           echo "Se actualizó satisfactoriamente ($affected)...<br/>";
       } elseif( $id == '' ) {
           \DB::insert('insert into modulos (descripcion, url, activo, titulo, icono, tipo_menu, orden, created_at) values(?, ?, ?, ?, ?, ?, ?, ?)', [$descripcion, $url, $activo, $titulo, $icono, $tipo_menu, $orden, $created_at]);
           $lastInsertId = app('db')->getPdo()->lastInsertId();
+
           echo "ID=$lastInsertId\nSe guardó satisfactoriamente ($lastInsertId)...<br/>";
       } else {
           echo "No se guardó nada :(<br/>";
       }
-      
+
+      if ( file_exists("./img/" . str_replace("uploads/", "uploads/tmp/", $icono)) ){ // Si aun sigue como archivo temporal
+          rename( "./img/" . str_replace("uploads/", "uploads/tmp/", $icono), "./img/" . $icono );// Movemos el archivo temporal si es posible
+      }
   }
+
   public function borrarModulo(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $affected = \DB::delete('delete from modulos where id = ?', [$id]);
-      echo "Se borro satisfactoriamente ($affected)...<br/>";
+      echo "ID=OK\nSe borro satisfactoriamente ($affected)...<br/>";
   }  
 
   public function get_image(Request $request){
@@ -89,18 +102,54 @@ class AbmModulosController extends Controller
       } else {
           $Extencion = $image->getClientOriginalExtension();
           //$NombreArchivo = $image->getClientOriginalName();
-          date_default_timezone_set('America/La_Paz');  // por si acaso no esta configurado          
+          date_default_timezone_set('America/La_Paz');  // por si acaso no está configurado          
           $NombreArchivo = date("Y") . date("m") . date("d") . "_" . date("G")  . date("i")   . date("s") . "." . $Extencion;
-          $file_dir = $request->file('imagen_modulo')->storeAs('uploads', $NombreArchivo, 'public_images_folder' ); // public_images_folder esta en filesystems.php
+          $file_dir = $request->file('imagen_modulo')->storeAs('uploads/tmp', $NombreArchivo, 'public_images_folder' ); // public_images_folder está en filesystems.php
+
+          // directorio actual:  getcwd ();
+          //borrar_tmps_antiguos("./img/uploads/tmp");  // no deja llamar a esta funcion por alguna razon :(((
+          $directorio = "./img/uploads/tmp";
+          if ($handle = opendir("$directorio")){
+              while ((($file=readdir($handle))!==false) ){  
+                  if ($file!='.' && $file!='..'){  // evitamos los directorios raiz
+                      if (!is_dir("$directorio/$file")){
+                          $horaAntes = time() - ( 1 * 60 * 60); // 0 días; 1 horas; 60 minutos; 60 segundos
+                          $timeArchivo = filectime("$directorio/$file");  // creacion
+                          if ( $timeArchivo < $horaAntes ) {// es mas antiguo q una hora
+                              unlink("$directorio/$file");  // Borramos archivo
+                          }
+                      }
+                  }
+              }
+              closedir($handle);
+          }
 
           $url_imagen = $file_dir; //$image->getRealPath() ;
           $status = 'OK';
       }
 
 
-      $data = array('url_imagen' =>  $url_imagen, 'status' => $status);
+      $data = array('url_imagen' => str_replace("/tmp", "", $url_imagen), 'url_imagen_tmp' =>  $url_imagen, 'status' => $status);
       echo json_encode($data);
 
+  }
+
+  // por alguna razon no puedo llamarlo desde la funcion get_image(Request $request) :((((
+  public function borrar_tmps_antiguos($directorio) {  // borrará archivos de la carpera que sean mas antiguos que una hora atras
+    if ($handle = opendir("$directorio")){
+        while ((($file=readdir($handle))!==false) ){  
+            if ($file!='.' && $file!='..'){  // evitamos los directorios raiz
+                if (!is_dir("$directorio/$file")){
+                    $horaAntes = time() - ( 1 * 60 * 60); // 0 días; 1 horas; 60 minutos; 60 segundos
+                    $timeArchivo = filectime("$directorio/$file");  // creacion
+                    if ( $timeArchivo < $horaAntes ) {// es mas antiguo q una hora
+                        unlink("$directorio/$file");  // Borramos archivo
+                    }
+                }
+            }
+        }
+        closedir($handle);
+    }
   }
 
 
