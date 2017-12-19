@@ -10,103 +10,107 @@
 
 
 @section('content')
-  <div class="container">
-    <h2>Listado de Usuarios</h2>
-    <div id='jqxWidget'>
-        <div id="UsuariosGrid">
-        </div>
+  <div class="container" id="miContenedor"> 
 
+    <div style="width: 800px; height: 100%; margin-left: auto; margin-right: auto;"> <!-- Centrador --> 
+      <h2>Listado de Usuarios</h2>
 
-       <div id="mensajesUsuarios" style="width: 800px; min-height:20px;"></div>
-
-       <div id="popupUsuario">
-          <div>Usuario</div>
-          <div style="overflow: hidden;">
-            <div id="mensajes"></div>
-            <form class="form" id="form" target="form-iframe"  method="post" action="guardarusuario" >
-                <table class="tabla-ventana">
-                    <tr>
-                        <td align="right" style="color:#000000; width: 50%;">Usuario:</td>
-                        <td><input name="username" type="text" id="userInput" /></td>
-                        <input type="hidden" name="id" id="idInput" value="">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Contraseña:</td>
-                        <td><input name="password" type="password" id="passwordInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Confirme Contraseña:</td>
-                        <td><input type="password" id="passwordConfirmInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Nombre Completo:</td>
-                        <td><input name="name" type="text" id="realNameInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Carnet de Identidad:</td>
-                        <td><input name="carnet" type="text" id="carnetInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">E-mail:</td>
-                        <td><input name="email" type="text" id="emailInput" placeholder="someone@mail.com" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Teléfono:</td>
-                        <td><div name="telefono" id="telefonoInput"></div></td>
-                    </tr>
-
-                    <tr>
-                        <td align="right" style="color:#000000">Rol:</td>
-                        <td align="left"><div name="id_rol"  id="id_rol"></div></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Institución:</td>
-                        <td><input name="id_institucion" type="hidden" id="id_institucion" />
-                            <input type="text" id="institucion_label"  placeholder="Escriba y seleccione.." /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Cargo:</td>
-                        <td><input type="text" name="cargo" id="cargoInput" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right" style="color:#000000">Permisos de ABM:</td>
-                        <td align="left"><div name="permisos_abm"  id="permisos_abm"></div></td>
-                    </tr>
-                    <tr>
-                        <td align="right"></td>
-                        <td style="padding-top: 10px;" align="right">
-                            <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
-                            <input id="Cancel" type="button" value="Cerrar" />
-                        </td>
-                    </tr>
-
-                </table>
-            </form>
-          </div>
-       </div>
-    </div>
-
-    <div id="popupDeleteConfirm">
-      <div>
-          <img width="14" height="14" src="../../images/help.png" alt="" />
-          ¿Borrar Datos?
+      <div id="UsuariosGrid">
       </div>
-      <div>
-        <div>
-            ¿Realmente desea borrar el Registro?, una vez borrados los datos no es posible deshacer la acción, para borrar presione el boton "OK", para cancelar el borrado precione "Cancelar".
-        </div>
-        <div>
-          <div style="float: right; margin-top: 15px;">
-              <input type="button" id="okDelete" value="OK" style="margin-right: 10px" />
-              <input type="button" id="cancelDelete" value="Cancelar" />
-          </div>
-        </div>
-      </div>
-    </div>
 
+      <div id="mensajesUsuarios" style="width: 800px; min-height:20px;"></div>
+
+    </div> <!-- Centrador --> 
 
   </div>
+
+  <div id="popupUsuario">
+     <div>Usuario</div>
+     <div style="overflow: hidden;">
+       <div id="mensajes"></div>
+       <form class="form" id="form" target="form-iframe"  method="post" action="guardarusuario" >
+           <table class="tabla-ventana">
+               <tr>
+                   <td align="right" style="color:#000000; width: 50%;">Usuario:</td>
+                   <td><input name="username" type="text" id="userInput" /></td>
+                   <input type="hidden" name="id" id="idInput" value="">
+                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Contraseña:</td>
+                   <td><input name="password" type="password" id="passwordInput" /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Confirme Contraseña:</td>
+                   <td><input type="password" id="passwordConfirmInput" /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Nombre Completo:</td>
+                   <td><input name="name" type="text" id="realNameInput" /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Carnet de Identidad:</td>
+                   <td><input name="carnet" type="text" id="carnetInput" /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">E-mail:</td>
+                   <td><input name="email" type="text" id="emailInput" placeholder="someone@mail.com" /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Teléfono:</td>
+                   <td><div name="telefono" id="telefonoInput"></div></td>
+               </tr>
+
+               <tr>
+                   <td align="right" style="color:#000000">Rol:</td>
+                   <td align="left"><div name="id_rol"  id="id_rol"></div></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Institución:</td>
+                   <td><input name="id_institucion" type="hidden" id="id_institucion" />
+                       <input type="text" id="institucion_label"  placeholder="Escriba y seleccione.." /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Cargo:</td>
+                   <td><input type="text" name="cargo" id="cargoInput" /></td>
+               </tr>
+               <tr>
+                   <td align="right" style="color:#000000">Permisos de ABM:</td>
+                   <td align="left"><div name="permisos_abm"  id="permisos_abm"></div></td>
+               </tr>
+               <tr>
+                   <td align="right"></td>
+                   <td style="padding-top: 10px;" align="right">
+                       <input style="margin-right: 5px;" type="button" id="Save" value="Guardar" />
+                       <input id="Cancel" type="button" value="Cerrar" />
+                   </td>
+               </tr>
+
+           </table>
+       </form>
+     </div>
+  </div>
+
+
+  <div id="popupDeleteConfirm">
+    <div>
+        <img width="14" height="14" src="../../images/help.png" alt="" />
+        ¿Borrar Datos?
+    </div>
+    <div>
+      <div>
+          ¿Realmente desea borrar el Registro?, una vez borrados los datos no es posible deshacer la acción, para borrar presione el boton "OK", para cancelar el borrado precione "Cancelar".
+      </div>
+      <div>
+        <div style="float: right; margin-top: 15px;">
+            <input type="button" id="okDelete" value="OK" style="margin-right: 10px" />
+            <input type="button" id="cancelDelete" value="Cancelar" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 @endsection
 
 
@@ -152,6 +156,33 @@
 
 
   <style type="text/css">
+
+    html, body, #wrapper, .container-fluid {
+      height:100% !important;
+      padding: 0 0 0 0 !important;
+    }
+
+    #page-wrapper{
+      height: calc(100% - 60px) !important;
+      /*min-height: calc(100% - 160px) !important; - 60px -60px (100 80 60) cabecera y piede pagina*/
+    }
+
+    ul {
+      margin: 0 !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0 !important;
+      padding: 10px 0 !important;
+    }
+
+    #miContenedor { /* para que en los celulares salga mas optimizada la pantalla */
+      overflow:auto; 
+      width: 100% !important; 
+      /*height:calc(100% - 42px);*/
+      min-height:calc(100% - 60px);
+    }
+
     .jqx-validator-hint {  /* Cambiamos el color guindo de los mensajes del validador*/
       border: 1px solid #DEABA0;
       background-color: #de857b;
@@ -177,11 +208,11 @@
     }
 
     .jqx-validator-hint-arrow img {display: none;} /* ya no mostramos el rombo del validador*/ 
-       .text-input-popup
-        {
-            height: 23px;
-            width: 150px;
-        }    
+
+    .text-input-popup {
+        height: 23px;
+       width: 150px;
+    }    
     
     .clase-iframe {
             border: none;
@@ -201,6 +232,9 @@
       background: white url("../images/ui-anim_basic_16x16.gif") right center no-repeat;
     } 
 
+    #pagerUsuariosGrid > div{
+        width: 400px !important;
+    }
 
   </style>
 

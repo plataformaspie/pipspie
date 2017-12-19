@@ -47,6 +47,10 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
   public function guardarUsuario(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $name = $request->input('name');
       $email = $request->input('email');
@@ -78,6 +82,10 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
   public function borrarUsuario(Request $request)
   {
    
+      if ( \Auth::user()->permisos_abm == 'false') {
+        return "¡No Autorizado!";
+      }
+
       $id = $request->input('id');
       $affected = \DB::delete('delete from users where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
