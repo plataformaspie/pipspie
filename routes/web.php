@@ -125,7 +125,7 @@ Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'api/modulopriorizacion'),
           function() {
-              Route::get('menustablero', 'ModuloPriorizacion\tableroController@menusTablero');
+              Route::get('menustablero', 'ModuloPriorizacion\TableroController@menusTablero');
               Route::get('datosVariableEstadistica', 'ModuloPriorizacion\TableroController@datosVariableEstadistica');
               Route::get('datosIndicadoresMeta', 'ModuloPriorizacion\TableroController@datosIndicadoresMeta');
           }
