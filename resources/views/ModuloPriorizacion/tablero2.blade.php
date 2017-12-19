@@ -98,9 +98,18 @@
             </div>
 
             <div class="row m-0">
-                <div id="contenedorDatos" style="min-height: 1000px; max-height: auto; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
+                <div id="contenedorDatos" style="height: 1000px; max-height: auto; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
 
-                    <div id="divTitulo"></div>
+                    <div id="divTitulo" class="row">
+                        <div id="titulo" class="col-sm-10"></div>
+                        <div class="col-sm-2">      
+                            <div class="pull-right">                     
+                            <a href="#" id="btn_grafico" class="btn btn-default btn-xs  " ><i class="fa fa-2x fa-bar-chart"></i></a>
+                            <a href="#" id="btn_tabla" class="btn btn-default btn-xs "><i class="fa fa-2x fa-table"></i></a>
+                            </div> 
+                        </div>
+                    </div>
+
                     <div id='divGrafico'>
                         <div id="tituloGrafico" class="mb15"></div>
 
@@ -113,8 +122,6 @@
                         </select>
                         <div id="divChart" style="font-family: arial; width: 90%; min-height: 600px; margin: 0 auto"></div>
                     </div>
-
-                    <div id="separador"><hr/></div>
 
                     <div id='divDatos' class="">
                         <div id=tituloDatos class="mb15"></div>
@@ -303,9 +310,9 @@
     var ctxC = {
         contenedorPredefinidos: $("#contenedorPredefinidos"),
         contenedorDatos : $("#contenedorDatos"),
-        titulo: $("#divTitulo"),
+        titulo: $("#titulo"),
         tituloGrafico: $("#tituloGrafico"),
-        tituloDatos: $("#tituloDatos"),
+        tituloDatos: $("#tituloDatos"),        
         cargarHTMLCalculosPredefinidos: function(variableEst){
             ctxC.contenedorPredefinidos.html('');
             predef = variableEst.sets_predefinidos;
@@ -370,8 +377,25 @@
             ctxC.tituloDatos.html('');
             ctxC.tituloGrafico.html( '');
         },
-        mostrarPantallas: function(visible){
-
+        mostrarPantallas: function(op){
+            $("#divTitulo a").removeClass('disabled');
+            $("#btn_" + op).addClass('disabled'); 
+            if(op == 'grafico')
+            {                
+                $("#contenedorDatos").show();
+                $("#divGrafico").show();
+                $("#divDatos").hide();
+            }
+            else if (op=='tabla')
+            {
+                $("#contenedorDatos").show();
+                $("#divGrafico").hide();
+                $("#divDatos").show();
+            }
+            else
+            {
+                $("#contenedorDatos").hide();
+            }
         }
 
     };
@@ -562,6 +586,7 @@
 $(function(){
 
     ctxM.creaMenuBaseHtml();
+    ctxC.mostrarPantallas();
 
     ctxM.btnmenu.click(function() {
         ctxM.abrirCerrarMenu();
@@ -586,6 +611,7 @@ $(function(){
             ctxC.actualizaTitulos();
             ctxC.cargarHTMLCalculosPredefinidos(ctxG.varEstActual);            
             ctxC.obtenerData(ctxG.varEstActual);
+            ctxC.mostrarPantallas('grafico');
         }
     }); 
 
@@ -597,6 +623,11 @@ $(function(){
         ctxC.actualizaTitulos();
         ctxC.mostrarData(ctxG.collection);
     });
+
+    $("#divTitulo a").click(function(){
+        var op = $(this).attr('id') == 'btn_tabla' ? 'tabla' : 'grafico';
+        ctxC.mostrarPantallas(op);
+    })
 
 
 
