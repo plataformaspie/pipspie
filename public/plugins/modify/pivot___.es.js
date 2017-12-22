@@ -42,7 +42,9 @@
         filterResults: "Filtrar",
         totals: "Totales",
         vs: "vs",
-        by: "por"
+        by: "por",
+        apply: "aplicar",
+        cancel: "cerrar"
       },
       aggregators: {
         "Contar": tpl.count(frFmtInt),
@@ -56,9 +58,10 @@
         "Suma de sumas": tpl.sumOverSum(frFmt),
         "Cota 80% superior": tpl.sumOverSumBound80(true, frFmt),
         "Cota 80% inferior": tpl.sumOverSumBound80(false, frFmt),
-        "% participación del total (suma)": tpl.fractionOf(tpl.sum(), "total", frFmtPct),
-        "% participación en fila (suma)": tpl.fractionOf(tpl.sum(), "row", frFmtPct),
         "% participación en columna (suma)": tpl.fractionOf(tpl.sum(), "col", frFmtPct),
+        "% participación en fila (suma)": tpl.fractionOf(tpl.sum(), "row", frFmtPct),
+        "% participación del total (suma)": tpl.fractionOf(tpl.sum(), "total", frFmtPct),
+        
         // "% participación del total (cuenta)": tpl.fractionOf(tpl.count(), "total", frFmtPct),
         // "% participación en fila (cuenta)": tpl.fractionOf(tpl.count(), "row", frFmtPct),
         // "% participación en columna (cuenta)": tpl.fractionOf(tpl.count(), "col", frFmtPct)

@@ -64,7 +64,7 @@
 <!--====                                                                FORM                                        =========== -->
 <!--====                                                                                                            =========== -->
 
-<form id="form_proyecto" class="modal fadein " role="dialog">
+<form id="form_proyecto" class="modal " role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
@@ -363,7 +363,7 @@ $(function ()
                 this.setObjProyecto(objSel);
             }
             this.validarForm();
-            $("#form_proyecto").modal();
+            $("#form_proyecto").fadeIn(500).modal();
         },
         
         iniciarResultadosPDES: function() {

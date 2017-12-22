@@ -1373,7 +1373,7 @@ _a_ = function() {
                 if (values.length > opts.menuLimit) {
                   valueList.append($("<p>").html(opts.localeStrings.tooMany));
                 } else {
-                    if (values.length > 5) {
+                    if (values.length > 3) {
                         controls = $("<p>").appendTo(valueList);
                         sorter = getSort(opts.sorters, attr);
                         placeholder = opts.localeStrings.filterResults;
@@ -1414,13 +1414,13 @@ _a_ = function() {
                         controls.append($("<br>"));
                         $("<button>", {
                           type: "button"
-                        }).appendTo(controls).html(opts.localeStrings.selectAll).bind("click", function() {
+                        }).addClass('btn btn-xs btn-info mr5').appendTo(controls).html(opts.localeStrings.selectAll).bind("click", function() {
                           valueList.find("input:visible:not(:checked)").prop("checked", true).toggleClass("changed");
                           return false;
                         });
                         $("<button>", {
                           type: "button"
-                        }).appendTo(controls).html(opts.localeStrings.selectNone).bind("click", function() {
+                        }).addClass('btn btn-xs btn-info mr5').appendTo(controls).html(opts.localeStrings.selectNone).bind("click", function() {
                           valueList.find("input:visible:checked").prop("checked", false).toggleClass("changed");
                           return false;
                         });
@@ -1460,7 +1460,7 @@ _a_ = function() {
                 if (values.length <= opts.menuLimit) {
                     $("<button>", {
                       type: "button"
-                    }).text(opts.localeStrings.apply).appendTo(finalButtons).bind("click", function() {
+                    }).addClass('btn btn-xs btn-success mr5').text(opts.localeStrings.apply).appendTo(finalButtons).bind("click", function() {
                       if (valueList.find(".changed").removeClass("changed").length) {
                         refresh();
                       }
@@ -1469,18 +1469,20 @@ _a_ = function() {
                 }
                 $("<button>", {
                   type: "button"
-                }).text(opts.localeStrings.cancel).appendTo(finalButtons).bind("click", function() {
+                }).addClass('btn btn-xs bg-orange mr5').text(opts.localeStrings.cancel).appendTo(finalButtons).bind("click", function() {
                   valueList.find(".changed:checked").removeClass("changed").prop("checked", false);
                   valueList.find(".changed:not(:checked)").removeClass("changed").prop("checked", true);
                   return closeFilterBox();
                 });
-                triangleLink = $("<span>").addClass('pvtTriangle').html(" &#x25BE;").bind("click", function(e) {
+                triangleLink = $("<span>").addClass('pvtTriangle').html(" &#x25BE;").bind("click", function(e) {                  
+                  $(".pvtFilterBox").not(valueList).hide();
                   var left, ref2, top;
                   ref2 = $(e.currentTarget).position(), left = ref2.left, top = ref2.top;
                   return valueList.css({
                     left: left + 10,
                     top: top + 10
-                  }).show();
+                  }).toggle(300);
+
                 });
                 attrElem = $("<li>").addClass("axis_" + i).append($("<span>").addClass('pvtAttr').text(attr).data("attrName", attr).append(triangleLink));
                 if (hasExcludedItem) {

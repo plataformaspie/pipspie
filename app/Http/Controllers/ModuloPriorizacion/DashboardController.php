@@ -469,7 +469,7 @@ class DashboardController extends Controller
   public function generarDatosVE0001(Request $request)
   {
       if($request->ajax()) {
-          $datos = \DB::connection('dbentreparentesys')
+          $datos = \DB::connection('dbestadistica')
                     ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
                               FROM ".$request->vista."
                               WHERE pobreza_extrema = 'POBRE EXTREMO'
@@ -482,7 +482,7 @@ class DashboardController extends Controller
   public function generarDatosVE0002(Request $request)
   {
       if($request->ajax()) {
-          $datos = \DB::connection('dbentreparentesys')
+          $datos = \DB::connection('dbestadistica')
                     ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
                               FROM ".$request->vista."
                               WHERE pobreza_moderada = 'POBRE'
@@ -495,7 +495,7 @@ class DashboardController extends Controller
   public function generarDatosVE0003(Request $request)
   {
       if($request->ajax()) {
-          $datos = \DB::connection('dbentreparentesys')
+          $datos = \DB::connection('dbestadistica')
                     ->select("SELECT t_ano as dimension, SUM(valor_cargado) as valor
                               FROM ".$request->vista."
                               WHERE po_pd = 'DESOCUPADO'
@@ -555,7 +555,7 @@ class DashboardController extends Controller
 
           if($req->porcentaje)
           {
-              $totales = collect(\DB::connection('dbentreparentesys')->select("
+              $totales = collect(\DB::connection('dbestadistica')->select("
                 SELECT t_ano AS gestion, SUM(valor_cargado)  AS total_ano
                 FROM " . $tabla . "
                 GROUP BY t_ano"))->groupBy('gestion');
@@ -569,7 +569,7 @@ class DashboardController extends Controller
                     WHERE 1 = 1 " . $condicion . "
                     GROUP BY t_ano
                     ORDER BY t_ano " ;
-             $datos = collect(\DB::connection('dbentreparentesys')->select($query));
+             $datos = collect(\DB::connection('dbestadistica')->select($query));
              foreach ($datos as $key => $anoObjetos) {
                   $elem = [];
                   $factorPorcentual = ($req->porcentaje) ?  100 / $totales[$anoObjetos->gestion][0]->total_ano : 1;
@@ -586,7 +586,7 @@ class DashboardController extends Controller
                     GROUP BY " .$req->campo . ", t_ano
                     ORDER BY t_ano, dimension " ;
 
-          $datos = collect(\DB::connection('dbentreparentesys')->select($query))->groupBy('gestion');
+          $datos = collect(\DB::connection('dbestadistica')->select($query))->groupBy('gestion');
 
           foreach ($datos as $key => $anoObjetos) {
               $elem = [];

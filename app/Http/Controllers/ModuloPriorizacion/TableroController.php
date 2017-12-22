@@ -65,7 +65,7 @@ class TableroController extends Controller
         $id_rol = $user->id_rol;
         $listaMenus = collect(\DB::select("SELECT m.id, m.cod_str, m.nombre,  m.descripcion, 
                                             m.nivel, m.tipo, m.orden, c.variable_estadistica, c.configuracion
-                                            FROM  dash_menu m JOIN dash_menu_rol mr ON m.id = mr.id_dash_menu AND mr.id_rol = 1 AND m.activo
+                                            FROM  dash_menu m JOIN dash_menu_rol mr ON m.id = mr.id_dash_menu  AND m.activo AND mr.id_rol = {$id_rol}
                                             LEFT JOIN dash_config c ON m.id_dash_config = c.id
                                             ORDER BY m.cod_str
                                 "));
@@ -130,7 +130,7 @@ class TableroController extends Controller
         $totales = [];
         $qrySelect = $qryCondicion = $qryGroupBy = '';
 
-        $tablas = collect(\DB::connection("dbentreparentesys")->select("select table_name from information_schema.tables 
+        $tablas = collect(\DB::connection("dbestadistica")->select("select table_name from information_schema.tables 
                                 where table_schema='public' and table_type='VIEW'
                                 and table_name ilike '%{$req->tabla_vista}%' "));
         if($tablas->count()<=0)
@@ -150,7 +150,7 @@ class TableroController extends Controller
 
         // if($porcentaje)
         // {
-        //     $totales = collect(\DB::connection('dbentreparentesys')->select("
+        //     $totales = collect(\DB::connection('dbestadistica')->select("
         //         SELECT t_ano AS gestion, SUM(valor_cargado)  AS total_ano
         //         FROM {$tabla}  
         //         WHERE 1 = 1  {$qryCondicion}  
@@ -158,9 +158,9 @@ class TableroController extends Controller
         // }
 
         $query = $qrySelect . $qryCondicion . $qryGroupBy;
-        $collection  =   collect(\DB::connection('dbentreparentesys')->select($query));      
+        $collection  =   collect(\DB::connection('dbestadistica')->select($query));      
 
-        $unidadesMedida = collect(\DB::connection('dbentreparentesys')->select("
+        $unidadesMedida = collect(\DB::connection('dbestadistica')->select("
                             SELECT valor_unidad_medida, valor_tipo FROM {$tabla} LIMIT 1"))->first();
 
         $indicador = collect(\DB::connection('pgsql')->select("
