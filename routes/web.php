@@ -21,7 +21,7 @@ Route::get('home', 'HomeController@index')->name('home');
 Route::get('siep/dashboard', 'HomeController@siepRedirect');
 
 /* -----------------------------------------------------------------------------
-| Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro 
+| Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro
 | omitir .blase.php y debe ser separado por puntos ej. modulopdes.dashboard
 */
 Route::get(Config::get('app.urlBase') . '/{vista}', 'VistaController@index')->middleware('auth');
@@ -49,8 +49,8 @@ Route::group(['middleware' => 'auth'],function(){
 
               Route::get('abm_menus', 'ModuloAdministracion\AbmMenusController@index');
               Route::get('listamenus', 'ModuloAdministracion\AbmMenusController@listarMenus');
-              Route::get('listamenus2', 'ModuloAdministracion\AbmMenusController@listarMenus2');  
-              Route::get('listamodulos_mnu', 'ModuloAdministracion\AbmMenusController@listarModulos');  
+              Route::get('listamenus2', 'ModuloAdministracion\AbmMenusController@listarMenus2');
+              Route::get('listamodulos_mnu', 'ModuloAdministracion\AbmMenusController@listarModulos');
               Route::post('guardarmenu', 'ModuloAdministracion\AbmMenusController@guardarMenu');
               Route::post('borrarmenu', 'ModuloAdministracion\AbmMenusController@borrarMenu');
               Route::get('listasubmenus', 'ModuloAdministracion\AbmMenusController@listarSubmenus');
@@ -71,11 +71,11 @@ Route::group(['middleware' => 'auth'],function(){
 
               Route::get('abm_dashmenu', 'ModuloAdministracion\AbmDashMenuController@index');
               Route::get('listadashmenu', 'ModuloAdministracion\AbmDashMenuController@listarDashMenu');
-              Route::get('listadashconfigs', 'ModuloAdministracion\AbmDashMenuController@listarDashConfigs');  
+              Route::get('listadashconfigs', 'ModuloAdministracion\AbmDashMenuController@listarDashConfigs');
               Route::post('guardardashmenu', 'ModuloAdministracion\AbmDashMenuController@guardarDashMenu');
               Route::post('borrardashmenu', 'ModuloAdministracion\AbmDashMenuController@borrarDashMenu');
 
-              
+
           }
       );
       Route::group(
@@ -185,17 +185,37 @@ Route::group(['middleware' => 'auth'],function(){
       //  RUTAS DE GESTION DE PROYECTOS_PDES ///////////////////////////////////
       Route::group(
         array('prefix' => 'api/modulopdes' ),
-        function() {              
+        function() {
               Route::get('gestionproyectos',      'ModuloPdes\GestionProyectosController@listarProyectosPdesAsociados');
               Route::post('gestionproyectos',     'ModuloPdes\GestionProyectosController@insertar');
               Route::get('gestionproyectos/{id}', 'ModuloPdes\GestionProyectosController@obtieneProyecto');
               Route::get('gestionproyectos/listar/{op}',      'ModuloPdes\GestionProyectosController@listar'); // op:['sectores','instituciones','sisinweb','resultados']
-              Route::get('gestionproyectos/buscar/sisin',      'ModuloPdes\GestionProyectosController@buscarSisin'); 
+              Route::get('gestionproyectos/buscar/sisin',      'ModuloPdes\GestionProyectosController@buscarSisin');
               /* OJO   --- NO EJECUTAR   Funcion para vincular los proyectos y Resultados del SP en la base postgres realiza un insert masivo, sobreescribiendo los datos */
               Route::get('gestionproyectos/sp/insetar_resultados_proyectos_pdes',  'ModuloPdes\GestionProyectosController@insertarResultadosProyectosPdes');
               Route::get('gestionproyectos/sp/obtener_proyecto_sp/{codigo}',  'ModuloPdes\GestionProyectosController@obtenerProyectoSP');
 
 
 		  }
+      );
+});
+
+
+Route::group(['middleware' => 'auth'],function(){
+      Route::group(
+          array('prefix' => 'moduloplanificacion'),
+          function() {
+              Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
+
+
+
+          }
+      );
+      Route::group(
+          array('prefix' => 'moduloplanificacion/ajax'),
+          function() {
+              Route::get('demo', 'ModuloPlanificacion\DashboardController@demo');
+
+          }
       );
 });
