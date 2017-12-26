@@ -108,33 +108,51 @@
                             <a href="#" id="btn_grafico" class="btn btn-default btn-xs  " ><i class="fa fa-2x fa-bar-chart"></i></a>
                             <a href="#" id="btn_tabla" class="btn btn-default btn-xs "><i class="fa fa-2x fa-table"></i></a>
                             
-                            <a  class="dropdown-toggle pull-right btn btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
+                            <a id="btn_menuconfig_acciones" class="dropdown-toggle pull-right btn btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                                 <i class="fa fa-2x fa-cog bg-dark-light pr5 pl5 bordered round"></i><span ></span>
                             </a>
                             <ul class="dropdown-menu pull-right">
-                                <li><a href=# id="predef_update"><i class="fa fa-save fa-2x"></i><span> Guardar la configuración actual  </span></a></li>
-                                <li><a href=# id="predef_new"><i class="fa fa-clone fa-2x"></i><span> Guardar como una conf. nueva     </span></a></li>
-                                <li><a href=# id="predef_del"><i class="fa fa-trash-o fa-2x bg-warning-dark"></i><span> Eliminar configuarción actual  </span></a></li>                                   
+                                <li><a href=# id="predef_update"><i class="fa fa-save fa-2x p2"></i><span> Guardar la visualización actual  </span></a></li>
+                                <li><a href=# id="predef_new"><i class="fa fa-clone fa-2x p2"></i><span> Guardar como una vis. nueva     </span></a></li>
+                                <li><a href=# id="predef_del"><i class="fa fa-trash-o fa-2x p2 bg-danger-dark"></i><span> Eliminar visualización actual  </span></a></li>
                             </ul>
+                            <a href="#" id="btn_vista_Usuario" class="pull-right btn btn-xs"   >
+                                <i class="fa fa-2x fa-user-plus  bg-dark-light pr5 pl5 bordered round"></i><span ></span>
+                            </a>
                         </div>
                     </div>
 
                     <div id='divGrafico'>
                         <div id="tituloGrafico" class="mb15"></div>
 
-                        <select id="opcionesGrafico" onchange="ctxGra.graficarH(this);" >
-                            <option value="line">Linea</option> 
-                            <option value="column">Columnas</option>
-                            <option value="column-stacked">Columnas apiladas</option>    
-                            <option value="column-stackedp">Columnas apiladas en proporcion</option>                            
-                            <option value="bar">Barras</option> 
-                            <option value="bar-stacked">Barras apiladas</option>    
-                            <option value="bar-stackedp">Barras apiladas en proporcion</option>  
-                            <option value="area">Area</option>
-                            <option value="area-stacked">Areas apiladas</option>    
-                            <option value="area-stackedp">Areas apiladas en proporcion</option>
-                        </select>
-                        <div id="divChart" style="font-family: arial; width: 90%; min-height: 600px; margin: 0 auto"></div>
+                        <div class="row" >
+                            <div class="col-sm-2" id="configuracionGrafico">
+                                <h5>OPCIONES DE GRAFICO</h5>
+                                <label >Tipo Gráfico</label>
+                                <select id="opcionesGrafico"  style="width: 100%">
+                                    <option value="line">Linea</option>
+
+                                    <option value="column">Columnas</option>
+                                    <option value="column-stacked">Columnas apiladas</option>    
+                                    <option value="column-stackedp">Columnas apiladas en proporcion</option>                            
+                                    <option value="bar">Barras</option> 
+                                    <option value="bar-stacked">Barras apiladas</option>    
+                                    <option value="bar-stackedp">Barras apiladas en proporcion</option>                         
+                                    <option value="area">Area</option>
+                                    <option value="area-stacked">Areas apiladas</option>    
+                                    <option value="area-stackedp" >Areas apiladas en proporcion</option>
+                                    <option value="pie-3d" >Dona 3d</option> 
+                                </select>
+                                <hr>
+                                <label class="block" ><input type="checkbox" id="view3d" name="view3d" /> Vista 3D</label>
+                                <label class="block"  ><input type="checkbox" id="viewlabel" name="viewlabel" /> Visualizar Datos</label>
+                            </div>
+
+
+                            <div class="col-sm-10" style="height: 600px">
+                                <div id="divChart" style="font-family: arial; width: 90%; min-height: 100%; margin: 0 auto"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div id='divDatos' class="">
@@ -143,13 +161,17 @@
                             <div id="pvtTable"></div>                
                         </div>
                     </div>
+
+
+
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="modalConfig" class="modal  " role="dialog">
+<div id="predefModal" class="modal  " role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -161,20 +183,13 @@
             <div class="modal-body" >
                 <div>
                     <div class="stat-item item_campo_predefinido containertipoimg col-sm-2 offset-5"  title=''  style="cursor:pointer;">
-                        <img id="imagen"  src='' alt='' class="image" style="width:80px;height:60px">
+                        <img id="predef_imagen_previsualizacion"  src='' alt='' class="image" style="width:80px;height:60px">
                         <div class="filt" >
                             <div id='dixTextoImagen' class="text"></div>
                         </div>
                     </div>
                 </div>
                 <div class="form-horizontal" role="form" id='predefNewUpdate'>
-                    
-                    <div class="form-group">
-                        <label class="control-label col-md-3" for="predef_nombre">Nombre</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" id="predef_nombre" placeholder="Nombre ">
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="control-label col-md-3" for="predef_etiqueta">Etiqueta visible</label>
                         <div class="col-md-9">
@@ -182,8 +197,8 @@
                         </div>
                     </div>    
                     <div class="form-group">
-                        <label class="control-label col-md-3" for="predef_imagen">imagen</label>
-                        <div id="selectImagenes" class="col-md-9">
+                        <label class="col-md-12">Imágenes</label>   <input type="hidden" id="predef_imagen">
+                        <div id="selectImagenes" style="width: 90%; margin: 0px auto; overflow-x: scroll;">
                         </div>
                     </div>  
                     <div class="form-group">
@@ -220,6 +235,9 @@
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
+{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica.js"></script> --}}
+{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/gray.js.map"></script> --}}
+{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/sunset.src.js"></script> --}}
 
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
@@ -391,7 +409,6 @@
         contenedorDatos : $("#contenedorDatos"),
         divDatos : $("#divDatos"),
         divGrafico : $("#divGrafico"),
-        modalConfig : $("#modalConfig"),
         titulo: $("#titulo"),
         tituloGrafico: $("#tituloGrafico"),
         tituloDatos: $("#tituloDatos"),        
@@ -427,13 +444,13 @@
                 condicion_sql: varEst.condicion_sql,
                 campos_disponibles: varEst.campos_disponibles,
                 porcentaje: varEst.porcentaje ? true : null,
-                // _token : $('input[name=_token]').val(),
+                _token : $('input[name=_token]').val(),
             }
             return objVE;
         },    
         obtenerData: function(varEst){
             objRequest = ctxC.crearRequest(varEst);
-            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){                
+            $.post('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){                
                 ctxG.collection = res.collection;
                 ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
                 ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
@@ -479,32 +496,104 @@
             {
                 ctxC.contenedorDatos.hide();
             }
-        },
-        mostrarModal: function(op){
+        },      
+    };
 
-            this.modalConfig.fadeIn(500).modal();
+    var ctxModal = {
+        predefModal : $("#predefModal"),
+        tituloModal : $("#modal_titulo"),
+        mostrarModal: function(op)
+        {
             var oculta = op == 'del';
-            $('#predefNewUpdate').attr('hidden', oculta);
+            $('#predefNewUpdate').attr('hidden', oculta);            
             $('#predefDel').attr('hidden', !oculta);
-            if(op == 'del'){
-                $("#predefDel #imagen").attr("src",cnf.c.img[ctxG.varEstActual.set_predefinido.imagen]);
-                $("#predefDel #dixTextoImagen").html(ctxG.varEstActual.set_predefinido.etiqueta);
-            }
-            if(op=='update' || op == 'new')
-            {
-                var html = '<div>';
-                cnf.c.img.keys(function(key){
-                    console.log(key)
-                })
+            this.cargarImagenes(); 
+
+            function cargaPredef(predef){
+                $("#predefModal #predef_imagen_previsualizacion").attr("src",cnf.c.img[predef.imagen] || '');
+                $("#predefModal #divTextoImagen").html(predef.etiqueta || '');  
+                $("#predefModal #predef_etiqueta").val(predef.etiqueta || '');
+                $("#predefModal #predef_posicion").val( parseInt(predef.index) + 1 || '');
+                $("#predefModal #predef_imagen").val(predef.imagen || '');
+                $("#predefModal #accion").val(op);
             }
 
+            if(op == 'del') {
+                cargaPredef(ctxG.varEstActual.set_predefinido);
+                this.tituloModal.html("Eliminar Visualización");
+            }
+            if(op=='update') {
+                cargaPredef(ctxG.varEstActual.set_predefinido);
+                this.tituloModal.html("Guardar Visualización Actual");
+            }
+            if(op == 'new') {
+                cargaPredef({});
+                this.tituloModal.html("Nueva Visualización");
+                $("#predefModal #predef_posicion").val(ctxG.varEstActual.sets_predefinidos.length);
+            }
+            this.predefModal.fadeIn(500).modal();
 
         },
         guardarPredef: function(){
+            var op = $("#predefModal #accion").val();
+            var config = {
+                etiqueta : $("#predefModal #predef_etiqueta").val(),
+                imagen : $("#predefModal #predef_imagen").val(),
+                x: ctxG.pivotInstancia.cols,
+                y: ctxG.pivotInstancia.rows,
+                agregacion:  ctxG.pivotInstancia.aggregatorName,
+                filtros: (function(){
+                    var filtro = [];
+                    _.mapObject(ctxG.pivotInstancia.inclusions,function(val, key){
+                        val.map(function(elem){
+                            filtro.push(key + " = '" + elem + "' ");
+                        }) 
+                        
+                    })
+                    return filtro;
+                })(),
+                grafico: {
+                    tipo : $("#opcionesGrafico").val()
+                }
+            }
 
-        }
+            var setsPredef = ctxG.varEstActual.sets_predefinidos;
+            var predef = ctxG.varEstActual.set_predefinido;
+            var posicion = isNaN($("#predef_posicion").val() ) ? $("#predef_posicion").val() : $("#predef_posicion").val() - 1 ;
+            if(op == 'del')
+                setsPredef.splice(predef.index, 1);
+            if(op == 'new'){
+                setsPredef.splice(posicion, 0, config);
+            };
+            if(op == "update"){
+                setsPredef.splice(predef.index, 1);
+                setsPredef.splice(posicion, 0, config);
+            };
 
-    };
+            var configuracionString = JSON.stringify(ctxG.varEstActual);
+            var objReq = {
+                id_dash_menu : ctxG.nodoSel.id,
+                configuracionString : configuracionString,
+                _token : $('input[name=_token]').val(),
+            };
+            $.post("/api/modulopriorizacion/tablero/guardaconfiguracion", objReq, function(res){
+                ctxC.cargarHTMLPredefinidos(ctxG.varEstActual);  
+            });
+
+
+        },
+        cargarImagenes : function(){
+            var divImagenes = '<table><tr>';
+            _.mapObject(cnf.c.img, function(val, key){
+                divImagenes += '<td><div class="ml5 mr5" style="cursor:pointer; border: 1px solid #fff; " onMouseOver= "this.style.border = \'#aaa 1px solid\'"  onMouseOut= "this.style.border = \'1px solid #fff\'">\
+                <img id="' + key + '"  src="'+ val + '" alt="" class="image" style="width:80px;height:60px"></div>\
+                </td>';                    
+            });
+            divImagenes += '</tr></table>'
+            $("#selectImagenes").html(divImagenes);
+        },
+
+    }
 
     /*-----------------------------------------------------------------------
      *      ctxPiv variable que contiene el contexto del Pivot  
@@ -517,7 +606,7 @@
             config.rows = set_predefinido.y;
             config.inclusions = _.chain(set_predefinido.filtros)
                                 .map(function(item){                    
-                                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
+                                    condicion = item.split("=").map(function(s){ return s.toString().trim();});
                                     _datafield =  condicion[0];
                                     _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
                                     filtro = {};
@@ -628,7 +717,7 @@
                                                 num =  parseFloat((Math.round( elem.valor * 100 * 10 )/10 ).toString()) ;
                                             else 
                                                 num = elem.valor;
-                                            return [elem[pivot.dimColumna], num];
+                                            return { name : elem[pivot.dimColumna], y: num};
                                         });
                                         return serie;
                                     }).value();
@@ -642,7 +731,29 @@
             var subtituloChart = ctxG.pivot.dimFila + ' vs. ' + ctxG.pivot.dimColumna;
             var tipo = $("#opcionesGrafico").val().split('-');
             var stacked = (tipo[1]  == 'stacked') ? 'normal' : (tipo[1]  == 'stackedp') ? 'percent': '';
-            var tipo3d = false;
+            var x = document.getElementById("view3d").checked;
+            var y = document.getElementById("viewlabel").checked;
+            //alert(x);
+            var tipo3d = x;
+
+            var vale = tipo[0];
+            var tool = '';
+            if(vale =='line'||vale=='bar'||vale=='area'||vale=='column'){
+                tool= '{series.name}: <b>{point.y}</b> ';
+            };
+            if(tipo[1]){
+                tool = '{series.name}: <b>{point.y}</b> <br>porcentaje: <b>{point.percentage:.1f} %</b>';
+            
+            }
+            // if(tipo.substring(0,2) == '3d')
+            // {
+            //     tipo3d = true;
+            //     tipo = tipo.substring(2, tipo.length);
+            // }
+
+
+
+
 
 
             var chart={}, title={}, subtitle={}, xAxis={}, yAxis={}, tooltip={}, plotOptions={}, series={};
@@ -662,16 +773,19 @@
                 text: subtituloChart
             };  
             xAxis = {
-                categories: ctxG.pivot.dataGraph.categorias
+                type: 'category',
+                categories: ctxG.pivot.dataGraph.categorias,
+                // max:  ctxG.pivot.dataGraph.categorias.length
             };
             yAxis = {
                 title: {
                     text: unidadMedida
                 }
             };
-            // tooltip =   {
-            //     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br>categ {point.category} </br> total {point.total} </br>y {point.y}'
-            // };
+            tooltip =  {
+                pointFormat: tool,
+            };
+
             plotOptions = {
                 // pies donas
                 pie: {
@@ -689,12 +803,16 @@
                     stacking: stacked,
                     dataLabels: {
                         enabled: true,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#666'
                     }
                 },
                 //bars
                 series: {
-                    stacking: stacked
+                    stacking: stacked,
+                    dataLabels: {
+                        enabled: y,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#666'
+                    }
                 },
                 area: {
                     stacking: stacked,
@@ -738,6 +856,8 @@ $(function(){
         ctxM.abrirCerrarMenu();
     });
 
+    /*  Click sobre elemento del menu 
+    */
     $("#menuPrincipal, #menuDetalle").on('click', 'a.nodo_menu', function(event){
         str_cod = $(this).attr('id');
         ctxG.nodoSel = ctxM.obtenerNodo(str_cod);
@@ -751,9 +871,8 @@ $(function(){
         else
         {
             ctxG.varEstActual = jQuery.parseJSON(ctxG.nodoSel.configuracion);
-            ctxG.varEstActual.campo_tituloPredef = '';
-            ctxG.varEstActual.porcentaje =  false;
             ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[0]; // por defecto el primero
+            ctxG.varEstActual.set_predefinido.index = 0;
             ctxC.actualizaTitulos();
             ctxC.cargarHTMLPredefinidos(ctxG.varEstActual);            
             ctxC.obtenerData(ctxG.varEstActual);
@@ -761,25 +880,76 @@ $(function(){
         }
     }); 
 
+    /* Click sobre menu de predefinidos
+    */
     ctxC.contenedorPredefinidos.on('click', '.item_campo_predefinido', function(e){
         index =  $(this).attr('id');
-        ctxG.varEstActual.campo_tituloPredef =  $(this).attr('title');
-        ctxG.varEstActual.porcentaje =  false;
         ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[index];
+        ctxG.varEstActual.set_predefinido.index = index;
         ctxC.actualizaTitulos();
         ctxC.mostrarData(ctxG.collection);
     });
 
+    /* Click sobre los botones de mostrar tabla o grafico o geo
+    */
     $("#btn_tabla, #btn_grafico").click(function(){
         var op = $(this).attr('id').replace('btn_',''); // == 'btn_tabla' ? 'tabla' : 'grafico';
         ctxC.mostrarPantallas(op);
     });
 
-    $("#predef_update, #predef_new, #predef_del").click(function(){
-        var op = $(this).attr('id').replace('predef_','');
-        ctxC.mostrarModal(op);        
+    /*  Cambia config del grafico
+    */
+    $("#configuracionGrafico ").change(function(){
+        ctxGra.graficarH();
     });
 
+    /*  Click sobre algun elemento del menu de guardar, modificar, o eliminar predefinidos (new, update, del)    
+     */
+    $("#predef_update, #predef_new, #predef_del").click(function(){
+        var op = $(this).attr('id').replace('predef_','');
+        ctxModal.mostrarModal(op);        
+    });
+
+    /* Click sobre una imagen de la ventana modal
+    */
+    $("#selectImagenes").on('click', 'img', function(){
+        id_imagen = $(this).attr('id');
+        $("#predefModal #predef_imagen_previsualizacion").attr("src",cnf.c.img[id_imagen]);
+        $("#predef_imagen").val(id_imagen)
+    })
+
+    /* Click Guardar de la ventana Modal
+    */
+    $("#predefModal #btnGuardar").click(function(){
+        ctxModal.guardarPredef();
+    });
+
+    /* Click Boton de vista usuario Admin , usuariop normal
+    */
+    $("#btn_vista_Usuario").click(function(){
+        ocultar = $("#btn_vista_Usuario i").hasClass('fa-user-plus');
+        if(ocultar){ 
+            $("#btn_vista_Usuario i").removeClass('fa-user-plus');
+            $("#btn_vista_Usuario i").addClass('fa-user');
+            $("#configuracionGrafico").hide();
+            $("#btn_menuconfig_acciones").hide();
+
+            $("#pvtTable .pvtTdForRender").hide();
+            $("#pvtTable .pvtAxisContainer").hide();
+            $("#pvtTable .pvtVals").hide();
+        }
+        else{
+            $("#btn_vista_Usuario i").addClass('fa-user-plus');
+            $("#btn_vista_Usuario i").removeClass('fa-user');
+            $("#configuracionGrafico ").show();
+            $("#btn_menuconfig_acciones").show(); 
+
+            $("#pvtTable .pvtTdForRender").show();
+            $("#pvtTable .pvtAxisContainer").show();
+            $("#pvtTable .pvtVals").show();
+        }
+
+    })
 
 
 });

@@ -1296,7 +1296,7 @@ _a_ = function() {
             uiTable = $("<table>", {
                 "class": "pvtUi"
             }).attr("cellpadding", 5);
-            rendererControl = $("<td>");
+            rendererControl = $("<td>").addClass('pvtTdForRender');
             renderer = $("<select>").addClass('pvtRenderer').appendTo(rendererControl).bind("change", function() {
                 return refresh();
             });

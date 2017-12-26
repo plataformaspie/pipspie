@@ -115,7 +115,7 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               Route::get('dashboard', 'ModuloPriorizacion\DashboardController@index');
               Route::get('tablero', 'ModuloPriorizacion\TableroController@index');
-              Route::get('tablero2', 'ModuloPriorizacion\TableroController@index2');
+              // Route::get('tablero2', 'ModuloPriorizacion\TableroController@index2');
           }
       );
       Route::group(
@@ -133,8 +133,10 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'api/modulopriorizacion'),
           function() {
               Route::get('menustablero', 'ModuloPriorizacion\TableroController@menusTablero');
-              Route::get('datosVariableEstadistica', 'ModuloPriorizacion\TableroController@datosVariableEstadistica');
+              Route::post('datosVariableEstadistica', 'ModuloPriorizacion\TableroController@datosVariableEstadistica');
+              Route::post('tablero/guardaconfiguracion', 'ModuloPriorizacion\TableroController@guardaConfiguracion');
               Route::get('datosIndicadoresMeta', 'ModuloPriorizacion\TableroController@datosIndicadoresMeta');
+
           }
       );
 });
