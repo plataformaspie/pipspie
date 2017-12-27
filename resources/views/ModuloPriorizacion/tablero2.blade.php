@@ -1,11 +1,6 @@
 @extends('layouts.plataforma')
 
 @section('header')
-{{-- <link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.base.css" type="text/css" />
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.light.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.darkblue.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.energyblue.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.ui-overcast.css" type="text/css"/> --}}
 
 <link rel="stylesheet" href="/plugins/amcharts3.21.8/plugins/export/export.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/visores.css" type="text/css" />
@@ -33,7 +28,7 @@
     text-decoration: none;
     color: #818181;
     display: block;
-    transition: 3s;
+    transition: 1s;
 }
 
 .sidenav a:hover, .menuDetail a:hover {
@@ -131,7 +126,6 @@
                                 <label >Tipo Gráfico</label>
                                 <select id="opcionesGrafico"  style="width: 100%">
                                     <option value="line">Linea</option>
-
                                     <option value="column">Columnas</option>
                                     <option value="column-stacked">Columnas apiladas</option>    
                                     <option value="column-stackedp">Columnas apiladas en proporcion</option>                            
@@ -147,8 +141,6 @@
                                 <label class="block" ><input type="checkbox" id="view3d" name="view3d" /> Vista 3D</label>
                                 <label class="block"  ><input type="checkbox" id="viewlabel" name="viewlabel" /> Visualizar Datos</label>
                             </div>
-
-
                             <div class="col-sm-10" style="height: 600px">
                                 <div id="divChart" style="font-family: arial; width: 90%; min-height: 100%; margin: 0 auto"></div>
                             </div>
@@ -161,10 +153,6 @@
                             <div id="pvtTable"></div>                
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
         </div>
@@ -235,9 +223,9 @@
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
-{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica.js"></script> --}}
+<script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica.js"></script>
 {{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/gray.js.map"></script> --}}
-{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/sunset.src.js"></script> --}}
+<script type="text/javascript" src="/plugins/modify/hightcharts/themes/sunset.src.js"></script>
 
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
@@ -402,7 +390,7 @@
     }
 
     /*-----------------------------------------------------------------------
-     *      ctxC variable que contiene el contexto del Contenido, contenedorPredefinidos, titulos, 
+     *      ctxC variable que contiene el contexto del Contenido, contenedorPredefinidos, titulos, new update del config
      */
     var ctxC = {
         contenedorPredefinidos: $("#contenedorPredefinidos"),
@@ -471,6 +459,7 @@
             ctxPiv.pivottable();
             ctxGra.colocarOpcionesPredefinidas();
             ctxGra.graficarH();
+            ctxC.ocultaMuestra()
         },
         actualizaTitulos: function(){
             this.titulo.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
@@ -496,7 +485,31 @@
             {
                 ctxC.contenedorDatos.hide();
             }
-        },      
+        },  
+        ocultaMuestra: function ()
+        {
+            ocultar = $("#btn_vista_Usuario i").hasClass('fa-user-plus');
+            if(ocultar){ 
+                $("#btn_vista_Usuario i").removeClass('fa-user-plus');
+                $("#btn_vista_Usuario i").addClass('fa-user');
+                $("#configuracionGrafico").hide();
+                $("#btn_menuconfig_acciones").hide();
+
+                $("#pvtTable .pvtTdForRender").hide();
+                $("#pvtTable .pvtAxisContainer").hide();
+                $("#pvtTable .pvtVals").hide();
+            }
+            else{
+                $("#btn_vista_Usuario i").addClass('fa-user-plus');
+                $("#btn_vista_Usuario i").removeClass('fa-user');
+                $("#configuracionGrafico ").show();
+            $("#btn_menuconfig_acciones").show(); 
+
+            $("#pvtTable .pvtTdForRender").show();
+            $("#pvtTable .pvtAxisContainer").show();
+            $("#pvtTable .pvtVals").show();
+        }
+    }    
     };
 
     var ctxModal = {
@@ -522,14 +535,14 @@
                 cargaPredef(ctxG.varEstActual.set_predefinido);
                 this.tituloModal.html("Eliminar Visualización");
             }
-            if(op=='update') {
+            if(op =='update') {
                 cargaPredef(ctxG.varEstActual.set_predefinido);
                 this.tituloModal.html("Guardar Visualización Actual");
             }
             if(op == 'new') {
                 cargaPredef({});
                 this.tituloModal.html("Nueva Visualización");
-                $("#predefModal #predef_posicion").val(ctxG.varEstActual.sets_predefinidos.length);
+                $("#predefModal #predef_posicion").val(ctxG.varEstActual.sets_predefinidos.length + 1);
             }
             this.predefModal.fadeIn(500).modal();
 
@@ -559,7 +572,7 @@
 
             var setsPredef = ctxG.varEstActual.sets_predefinidos;
             var predef = ctxG.varEstActual.set_predefinido;
-            var posicion = isNaN($("#predef_posicion").val() ) ? $("#predef_posicion").val() : $("#predef_posicion").val() - 1 ;
+            var posicion = isNaN($("#predef_posicion").val() ) ? 999 : $("#predef_posicion").val() - 1 ;
             if(op == 'del')
                 setsPredef.splice(predef.index, 1);
             if(op == 'new'){
@@ -633,6 +646,7 @@
                     ctxG.pivotInstancia = p;
                     ctxPiv.trnDatosDePivot();
                     ctxGra.graficarH();
+                    ctxC.ocultaMuestra();
                     console.log(ctxG)
                 }
             }, true, "es");
@@ -692,9 +706,13 @@
     var ctxGra = {
         colocarOpcionesPredefinidas: function()
         {
-            try { $("#opcionesGrafico").val(ctxG.varEstActual.set_predefinido.grafico.tipo);}
+            try { 
+                $("#opcionesGrafico").val(ctxG.varEstActual.set_predefinido.grafico.tipo);
+                if($("#opcionesGrafico").val() == null)
+                    $("#opcionesGrafico").val('line');
+            }
             catch(e)/* si no existe le asigna el primer grafico*/           
-                { $('#opcionesGrafico option')[0].selected = true; }
+                { $('#opcionesGrafico option')[0].selected = true;}
         },
         transformarDatosParaGrafico: function()
         {
@@ -745,15 +763,6 @@
                 tool = '{series.name}: <b>{point.y}</b> <br>porcentaje: <b>{point.percentage:.1f} %</b>';
             
             }
-            // if(tipo.substring(0,2) == '3d')
-            // {
-            //     tipo3d = true;
-            //     tipo = tipo.substring(2, tipo.length);
-            // }
-
-
-
-
 
 
             var chart={}, title={}, subtitle={}, xAxis={}, yAxis={}, tooltip={}, plotOptions={}, series={};
@@ -765,6 +774,7 @@
                     alpha: tipo=='pie' ? 45 : 23, 
                     beta: 0, depth: 60
                 },
+                zoomType: 'xy'
             };
             title = {
                 text: tituloChart   
@@ -787,6 +797,9 @@
             };
 
             plotOptions = {
+                line:{
+                    marker: { symbol:'circle',}
+                },
                 // pies donas
                 pie: {
                     innerSize: 100,
@@ -803,7 +816,7 @@
                     stacking: stacked,
                     dataLabels: {
                         enabled: true,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#666'
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#fff'
                     }
                 },
                 //bars
@@ -811,7 +824,7 @@
                     stacking: stacked,
                     dataLabels: {
                         enabled: y,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#666'
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#fff'
                     }
                 },
                 area: {
@@ -825,10 +838,7 @@
                 }
             };
 
-            series = ctxG.pivot.dataGraph.series;
-
-            
-            
+            series = ctxG.pivot.dataGraph.series;       
 
             var json = {};   
             json.chart = chart; 
@@ -924,30 +934,11 @@ $(function(){
         ctxModal.guardarPredef();
     });
 
+
     /* Click Boton de vista usuario Admin , usuariop normal
     */
     $("#btn_vista_Usuario").click(function(){
-        ocultar = $("#btn_vista_Usuario i").hasClass('fa-user-plus');
-        if(ocultar){ 
-            $("#btn_vista_Usuario i").removeClass('fa-user-plus');
-            $("#btn_vista_Usuario i").addClass('fa-user');
-            $("#configuracionGrafico").hide();
-            $("#btn_menuconfig_acciones").hide();
-
-            $("#pvtTable .pvtTdForRender").hide();
-            $("#pvtTable .pvtAxisContainer").hide();
-            $("#pvtTable .pvtVals").hide();
-        }
-        else{
-            $("#btn_vista_Usuario i").addClass('fa-user-plus');
-            $("#btn_vista_Usuario i").removeClass('fa-user');
-            $("#configuracionGrafico ").show();
-            $("#btn_menuconfig_acciones").show(); 
-
-            $("#pvtTable .pvtTdForRender").show();
-            $("#pvtTable .pvtAxisContainer").show();
-            $("#pvtTable .pvtVals").show();
-        }
+        ctxC.ocultaMuestra();
 
     })
 
