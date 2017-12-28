@@ -37,7 +37,7 @@ class TableroController extends Controller
             array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'submenus' => $submenu));
         }
         \View::share(['modulos'=> $this->modulos,'menus'=>$this->menus]);
-        return view('ModuloPriorizacion.tablero2');
+        return view('ModuloPriorizacion.tablero');
     }
 
 

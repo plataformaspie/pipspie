@@ -1,11 +1,11 @@
-@extends('dashboard.plataforma')
+@extends('ModuloPlanificacion.dashboard')
 
-@section('header')
+@section('header-css')
 
 @endsection
 
 
-@section('content')
+@section('contenido')
 
 
 Estoy en la <b>PRUEBA</b> 
