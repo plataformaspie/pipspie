@@ -25,16 +25,21 @@
 
         /* global document */
         // Load the fonts
-        Highcharts.createElement('link', {
-            href: 'https://fonts.googleapis.com/css?family=Unica+One',
-            rel: 'stylesheet',
-            type: 'text/css'
-        }, null, document.getElementsByTagName('head')[0]);
+        // Highcharts.createElement('link', {
+        //     href: 'https://fonts.googleapis.com/css?family=Unica+One',
+        //     rel: 'stylesheet',
+        //     type: 'text/css'
+        // }, null, document.getElementsByTagName('head')[0]);
 
         Highcharts.theme = {
-            colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
-                '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
-            ],
+            // colors: [
+            //     '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
+            //     '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE',      
+            //     '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
+            //     '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', '#E80000',
+            //     '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
+            //     '#FF72F4', '#84345E', '#348445', '#C4D21C', '#9C0000'
+            // ],
             chart: {
                 backgroundColor: {
                     linearGradient: {
@@ -49,28 +54,31 @@
                     ]
                 },
                 style: {
-                    fontFamily: '\'Unica One\', sans-serif'
+                    fontFamily: ' sans-serif, Verdana,'
                 },
                 plotBorderColor: '#606063'
             },
             title: {
                 style: {
-                    color: '#E0E0E3',
+                    color: '#f5f5ff',//'#FDD089',
                     textTransform: 'uppercase',
-                    fontSize: '20px'
+                    fontSize: '18px ',
+                    fontWeight: 'bold'
                 }
             },
             subtitle: {
                 style: {
-                    color: '#E0E0E3',
-                    textTransform: 'uppercase'
+                    color: '#f5f5ff',
+                    textTransform: 'uppercase',
+                    fontSize: '14px'
                 }
             },
             xAxis: {
                 gridLineColor: '#707073',
                 labels: {
                     style: {
-                        color: '#E0E0E3'
+                        color: '#E0E0E3',
+                        fontSize: '12px'
                     }
                 },
                 lineColor: '#707073',
@@ -78,8 +86,7 @@
                 tickColor: '#707073',
                 title: {
                     style: {
-                        color: '#A0A0A3'
-
+                        color: '#f2f2f2',
                     }
                 }
             },
@@ -87,7 +94,8 @@
                 gridLineColor: '#707073',
                 labels: {
                     style: {
-                        color: '#E0E0E3'
+                        color: '#E0E0E3',
+                        fontSize: '12px'
                     }
                 },
                 lineColor: '#707073',
@@ -96,12 +104,13 @@
                 tickWidth: 1,
                 title: {
                     style: {
-                        color: '#A0A0A3'
+                        color: '#E0E0E3',
+                        fontSize: '14px'
                     }
                 }
             },
             tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                backgroundColor: 'rgba(50, 50, 60, 0.7)',
                 style: {
                     color: '#F0F0F0'
                 }
@@ -143,7 +152,7 @@
             },
             labels: {
                 style: {
-                    color: '#707073'
+                    color: '#f00'//'#707073'
                 }
             },
 
@@ -230,7 +239,7 @@
             // special colors for some of the
             legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
             background2: '#505053',
-            dataLabelsColor: '#B0B0B3',
+            dataLabelsColor: '#bbb',//'#B0B0B3',
             textColor: '#C0C0C0',
             contrastTextColor: '#F0F0F3',
             maskColor: 'rgba(255,255,255,0.3)'

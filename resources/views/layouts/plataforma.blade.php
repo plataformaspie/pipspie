@@ -28,7 +28,6 @@
     {{-- <link href="{{ asset('css/fontello.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/auxmenu.css') }}" rel="stylesheet">
 
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -36,6 +35,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
     @yield('header')
+
 </head>
 
 <body class="fix-sidebar">

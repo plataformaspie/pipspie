@@ -1,14 +1,10 @@
 @extends('layouts.plataforma')
 
 @section('header')
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.base.css" type="text/css" />
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.light.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.darkblue.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.energyblue.css" type="text/css"/>
-<link rel="stylesheet" href="/jqwidgets5.4.0/jqwidgets/styles/jqx.ui-overcast.css" type="text/css"/>
 
-<link rel="stylesheet" href="/plugins/amcharts3.21.8/plugins/export/export.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/visores.css" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="/plugins/modify/pivot___.css">
 <link rel="stylesheet" href="/plugins/bower_components/bootstrap-urban-master/urban.css" type="text/css" />
 <style>
 
@@ -31,7 +27,7 @@
     text-decoration: none;
     color: #818181;
     display: block;
-    transition: 3s;
+    transition: 1s;
 }
 
 .sidenav a:hover, .menuDetail a:hover {
@@ -71,6 +67,11 @@
 .jqx-pivotgrid{
     background-color: #fff;
 }
+
+.oculta_pvt .pvtTdForRender, .oculta_pvt .pvtAxisContainer, .oculta_pvt  .pvtVals{
+    display: none}
+
+/*.pvtTotal, .pvtTotalLabel, .pvtGrandTotal {display: none}*/
 </style>
 @endsection
 
@@ -78,7 +79,7 @@
 @section('content')
 <div class='container-fluid'>
     <div class=row>
-    
+
         <div class="col-md-3">
             <div id="menuPrincipal"  class="sidenav list-group bordered border-default rounded-right w300" style="height: 720px">
                 <div href="#" id='btnmenu' class="p5" style="cursor: pointer;">
@@ -88,79 +89,200 @@
             <div id="menuDetalle" class="menuDetail " style="height: 720px;" >
             </div>
         </div>    
-    
-        <div id="contenido" class="col-md-9 ">
-            <div id="contenedorPredefinidos" class="row stats-row m-0 bg-white p-3" >
-            </div>
-            <div class="row m-0">              
-
-                <div id="contenedorDatos" style="height: 1000px; width: 100%"  class="bg-white p15 mt-1" style="overflow-y: scroll;"> 
-
-                    <div class="">
-                        <div id=tituloDatos></div>
-                        <table>
-                            <tr>
-                                <td class='align-top'>
-                                   <div id="divPivotGridDesigner" class=""  style="height: 450px; width: 250px;"></div> 
-                                </td>
-                                <td class='align-top'>
-                                    <div style="height: 500px; width: 750px;  background-color: white; overflow: scroll;" >
-                                        <div id="divPivotGrid" class="ml15"  style="height: 400px;  background-color: white;" ></div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+        <div class="col-md-9 ">
+            {{-- ####################        loading #######################################333--}}
+            <div id="loading" class="bg-white" style="width: 100%; height: 720px; background: white" hidden="" > 
+                <div style="left: 40%; top: 200px; width: 100%; position: absolute;">
+                    <div  style="width: 20%; padding: 0 25px">
+                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        <span class=""> Cargango...</span>
                     </div>
-                    <div id="separador"><hr/></div>
-                    <div>
-                        <div id="tituloGrafico"></div>
-                        <div id="chartdiv"></div>
+                    <div class="progress progress-striped active" style="margin-top: 20px; width: 20%;height: 20px"><div class="progress-bar" style="width: 100%"></div></div>                   
+                </div>
+            </div>
+            {{--  ...........          Pantalla de inicio  --}}
+            <div id="vistaInicio" style="width: 100%; height: 900px; background: white; overflow: hidden;" >
+                <img src="/img/spie-ico.png" style="width: 1000px;height: 1000px; opacity: 0.05; left: 200px; top: 200px; position: absolute;" > 
+            </div>
+
+            <div id="contenedor" hidden="">
+                <div class="row">
+                    <div id="contenedorPredefinidos" class="col-sm-12 stats-row m-0 bg-white p-3" >
                     </div>
                 </div>
+                <div class="row m-0">
+                    <div id="contenedorDatos" style="height: 1300px; max-height: auto; width: 100%; "  class="bg-white p15 mt-1" > 
+                         {{-- ::::::::::::::::::::        BOTONES DE PANTALLAS y CONFIGURACION  :::::::::::::::::::::::  --}}
+                        <div id="divTitulo" class="row">
+                            <div id="titulo" class="col-sm-9"></div>
+                            <div class="col-sm-3">      
+
+                                <a href="#" id="btn_grafico" class="btn btn-default btn-xs  " ><i class="fa fa-2x fa-bar-chart"></i></a>
+                                <a href="#" id="btn_tabla" class="btn btn-default btn-xs "><i class="fa fa-2x fa-table"></i></a>
+                                
+                                <a id="btn_menuconfig_acciones" class="dropdown-toggle pull-right btn btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
+                                    <i class="fa fa-2x fa-cog bg-dark-light pr5 pl5 bordered round"></i><span ></span>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href=# id="predef_new"><i class="fa fa-clone fa-2x p2"></i><span> Guardar como Nueva  </span></a></li>
+                                    <li><a href=# id="predef_update"><i class="fa fa-save fa-2x p2"></i><span> Guardar/actualizar Cambios</span></a></li>                                
+                                    <li><a href=# id="predef_del"><i class="fa fa-trash-o fa-2x p2 bg-danger-dark"></i><span> Eliminar actual  </span></a></li>
+                                </ul>
+                                <a href="#" id="btn_vista_Usuario" class="pull-right btn btn-xs"   >
+                                    <i class="fa fa-2x fa-user-plus  bg-dark-light pr5 pl5 bordered round"></i><span ></span>
+                                </a>
+                            </div>
+                        </div>
+
+                        {{-- ****************     PIVOT  PARA ADMIN ************************--}}
+                        <div id='divDatosUI' class="divPivot">
+                            <div id=tituloDatosUI class="mb15 tituloDatos"></div>
+                            <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 600px; padding: 2px">
+                                <div id="pvtTableUI" ></div>                
+                            </div>
+                        </div>
+                        
+                        {{-- ================= CHARTS ==================--}}
+                        <div id='divGrafico'>
+                            <div id="tituloGrafico" class="mb15"></div>
+
+                            <div class="row" >
+                                <div class="col-sm-2" id="configuracionGrafico">
+                                    <h5>OPCIONES DE GRAFICO</h5>
+                                    <label >Tipo Gráfico</label>
+                                    <select id="opcionesGrafico"  style="width: 100%">
+                                        <option value="line">Linea</option>
+                                        <option value="column">Columnas</option>
+                                        <option value="column-stacked">Columnas apiladas</option>    
+                                        <option value="column-stackedp">Columnas apiladas en proporcion</option>                            
+                                        <option value="bar">Barras</option> 
+                                        <option value="bar-stacked">Barras apiladas</option>    
+                                        <option value="bar-stackedp">Barras apiladas en proporcion</option>                         
+                                        <option value="area">Area</option>
+                                        <option value="area-stacked">Areas apiladas</option>    
+                                        <option value="area-stackedp" >Areas apiladas en proporcion</option>
+                                        <option value="pie-3d" >Dona 3d</option> 
+                                    </select>
+                                    <hr>
+                                    <label class="block" ><input type="checkbox" id="view3d" name="view3d" /> Vista 3D</label>
+                                    <label class="block"  ><input type="checkbox" id="viewlabel" name="viewlabel" /> Visualizar Datos</label>
+                                </div>
+                                <div class="col-sm-10" style="height: 600px">
+                                    <div id="divChart" style="font-family: arial; width: 90%; min-height: 100%; margin: 0 auto"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- +++++++++++++++++++         PIVOT PARA SOLO VER     +++++++++++++++++++++++++++++++ --}}
+                        <div id='divDatosRead' class="divPivot oculta_pvt " hidden="">
+                            <div id=tituloDatos class="mb15 tituloDatos"></div>
+                            <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 600px; padding: 2px">
+                                <div id="pvtTableUIRead"  ></div>                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        
+        </div>
+    </div>
+</div>
+
+{{-- <div id="loadingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" >
+                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+<div id="predefModal" class="modal  " role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-dark-light">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title bg-dark-light" id="modal_titulo"></h4>
+                <input class="hidden"  id="accion">
+            </div>
+            <div class="modal-body" >
+                <div>
+                    <div class="stat-item item_campo_predefinido containertipoimg col-sm-2 offset-5"  title=''  style="cursor:pointer;">
+                        <img id="predef_imagen_previsualizacion"  src='' alt='' class="image" style="width:80px;height:60px">
+                        <div class="filt" >
+                            <div id='dixTextoImagen' class="text"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal" role="form" id='predefNewUpdate'>
+                    <div class="form-group">
+                        <label class="control-label col-md-3" for="predef_etiqueta">Etiqueta visible</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="predef_etiqueta" placeholder="Etiqueta visible ">
+                        </div>
+                    </div>    
+                    <div class="form-group">
+                        <label class="col-md-12">Imágenes</label>   <input type="hidden" id="predef_imagen">
+                        <div id="selectImagenes" style="width: 90%; margin: 0px auto; overflow-x: scroll;">
+                        </div>
+                    </div>  
+                    <div class="form-group">
+                        <label class="control-label col-md-3" for="predef_posicion">Posicion</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="predef_posicion" placeholder="Posicion 1,2,3.. ">
+                        </div>
+                    </div> 
+                </div>
+
+                <div id="predefDel">
+                    <div class="bg-danger-dark row" style="border-radius: 6px">
+                        <div class="col-sm-2">
+                            <i class="fa fa-exclamation-triangle fa-3x mt15"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <h5 >Se va a Eliminar la configuración que esta actualmente visualizando. Si elimina se perdará definitivamente dicha configuracion de visualizacion, pero no los datos mostrados.</h5>
+                        </div>
+                    </div>
+                    <h4 class="text-danger"><i class="fa fa-danger"></i> <span><b>Esta seguro que desea eliminar la configuarcion de visualizacion de datos actual ?</b></span></h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelar" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i><span> Cancelar</span></button>
+                <button id="btnGuardar" type="submit" class="btn btn-success "  data-dismiss="modal" ><i class="fa fa-check"></i><span> Aceptar</span></button>
             </div>
         </div>
     </div>
 </div>
 
-
 @endsection
 
 @push('script-head')
-
-<script src="/plugins/amcharts3.21.8/amcharts.js"></script>
-<script src="/plugins/amcharts3.21.8/serial.js"></script>
-<script src="/plugins/amcharts3.21.8/plugins/export/export.min.js"></script>
-<script src="/plugins/amcharts3.21.8/themes/light.js"></script>
-
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcore.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdata.js"></script> 
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxbuttons.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxscrollbar.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxmenu.js"></script>
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivot.js"></script> 
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivotgrid.js"></script> --}}
+<script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
+<script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
+<script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
+<script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script>
 
 
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxcheckbox.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxinput.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxwindow.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxlistbox.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdropdownlist.js"></script>
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxdragdrop.js"></script>
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivot.js"></script>  --}}
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivotgrid.js"></script> --}}
-{{-- <script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/jqxpivotdesigner.js"></script> --}}
-<script type="text/javascript" src="/plugins/modify/jqxpivot___.js"></script> 
-<script type="text/javascript" src="/plugins/modify/jqxpivotgrid___.js"></script>
-<script type="text/javascript" src="/plugins/modify/jqxpivotdesigner___.js"></script>
-
-<script type="text/javascript" src="/jqwidgets5.4.0/jqwidgets/globalization/globalize.js"></script>
-<script type="text/javascript" src="/js/jqwidgets-localization.js"></script>
+<script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
+<script type="text/javascript" src="/plugins/modify/pivot___.es.js"></script>
 
 <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
+
 {{-- *********************  MAIN APP ************************ --}}
 <script type="text/javascript">
+co = 1;
+$("#btnhide").click(function(){
+    // if(co % 2 == 0)
+        $("#loading").attr("hidden", (co % 2 == 0) );
+        co++;
+})
+
     /*-----------------------------------------------------------------------
      *      cnf variables de configuracion  del modulo, como coleres, iconos y otros
      */
@@ -177,17 +299,19 @@
                 '03' : '/img/priori-3.png',
                 '04' : '/img/priori-4.png',
                 '05' : '/img/priori-5.png',
+                '06' : '/img/priori-6.png',
+                '11' : '/img/priori-1.png',
             },
         },
         c : {  // c contenido
-            themePivot : 'ui-overcast',
             img: {  // buscara si key departamento existe en r_departamento de configuracion.campos_predefinidos.campo, con contains 
                 'imagen_por_default':'/img/icon-graf/3.png',
-                'imagen_por_default_1':'/img/icon-graf/1.png',
-                'imagen_por_default_2':'/img/icon-graf/2.png',
-                'imagen_por_default_4':'/img/icon-graf/4.png',
-                'imagen_por_default_5':'/img/icon-graf/5.png',
-                'imagen_por_default_6':'/img/icon-graf/6.png',
+                '1':'/img/icon-graf/1.png',
+                '2':'/img/icon-graf/2.png',
+                '3':'/img/icon-graf/3.png',
+                '4':'/img/icon-graf/4.png',
+                '5':'/img/icon-graf/5.png',
+                '6':'/img/icon-graf/6.png',
                 'departamento':'/img/icon-graf/r_departamento.png',  
                 'urbano_rural':'/img/icon-graf/r_urbano_rural.png',
                 'genero':'/img/icon-graf/genero.png',
@@ -196,6 +320,7 @@
                 'desempleo':'/img/icon-graf/desem.png',
             },            
         },
+
     }
 
     /*-----------------------------------------------------------------------
@@ -205,16 +330,17 @@
         nodos : [],
         nodoSel : {},  // elemento menu  nodo seleccionado
         varEstActual : {},    // objeto JSON VariableEstadisticaActual del nodoSel.configuracion 
+        varEstActualUnidades:{}, // objeto de las unidades de medida
         collection : [],
-        instanciaPivotGrid : {},
-        pivot: {
-            dataAll:[],
+        indicadorActual: {},
+        pivotInstancia:{},
+        pivot:{
             data : [], // Datos del pivot  en formato collection 
             dataGraph : [],
             dimColumna : [],
             dimFila : [],
             total: 0, t_cols : {}, t_filas : {}, total_p : 0, tp_cols : {}, tp_filas: {},
-        },   
+        },
     }
 
     /*-----------------------------------------------------------------------
@@ -314,14 +440,17 @@
     }
 
     /*-----------------------------------------------------------------------
-     *      ctxC variable que contiene el contexto del Contenido, contenedorPredefinidos, graficos y tablas, contenidos dinamicos , 
+     *      ctxC variable que contiene el contexto del Contenido, contenedorPredefinidos, titulos, new update del config
      */
     var ctxC = {
         contenedorPredefinidos: $("#contenedorPredefinidos"),
         contenedorDatos : $("#contenedorDatos"),
+        divDatos : $(".divPivot"), // los dos pivot de admin y consulta
+        divGrafico : $("#divGrafico"),
+        titulo: $("#titulo"),
         tituloGrafico: $("#tituloGrafico"),
-        tituloDatos: $("#tituloDatos"),
-        cargarHTMLCalculosPredefinidos: function(variableEst){
+        tituloDatos: $(".tituloDatos"),  //son dos uno de admin y otro de consulta       
+        cargarHTMLPredefinidos: function(variableEst){
             ctxC.contenedorPredefinidos.html('');
             predef = variableEst.sets_predefinidos;
             for(i=0; i< predef.length; i++)
@@ -351,166 +480,255 @@
                 campo_agregacion: varEst.campo_agregacion,
                 campo_defecto: varEst.campo_defecto,
                 condicion_sql: varEst.condicion_sql,
-                campo: varEst.campo,
                 campos_disponibles: varEst.campos_disponibles,
                 porcentaje: varEst.porcentaje ? true : null,
-                // _token : $('input[name=_token]').val(),
+                _token : $('input[name=_token]').val(),
             }
             return objVE;
-        },      
-        mostrarData: function(collection){
-            ctxPiv.cargarPivot(collection);
-            ctxGra.graficar();
-
-        },
-        obtenerData: function(objRequest){
-            $.get('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){
+        },    
+        obtenerData: function(varEst){
+            objRequest = ctxC.crearRequest(varEst);
+            ctxC.showLoading(1);
+            $.post('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){                
                 ctxG.collection = res.collection;
-                ctxG.varEstActual.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
-                ctxG.varEstActual.valor_tipo = res.unidad_medida.valor_tipo;
-                ctxC.mostrarData(ctxG.collection);
+                ctxG.varEstActualUnidades.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
+                ctxG.varEstActualUnidades.valor_tipo = res.unidad_medida.valor_tipo;
+                $.get('/api/modulopriorizacion/datosIndicadoresMeta', {id_indicador : ctxG.varEstActual.id_indicador}, function(r){
+                    if(r.mensaje=='ok')
+                    {
+                        ctxG.indicadorActual = r.indicador;
+                        ctxG.indicadorActual.metas = r.metasIndicador
+                    }
+                    else
+                        ctxG.indicadorActual = {};
+                    ctxC.mostrarData(ctxG.collection);
+                    ctxC.showLoading(0)
+                } )
+                
             })
         },
+        mostrarData: function(collection){
+            ctxPiv.pivottableUI();
+            ctxGra.colocarOpcionesPredefinidas();
+            // ctxGra.graficarH();
+        },
+        actualizaTitulos: function(){
+            this.titulo.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
+            this.tituloDatos.html('');
+            this.tituloGrafico.html( '');
+        },
+        mostrarPantallas: function(op){
+            // $("#divTitulo a").removeClass('disabled');
+            // $("#btn_" + op).addClass('disabled'); 
+            // if(op == 'grafico')
+            // {                
+            //     this.contenedorDatos.show();
+            //     this.divGrafico.show();
+            //     this.divDatos.hide();
+            // }
+            // else if (op=='tabla')
+            // {
+            //     this.contenedorDatos.show();
+            //     this.divGrafico.hide();
+            //     this.divDatos.show();
+            // }
+            // else
+            // {
+            //     ctxC.contenedorDatos.hide();
+            // }
+        },  
+        ocultaMuestra: function () {
+            ocultar = $("#btn_vista_Usuario i").hasClass('fa-user-plus');
+            $("#divDatosUI").attr('hidden', ocultar);
+            $("#divDatosRead").attr('hidden',!ocultar);
+            $("#configuracionGrafico").attr('hidden', ocultar);
+            $("#btn_menuconfig_acciones").attr('hidden', ocultar);
+
+            $("#btn_vista_Usuario i").removeClass('fa-user-plus fa-user');
+            $("#btn_vista_Usuario i").addClass( ocultar ? 'fa-user' : 'fa-user-plus');      
+        },
+        showLoading : function(op){
+            // mostrarLoading =  ? true : false;
+            $("#vistaInicio").attr('hidden', true);
+            $("#loading").attr('hidden', ( op == 0) );
+            $("#contenedor").attr('hidden', ( op == 1 ) );
+        }    
     };
 
     /*-----------------------------------------------------------------------
      *      ctxPiv variable que contiene el contexto del Pivot  
      */
-    var ctxPiv = {
-        getConfigDePivot : function(collection, set_predefinido){
-            var fields = [];
-            var columnas = [];
-            var filas = [];
-            var filtros = [];
+    var ctxModal = {
+        predefModal : $("#predefModal"),
+        tituloModal : $("#modal_titulo"),
+        mostrarModal: function(op)
+        {
+            var oculta = op == 'del';
+            $('#predefNewUpdate').attr('hidden', oculta);            
+            $('#predefDel').attr('hidden', !oculta);
+            this.cargarImagenes(); 
 
-            if(collection.length > 0)
-                fields = _.chain(collection).first().map(function(value, key){
-                    return {name: key, type : (key == 'valor') ? 'number' : 'string' }
-                }).value();
+            function cargaPredef(predef){
+                $("#predefModal #predef_imagen_previsualizacion").attr("src",cnf.c.img[predef.imagen] || '');
+                $("#predefModal #divTextoImagen").html(predef.etiqueta || '');  
+                $("#predefModal #predef_etiqueta").val(predef.etiqueta || '');
+                $("#predefModal #predef_posicion").val( parseInt(predef.index) + 1 || '');
+                $("#predefModal #predef_imagen").val(predef.imagen || '');
+                $("#predefModal #accion").val(op);
+            }
 
-            columnas = _.map(set_predefinido.x, function(item){
-                return {dataField : item};
-            });
-            filas = _.map(set_predefinido.y, function(item){
-                return {dataField : item};
-            });
+            if(op == 'del') {
+                cargaPredef(ctxG.set_predef_actual);
+                this.tituloModal.html("Eliminar Visualización");
+            }
+            if(op =='update') {
+                cargaPredef(ctxG.set_predef_actual);
+                this.tituloModal.html("Guardar Visualización Actual");
+            }
+            if(op == 'new') {
+                cargaPredef({});
+                this.tituloModal.html("Nueva Visualización");
+                $("#predefModal #predef_posicion").val(ctxG.varEstActual.sets_predefinidos.length + 1);
+            }
+            this.predefModal.fadeIn(500).modal();
 
-            filtros = _.map(set_predefinido.filtros, 
-                function(item){                    
-                    condicion = item.split("==").map(function(s){ return s.toString().trim();});
-                    _datafield =  condicion[0];
-                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
-                    filtro = {
-                        dataField: _datafield,
-                        filterFunction: function(value){
-                            if(_values.indexOf(value.toString()) == -1)
-                                return true;
-                            return false;
-                        }
-                    };
+        },
+        guardarPredef: function(){
+            var op = $("#predefModal #accion").val();
+            var config = {
+                etiqueta : $("#predefModal #predef_etiqueta").val(),
+                imagen : $("#predefModal #predef_imagen").val(),
+                x: ctxG.pivotInstancia.cols,
+                y: ctxG.pivotInstancia.rows,
+                agregacion:  ctxG.pivotInstancia.aggregatorName,
+                filtros: (function(){
+                    var filtro = [];
+                    _.mapObject(ctxG.pivotInstancia.inclusions,function(val, key){
+                        val.map(function(elem){
+                            filtro.push(key + " = '" + elem + "' ");
+                        }) 
+                        
+                    })
                     return filtro;
-            });
-            return { fields: fields, columns: columnas, rows: filas, filters: filtros};
-        },
-        cargarPivot: function() {            
-            var pivotElems = ctxPiv.getConfigDePivot(ctxG.collection, ctxG.varEstActual.set_predefinido);
-            var source = {
-                localdata: ctxG.collection, // los datos en el formato que requiere el pivot son del tipo collection, array de objetos similares
-                datatype: "json",
-                datafields: pivotElems.fields
-            };
-            var dataAdapter = new $.jqx.dataAdapter(source);
-            dataAdapter.dataBind();
-
-            var pivotSettings = {
-                        pivotValuesOnRows: false,
-                        columns: pivotElems.columns,/* [{ dataField: 'gestion'}], */
-                        rows: pivotElems.rows,/* [{ dataField: 'r_departamento'}], */
-                        filters: [],
-                        /*  Ejemplo de filtro, cuando la condicion es true se filtra, se excluye, 
-                            en el caso se quiere solo los valores de 2013 y 2015, por lo tanto la comparacion es , si no esta en el array se excluye                        
-                            filters: [
-                            {
-                                dataField: 'gestion',
-                                filterFunction: function (value) {
-                                    if (['2013', '2015'].indexOf(value.toString()) == -1)
-                                        return true;
-                                    return false;
-                                }
-                            },
-                        */
-                        values: [
-                            { dataField: 'valor', 'function': 'sum', text: 'cantidad'},
-                        ],
-                        customAggregationFunctions : funcionesAgregacion,
-                    };
-            
-            function implementaPivotGrid(dataAdapter, pivotSettings)
-            {
-                var pivotDataSource = new $.jqx.pivot(dataAdapter, pivotSettings);
-                $('#divPivotGrid').jqxPivotGrid(
-                {
-                    source: pivotDataSource,
-                    treeStyleRows: true,
-                    autoResize: true,
-                    // theme: cnf.c.themePivot,
-                    multipleSelectionEnabled: true,
-                    localization: getLocalization('es')
-                });
-                var instanciaPivotGrid = $('#divPivotGrid').jqxPivotGrid('getInstance'); 
-                return instanciaPivotGrid;
-            }
-            var pivotGridInstancia =  implementaPivotGrid(dataAdapter, pivotSettings);
-            ctxG.pivot.dataAll = pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue;
-
-            if(pivotElems.filters.length > 0)
-            {
-                pivotSettings.filters = pivotElems.filters;
-                pivotGridInstancia =  implementaPivotGrid(dataAdapter, pivotSettings);
-            }
-            pivotGridInstancia.refresh();
-            ctxG.pivotGridInstancia = pivotGridInstancia;     
-            ctxPiv.tranformarDatosDePivot();
-
-            $('#divPivotGridDesigner').jqxPivotDesigner(
-            {
-                type: 'pivotGrid',
-                target: pivotGridInstancia
-            });
-            var pivotDesignerInstance =  $('#divPivotGridDesigner').jqxPivotDesigner('getInstance');
-            pivotDesignerInstance.refresh();
-        },
-        tranformarDatosDePivot: function()     {   
-            datos = [];
-            var cellValuesObj = ctxG.pivotGridInstancia._pivotCells.cellProperties.namedPropertyTables.CellValue; //Contiene los valores de las celdas como un obj
-            var pivotColumns = ctxG.pivotGridInstancia._pivotColumns.items;
-            var pivotRows = ctxG.pivotGridInstancia._pivotRows.items;   
-            datosPivotObj = _.chain(cellValuesObj).map(function(item, key){ item.key = key; return item}).sortBy('key').value(); // transforma el obj a una lista ordenada por su key (key mantiene el orden ) 
-            ctxG.pivot.dimColumna = pivotColumns.length > 0 ?  pivotColumns[0].adapterItem.boundField.dataField : 'cantidad'; 
-            ctxG.pivot.dimFila = pivotRows.length > 0 ?  pivotRows[0].adapterItem.boundField.dataField : 'cantidad';
-            columnas = pivotColumns.map(function(col){
-                return col.adapterItem.text;
-            });
-            filas = pivotRows.map(function(row){
-                return row.adapterItem.text;
-            })
-            
-            k = 0;
-            for(i=0; i< columnas.length; i++){ 
-                for(j=0; j<filas.length; j++)
-                {
-                    item = {};
-                    item[ctxG.pivot.dimColumna] = columnas[i];
-                    item[ctxG.pivot.dimFila] = filas[j];
-                    item['valor'] = datosPivotObj[k].value;
-                    datos.push(item);
-                    k++;
+                })(),
+                grafico: {
+                    tipo : $("#opcionesGrafico").val()
                 }
             }
-            ctxG.pivot.data = datos;
-            ctxGra.transformarDatosParaGrafico();
+
+            var setsPredef = ctxG.varEstActual.sets_predefinidos;
+            var predef = ctxG.set_predef_actual;
+            var posicion = isNaN($("#predef_posicion").val() ) ? 999 : $("#predef_posicion").val() - 1 ;
+            if(op == 'del')
+                setsPredef.splice(predef.index, 1);
+            if(op == 'new'){
+                setsPredef.splice(posicion, 0, config);
+            };
+            if(op == "update"){
+                setsPredef.splice(predef.index, 1);
+                setsPredef.splice(posicion, 0, config);
+            };
+            console.log(ctxG.varEstActual)
+            console.log(config)
+            var configuracionString = JSON.stringify(ctxG.varEstActual);
+            var objReq = {
+                id_dash_menu : ctxG.nodoSel.id,
+                configuracionString : configuracionString,
+                _token : $('input[name=_token]').val(),
+            };
+            $.post("/api/modulopriorizacion/tablero/guardaconfiguracion", objReq, function(res){
+                ctxC.cargarHTMLPredefinidos(ctxG.varEstActual);  
+            });
+
+
+        },
+        cargarImagenes : function(){
+            var divImagenes = '<table><tr>';
+            _.mapObject(cnf.c.img, function(val, key){
+                divImagenes += '<td><div class="ml5 mr5" style="cursor:pointer; border: 1px solid #fff; " onMouseOver= "this.style.border = \'#aaa 1px solid\'"  onMouseOut= "this.style.border = \'1px solid #fff\'">\
+                <img id="' + key + '"  src="'+ val + '" alt="" class="image" style="width:80px;height:60px"></div>\
+                </td>';                    
+            });
+            divImagenes += '</tr></table>'
+            $("#selectImagenes").html(divImagenes);
+        },
+    }
+
+    /*-----------------------------------------------------------------------
+     *      ctxPiv variable que contiene el contexto del Pivot  
+     */
+    var ctxPiv = {
+        pvtTableUI: $("#pvtTableUI"),
+        pvtTableUIRead: $("#pvtTableUIRead"),
+        configParaPivotT : function(set_predefinido){
+            var config = {}
+            config.columns = set_predefinido.x;
+            config.rows = set_predefinido.y;
+            config.inclusions = _.chain(set_predefinido.filtros)
+                                .map(function(item){                    
+                                    condicion = item.split("=").map(function(s){ return s.toString().trim();});
+                                    _datafield =  condicion[0];
+                                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
+                                    filtro = {};
+                                    filtro[_datafield] = _values        
+                                    return filtro;
+                                }).reduce(function(carry, item){
+                                    return $.extend(true, carry, item);                                
+                                }, {}).value();
+            var existeAgregacion = $.pivotUtilities.locales.es.aggregators[set_predefinido.agregacion]; 
+            config.aggregatorName = existeAgregacion ?  set_predefinido.agregacion : "Suma de enteros";
+            config.vals = ["valor"];         
+            return config;
+        },
+        pivottableUI: function()
+        {
+            var pivotConfig = ctxPiv.configParaPivotT(ctxG.set_predef_actual);
+            ctxPiv.pvtTableUI.pivotUI(ctxG.collection, {
+                cols: pivotConfig.columns, 
+                rows: pivotConfig.rows,
+                aggregatorName: pivotConfig.aggregatorName,
+                vals: pivotConfig.vals,
+                inclusions: pivotConfig.inclusions,
+                onRefresh: function(p) {
+                    ctxG.pivotInstancia = p;
+                    ctxPiv.trnDatosDePivot();
+                    ctxGra.graficarH();
+                    ctxPiv.pivottableUIRead(p)
+                    // ctxC.ocultaMuestra();
+                    console.log(ctxG)
+                }
+            }, true, "es");
+        }, 
+        pivottableUIRead: function(instanciaP)
+        {
+            ctxPiv.pvtTableUIRead.pivotUI(ctxG.collection, {
+                cols: ctxG.pivotInstancia.cols, 
+                rows: ctxG.pivotInstancia.rows,
+                aggregatorName: ctxG.pivotInstancia.aggregatorName,
+                vals: ctxG.pivotInstancia.vals,
+                inclusions: ctxG.pivotInstancia.inclusions,
+            }, true, "es");
+        }, 
+        trnDatosDePivot: function(){
+            var tree = ctxG.pivotInstancia.pivotData.tree;
+            dim_columna = ctxG.pivotInstancia.cols.join('-');
+            dim_fila = ctxG.pivotInstancia.rows.join('-');
+            ctxG.pivot.data = [];
+            for (row in tree){
+                for(col in tree[row])
+                {
+                    var item = {};  
+                    arg =   tree[row][col];                   
+                    item['valor'] =arg.value();
+                    item[dim_columna] = col;
+                    item[dim_fila] = row;
+                    ctxG.pivot.data.push(item); 
+                }
+            }
+            ctxG.pivot.dimColumna = dim_columna;
+            ctxG.pivot.dimFila = dim_fila;
             ctxPiv.obtenerTotales();
-            // console.log(ctxG)
+            ctxGra.transformarDatosParaGrafico();            
         },
         obtenerTotales: function(){
             var t_cols = {},  t_filas = {}, tp_cols = {}, tp_filas = {};            
@@ -537,218 +755,205 @@
             total.total_p =  Object.keys(tp_cols).reduce(function(total, key){
                 return total + tp_cols[key];
             }, 0);
-        },       
+        }, 
     }
 
     /*-----------------------------------------------------------------------
      *      ctxGra variable que contiene el contexto del grafico  
      */
     var ctxGra = {
-        graficar: function()   {
-            data = ctxG.pivot.dataGraph;
-            tituloChart = ctxG.varEstActual.variable_estadistica;
-            unidad = ctxG.varEstActual.porcentaje  ? ' (expresado en porcentaje) ' : ' (expresado en ' + ctxG.varEstActual.valor_tipo +': ' + ctxG.varEstActual.valor_unidad_medida + ') '
-            subtituloChart = (ctxG.varEstActual.campo == '') ? unidad : 'Por ' + ctxG.varEstActual.campo_titulo + unidad;
-            var graphs = [];
-            if(data.length > 0)
-            {
-                for(key in data[0])  //Si existen elemntos se recorren los indices (key) del primer elemento. ej data[0] = { hombre:12, mujer:11, gestion:2015 }
-                {
-                    if(key != ctxG.pivot.dimColumna)
-                    {
-                        var graph = {
-                            id: key,
-                            title: key,
-                            valueField: key,
-                            // labelText: "[[percents]] %",
-                            // "labelPosition": "inside",
-                            type: 'smoothedLine',
-                            balloonText: key + ": <b>[[value]]</b><br><b>[[percents]] % </b>",
-                            balloon : {
-                                adjustBorderColor: false,                                
-                                color: "#333",
-                                borderColor : '#000',
-                                borderAlpha: 0.2,
-                                borderThickness: 0,
-                                cornerRadius: 5,
-                                fillColor : '#fff',
-                                fillAlpha:0.2,
-                                shadowColor: '#000',
-                                fontSize : 10,
-                                animationDuration: 0.7,
-                            },
-                            bullet: "round",
-                            bulletBorderAlpha: 1,
-                            hideBulletsCount: 50,
-                            useLineColorForBulletBorder: true,     
-                            lineThickness : 3,
-                            lineAlpha: 0.8,                     
-                        };
-                        graphs.push(graph);
-                    }
-                }
+        colocarOpcionesPredefinidas: function()
+        {
+            try { 
+                $("#opcionesGrafico").val(ctxG.set_predef_actual.grafico.tipo);
+                if($("#opcionesGrafico").val() == null)
+                    $("#opcionesGrafico").val('line');
             }
-
-            chart = AmCharts.makeChart("chartdiv", {
-                    type: "serial",
-                    theme: "light",
-                    addClassNames: true,
-                    marginRight: 80,
-                    autoMarginOffset: 20,
-                    marginTop: 7,
-                    graphs: graphs,
-                    dataProvider: data,
-                    // startEffect : 'easeOutSine',
-                    // startDuration: 1.5,
-                    // sequencedAnimation: false, 
-                    titles: [
-                            {
-                                color : "#333",
-                                size: 11,
-                                text: tituloChart,
-                                // "align": "right",
-                                // x: 40, y:30,
-                            },
-                            {
-                                color : "#333",
-                                size: 10,
-                                text: subtituloChart,
-                                bold: false,
-                            }
-                    ],
-                   "valueAxes": [{
-                        "axisAlpha": 0.5,
-                        "dashLength": 1,
-                        "position": "left"
-                    }],
-                    "mouseWheelZoomEnabled": false,
-                    // "chartScrollbar": {
-                    //     "autoGridCount": true,
-                    //     "scrollbarHeight": 40
-                    // },
-                    legend: {
-                        useGraphSettings: true,
-                        borderColor: "#aaa",
-                        borderAlpha: 0.8,
-                        horizontalGap: 10,
-                        align: 'center'
-                    },
-                    chartCursor: {
-                        oneBalloonOnly: true,
-                        graphBulletSize:1,
-                    },
-                    categoryField: ctxG.pivot.dimColumna,
-                    "categoryAxis": {
-                        "axisColor": "#DADADA",
-                        "dashLength": 1,
-                        "minorGridEnabled": true
-                    },
-                    "export": {
-                        "enabled": true
-                    }
-                });
-                // chart.addListener("rendered", zoomChart);
-                // zoomChart(data);
-                
-                // function zoomChart(data) {
-                //     chart.zoomToIndexes(data.length - 40, data.length - 1);
-                // }
-
-                chart.timeout;
-                chart.addListener( "rollOverGraph", function( event ) {
-                    hightLightItem( event.graph, 'in' );
-                } );
-                chart.addListener( "rollOutGraph", function( event ) {
-                    hightLightItem( event.graph, 'out' );
-                } );
-
-                function hightLightItem( graph, op ) {
-                    var className = "amcharts-graph-" + graph.id;
-                    var items = document.getElementsByClassName( className );
-                    if ( undefined === items )
-                        return;
-                    for ( var x in items ) {
-                        if ( "object" !== typeof items[x] )
-                            continue;
-                        var path = items[x].getElementsByTagName( "path" )[ 0 ];
-                        if ( undefined !== path )
-                        {
-                            if(op == 'in')
-                            {
-                               path.style.strokeWidth = 4; 
-                               path.style.strokeOpacity = 1;
-                            }
-                            if(op == 'out')
-                            {
-                                path.style.strokeWidth = 3; 
-                                path.style.strokeOpacity = 0.8;
-                            }                            
-                        }
-                    }
-                }
-                chart.addListener("init", function () {
-                    chart.legend.addListener("rollOverItem", function (event) {
-                        hightLightItem( event.chart.graphs[event.dataItem.index], 4 );
-                    });
-
-                    chart.legend.addListener("rollOutItem", function (event) {
-                        hightLightItem( event.chart.graphs[event.dataItem.index], 2 );
-                    });
-                });
-        },  
+            catch(e)/* si no existe le asigna el primer grafico*/           
+                { $('#opcionesGrafico option')[0].selected = true;}
+        },
         transformarDatosParaGrafico: function()
         {
-            datosGraph = [];
-            if(ctxG.pivot.data.length > 0)
-            {
-                datosGraph = _.chain(ctxG.pivot.data)
-                .groupBy(ctxG.pivot.dimColumna)
-                .map(function(el, k){
-                    elemNew = {};
-                    _.each(el, function(item){
-                        elemNew[ctxG.pivot.dimColumna] = item[ctxG.pivot.dimColumna];
-                        elemNew[item[ctxG.pivot.dimFila]] = item.valor;
-                        return true;
-                    })
-                    return elemNew;
-                }).value();
-            }
+            var datosGraph = {};
+            var pivotData = ctxG.pivotInstancia.pivotData;            
+            var pivot = ctxG.pivot;
+            // var factorPorcentual = ctxG.pivotInstancia.aggregatorName[0] == '%' ? 100 : 1;
+            datosGraph.categorias = pivotData.colKeys.map(function(cat, key){
+                return cat.join('-');
+            });
+            
+            datosGraph.series = _.chain(pivot.data).groupBy(function(item){
+                                        return item[pivot.dimFila]
+                                    }).map(function(setDatos, key){
+                                        serie = {};
+                                        serie.name = key;
+
+                                        /* con valores ceros los discontinuos */
+                                        serie.data = datosGraph.categorias.map(function(elem){
+                                            var s = { name : elem, y: 0};
+                                            setDatos.forEach(function(sd){
+                                                if(sd[pivot.dimColumna] == elem){
+                                                    var num;
+                                                    if(ctxG.pivotInstancia.aggregatorName[0] == "%")                
+                                                        num =  parseFloat((Math.round( sd.valor * 100 * 10 )/10 ).toString()) ;
+                                                    else 
+                                                        num = sd.valor;
+                                                    
+                                                    s.y = num;
+                                                }
+                                            });
+                                            return s;
+                                        });
+                                        return serie;
+
+                                        /*Series discontinuadas */
+                                        // serie.data = setDatos.map(function(elem){  
+                                        //     var num;
+                                        //     if(ctxG.pivotInstancia.aggregatorName[0] == "%")                
+                                        //         num =  parseFloat((Math.round( elem.valor * 100 * 10 )/10 ).toString()) ;
+                                        //     else 
+                                        //         num = elem.valor;
+                                        //     return { name : elem[pivot.dimColumna], y: num};
+                                        // });
+                                        // return serie;
+                                    }).value();
             ctxG.pivot.dataGraph = datosGraph;
-            return datosGraph;
+
+        },
+        graficarH : function()   {
+            var tituloChart = ctxG.varEstActual.variable_estadistica;
+            var unidadMedida = ctxG.varEstActual.porcentaje  ? ' (porcentaje) ' : '(' + ctxG.varEstActualUnidades.valor_tipo +': ' + ctxG.varEstActualUnidades.valor_unidad_medida + ') ';
+            var subtituloChart = ctxG.pivot.dimFila + ' vs. ' + ctxG.pivot.dimColumna;
+            var tipo = $("#opcionesGrafico").val().split('-');
+            var stacked = (tipo[1]  == 'stacked') ? 'normal' : (tipo[1]  == 'stackedp') ? 'percent': '';
+            var ifLabel = $("#viewlabel").prop("checked");
+            var tipo3d = $("#view3d").prop("checked");;
+
+            var vale = tipo[0];
+            var tool = '';
+            if(vale =='line'||vale=='bar'||vale=='area'||vale=='column'){
+                tool= '{series.name}: <b>{point.y}</b> ';
+            };
+            if(tipo[1]){
+                tool = '{series.name}: <b>{point.y}</b> <br>porcentaje: <b>{point.percentage:.1f} %</b>';
+            }
+
+            colores= [
+            '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
+            '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE',      
+            '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
+            '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', '#E80000',
+            '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
+            '#FF72F4', '#84345E', '#348445', '#C4D21C', '#9C0000'
+            ];
+            colores = _.chain(colores)
+                            .map(function(color){ 
+                                return { id : _.random(100), color:color    }
+                            }).sortBy('id')
+                            .map(function(obj){
+                                return obj.color
+                            })
+                            .value();
+
+            Highcharts.setOptions({
+                colors: colores,
+            });
+
+            var json = {   
+                chart : {
+                    type: tipo[0],
+                    options3d: {
+                        enabled: tipo3d,
+                        alpha: tipo=='pie' ? 45 : 23, 
+                        beta: 0, depth: 60
+                    },
+                    zoomType: 'xy'
+                },
+                title : {
+                    text: tituloChart   
+                },   
+                subtitle :{
+                    text: subtituloChart
+                }, 
+                xAxis :{
+                    type: 'category',
+                    categories: ctxG.pivot.dataGraph.categorias,
+                    // max:  ctxG.pivot.dataGraph.categorias.length
+                },
+                yAxis : {
+                    title: {
+                        text: unidadMedida
+                    }
+                },
+                tooltip:  {
+                    pointFormat: tool,
+                },
+
+                plotOptions : {
+                    line:{
+                        marker: { symbol:'circle',}
+                    },
+                    // pies donas
+                    pie: {
+                        innerSize: 100,
+                        depth: 45,
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        // depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.category}'
+                        }
+                    },
+                    column: {
+                        stacking: stacked,
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
+                        }
+                    },
+                    //bars
+                    series: {
+                        stacking: stacked,
+                        dataLabels: {
+                            enabled: ifLabel,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
+                        }
+                    },
+                    area: {
+                        stacking: stacked,
+                        lineColor: '#ffffff',
+                        lineWidth: 1,
+                        marker: {
+                            lineWidth: 1,
+                            lineColor: '#ffffff'
+                        }
+                    }
+                },
+
+                series : ctxG.pivot.dataGraph.series, 
+            }
+            $('#divChart').highcharts(json);
+
         }
     }
-    var $i = 0;
-    var funcionesAgregacion = {
-        '%_part_col': function(values, columns, rows){
-            sum = values.reduce(function(total, val){
-                return total + val;
-            }, 0);
 
 
-            console.log(values);
-            console.log(sum);
-            console.log(ctxG.pivot); 
-            return 3;
 
-        }
-    }
-
-    function funcionDespuesDePivotear(){
-        ctxPiv.tranformarDatosDePivot();
-        ctxGra.graficar();
-        // console.log(ctxG.pivot);
-    }
 </script>
 
 <script>
 $(function(){
 
     ctxM.creaMenuBaseHtml();
+    ctxC.mostrarPantallas();
 
     ctxM.btnmenu.click(function() {
         ctxM.abrirCerrarMenu();
     });
 
+    /*  Click sobre elemento del menu 
+    */
     $("#menuPrincipal, #menuDetalle").on('click', 'a.nodo_menu', function(event){
         str_cod = $(this).attr('id');
         ctxG.nodoSel = ctxM.obtenerNodo(str_cod);
@@ -761,29 +966,76 @@ $(function(){
         }
         else
         {
-            ctxG.varEstActual = jQuery.parseJSON(ctxG.nodoSel.configuracion);// JSON.parse( ctxG.nodoSel.configuracion );
-            ctxG.varEstActual.campo =  '';
-            ctxG.varEstActual.campo_titulo = '';
-            ctxG.varEstActual.porcentaje =  false;
-            ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[0]; // por defecto el primero
-            ctxC.tituloGrafico.html('<h4>'  + ctxG.nodoSel.padre + ': ' + ctxG.nodoSel.nombre + '</h4>');
-            ctxC.tituloDatos.html('Datos para ' +ctxG.varEstActual.variable_estadistica);
-            ctxC.cargarHTMLCalculosPredefinidos(ctxG.varEstActual);
-            objRequest = ctxC.crearRequest(ctxG.varEstActual);
-            ctxC.obtenerData(objRequest);
+            ctxG.varEstActual = jQuery.parseJSON(ctxG.nodoSel.configuracion);
+            ctxG.set_predef_actual = ctxG.varEstActual.sets_predefinidos[0]; // por defecto el primero
+            ctxG.set_predef_actual.index = 0;
+            ctxC.actualizaTitulos();
+            ctxC.cargarHTMLPredefinidos(ctxG.varEstActual);  
+            // ctxC.showLoading(1)        
+            ctxC.obtenerData(ctxG.varEstActual);
+            // ctxC.showLoading(0)  
+            ctxC.mostrarPantallas('grafico');
         }
     }); 
 
+    /* Click sobre menu de predefinidos
+    */
     ctxC.contenedorPredefinidos.on('click', '.item_campo_predefinido', function(e){
         index =  $(this).attr('id');
-        ctxG.varEstActual.campo_titulo =  $(this).attr('title');
-        ctxG.varEstActual.porcentaje =  false;
-        ctxG.varEstActual.set_predefinido = ctxG.varEstActual.sets_predefinidos[index];
-        ctxC.tituloDatos.html('Datos para ' + ctxG.varEstActual.variable_estadistica +' por ' + ctxG.varEstActual.campo_titulo );
+        ctxG.set_predef_actual = ctxG.varEstActual.sets_predefinidos[index];
+        ctxG.set_predef_actual.index = index;
+        ctxC.actualizaTitulos();
+        // ctxC.showLoading(1) 
         ctxC.mostrarData(ctxG.collection);
+        // ctxC.showLoading(0) 
     });
 
+    /* Click sobre los botones de mostrar tabla o grafico o geo
+    */
+    $("#btn_tabla, #btn_grafico").click(function(){
+        var op = $(this).attr('id').replace('btn_',''); // == 'btn_tabla' ? 'tabla' : 'grafico';
+        ctxC.mostrarPantallas(op);
+    });
+
+    /*  Cambia config del grafico
+    */
+    $("#configuracionGrafico ").change(function(){
+        ctxGra.graficarH();
+    });
+
+    /*  Click sobre algun elemento del menu de guardar, modificar, o eliminar predefinidos (new, update, del)    
+     */
+    $("#predef_update, #predef_new, #predef_del").click(function(){
+        var op = $(this).attr('id').replace('predef_','');
+        ctxModal.mostrarModal(op);        
+    });
+
+    /* Click sobre una imagen de la ventana modal
+    */
+    $("#selectImagenes").on('click', 'img', function(){
+        id_imagen = $(this).attr('id');
+        $("#predefModal #predef_imagen_previsualizacion").attr("src",cnf.c.img[id_imagen]);
+        $("#predef_imagen").val(id_imagen)
+    })
+
+    /* Click Guardar de la ventana Modal
+    */
+    $("#predefModal #btnGuardar").click(function(){
+        ctxModal.guardarPredef();
+    });
+
+
+    /* Click Boton de vista usuario Admin , usuariop normal
+    */
+    $("#btn_vista_Usuario").click(function(){
+        ctxC.ocultaMuestra();
+
+    })
+
+
 });
+
+
 </script>
 
 

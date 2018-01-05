@@ -37,7 +37,7 @@ class TableroController extends Controller
             array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'submenus' => $submenu));
         }
         \View::share(['modulos'=> $this->modulos,'menus'=>$this->menus]);
-        return view('ModuloPriorizacion.tablero2');
+        return view('ModuloPriorizacion.tablero');
     }
 
 
@@ -82,6 +82,21 @@ class TableroController extends Controller
                 $nivel2->hijos = $niveles3;
             }
         }
+
+
+        /* INSERTA LAS VISTAS COMO SUBMENUS  NO EJECUTAR*/
+        // $tablas = collect(\DB::connection('dbestadistica')->select("select table_name from information_schema.tables 
+        //     where table_schema='public' and table_type='VIEW'
+        //     and table_name ilike '%v_ve%' "));
+        //                         // return response()->json($tablas); 
+        // for($i = 0; $i< $tablas->count(); $i++) {
+        //     $nombre = $tablas[$i]->table_name;
+        //     $cod = $i<9 ? '0' . ($i +1) : $i+1 ;
+        //     $cod_str = '1101' . $cod;
+        //     $orden = 201 + $i +1;
+        //     \DB::select("insert into dash_menu(cod_str, nombre, descripcion, nivel, tipo, orden, activo) 
+        //         values ('{$cod_str}', '{$nombre}', '{$nombre}', 3, 'link', {$orden},   true   )");
+        // }
                    
         return response()->json([
             'mensaje' => 'ok',
@@ -154,7 +169,7 @@ class TableroController extends Controller
 
     public function datosIndicadoresMeta(Request $req)
     {
-        $id_indicador = $req->id_indicador;
+        $id_indicador = trim($req->id_indicador) == '' ? -111: trim($req->id_indicador) ;
         $indicadores = \DB::select("SELECT nombre,  linea_base_gestion, linea_base_valor, linea_base_unidad, 
                                     linea_base_descripcion, meta_gestion, meta_valor, frecuencia
                                     FROM spie_indicadores i
@@ -167,7 +182,7 @@ class TableroController extends Controller
 
         return response()->json([
             'mensaje' => $existeIndicador ? 'ok' : 'no_existe',
-            'indicador'=> $indicadores[0],
+            'indicador'=> $existeIndicador ?  $indicadores[0] : '',
             'metasIndicador' => $metasIndicador,
         ]);
 
@@ -177,7 +192,7 @@ class TableroController extends Controller
     public function guardaConfiguracion(Request $req)
     {
         $id_dach_menu = $req->id_dash_menu;
-        $configuracionString = $req->configuracionString;
+        $configuracionString = str_replace("'", "''", $req->configuracionString);
         $dash_menu = collect(\DB::select("SELECT * from dash_menu where id = {$id_dach_menu} " ));
         $id_config = $dash_menu->first()->id_dash_config;
 
