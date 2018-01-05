@@ -47,4 +47,17 @@ class PruebaController extends Controller
    {
      return view('ModuloPlanificacion.prueba');
    }
+
+   public function res()
+   {
+     return view('ModuloPlanificacion.res');
+   }
+      public function tablero_()
+   {
+     return \View::make('ModuloPlanificacion.tablero_')->render();
+   }
+      public function gestion_proyectos_pdes_()
+   {
+     return \View::make('ModuloPlanificacion.gestion_z')->render();
+   }
 }

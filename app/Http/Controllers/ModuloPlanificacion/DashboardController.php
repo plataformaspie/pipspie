@@ -39,6 +39,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('ModuloPlanificacion.dashboard');
+        return \View::make('ModuloPlanificacion.dashboard')->render();
     }
 }

@@ -208,6 +208,8 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
               Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
+              Route::get('res', 'ModuloPlanificacion\PruebaController@res');
+
 
 
           }

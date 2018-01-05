@@ -1,8 +1,8 @@
 @extends('layouts.plataforma')
 
 @section('header')
-    @parent
-    @yield('header-css')
+    {{-- @parent --}}
+    {{-- @yield('header-css') --}}
     <style>
     #menu_sp>.sidenav {
         position: absolute;
@@ -26,7 +26,7 @@
         display: block;
     }
     #menu_sp > .sidenav img{
-        opacity: 0.6;
+        opacity: 0.7;
     }
 
 
@@ -34,9 +34,9 @@
         /*color: #f1f1f1;*/
         background-color: #F5F5DC;
     }
-/*    #menu_sp>.sidenav>a:hover img{
+    #menu_sp>.sidenav>a:hover img{
         opacity: 1;
-    }*/
+    }
 
     #contenedor_sp{
         transition: margin-left 1s;
@@ -75,8 +75,10 @@
 
             </div> --}}
         </div> 
-        <div id="contenedor_sp" style="margin-left: 300px">
-            @yield('contenido')
+        <div id="contenedor_sp" style="margin-left: 300px; width: 100%">
+            <div id="contenido"></div>
+             {{-- @yield('contenido') --}}
+           {{-- @include('ModuloPlanificacion.res') --}}
         </div>
     </div>
 </div>
@@ -86,18 +88,19 @@
 
 @push('script-head')
 <script>
-    var cnf = {
+ var x =  ( function(){  
+    var cnfg = {
         menu : [
-                { texto: "1. Entidades", ico: "/img/sp-icons/003-diagrama-1.png", hijos: [] },
-                { texto: "2. Enfoque Político", ico: "/img/sp-icons/013-contrato.png",  hijos: []},
-                { texto: "3. Diagnóstico",    ico: "/img/sp-icons/007-grafico-circular.png", 
+                { texto: "1. Entidades", ico: "/img/sp-icons/003-diagrama-1.png", ruta: '/moduloplanificacion/res', hijos: [] },
+                { texto: "2. Enfoque Político", ico: "/img/sp-icons/013-contrato.png", ruta: '/moduloplanificacion/prueba', hijos: []},
+                { texto: "3. Diagnóstico",    ico: "/img/sp-icons/007-grafico-circular.png", ruta: '/moduloplanificacion/tablero_', 
                     hijos: [
                         { texto: "3.1. Producto - VAriables - Sectorial", ico: "" },
                         { texto: "3.2. Sistema de Vida", ico: "" },
                         { texto: "3.3. Gestion de Riesgo y Cambio Climático", ico: "" },
                     ] 
                 },
-                { texto: "4. Política Sectorial", ico: "/img/sp-icons/009-rompecabezas.png", hijos: [] },
+                { texto: "4. Política Sectorial", ico: "/img/sp-icons/009-rompecabezas.png",  ruta: '/moduloplanificacion/gestion_proyectos_pdes_',  hijos: [] },
                 { texto: "5. Planificación", ico: "/img/sp-icons/008-objetivo.png",  
                     hijos: [
                         { texto: "5.1. Identificación PMRA", ico: "" },
@@ -115,21 +118,21 @@
 
     
     /*-----------------------------------------------------------------------
-     *      ctxM variable que contiene el contexto del menu , 
+     *      ctxMn variable que contiene el contexto del menu , 
      */
-    var ctxM = {
+    var ctxMn = {
         menu_1 : $("#menu_sp #menu_nivel1"), 
         menu_2 : $("#menu_sp #menu_nivel2"),
         contenedor : $("#contenedor_sp"),
         btnmenu : $("#menu_sp #btnmenu"), 
         menup_estado : 1, // { 1: abierto, 0: cerrado}
         abrirCerrarMenu : function(){
-            ctxM.menu_1.css('width', ctxM.menup_estado == 1 ? "80px" : "300px");
-            ctxM.contenedor.css('margin-left', ctxM.menup_estado == 1 ? "80px" : "300px")     
-            ctxM.menup_estado = Math.abs(ctxM.menup_estado - 1);
+            ctxMn.menu_1.css('width', ctxMn.menup_estado == 1 ? "80px" : "300px");
+            ctxMn.contenedor.css('margin-left', ctxMn.menup_estado == 1 ? "80px" : "300px")     
+            ctxMn.menup_estado = Math.abs(ctxMn.menup_estado - 1);
         },
         creaMenuBaseHtml : function(){
-            cnf.menu.map(function(m, k){
+            cnfg.menu.map(function(m, k){
                 var html = '<a href="#" id="' + k + '"  \
                 class="list-group-item m-0 row p-0 p-t-10 p-b-10 " style="width:300px" title="' + m.texto + ' ">\
                 <div class="col-md-3">\
@@ -137,16 +140,16 @@
                 </div>\
                 <div class="col-md-9" ><span class="align-middle">' + m.texto + '</span></div>\
                 </a>';
-                ctxM.menu_1.append(html);
+                ctxMn.menu_1.append(html);
             })
 
-            // ctxM.menu_2.addClass(cnf.estilo.bgMenu2);
+            // ctxMn.menu_2.addClass(cnfg.estilo.bgMenu2);
 
         },
         activarElem: function(elem)
         {
             $("#menu_sp #menu_nivel1 a").removeClass('activoPri');
-            $("#menu_sp #menu_nivel1 img").css({'opacity': 0.6, "border" : "3px white "});
+            $("#menu_sp #menu_nivel1 img").css({'opacity': 0.7, "border" : "3px white "});
             $("#menu_sp #menu_nivel1 #" + elem.id).addClass('activoPri');
             $("#menu_sp #menu_nivel1 #" + elem.id + " img").css({'opacity': 0.8, "border" : "3px #E5E8E8   solid"});
 
@@ -154,10 +157,10 @@
     }
 
 
-    ctxM.creaMenuBaseHtml();
+    ctxMn.creaMenuBaseHtml();
 
-    ctxM.btnmenu.click(function() {
-        ctxM.abrirCerrarMenu();
+    ctxMn.btnmenu.click(function() {
+        ctxMn.abrirCerrarMenu();
     });
 
 
@@ -165,14 +168,20 @@
     // */
     $("#menu_sp #menu_nivel1, #menu_sp #menu_nivel2").on('click', 'a', function(event){
         var index = $(this).attr("id");
-        var elem_menu = cnf.menu[index];
+        var elem_menu = cnfg.menu[index];
         elem_menu.id = index;
-        ctxM.activarElem(elem_menu);
+        ctxMn.activarElem(elem_menu);
 
-        if(ctxM.menup_estado == 1) //si esta abierto el menu al presionar que se cierre
-            ctxM.abrirCerrarMenu();
+        if(ctxMn.menup_estado == 1) //si esta abierto el menu al presionar que se cierre
+            ctxMn.abrirCerrarMenu();
+
+        $.get(elem_menu.ruta, function(view){
+            $("#contenido").html(view);
+        })
 
     }); 
+})();
+
 
 </script>
 
