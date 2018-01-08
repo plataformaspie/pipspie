@@ -91,7 +91,7 @@
         </div>    
         <div class="col-md-9 ">
             {{-- ####################        loading #######################################333--}}
-            <div id="loading" class="bg-white" style="width: 100%; height: 720px; background: white" hidden="" > 
+            <div id="loading" class="bg-white" style="width: 100%; height: 1000px; background: white" hidden="" > 
                 <div style="left: 40%; top: 200px; width: 100%; position: absolute;">
                     <div  style="width: 20%; padding: 0 25px">
                         <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
@@ -100,9 +100,11 @@
                     <div class="progress progress-striped active" style="margin-top: 20px; width: 20%;height: 20px"><div class="progress-bar" style="width: 100%"></div></div>                   
                 </div>
             </div>
-            {{--  ...........          Pantalla de inicio  --}}
-            <div id="vistaInicio" style="width: 100%; height: 900px; background: white; overflow: hidden;" >
-                <img src="/img/spie-ico.png" style="width: 1000px;height: 1000px; opacity: 0.05; left: 200px; top: 200px; position: absolute;" > 
+            {{--  ===============================          Pantalla de inicio  ========================--}}
+            <div id="vistaInicio" style="width: 100%; height: 750px; background: white; overflow: hidden; position: relative;" >
+                <img src="/img/spie-ico.png" style=" opacity: 0.1; width: 80%; margin: 100px 0 0 200px ; position: absolute;"> 
+            
+                   
             </div>
 
             <div id="contenedor" hidden="">
@@ -137,9 +139,10 @@
                         {{-- ****************     PIVOT  PARA ADMIN ************************--}}
                         <div id='divDatosUI' class="divPivot">
                             <div id=tituloDatosUI class="mb15 tituloDatos"></div>
-                            <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 600px; padding: 2px">
+                            <div class="row m-0 bg-white mt-2" style="overflow: auto; width: 100%; max-height: 600px; padding: 2px">
                                 <div id="pvtTableUI" ></div>                
                             </div>
+                            <hr style="margin: 25px 0">
                         </div>
                         
                         {{-- ================= CHARTS ==================--}}
@@ -151,7 +154,7 @@
                                     <h5>OPCIONES DE GRAFICO</h5>
                                     <label >Tipo Gráfico</label>
                                     <select id="opcionesGrafico"  style="width: 100%">
-                                        <option value="line">Linea</option>
+                                        <option value="spline">Linea</option>
                                         <option value="column">Columnas</option>
                                         <option value="column-stacked">Columnas apiladas</option>    
                                         <option value="column-stackedp">Columnas apiladas en proporcion</option>                            
@@ -161,11 +164,11 @@
                                         <option value="area">Area</option>
                                         <option value="area-stacked">Areas apiladas</option>    
                                         <option value="area-stackedp" >Areas apiladas en proporcion</option>
-                                        <option value="pie-3d" >Dona 3d</option> 
+                                        <option value="pie" >Dona</option> 
                                     </select>
-                                    <hr>
-                                    <label class="block" ><input type="checkbox" id="view3d" name="view3d" /> Vista 3D</label>
-                                    <label class="block"  ><input type="checkbox" id="viewlabel" name="viewlabel" /> Visualizar Datos</label>
+                                    <hr>                                    
+                                    <label class="block"  ><input type="checkbox" id="viewlabel" name="viewlabel" /> Ver Datos</label>
+                                    <label class="block" ><input type="checkbox" id="view3d" name="view3d" /> 3D</label>
                                 </div>
                                 <div class="col-sm-10" style="height: 600px">
                                     <div id="divChart" style="font-family: arial; width: 90%; min-height: 100%; margin: 0 auto"></div>
@@ -175,8 +178,9 @@
 
                         {{-- +++++++++++++++++++         PIVOT PARA SOLO VER     +++++++++++++++++++++++++++++++ --}}
                         <div id='divDatosRead' class="divPivot oculta_pvt " hidden="">
+                            <hr style="margin: 25px 0">
                             <div id=tituloDatos class="mb15 tituloDatos"></div>
-                            <div class="row m-0 bg-white mt-2" style="overflow: scroll; width: 100%; height: 600px; padding: 2px">
+                            <div class="row m-0 bg-white mt-2" style="overflow: auto; width: 100%; max-height: 600px; padding: 2px">
                                 <div id="pvtTableUIRead"  ></div>                
                             </div>
                         </div>
@@ -189,16 +193,6 @@
     </div>
 </div>
 
-{{-- <div id="loadingModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body" >
-                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 <div id="predefModal" class="modal  " role="dialog">
     <div class="modal-dialog">
@@ -264,7 +258,7 @@
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
-<script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script>
+{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script> --}}
 
 
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
@@ -301,6 +295,14 @@ $("#btnhide").click(function(){
                 '05' : '/img/priori-5.png',
                 '06' : '/img/priori-6.png',
                 '11' : '/img/priori-1.png',
+
+                '21' : '/img/priori-1.png',
+                '22' : '/img/priori-5.png',
+                '23' : '/img/priori-4.png',
+                '24' : '/img/priori-3.png',
+                '25' : '/img/priori-2.png',
+                '26' : '/img/priori-6.png',
+                '27' : '/img/priori-1.png',
             },
         },
         c : {  // c contenido
@@ -312,6 +314,13 @@ $("#btnhide").click(function(){
                 '4':'/img/icon-graf/4.png',
                 '5':'/img/icon-graf/5.png',
                 '6':'/img/icon-graf/6.png',
+                // '21':'/img/icon-graf/1.png',
+                // '22':'/img/icon-graf/2.png',
+                // '23':'/img/icon-graf/3.png',
+                // '24':'/img/icon-graf/4.png',
+                // '25':'/img/icon-graf/5.png',
+                // '26':'/img/icon-graf/6.png',
+                // '27':'/img/icon-graf/1.png',
                 'departamento':'/img/icon-graf/r_departamento.png',  
                 'urbano_rural':'/img/icon-graf/r_urbano_rural.png',
                 'genero':'/img/icon-graf/genero.png',
@@ -767,7 +776,7 @@ $("#btnhide").click(function(){
             try { 
                 $("#opcionesGrafico").val(ctxG.set_predef_actual.grafico.tipo);
                 if($("#opcionesGrafico").val() == null)
-                    $("#opcionesGrafico").val('line');
+                    $("#opcionesGrafico").val('spline');
             }
             catch(e)/* si no existe le asigna el primer grafico*/           
                 { $('#opcionesGrafico option')[0].selected = true;}
@@ -831,21 +840,29 @@ $("#btnhide").click(function(){
 
             var vale = tipo[0];
             var tool = '';
-            if(vale =='line'||vale=='bar'||vale=='area'||vale=='column'){
+            if(vale =='spline'||vale=='bar'||vale=='area'||vale=='column'){
                 tool= '{series.name}: <b>{point.y}</b> ';
             };
             if(tipo[1]){
                 tool = '{series.name}: <b>{point.y}</b> <br>porcentaje: <b>{point.percentage:.1f} %</b>';
             }
 
+            // colores= [
+            // '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
+            // '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE',      
+            // '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
+            // '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', '#E80000',
+            // '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
+            // '#FF72F4', '#84345E', '#348445', '#C4D21C', '#9C0000'
+            // ];
+
             colores= [
+            '#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+            '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#DDDF0D',             
             '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
-            '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE',      
-            '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
-            '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', '#E80000',
-            '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
-            '#FF72F4', '#84345E', '#348445', '#C4D21C', '#9C0000'
-            ];
+            '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE',  
+            '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF',  
+            ],
             colores = _.chain(colores)
                             .map(function(color){ 
                                 return { id : _.random(100), color:color    }
@@ -867,7 +884,7 @@ $("#btnhide").click(function(){
                         alpha: tipo=='pie' ? 45 : 23, 
                         beta: 0, depth: 60
                     },
-                    zoomType: 'xy'
+                    zoomType: 'xy',
                 },
                 title : {
                     text: tituloChart   
@@ -890,10 +907,29 @@ $("#btnhide").click(function(){
                 },
 
                 plotOptions : {
-                    line:{
-                        marker: { symbol:'circle',}
+                    series: {
+                        marker : { 
+                            symbol:'circle',
+                            // radius: 3,
+                        },
+                        stacking: stacked,
+                        dataLabels: {
+                            enabled: ifLabel,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
+                        }
                     },
-                    // pies donas
+                    column: {
+                        stacking: stacked,
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
+                        }
+                    },
+                    area: {
+                        stacking: stacked,
+                        lineColor: '#eee',
+                        lineWidth: 1,
+                    },
                     pie: {
                         innerSize: 100,
                         depth: 45,
@@ -905,30 +941,7 @@ $("#btnhide").click(function(){
                             format: '{point.category}'
                         }
                     },
-                    column: {
-                        stacking: stacked,
-                        dataLabels: {
-                            enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
-                        }
-                    },
-                    //bars
-                    series: {
-                        stacking: stacked,
-                        dataLabels: {
-                            enabled: ifLabel,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
-                        }
-                    },
-                    area: {
-                        stacking: stacked,
-                        lineColor: '#ffffff',
-                        lineWidth: 1,
-                        marker: {
-                            lineWidth: 1,
-                            lineColor: '#ffffff'
-                        }
-                    }
+                    
                 },
 
                 series : ctxG.pivot.dataGraph.series, 

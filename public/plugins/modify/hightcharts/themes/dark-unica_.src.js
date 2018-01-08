@@ -53,14 +53,18 @@
                         [1, '#3e3e40']
                     ]
                 },
+                 borderColor: '#000000',
+                borderWidth: 2,
+                plotBorderColor: '#CCCCCC',
+                plotBorderWidth: 1, 
                 style: {
                     fontFamily: ' sans-serif, Verdana,'
                 },
-                plotBorderColor: '#606063'
+                // plotBorderColor: '#606063'
             },
             title: {
                 style: {
-                    color: '#f5f5ff',//'#FDD089',
+                    color: '#FDD089',//'#FDD089',
                     textTransform: 'uppercase',
                     fontSize: '18px ',
                     fontWeight: 'bold'
@@ -68,13 +72,14 @@
             },
             subtitle: {
                 style: {
-                    color: '#f5f5ff',
+                    color: '#FDD089',
                     textTransform: 'uppercase',
                     fontSize: '14px'
                 }
             },
             xAxis: {
-                gridLineColor: '#707073',
+                gridLineColor: '#70707344',
+                gridLineWidth: 1,
                 labels: {
                     style: {
                         color: '#E0E0E3',
@@ -91,7 +96,8 @@
                 }
             },
             yAxis: {
-                gridLineColor: '#707073',
+                gridLineColor: '#707073ff',
+                gridLineWidth: 1,
                 labels: {
                     style: {
                         color: '#E0E0E3',
