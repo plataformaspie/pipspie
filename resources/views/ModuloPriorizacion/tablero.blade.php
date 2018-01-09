@@ -409,7 +409,9 @@ $("#btnhide").click(function(){
                         if (elem.tipo == 'titulo')
                             htmlContent += "<div class='list-group-item " + cnf.m.bgTituloSub + " ' >" + elem.nombre + "</div>";
                         else if (elem.tipo == 'link')
-                            htmlContent += "<a class='list-group-item nodo_menu' href='#'  id='" + elem.cod_str + "'   >" + elem.nombre + "</a>";
+                        {
+                            htmlContent += "<a class='list-group-item nodo_menu' href='#'  id='" + elem.cod_str + "'   >" + elem.nombre + ((elem.configuracion)? "<i class='fa fa-tags  pull-right'></i>" : "" ) + "</a>" ;
+                        }
                     }
                     htmlContent += "</ul></div>";
                     ctxM.menuDetalle.append(/*"<div class='panel panel-info m-b-5'>"  + */ htmlHeader + htmlContent /* + "</div>" */ );
