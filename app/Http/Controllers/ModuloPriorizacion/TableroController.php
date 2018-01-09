@@ -87,13 +87,18 @@ class TableroController extends Controller
         /* INSERTA LAS VISTAS COMO SUBMENUS  NO EJECUTAR*/
         // $tablas = collect(\DB::connection('dbestadistica')->select("select table_name from information_schema.tables 
         //     where table_schema='public' and table_type='VIEW'
-        //     and table_name ilike '%v_ve%' "));
+        //     and table_name ilike '%v_ve%'  and table_name >'v_ve0067' "));
         //                         // return response()->json($tablas); 
+        //                         $hu = '';
         // for($i = 0; $i< $tablas->count(); $i++) {
         //     $nombre = $tablas[$i]->table_name;
-        //     $cod = $i<9 ? '0' . ($i +1) : $i+1 ;
+        //     // $cod = $i<9 ? '0' . ($i +1) : $i+1 ;
+        //     $cod = 68 + $i;
         //     $cod_str = '1101' . $cod;
-        //     $orden = 201 + $i +1;
+        //     $orden = 268 + $i +1;
+        //     $id = $cod +102;
+        //     $hu .=  "insert into dash_menu(id, cod_str, nombre, descripcion, nivel, tipo, orden, activo) 
+        //         values ({$id}, '{$cod_str}', '{$nombre}', '{$nombre}', 3, 'link', {$orden},   true   )";
         //     \DB::select("insert into dash_menu(cod_str, nombre, descripcion, nivel, tipo, orden, activo) 
         //         values ('{$cod_str}', '{$nombre}', '{$nombre}', 3, 'link', {$orden},   true   )");
         // }
