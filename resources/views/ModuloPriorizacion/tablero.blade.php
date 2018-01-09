@@ -260,7 +260,6 @@
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
 <script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script>
 
-
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
 <script type="text/javascript" src="/plugins/modify/pivot___.es.js"></script>
@@ -307,20 +306,43 @@ $("#btnhide").click(function(){
         },
         c : {  // c contenido
             img: {  // buscara si key departamento existe en r_departamento de configuracion.campos_predefinidos.campo, con contains 
-                'imagen_por_default':'/img/icon-graf/3.png',
-                '1':'/img/icon-graf/1.png',
-                '2':'/img/icon-graf/2.png',
-                '3':'/img/icon-graf/3.png',
-                '4':'/img/icon-graf/4.png',
-                '5':'/img/icon-graf/5.png',
-                '6':'/img/icon-graf/6.png',
-                // '21':'/img/icon-graf/1.png',
-                // '22':'/img/icon-graf/2.png',
-                // '23':'/img/icon-graf/3.png',
-                // '24':'/img/icon-graf/4.png',
-                // '25':'/img/icon-graf/5.png',
-                // '26':'/img/icon-graf/6.png',
-                // '27':'/img/icon-graf/1.png',
+                'imagen_por_default':'/img/icon-graf/03.png',
+                '1':'/img/icon-graf/01.png',
+                '2':'/img/icon-graf/02.png',
+                '3':'/img/icon-graf/03.png',
+                '4':'/img/icon-graf/04.png',
+                '5':'/img/icon-graf/05.png',
+                '6':'/img/icon-graf/06.png',
+                '7':'/img/icon-graf/07.png',
+                '8':'/img/icon-graf/08.png',
+                '9':'/img/icon-graf/09.png',
+                '10':'/img/icon-graf/10.png',
+                '11':'/img/icon-graf/11.png',
+                '12':'/img/icon-graf/12.png',
+                '13':'/img/icon-graf/13.png',
+                '14':'/img/icon-graf/14.png',
+                '15':'/img/icon-graf/15.png',
+                '16':'/img/icon-graf/16.png',
+                '17':'/img/icon-graf/17.png',
+                '18':'/img/icon-graf/18.png',
+                '19':'/img/icon-graf/19.png',
+                '20':'/img/icon-graf/20.png',
+                '21':'/img/icon-graf/21.png',
+                '22':'/img/icon-graf/22.png',
+                '23':'/img/icon-graf/23.png',
+                '24':'/img/icon-graf/24.png',
+                '25':'/img/icon-graf/25.png',
+                '26':'/img/icon-graf/26.png',
+                '27':'/img/icon-graf/27.png',
+                '28':'/img/icon-graf/28.png',
+                '29':'/img/icon-graf/29.png',
+                '30':'/img/icon-graf/30.png',
+                '31':'/img/icon-graf/31.png',
+                '32':'/img/icon-graf/32.png',
+                '33':'/img/icon-graf/33.png',
+                '34':'/img/icon-graf/34.png',
+                '35':'/img/icon-graf/35.png',
+                '36':'/img/icon-graf/36.png',
                 'departamento':'/img/icon-graf/r_departamento.png',  
                 'urbano_rural':'/img/icon-graf/r_urbano_rural.png',
                 'genero':'/img/icon-graf/genero.png',
@@ -410,7 +432,7 @@ $("#btnhide").click(function(){
                             htmlContent += "<div class='list-group-item " + cnf.m.bgTituloSub + " ' >" + elem.nombre + "</div>";
                         else if (elem.tipo == 'link')
                         {
-                            htmlContent += "<a class='list-group-item nodo_menu' href='#'  id='" + elem.cod_str + "'   >" + elem.nombre + ((elem.configuracion)? "<i class='fa fa-tags  pull-right'></i>" : "" ) + "</a>" ;
+                            htmlContent += "<a class='list-group-item nodo_menu bg-white " + ((elem.configuracion) ? "" : "disabled" ) + " ' href='#'  id='" + elem.cod_str + "' >" + elem.nombre + ((elem.configuracion)? "<i class='fa fa-tags  pull-right'></i>" : "" ) + "</a>" ;
                         }
                     }
                     htmlContent += "</ul></div>";
@@ -470,7 +492,8 @@ $("#btnhide").click(function(){
                 imagen = cnf.c.img['imagen_por_default'];
                 for(key in cnf.c.img)
                 {                     
-                    if(key.indexOf(item.imagen) !== -1 && item.imagen != '')  //Si existe la coincidencia que alguna imagen en cnf.c.img contenga la imagen del predefido entonces se asigna esa imagen
+                    // if(key.indexOf(item.imagen) !== -1 && item.imagen != '')  //Si existe la coincidencia que alguna imagen en cnf.c.img contenga la imagen del predefido entonces se asigna esa imagen
+                    if(item.imagen != '' && key == item.imagen)
                         imagen = cnf.c.img[key]; 
                 }
 
