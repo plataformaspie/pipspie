@@ -258,7 +258,7 @@
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
-{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script> --}}
+<script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script>
 
 
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
