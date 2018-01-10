@@ -119,8 +119,8 @@
                             <div id="titulo" class="col-sm-9"></div>
                             <div class="col-sm-3">      
 
-                                <a href="#" id="btn_grafico" class="btn btn-default btn-xs  " ><i class="fa fa-2x fa-bar-chart"></i></a>
-                                <a href="#" id="btn_tabla" class="btn btn-default btn-xs "><i class="fa fa-2x fa-table"></i></a>
+                                <a href="#" id="btn_grafico" class="btn btn-default btn-xs  " hidden="" ><i class="fa fa-2x fa-bar-chart"></i></a>
+                                <a href="#" id="btn_tabla" class="btn btn-default btn-xs " hidden=""><i class="fa fa-2x fa-table"></i></a>
                                 
                                 <a id="btn_menuconfig_acciones" class="dropdown-toggle pull-right btn btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                                     <i class="fa fa-2x fa-cog bg-dark-light pr5 pl5 bordered round"></i><span ></span>
@@ -212,6 +212,7 @@
                         </div>
                     </div>
                 </div>
+                <hr>
                 <div class="form-horizontal" role="form" id='predefNewUpdate'>
                     <div class="form-group">
                         <label class="control-label col-md-3" for="predef_etiqueta">Etiqueta visible</label>
@@ -233,15 +234,15 @@
                 </div>
 
                 <div id="predefDel">
-                    <div class="bg-danger-dark row" style="border-radius: 6px">
+                    <div class="bg-danger-dark row m25" style="border-radius: 6px">
                         <div class="col-sm-2">
                             <i class="fa fa-exclamation-triangle fa-3x mt15"></i>
                         </div>
                         <div class="col-sm-9">
-                            <h5 >Se va a Eliminar la configuración que esta actualmente visualizando. Si elimina se perdará definitivamente dicha configuracion de visualizacion, pero no los datos mostrados.</h5>
+                            <h5 style="color: white">Se va a Eliminar la configuración que esta actualmente visualizando. Si elimina se perdará definitivamente dicha configuracion de visualizacion, pero no los datos.</h5>
                         </div>
                     </div>
-                    <h4 class="text-danger"><i class="fa fa-danger"></i> <span><b>Esta seguro que desea eliminar la configuarcion de visualizacion de datos actual ?</b></span></h4>
+                    <h5 class=""><span><b>Está seguro que desea eliminar la configuarcion de visualizacion de datos actual ?</b></span></h5>
                 </div>
             </div>
             <div class="modal-footer">
@@ -258,7 +259,9 @@
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/highcharts-3d.js"></script>
 <script type="text/javascript" src="/plugins/Highcharts-6.0.4/code/modules/exporting.js"></script>
-<script type="text/javascript" src="/plugins/modify/hightcharts/themes/dark-unica_.src.js"></script>
+{{-- <script type="text/javascript" src="/plugins/moCdify/hightcharts/themes/dark-unica_.src.js"></script> --}}
+<script type="text/javascript" src="/plugins/modify/hightcharts/themes/grid_.src.js"></script>
+{{-- <script type="text/javascript" src="/plugins/modify/hightcharts/themes/sand-signika_.src.js"></script> --}}
 
 <script type="text/javascript" src="/plugins/pivottable/dist/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/plugins/modify/pivot___.js"></script>
@@ -305,7 +308,7 @@ $("#btnhide").click(function(){
             },
         },
         c : {  // c contenido
-            img: {  // buscara si key departamento existe en r_departamento de configuracion.campos_predefinidos.campo, con contains 
+            img: {  
                 'imagen_por_default':'/img/icon-graf/03.png',
                 '1':'/img/icon-graf/01.png',
                 '2':'/img/icon-graf/02.png',
@@ -525,7 +528,7 @@ $("#btnhide").click(function(){
             ctxC.showLoading(1);
             $.post('/api/modulopriorizacion/datosVariableEstadistica', objRequest, function(res){                
                 ctxG.collection = res.collection;
-                ctxG.varEstActualUnidades.valor_unidad_medida = res.unidad_medida.valor_unidad_medida;
+                ctxG.varEstActualUnidades.valor_unidad_medida = res.unidad_medida.valor_defecto_um;
                 ctxG.varEstActualUnidades.valor_tipo = res.unidad_medida.valor_tipo;
                 $.get('/api/modulopriorizacion/datosIndicadoresMeta', {id_indicador : ctxG.varEstActual.id_indicador}, function(r){
                     if(r.mensaje=='ok')
@@ -639,7 +642,7 @@ $("#btnhide").click(function(){
                     var filtro = [];
                     _.mapObject(ctxG.pivotInstancia.inclusions,function(val, key){
                         val.map(function(elem){
-                            filtro.push(key + " = '" + elem + "' ");
+                            filtro.push(key + " = '" + elem + "'");
                         }) 
                         
                     })
@@ -662,8 +665,6 @@ $("#btnhide").click(function(){
                 setsPredef.splice(predef.index, 1);
                 setsPredef.splice(posicion, 0, config);
             };
-            console.log(ctxG.varEstActual)
-            console.log(config)
             var configuracionString = JSON.stringify(ctxG.varEstActual);
             var objReq = {
                 id_dash_menu : ctxG.nodoSel.id,
@@ -673,8 +674,6 @@ $("#btnhide").click(function(){
             $.post("/api/modulopriorizacion/tablero/guardaconfiguracion", objReq, function(res){
                 ctxC.cargarHTMLPredefinidos(ctxG.varEstActual);  
             });
-
-
         },
         cargarImagenes : function(){
             var divImagenes = '<table><tr>';
@@ -699,16 +698,16 @@ $("#btnhide").click(function(){
             config.columns = set_predefinido.x;
             config.rows = set_predefinido.y;
             config.inclusions = _.chain(set_predefinido.filtros)
-                                .map(function(item){                    
-                                    condicion = item.split("=").map(function(s){ return s.toString().trim();});
-                                    _datafield =  condicion[0];
-                                    _values = condicion[1].split(",").map(function(o){ return o.toString().trim().replace(/'/g,"");});
-                                    filtro = {};
-                                    filtro[_datafield] = _values        
-                                    return filtro;
-                                }).reduce(function(carry, item){
-                                    return $.extend(true, carry, item);                                
-                                }, {}).value();
+                                    .map(function(item){                    
+                                        condicion =  item.split("=").map(function(s){ return s.toString().trim().replace(/'/g,"");});
+                                        var obj = { 'key': condicion[0], 'value' : condicion[1] };
+                                        return obj;   
+                                    }).groupBy(function(item){
+                                        return item.key;
+                                    }).mapObject(function(items, key){
+                                        var arr = _.map(items, function(elem){ return elem.value; });
+                                        return arr
+                                    }).value();
             var existeAgregacion = $.pivotUtilities.locales.es.aggregators[set_predefinido.agregacion]; 
             config.aggregatorName = existeAgregacion ?  set_predefinido.agregacion : "Suma de enteros";
             config.vals = ["valor"];         
@@ -864,12 +863,9 @@ $("#btnhide").click(function(){
             var tipo3d = $("#view3d").prop("checked");;
 
             var vale = tipo[0];
-            var tool = '';
-            if(vale =='spline'||vale=='bar'||vale=='area'||vale=='column'){
-                tool= '{series.name}: <b>{point.y}</b> ';
-            };
+            var tool = '{series.name}: <b>{point.y:.1f} (' +  ctxG.varEstActualUnidades.valor_unidad_medida +') </b> ';            
             if(tipo[1]){
-                tool = '{series.name}: <b>{point.y}</b> <br>porcentaje: <b>{point.percentage:.1f} %</b>';
+                tool += '<br>porcentaje: <b>{point.percentage:.1f} %</b>';
             }
 
             // colores= [
@@ -882,11 +878,12 @@ $("#btnhide").click(function(){
             // ];
 
             colores= [
-            '#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
-            '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#DDDF0D',             
-            '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
-            '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE',  
-            '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF',  
+            // '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572',
+            //     '#FF9655', '#FFF263', '#6AF9C4',
+                '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
+                '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE', 
+                '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
+                '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
             ],
             colores = _.chain(colores)
                             .map(function(color){ 
@@ -940,7 +937,8 @@ $("#btnhide").click(function(){
                         stacking: stacked,
                         dataLabels: {
                             enabled: ifLabel,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
+                            format: '{y:.1f}'
+                            // color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || '#ccc'
                         }
                     },
                     column: {
