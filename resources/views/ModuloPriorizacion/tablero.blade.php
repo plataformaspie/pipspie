@@ -157,10 +157,10 @@
                                         <option value="spline">Linea</option>
                                         <option value="column">Columnas</option>
                                         <option value="column-stacked">Columnas apiladas</option>    
-                                        <option value="column-stackedp">Columnas apiladas en proporcion</option>                            
+                                        <option value="column-stackedp">Columnas apiladas en proporcion</option>
                                         <option value="bar">Barras</option> 
                                         <option value="bar-stacked">Barras apiladas</option>    
-                                        <option value="bar-stackedp">Barras apiladas en proporcion</option>                         
+                                        <option value="bar-stackedp">Barras apiladas en proporcion</option>
                                         <option value="area">Area</option>
                                         <option value="area-stacked">Areas apiladas</option>    
                                         <option value="area-stackedp" >Areas apiladas en proporcion</option>
@@ -356,7 +356,7 @@ $("#btnhide").click(function(){
         },
 
     }
-
+    var pivot = '';
     /*-----------------------------------------------------------------------
      *      ctxG variable que contiene el contexto global, variables globales
      */
@@ -574,8 +574,11 @@ $("#btnhide").click(function(){
             //     ctxC.contenedorDatos.hide();
             // }
         },  
-        ocultaMuestra: function () {
-            ocultar = $("#btn_vista_Usuario i").hasClass('fa-user-plus');
+        ocultaMuestra: function (usr = '') {
+            if(usr=='success') ocultar = false;
+            if(usr=='access') ocultar = true;
+            if(usr=='')
+                ocultar = $("#btn_vista_Usuario i").hasClass('fa-user-plus');
             $("#divDatosUI").attr('hidden', ocultar);
             $("#divDatosRead").attr('hidden',!ocultar);
             $("#configuracionGrafico").attr('hidden', ocultar);
@@ -877,26 +880,26 @@ $("#btnhide").click(function(){
             // '#FF72F4', '#84345E', '#348445', '#C4D21C', '#9C0000'
             // ];
 
-            colores= [
-            '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572',
-                '#FF9655', '#FFF263', '#6AF9C4',
-                '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
-                '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE', 
-                '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
-                '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
-            ],
-            colores = _.chain(colores)
-                            .map(function(color){ 
-                                return { id : _.random(100), color:color    }
-                            }).sortBy('id')
-                            .map(function(obj){
-                                return obj.color
-                            })
-                            .value();
+            // colores= [
+            // '#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572',
+            //     '#FF9655', '#FFF263', '#6AF9C4',
+            //     '#E86D00', '#FFB97F', '#E8E400', '#80699B', '#00E820',
+            //     '#4572A7', '#AA4643', '#89A54E', '#70E800', '#3D96AE', 
+            //     '#00E8D6', '#00A5E8', '#0054E8', '#A013E6', '#E800CF', 
+            //     '#E8007B', '#FF766D', '#EDFF6D', '#8AFF6D', '#89FFEA',
+            // ],
+            // colores = _.chain(colores)
+            //                 .map(function(color){ 
+            //                     return { id : _.random(100), color:color    }
+            //                 }).sortBy('id')
+            //                 .map(function(obj){
+            //                     return obj.color
+            //                 })
+            //                 .value();
 
-            Highcharts.setOptions({
-                colors: colores,
-            });
+            // Highcharts.setOptions({
+            //     colors: colores,
+            // });
 
             var json = {   
                 chart : {

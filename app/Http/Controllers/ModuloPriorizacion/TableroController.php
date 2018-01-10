@@ -64,7 +64,7 @@ class TableroController extends Controller
                     return $item;
                 }
 
-            })->sortBy('cod_str')->values();
+            })->sortBy('orden')->values();
 
             $nivel1->hijos = $niveles2;
             foreach ($niveles2 as $nivel2) {
@@ -77,7 +77,7 @@ class TableroController extends Controller
                         return $item;
                     }
                     // return (substr($item->cod_str, 0, 4) == $cod2);
-                })->sortBy('cod_str')->values();
+                })->sortBy('orden')->values();
 
                 $nivel2->hijos = $niveles3;
             }
@@ -104,7 +104,7 @@ class TableroController extends Controller
         // }
                    
         return response()->json([
-            'mensaje' => 'ok',
+            'mensaje' => 'ok'.   $user->permisos_abm ? "_success" : "_access",
             'nodosMenu'=> $nodosMenu,
         ]);
     }
