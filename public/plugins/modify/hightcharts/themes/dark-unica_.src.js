@@ -53,8 +53,10 @@
                         [1, '#3e3e40']
                     ]
                 },
-                 borderColor: '#000000',
+                borderColor: '#000000',
                 borderWidth: 2,
+                                plotBackgroundColor: 'rgba(255, 255, 255, 1)',
+                plotShadow: true,
                 plotBorderColor: '#CCCCCC',
                 plotBorderWidth: 1, 
                 style: {
@@ -124,7 +126,7 @@
             plotOptions: {
                 series: {
                     dataLabels: {
-                        color: '#B0B0B3'
+                        color: '#ccc'
                     },
                     marker: {
                         lineColor: '#333'
