@@ -45,7 +45,7 @@ class TableroController extends Controller
     {
         $user = \Auth::user();
         $id_rol = $user->id_rol;
-        $listaMenus = collect(\DB::select("SELECT m.id, m.cod_str, m.nombre,  m.descripcion, 
+        $listaMenus = collect(\DB::select("SELECT m.id, m.cod_str, m.nombre,  m.descripcion,
                                             m.nivel, m.tipo, m.orden, c.variable_estadistica, c.configuracion
                                             FROM  dash_menu m JOIN dash_menu_rol mr ON m.id = mr.id_dash_menu  AND m.activo AND mr.id_rol = {$id_rol}
                                             LEFT JOIN dash_config c ON m.id_dash_config = c.id
@@ -85,10 +85,10 @@ class TableroController extends Controller
 
 
         /* INSERTA LAS VISTAS COMO SUBMENUS  NO EJECUTAR*/
-        // $tablas = collect(\DB::connection('dbestadistica')->select("select table_name from information_schema.tables 
+        // $tablas = collect(\DB::connection('dbestadistica')->select("select table_name from information_schema.tables
         //     where table_schema='public' and table_type='VIEW'
         //     and table_name ilike '%v_ve%'  and table_name >'v_ve0067' "));
-        //                         // return response()->json($tablas); 
+        //                         // return response()->json($tablas);
         //                         $hu = '';
         // for($i = 0; $i< $tablas->count(); $i++) {
         //     $nombre = $tablas[$i]->table_name;
@@ -97,12 +97,12 @@ class TableroController extends Controller
         //     $cod_str = '1101' . $cod;
         //     $orden = 268 + $i +1;
         //     $id = $cod +102;
-        //     $hu .=  "insert into dash_menu(id, cod_str, nombre, descripcion, nivel, tipo, orden, activo) 
+        //     $hu .=  "insert into dash_menu(id, cod_str, nombre, descripcion, nivel, tipo, orden, activo)
         //         values ({$id}, '{$cod_str}', '{$nombre}', '{$nombre}', 3, 'link', {$orden},   true   )";
-        //     \DB::select("insert into dash_menu(cod_str, nombre, descripcion, nivel, tipo, orden, activo) 
+        //     \DB::select("insert into dash_menu(cod_str, nombre, descripcion, nivel, tipo, orden, activo)
         //         values ('{$cod_str}', '{$nombre}', '{$nombre}', 3, 'link', {$orden},   true   )");
         // }
-                   
+
         return response()->json([
             'mensaje' => 'ok'.   $user->permisos_abm ? "_success" : "_access",
             'nodosMenu'=> $nodosMenu,
@@ -127,7 +127,7 @@ class TableroController extends Controller
 
         $qrySelect = $qryCondicion = $qryGroupBy = '';
 
-        $tablas = collect(\DB::connection("dbestadistica")->select("select table_name from information_schema.tables 
+        $tablas = collect(\DB::connection("dbestadistica")->select("select table_name from information_schema.tables
                                 where table_schema='public' and table_type='VIEW'
                                 and table_name ilike '%{$tabla_vista}%' "));
         if($tablas->count()<=0)
@@ -136,8 +136,8 @@ class TableroController extends Controller
         $tabla = $tablas->first()->table_name;
 
         $qrySelect = "SELECT {$campos_disponibles_select}, SUM( {$campo_agregacion} ) AS valor
-                    FROM {$tabla} 
-                    WHERE 1 = 1 " ; 
+                    FROM {$tabla}
+                    WHERE 1 = 1 " ;
 
         $qryCondicion = trim($condicion_sql) == '' ? '' : ' AND ' . $condicion_sql . ' ' ;
 
@@ -145,7 +145,7 @@ class TableroController extends Controller
               // ORDER BY t_ano, {$campos_disponibles} " ;
 
         $query = $qrySelect . $qryCondicion . $qryGroupBy;
-        $collection  =   collect(\DB::connection('dbestadistica')->select($query));      
+        $collection  =   collect(\DB::connection('dbestadistica')->select($query));
 
         $unidadesMedida = collect(\DB::connection('dbestadistica')->select("
                             SELECT valor_unidad_medida, valor_defecto_um, valor_tipo FROM {$tabla} LIMIT 1"))->first();
@@ -154,13 +154,13 @@ class TableroController extends Controller
         //             SELECT * FROM spie_indicadores where id = {$id_indicador} "))->first();
 
         // $metasPeriodo = collect(\DB::connection('pgsql')->select("
-        //             SELECT to_char(fecha, 'YYYY')::int as gestion, meta_del_periodo 
-        //             FROM spie_indicadores_metas 
+        //             SELECT to_char(fecha, 'YYYY')::int as gestion, meta_del_periodo
+        //             FROM spie_indicadores_metas
         //             WHERE id_indicador = {$id_indicador}
         //             ORDER BY fecha"));
-        
 
-        return Response()->json([ 
+
+        return Response()->json([
                     'mensaje'   => 'ok',
                     'collection'=> $collection,
                     'unidad_medida' => $unidadesMedida,
@@ -175,7 +175,7 @@ class TableroController extends Controller
     public function datosIndicadoresMeta(Request $req)
     {
         $id_indicador = trim($req->id_indicador) == '' ? -111: trim($req->id_indicador) ;
-        $indicadores = \DB::select("SELECT nombre,  linea_base_gestion, linea_base_valor, linea_base_unidad, 
+        $indicadores = \DB::select("SELECT nombre,  linea_base_gestion, linea_base_valor, linea_base_unidad,
                                     linea_base_descripcion, meta_gestion, meta_valor, frecuencia
                                     FROM spie_indicadores i
                                     WHERE  i.estado AND i.id = {$id_indicador} ");
