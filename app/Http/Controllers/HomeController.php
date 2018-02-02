@@ -45,4 +45,8 @@ class HomeController extends Controller
     {
         return view('Siep/dashboard');
     }
+    public function spRedirect()
+    {
+        return view('Sp/dashboard');
+    }
 }
