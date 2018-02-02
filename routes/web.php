@@ -209,15 +209,59 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
               Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
               Route::get('res', 'ModuloPlanificacion\PruebaController@res');
+              Route::get('index', 'ModuloPlanificacion\IndexController@index');
+              Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+
+          }
+      );
+      Route::group(
+          array('prefix' => 'api/moduloplanificacion'),
+          function() {
+              Route::get('demo', 'ModuloPlanificacion\DashboardController@demo');
+              Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
+              Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');
+              Route::post('saveDataEdit', 'ModuloPlanificacion\PlanificacionController@saveDataEdit');
+              Route::get('deleteDiagnostico', 'ModuloPlanificacion\PlanificacionController@deleteDiagnostico');
+              Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
+
+          }
+      );
+});
+
+
+
+
+
+
+
+Route::group(['middleware' => 'auth'],function(){
+      Route::group(
+          array('prefix' => 'sistemasisgri'),
+          function() {
+              Route::get('index', 'Sistemasisgri\IndexController@index');
+              Route::get('showPilares', 'Sistemasisgri\PdesController@showPilares');
+              Route::get('showMetas', 'Sistemasisgri\PdesController@showMetas');
+              Route::get('showResultados', 'Sistemasisgri\PdesController@showResultados');
+              Route::get('adminClasificador', 'Sistemasisgri\PdesController@adminClasificador');
 
 
 
           }
       );
       Route::group(
-          array('prefix' => 'moduloplanificacion/ajax'),
+          array('prefix' => 'api/sistemasisgri'),
           function() {
-              Route::get('demo', 'ModuloPlanificacion\DashboardController@demo');
+              Route::get('setPilares', 'Sistemasisgri\PdesController@setPilares');
+              Route::get('setMetas', 'Sistemasisgri\PdesController@setMetas');
+              Route::get('setResultados', 'Sistemasisgri\PdesController@setResultados');
+              Route::get('setClasificadores', 'Sistemasisgri\PdesController@setClasificadores');
+              Route::get('dataSetPilar', 'Sistemasisgri\PdesController@dataSetPilar');
+              Route::get('dataSetMeta', 'Sistemasisgri\PdesController@dataSetMeta');
+              Route::get('dataSetResultado', 'Sistemasisgri\PdesController@dataSetResultado');
+              Route::post('saveDataPilar', 'Sistemasisgri\PdesController@saveDataPilar');
+              Route::post('saveDataMeta', 'Sistemasisgri\PdesController@saveDataMeta');
+              Route::post('saveDataResultado', 'Sistemasisgri\PdesController@saveDataResultado');
+
 
           }
       );
