@@ -335,15 +335,18 @@ class DashboardController extends Controller
 
         $chkDim = array();
         $chkDimVal = array();
-        foreach ($filter as $aP) {
-          foreach ($aP as $i=>$data) {
-            if($i==0){
-              $chkDim[]=$data;
-            }else{
-              $idValorH = \DB::connection('dbestadistica')->table('be_domains')->where('name',$data)->first();
-              $chkDimVal[]=$idValorH->id;
-            }
 
+        if($filter){
+          foreach ($filter as $aP) {
+            foreach ($aP as $i=>$data) {
+              if($i==0){
+                $chkDim[]=$data;
+              }else{
+                $idValorH = \DB::connection('dbestadistica')->table('be_domains')->where('name',$data)->first();
+                $chkDimVal[]=$idValorH->id;
+              }
+
+            }
           }
         }
 
