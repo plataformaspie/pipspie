@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
 use App\Models\ModuloPlanificacion\Metricas;
+use App\Models\ModuloPdes\Pilares;
 
 class PlanificacionController extends Controller
 {
@@ -52,6 +53,11 @@ class PlanificacionController extends Controller
   {
       $metricas = Metricas::orderBy('simbolo','asc')->get();
        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
+  }
+  public function showEnfoque()
+  {
+      $pilares = Pilares::orderBy('cod_p','asc')->get();
+       return view('ModuloPlanificacion.show-enfoque',['pilares' => $pilares]);
   }
 
   public function setDiagnostico(Request $request)

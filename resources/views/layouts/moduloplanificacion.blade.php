@@ -14,6 +14,9 @@
     <!-- Font CSS (Via CDN) -->
     <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300">
+
+    @yield('headerIni')
+
     <!-- Vendor CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/vendor/plugins/magnific/magnific-popup.css') }}">
     <!-- Admin Forms CSS -->
@@ -430,7 +433,7 @@
                                     <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/003-diagrama-1.png"> Entidades </a>
                             </li>
                             <li id="G1-2" class="">
-                                <a href="{{ url('moduloplanificacion/showMetas')}}">
+                                <a href="{{ url('moduloplanificacion/showEnfoque')}}">
                                     <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/013-contrato.png"></span> Enfoque Político </a>
                             </li>
                             <li id="G1-3" class="">

@@ -212,6 +212,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('res', 'ModuloPlanificacion\PruebaController@res');
               Route::get('index', 'ModuloPlanificacion\IndexController@index');
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
 
           }
       );
