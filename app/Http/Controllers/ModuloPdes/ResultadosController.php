@@ -13,7 +13,13 @@ class ResultadosController extends Controller
   {
 
    if($request->ajax()) {
-        $resultados = Resultados::select("id", \DB::raw("'R'||cod_r as nombre"),"meta")->where('cod_r','1')->orwhere('cod_r','2')->orderBy('cod_r','asc')->get();
+        $resultados = Resultados::select("id", \DB::raw("'R'||cod_r as nombre"),"meta")
+                      ->where('cod_r','1')
+                      ->orwhere('cod_r','2')
+                      ->orwhere('cod_r','4')
+                      ->orwhere('cod_r','140')
+                      ->orwhere('cod_r','141')
+                      ->orderBy('cod_r','asc')->get();
         return \Response::json($resultados);
     }
   }
