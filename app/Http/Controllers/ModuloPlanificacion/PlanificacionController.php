@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
 use App\Models\ModuloPlanificacion\Metricas;
+use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
 use App\Models\ModuloPdes\Pilares;
 
 class PlanificacionController extends Controller
@@ -57,7 +58,9 @@ class PlanificacionController extends Controller
   public function showEnfoque()
   {
       $pilares = Pilares::orderBy('cod_p','asc')->get();
-       return view('ModuloPlanificacion.show-enfoque',['pilares' => $pilares]);
+      $enfoque = EnfoquesPoliticos::where('id_entidad',3)->get();
+
+       return view('ModuloPlanificacion.show-enfoque',['pilares' => $pilares,'enfoque' => $enfoque[0]->enfoque_politico]);
   }
 
   public function setDiagnostico(Request $request)
@@ -237,6 +240,24 @@ class PlanificacionController extends Controller
           );
       }
   }
+
+
+
+  public function dataEntidadEnfoque(Request $request)
+  {
+
+    $enfoque = EnfoquesPoliticos::where('id_entidad', 16)->first();
+
+    return \Response::json($enfoque);
+  }
+
+
+
+
+
+
+
+
 
   /*public function dataSetDiagnostico(Request $request)
   {

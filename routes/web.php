@@ -225,6 +225,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('saveDataEdit', 'ModuloPlanificacion\PlanificacionController@saveDataEdit');
               Route::get('deleteDiagnostico', 'ModuloPlanificacion\PlanificacionController@deleteDiagnostico');
               Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
+              Route::get('dataEntidadEnfoque', 'ModuloPlanificacion\PlanificacionController@dataEntidadEnfoque');
 
           }
       );
