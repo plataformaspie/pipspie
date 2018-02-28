@@ -4,16 +4,18 @@
 <head>
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
-    <title>::SP::</title>
-    <meta name="keywords" content="HTML5 Bootstrap 3" />
-    <meta name="description" content="VPC-MPD">
+    <title>::PIPSPIE::</title>
+    <meta name="keywords" content="HTML5 Bootstrap3" />
+    <meta name="description" content="Viceministerio de Planificacion y Coordinacion">
     <meta name="author" content="CristhianFloresLopez">
-    <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
-    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Font CSS (Via CDN) -->
     <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800'>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300">
+
+    <!-- Required Plugin CSS -->
+    <!--link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
 
     @yield('headerIni')
 
@@ -26,166 +28,18 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href=" {{ asset('sty-mode-2/assets/skin/default_skin/css/theme.css') }} ">
 
+    <!-- Admin Panels CSS -->
+    <!--link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css') }}"-->
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('sty-mode-2/assets/img/favicon.ico') }} ">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-<![endif]-->
-
     @yield('header')
 
 </head>
 
-<body class="blank-page">
-
-    <!-- Start: Theme Preview Pane -->
-    <div id="skin-toolbox">
-        <div class="panel">
-            <div class="panel-heading">
-                <span class="panel-icon"><i class="fa fa-gear text-primary"></i>
-                </span>
-                <span class="panel-title"> Theme Options</span>
-            </div>
-            <div class="panel-body pn">
-
-                <ul class="nav nav-list nav-list-sm pl15 pt10" role="tablist">
-                    <li class="active">
-                        <a href="#toolbox-header" role="tab" data-toggle="tab">Navbar</a>
-                    </li>
-                    <li>
-                        <a href="#toolbox-sidebar" role="tab" data-toggle="tab">Sidebar</a>
-                    </li>
-                    <li>
-                        <a href="#toolbox-settings" role="tab" data-toggle="tab">Misc</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content p20 ptn pb15">
-                    <div role="tabpanel" class="tab-pane active" id="toolbox-header">
-                        <form id="toolbox-header-skin">
-                            <h4 class="mv20">Header Skins</h4>
-
-                            <div class="skin-toolbox-swatches">
-                                <div class="checkbox-custom checkbox-disabled fill mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin8" checked value="bg-light">
-                                    <label for="headerSkin8">Light</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-primary mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin1" value="bg-primary">
-                                    <label for="headerSkin1">Primary</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-info mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin3" value="bg-info">
-                                    <label for="headerSkin3">Info</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-warning mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin4" value="bg-warning">
-                                    <label for="headerSkin4">Warning</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-danger mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin5" value="bg-danger">
-                                    <label for="headerSkin5">Danger</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-alert mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin6" value="bg-alert">
-                                    <label for="headerSkin6">Alert</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-system mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin7" value="bg-system">
-                                    <label for="headerSkin7">System</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-success mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin2" value="bg-success">
-                                    <label for="headerSkin2">Success</label>
-                                </div>
-                                <div class="checkbox-custom fill mb5">
-                                    <input type="radio" name="headerSkin" id="headerSkin9" value="bg-dark">
-                                    <label for="headerSkin9">Dark</label>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="toolbox-sidebar">
-                        <form id="toolbox-sidebar-skin">
-
-                            <h4 class="mv20">Sidebar Skins</h4>
-                            <div class="skin-toolbox-swatches">
-                                <div class="checkbox-custom fill mb5">
-                                    <input type="radio" name="sidebarSkin" checked id="sidebarSkin3" value="">
-                                    <label for="sidebarSkin3">Dark</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-disabled mb5">
-                                    <input type="radio" name="sidebarSkin" id="sidebarSkin1" value="sidebar-light">
-                                    <label for="sidebarSkin1">Light</label>
-                                </div>
-                                <div class="checkbox-custom fill checkbox-light mb5">
-                                    <input type="radio" name="sidebarSkin" id="sidebarSkin2" value="sidebar-light light">
-                                    <label for="sidebarSkin2">Lighter</label>
-                                </div>
-
-                            </div>
-
-                        </form>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="toolbox-settings">
-                        <form id="toolbox-settings-misc">
-                            <h4 class="mv20 mtn">Layout Options</h4>
-                            <div class="form-group">
-                                <div class="checkbox-custom fill mb5">
-                                    <input type="checkbox" checked="" id="header-option">
-                                    <label for="header-option">Fixed Header</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox-custom fill mb5">
-                                    <input type="checkbox" id="sidebar-option">
-                                    <label for="sidebar-option">Fixed Sidebar</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox-custom fill mb5">
-                                    <input type="checkbox" id="breadcrumb-option">
-                                    <label for="breadcrumb-option">Fixed Breadcrumbs</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox-custom fill mb5">
-                                    <input type="checkbox" id="breadcrumb-hidden">
-                                    <label for="breadcrumb-hidden">Hide Breadcrumbs</label>
-                                </div>
-                            </div>
-                            <h4 class="mv20">Layout Options</h4>
-                            <div class="form-group">
-                                <div class="radio-custom mb5">
-                                    <input type="radio" id="fullwidth-option" checked name="layout-option">
-                                    <label for="fullwidth-option">Fullwidth Layout</label>
-                                </div>
-                            </div>
-                            <div class="form-group mb20">
-                                <div class="radio-custom radio-disabled mb5">
-                                    <input type="radio" id="boxed-option" name="layout-option" disabled>
-                                    <label for="boxed-option">Boxed Layout <b class="text-muted">(Coming Soon)</b></label>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-                <div class="form-group mn br-t p15">
-                    <a href="#" id="clearLocalStorage" class="btn btn-primary btn-block pb10 pt10">Clear LocalStorage</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- End: Theme Preview Pane -->
-
+<body class="admin-panels-page" data-spy="scroll" data-target="#nav-spy" data-offset="300">
     <!-- Start: Main -->
     <div id="main">
-
         <!-- Start: Header -->
         <header class="navbar navbar-fixed-top bg-light">
             <div class="navbar-branding">
@@ -249,7 +103,8 @@
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown dropdown-item-slide">
+
+                <!--li class="dropdown dropdown-item-slide">
                     <a class="dropdown-toggle pl10 pr10" data-toggle="dropdown" href="#">
                         <span class="octicon octicon-radio-tower fs18"></span>
                     </a>
@@ -260,7 +115,7 @@
                         </li>
                         <li class="p10 br-t item-1">
                             <div class="media">
-                                <a class="media-left" href="#"> <img src="" class="mw40" alt="holder-img"> </a>
+                                <a class="media-left" href="#"> <img src="assets/img/avatars/2.jpg" class="mw40" alt="holder-img"> </a>
                                 <div class="media-body va-m">
                                     <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
                                     <a class="text-system" href="#"> Max </a>
@@ -269,7 +124,7 @@
                         </li>
                         <li class="p10 br-t item-2">
                             <div class="media">
-                                <a class="media-left" href="#"> <img src="" class="mw40" alt="holder-img"> </a>
+                                <a class="media-left" href="#"> <img src="assets/img/avatars/3.jpg" class="mw40" alt="holder-img"> </a>
                                 <div class="media-body va-m">
                                     <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
                                     <a class="text-system" href="#"> Max </a>
@@ -278,7 +133,7 @@
                         </li>
                         <li class="p10 br-t item-3">
                             <div class="media">
-                                <a class="media-left" href="#"> <img src="" class="mw40" alt="holder-img"> </a>
+                                <a class="media-left" href="#"> <img src="assets/img/avatars/4.jpg" class="mw40" alt="holder-img"> </a>
                                 <div class="media-body va-m">
                                     <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
                                     <a class="text-system" href="#"> Max </a>
@@ -287,7 +142,7 @@
                         </li>
                         <li class="p10 br-t item-4">
                             <div class="media">
-                                <a class="media-left" href="#"> <img src="" class="mw40" alt="holder-img"> </a>
+                                <a class="media-left" href="#"> <img src="assets/img/avatars/5.jpg" class="mw40" alt="holder-img"> </a>
                                 <div class="media-body va-m">
                                     <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
                                     <a class="text-system" href="#"> Max </a>
@@ -295,9 +150,8 @@
                             </div>
                         </li>
                     </ul>
-                </li>
+                </li-->
 
-                <!-- Menu de Idiomas -->
                 <!--li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="flag-xs flag-us"></span>
@@ -318,56 +172,35 @@
                         </li>
                     </ul>
                 </li-->
+
                 <li class="ph10 pv20 hidden-xs"> <i class="fa fa-circle text-tp fs8"></i>
                 </li>
+
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle fw600 p15" data-toggle="dropdown"> <img src="{{ asset('sty-mode-2/assets/img/avatars/1.jpg') }}" alt="avatar" class="mw30 br64 mr15">
+                    <a href="#" class="dropdown-toggle fw600 p15" data-toggle="dropdown">
+                        <img src="{{ asset('sty-mode-2/assets/img/avatars/1.jpg') }}" alt="avatar" class="mw30 br64 mr15">
                         <span>{{ Auth::user()->name }}</span>
                         <span class="caret caret-tp hidden-xs"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-persist pn w250 bg-white" role="menu">
-                        <li class="bg-light br-b br-light p8">
-                            <span class="pull-left ml10">
-                                <select id="user-status">
-                                    <optgroup label="Current Status:">
-                                        <option value="1-1">Away</option>
-                                        <option value="1-2">Offline</option>
-                                        <option value="1-3" selected="selected">Online</option>
-                                    </optgroup>
-                                </select>
-                            </span>
-
-                            <span class="pull-right mr10">
-                                <select id="user-role">
-                                    <optgroup label="Logged in As:">
-                                        <option value="1-1">Client</option>
-                                        <option value="1-2">Editor</option>
-                                        <option value="1-3" selected="selected">Admin</option>
-                                    </optgroup>
-                                </select>
-                            </span>
-                            <div class="clearfix"></div>
-
-                        </li>
-                        <li class="of-h">
-                            <a href="#" class="fw600 p12 animated animated-short fadeInUp">
-                                <span class="fa fa-envelope pr5"></span> Messages
-                                <span class="pull-right lh20 h-20 label label-warning label-sm">2</span>
-                            </a>
-                        </li>
-                        <li class="br-t of-h">
-                            <a href="#" class="fw600 p12 animated animated-short fadeInUp">
-                                <span class="fa fa-user pr5"></span> Friends
-                                <span class="pull-right lh20 h-20 label label-warning label-sm">6</span>
-                            </a>
-                        </li>
+                      <li class="br-t of-h">
+                          <a href="#" class="fw600 p12 animated animated-short fadeInDown">
+                              <span class="fa fa-gear pr5"></span> Mi perfil </a>
+                      </li>
                         <li class="br-t of-h">
                             <a href="#" class="fw600 p12 animated animated-short fadeInDown">
-                                <span class="fa fa-gear pr5"></span> Account Settings </a>
+                                <span class="fa fa-gear pr5"></span> Cambiar contraseña </a>
                         </li>
                         <li class="br-t of-h">
-                            <a href="#" class="fw600 p12 animated animated-short fadeInDown">
-                                <span class="fa fa-power-off pr5"></span> Logout </a>
+                            <a href="{{ url('/home') }}" class="fw600 p12 animated animated-short fadeInDown">
+                                <span class="fa fa-gear pr5"></span> Cerrar Modulo </a>
+                        </li>
+                        <li class="br-t of-h">
+                            <a href="#" class="fw600 p12 animated animated-short fadeInDown" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <span class="fa fa-power-off pr5"></span> Cerrar Sesión </a>
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                </form>
                         </li>
                     </ul>
                 </li>
@@ -376,7 +209,7 @@
         <!-- End: Header -->
 
         <!-- Start: Sidebar -->
-        <aside id="sidebar_left" class="nano nano-primary sidebar-light light">
+        <aside id="sidebar_left" class="sidebar-light nano nano-primary affix">
             <div class="nano-content">
 
                 <!-- Start: Sidebar Header -->
@@ -420,49 +253,78 @@
 
                 <!-- sidebar menu -->
                 <ul class="nav sidebar-menu">
-                    <li class="sidebar-label pt20">PDES</li>
+                  <li class="sidebar-label pt20">PDES</li>
+
+                  <?php $g=0;
+                  $grupo = "";
+                  ?>
+                  @foreach($menus as $m)
+                    @if( $grupo !=  $m["tipo_menu"])
+                      <?php $g++;
+                      $grupo = $m["tipo_menu"];
+                      ?>
+                      @if( $g > 1 )
+                          </ul>
+                      </li>
+                      @endif
+
                     <li>
-                        <a id="G1" class="accordion-toggle" href="#">
+                        <a id="G{{ $g }}" class="accordion-toggle" href="#">
                             <span class="glyphicons glyphicons-fire"></span>
-                            <span class="sidebar-title">Planificacion</span>
+                            <span class="sidebar-title"> {{ $m["tipo_menu"] }}</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav">
-                            <li id="G1-1" class="">
-                                <a href="{{ url('moduloplanificacion/showPilares')}}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/003-diagrama-1.png"> Entidades </a>
-                            </li>
-                            <li id="G1-2" class="">
-                                <a href="{{ url('moduloplanificacion/showEnfoque')}}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/013-contrato.png"></span> Enfoque Político </a>
-                            </li>
-                            <li id="G1-3" class="">
-                                <a href="{{ url('moduloplanificacion/showDiagnostico')}}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/007-grafico-circular.png"> Diagnostico </a>
-                            </li>
-                            <li id="G1-4" class="">
-                                <a href="{{ url('moduloplanificacion/showResultados')}}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/009-rompecabezas.png"> Política Sectorial </a>
-                            </li>
-                            <li id="G1-5" class="">
-                                <a href="{{ url('moduloplanificacion/showResultados')}}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/008-objetivo.png"> Planificación </a>
-                            </li>
-                            <li id="G1-6" class="">
-                                <a href="{{ url('moduloplanificacion/showResultados')}}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="/img/sp-icons/002-archivo.png"> Gestión Documental </a>
-                            </li>
-                        </ul>
+
+                          <li id="G{{ $g }}-{{ $m["id"] }}" class="">
+                            @if( $m["submenus"] )
+                              <a href="{{ url( $m["url"] ) }}">
+                                  <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                              </a>
+                              <ul class="nav sub-nav">
+                                @foreach($m["submenus"] as $sm)
+                                  <li id="sm-{{ $sm->id }}" class="">
+                                    <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
+                                  </li>
+                                @endforeach
+                              </ul>
+                            @else
+                              <a href="{{ url( $m["url"] ) }}">
+                                <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                              </a>
+                            @endif
+                          </li>
+                    @else
+                      <li id="G{{ $g }}-{{ $m["id"] }}" class="">
+                        @if( $m["submenus"] )
+                          <a href="{{ url( $m["url"] ) }}">
+                              <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                          </a>
+                          <ul class="nav sub-nav">
+                            @foreach($m["submenus"] as $sm)
+                              <li id="sm-{{ $sm->id }}" class="">
+                                <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
+                              </li>
+                            @endforeach
+                          </ul>
+                        @else
+                          <a href="{{ url( $m["url"] ) }}">
+                            <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                          </a>
+                        @endif
+                      </li>
+
+                    @endif
+
+
+
+
+
+
+                  @endforeach
+
+                      </ul>
                     </li>
-
-
-
-
-
-
-
-
-
 
 
                     <!-- sidebar progress bars -->
@@ -493,7 +355,7 @@
                     </li>
                 </ul>
                 <div class="sidebar-toggle-mini">
-                    <a href="#" title="Cerrar">
+                    <a href="#">
                         <span class="fa fa-sign-out"></span>
                     </a>
                 </div>
@@ -507,63 +369,25 @@
             <div id="topbar-dropmenu">
                 <div class="topbar-menu row">
                   @foreach($modulos as $m)
-                    <!--li class="">
-                          <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect">
-
-                            <span class="hide-menu" ></span>
-                        </a>
-                    </li-->
-
-                    <div class="col-xs-4 col-sm-2">
-                        <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="metro-tile bg-success">
-                            <img class="metro-icon" src="{{ asset('img/'.$m["icono"]) }}" width="60" alt="" />
-                            <p class="metro-title">{{ $m["titulo"] }}</p>
-                        </a>
-                    </div>
+                     <div class="col-xs-4 col-sm-2">
+                         <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="metro-tile bg-success">
+                             <img class="metro-icon" src="{{ asset('img/'.$m["icono"]) }}" width="60" alt="" />
+                             <p class="metro-title">{{ $m["titulo"] }}</p>
+                         </a>
+                     </div>
                   @endforeach
-
-                    <!--div class="col-xs-4 col-sm-2">
-                        <a href="#" class="metro-tile bg-info">
-                            <span class="metro-icon glyphicons glyphicons-parents"></span>
-                            <p class="metro-title">Users</p>
-                        </a>
-                    </div>
-                    <div class="col-xs-4 col-sm-2">
-                        <a href="#" class="metro-tile bg-alert">
-                            <span class="metro-icon glyphicons glyphicons-headset"></span>
-                            <p class="metro-title">Support</p>
-                        </a>
-                    </div>
-                    <div class="col-xs-4 col-sm-2">
-                        <a href="#" class="metro-tile bg-primary">
-                            <span class="metro-icon glyphicons glyphicons-cogwheels"></span>
-                            <p class="metro-title">Settings</p>
-                        </a>
-                    </div>
-                    <div class="col-xs-4 col-sm-2">
-                        <a href="#" class="metro-tile bg-warning">
-                            <span class="metro-icon glyphicons glyphicons-facetime_video"></span>
-                            <p class="metro-title">Videos</p>
-                        </a>
-                    </div>
-                    <div class="col-xs-4 col-sm-2">
-                        <a href="#" class="metro-tile bg-system">
-                            <span class="metro-icon glyphicons glyphicons-picture"></span>
-                            <p class="metro-title">Pictures</p>
-                        </a>
-                    </div-->
                 </div>
             </div>
             <!-- End: Topbar-Dropdown -->
 
             <!-- Start: Topbar -->
             <header id="topbar">
-               @yield('title-topbar')
+                 @yield('title-topbar')
             </header>
             <!-- End: Topbar -->
 
             <!-- Begin: Content -->
-            <section id="content" class="table-layout animated fadeIn">
+            <section id="content" class="table-layout animated fadeIn" style="min-height: 3500px;">
                 @yield('content')
             </section>
             <!-- End: Content -->
@@ -651,25 +475,95 @@
     </div>
     <!-- End: Main -->
 
+
+    <style>
+
+    /*demo styles*/
+    body {
+        min-height: 2000px;
+    }
+    .custom-nav-animation li {
+        display: none;
+    }
+    .custom-nav-animation li.animated {
+        display: block;
+    }
+
+    /* nav fixed settings */
+    ul.tray-nav.affix {
+        width: 319px;
+        top: 80px;
+    }
+    </style>
+
     <!-- BEGIN: PAGE SCRIPTS -->
 
     <!-- jQuery -->
-    <script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery-1.11.1.min.js') }}"></script>
-    <script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery_ui/jquery-ui.min.js') }}"></script>
+		<script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery-1.11.1.min.js') }}"></script>
+		<script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery_ui/jquery-ui.min.js') }}"></script>
 
-    <!-- Bootstrap -->
-    <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
+		<!-- Bootstrap -->
+		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
 
-    <!-- Theme Javascript -->
-    <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
-    <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
-    <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
+		<!-- Theme Javascript -->
+		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
+		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
+		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
+
+
+
+
+
 
     <script type="text/javascript">
+        jQuery(document).ready(function() {
+
+            "use strict";
+
+            // Init Theme Core
+            Core.init();
+
+            // Init Theme Core
+            //Demo.init();
+
+            // Init tray navigation smooth scroll
+            $('.tray-nav a').smoothScroll({
+                offset: -145
+            });
+
+            // Init custom navigation animation
+            setTimeout(function() {
+                $('.custom-nav-animation li').each(function(i, e) {
+                    var This = $(this);
+                    var timer = setTimeout(function() {
+                        This.addClass('animated animated-short zoomIn');
+                    }, 50 * i);
+                });
+            }, 500);
+
+            // Init tray navigation smooth scroll
+
+            //$('.tray-nav a').smoothScroll({
+            //    offset: -145
+            //});
+
+            // Init Highlight.js Plugin
+            // $('pre code').each(function(i, block) {
+            //     hljs.highlightBlock(block);
+            // });
+
+
+
+
+
+
+
+        });
+
         function activarMenu(gr,mn){
             $('#G'+gr).addClass('menu-open');
             $('#G'+gr+'-'+mn).addClass('active');
@@ -696,20 +590,7 @@
 
             return amount_parts.join('.');
         }
-        jQuery(document).ready(function() {
-            "use strict";
 
-            // Init Theme Core
-            Core.init();
-
-            // Init Theme Core
-            Demo.init();
-
-
-
-
-
-        });
         var Stacks = {
             stack_top_right: {
                 "dir1": "down",
@@ -759,7 +640,7 @@
             },
         }
 
-        var  noteStack ="stack_top_right"
+        var  noteStack ="stack_top_right";
         function findWidth() {
             if (noteStack == "stack_bar_top") {
                 return "100%";
@@ -770,13 +651,9 @@
                 return "290px";
             }
         }
-
-
     </script>
-
-    @stack('script-head')
     <!-- END: PAGE SCRIPTS -->
-
+  @stack('script-head')
 </body>
 
 </html>

@@ -68,29 +68,101 @@
 @endsection
 
 @section('content')
-  <div class="tray tray-center p25 va-t posr">
-      <!-- create new order panel -->
-      <div class="panel mb25 mt5">
-          <div class="panel-heading">
-              <span class="panel-title"> Diagnóstico valores </span>
+  <!-- begin: .tray-left -->
+  <aside class="tray tray-left tray240 va-t pn" data-tray-height="match">
+
+    <div class="animated-delay p20" data-animate='["300","fadeIn"]'>
+        <h4 class="mt5 mb20"> Completar datos </h4>
+        <ul class="fs14 list-unstyled list-spacing-10 mb10 pl5">
+            <li>
+                <i class="fa fa-exclamation-circle text-warning fa-lg pr10"></i>
+                Llene la información solicitada por el sistema
+            </li>
+        </ul>
+    </div>
+      <div id="nav-spy">
+          <ul class="nav tray-nav tray-nav-border custom-nav-animation" data-spy="affix" data-offset-top="200">
+              <li class="active">
+                  <a href="#spy1">
+                    <span class="fa fa-check fa-lg"></span>  Diagnóstico</a>
+              </li>
+              <li>
+                  <a href="#spy2">
+                    <span class="fa fa-check fa-lg"></span>  Sistemas de Vida</a>
+              </li>
+              <li>
+                  <a href="#spy3">
+                    <span class="fa fa-check fa-lg"></span>  Gestion de Riesgos</a>
+              </li>
+
+          </ul>
+      </div>
+
+  </aside>
+  <!-- end: .tray-left -->
+
+  <!-- begin: .tray-center -->
+  <div class="tray tray-center p40 va-t posr">
+
+      <div class="row">
+          <div class="col-md-12">
+              <div class="panel panel-visible" id="spy1">
+                  <div class="panel-heading">
+                      <div class="panel-title hidden-xs">
+                         <span class="glyphicon glyphicon-tasks"></span>Diagnóstico
+                          <!--button id="nuevo" type="button" class="btn btn-success m5"><i class="glyphicons glyphicons-circle_plus"></i> </button-->
+                         <button id="nuevo" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-primary"></i> Agregar</button>
+                         <button id="editar" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-warning"></i> Editar</button>
+                         <button id="eliminar" type="button" class="btn btn-sm btn-default m5"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar </button>
+                      </div>
+                  </div>
+                  <div class="panel-body pn">
+                      <div id="dataTable"></div>
+                  </div>
+              </div>
           </div>
 
+          <div class="col-md-12">
+              <div class="panel panel-visible" id="spy2">
+                  <div class="panel-heading">
+                      <div class="panel-title hidden-xs">
+                          <span class="glyphicon glyphicon-tasks"></span>Sistemas de Vida</div>
+                  </div>
+                  <div class="panel-body pn">
 
-          <div class="panel-body p20 pb10">
-              <div class="tab-content pn br-n admin-form">
-                  <!--button id="nuevo" type="button" class="btn btn-success m5"><i class="glyphicons glyphicons-circle_plus"></i> </button-->
-                  <button id="nuevo" type="button" class="btn btn-default m5"><i class="fa fa-edit icon-primary"></i> Agregar</button>
-                  <button id="editar" type="button" class="btn btn-default m5"><i class="fa fa-edit icon-warning"></i> Editar</button>
-                  <button id="eliminar" type="button" class="btn btn-default m5"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar </button>
 
-                  <div id="dataTable"></div>
 
+
+
+
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-12">
+              <div class="panel panel-visible" id="spy3">
+                  <div class="panel-heading">
+                      <div class="panel-title hidden-xs">
+                          <span class="glyphicon glyphicon-tasks"></span>Gestion de Riesgo</div>
+                  </div>
+                  <div class="panel-body pn">
+
+
+
+
+
+                  </div>
               </div>
           </div>
 
 
       </div>
+
   </div>
+  <!-- end: .tray-center -->
+
+
+
   <!-- Admin Form Popup -->
   <div id="modal-nuevo"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
       <div class="panel">
@@ -382,10 +454,13 @@
       <!-- end: .panel -->
   </div>
   <!-- end: .admin-form -->
-
 @endsection
 
 @push('script-head')
+
+
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
   <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
   <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
@@ -400,7 +475,8 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-        activarMenu('1','3');
+        activarMenu('1','0');
+        activarMenu('2','26');
         $(document).keydown(function(tecla){
               if (tecla.keyCode == 113) {
 
@@ -504,7 +580,7 @@
               { text: '2014', dataField: '2014',cellsAlign: 'center', width: 100 },
               { text: '2015', dataField: '2015',cellsAlign: 'center', width: 100 },
               {
-                text: 'Gráfica', align: 'center', dataField: 'grafica',
+                text: 'Gráfica', align: 'center', dataField: 'grafica',width: 300,
                 cellsRenderer: function (row, column, value, rowData) {
                     var div = "<div id=sparklineContainer" + row + " style='margin: 0px; margin-bottom: 0px; width: 100%; height: 40px;'></div>";
                     return div;
@@ -838,6 +914,7 @@
 
 
             });
+
 
 
     });

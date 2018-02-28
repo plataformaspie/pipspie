@@ -79,123 +79,127 @@
 @endsection
 
 @section('content')
-  <!--div class="tray tray-center p25 va-t posr">
 
-      <div class="panel mb25 mt5">
-          <div class="panel-heading">
-              <span class="panel-title"> Enfoque Político </span>
-          </div>
+  <!-- begin: .tray-left -->
+  <aside class="tray tray-left tray250 va-t pn" data-tray-height="match">
 
-          <section class="wizard-section">
-            <div class="section">
-              <div class="panel mb40">
-                  <div class="panel-body pn of-h">
-                      <textarea class="summernote" style="height: 400px;"></textarea>
+    <div class="animated-delay p20" data-animate='["300","fadeIn"]'>
+        <h4 class="mt5 mb20"> Completar datos </h4>
+        <ul class="fs14 list-unstyled list-spacing-10 mb10 pl5">
+            <li>
+                <i class="fa fa-exclamation-circle text-warning fa-lg pr10"></i>
+                Llene la información solicitada por el sistema
+            </li>
+        </ul>
+    </div>
+      <div id="nav-spy">
+          <ul class="nav tray-nav tray-nav-border custom-nav-animation" data-spy="affix" data-offset-top="200">
+              <li class="active">
+                  <a href="#spy1">
+                    <span class="fa fa-check fa-lg"></span>  Enfoque Politico</a>
+              </li>
+              <li>
+                  <a href="#spy2">
+                    <span class="fa fa-check fa-lg"></span>  Atribuciones</a>
+              </li>
+          </ul>
+      </div>
+
+  </aside>
+  <!-- end: .tray-left -->
+
+  <!-- begin: .tray-center -->
+  <div class="tray tray-center p40 va-t posr">
+
+      <div class="row">
+          <div class="col-md-12">
+              <div class="panel panel-visible" id="spy1">
+                  <div class="panel-heading">
+                      <div class="panel-title hidden-xs">
+                        <span class="glyphicon glyphicon-tasks"></span> Enfoque Politico
+                        <button id="editar" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-warning"></i> Editar</button>
+                      </div>
+                  </div>
+                  <div class="panel-body pn">
+                      <div class="dina4">{!! $enfoque !!}</div>
                   </div>
               </div>
-
-            </div>
-          </section>
-      </div>
-  </div-->
-
-  <!--div class="tray tray-center p25 va-t posr">
-
-      <div class="panel mb25 mt5">
-          <div class="panel-heading">
-              <span class="panel-title"> Registro de Enfoque Polìtico</span>
           </div>
-          <div class="panel-body p20 pb10">
-              <div class="tab-content pn br-n">
-                <section class="wizard-section">
-                  <div class="section">
-                    <label for="enfoque_politico" class="field">
-                        <div class="panel mb40">
-                            <div class="panel-body pn of-h">
-                                <textarea class="summernote"  name="enfoque_politico">{{ $enfoque }}</textarea>
-                            </div>
-                        </div>
-                   </label>
+
+          <div class="col-md-12">
+              <div class="panel panel-visible" id="spy2">
+                  <div class="panel-heading">
+                      <div class="panel-title hidden-xs">
+                          <span class="glyphicon glyphicon-tasks"></span> Atribuciones
+                      </div>
                   </div>
-                </section>
+                  <div class="panel-body pn">
+                      S/D
+                  </div>
               </div>
           </div>
+
 
 
       </div>
-  </div-->
-  <div class="tray tray-center p25 va-t posr">
-
-      <div class="panel mb5 mt5">
-          <div class="panel-heading">
-              <span class="panel-title"> Registro de Enfoque Polìtico </span>
-          </div>
-
-          <div class=" ">
-              <div class="tab-content pn br-n admin-form">
-                  <button id="editar" type="button" class="btn btn-default m5"><i class="fa fa-edit icon-warning"></i> Editar</button>
-              </div>
-          </div>
-
-      </div>
-          <div class="panel-body">
-              <div class="tab-content pn br-n">
-                  <div class="dina4">{{ $enfoque }}</div>
-              </div>
-          </div>
-
 
   </div>
+  <!-- end: .tray-center -->
+
+
+
+
+
+
 
 
 
   <!-- Admin Form Popup -->
-  <div id="modal-editar"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
-      <div class="panel">
-          <div class="panel-heading">
-              <span class="panel-title"><i class="fa fa-pencil"></i>Modificar Enfoque Politico</span>
-          </div>
-          <!-- end .panel-heading section -->
-          <form method="post" action="/" id="form-edit" name="form-edit">
-            {{ csrf_field() }}
+    <div id="modal-editar"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title"><i class="fa fa-pencil"></i>Modificar Enfoque Politico</span>
+            </div>
+            <!-- end .panel-heading section -->
+            <form method="post" action="/" id="form-edit" name="form-edit">
+              {{ csrf_field() }}
 
-              <input type="hidden" name="mod_id" id="mod_id" value="">
+                <input type="hidden" name="mod_id" id="mod_id" value="">
 
 
 
-              <div class="panel-body mnw700 of-a">
-                  <div class="row">
-                      <!-- Icon Column -->
-                      <div class="col-md-12 ">
-                        <div class="panel-body p20 pb10">
-                            <div class="tab-content pn br-n">
-                              <section class="wizard-section">
-                                <div class="section">
-                                     <div class="panel">
-                                          <div class="panel-body pn of-h">
-                                              <textarea id="mod_enfoque_politico" class="summernote" name="mod_enfoque_politico"> </textarea>
-                                          </div>
-                                      </div>
-                                </div>
-                              </section>
-                            </div>
+                <div class="panel-body mnw700 of-a">
+                    <div class="row">
+                        <!-- Icon Column -->
+                        <div class="col-md-12 ">
+                          <div class="panel-body p20 pb10">
+                              <div class="tab-content pn br-n">
+                                <section class="wizard-section">
+                                  <div class="section">
+                                       <div class="panel">
+                                            <div class="panel-body pn of-h">
+                                                <textarea id="mod_enfoque_politico" class="summernote" name="mod_enfoque_politico"> </textarea>
+                                            </div>
+                                        </div>
+                                  </div>
+                                </section>
+                              </div>
+                          </div>
                         </div>
-                      </div>
-                  </div>
-              </div>
+                    </div>
+                </div>
 
 
 
-              <div class="panel-footer">
-                  <button type="submit" class="button btn-primary">Validar y Guardar</button>
-              </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary">Validar y Guardar</button>
+                </div>
 
-          </form>
-      </div>
-      <!-- end: .panel -->
-  </div>
-  <!-- end: .admin-form -->
-
+            </form>
+        </div>
+        <!-- end: .panel -->
+    </div>
+    <!-- end: .admin-form -->
 @endsection
 
 @push('script-head')
@@ -214,7 +218,8 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-        activarMenu('1','2');
+        activarMenu('1','0');
+        activarMenu('2','25');
         // Init Summernote
         $('.summernote').summernote({
             height: 350, //set editable area's height
@@ -249,16 +254,10 @@
                           dataType: 'json',
                           success: function(data){
 
-                            $("#form-edit em").remove();
-                            $('#mod_enfoque_politico').html(data.enfoque_politico);
-                            $('.summernote').summernote({
-                                callbacks: {
-                                    onChange: function (contents, $editable) {
-                                        $(this).val(contents);
-                                    }
-                                }
-                            });
-
+                             $("#form-edit em").remove();
+                            $('input[name="mod_id"]').val(data.id);
+                            // $('textarea[name="mod_enfoque_politico"]').html($('#mod_enfoque_politico').code());
+                            $('#mod_enfoque_politico').code(data.enfoque_politico);
 
                               //$('.note-editable').html(data.enfoque_politico);
                           },
@@ -303,15 +302,10 @@
                     ------------------------------------------ */
 
                     rules: {
-                            mod_variable: {
-                                    required: true
-                            },
-                            mod_indicador:  {
-                                    required: true
-                            },
-                            mod_unidad: {
+                            mod_enfoque_politico: {
                                     required: true
                             }
+
 
 
                     },
@@ -320,14 +314,8 @@
                     ---------------------------------------------- */
 
                     messages:{
-                            mod_variable: {
-                                    required: 'Ingresar la Variable'
-                            },
-                            mod_indicador:  {
-                                    required: 'Ingresar el Indicador'
-                            },
-                            mod_unidad:  {
-                                    required: 'Por favor, selecciones una opcion'
+                            mod_enfoque_politico: {
+                                    required: 'Ingresar datos'
                             }
 
                     },
@@ -424,7 +412,7 @@
     });
     function saveFormNew(){
 
-    var formData = new FormData($("#form-nuevo")[0]);
+    var formData = new FormData($("#form-edit")[0]);
       $.ajax({
               url: "{{ url('/api/moduloplanificacion/saveDataNew') }}",
               type: "POST",
@@ -466,7 +454,7 @@
 
     var formData = new FormData($("#form-edit")[0]);
       $.ajax({
-              url: "{{ url('/api/moduloplanificacion/saveDataEdit') }}",
+              url: "{{ url('/api/moduloplanificacion/saveEnfoqueEdit') }}",
               type: "POST",
               data: formData,
               contentType: false,
@@ -483,7 +471,18 @@
                       width: findWidth(),
                       delay: 1400
                   });
-                  $("#dataTable").jqxDataTable("updateBoundData");
+
+                  $.ajax({
+                          url: "{{ url('/api/moduloplanificacion/dataEntidadEnfoque') }}",
+                          type: "GET",
+                          dataType: 'json',
+                          success: function(data){
+                            $('.dina4').html(data.enfoque_politico);
+                          },
+                          error:function(data){
+                            console("Error recuperar los datos.");
+                          }
+                  });
               },
               error:function(data){
                   new PNotify({

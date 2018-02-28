@@ -5,7 +5,7 @@ namespace App\Http\Controllers\ModuloPlanificacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class AdministracionController extends Controller
 {
   /**
    * Create a new controller instance.
@@ -45,9 +45,9 @@ class DashboardController extends Controller
 
   }
 
+  public function showEstructura()
+  {
 
-    public function index()
-    {
-        return \View::make('ModuloPlanificacion.dashboard')->render();
-    }
+       return view('ModuloPlanificacion.show-estructura');
+  }
 }

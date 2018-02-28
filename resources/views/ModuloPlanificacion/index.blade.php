@@ -23,6 +23,7 @@ Bienvenido...!!!
   <script type="text/javascript">
     $(document).ready(function(){
       activarMenu('1','0');
+      activarMenu('2','0');
 
     });
   </script>

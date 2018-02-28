@@ -213,6 +213,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('index', 'ModuloPlanificacion\IndexController@index');
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
               Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
+              Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
 
           }
       );
@@ -226,6 +227,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('deleteDiagnostico', 'ModuloPlanificacion\PlanificacionController@deleteDiagnostico');
               Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
               Route::get('dataEntidadEnfoque', 'ModuloPlanificacion\PlanificacionController@dataEntidadEnfoque');
+              Route::post('saveEnfoqueEdit', 'ModuloPlanificacion\PlanificacionController@saveEnfoqueEdit');
 
           }
       );
