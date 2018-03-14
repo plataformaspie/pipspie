@@ -9,6 +9,7 @@ use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
 use App\Models\ModuloPlanificacion\Metricas;
 use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
+use App\Models\ModuloPlanificacion\Entidades;
 use App\Models\ModuloPdes\Pilares;
 
 class PlanificacionController extends Controller
@@ -55,17 +56,36 @@ class PlanificacionController extends Controller
       $metricas = Metricas::orderBy('simbolo','asc')->get();
        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
   }
-  public function showEnfoque()
+  public function showEnfoque(Request $request)
   {
+      if($request->id_entidad)
+      {
+        $idEntidad = $request->id_entidad;
+      }
+      else
+      {
+        $this->user = \Auth::user();
+        $idEntidad = $this->user->id_institucion;
+      }
+
+
       $pilares = Pilares::orderBy('cod_p','asc')->get();
-      $enfoque = EnfoquesPoliticos::where('id_entidad',16)->get();
+      $enfoque = EnfoquesPoliticos::where('id_entidad',$idEntidad)->get();
 
        return view('ModuloPlanificacion.show-enfoque',['pilares' => $pilares,'enfoque' => $enfoque[0]->enfoque_politico]);
   }
 
   public function setDiagnostico(Request $request)
   {
-    //DB::raw("CONCAT(cod_p||'.'||cod_m) AS codigo")
+    if($request->id_entidad)
+    {
+      $idEntidad = $request->id_entidad;
+    }
+    else
+    {
+      $this->user = \Auth::user();
+      $idEntidad = $this->user->id_institucion;
+    }
 
 
     $diagnostico = \DB::select("SELECT *,
@@ -104,7 +124,7 @@ class PlanificacionController extends Controller
                                     SELECT d.*, m.simbolo
                                     FROM sp_diagnostico d
                                     INNER JOIN sp_metricas m ON d.unidad = m.id
-                                    WHERE d.entidad = 16
+                                    WHERE d.entidad = ".$idEntidad."
                                     AND d.activo = true
                                     ) tab");
     $i=1;
@@ -179,12 +199,22 @@ class PlanificacionController extends Controller
 
   public function saveDataNew(Request $request)
   {
+    if($request->id_entidad)
+    {
+      $idEntidad = $request->id_entidad;
+    }
+    else
+    {
+      $this->user = \Auth::user();
+      $idEntidad = $this->user->id_institucion;
+    }
+
     $periodo = array(2011,2012,2013,2014,2015);
     //$this->user= \Auth::user();
 
     try{
           $diagnostico = new Diagnosticos();
-          $diagnostico->entidad = 16;
+          $diagnostico->entidad = $idEntidad;
           $diagnostico->variable = $request->variable;
           $diagnostico->indicador = $request->indicador;
           $diagnostico->unidad = $request->unidad;
@@ -245,14 +275,31 @@ class PlanificacionController extends Controller
 
   public function dataEntidadEnfoque(Request $request)
   {
+    if($request->id_entidad)
+    {
+      $idEntidad = $request->id_entidad;
+    }
+    else
+    {
+      $this->user = \Auth::user();
+      $idEntidad = $this->user->id_institucion;
+    }
 
-    $enfoque = EnfoquesPoliticos::where('id_entidad', 16)->first();
-
+    $enfoque = EnfoquesPoliticos::where('id_entidad', $idEntidad)->first();
     return \Response::json($enfoque);
   }
 
   public function saveEnfoqueEdit(Request $request)
   {
+    if($request->id_entidad)
+    {
+      $idEntidad = $request->id_entidad;
+    }
+    else
+    {
+      $this->user = \Auth::user();
+      $idEntidad = $this->user->id_institucion;
+    }
     $periodo = array(2011,2012,2013,2014,2015);
 
     try{
@@ -262,7 +309,7 @@ class PlanificacionController extends Controller
           $enfoque->save();
         }else{
           $enfoque = new EnfoquesPoliticos();
-          $enfoque->entidad = 16;
+          $enfoque->entidad = $idEntidad;
           $enfoque->periodo = 1;
           $enfoque->enfoque_politico = $request->mod_enfoque_politico;
           $enfoque->activo = true;
@@ -284,6 +331,8 @@ class PlanificacionController extends Controller
           );
       }
   }
+
+
 
 
 

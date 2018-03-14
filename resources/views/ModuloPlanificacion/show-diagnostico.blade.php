@@ -2,8 +2,6 @@
 
 @section('header')
   <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
   <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 
@@ -770,13 +768,6 @@
                             }
                     });
                 });
-
-
-
-
-
-
-
 
               }else {
                   swal("Seleccione el registro que eliminara.");

@@ -214,6 +214,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
               Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
               Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
+              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\AdministracionController@showPlanesInstitucion');
 
           }
       );
@@ -228,7 +229,17 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
               Route::get('dataEntidadEnfoque', 'ModuloPlanificacion\PlanificacionController@dataEntidadEnfoque');
               Route::post('saveEnfoqueEdit', 'ModuloPlanificacion\PlanificacionController@saveEnfoqueEdit');
-
+              Route::get('setEstructuraEntidad', 'ModuloPlanificacion\AdministracionController@setEstructuraEntidad');
+              Route::post('saveEntidadNew', 'ModuloPlanificacion\AdministracionController@saveEntidadNew');
+              Route::get('dataSetEntidad', 'ModuloPlanificacion\AdministracionController@dataSetEntidad');
+              Route::post('saveEntidadEdit', 'ModuloPlanificacion\AdministracionController@saveEntidadEdit');
+              Route::get('deleteEntidad', 'ModuloPlanificacion\AdministracionController@deleteEntidad');
+              Route::get('setEntidadOrganigrama', 'ModuloPlanificacion\AdministracionController@setEntidadOrganigrama');
+              Route::post('saveOficinaNew', 'ModuloPlanificacion\AdministracionController@saveOficinaNew');
+              Route::post('saveOficinaEdit', 'ModuloPlanificacion\AdministracionController@saveOficinaEdit');
+              Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
+              Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
+              Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
           }
       );
 });

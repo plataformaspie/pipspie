@@ -181,6 +181,7 @@
                 sortremovestring: "Quitar orden",
                 groupbystring: "Agrupar por esta columna",
                 groupremovestring: "Quitar del grupos",
+                filtersearchstring: "Buscar:",
                 filterclearstring: "Limpiar",
                 filterstring: "Filtro",
                 filtershowrowstring: "Mostrar filas donde:",
@@ -188,14 +189,14 @@
                 filterandconditionstring: "Y",
                 filterselectallstring: "(Seleccionar Todo)",
                 filterchoosestring: "Por favor seleccione:",
-                filterstringcomparisonoperators: ['vacio', 'no vacio', 'contenga', 'contenga(coicidir Mayúsculas/Minúsculas)', 
+                filterstringcomparisonoperators: ['vacio', 'no vacio', 'contenga', 'contenga(coicidir Mayúsculas/Minúsculas)',
                    'no contenga', 'no contenga(coincidir Mayúsculas/Minúsculas)', 'inicia con', 'inicia con(coicidir Mayúsculas/Minúsculas)',
                    'termina con', 'termina con(coicidir Mayúsculas/Minúsculas)', 'igual', 'igual(coicidir Mayúsculas/Minúsculas)', 'nulo', 'no nulo'],
 
                 filternumericcomparisonoperators: ['equal', 'not equal', 'less than', 'less than or equal', 'greater than', 'greater than or equal', 'null', 'not null'],
                 filterdatecomparisonoperators: ['equal', 'not equal', 'less than', 'less than or equal', 'greater than', 'greater than or equal', 'null', 'not null'],
                 filterbooleancomparisonoperators: ['equal', 'not equal'],
-                
+
                 validationstring: "El valor ingresado no es válido",
                 emptydatastring: "No hay datos para mostrar",
                 filterselectstring: "Seleccionar filtro",
