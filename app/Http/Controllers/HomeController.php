@@ -49,4 +49,9 @@ class HomeController extends Controller
     {
         return view('Sp/dashboard');
     }
+
+    public function ficasRedirect()
+    {
+        return view('FichasIndicadores/index');
+    }
 }

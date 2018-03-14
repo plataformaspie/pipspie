@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('home', 'HomeController@index')->name('home');
 Route::get('siep/dashboard', 'HomeController@siepRedirect');
 Route::get('sp/dashboard', 'HomeController@spRedirect');
+Route::get('fichas/index', 'HomeController@ficasRedirect');
 
 /* -----------------------------------------------------------------------------
 | Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro
