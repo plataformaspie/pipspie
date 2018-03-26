@@ -95,9 +95,13 @@
 
                     @foreach($modulos as $m)
                       <li class="">
-                            <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect">
-                              <img src="{{ asset('img/'.$m["icono"]) }}" width="100" alt="home" />
-                              <span class="hide-menu" >{{ $m["titulo"] }}</span>
+                            <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect"
+                              @if($m["target"])
+                              target="{{ url($m["target"])}}"
+                              @endif
+                            >
+                            <img src="{{ asset('img/'.$m["icono"]) }}" width="100" alt="home" />
+                            <span class="hide-menu" >{{ $m["titulo"] }}</span>
                           </a>
                       </li>
                     @endforeach

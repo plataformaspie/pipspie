@@ -11,9 +11,7 @@
   <form id="formSP" class="login-form" action="http://mod.ine.gob.bo/pdes/inicio/ws" method="post" target="iframeb">
           <input type="hidden" value="1" name="id" id="id"/>
           <input type="hidden" value="admin" name="usuario" id="usuario"/>
-        <button type="submit" class="btn blue pull-right">
-                        Entrar <i class="m-icon-swapright m-icon-white"></i>
-        </button>
+          <button type="submit" class="btn blue pull-right">Entrar <i class="m-icon-swapright m-icon-white"></i></button>
   </form>
 </div>
 
@@ -51,7 +49,7 @@
   }
       $(document).ready(function(){
         activarMenu('x','mp-6');
-        menuModulosHideShow(1)
+        menuModulosHideShow(0)
         $( "#formSP" ).submit();
 
 

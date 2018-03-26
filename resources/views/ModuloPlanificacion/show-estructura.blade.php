@@ -303,15 +303,15 @@
 
 
                         <div id="organigrama" class="col-md-12 hide">
-                          <div class="col-xs-2">
-                              <button id="change-panelOrg" type="button" class="btn btn-warning btn-sm mt5"><b><i class="glyphicons glyphicons-unshare"></i> Atras</b></button>
-                          </div>
-                          <div id="title-entidad"class="well well-sm text-center">-</div>
-                          <button id="nuevo-ofi" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-primary"></i> Agregar Oficina</button>
-                          <button id="editar-ofi" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-warning"></i> Editar</button>
-                          <button id="eliminar-ofi" type="button" class="btn btn-sm btn-default m5"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar</button>
+                            <div class="col-xs-2">
+                                <button id="change-panelOrg" type="button" class="btn btn-warning btn-sm mt5"><b><i class="glyphicons glyphicons-unshare"></i> Atras</b></button>
+                            </div>
+                            <div id="title-entidad"class="well well-sm text-center">-</div>
+                            <button id="nuevo-ofi" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-primary"></i> Agregar Oficina</button>
+                            <button id="editar-ofi" type="button" class="btn btn-sm btn-default m5"><i class="fa fa-edit icon-warning"></i> Editar</button>
+                            <button id="eliminar-ofi" type="button" class="btn btn-sm btn-default m5"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar</button>
 
-                          <div id="dataTableSecond"></div>
+                            <div id="dataTableSecond"></div>
                         </div>
                     </div>
                 </div>

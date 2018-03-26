@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('home', 'HomeController@index')->name('home');
 Route::get('siep/dashboard', 'HomeController@siepRedirect');
 Route::get('sp/dashboard', 'HomeController@spRedirect');
-Route::get('fichas/index', 'HomeController@ficasRedirect');
+Route::get('fichas/index', 'HomeController@fichasRedirect');
 
 /* -----------------------------------------------------------------------------
 | Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro
@@ -203,7 +203,6 @@ Route::group(['middleware' => 'auth'],function(){
       );
 });
 
-
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'moduloplanificacion'),
@@ -216,7 +215,6 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
               Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
               Route::get('showPlanesInstitucion', 'ModuloPlanificacion\AdministracionController@showPlanesInstitucion');
-
           }
       );
       Route::group(
@@ -241,15 +239,10 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
               Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
               Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
+              Route::get('setEntidadPlan', 'ModuloPlanificacion\AdministracionController@setEntidadPlan');
           }
       );
 });
-
-
-
-
-
-
 
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
@@ -278,7 +271,22 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('saveDataPilar', 'Sistemasisgri\PdesController@saveDataPilar');
               Route::post('saveDataMeta', 'Sistemasisgri\PdesController@saveDataMeta');
               Route::post('saveDataResultado', 'Sistemasisgri\PdesController@saveDataResultado');
+          }
+      );
+});
 
+
+Route::group(['middleware' => 'auth'],function(){
+      Route::group(
+          array('prefix' => 'sistemaremi'),
+          function() {
+              Route::get('index', 'SistemaRemi\IndexController@index');
+          }
+      );
+      Route::group(
+          array('prefix' => 'api/sistemaremi'),
+          function() {
+              Route::get('demo', 'ModuloPlanificacion\DashboardController@demo');
 
           }
       );

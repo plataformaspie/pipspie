@@ -95,7 +95,7 @@
 
                     @foreach($modulos as $m)
                       <li class="">
-                            <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect">
+                            <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect" target="{{ url($m["target"])}}">
                               <img src="{{ asset('img/'.$m["icono"]) }}" width="100" alt="home" />
                               <span class="hide-menu" >{{ $m["titulo"] }}</span>
                           </a>
