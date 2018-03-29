@@ -28,7 +28,7 @@ class AbmMenusController extends Controller
 
   public function listarMenus2(Request $request) {
 //      if($request->ajax()) {
-          $menus = \DB::select("SELECT Mn.id, Mn.titulo,Mn.url,Mn.descripcion,Mn.activo,Mn.icono,Mn.tipo_menu,Mn.orden,Mn.id_modulo ,Mo.titulo as modulo 
+          $menus = \DB::select("SELECT Mn.id, Mn.titulo,Mn.url,Mn.descripcion,Mn.activo,Mn.icono,Mn.tipo_menu,Mn.orden,Mn.id_modulo ,Mo.titulo as modulo
 FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titulo ASC");
           return \Response::json($menus);
 //      }
@@ -43,7 +43,7 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
 
   public function guardarMenu(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -70,12 +70,12 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       } else {
           echo "No se guardó nada :(<br/>";
       }
-      
+
   }
 
   public function borrarMenu(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -83,7 +83,7 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       $id = $request->input('id');
       $affected = \DB::delete('delete from menus where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
-  }  
+  }
 
   public function listarSubmenus(Request $request) {
 //      if($request->ajax()) {
@@ -94,7 +94,7 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
 
  public function guardarSubmenu(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -121,12 +121,12 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       } else {
           echo "No se guardó nada :(<br/>";
       }
-      
+
   }
-  
+
   public function borrarSubmenu(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -134,7 +134,7 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       $id = $request->input('id');
       $affected = \DB::delete('delete from sub_menus where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
-  }  
+  }
 
 
 // ======================================================================================================
@@ -150,7 +150,7 @@ FROM menus AS Mn LEFT JOIN modulos AS Mo ON Mn.id_modulo=Mo.id ORDER BY Mn.titul
       $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
       $this->modulos = array();
       foreach ($sql as $mn) {
-          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html));
+          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
       }
 
 

@@ -46,7 +46,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
 
   public function guardarUsuario(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -81,7 +81,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
 
   public function borrarUsuario(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -89,7 +89,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
       $id = $request->input('id');
       $affected = \DB::delete('delete from users where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected)...<br/>";
-  }  
+  }
 
   public function autocompletarInstitucion(Request $request)
   {
@@ -97,11 +97,11 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
       $callback = $request->input('callbackjQuery');
       $termino = $request->input('term');
 
-      $Inst = \DB::select("SELECT id, ( nombre || coalesce(' ' || localidad,'') ) AS value, ( nombre || coalesce(' ' || localidad,'') ) AS label 
+      $Inst = \DB::select("SELECT id, ( nombre || coalesce(' ' || localidad,'') ) AS value, ( nombre || coalesce(' ' || localidad,'') ) AS label
                             FROM spie_instituciones
-                            WHERE 
+                            WHERE
                             translate(nombre || coalesce(' ' || localidad,''), 'áéíóúÁÉÍÓÚüÜñÑ', 'aeiouAEIOUuUnN')
-                            ILIKE 
+                            ILIKE
                             '%' || translate('" . $termino . "', 'áéíóúÁÉÍÓÚüÜñÑ', 'aeiouAEIOUuUnN') || '%'
                             ORDER BY nombre");
 
@@ -122,7 +122,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id LEFT JOIN spie_institucion
       $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
       $this->modulos = array();
       foreach ($sql as $mn) {
-          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html));
+          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
       }
 
 

@@ -47,13 +47,10 @@
       break;
     }
   }
-      $(document).ready(function(){
+    $(document).ready(function(){
         activarMenu('x','mp-6');
         menuModulosHideShow(0)
         $( "#formSP" ).submit();
-
-
-
-      });
+    });
   </script>
 @endpush

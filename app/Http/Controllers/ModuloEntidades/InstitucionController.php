@@ -22,7 +22,7 @@ class InstitucionController extends Controller
         $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
         $this->modulos = array();
         foreach ($sql as $mn) {
-            array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html));
+            array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
         }
 
 
@@ -42,7 +42,7 @@ class InstitucionController extends Controller
 
         });
 
-    }    
+    }
     public function index()
     {
         //$instituciones=Institucion::latest()->paginate(12);
@@ -91,7 +91,7 @@ class InstitucionController extends Controller
         if($request->id && $request->task=='delete'){
             $data=['borrado'=>'1','updated_at'=>date("Y-m-d h:i:s")];
             $crudRegs=\DB::table('spie_instituciones')->where('id',$request->id)->update($data);
-        }        
+        }
         if($crudRegs){
             $msg="Operacion Realizada con Exito";
         }
@@ -154,7 +154,7 @@ class InstitucionController extends Controller
             'codigo'=>'required',
             'sigla'=>'required',
             'direccion'=>'required',
-            'localidad'=>'required'            
+            'localidad'=>'required'
         ]);
         Institucion::find($id)->update($request->all());
         return redirect()->route('instituciones.index')->with('success','Institucion Actualizada con Exito');
@@ -185,7 +185,7 @@ class InstitucionController extends Controller
         return response()->json(['categorias'=>$categorias,'listado'=>'ok']);
     }
     public function getRegiones(){
-        $regiones=\DB::select("SELECT r3.id, r1.nombre_comun || ' - ' || r3.nombre_comun as nombre 
+        $regiones=\DB::select("SELECT r3.id, r1.nombre_comun || ' - ' || r3.nombre_comun as nombre
 FROM (SELECT id, codigo_numerico, nombre_comun, substring(codigo_numerico, 1,2) as codigo_numerico_n1 FROM regiones   WHERE categoria = 'NIVEL_3') r3,(SELECT id, codigo_numerico, nombre_comun FROM regiones WHERE categoria = 'NIVEL_1') r1 WHERE r1.codigo_numerico = r3.codigo_numerico_n1 order by r1.nombre_comun,r3.nombre_comun");
         return response()->json(['regiones'=>$regiones,'listado'=>'ok']);
 

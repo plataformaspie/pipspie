@@ -18,7 +18,7 @@ class AbmRolesController extends Controller
 // ======================================================================================================
 // ======================================================================================================
 // ======================================================================================================
-  
+
   public function listarRoles(Request $request)
   {
     if($request->ajax()) {
@@ -30,7 +30,7 @@ class AbmRolesController extends Controller
   public function listarRoles2(Request $request)
   {
    //if($request->ajax()) {
-        $roles = \DB::select("SELECT U.id, U.name, U.email, U.password, U.remember_token, U.username, U.id_rol,R.rol, U.permisos_abm 
+        $roles = \DB::select("SELECT U.id, U.name, U.email, U.password, U.remember_token, U.username, U.id_rol,R.rol, U.permisos_abm
 FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
         return \Response::json($roles);
    // }
@@ -107,7 +107,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
       for ( $i=0; $i<=( $tam - 1 ); $i++) {
           \DB::insert('insert into roles_menu(id_rol, id_menu) values(?, ?)', [$id_rol, $ids_menus[$i]]);
       }
-      echo "Se guardo los Roles-Menus satisfactoriamente ($affected, $tam)...<br/>"; 
+      echo "Se guardo los Roles-Menus satisfactoriamente ($affected, $tam)...<br/>";
   }
 
 
@@ -126,7 +126,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
       for ( $i=0; $i<=( $tam - 1 ); $i++) {
           \DB::insert('insert into roles_modulos(id_rol, id_modulo) values(?, ?)', [$id_rol, $ids_modulos[$i]]);
       }
-      echo "Se guardo los Roles-Modulos satisfactoriamente ($affected, $tam)...<br/>"; 
+      echo "Se guardo los Roles-Modulos satisfactoriamente ($affected, $tam)...<br/>";
   }
 
 
@@ -142,7 +142,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
       $affected2 = \DB::delete('delete from roles_modulos where id_rol = ?', [$id]);
       $affected3 = \DB::delete('delete from roles where id = ?', [$id]);
       echo "Se borro satisfactoriamente ($affected1,$affected2,$affected3)...<br/>";
-  }  
+  }
 
 
 // ======================================================================================================
@@ -158,7 +158,7 @@ FROM users AS U LEFT JOIN roles AS R ON U.id_rol=R.id ORDER BY U.name ASC");
       $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
       $this->modulos = array();
       foreach ($sql as $mn) {
-          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html));
+          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
       }
 
 

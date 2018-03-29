@@ -31,7 +31,7 @@ class AbmModulosController extends Controller
 
   public function guardarModulo(Request $request)
   {
-    
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -66,7 +66,7 @@ class AbmModulosController extends Controller
 
   public function borrarModulo(Request $request)
   {
-   
+
       if ( \Auth::user()->permisos_abm == 'false') {
         return "¡No Autorizado!";
       }
@@ -74,12 +74,12 @@ class AbmModulosController extends Controller
       $id = $request->input('id');
       $affected = \DB::delete('delete from modulos where id = ?', [$id]);
       echo "ID=OK\nSe borro satisfactoriamente ($affected)...<br/>";
-  }  
+  }
 
   public function get_image(Request $request){
 
       $name = '';
-      
+
       $image = request()->file('imagen_modulo'); // lo mismo: $image = Input::file('imagen_modulo');
 /*
         $validator = $this->validate($request, [
@@ -92,7 +92,7 @@ class AbmModulosController extends Controller
                 'format'   => $image->getClientOriginalExtension()
             ],[
                 'image' => 'required',
-                'format'   => 'in:png,gif,jpeg,jpg' 
+                'format'   => 'in:png,gif,jpeg,jpg'
             ]
         );
 
@@ -102,7 +102,7 @@ class AbmModulosController extends Controller
       } else {
           $Extencion = $image->getClientOriginalExtension();
           //$NombreArchivo = $image->getClientOriginalName();
-          date_default_timezone_set('America/La_Paz');  // por si acaso no está configurado          
+          date_default_timezone_set('America/La_Paz');  // por si acaso no está configurado
           $NombreArchivo = date("Y") . date("m") . date("d") . "_" . date("G")  . date("i")   . date("s") . "." . $Extencion;
           $file_dir = $request->file('imagen_modulo')->storeAs('uploads/tmp', $NombreArchivo, 'public_images_folder' ); // public_images_folder está en filesystems.php
 
@@ -110,7 +110,7 @@ class AbmModulosController extends Controller
           //borrar_tmps_antiguos("./img/uploads/tmp");  // no deja llamar a esta funcion por alguna razon :(((
           $directorio = "./img/uploads/tmp";
           if ($handle = opendir("$directorio")){
-              while ((($file=readdir($handle))!==false) ){  
+              while ((($file=readdir($handle))!==false) ){
                   if ($file!='.' && $file!='..'){  // evitamos los directorios raiz
                       if (!is_dir("$directorio/$file")){
                           $horaAntes = time() - ( 1 * 60 * 60); // 0 días; 1 horas; 60 minutos; 60 segundos
@@ -137,7 +137,7 @@ class AbmModulosController extends Controller
   // por alguna razon no puedo llamarlo desde la funcion get_image(Request $request) :((((
   public function borrar_tmps_antiguos($directorio) {  // borrará archivos de la carpera que sean mas antiguos que una hora atras
     if ($handle = opendir("$directorio")){
-        while ((($file=readdir($handle))!==false) ){  
+        while ((($file=readdir($handle))!==false) ){
             if ($file!='.' && $file!='..'){  // evitamos los directorios raiz
                 if (!is_dir("$directorio/$file")){
                     $horaAntes = time() - ( 1 * 60 * 60); // 0 días; 1 horas; 60 minutos; 60 segundos
@@ -166,7 +166,7 @@ class AbmModulosController extends Controller
       $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
       $this->modulos = array();
       foreach ($sql as $mn) {
-          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html));
+          array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
       }
 
 
