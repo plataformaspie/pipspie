@@ -4,38 +4,40 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=3, minimum-scale=5">
+    <!-- Tell the browser to be responsive to screen width -->
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=3, minimum-scale=5"-->
     <meta name="description" content="">
     <meta name="author" content="Cristhian Marcelo Flores Lopez">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicons.png">
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
+
 
     <title>Plataforma SPIE</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('sty-home/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
-    <!-- Menu CSS -->
-    <link href="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}" rel="stylesheet" type="text/css" />
-    <!-- animation CSS -->
-    <link href="{{ asset('sty-home/css/animate.css') }}" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ asset('sty-home/css/style.css') }}" rel="stylesheet">
-    <!-- color CSS you can use different color css from css/colors folder -->
-    <link href="{{ asset('sty-home/css/colors/default.css') }}" id="theme" rel="stylesheet">
+      <!-- Bootstrap Core CSS -->
+      <link href="{{ asset('sty-home/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+      <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
+      <!-- Menu CSS -->
+      <link href="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
+      <link href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}" rel="stylesheet" type="text/css" />
+      <!-- animation CSS -->
+      <link href="{{ asset('sty-home/css/animate.css') }}" rel="stylesheet">
+      <!-- Custom CSS -->
+      <link href="{{ asset('sty-home/css/style.css') }}" rel="stylesheet">
+      <!-- color CSS you can use different color css from css/colors folder -->
+      <link href="{{ asset('sty-home/css/colors/default.css') }}" id="theme" rel="stylesheet">
 
-    {{-- <link href="{{ asset('css/fontello.css') }}" rel="stylesheet"> --}}
-    <link href="{{ asset('css/auxmenu.css') }}" rel="stylesheet">
+      {{-- <link href="{{ asset('css/fontello.css') }}" rel="stylesheet"> --}}
+      <link href="{{ asset('css/auxmenu.css') }}" rel="stylesheet">
 
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-    @yield('header')
+      @yield('header')
 </head>
 
 <body class="fix-sidebar">
@@ -46,16 +48,21 @@
     <div id="wrapper">
         <!-- Top Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
-            <div class="navbar-header"> <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+            <div class="navbar-header">
+                <!-- Toggle icon for mobile view -->
+                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+                <!-- Search input and Toggle icon -->
                 <ul class="nav navbar-top-links navbar-left hidden-xs">
                     <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
-                    <li>
+                    <!--li>
                         <form role="search" class="app-search hidden-xs">
-                            <input type="text" placeholder="Buscar..." class="form-control">
+                            <input type="text" placeholder="Search..." class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>
-                    </li>
+                    </li-->
                 </ul>
+                <!-- Search input and Toggle icon -->
+                <!-- /.dropdown-messages -->
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <!-- /.dropdown -->
                     <li class="right-side-toggle">
@@ -68,6 +75,7 @@
                 </ul>
                 <div class="top-left-part"><a class="logo" href="{{url('home')}}"><b><img src="{{ asset('img/spie-ico-b.png') }}" width="50" alt="home" /></b><span class="hidden-xs">Plataforma SPIE</span></a></div>
             </div>
+            <!-- /.Logo -->
             <!-- /.navbar-header -->
             <!-- /.navbar-top-links -->
             <!-- /.navbar-static-side -->
@@ -76,61 +84,29 @@
         <!-- Left navbar-header -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse slimscrollsidebar">
-                <ul class="nav in" id="side-menu">
-                    <li class="sidebar-search hidden-sm hidden-md hidden-lg">
-                        <!-- input-group -->
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="bUSCAR...">
-                            <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
-                            </span> </div>
-                                        <!-- /input-group -->
+                <ul class="nav" id="side-menu">
+                  @foreach($modulos as $m)
+                    <li class="">
+                          <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect"
+                            @if($m["target"])
+                            target="{{ url($m["target"])}}"
+                            @endif
+                          >
+                          <img src="{{ asset('img/'.$m["icono"]) }}" width="100" alt="home" />
+                          <span class="hide-menu" >{{ $m["titulo"] }}</span>
+                        </a>
                     </li>
-
-                    {{-- <li class=" m-t-10">--Subsistema de Planificación</li> --}}
-
-                    {{-- <li>
-                      <a id="modulopdes" href="{{ url('modulopdes/indicadores')}}" class="waves-effect"><img src="{{ asset('img/pdes-logo.png') }}" width="100" alt="home" /><span class="hide-menu" >MODULO PDES</span></a>
-                    </li> --}}
-
-                    @foreach($modulos as $m)
-                      <li class="">
-                            <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="waves-effect"
-                              @if($m["target"])
-                              target="{{ url($m["target"])}}"
-                              @endif
-                            >
-                            <img src="{{ asset('img/'.$m["icono"]) }}" width="100" alt="home" />
-                            <span class="hide-menu" >{{ $m["titulo"] }}</span>
-                          </a>
-                      </li>
-                    @endforeach
-
-                    {{-- <li> <a href="{{ url('moduloIndicadores/dashboard')}}" class="waves-effect"><img src="img/indicadores-logo.png" width="100" alt="home" /><span class="hide-menu" >CATALOGO INDICADORES</span></a> </li> --}}
-
-
-
+                  @endforeach
                 </ul>
             </div>
         </div>
-
         <!-- Left navbar-header end -->
         <!-- Page Content -->
-
         <div id="page-wrapper">
-          <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
-              <div class="row">
-                <div class="col-lg-12">
-
-
-
-                </div>
-              </div>
-
+            <div class="container-fluid">
                 @yield('content')
-                <!-- br/>
-                <br/ -->
-                <!-- /.container-fluid -->
+
+                <!-- .right-sidebar -->
                 <div class="right-sidebar">
                     <div class="slimscrollright">
                         <div class="rpanel-title"> {{ Auth::user()->name }} <span><i class="ti-close right-side-toggle"></i></span> </div>
@@ -155,7 +131,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- /.right-sidebar -->
             </div>
+            <!-- /.container-fluid -->
             <footer class="footer text-center"> 2017 &copy; Ministerio de Planificación del Desarrollo - Viceministerio Planificación y Coordinación </footer>
         </div>
         <!-- /#page-wrapper -->
@@ -180,7 +158,6 @@
     <script src="{{ asset('plugins/bower_components/styleswitcher/jQuery.style.switcher.js') }}"></script>
 
     <script src="{{ asset('js/auxmenu.js') }}"></script>
-
     @stack('script-head')
 </body>
 

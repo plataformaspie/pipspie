@@ -281,6 +281,10 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'sistemaremi'),
           function() {
               Route::get('index', 'SistemaRemi\IndexController@index');
+              Route::get('setIndicadores', 'SistemaRemi\IndicadorController@setIndicadores');
+              Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
+              Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
+              Route::get('addIndicador', 'SistemaRemi\IndicadorController@addIndicador');
           }
       );
       Route::group(

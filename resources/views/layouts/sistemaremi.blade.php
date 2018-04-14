@@ -13,8 +13,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
-    <title>Elite Admin Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_remi.png">
+    <title>::REMI::</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
@@ -36,6 +36,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
       <![endif]-->
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
+    @yield('header')
 </head>
 
 <body>
@@ -51,11 +52,11 @@
                 <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
                 <!-- Logo -->
                 <div class="top-left-part">
-                    <a class="logo" href="index.html">
+                    <a class="logo" href="{{ url('/sistemaremi/index') }}">
                         <!-- Logo icon image, you can use font-icon also -->
-                        <b><img src="../plugins/images/eliteadmin-logo.png" alt="home" /></b>
+                        <b class="m-l-10"><img src="/img/remi.png" height="60" alt="-" /></b>
                         <!-- Logo text image you can use text also -->
-                        <span class="hidden-xs"><img src="../plugins/images/eliteadmin-text.png" alt="home" /></span>
+
                     </a>
                 </div>
                 <!-- /Logo -->
@@ -63,14 +64,16 @@
                 <ul class="nav navbar-top-links navbar-left hidden-xs">
                     <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
                     <li>
-                        <form role="search" class="app-search hidden-xs">
-                            <input type="text" placeholder="Search..." class="form-control">
+                        <form method="post" action="/sistemaremi/setIndicadoresSearch" role="search" class="app-search hidden-xs">
+                          {{ csrf_field() }}
+                            <input type="text" name="buscar" placeholder="Buscar Indicador..." class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>
                     </li>
                 </ul>
                 <!-- This is the message dropdown -->
                 <ul class="nav navbar-top-links navbar-right pull-right">
+                    <?php /*
                     <li class="dropdown">
                         <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
                             <i class="icon-envelope"></i>
@@ -137,38 +140,32 @@
                         <!-- /.user dropdown-user -->
                     </li>
                     <!-- /.user dropdown -->
+                    */ ?>
                     <!-- .Megamenu -->
                     <li class="mega-dropdown">
-                        <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><span class="hidden-xs">Mega</span> <i class="icon-options-vertical"></i></a>
+                        <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><span class="hidden-xs">MOD</span> <i class="fa fa-th"></i></a>
                         <ul class="dropdown-menu mega-dropdown-menu animated bounceInDown">
-                            <li class="col-sm-3">
-                                <ul>
-                                    <li class="dropdown-header">Header Title</li>
-                                    <li><a href="javascript:void(0)">Link of page</a> </li>
-                                </ul>
-                            </li>
-                            <li class="col-sm-3">
-                                <ul>
-                                    <li class="dropdown-header">Header Title</li>
-                                    <li><a href="javascript:void(0)">Link of page</a> </li>
-                                </ul>
-                            </li>
-                            <li class="col-sm-3">
-                                <ul>
-                                    <li class="dropdown-header">Header Title</li>
-                                    <li><a href="javascript:void(0)">Link of page</a> </li>
-                                </ul>
-                            </li>
-                            <li class="col-sm-3">
-                                <ul>
-                                    <li class="dropdown-header">Header Title</li>
-                                    <li> <a href="javascript:void(0)">Link of page</a> </li>
-                                </ul>
-                            </li>
+                            @foreach($modulos as $m)
+                              <li id="mod-{{ $m["id_html"] }}" class="col-sm-1 text-center">
+                                  <ul>
+                                      <li class="dropdown-header">
+                                        <a href="{{ url($m["url"])}}">
+                                        <img class="metro-icon" src="{{ asset('img/'.$m["icono"]) }}" width="60" alt="" />
+                                        </a>
+                                      </li>
+                                      <li><a href="{{ url($m["url"])}}">{{ $m["sigla"] }}</a> </li>
+                                  </ul>
+                              </li>
+                            @endforeach
                         </ul>
                     </li>
                     <!-- /.Megamenu -->
-                    <li class="right-side-toggle"> <a class="waves-effect waves-light" href="javascript:void(0)"><i class="ti-settings"></i></a></li>
+                    <li class="right-side-toggle">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+                          <i class="fa fa-user img-circle"></i> <b class="hidden-xs">{{ Auth::user()->name }}</b>
+                        </a>
+                        <!-- /.dropdown-user -->
+                    </li>
                     <!-- /.dropdown -->
                 </ul>
             </div>
@@ -184,7 +181,7 @@
                     <li class="sidebar-search hidden-sm hidden-md hidden-lg">
                         <!-- input-group -->
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control" placeholder="Buscar Indicadorssss...">
                             <span class="input-group-btn">
                         <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
                         </span>
@@ -192,30 +189,22 @@
                         <!-- /input-group -->
                     </li>
                     <li>
-                        <a href="index.html" class="waves-effect"><i class="linea-icon linea-basic fa-fw" data-icon="v"></i> <span class="hide-menu"> Dashboard <span class="fa arrow"></span> </span></a>
-                        <ul class="nav nav-second-level">
-                            <li> <a href="index.html">Minimalistic</a> </li>
-                            <li> <a href="index2.html">Demographical</a> </li>
-                            <li> <a href="index3.html">Analitical</a> </li>
-                            <li> <a href="index4.html">Simpler</a> </li>
-                        </ul>
+                        <a href="{{ url('/sistemaremi/index') }}" class="waves-effect">
+                            <i class="linea-icon linea-basic fa-fw" data-icon="v" style="font-size: 25px"></i>
+                            <span class="hide-menu"> Inicio <span class="fa arrow"></span> </span>
+                        </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" class="waves-effect"><i data-icon="F" class="linea-icon linea-software fa-fw"></i> <span class="hide-menu">Multi level<span class="fa arrow"></span></span></a>
+                        <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
+                          <i  class="linea-icon linea-ecommerce fa-fw" data-icon="U" style="font-size: 25px"></i>
+                          <span class="hide-menu"> Indicadores <span class="fa arrow"></span> </span>
+                        </a>
                         <ul class="nav nav-second-level">
-                            <li> <a href="javascript:void(0)">Second Level Item</a> </li>
-                            <li> <a href="javascript:void(0)">Second Level Item</a> </li>
-                            <li>
-                                <a href="javascript:void(0)" class="waves-effect">Third Level <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li> <a href="javascript:void(0)">Third Level Item</a> </li>
-                                    <li> <a href="javascript:void(0)">Third Level Item</a> </li>
-                                    <li> <a href="javascript:void(0)">Third Level Item</a> </li>
-                                    <li> <a href="javascript:void(0)">Third Level Item</a> </li>
-                                </ul>
-                            </li>
+                            <li> <a href="{{ url('/sistemaremi/setIndicadores') }}">Mostrar lista</a> </li>
+                            <li> <a href="{{ url('/sistemaremi/addIndicador') }}">Registrar nuevo</a> </li>
                         </ul>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -223,61 +212,26 @@
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
-                <div class="row bg-title">
-                    <!-- .page title -->
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Starter Page</h4>
-                    </div>
-                    <!-- /.page title -->
-                    <!-- .breadcrumb -->
-                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                        <a href="https://themeforest.net/item/elite-admin-responsive-dashboard-web-app-kit-/16750820" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Buy Now</a>
-                        <ol class="breadcrumb">
-                            <li><a href="#">Dashboard</a></li>
-                            <li class="active">Starter Page</li>
-                        </ol>
-                    </div>
-                    <!-- /.breadcrumb -->
-                </div>
-                <!-- .row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="white-box">
-                            <h3 class="box-title">Blank Starter page</h3>
-                        </div>
-                    </div>
-                </div>
+                @yield('content')
                 <!-- .row -->
                 <!-- .right-sidebar -->
                 <div class="right-sidebar">
                     <div class="slimscrollright">
-                        <div class="rpanel-title"> Service Panel <span><i class="ti-close right-side-toggle"></i></span> </div>
+                        <div class="rpanel-title"> {{ Auth::user()->name }} <span><i class="ti-close right-side-toggle"></i></span> </div>
                         <div class="r-panel-body">
-                            <ul class="m-t-20 chatonline">
-                                <li><b>Chat option</b></li>
+                            <ul>
+                                <li><b>Opciones</b></li>
+                            </ul>
+                            <ul class="">
+                                <li><a href="#"><i class="ti-user"></i> Mi perfil</a></li>
+                                <li><a href="#"><i class="ti-wallet"></i> Cambiar contraseña</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ url('/home') }}"><i class="fa icon-logout"></i> Cerrar Modulos </a></li>
                                 <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/varun.jpg" alt="user-img" class="img-circle"> <span>Varun Dhavan <small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/genu.jpg" alt="user-img" class="img-circle"> <span>Genelia Deshmukh <small class="text-warning">Away</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/ritesh.jpg" alt="user-img" class="img-circle"> <span>Ritesh Deshmukh <small class="text-danger">Busy</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/arijit.jpg" alt="user-img" class="img-circle"> <span>Arijit Sinh <small class="text-muted">Offline</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/govinda.jpg" alt="user-img" class="img-circle"> <span>Govinda Star <small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/hritik.jpg" alt="user-img" class="img-circle"> <span>John Abraham<small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/john.jpg" alt="user-img" class="img-circle"> <span>Hritik Roshan<small class="text-success">online</small></span></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"><img src="../plugins/images/users/pawandeep.jpg" alt="user-img" class="img-circle"> <span>Pwandeep rajan <small class="text-success">online</small></span></a>
+                                  <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Cerrar Sesión </a>
+                                  <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                          {{ csrf_field() }}
+                                  </form>
                                 </li>
                             </ul>
                         </div>
@@ -286,7 +240,7 @@
                 <!-- /.right-sidebar -->
             </div>
             <!-- /.container-fluid -->
-            <footer class="footer text-center"> 2017 &copy; Elite Admin brought to you by themedesigner.in </footer>
+            <footer class="footer text-center"> 2018 &copy; Ministerio de Planificación del Desarrollo </footer>
         </div>
         <!-- /#page-wrapper -->
     </div>
@@ -305,6 +259,13 @@
     <script src="{{ asset('sty-mode-3/js/waves.js') }}"></script>
     <!-- Custom Theme JavaScript -->
     <script src="{{ asset('sty-mode-3/js/custom.min.js') }}"></script>
+    <script src="{{ asset('sty-mode-3/js/validator.js') }}"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+      });
+    </script>
+    @stack('script-head')
 </body>
 
 </html>

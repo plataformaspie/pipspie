@@ -19,9 +19,10 @@
 		$('.easy-pie-chart-2').easyPieChart({
 			easing: 'easeOutBounce',
 			barColor : '#00c292',
+      size: 300,
 			lineWidth: 3,
 			trackColor : false,
-			lineCap : 'butt',
+			lineCap : 'square',
 			onStep: function(from, to, percent) {
 				$(this.el).find('.percent').text(Math.round(percent));
 			}
