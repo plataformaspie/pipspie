@@ -284,13 +284,18 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('setIndicadores', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
-              Route::get('addIndicador', 'SistemaRemi\IndicadorController@addIndicador');
+              Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
           }
       );
       Route::group(
           array('prefix' => 'api/sistemaremi'),
           function() {
-              Route::get('demo', 'ModuloPlanificacion\DashboardController@demo');
+              Route::get('demo', 'SistemaRemi\IndicadorController@demo');
+              Route::get('setDataPdes', 'SistemaRemi\IndicadorController@setDataPdes');
+              Route::get('apiSetIndicadores', 'SistemaRemi\IndicadorController@apiSetIndicadores');
+              Route::post('apiSaveIndicador', 'SistemaRemi\IndicadorController@apiSaveIndicador');
+              Route::get('apiDataSetIndicador', 'SistemaRemi\IndicadorController@apiDataSetIndicador');
+              Route::delete('apiDeleteIndicador', 'SistemaRemi\IndicadorController@apiDeleteIndicador');
 
           }
       );

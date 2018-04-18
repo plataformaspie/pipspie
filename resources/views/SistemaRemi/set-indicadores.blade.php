@@ -95,7 +95,7 @@ text-decoration: underline;
                         <div class="col-lg-1 col-xs-12">
                           <center>
                             <a href="/sistemaremi/dataIndicador/{{ $item->id }}">
-                                <img class="media-object" src="/img/icono_indicadores/IND_{{ $item->id }}.png"  style="width: 90px; height: 100px;">
+                                <img class="media-object" src="/img/icono_indicadores/{{ $item->logo }}"  style="width: 90px; height: 100px;">
                             </a>
                           </center>
                         </div>

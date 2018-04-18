@@ -20,6 +20,7 @@
     <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
     <!-- This is Sidebar menu CSS -->
     <link href="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugins/bower_components/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
     <!-- This is a Animation CSS -->
     <link href="{{ asset('sty-mode-3/css/animate.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
@@ -200,8 +201,8 @@
                           <span class="hide-menu"> Indicadores <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li> <a href="{{ url('/sistemaremi/setIndicadores') }}">Mostrar lista</a> </li>
-                            <li> <a href="{{ url('/sistemaremi/addIndicador') }}">Registrar nuevo</a> </li>
+                            <li> <a href="{{ url('/sistemaremi/setIndicadores') }}">Detalle de Indicadores</a> </li>
+                            <li> <a href="{{ url('/sistemaremi/adminIndicador') }}">Administrar Indicadores</a> </li>
                         </ul>
                     </li>
 
@@ -255,6 +256,7 @@
     <script src="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js') }}"></script>
     <!--Slimscroll JavaScript For custom scroll-->
     <script src="{{ asset('sty-mode-3/js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
     <!--Wave Effects -->
     <script src="{{ asset('sty-mode-3/js/waves.js') }}"></script>
     <!-- Custom Theme JavaScript -->
