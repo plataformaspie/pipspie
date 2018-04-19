@@ -109,21 +109,18 @@ text-decoration: underline;
                                   <p> {{ $item->tipo }} </p>
                               </div>
                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                  <p class="text-muted"> Último Valor: </p>
-                                  <p> 70 </p>
-                              </div>
-                              <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                  <p class="text-muted">Unidad de Medida:</p>
+                                  <p class="text-muted">Unidad de medida:</p>
                                   <p>{{ $item->unidad_medida }}</p>
                               </div>
                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                  <p class="text-muted"> Periodicidad:</p>
-                                  <p> Anual </p>
+                                  <p class="text-muted">Serie disponible:</p>
+                                  <p>{{ $item->serie_disponible }}</p>
                               </div>
                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                  <p class="text-muted">Etapa:</p>
-                                  <p> Etapa 1 </p>
+                                  <p class="text-muted">Linea base:</p>
+                                  <p>{{ $item->linea_base_valor }}</p>
                               </div>
+
                           </div>
                         </div>
                     </div>

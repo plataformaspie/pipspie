@@ -93,12 +93,13 @@ class IndicadorController extends Controller
 
   public function dataIndicador($id)
   {
-
     $indicador = Indicadores::find($id);
-
-    // $indicadores = \DB::select("SELECT *
-    //                             FROM remi_indicadores")->paginate(5);
-    return view('SistemaRemi.data-indicador',compact('indicador'));
+    $pdes = \DB::select("SELECT c.*,ir.id
+                         FROM remi_indicador_pdes_resultado ir
+                         INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
+                         WHERE ir.id_indicador = ".$id);
+    $metas = Metas::where('id_indicador',$id)->orderBy('gestion', 'asc')->get();
+    return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes'));
   }
 
   public function adminIndicador()

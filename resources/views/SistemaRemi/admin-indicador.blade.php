@@ -93,12 +93,6 @@
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
-                                          <a data-toggle="tab" class="nav-link" href="#info2" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-info-circle" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-info-circle" style="font-size: 25px"></i> Información adicional</span>
-                                          </a>
-                                      </li>
-                                      <li class="tab nav-item">
                                           <a data-toggle="tab" class="nav-link" href="#info5" aria-expanded="false">
                                             <span class="visible-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i></span>
                                             <span class="hidden-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i> Alinear a PDES</span>
@@ -148,6 +142,16 @@
                                                   <div class="help-block with-errors"></div>
                                               </div>
                                             </div>
+
+                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                  <div class="col-md-3 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Serie disponible</label>
+                                                  </div>
+                                                  <div class="col-md-9 p-l-0">
+                                                      <input id="serie_disponible" name="serie_disponible" type="text" class="form-control" placeholder="Tipo de indicador" >
+                                                      <div class="help-block with-errors"></div>
+                                                  </div>
+                                            </div>
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Variables de desagregación</label>
@@ -166,6 +170,8 @@
                                                   <div class="help-block with-errors"></div>
                                               </div>
                                             </div>
+
+
                                             <h5>Linea base del indicador</h5>
                                             <hr>
                                             <div class="row m-b-5 m-l-5 m-t-5" >
@@ -247,33 +253,19 @@
                                               </div>
                                             </div>
 
+                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                              <div class="col-md-2 p-l-0 p-r-0">
+                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Observaciones a la fuente de datos</label>
+                                              </div>
+                                              <div class="col-md-9 p-l-0">
+                                                  <textarea id="observacion" name="observacion" class="form-control" placeholder="Observaciones al indicador" rows="8" ></textarea>
+                                                  <div class="help-block with-errors"></div>
+                                              </div>
+                                            </div>
+
                                           </div>
                                       </div>
-                                      <div id="info2" class="tab-pane">
-                                          <div class="col-md-12 list-group-item-success">
-                                              <h4 style="width:100%;">Información adicional </h4>
-                                          </div>
-                                          <div class="col-md-12">
-                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                <div class="col-md-2 p-l-0 p-r-0">
-                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Serie disponible</label>
-                                                </div>
-                                                <div class="col-md-9 p-l-0">
-                                                    <input id="serie_disponible" name="serie_disponible" type="text" class="form-control" placeholder="Tipo de indicador" >
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                              </div>
-                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                <div class="col-md-2 p-l-0 p-r-0">
-                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Observaciones</label>
-                                                </div>
-                                                <div class="col-md-9 p-l-0">
-                                                    <textarea id="observacion" name="observacion" class="form-control" placeholder="Observaciones al indicador" rows="8" ></textarea>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                              </div>
-                                          </div>
-                                      </div>
+
                                       <div id="info5" class="tab-pane">
                                           <div class="col-md-12 list-group-item-success">
                                               <h4 style="width:100%;">Alinar a PDES </h4>
@@ -542,11 +534,11 @@
           },
           { text: 'Nombre del indicador', minWidth: 300,dataField: 'nombre' },
           { text: 'Codigo', dataField: 'codigo', width: 200,cellsAlign: 'center' },
-          { text: 'Opciones', width: 100,
+          { text: 'Opciones', width: 120,
                 cellsRenderer: function (row, column, value, rowData) {
                         var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                        var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Editar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                        var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Borrar</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                        var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Gestionar</span> <i class="fa fa-pencil m-l-5"></i></button>';
+                        var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
                         abm += inputEdit;
                         abm += inputDelete;
                         abm += "</div>";
@@ -656,10 +648,6 @@
                      $('input[name="id_meta_'+data.gestion+'"]').val(data.id);
                      $('input[name="meta_'+data.gestion+'"]').val(data.valor);
                   });
-
-
-
-
 
                }else{
                    $.toast({

@@ -65,11 +65,16 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">
                                 <p class="text-muted card-footer"> Unidad de medida: </p>
-                                <p> 70 </p>
+                                <p> {{$indicador->unidad_medida}} </p>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">
                                 <p class="text-muted card-footer">Meta PDES al 2020</p>
-                                <p>x</p>
+                                @foreach ($metas as $item)
+                                  @if ($item->gestion == 2020)
+                                      <p>{{$item->valor}}</p>
+                                  @endif
+                                @endforeach
+
                             </div>
                           </div>
                       </div>
@@ -99,20 +104,32 @@
                                       <b>Tipo de indicador</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                      <p>:</p>
+                                      <p>: {{$indicador->tipo}}</p>
                                     </div>
 
                                     <div class="col-lg-4 col-sm-6">
                                       <b>Variables de desagregación</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                      <p>:</p>
+                                      <p>: <?php echo str_replace(',',', ',$indicador->variables_desagregacion)?></p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
                                       <b>Serie disponible</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                      <p>:</p>
+                                      <p>: {{$indicador->serie_disponible}}</p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Fecha de linea base</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: {{$indicador->linea_base_mes}}/{{$indicador->linea_base_anio}}</p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Valor actual de linea base</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: {{$indicador->linea_base_valor}}</p>
                                     </div>
 
                                 </div>
@@ -138,7 +155,7 @@
                                           <b>Formula de cálculo</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>:</p>
+                                          <p>: {{$indicador->formula}}</p>
                                         </div>
                                         <div class="col-lg-12">
                                             <h5><b>Parámetros de la formula</b></h5>
@@ -148,25 +165,31 @@
                                           <b>Numerador</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>:</p>
+                                          <p>: {{$indicador->numerador_detalle}}</p>
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
                                           <b>Fuente del numerador</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>:</p>
+                                          <p>: {{$indicador->numerador_fuente}}</p>
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
                                           <b>Denominador</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>:</p>
+                                          <p>: {{$indicador->denominador_detalle}}</p>
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
                                           <b>Fuente del denominador</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>:</p>
+                                          <p>: {{$indicador->denominador_fuente}}</p>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6">
+                                          <b>Observaciones a la fuente de datos</b>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                          <p>: {{$indicador->observacion}}</p>
                                         </div>
                                     </div>
                               </div>
@@ -182,20 +205,54 @@
 
                               <div class="pull-left" style="margin-top: -9px;">
                                 <a href="#" data-perform="panel-collapse">
-                                  <i class="ti-minus"></i> Información adicional
+                                  <i class="ti-minus"></i> Metas
                                 </a>
                               </div>
                           </div>
                           <div class="panel-wrapper collapse in" aria-expanded="true">
                               <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-lg-4 col-sm-6">
-                                          <b>2020</b>
-                                        </div>
-                                        <div class="col-lg-8 col-sm-6">
-                                          <p>: x</p>
-                                        </div>
+                                        @foreach ($metas as $item)
+                                          <div class="col-lg-4 col-sm-6">
+                                            <b>{{ $item->gestion }}</b>
+                                          </div>
+                                          <div class="col-lg-8 col-sm-6">
+                                            <p>: {{ $item->valor }}</p>
+                                          </div>
+                                        @endforeach
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
+                  <div class="col-lg-12 col-sm-12">
+                      <div class="panel panel-success">
+                          <div class="panel-heading" style="background-color: #468E9B;">
+
+                              <div class="pull-left" style="margin-top: -9px;">
+                                <a href="#" data-perform="panel-collapse">
+                                  <i class="ti-minus"></i> Articulación PDES
+                                </a>
+                              </div>
+                          </div>
+                          <div class="panel-wrapper collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                                    <div class="row">
+                                        @foreach ($pdes as $item)
+                                          <div class="row">
+                                                <div class="media row col-lg-12 ">
+                                                    <div class="col-lg-2 text-center">
+                                                        <img src="/img/{{$item->logo}}" alt="Pliar" width="100">
+                                                    </div>
+                                                    <div class="row col-lg-10">
+                                                        <div class="col-12"><b>{{$item->pilar}}:</b> {{$item->desc_p}}</div>
+                                                        <div class="col-12"><b>{{$item->meta}}:</b> {{$item->desc_m}}</div>
+                                                        <div class="col-12"><b>{{$item->resultado}}:</b> {{$item->desc_r}}</div>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        @endforeach
                                     </div>
                               </div>
                           </div>
