@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_remi.png">
     <title>::REMI::</title>
     <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}">
     <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
     <!-- This is Sidebar menu CSS -->
     <link href="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
@@ -203,6 +203,17 @@
                         <ul class="nav nav-second-level">
                             <li> <a href="{{ url('/sistemaremi/setIndicadores') }}">Detalle de Indicadores</a> </li>
                             <li> <a href="{{ url('/sistemaremi/adminIndicador') }}">Administrar Indicadores</a> </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
+                          <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe005;" style="font-size: 25px"></i>
+                          <span class="hide-menu"> Otros <span class="fa arrow"></span> </span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li> <a href="#"><i  class="fa fa-external-link"></i> Fuente de datos</a> </li>
+                            <li> <a href="#"><i  class="fa fa-list-alt"></i> Codigos PDES</a> </li>
                         </ul>
                     </li>
 

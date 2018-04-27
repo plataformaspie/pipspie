@@ -280,6 +280,7 @@ Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'sistemaremi'),
           function() {
+              Route::get('/', 'SistemaRemi\IndexController@index');
               Route::get('index', 'SistemaRemi\IndexController@index');
               Route::get('setIndicadores', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
@@ -296,6 +297,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('apiSaveIndicador', 'SistemaRemi\IndicadorController@apiSaveIndicador');
               Route::get('apiDataSetIndicador', 'SistemaRemi\IndicadorController@apiDataSetIndicador');
               Route::delete('apiDeleteIndicador', 'SistemaRemi\IndicadorController@apiDeleteIndicador');
+              Route::get('apiSourceOrderbyArray', 'SistemaRemi\IndicadorController@apiSourceOrderbyArray');
 
           }
       );

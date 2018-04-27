@@ -13,6 +13,26 @@
     .select2-container-multi{
       padding-left: 0px;padding-right: 0px;padding-top: 0px;
     }
+
+    table.scroll , .scroll tr td{
+    border:1px solid #E4E7EA;
+    }
+    .scroll tbody {
+        display:block;
+        height:200px;
+        overflow:auto;
+    }
+    .scroll thead, .scroll tbody tr {
+        display:table;
+        width:100%;
+        table-layout:fixed;
+    }
+    .scroll thead {
+        width: calc( 100% - 1em )
+    }
+    table.scroll {
+        width:100%;
+    }
   </style>
 @endsection
 
@@ -80,128 +100,207 @@
                       <div class="col-lg-12 col-sm-12 col-xs-12 p-l-0">
                               <div class="vtabs">
                                   <ul class="nav tabs-vertical media p-t-0 p-l-0 p-r-0" style="width:300px;">
+                                    <li class="tab nav-item">
+                                        <a id="tab-ini1" data-toggle="tab" class="nav-link ctrl-btn active" href="#info1" aria-expanded="false">
+                                          <span class="visible-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i></span>
+                                          <span class="hidden-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i> Alinear al PDES</span>
+                                        </a>
+                                    </li>
                                       <li class="tab nav-item">
-                                          <a id="tab-ini" data-toggle="tab" class="nav-link active" href="#info1" aria-expanded="true">
+                                          <a id="tab-ini2" data-toggle="tab" class="nav-link ctrl-btn" href="#info2" aria-expanded="true">
                                             <span class="visible-xs"><i class="fa fa-book" style="font-size: 25px"></i></span>
                                             <span class="hidden-xs"><i class="fa fa-book" style="font-size: 25px"></i> Información básica </span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
-                                          <a aria-expanded="false" class="nav-link" data-toggle="tab" href="#info3">
+                                          <a id="tab-ini3" aria-expanded="false" class="nav-link ctrl-btn" data-toggle="tab" href="#info3">
                                             <span class="visible-xs"><i class="fa fa-building-o" style="font-size: 25px"></i></span>
                                             <span class="hidden-xs"><i class="fa fa-building-o" style="font-size: 25px"></i> Método de cálculo</span>
                                           </a>
                                       </li>
+
                                       <li class="tab nav-item">
-                                          <a data-toggle="tab" class="nav-link" href="#info5" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i> Alinear a PDES</span>
+                                          <a id="tab-ini4" data-toggle="tab" class="nav-link ctrl-btn" href="#info4" aria-expanded="false">
+                                            <span class="visible-xs"><i class="fa fa-eye" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="fa fa-eye" style="font-size: 25px"></i> Metas y avances</span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
-                                          <a data-toggle="tab" class="nav-link" href="#info4" aria-expanded="false">
+                                          <a id="tab-ini5" data-toggle="tab" class="nav-link ctrl-btn" href="#info5" aria-expanded="false">
                                             <span class="visible-xs"><i class="fa fa-eye" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-eye" style="font-size: 25px"></i> Metas</span>
+                                            <span class="hidden-xs"><i class="fa fa-eye" style="font-size: 25px"></i> Fuente de datos</span>
                                           </a>
                                       </li>
 
                                   </ul>
                                   <div class="tab-content media p-t-0 p-l-0 p-r-0" style="width: 80%;">
                                       <div id="info1" class="tab-pane active">
+                                          <div class="col-md-12 list-group-item-success" style="margin-top: -9px;">
+                                              <h4 style="width:100%;">Alinar al PDES </h4>
+                                          </div>
+                                          <p><h5>Ingrese los codigos PDES para agregar la articulación</h5></p>
+                                          <div class="col-md-12">
+                                                <div class="row m-b-5 m-l-5 m-t-5" >
+                                                    <div class="form-group col-md-2 p-l-0 p-r-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Pilar</label>
+                                                    </div>
+                                                    <div class="form-group col-md-1 p-l-0">
+                                                        <input id="cod_pilar" name="cod_pilar" type="text" class="form-control input" placeholder="Pilar" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <div class="help-block with-errors"></div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-2 p-l-0 p-r-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta</label>
+                                                    </div>
+                                                    <div class="form-group col-md-1 p-l-0">
+                                                        <input id="cod_meta" name="cod_meta" type="text" class="form-control input" placeholder="Meta" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <div class="help-block with-errors"></div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-2 p-l-0 p-r-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Resultado</label>
+                                                    </div>
+                                                    <div class="form-group col-md-2 p-l-0">
+                                                        <input id="cod_resultado" name="cod_resultado" type="text" class="form-control input" placeholder="Resultado" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <div class="help-block with-errors"></div>
+                                                    </div>
+
+                                                    <div class="col-md-2 p-l-0 text-center">
+                                                        <button type="button" class="btn btn-info btn-sm agregarART m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                    </div>
+                                                </div>
+                                                <h5>Detalle de articulación</h5>
+                                                <hr/>
+                                                <div id="datosART">
+                                                    <div></div>
+                                                </div>
+
+                                            </div>
+                                      </div>
+
+                                      <div id="info2" class="tab-pane ">
                                           <div class="col-md-12 list-group-item-success">
-                                              <h4 style="width:100%;">Información Básica </h4>
+                                              <h4 style="width:100%;">Información Básica del indicador </h4>
                                           </div>
                                           <div class="col-md-12">
-
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tipo</label>
+                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Etapa</label>
                                               </div>
                                               <div class="col-md-9 p-l-0">
-                                                  <select id="tipo" name="tipo" class="custom-select col-12 form-control">
+                                                  <select id="etapa" name="etapa" class="custom-select col-12 form-control" >
                                                       <option value="">Seleccionar...</option>
-                                                      @foreach ($tipos as  $item)
-                                                            <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
-                                                      @endforeach
+                                                      <option value="Etapa 1">Etapa 1</option>
+                                                      <option value="Etapa 2">Etapa 2</option>
+                                                      <option value="Etapa 3">Etapa 3</option>
                                                   </select>
                                                   <div class="help-block with-errors"></div>
                                               </div>
                                             </div>
 
-                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                              <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de medida</label>
-                                              </div>
-                                              <div class="col-md-9 p-l-0">
-                                                  <select id="unidad_medida" name="unidad_medida" class="custom-select col-12 form-control" >
-                                                      <option value="">Seleccionar...</option>
-                                                      @foreach ($unidades as  $item)
-                                                            <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
-                                                      @endforeach
-                                                  </select>
-                                                  <div class="help-block with-errors"></div>
-                                              </div>
-                                            </div>
-
-                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                  <div class="col-md-3 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Serie disponible</label>
-                                                  </div>
-                                                  <div class="col-md-9 p-l-0">
-                                                      <input id="serie_disponible" name="serie_disponible" type="text" class="form-control" placeholder="Tipo de indicador" >
-                                                      <div class="help-block with-errors"></div>
-                                                  </div>
-                                            </div>
-                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                              <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Variables de desagregación</label>
-                                              </div>
-                                              <div class="col-md-9 p-l-0">
-                                                  <!--select class="select2 m-b-10 select2-multiple" multiple="multiple" data-placeholder="Seleccionar" required>
-
-                                                  </select-->
-                                                  <div class="select2-wrapper">
-                                                    <select id="variables_desagregacion" name="variables_desagregacion[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
-                                                        @foreach ($variables as  $item)
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                <div class="col-md-3 p-l-0 p-r-0">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tipo</label>
+                                                </div>
+                                                <div class="col-md-9 p-l-0">
+                                                    <select id="tipo" name="tipo" class="custom-select col-12 form-control">
+                                                        <option value="">Seleccionar...</option>
+                                                        @foreach ($tipos as  $item)
                                                               <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                         @endforeach
                                                     </select>
-                                                  </div>
-                                                  <div class="help-block with-errors"></div>
-                                              </div>
-                                            </div>
-
-
-                                            <h5>Linea base del indicador</h5>
-                                            <hr>
-                                            <div class="row m-b-5 m-l-5 m-t-5" >
-                                              <div class="form-group col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Fecha linea base</label>
-                                              </div>
-                                              <div class="form-group col-md-3 p-l-0">
-                                                <div class='input-group date' id='dateLB'>
-                                                  <input name="linea_base_fecha" type='text' class="form-control" placeholder="mm/yyyy"/>
-                                                  <span class="input-group-addon">
-                                                      <span class="glyphicon glyphicon-calendar">
-                                                      </span>
-                                                  </span>
+                                                    <div class="help-block with-errors"></div>
                                                 </div>
-                                                <div class="help-block with-errors"></div>
                                               </div>
-                                              <div class="form-group col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor linea base</label>
+
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                <div class="col-md-3 p-l-0 p-r-0">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de medida</label>
+                                                </div>
+                                                <div class="col-md-9 p-l-0">
+                                                    <select id="unidad_medida" name="unidad_medida" class="custom-select col-12 form-control" >
+                                                        <option value="">Seleccionar...</option>
+                                                        @foreach ($unidades as  $item)
+                                                              <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
                                               </div>
-                                              <div class="form-group col-md-3 p-l-0">
-                                                  <input name="linea_base_valor" type="text" class="form-control input" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" >
-                                                  <div class="help-block with-errors"></div>
+
+
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                <div class="col-md-3 p-l-0 p-r-0">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Frecuencia de reporte</label>
+                                                </div>
+                                                <div class="col-md-9 p-l-0">
+                                                    <select id="frecuencia" name="frecuencia" class="custom-select col-12 form-control">
+                                                        <option value="">Seleccionar...</option>
+                                                        @foreach ($frecuencia as  $item)
+                                                              <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
                                               </div>
-                                            </div>
+
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                    <div class="col-md-3 p-l-0 p-r-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Serie disponible</label>
+                                                    </div>
+                                                    <div class="col-md-9 p-l-0">
+                                                        <input id="serie_disponible" name="serie_disponible" type="text" class="form-control" placeholder="Tipo de indicador" >
+                                                        <div class="help-block with-errors"></div>
+                                                    </div>
+                                              </div>
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                <div class="col-md-3 p-l-0 p-r-0">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Variables de desagregación</label>
+                                                </div>
+                                                <div class="col-md-9 p-l-0">
+                                                    <div class="select2-wrapper">
+                                                      <select id="variables_desagregacion" name="variables_desagregacion[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                                                          @foreach ($variables as  $item)
+                                                                <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                                          @endforeach
+                                                      </select>
+                                                    </div>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                              </div>
+
+
+                                              <h5>Linea base del indicador</h5>
+                                              <hr>
+                                              <div class="row m-b-5 m-l-5 m-t-5" >
+                                                  <div class="form-group col-md-3 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Fecha linea base</label>
+                                                  </div>
+                                                  <div class="form-group col-md-3 p-l-0">
+                                                    <div class='input-group date' id='dateLB'>
+                                                      <input name="linea_base_fecha" type='text' class="form-control" placeholder="mm/yyyy"/>
+                                                      <span class="input-group-addon">
+                                                          <span class="glyphicon glyphicon-calendar">
+                                                          </span>
+                                                      </span>
+                                                    </div>
+                                                    <div class="help-block with-errors"></div>
+                                                  </div>
+                                                  <div class="form-group col-md-3 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor linea base</label>
+                                                  </div>
+                                                  <div class="form-group col-md-3 p-l-0">
+                                                      <input name="linea_base_valor" type="text" class="form-control input" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" value="0.00">
+                                                      <div class="help-block with-errors"></div>
+                                                  </div>
+                                              </div>
 
                                           </div>
                                       </div>
+
                                       <div id="info3" class="tab-pane">
                                           <div class="col-md-12 list-group-item-success">
-                                              <h4 style="width:100%;">Método de cálculo </h4>
+                                              <h4 style="width:100%;">Método de cálculo del indicador</h4>
                                           </div>
                                           <div class="col-md-12">
 
@@ -266,83 +365,173 @@
                                           </div>
                                       </div>
 
-                                      <div id="info5" class="tab-pane">
-                                          <div class="col-md-12 list-group-item-success">
-                                              <h4 style="width:100%;">Alinar a PDES </h4>
-                                          </div>
-                                          <div class="col-md-12">
-                                              <div class="row m-b-5 m-l-5 m-t-5" >
-                                                  <div class="form-group col-md-2 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Pilar</label>
-                                                  </div>
-                                                  <div class="form-group col-md-1 p-l-0">
-                                                      <input id="cod_pilar" name="cod_pilar" type="text" class="form-control input" placeholder="Pilar" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
-                                                      <div class="help-block with-errors"></div>
-                                                  </div>
-
-                                                  <div class="form-group col-md-2 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta</label>
-                                                  </div>
-                                                  <div class="form-group col-md-1 p-l-0">
-                                                      <input id="cod_meta" name="cod_meta" type="text" class="form-control input" placeholder="Meta" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
-                                                      <div class="help-block with-errors"></div>
-                                                  </div>
-
-                                                  <div class="form-group col-md-2 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Resultado</label>
-                                                  </div>
-                                                  <div class="form-group col-md-2 p-l-0">
-                                                      <input id="cod_resultado" name="cod_resultado" type="text" class="form-control input" placeholder="Resultado" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
-                                                      <div class="help-block with-errors"></div>
-                                                  </div>
-
-                                                  <div class="col-md-2 p-l-0 text-center">
-                                                      <button type="button" class="btn btn-info btn-circle agregarART"><i class="fa fa-plus-square"></i></button>
-                                                  </div>
-                                              </div>
-                                              <h5>Detalle de articulación</h5>
-                                              <hr/>
-                                              <div id="datosART">
-                                                  <div></div>
-                                              </div>
-
-                                          </div>
-                                       </div>
-                                       <div id="info4" class="tab-pane">
+                                      <div id="info4" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
-                                               <h4 style="width:100%;">Metas </h4>
+                                               <h4 style="width:100%;">Metas y avances</h4>
                                            </div>
                                            <div class="col-md-12">
+                                               <h5>Metas macro</h5>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                 <div class="col-md-3 p-l-0 p-r-0">
-                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta 2020</label>
-                                                 </div>
-                                                 <div class="col-md-3 p-l-0">
-                                                     <input id="id_meta_2020" name="id_meta_2020" type="hidden" class="form-control oculto" required>
-                                                     <input id="meta_2020" name="meta_2020" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
-                                                     <div class="help-block with-errors"></div>
-                                                 </div>
+                                                   <div class="col-md-1 p-l-0 p-r-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta 2020</label>
+                                                   </div>
+                                                   <div class="col-md-2 p-l-0">
+                                                       <input id="id_meta_2020" name="id_meta_2020" type="hidden" class="form-control oculto" required>
+                                                       <input id="meta_2020" name="meta_2020" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
+
+                                                   <div class="col-md-1 p-l-0 p-r-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta 2025</label>
+                                                   </div>
+                                                   <div class="col-md-2 p-l-0">
+                                                       <input id="id_meta_2025" name="id_meta_2025" type="hidden" class="form-control oculto" required>
+                                                       <input id="meta_2025" name="meta_2025" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
+
+
+                                                   <div class="col-md-1 p-l-0 p-r-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta 2030</label>
+                                                   </div>
+                                                   <div class="col-md-2 p-l-0">
+                                                       <input id="id_meta_2030" name="id_meta_2030" type="hidden" class="form-control oculto" required>
+                                                       <input id="meta_2030" name="meta_2030" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
                                                </div>
-                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                 <div class="col-md-3 p-l-0 p-r-0">
-                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta 2025</label>
-                                                 </div>
-                                                 <div class="col-md-3 p-l-0">
-                                                     <input id="id_meta_2025" name="id_meta_2025" type="hidden" class="form-control oculto" required>
-                                                     <input id="meta_2025" name="meta_2025" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
-                                                     <div class="help-block with-errors"></div>
-                                                 </div>
+                                           </div>
+
+                                           <div class="col-md-12">
+                                             <hr/>
+                                               <h5>Metas Parciales</h5>
+                                               <div class="row m-b-5 m-l-5 m-t-5" >
+                                                   <div class="form-group col-md-2 p-l-0 p-r-0 m-b-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2016</label>
+                                                   </div>
+                                                   <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                       <input id="id_meta_2016" name="id_meta_2016" type="hidden" class="form-control oculto" required>
+                                                       <input id="meta_2016" name="meta_2016" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
+                                              </div>
+                                              <div class="row m-l-5" >
+                                                   <div class="form-group col-md-2 p-l-0 p-r-0 m-b-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2017</label>
+                                                   </div>
+                                                   <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                       <input id="id_meta_2017" name="id_meta_2017" type="hidden" class="form-control oculto" required>
+                                                       <input id="meta_2017" name="meta_2017" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
+                                              </div>
+                                              <div class="row  m-l-5" >
+                                                   <div class="form-group col-md-2 p-l-0 p-r-0 m-b-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2018</label>
+                                                   </div>
+                                                   <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                       <input id="id_meta_2018" name="id_meta_2018" type="hidden" class="form-control oculto" required>
+                                                       <input id="meta_2018" name="meta_2018" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
                                                </div>
-                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                 <div class="col-md-3 p-l-0 p-r-0">
-                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta 2030</label>
-                                                 </div>
-                                                 <div class="col-md-3 p-l-0">
-                                                     <input id="id_meta_2030" name="id_meta_2030" type="hidden" class="form-control oculto" required>
-                                                     <input id="meta_2030" name="meta_2030" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                               <div class="row m-l-5" >
+                                                    <div class="form-group col-md-2 p-l-0 p-r-0 m-b-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2019</label>
+                                                    </div>
+                                                    <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                        <input id="id_meta_2019" name="id_meta_2019" type="hidden" class="form-control oculto" required>
+                                                        <input id="meta_2019" name="meta_2019" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <div class="help-block with-errors"></div>
+                                                    </div>
+                                                </div>
+                                           </div>
+
+                                           <div class="col-md-12">
+                                             <hr/>
+                                               <h4>Reportar avances</h4>
+                                               <div class="row m-b-5 m-l-5 m-t-5" >
+                                                   <div class="form-group col-md-2 p-l-0 p-r-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Fecha reporte</label>
+                                                   </div>
+                                                   <div class="form-group col-md-2 p-l-0">
+                                                     <div class='input-group date' id='dateAV'>
+                                                       <input name="avance_fecha_input" type='text' class="form-control" placeholder="mes/Año"/>
+                                                       <span class="input-group-addon">
+                                                           <span class="glyphicon glyphicon-calendar">
+                                                           </span>
+                                                       </span>
+                                                     </div>
                                                      <div class="help-block with-errors"></div>
-                                                 </div>
+                                                   </div>
+                                                   <div class="form-group col-md-2 p-l-0 p-r-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor a reportar</label>
+                                                   </div>
+                                                   <div class="form-group col-md-2 p-l-0">
+                                                       <input name="avance_valor_input" type="text" class="form-control input" placeholder="Valor"  value="0" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" >
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
+
+                                                   <div class="col-md-2 p-l-0 text-center">
+                                                       <button type="button" class="btn btn-info btn-sm agregarAV m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                   </div>
                                                </div>
+                                           </div>
+
+                                           <div class="col-md-8">
+                                             <h5>Listado de avances reportados</h5>
+                                               <div class="row m-b-5 m-l-5 m-t-5" >
+                                                 <table id="set_avance" class="table table-hover scroll ">
+                                                     <thead>
+                                                         <tr>
+                                                             <th class="col-sm-1">#</th>
+                                                             <th class="col-sm-5">Fecha reportado</th>
+                                                             <th class="col-sm-4">Valor reportado</th>
+                                                             <th class="col-sm-1"> - </th>
+                                                         </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     </tbody>
+                                                 </table>
+                                              </div>
+                                           </div>
+
+                                           <div class="col-md-12">
+                                               <br/>
+                                               <br/>
+                                               <br/>
+                                           </div>
+                                       </div>
+
+
+                                       <div id="info5" class="tab-pane">
+                                           <div class="col-md-12 list-group-item-success">
+                                               <h4 style="width:100%;">Fuente de datos del indicador</h4>
+                                           </div>
+                                           <div class="col-md-12">
+
+
+
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Fuente</label>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <div class="select2-wrapper">
+                                                     <select id="fuente_datos" name="fuente_datos[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                                                         @foreach ($variables as  $item)
+                                                               <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                                         @endforeach
+                                                     </select>
+                                                   </div>                                                   
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                             </div>
+                                             <h5>Detalle fuente de datos seleccionado(s)</h5>
+                                             <hr/>
+                                             <div id="datosFD">
+                                                 <div>--</div>
+                                             </div>
 
                                            </div>
                                        </div>
@@ -355,7 +544,8 @@
 
                     <div class="col-sm-12">
                             <div class="form-group text-center">
-                              <button type="submit" class="btn btn-info">Aceptar</button>
+                              <button id="bt_guardar" type="submit" class="btn btn-info hidden tap-btn">Guardar</button>
+                              <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
                               <button type="button" class="btn btn-default btn-back">Cancelar</button>
                             </div>
                     </div>
@@ -405,8 +595,14 @@
   <!-- Date Picker Plugin JavaScript -->
 
   <script type="text/javascript">
+  var fechaAV = [];
+  var valorAV = [];
+  var estadoAV = [];
+  var origenAV = [];
+  var idAV = [];
     $(document).ready(function(){
       //$(".select2").select2();
+
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $(".input").inputmask();
       $(function () {
@@ -415,9 +611,15 @@
                       format: 'MM/YYYY',
                       locale: 'es'
                   });
+                  $('#dateAV').datetimepicker({
+                      viewMode: 'years',
+                      format: 'MM/YYYY',
+                      locale: 'es'
+                  });
       });
 
-      var ip_id = -100;
+
+
       $(".agregarART").click(function () {
          var codigo = $('input[name=cod_pilar]').val()+$('input[name=cod_meta]').val()+$('input[name=cod_resultado]').val();
          if(!$('#datosART').find("#ART"+codigo).length){
@@ -489,6 +691,49 @@
       });
 
 
+
+      var ip_id = -1000;
+
+      $(".agregarAV").click(function () {
+
+        if( $("input[name=avance_fecha_input]").val() != ""){
+
+           var idAV = $('input[name=avance_fecha_input]').val().replace('/', '');
+           var valor = ( $("input[name=avance_valor_input]").val() ? $("input[name=avance_valor_input]").val():0);
+           if(!$('#set_avance').find("#AV"+idAV).length){
+
+              fechaAV.push($('input[name=avance_fecha_input]').val());
+              valorAV.push(valor);
+              estadoAV.push(1);
+              origenAV.push(1);
+              actualizarListaAvance();
+
+          }else{
+              $.toast({
+               heading: 'Alerta:',
+               text: 'Ya existe valor en la fecha reportada.',
+               position: 'top-right',
+               loaderBg:'#ff6849',
+               icon: 'warning',
+               hideAfter: 3500
+             });
+            }
+        }else{
+          $.toast({
+           heading: 'Error:',
+           text: 'Llene los campos para agregar avance.',
+           position: 'top-right',
+           loaderBg:'#ff6849',
+           icon: 'error',
+           hideAfter: 3500
+         });
+
+        }
+
+
+      });
+
+
     var url = '{{ url('api/sistemaremi/apiSetIndicadores') }}';
     // prepare the data
     var source =
@@ -496,7 +741,7 @@
         dataType: "json",
         dataFields: [
             { name: 'id', type: 'int' },
-            { name: 'codigo', type: 'int' },
+            { name: 'codigo', type: 'string' },
             { name: 'nombre', type: 'string' },
             { name: 'tipo', type: 'string' },
             { name: 'logo', type: 'string' }
@@ -551,8 +796,99 @@
 
 
 
+    $(".ctrl-btn").click(function () {
+      var activo = $(this).attr('href');
+      var next =  activo.substr(-1,1) ;
+      if(next == 5){
+        $("#bt_siguiente").addClass('hidden');
+        $("#bt_guardar").removeClass('hidden');
+      }else{
+        $("#bt_siguiente").removeClass('hidden');
+        $("#bt_guardar").addClass('hidden');
+      }
+    });
+
+
+    $(".tap-btn").click(function () {
+      var activo = $(".nav-item a.active").attr('href');
+
+      var next =  activo.substr(-1,1) ;
+      next++;
+      if(next == 5){
+        $("#bt_siguiente").addClass('hidden');
+        $("#bt_guardar").removeClass('hidden');
+      }
+      $("#tab-ini"+next ).trigger( "click" );
 
     });
+
+
+    });
+
+    function actualizarListaAvance(){
+      var cav= 1;
+      $("#set_avance > tbody").html("");
+
+
+      $.ajax({
+            url: "{{ url('/api/sistemaremi/apiSourceOrderbyArray') }}",
+            type: "GET",
+            dataType: 'json',
+            data:{'fechas':fechaAV,'valores':valorAV,'estados':estadoAV},
+            success: function(date){
+                  if(date.error == false){
+                      $.each(date.item, function(i, data) {
+                        if(estadoAV[data.index]==1){
+                            var html = '<tr id="AV'+ data.valor.replace('/', '') +'">'+
+                                            '<td>'+
+                                               '<input type="hidden" name="id_avance[]" value="'+ (idAV[data.index] ? idAV[data.index] : "") +'" /><input type="hidden" id="AVEST'+data.valor.replace('/', '')+'" name="avance_estado[]" value="1" />'+cav+
+                                            '</td>'+
+                                            '<td>'+
+                                              '<input type="hidden" name="avance_fecha[]" value="'+ data.valor +'" />'+
+                                               data.valor+
+                                            '</td>'+
+                                            '<td>'+
+                                              '<input type="hidden" name="avance_valor[]" value="'+ valorAV[data.index]+'" />'+
+                                               valorAV[data.index]+
+                                            '</td>'+
+                                            '<td>'+
+                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace('/', '')+'\','+origenAV[data.index]+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a>'+
+                                            '</td>'+
+                                      '</tr>';
+                            $("#set_avance > tbody").append(html);
+                            cav++;
+                          }else{
+                            var html = '<tr id="0AV'+ data.valor.replace('/', '') +'" class="hidden">'+
+                                            '<td>'+
+                                               '<input type="hidden" name="id_avance[]" value="'+ (idAV[data.index] ? idAV[data.index] : "") +'" /><input type="hidden" id="AVEST'+data.valor.replace('/', '')+'" name="avance_estado[]" value="0" />'+cav+
+                                            '</td>'+
+                                            '<td>'+
+                                              '<input type="hidden" name="avance_fecha[]" value="'+ data.valor +'" />'+
+                                               data.valor+
+                                            '</td>'+
+                                            '<td>'+
+                                              '<input type="hidden" name="avance_valor[]" value="'+ valorAV[data.index]+'" />'+
+                                               valorAV[data.index]+
+                                            '</td>'+
+                                            '<td>'+
+                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace('/', '')+'\','+origenAV[data.index]+','+data.index+');"> <i class="fa fa-close text-danger"></i> </a>'+
+                                            '</td>'+
+                                      '</tr>';
+                            $("#set_avance > tbody").append(html);
+                          }
+
+                     });
+
+               }
+            },
+            error:function(data){
+              alert("Error recuperar los datos.");
+            }
+      });
+
+
+
+    }
     function quitarART(ele,tipo){
         if(tipo == 1){
           $('#ART'+ele).remove();
@@ -562,6 +898,20 @@
           $('#ART'+ele).attr("id",'0ART'+ele);
         }
 
+    }
+    function quitarAV(ele,tipo,index){
+
+        if(tipo == 1){
+          $('#AV'+ele).remove();
+          fechaAV.splice(index, 1);
+          valorAV.splice(index, 1);
+          estadoAV.splice(index, 1);
+          origenAV.splice(index, 1);
+        }else{
+          estadoAV[index] = 0;
+        }
+
+        actualizarListaAvance();
     }
     function editarI(ele){
        alert(ele);
@@ -582,8 +932,14 @@
        $('.form-group').removeClass('has-error');
        $("#variables_desagregacion").val('').trigger('change');
        $("#datosART").html("");
+       fechaAV = [];
+       valorAV = [];
+       estadoAV = [];
+       origenAV = [];
+       idAV = [];
+       $("#set_avance > tbody").html("");
        $('input[name="id_indicador"]').val(null);
-       $("#tab-ini" ).trigger( "click" );
+       $("#tab-ini1" ).trigger( "click" );
     });
     $('#btn-new, .btn-new ').click(function() {
        $('#option2').removeClass('hidden');
@@ -604,8 +960,10 @@
                    $('input[name="id_indicador"]').val(data.indicador[0].id);
                    $('input[name="nombre"]').val(data.indicador[0].nombre);
                    $('textarea[name="definicion"]').val(data.indicador[0].definicion);
+                   $('select[name=etapa]').val(data.indicador[0].etapa);
                    $('select[name=tipo]').val(data.indicador[0].tipo);
                    $('select[name=unidad_medida]').val(data.indicador[0].unidad_medida);
+                   $('select[name=frecuencia]').val(data.indicador[0].frecuencia);
                    if(data.indicador[0].variables_desagregacion){
                      $("#variables_desagregacion").val(data.indicador[0].variables_desagregacion.split(",")).trigger('change');
                    }
@@ -648,6 +1006,16 @@
                      $('input[name="id_meta_'+data.gestion+'"]').val(data.id);
                      $('input[name="meta_'+data.gestion+'"]').val(data.valor);
                   });
+
+
+                  $.each(data.avances, function(i, data) {
+                      fechaAV.push(data.fecha_generado_mes+'/'+data.fecha_generado_anio);
+                      valorAV.push(data.valor);
+                      estadoAV.push(1);
+                      origenAV.push(2);
+                      idAV.push(data.id);
+                  });
+                  actualizarListaAvance();
 
                }else{
                    $.toast({

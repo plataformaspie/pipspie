@@ -12,6 +12,10 @@ use App\Models\SistemaRemi\Dimensiones;
 use App\Models\SistemaRemi\Variables;
 use App\Models\SistemaRemi\IndicadorResultado;
 use App\Models\SistemaRemi\Metas;
+use App\Models\SistemaRemi\IndicadorAvance;
+use App\Models\SistemaRemi\Resultados;
+use App\Models\SistemaRemi\VistaCatalogoPdespmr;
+use App\Models\SistemaRemi\IndicadorFrecuencia;
 
 class IndicadorController extends Controller
 {
@@ -56,38 +60,44 @@ class IndicadorController extends Controller
   {
     //$indicadores = Indicadores::paginate();
     $sw=0;
+    $sb=0;
     $tipo = "";
     $unidad = "";
+    $buscar = "";
+    $where = array();
+    $orwhere = array();
 
     if($request->has('buscar')){
-        dd($request->buscar);
+        $sb=1;
+        $orwhere[] = array(\DB::raw("upper(lower(nombre))"),'LIKE','%'.mb_strtoupper($request->buscar,'utf-8') .'%');
+        $buscar = $request->buscar;
+        $sw++;
     }
     if($request->has('tipo')){
         $where[] = array("tipo","=",$request->tipo);
-        $append[] = array("tipo",$request->tipo);
         $tipo = $request->tipo;
         $sw++;
     }
     if($request->has('unidad')){
         $where[] = array("unidad_medida","=",$request->unidad);
-        $append[] = array("unidad",$request->unidad);
         $unidad = $request->unidad;
         $sw++;
     }
 
-    if($sw>0){
+    if($sw > 0){
 
-        $indicadores = Indicadores::where($where)->where('activo',true)->paginate(5)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad);
+          $indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->paginate(5)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar);
 
     }else{
-
-      $indicadores = Indicadores::where('activo',true)->paginate(5);
-
+          $indicadores = Indicadores::where('activo',true)->paginate(5);
     }
-    // $indicadores = \DB::select("SELECT *
-    //                             FROM remi_indicadores")->paginate(5);
 
-    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad'));
+
+
+    $tiposMedicion = TiposMedicion::get();
+    $unidadesMedidas = UnidadesMedidas::get();
+
+    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','tiposMedicion','unidadesMedidas','buscar'));
   }
 
 
@@ -99,7 +109,24 @@ class IndicadorController extends Controller
                          INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
                          WHERE ir.id_indicador = ".$id);
     $metas = Metas::where('id_indicador',$id)->orderBy('gestion', 'asc')->get();
-    return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes'));
+    $avance = IndicadorAvance::where('id_indicador',$id)->orderBy('fecha_generado', 'DESC')->first();
+
+
+    $dataMetasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
+                            FROM remi_metas m
+                            LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+                            WHERE m.id_indicador = ".$id."
+                            ORDER BY m.gestion ASC
+                            LIMIT 5");
+    $metasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
+                            FROM remi_metas m
+                            LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+                            WHERE m.id_indicador = ".$id."
+                            ORDER BY m.gestion ASC");
+
+    $grafica = json_encode($dataMetasAvance);
+
+    return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes','avance','grafica','metasAvance'));
   }
 
   public function adminIndicador()
@@ -108,7 +135,8 @@ class IndicadorController extends Controller
     $unidades = UnidadesMedidas::where('activo',true)->get();
     $dimensiones = Dimensiones::get();
     $variables = Variables::get();
-    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','variables'));
+    $frecuencia = IndicadorFrecuencia::get();
+    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','variables','frecuencia'));
   }
 
   public function setDataPdes(Request $request)
@@ -155,16 +183,26 @@ class IndicadorController extends Controller
 
   public function apiSaveIndicador(Request $request)
   {
-
+    $codigo = "";
     if(!$request->id_indicador){
-        try{
 
+        if(isset($request->resultado_articulado)){
+            $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();
+            $codigo = $vistaPmr->codigo_ext.($vistaPmr->correlativo_indicador+1);
+            $resultado = Resultados::find($vistaPmr->id_resultado);
+            $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);
+            $resultado->save();
+        }
+
+        try{
             $indicador = new Indicadores();
-            $indicador->codigo = "";
+            $indicador->codigo = $codigo;
             $indicador->nombre = $request->nombre;
+            $indicador->etapa = $request->etapa;
             $indicador->tipo = $request->tipo;
             $indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
             $indicador->unidad_medida = $request->unidad_medida;
+            $indicador->frecuencia = $request->frecuencia;
             $indicador->definicion = $request->definicion;
             $indicador->formula = $request->formula;
             $indicador->numerador_detalle = $request->numerador_detalle;
@@ -202,13 +240,33 @@ class IndicadorController extends Controller
               }
             }
 
-            $metasList = array('1'=>2020,'2'=>2025,'3'=>2030);
+            $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             for($i=1; $i <= count($metasList); $i++){
                 $metas = new Metas();
                 $metas->id_indicador = $indicador->id;
                 $metas->gestion = $metasList[$i];
                 $metas->valor = $request->input('meta_'.$metasList[$i]);
                 $metas->save();
+            }
+
+            if(isset($request->avance_fecha)){
+              foreach ($request->avance_fecha as $k => $v) {
+                    $avance = new IndicadorAvance();
+                    $avance->id_indicador = $indicador->id;
+                    $fechaAV="";
+                    if($request->avance_fecha[$k]){
+                      list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                      $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+              		    $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                    }
+                    $avance->fecha_generado = $fechaAV;
+                    $avance->fecha_generado_dia = $dia;
+                    $avance->fecha_generado_mes = $mes;
+                    $avance->fecha_generado_anio = $anio;
+                    $avance->fecha_reportado = date('Y-m-d');
+                    $avance->valor = $request->avance_valor[$k];
+                    $avance->save();
+              }
             }
 
             return \Response::json(array(
@@ -226,13 +284,27 @@ class IndicadorController extends Controller
               );
           }
       }else{
+
+
         try{
             $indicador = Indicadores::find($request->id_indicador);
-            $indicador->codigo = "";
+            if($indicador->codigo == ""){
+              if(isset($request->resultado_articulado)){
+                  $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();
+                  $codigo = $vistaPmr->codigo_ext.($vistaPmr->correlativo_indicador+1);
+                  $resultado = Resultados::find($vistaPmr->id_resultado);
+                  $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);
+                  $resultado->save();
+              }
+              $indicador->codigo = $codigo;
+            }
+
             $indicador->nombre = $request->nombre;
+            $indicador->etapa = $request->etapa;
             $indicador->tipo = $request->tipo;
             $indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
             $indicador->unidad_medida = $request->unidad_medida;
+            $indicador->frecuencia = $request->frecuencia;
             $indicador->definicion = $request->definicion;
             $indicador->formula = $request->formula;
             $indicador->numerador_detalle = $request->numerador_detalle;
@@ -275,12 +347,40 @@ class IndicadorController extends Controller
               }
             }
 
-            $metasList = array('1'=>2020,'2'=>2025,'3'=>2030);
+            if(isset($request->avance_fecha)){
+              foreach ($request->avance_fecha as $k => $v) {
+                  if(!$request->id_avance[$k]){
+                        $avance = new IndicadorAvance();
+                        $avance->id_indicador = $indicador->id;
+                        $fechaAV="";
+                        if($request->avance_fecha[$k]){
+                          list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                          $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+                  		    $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                        }
+                        $avance->fecha_generado = $fechaAV;
+                        $avance->fecha_generado_dia = $dia;
+                        $avance->fecha_generado_mes = $mes;
+                        $avance->fecha_generado_anio = $anio;
+                        $avance->fecha_reportado = date('Y-m-d');
+                        $avance->valor = $request->avance_valor[$k];
+                        $avance->save();
+                   }else{
+                        if($request->avance_estado[$k]==0){
+                          $avance = IndicadorAvance::find($request->id_avance[$k]);
+                          $avance->delete();
+                        }
+                   }
+              }
+            }
+
+            $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             for($i=1; $i <= count($metasList); $i++){
                 $metas = Metas::find($request->input('id_meta_'.$metasList[$i]));
                 $metas->valor = $request->input('meta_'.$metasList[$i]);
                 $metas->save();
             }
+
 
             return \Response::json(array(
                 'error' => false,
@@ -308,13 +408,15 @@ class IndicadorController extends Controller
 	                         INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
                            WHERE ir.id_indicador = ".$request->id);
       $metas = Metas::where('id_indicador',$request->id)->get();
+      $avances = IndicadorAvance::where('id_indicador',$request->id)->get();
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
           'msg' => "Se guardo con exito.",
           'indicador' => $indicador,
           'pdes' => $pdes,
-          'metas' => $metas)
+          'metas' => $metas,
+          'avances' => $avances)
       );
   }
 
@@ -329,5 +431,59 @@ class IndicadorController extends Controller
           'msg' => "Se guardo con exito.")
       );
   }
+
+  public function apiSourceOrderbyArray(Request $request)
+  {
+      if($request->fechas){
+          $array = $request->fechas;
+
+          $orderByAr = Array();
+          $i=0;
+          foreach ($array as $key => $value) {
+            $orderByAr[$i]['index'] = $key;
+            list ( $mes, $anio ) = explode ( "/", $value );
+            $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+            $fecha = $anio . "-" . $mes . "-" . $dia;
+            $orderByAr[$i]['filtro'] = $fecha;
+            $orderByAr[$i]['valor'] = $value;
+            $i++;
+          }
+
+          $sortArray = array();
+
+          foreach($orderByAr as $validate){
+              foreach($validate as $key=>$value){
+                  if(!isset($sortArray[$key])){
+                      $sortArray[$key] = array();
+                  }
+                  $sortArray[$key][] = $value;
+              }
+          }
+
+          $orderby = "filtro"; //change this to whatever key you want from the array
+          array_multisort($sortArray[$orderby],SORT_DESC,$orderByAr);
+          return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'msg' => "Se guardo con exito.",
+              'item' =>$orderByAr)
+          );
+    }else{
+      return \Response::json(array(
+          'error' => true,
+          'title' => "Vacio!",
+          'msg' => "la matriz esta vacia.",
+          'item' => [] )
+      );
+    }
+  }
+
+  public function ordenar_fecha($a, $b)
+  {
+     $a = strtotime($a);
+     $b = strtotime($b);
+     return strcmp($a, $b);
+  }
+
 
 }

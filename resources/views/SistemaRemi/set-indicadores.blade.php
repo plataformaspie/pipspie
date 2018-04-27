@@ -39,40 +39,28 @@ text-decoration: underline;
               </div>
               <div class="panel-wrapper collapse in" aria-expanded="true">
                   <div class="panel-body">
-                    <div class="row">
-                    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                      <select name="tipo" class="form-control filter">
-                          <option value="">-Tipo Indicador-</option>
-                          <option value="Insumo" {{ $tipo === "Insumo" ? "selected" : "" }}>Insumo</option>
-                          <option value="Impacto" {{ $tipo === "Impacto" ? "selected" : "" }}>Impacto</option>
-                          <option value="Producto" {{ $tipo === "Producto" ? "selected" : "" }}>Producto</option>
-                      </select>
-                    </div>
+                      <div class="row">
+                          <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <input type="text" name="buscar_sel" class="form-control buscar" value="{{ $buscar }}" placeholder="Buscar...">
+                          </div>
+                          <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                            <select name="tipo" class="form-control filter">
+                                <option value="">-Tipo Indicador-</option>
+                                @foreach ($tiposMedicion as $item)
+                                  <option value="{{ $item->nombre }}" {{ $tipo === $item->nombre  ? "selected" : "" }}>{{ $item->nombre }}</option>
+                                @endforeach
+                            </select>
+                          </div>
 
-                    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                      <select name="unidad" class="form-control filter">
-                          <option value="">-Unidad de Medida-</option>
-                          <option value="Porcentaje" {{ $unidad === "Porcentaje" ? "selected" : "" }}>Porcentaje</option>
-                          <option value="Número" {{ $unidad === "Número" ? "selected" : "" }}>Número</option>
-                      </select>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                      <select name="periodicidad" class="form-control filter">
-                          <option>-Periodicidad-</option>
-                          <option>Opción 2</option>
-                      </select>
-                    </div>
-
-                    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                      <select name="estado" class="form-control filter">
-                          <option>-Estado-</option>
-                          <option>Opción 2</option>
-                      </select>
-                    </div>
-
-
-                  </div>
+                          <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                            <select name="unidad" class="form-control filter">
+                                <option value="">-Unidad de Medida-</option>
+                                @foreach ($unidadesMedidas as $item)
+                                  <option value="{{ $item->nombre }}" {{ $unidad === $item->nombre  ? "selected" : "" }}>{{ $item->nombre }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                      </div>
                   </div>
               </div>
           </div>
@@ -102,7 +90,7 @@ text-decoration: underline;
                         <div class="col-lg-11 col-xs-12">
                           <div class="row">
                               <div class="col-lg-12 card-footer">
-                                    <a href="/sistemaremi/dataIndicador/{{ $item->id }}" style="color:#000000;font-weight: bold;">{{ $item->id }}. {{ $item->nombre }}</a>
+                                    <a href="/sistemaremi/dataIndicador/{{ $item->id }}" style="color:#000000;font-weight: bold;">{{ $item->nombre }}</a>
                               </div>
                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
                                   <p class="text-muted">Tipo:</p>
@@ -150,6 +138,7 @@ text-decoration: underline;
       $( ".filter" ).change(function() {
             var tipo = $( "select[name*='tipo']" ).val();
             var unidad = $( "select[name*='unidad']" ).val();
+            var buscar = $('input[name="buscar_sel"]').val();
             var concat = "";
             if(tipo){
               concat += "tipo="+tipo+"&";
@@ -157,7 +146,18 @@ text-decoration: underline;
             if(unidad){
               concat += "unidad="+unidad+"&";
             }
+            if(buscar){
+              concat += "buscar="+buscar+"&";
+            }
             $(location).attr('href', '/sistemaremi/setIndicadores/?'+concat);
+      });
+
+
+      $(".buscar").keypress(function(e) {
+          var code = (e.keyCode ? e.keyCode : e.which);
+          if(code==13){
+              $(".filter" ).trigger( "change" );
+          }
       });
     });
   </script>

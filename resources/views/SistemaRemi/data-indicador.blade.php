@@ -17,7 +17,7 @@
 
 @section('content')
 
-  <div class="row bg-title">
+  <div class="row bg-title m-b-5">
       <!-- .page title -->
       <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
           <h4 class="page-title">Detalle Indicador</h4>
@@ -33,13 +33,12 @@
       <!-- /.breadcrumb -->
   </div>
   <!-- .row -->
+  <button onclick="window.history.back();" class="btn btn-info btn-sm">Regresar a la lista</button><br/><br/>
   <div class="row">
       <div class="col-md-12">
           <div class="white-box">
-
-
             <div class="row">
-                <div class="col-md-9">
+                <div id="HTMLtoPDF" class="col-md-9">
 
                   <div class="row media" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
                       <div class="col-lg-2 col-xs-12">
@@ -53,7 +52,7 @@
                                   <label style="color:#000000;font-weight: bold;">{{ $indicador->nombre }}</label>
                             </div>
                             <div class="col-lg-12">
-                                  <label>{{$indicador->definicion}}</label>
+                                  <label><b><u>Definicion:</u></b> {{$indicador->definicion}}</label>
                             </div>
                         </div>
                       </div>
@@ -61,7 +60,8 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">
                                 <p class="text-muted card-footer" >Último valor reportado:</p>
-                                <p> x </p>
+                                <p> {{ $avance->valor }} </p>
+                                <p> {{ $avance->fecha_generado_dia }}/{{ $avance->fecha_generado_mes }}/{{ $avance->fecha_generado_anio }} </p>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">
                                 <p class="text-muted card-footer"> Unidad de medida: </p>
@@ -79,7 +79,38 @@
                           </div>
                       </div>
                   </div>
+                  <div class="col-lg-12 col-sm-12">
+                      <div class="panel panel-success">
+                          <div class="panel-heading" style="background-color: #468E9B;">
 
+                              <div class="pull-left" style="margin-top: -9px;">
+                                <a href="#" data-perform="panel-collapse">
+                                  <i class="ti-minus"></i> Articulación PDES
+                                </a>
+                              </div>
+                          </div>
+                          <div class="panel-wrapper collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                                    <div class="row">
+                                        @foreach ($pdes as $item)
+                                          <div class="row">
+                                                <div class="media row col-lg-12 ">
+                                                    <div class="col-lg-2 text-center">
+                                                        <img src="/img/{{$item->logo}}" alt="Pliar" width="100">
+                                                    </div>
+                                                    <div class="row col-lg-10">
+                                                        <div class="col-12"><b>{{$item->pilar}}:</b> {{$item->desc_p}}</div>
+                                                        <div class="col-12"><b>{{$item->meta}}:</b> {{$item->desc_m}}</div>
+                                                        <div class="col-12"><b>{{$item->resultado}}:</b> {{$item->desc_r}}</div>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        @endforeach
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
                   <div class="col-lg-12 col-sm-12">
                       <div class="panel panel-success">
                           <div class="panel-heading" style="background-color: #468E9B;">
@@ -97,7 +128,7 @@
                                       <b>Código</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                      <p>:</p>
+                                      <p>: {{$indicador->codigo}}</p>
                                     </div>
 
                                     <div class="col-lg-4 col-sm-6">
@@ -202,62 +233,45 @@
                   <div class="col-lg-12 col-sm-12">
                       <div class="panel panel-success">
                           <div class="panel-heading" style="background-color: #468E9B;">
-
                               <div class="pull-left" style="margin-top: -9px;">
                                 <a href="#" data-perform="panel-collapse">
-                                  <i class="ti-minus"></i> Metas
+                                  <i class="ti-minus"></i> Metas y avance
                                 </a>
                               </div>
                           </div>
                           <div class="panel-wrapper collapse in" aria-expanded="true">
-                              <div class="panel-body">
-                                    <div class="row">
-                                        @foreach ($metas as $item)
-                                          <div class="col-lg-4 col-sm-6">
-                                            <b>{{ $item->gestion }}</b>
-                                          </div>
-                                          <div class="col-lg-8 col-sm-6">
-                                            <p>: {{ $item->valor }}</p>
-                                          </div>
-                                        @endforeach
-                                    </div>
+                              <div class="panel-body table-responsive ">
+
+                                          <table class="table table-hover ">
+                                            <thead>
+                                              <tr>
+                                                    <th>Gestión</th>
+                                                  @foreach ($metasAvance as $item)
+                                                    <th>{{ $item->dimension}} </th>
+                                                  @endforeach
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr>
+                                                    <th>Metas</th>
+                                                  @foreach ($metasAvance as $item)
+                                                    <td>{{ $item->meta}} </td>
+                                                  @endforeach
+                                              </tr>
+                                              <tr>
+                                                    <th>Avance</th>
+                                                  @foreach ($metasAvance as $item)
+                                                    <td>{{ $item->avance}} </td>
+                                                  @endforeach
+                                              </tr>
+                                            </tbody>
+                                          </table>
                               </div>
                           </div>
                       </div>
                   </div>
 
-                  <div class="col-lg-12 col-sm-12">
-                      <div class="panel panel-success">
-                          <div class="panel-heading" style="background-color: #468E9B;">
 
-                              <div class="pull-left" style="margin-top: -9px;">
-                                <a href="#" data-perform="panel-collapse">
-                                  <i class="ti-minus"></i> Articulación PDES
-                                </a>
-                              </div>
-                          </div>
-                          <div class="panel-wrapper collapse in" aria-expanded="true">
-                              <div class="panel-body">
-                                    <div class="row">
-                                        @foreach ($pdes as $item)
-                                          <div class="row">
-                                                <div class="media row col-lg-12 ">
-                                                    <div class="col-lg-2 text-center">
-                                                        <img src="/img/{{$item->logo}}" alt="Pliar" width="100">
-                                                    </div>
-                                                    <div class="row col-lg-10">
-                                                        <div class="col-12"><b>{{$item->pilar}}:</b> {{$item->desc_p}}</div>
-                                                        <div class="col-12"><b>{{$item->meta}}:</b> {{$item->desc_m}}</div>
-                                                        <div class="col-12"><b>{{$item->resultado}}:</b> {{$item->desc_r}}</div>
-                                                    </div>
-                                                </div>
-                                          </div>
-                                        @endforeach
-                                    </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
 
                 </div>
                 <div class="col-md-3">
@@ -273,7 +287,7 @@
                             <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Descargar ficha indicador </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body text-center">
-                                    <a href="#"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
+                                    <a onclick="HTMLtoPDF()"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
                                 </div>
                             </div>
                         </div>
@@ -296,10 +310,68 @@
 @push('script-head')
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script src="{{ asset('js/jspdf.js') }}"></script>
+  <script src="{{ asset('js/pdfFromHTML.js') }}"></script>
+
   <script type="text/javascript">
+  var data =  <?php echo $grafica; ?>;
     $(document).ready(function(){
-      var chartData = [{"date":"Ene","avance":2.0},{"date":"Feb","avance":8.0},{"date":"Mar","avance":8.0}];
-      var chart = AmCharts.makeChart("chartdivAvance", {
+        var chartData = [{"dimension":"Ene","avance":2.0,"meta":5.0},{"dimension":"Feb","avance":8.0,"meta":9.0},{"dimension":"Mar","avance":8.0,"meta":8.0}];
+        if(1==(Math.floor((Math.random() * 2) + 1))){
+
+          var chart = AmCharts.makeChart("chartdivAvance", {
+                "type": "serial",
+                "theme": "light",
+                "fontSize":9,
+                "legend": {
+                    "marginLeft":20,
+                    "marginRight":0,
+                    "autoMargins":false
+                },
+                "dataProvider": data,
+                "graphs": [{
+                    "title": "Avances",
+                    "type": "column",
+                    //"lineColor": "#00749F",  //B5CFE8
+                    "lineColor": "#00749F",
+                    "fillColors": "#00749F",
+                    //"bullet": "diamond",
+                    "bulletSize":12,
+                    "bulletBorderThickness": 1,
+                    "fillAlphas": 0.9,
+                    "lineAlpha": 0.2,
+                    "valueField": "avance"
+                },{
+                    "title": "Metas",
+                    "type": "column",
+                    //"lineColor": "#FF0000",//1D4168
+                    "lineColor": "#FF0000",
+                    "fillColors": "#FF0000",
+                    //"bullet": "round",
+                    "bulletBorderThickness": 1,
+                    "textAlign": "left",
+                    "fillAlphas": 0.9,
+                    "lineAlpha": 0.2,
+                    "color": "#000000",
+                    "clustered": false,
+                    "columnWidth": 0.5,
+                    "valueField": "meta"
+
+
+
+
+                }],
+                "chartCursor": {
+                    "cursorPosition": "mouse"
+                },
+                "categoryField": "dimension",
+                "categoryAxis": {
+                    "gridCount": data.length,
+                    "autoGridCount": false
+                }
+          });
+      }else{
+            var chart = AmCharts.makeChart("chartdivAvance", {
                         "type": "serial",
                         "theme": "light",
                         "fontSize":9,
@@ -308,7 +380,7 @@
                             "marginRight":0,
                             "autoMargins":false
                         },
-                        "dataProvider": chartData,
+                        "dataProvider": data,
                         "graphs": [{
                             "title": "Avances",
                             "lineColor": "#00749F",
@@ -326,49 +398,17 @@
                         "chartCursor": {
                             "cursorPosition": "mouse"
                         },
-                        "categoryField": "date",
+                        "categoryField": "dimension",
                         "categoryAxis": {
-                            "gridCount": chartData.length,
+                            "gridCount": data.length,
                             "autoGridCount": false
                         }
-          });
+            });
+      }
 
-          /*
-          var chart = AmCharts.makeChart("chartdivAvance", {
-                              "type": "serial",
-                              "theme": "light",
-                              "fontSize":9,
-                              "dataProvider": chartData,
-                              "legend": {
-                                  "useGraphSettings": true,
-                                  "valueWidth":0,
-                                  "verticalGap":0
-                              },
-                              "graphs": [{
-                                  "title": "Meta",
-                                  "lineColor": "#FF0000",
-                                  "valueField": "meta",
-                                  "fillAlphas": 0.9,
-                                  "lineAlpha": 0.2,
-                                  "type": "column"
-                              },{
-                                  "title": "Avances",
-                                  "lineColor": "#00749F",
-                                  "valueField": "avance",
-                                  "fillAlphas": 0.9,
-                                  "lineAlpha": 0.2,
-                                  "columnWidth":0.5,
-                                  "clustered":false,
-                                  "type": "column"
-                              }],
-                              "categoryField": "date",
-                              "categoryAxis": {
-                                  "gridCount":chartData.length,
-                                  "labelRotation":45,
-                                  "autoGridCount": false
-                              }
-                          });
-          */
+
+
     });
+
   </script>
 @endpush
