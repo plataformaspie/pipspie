@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}"  type="text/css" />
   <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 
+
   <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
 
   <style media="screen">
@@ -523,7 +524,7 @@
                                                                <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                          @endforeach
                                                      </select>
-                                                   </div>                                                   
+                                                   </div>
                                                    <div class="help-block with-errors"></div>
                                                </div>
                                              </div>
@@ -560,7 +561,19 @@
       </div>
   </div>
 
+  <div id="window" class="white-popup-block popup-basic admin-form mfp-with-anim" style="display: none;">
+      <div class="panel panel-heading" >
+        <section><span class="panel-title"><i class="fa fa-pencil"></i>Agregar fuente de datos</span>            </section>
+      </div>
+      <div>
 
+            <form method="post" action="/" id="form-nuevo" name="form-nuevo">
+              <button  type="submit" class="btn btn-info ">Guardar</button>
+              {{ csrf_field() }}
+            </form>
+
+      </div>
+  </div>
 
 
 
@@ -582,8 +595,10 @@
 
     <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}" type="text/javascript"></script>
 
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxwindow.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
@@ -823,8 +838,25 @@
     });
 
 
-    });
+    function createElements() {
+         $('#window').jqxWindow({
+             resizable: false,
+             isModal: true,
+             autoOpen: false,
+             width: '40%',
+             height: '45%',
+             minWidth: 330,
+             minHeight: '10%',
+             //cancelButton: $("#Cancel"),
+             modalOpacity: 0.01,
+             draggable: true
+         });
+         $('#window').jqxWindow('focus');
+     }
+     createElements();
 
+    });
+    //fin document
     function actualizarListaAvance(){
       var cav= 1;
       $("#set_avance > tbody").html("");
@@ -1115,5 +1147,16 @@
             });
       });
     }
+
+    //Evento del boton nuevo
+    function win_fuente(){
+      var offset = $("#side-menu").offset();
+      $("#window").jqxWindow({ position: { x: parseInt(offset.left) + 30  , y: parseInt(offset.top) + (180) } });
+          $("#window").css('visibility', 'visible');
+          $('#window').jqxWindow('open');
+          $('#window').jqxWindow('focus');
+    }
+
+
   </script>
 @endpush

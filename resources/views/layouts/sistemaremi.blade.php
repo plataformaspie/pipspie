@@ -21,6 +21,10 @@
     <!-- This is Sidebar menu CSS -->
     <link href="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/bower_components/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/vendor/plugins/magnific/magnific-popup.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-plugins/admin-modal/adminmodal.css') }}">
+
     <!-- This is a Animation CSS -->
     <link href="{{ asset('sty-mode-3/css/animate.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
@@ -212,7 +216,7 @@
                           <span class="hide-menu"> Otros <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li> <a href="#"><i  class="fa fa-external-link"></i> Fuente de datos</a> </li>
+                            <li> <a href="javascript:win_fuente()"><i  class="fa fa-external-link"></i> Fuente de datos</a> </li>
                             <li> <a href="#"><i  class="fa fa-list-alt"></i> Codigos PDES</a> </li>
                         </ul>
                     </li>
@@ -268,6 +272,7 @@
     <!--Slimscroll JavaScript For custom scroll-->
     <script src="{{ asset('sty-mode-3/js/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
+
     <!--Wave Effects -->
     <script src="{{ asset('sty-mode-3/js/waves.js') }}"></script>
     <!-- Custom Theme JavaScript -->
