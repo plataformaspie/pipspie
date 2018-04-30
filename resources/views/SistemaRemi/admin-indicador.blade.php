@@ -520,8 +520,8 @@
                                                <div class="col-md-9 p-l-0">
                                                    <div class="select2-wrapper">
                                                      <select id="fuente_datos" name="fuente_datos[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
-                                                         @foreach ($variables as  $item)
-                                                               <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                                         @foreach ($fuente_datos as  $item)
+                                                               <option value="{{ $item->id }}">{{$item->nombre}}</option>
                                                          @endforeach
                                                      </select>
                                                    </div>
@@ -531,7 +531,7 @@
                                              <h5>Detalle fuente de datos seleccionado(s)</h5>
                                              <hr/>
                                              <div id="datosFD">
-                                                 <div>--</div>
+
                                              </div>
 
                                            </div>
@@ -563,14 +563,209 @@
 
   <div id="window" class="white-popup-block popup-basic admin-form mfp-with-anim" style="display: none;">
       <div class="panel panel-heading" >
-        <section><span class="panel-title"><i class="fa fa-pencil"></i>Agregar fuente de datos</span>            </section>
+        <section><span class="panel-title"><i class="fa fa-pencil"></i> Fuente de datos</span></section>
       </div>
-      <div>
+      <div id="divcon">
 
-            <form method="post" action="/" id="form-nuevo" name="form-nuevo">
-              <button  type="submit" class="btn btn-info ">Guardar</button>
-              {{ csrf_field() }}
-            </form>
+        <form id="formAddFuente" name="formAddFuente" action="javascript:saveFuente();" data-toggle="validator">
+          {{ csrf_field() }}
+          <input type="hidden" name="id_indicador" value="">
+          <!-- .row -->
+          <div class="row" style="margin-right: 0px;">
+            <div class="col-sm-12">
+                <div class="white-box p-t-0">
+                    <h3 class="box-title m-b-0">Registro de fuente de datos</h3>
+                    <p class="text-muted m-b-10">Completar los datos solicitados en el formulario <button id ="btn-new-fuente" type="submit" class="btn btn-info btn-sm" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i>Guardar</button></p>
+
+                    <div class="form-group row m-b-10">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Nombre</label>
+                      </div>
+                      <div class="col-md-10 p-l-0">
+                          <input id="fd_nombre" name="fd_nombre" type="text" class="form-control"  placeholder="Nombre de la fuente" required>
+                          <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class=" row m-b-10">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Acrónimo</label>
+                      </div>
+                      <div class="form-group col-md-4 p-l-0">
+                          <input id="fd_acronimo" name="fd_acronimo" type="text" class="form-control"  placeholder="Acrónimo" required>
+                          <div class="help-block with-errors"></div>
+                      </div>
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Tipo</label>
+                      </div>
+                      <div class="form-group col-md-4 p-l-0">
+                          <select id="fd_tipo" name="fd_tipo" class="custom-select col-12 form-control" required>
+                              <option value="">Seleccionar...</option>
+                              @foreach ($fuente_tipos as  $item)
+                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                              @endforeach
+                          </select>
+                          <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class=" row m-b-10">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="fd_periodicidad" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Periodicidad</label>
+                      </div>
+                      <div class="form-group col-md-4 p-l-0">
+                          <select id="fd_periodicidad" name="fd_periodicidad" class="custom-select col-12 form-control">
+                              <option value="">Seleccionar...</option>
+                              @foreach ($frecuencia as  $item)
+                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                              @endforeach
+                          </select>
+                          <div class="help-block with-errors"></div>
+                      </div>
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="fd_serie_datos" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Serie_datos</label>
+                      </div>
+                      <div class=" form-group col-md-4 p-l-0">
+                          <input id="fd_serie_datos" name="fd_serie_datos" type="text" class="form-control"  placeholder="Serie datos disponible">
+                          <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class="form-group row m-b-10">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Cobertura</label>
+                      </div>
+                      <div class="col-md-10 p-l-0">
+                          <select id="fd_cobertura_geografica" name="fd_cobertura_geografica[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                              @foreach ($dimensiones as  $item)
+                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                              @endforeach
+                          </select>
+                          <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class="form-group row m-b-10 p-t-20">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Representatividad</label>
+                      </div>
+                      <div class="col-md-10 p-l-0">
+                          <input id="fd_nivel_representatividad_datos" name="fd_nivel_representatividad_datos" type="text" class="form-control"  placeholder="Nivel representatividad de datos">
+                          <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class="form-group row m-b-10">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Variables</label>
+                      </div>
+                      <div class="col-md-10 p-l-0">
+                          <select id="fd_variable" name="fd_variable[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                              @foreach ($variables as  $item)
+                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                              @endforeach
+                          </select>
+                          <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row m-b-10 p-t-20">
+                      <div class="col-md-2 p-l-0 p-r-0">
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Observaciones</label>
+                      </div>
+                      <div class="col-md-10 p-l-0">
+                        <textarea id="fd_observacion" name="fd_observacion" class="form-control" placeholder="Observaciones"></textarea>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+
+                    <h3 class="box-title m-b-0">Relacionar Responsables</h3>
+
+
+
+                    <ul class="nav nav-tabs" role="tablist">
+
+                        <li role="presentation" class="active nav-item">
+                          <a href="#lista" class="nav-link" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+                            <span class="visible-xs"><i class="ti-user"></i></span>
+                            <span class="hidden-xs">Lista </span>
+                            <span id="cont_resp"class="label label-warning" style="font-size:15px;font-weight:bold;">0</span></a>
+                        </li>
+                        <li role="presentation" class="nav-item">
+                          <a href="#registro" class="nav-link" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
+                            <span class="visible-xs"><i class="ti-home"></i></span>
+                            <span class="hidden-xs"> Registrar</span>
+                          </a>
+                        </li>
+
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="lista">
+                          <table id="set_responsables" class="table table-hover scroll ">
+                              <thead>
+                                  <tr>
+                                      <th style="width: 5%;">#</th>
+                                      <th style="width: 90%;">Detalle responsable</th>
+                                      <th style="width: 5%;"> - </th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                          </table>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="registro">
+
+                              <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="row">
+                                          <div class="col-md-4 p-l-0 p-r-0">
+                                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;" >Nombre entidad cabeza</label>
+                                          </div>
+                                          <div class="col-md-8 p-l-0">
+                                            <input id="responsable_1" name="responsable_1" type="text" class="form-control"  placeholder="Nombre" required>
+                                            <div class="help-block with-errors"></div>
+                                          </div>
+
+                                          <div class="col-md-4 p-l-0 p-r-0">
+                                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Nombre sub entidad</label>
+                                          </div>
+                                          <div class="col-md-8 p-l-0">
+                                            <input id="responsable_2" name="responsable_2" type="text" class="form-control"  placeholder="Nombre" required>
+                                            <div class="help-block with-errors"></div>
+                                          </div>
+
+                                          <div class="col-md-4 p-l-0 p-r-0">
+                                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Nombre sub entidad</label>
+                                          </div>
+                                          <div class="col-md-8 p-l-0">
+                                            <input id="responsable_3" name="responsable_3" type="text" class="form-control"  placeholder="Nombre" required>
+                                            <div class="help-block with-errors"></div>
+                                          </div>
+
+                                          <div class="col-md-4 p-l-0 p-r-0">
+                                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Número de referencia</label>
+                                          </div>
+                                          <div class="col-md-8 p-l-0">
+                                            <input id="referencia" name="referencia" type="text" class="form-control"  placeholder="Nombre" required>
+                                            <div class="help-block with-errors"></div>
+                                          </div>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-12 p-l-0 text-center">
+                                  <button type="button" class="btn btn-info btn-sm agregarRS m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                              </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
 
       </div>
   </div>
@@ -614,11 +809,17 @@
   var valorAV = [];
   var estadoAV = [];
   var origenAV = [];
+
+  var responsable1A = [];
+  var responsable2A = [];
+  var responsable3A = [];
+  var referenciaA = [];
   var idAV = [];
     $(document).ready(function(){
       //$(".select2").select2();
 
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
+      $("#formAddFuente .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $(".input").inputmask();
       $(function () {
                   $('#dateLB').datetimepicker({
@@ -744,8 +945,32 @@
          });
 
         }
+      });
 
 
+      $(".agregarRS").click(function () {
+
+        if( $("input[name=responsable_1]").val() != ""){
+
+              responsable1A.push($('input[name=responsable_1]').val());
+              responsable2A.push($('input[name=responsable_2]').val());
+              responsable3A.push($('input[name=responsable_3]').val());
+              referenciaA.push($('input[name=referencia]').val());
+
+              actualizarListaResponsable();
+
+
+        }else{
+          $.toast({
+           heading: 'Error:',
+           text: 'Llene los campos para agregar responsable.',
+           position: 'top-right',
+           loaderBg:'#ff6849',
+           icon: 'error',
+           hideAfter: 3500
+         });
+
+        }
       });
 
 
@@ -855,6 +1080,54 @@
      }
      createElements();
 
+
+
+
+     $("#fuente_datos").change(function () {
+       $("#datosFD").html('');
+       $.ajax({
+             url: "{{ url('/api/sistemaremi/apiSetFuenteDatos') }}",
+             data: { 'fuente': $(this).val()},
+             type: "get",
+             dataType: 'json',
+             success: function(date){
+               $.each(date.item, function(i, data) {
+                   var html= '<div class="row">'+
+                                   '<div class="media row col-lg-12 ">'+
+                                       '<div class="row col-lg-12">'+
+                                            '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
+                                            '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
+                                            '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'.</div>'+
+                                            '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'.</div>'+
+                                            '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
+                                            '<div class="col-6"><b>Principales variables:</b> '+data.variable+'.</div>'+
+                                            '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
+                                            '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'.</div>'+
+                                      '</div>'+
+                                  '</div>'+
+                               '</div>';
+                   $("#datosFD").append(html);
+               });
+
+             },
+             error:function(data){
+               console.log("no se recupero nada");
+             }
+       });
+
+
+     });
+
+
+
+
+
+
+
+
+
+
+
     });
     //fin document
     function actualizarListaAvance(){
@@ -921,6 +1194,53 @@
 
 
     }
+
+    function actualizarListaResponsable(){
+      var cav= 1;
+      $("#set_responsables > tbody").html("");
+
+      $.ajax({
+            url: "{{ url('/api/sistemaremi/apiSourceOrderbyArray2') }}",
+            type: "GET",
+            dataType: 'json',
+            data:{'responsable1':responsable1A,'responsable2':responsable2A,'responsable3':responsable3A,'referencia':referenciaA},
+            success: function(date){
+                  if(date.error == false){
+                      $.each(date.item, function(i, data) {
+                            var html = '<tr id="RS'+cav+'">'+
+                                            '<td style="width: 5%;">'+
+                                               cav+
+                                            '</td>'+
+                                            '<td style="width: 90%;">'+
+                                                 '<input type="hidden" name="responsable_nivel_1[]" value="'+ responsable1A[data.index] +'" />'+
+                                                 '<input type="hidden" name="responsable_nivel_2[]" value="'+ responsable2A[data.index] +'" />'+
+                                                 '<input type="hidden" name="responsable_nivel_3[]" value="'+ responsable3A[data.index] +'" />'+
+                                                 '<input type="hidden" name="numero_referencia[]" value="'+ referenciaA[data.index] +'" />'+
+                                                 '<b>Entidad Cabeza:</b> '+responsable1A[data.index]+'<br/>'+
+                                                 '<b>Sub entidad:</b> '+ responsable2A[data.index]+'<br/>'+
+                                                 '<b>Sub entidad:</b> '+ responsable3A[data.index] +'<br/>'+
+                                                 '<b>Número referencia:</b> '+ referenciaA[data.index]+
+                                            '</td>'+
+                                            '<td style="width: 5%;">'+
+                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a>'+
+                                            '</td>'+
+                                      '</tr>';
+                            $("#set_responsables > tbody").append(html);
+                            cav++;
+                     });
+                    $("#cont_resp").html(cav-1);
+               }else{
+                 $("#cont_resp").html(0);
+               }
+            },
+            error:function(data){
+              alert("Error recuperar los datos.");
+            }
+      });
+
+
+
+    }
     function quitarART(ele,tipo){
         if(tipo == 1){
           $('#ART'+ele).remove();
@@ -945,6 +1265,17 @@
 
         actualizarListaAvance();
     }
+    function quitarRS(ele,index){
+
+
+          $('#RS'+ele).remove();
+          responsable1A.splice(index, 1);
+          responsable2A.splice(index, 1);
+          responsable3A.splice(index, 1);
+          referenciaA.splice(index, 1);
+
+        actualizarListaResponsable();
+    }
     function editarI(ele){
        alert(ele);
     }
@@ -960,16 +1291,26 @@
        $('#option2').addClass('hidden');
 
        $("#formAdd")[0].reset();
+       $("#formAddFuente")[0].reset();
        $('.with-errors').html('');
        $('.form-group').removeClass('has-error');
        $("#variables_desagregacion").val('').trigger('change');
        $("#datosART").html("");
+       $("#fuente_datos").val('').trigger('change');
+       $("#fd_cobertura_geografica").val('').trigger('change');
+       $("#fd_variable").val('').trigger('change');
+       $("#datosFD").html("");
        fechaAV = [];
        valorAV = [];
        estadoAV = [];
        origenAV = [];
+       responsable1A = [];
+       responsable2A = [];
+       responsable3A = [];
+       referenciaA = [];
        idAV = [];
        $("#set_avance > tbody").html("");
+       $("#set_responsables > tbody").html("");
        $('input[name="id_indicador"]').val(null);
        $("#tab-ini1" ).trigger( "click" );
     });
@@ -1010,6 +1351,10 @@
                    $('input[name="denominador_fuente"]').val(data.indicador[0].denominador_fuente);
                    $('input[name="serie_disponible"]').val(data.indicador[0].serie_disponible);
                    $('textarea[name="observacion"]').val(data.indicador[0].observacion);
+
+                   if(data.indicador[0].fuente_datos){
+                     $("#fuente_datos").val(data.indicador[0].fuente_datos.split(",")).trigger('change');
+                   }
 
 
                   $.each(data.pdes, function(i, data) {
@@ -1148,14 +1493,65 @@
       });
     }
 
+    function saveFuente(){
+
+      var r = confirm("Guardar la fuente de datos?");
+      if (r == true) {
+        $.ajax({
+              type: "POST",
+              url: "{{ url('/api/sistemaremi/apiSaveFuente') }}",
+              dataType: 'json',
+              data: $("#formAddFuente").serialize() , // Adjuntar los campos del formulario enviado.
+              success: function(data){
+                if(data.error == false){
+                    //actualizar el combo de fuente de datos de la pagina padre
+                }else{
+                    $.toast({
+                     heading: data.title,
+                     text: data.msg,
+                     position: 'top-right',
+                     loaderBg:'#ff6849',
+                     icon: 'warning',
+                     hideAfter: 3500
+                   });
+                }
+              },
+              error:function(data){
+                $.toast({
+                 heading: 'Error:',
+                 text: 'Error al recuperar los datos.',
+                 position: 'top-right',
+                 loaderBg:'#ff6849',
+                 icon: 'error',
+                 hideAfter: 3500
+
+               });
+              }
+        });
+      } else {
+          txt = "You pressed Cancel!";
+      }
+
+    }
+
     //Evento del boton nuevo
     function win_fuente(){
+      $('#divcon').animate({scrollTop : 0}, 500);
       var offset = $("#side-menu").offset();
       $("#window").jqxWindow({ position: { x: parseInt(offset.left) + 30  , y: parseInt(offset.top) + (180) } });
           $("#window").css('visibility', 'visible');
           $('#window').jqxWindow('open');
           $('#window').jqxWindow('focus');
     }
+    $(document).keydown(function(tecla){
+          if (tecla.keyCode == 119) {
+            var offset = $("#side-menu").offset();
+            $("#window").jqxWindow({ position: { x: parseInt(offset.left) + 30  , y: parseInt(offset.top) + (180) } });
+                $("#window").css('visibility', 'visible');
+                $('#window').jqxWindow('open');
+                $('#window').jqxWindow('focus');
+          }
+    });
 
 
   </script>

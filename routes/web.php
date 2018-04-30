@@ -298,6 +298,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('apiDataSetIndicador', 'SistemaRemi\IndicadorController@apiDataSetIndicador');
               Route::delete('apiDeleteIndicador', 'SistemaRemi\IndicadorController@apiDeleteIndicador');
               Route::get('apiSourceOrderbyArray', 'SistemaRemi\IndicadorController@apiSourceOrderbyArray');
+              Route::get('apiSetFuenteDatos', 'SistemaRemi\IndicadorController@apiSetFuenteDatos');
+              Route::get('apiSourceOrderbyArray2', 'SistemaRemi\IndicadorController@apiSourceOrderbyArray2');
+              Route::post('apiSaveFuente', 'SistemaRemi\IndicadorController@apiSaveFuente');
 
           }
       );

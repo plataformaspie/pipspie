@@ -216,8 +216,8 @@
                           <span class="hide-menu"> Otros <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li> <a href="javascript:win_fuente()"><i  class="fa fa-external-link"></i> Fuente de datos</a> </li>
-                            <li> <a href="#"><i  class="fa fa-list-alt"></i> Codigos PDES</a> </li>
+                            <li> <a href="javascript:win_fuente()"><i  class="fa fa-external-link"></i> Fuente de datos (F8)</a> </li>
+                            <li> <a href="#"><i  class="fa fa-list-alt"></i> Codigos PDES (F9)</a> </li>
                         </ul>
                     </li>
 

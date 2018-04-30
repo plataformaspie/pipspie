@@ -15,7 +15,10 @@ use App\Models\SistemaRemi\Metas;
 use App\Models\SistemaRemi\IndicadorAvance;
 use App\Models\SistemaRemi\Resultados;
 use App\Models\SistemaRemi\VistaCatalogoPdespmr;
-use App\Models\SistemaRemi\IndicadorFrecuencia;
+use App\Models\SistemaRemi\Frecuencia;
+use App\Models\SistemaRemi\FuenteDatos;
+use App\Models\SistemaRemi\FuenteDatosResponsable;
+use App\Models\SistemaRemi\FuenteTipos;
 
 class IndicadorController extends Controller
 {
@@ -133,10 +136,12 @@ class IndicadorController extends Controller
   {
     $tipos = TiposMedicion::get();
     $unidades = UnidadesMedidas::where('activo',true)->get();
-    $dimensiones = Dimensiones::get();
+    $dimensiones = Dimensiones::where('id_variable',4)->get();
     $variables = Variables::get();
-    $frecuencia = IndicadorFrecuencia::get();
-    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','variables','frecuencia'));
+    $frecuencia = Frecuencia::get();
+    $fuente_datos = FuenteDatos::get();
+    $fuente_tipos = FuenteTipos::get();
+    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','variables','frecuencia','fuente_datos','fuente_tipos','dimensiones'));
   }
 
   public function setDataPdes(Request $request)
@@ -227,6 +232,8 @@ class IndicadorController extends Controller
             $indicador->linea_base_mes = $mes;
             $indicador->linea_base_dia = $dia;
             $indicador->linea_base_valor = $request->linea_base_valor;
+            $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
+
             $indicador->activo = true;
             $indicador->save();
 
@@ -328,6 +335,7 @@ class IndicadorController extends Controller
             $indicador->linea_base_mes = $mes;
             $indicador->linea_base_dia = $dia;
             $indicador->linea_base_valor = $request->linea_base_valor;
+            $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
             $indicador->save();
 
 
@@ -483,6 +491,128 @@ class IndicadorController extends Controller
      $a = strtotime($a);
      $b = strtotime($b);
      return strcmp($a, $b);
+  }
+
+  public function apiSetFuenteDatos(Request $request)
+  {
+
+      //$fuenteId = explode(",", $request->fuente);
+      if($request->fuente){
+      $dataFuente = FuenteDatos::whereIn('id',$request->fuente)->get();
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.",
+          'item' =>$dataFuente)
+      );
+    }else{
+      return \Response::json(array(
+          'error' => true,
+          'title' => "Alert!",
+          'msg' => "No se recupero ningun codigo valido.",
+          'item' => "")
+      );
+    }
+  }
+
+
+  public function apiSourceOrderbyArray2(Request $request)
+  {
+      if($request->responsable1){
+          $array = $request->responsable1;
+
+          $orderByAr = Array();
+          $i=0;
+          foreach ($array as $key => $value) {
+            $orderByAr[$i]['index'] = $key;
+            $orderByAr[$i]['filtro'] = $value;
+            $orderByAr[$i]['valor'] = $value;
+            $i++;
+          }
+
+          $sortArray = array();
+
+          foreach($orderByAr as $validate){
+              foreach($validate as $key=>$value){
+                  if(!isset($sortArray[$key])){
+                      $sortArray[$key] = array();
+                  }
+                  $sortArray[$key][] = $value;
+              }
+          }
+
+          $orderby = "filtro"; //change this to whatever key you want from the array
+          array_multisort($sortArray[$orderby],SORT_ASC,$orderByAr);
+          return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'msg' => "Se guardo con exito.",
+              'item' =>$orderByAr)
+          );
+    }else{
+      return \Response::json(array(
+          'error' => true,
+          'title' => "Vacio!",
+          'msg' => "la matriz esta vacia.",
+          'item' => [] )
+      );
+    }
+  }
+
+  public function apiSaveFuente(Request $request)
+  {
+
+    if(!$request->id_fuente){
+
+        try{
+            $fuente = new FuenteDatos();
+            $fuente->codigo = "";
+            $fuente->acronimo = $request->fd_acronimo;
+            $fuente->nombre = $request->fd_nombre;
+            $fuente->tipo = $request->fd_tipo;
+            $fuente->periodicidad = $request->fd_periodicidad;
+            $fuente->serie_datos = $request->fd_serie_datos;
+            $fuente->cobertura_geografica = ($request->fd_cobertura_geografica)?implode(",", $request->fd_cobertura_geografica):null;
+            $fuente->nivel_representatividad_datos = $request->fd_nivel_representatividad_datos;
+            $fuente->variable =($request->fd_variable)?implode(",", $request->fd_variable):null;
+            $fuente->observacion = $request->fd_observacion;
+            $fuente->activo = true;
+            $fuente->save();
+
+
+            if(isset($request->responsable_nivel_1)){
+              foreach ($request->responsable_nivel_1 as $k => $v) {
+                    $responsable = new FuenteDatosResponsable();
+                    $responsable->id_fuente = $fuente->id;
+                    $responsable->responsable_nivel_1 = $request->responsable_nivel_1[$k];
+                    $responsable->responsable_nivel_2 = $request->responsable_nivel_2[$k];
+                    $responsable->responsable_nivel_3 = $request->responsable_nivel_3[$k];
+                    $responsable->numero_referencia = $request->numero_referencia[$k];
+                    $responsable->save();
+              }
+            }
+
+
+
+            return \Response::json(array(
+                'error' => false,
+                'title' => "Success!",
+                'msg' => "Se guardo con exito.")
+            );
+
+          }
+          catch (Exception $e) {
+              return \Response::json(array(
+                'error' => true,
+                'title' => "Error!",
+                'msg' => $e->getMessage())
+              );
+          }
+      }else{
+
+          ///agregar el update
+
+      }
   }
 
 
