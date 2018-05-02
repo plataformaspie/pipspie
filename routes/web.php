@@ -301,6 +301,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('apiSetFuenteDatos', 'SistemaRemi\IndicadorController@apiSetFuenteDatos');
               Route::get('apiSourceOrderbyArray2', 'SistemaRemi\IndicadorController@apiSourceOrderbyArray2');
               Route::post('apiSaveFuente', 'SistemaRemi\IndicadorController@apiSaveFuente');
+              Route::get('apiUpdateComboFuente', 'SistemaRemi\IndicadorController@apiUpdateComboFuente');
+              Route::get('setPdes', 'SistemaRemi\IndicadorController@setPdes');
 
           }
       );

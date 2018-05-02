@@ -60,8 +60,10 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">
                                 <p class="text-muted card-footer" >Último valor reportado:</p>
-                                <p> {{ $avance->valor }} </p>
-                                <p> {{ $avance->fecha_generado_dia }}/{{ $avance->fecha_generado_mes }}/{{ $avance->fecha_generado_anio }} </p>
+                                @if(isset($avance->valor))
+                                    <p> {{ $avance->valor }} </p>
+                                    <p> {{ $avance->fecha_generado_dia }}/{{ $avance->fecha_generado_mes }}/{{ $avance->fecha_generado_anio }} </p>
+                                @endif
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 text-center">
                                 <p class="text-muted card-footer"> Unidad de medida: </p>

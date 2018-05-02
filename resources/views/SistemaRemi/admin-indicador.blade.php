@@ -146,7 +146,7 @@
                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Pilar</label>
                                                     </div>
                                                     <div class="form-group col-md-1 p-l-0">
-                                                        <input id="cod_pilar" name="cod_pilar" type="text" class="form-control input" placeholder="Pilar" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <input id="cod_pilar" name="cod_pilar" type="text" class="form-control input" placeholder="Pilar" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                         <div class="help-block with-errors"></div>
                                                     </div>
 
@@ -154,7 +154,7 @@
                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Meta</label>
                                                     </div>
                                                     <div class="form-group col-md-1 p-l-0">
-                                                        <input id="cod_meta" name="cod_meta" type="text" class="form-control input" placeholder="Meta" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <input id="cod_meta" name="cod_meta" type="text" class="form-control input" placeholder="Meta" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                         <div class="help-block with-errors"></div>
                                                     </div>
 
@@ -162,7 +162,7 @@
                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Resultado</label>
                                                     </div>
                                                     <div class="form-group col-md-2 p-l-0">
-                                                        <input id="cod_resultado" name="cod_resultado" type="text" class="form-control input" placeholder="Resultado" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <input id="cod_resultado" name="cod_resultado" type="text" class="form-control input" placeholder="Resultado" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 0, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                         <div class="help-block with-errors"></div>
                                                     </div>
 
@@ -291,7 +291,7 @@
                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor linea base</label>
                                                   </div>
                                                   <div class="form-group col-md-3 p-l-0">
-                                                      <input name="linea_base_valor" type="text" class="form-control input" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" value="0.00">
+                                                      <input name="linea_base_valor" type="text" class="form-control input" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" value="0.00">
                                                       <div class="help-block with-errors"></div>
                                                   </div>
                                               </div>
@@ -378,7 +378,7 @@
                                                    </div>
                                                    <div class="col-md-2 p-l-0">
                                                        <input id="id_meta_2020" name="id_meta_2020" type="hidden" class="form-control oculto" required>
-                                                       <input id="meta_2020" name="meta_2020" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <input id="meta_2020" name="meta_2020" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                        <div class="help-block with-errors"></div>
                                                    </div>
 
@@ -387,7 +387,7 @@
                                                    </div>
                                                    <div class="col-md-2 p-l-0">
                                                        <input id="id_meta_2025" name="id_meta_2025" type="hidden" class="form-control oculto" required>
-                                                       <input id="meta_2025" name="meta_2025" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <input id="meta_2025" name="meta_2025" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                        <div class="help-block with-errors"></div>
                                                    </div>
 
@@ -397,7 +397,7 @@
                                                    </div>
                                                    <div class="col-md-2 p-l-0">
                                                        <input id="id_meta_2030" name="id_meta_2030" type="hidden" class="form-control oculto" required>
-                                                       <input id="meta_2030" name="meta_2030" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <input id="meta_2030" name="meta_2030" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',',  'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                        <div class="help-block with-errors"></div>
                                                    </div>
                                                </div>
@@ -412,7 +412,7 @@
                                                    </div>
                                                    <div class="form-group col-md-3 p-l-0 m-b-0">
                                                        <input id="id_meta_2016" name="id_meta_2016" type="hidden" class="form-control oculto" required>
-                                                       <input id="meta_2016" name="meta_2016" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <input id="meta_2016" name="meta_2016" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                        <div class="help-block with-errors"></div>
                                                    </div>
                                               </div>
@@ -422,7 +422,7 @@
                                                    </div>
                                                    <div class="form-group col-md-3 p-l-0 m-b-0">
                                                        <input id="id_meta_2017" name="id_meta_2017" type="hidden" class="form-control oculto" required>
-                                                       <input id="meta_2017" name="meta_2017" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <input id="meta_2017" name="meta_2017" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                        <div class="help-block with-errors"></div>
                                                    </div>
                                               </div>
@@ -432,7 +432,7 @@
                                                    </div>
                                                    <div class="form-group col-md-3 p-l-0 m-b-0">
                                                        <input id="id_meta_2018" name="id_meta_2018" type="hidden" class="form-control oculto" required>
-                                                       <input id="meta_2018" name="meta_2018" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                       <input id="meta_2018" name="meta_2018" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                        <div class="help-block with-errors"></div>
                                                    </div>
                                                </div>
@@ -442,7 +442,7 @@
                                                     </div>
                                                     <div class="form-group col-md-3 p-l-0 m-b-0">
                                                         <input id="id_meta_2019" name="id_meta_2019" type="hidden" class="form-control oculto" required>
-                                                        <input id="meta_2019" name="meta_2019" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
+                                                        <input id="meta_2019" name="meta_2019" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                         <div class="help-block with-errors"></div>
                                                     </div>
                                                 </div>
@@ -469,7 +469,7 @@
                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor a reportar</label>
                                                    </div>
                                                    <div class="form-group col-md-2 p-l-0">
-                                                       <input name="avance_valor_input" type="text" class="form-control input" placeholder="Valor"  value="0" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" >
+                                                       <input name="avance_valor_input" type="text" class="form-control input" placeholder="Valor"  value="0" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" >
                                                        <div class="help-block with-errors"></div>
                                                    </div>
 
@@ -1133,8 +1133,6 @@
     function actualizarListaAvance(){
       var cav= 1;
       $("#set_avance > tbody").html("");
-
-
       $.ajax({
             url: "{{ url('/api/sistemaremi/apiSourceOrderbyArray') }}",
             type: "GET",
@@ -1299,6 +1297,7 @@
        $("#fuente_datos").val('').trigger('change');
        $("#fd_cobertura_geografica").val('').trigger('change');
        $("#fd_variable").val('').trigger('change');
+       $("#cont_resp").html(0);
        $("#datosFD").html("");
        fechaAV = [];
        valorAV = [];
@@ -1504,7 +1503,7 @@
               data: $("#formAddFuente").serialize() , // Adjuntar los campos del formulario enviado.
               success: function(data){
                 if(data.error == false){
-                    //actualizar el combo de fuente de datos de la pagina padre
+                    updateComboFuente();
                 }else{
                     $.toast({
                      heading: data.title,
@@ -1542,6 +1541,11 @@
           $("#window").css('visibility', 'visible');
           $('#window').jqxWindow('open');
           $('#window').jqxWindow('focus');
+          $("#formAddFuente")[0].reset();
+          $("#fd_cobertura_geografica").val('').trigger('change');
+          $("#fd_variable").val('').trigger('change');
+          $("#set_responsables > tbody").html("");
+          $("#cont_resp").html(0);
     }
     $(document).keydown(function(tecla){
           if (tecla.keyCode == 119) {
@@ -1550,9 +1554,43 @@
                 $("#window").css('visibility', 'visible');
                 $('#window').jqxWindow('open');
                 $('#window').jqxWindow('focus');
+                $("#formAddFuente")[0].reset();
+                $("#fd_cobertura_geografica").val('').trigger('change');
+                $("#fd_variable").val('').trigger('change');
+                $("#set_responsables > tbody").html("");
+                $("#cont_resp").html(0);
           }
     });
 
+    function updateComboFuente(){
+        $("#fuente_datos").empty();
+        $.ajax({
+              type: "get",
+              url: "{{ url('/api/sistemaremi/apiUpdateComboFuente') }}",
+              dataType: 'json',
+              success: function(data){
+                $.each(data.item, function(i, data) {
+                    $("#fuente_datos").append('<option value="'+data.id+'">'+data.nombre+'</option>');
+                    $('#window').jqxWindow('close');
+                    $("#formAddFuente")[0].reset();
+                    $("#fd_cobertura_geografica").val('').trigger('change');
+                    $("#fd_variable").val('').trigger('change');
+                    $("#set_responsables > tbody").html("");
+                });
+              },
+              error:function(data){
+                $.toast({
+                 heading: 'Error:',
+                 text: 'Error al recuperar los datos.',
+                 position: 'top-right',
+                 loaderBg:'#ff6849',
+                 icon: 'error',
+                 hideAfter: 3500
+
+               });
+              }
+        });
+    }
 
   </script>
 @endpush

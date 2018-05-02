@@ -231,7 +231,7 @@ class IndicadorController extends Controller
             $indicador->linea_base_anio = $anio;
             $indicador->linea_base_mes = $mes;
             $indicador->linea_base_dia = $dia;
-            $indicador->linea_base_valor = $request->linea_base_valor;
+            $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
 
             $indicador->activo = true;
@@ -252,7 +252,7 @@ class IndicadorController extends Controller
                 $metas = new Metas();
                 $metas->id_indicador = $indicador->id;
                 $metas->gestion = $metasList[$i];
-                $metas->valor = $request->input('meta_'.$metasList[$i]);
+                $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
                 $metas->save();
             }
 
@@ -271,7 +271,7 @@ class IndicadorController extends Controller
                     $avance->fecha_generado_mes = $mes;
                     $avance->fecha_generado_anio = $anio;
                     $avance->fecha_reportado = date('Y-m-d');
-                    $avance->valor = $request->avance_valor[$k];
+                    $avance->valor =  ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
                     $avance->save();
               }
             }
@@ -334,7 +334,7 @@ class IndicadorController extends Controller
             $indicador->linea_base_anio = $anio;
             $indicador->linea_base_mes = $mes;
             $indicador->linea_base_dia = $dia;
-            $indicador->linea_base_valor = $request->linea_base_valor;
+            $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
             $indicador->save();
 
@@ -371,7 +371,7 @@ class IndicadorController extends Controller
                         $avance->fecha_generado_mes = $mes;
                         $avance->fecha_generado_anio = $anio;
                         $avance->fecha_reportado = date('Y-m-d');
-                        $avance->valor = $request->avance_valor[$k];
+                        $avance->valor = ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
                         $avance->save();
                    }else{
                         if($request->avance_estado[$k]==0){
@@ -385,7 +385,7 @@ class IndicadorController extends Controller
             $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             for($i=1; $i <= count($metasList); $i++){
                 $metas = Metas::find($request->input('id_meta_'.$metasList[$i]));
-                $metas->valor = $request->input('meta_'.$metasList[$i]);
+                $metas->valor = ($request->input('meta_'.$metasList[$i]))? $this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
                 $metas->save();
             }
 
@@ -613,6 +613,47 @@ class IndicadorController extends Controller
           ///agregar el update
 
       }
+  }
+
+  public function apiUpdateComboFuente(Request $request)
+  {
+      $dataFuente = FuenteDatos::select('id','nombre')->get();
+      /*foreach ($dataFuente as $value) {
+        $data[$value->id] = $value->nombre;
+      }*/
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.",
+          'item' =>$dataFuente)
+      );
+
+  }
+  public function setPdes(Request $request)
+  {
+      $pdes = VistaCatalogoPdespmr::get();
+      $html = "";
+      foreach ($pdes as $value) {
+        $html .= '<tr>
+                      <td>P'.$value["cod_p"].'</td>
+                      <td>M'.$value["cod_m"].'</td>
+                      <td>R'.$value["cod_r"].'</td>
+                  </tr>';
+      }
+      return \Response::json($html);
+
+  }
+
+  public function format_numerica_db($numeric,$decimal){
+    if($decimal == '.'){
+      $formated = str_replace(',','',$numeric);
+    }elseif($decimal == ','){
+      $formated = str_replace('.','',$numeric);
+      $formated = str_replace(',','.',$formated);
+    }else{
+      $formated = str_replace(',','',$numeric);
+    }
+    return $formated;
   }
 
 

@@ -211,13 +211,13 @@
                     </li>
 
                     <li>
-                        <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
+                        <a href="#4" class="waves-effect">
                           <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe005;" style="font-size: 25px"></i>
                           <span class="hide-menu"> Otros <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li> <a href="javascript:win_fuente()"><i  class="fa fa-external-link"></i> Fuente de datos (F8)</a> </li>
-                            <li> <a href="#"><i  class="fa fa-list-alt"></i> Codigos PDES (F9)</a> </li>
+                            <li> <a href="javascript:win_pdes()"><i  class="fa fa-list-alt"></i> Codigos PDES (F9)</a> </li>
                         </ul>
                     </li>
 
@@ -259,6 +259,48 @@
             <footer class="footer text-center"> 2018 &copy; Ministerio de Planificación del Desarrollo </footer>
         </div>
         <!-- /#page-wrapper -->
+
+
+          <div id="window2" class="white-popup-block popup-basic admin-form mfp-with-anim" style="display: none;">
+            <div class="panel panel-heading" >
+              <section><span class="panel-title"><i class="fa fa-info"></i> Codigos PDES</span></section>
+            </div>
+            <div id="pdes_info">
+              <input id="myInput" type="text" placeholder="Buscar..">
+              <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="font-family: arial, sans-serif;border: 1px solid #dddddd;">Pilar</th>
+                  <th style="font-family: arial, sans-serif;border: 1px solid #dddddd;">Meta</th>
+                  <th style="font-family: arial, sans-serif;border: 1px solid #dddddd;">Resultado</th>
+                </tr>
+              </thead>
+              <tbody id="myTable">
+                <tr>
+                  <td>John</td>
+                  <td>Doe</td>
+                  <td>john@example.com</td>
+                </tr>
+                <tr>
+                  <td>Mary</td>
+                  <td>Moe</td>
+                  <td>mary@mail.com</td>
+                </tr>
+                <tr>
+                  <td>July</td>
+                  <td>Dooley</td>
+                  <td>july@greatstuff.com</td>
+                </tr>
+                <tr>
+                  <td>Anja</td>
+                  <td>Ravendale</td>
+                  <td>a_r@test.com</td>
+                </tr>
+              </tbody>
+            </table>
+
+            </div>
+        </div>
     </div>
     <!-- /#wrapper -->
     <!-- jQuery -->
@@ -278,12 +320,75 @@
     <!-- Custom Theme JavaScript -->
     <script src="{{ asset('sty-mode-3/js/custom.min.js') }}"></script>
     <script src="{{ asset('sty-mode-3/js/validator.js') }}"></script>
+
+    @stack('script-head')
+
     <script type="text/javascript">
       $(document).ready(function(){
-
+         $("#myInput").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+        });
       });
+
+      $(document).keydown(function(tecla){
+            if (tecla.keyCode == 120) {
+              $.ajax({
+                    url: "{{ url('/api/sistemaremi/setPdes') }}",
+                    type: "get",
+                    dataType: 'json',
+                    success: function(data){
+                         var offset = $("#side-menu").offset();
+                         $("#window2").jqxWindow({ position: { x: parseInt(offset.left) + 30  , y: parseInt(offset.top) + (180) } });
+                            $("#window2").css('visibility', 'visible');
+                            $('#window2').jqxWindow('open');
+                            $('#window2').jqxWindow('focus');
+                            $('#myTable').html(data);
+                    },
+                    error:function(data){
+                      alert("Error recuperar los datos.");
+                    }
+              });
+            }
+      });
+
+      function createElements() {
+           $('#window2').jqxWindow({
+               resizable: false,
+               isModal: false,
+               autoOpen: false,
+               width: '25%',
+               height: '45%',
+               minWidth: 330,
+               minHeight: '10%',
+               //cancelButton: $("#Cancel"),
+               modalOpacity: 0.01,
+               draggable: true
+           });
+           $('#window2').jqxWindow('focus');
+       }
+       createElements();
+       function win_pdes(){
+         $.ajax({
+               url: "{{ url('/api/sistemaremi/setPdes') }}",
+               type: "get",
+               dataType: 'json',
+               success: function(data){
+                    var offset = $("#side-menu").offset();
+                    $("#window2").jqxWindow({ position: { x: parseInt(offset.left) + 30  , y: parseInt(offset.top) + (180) } });
+                       $("#window2").css('visibility', 'visible');
+                       $('#window2').jqxWindow('open');
+                       $('#window2').jqxWindow('focus');
+                       $('#myTable').html(data);
+               },
+               error:function(data){
+                 alert("Error recuperar los datos.");
+               }
+         });
+       }
     </script>
-    @stack('script-head')
 </body>
 
 </html>
