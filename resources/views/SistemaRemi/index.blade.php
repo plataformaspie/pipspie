@@ -62,6 +62,27 @@
   right: 0;
 }
 .amcharts-chart-div a {display:none !important;}
+
+.imagensob > div
+{
+      position: absolute;
+      bottom: -11px;
+      /* color: #c60000; */
+      color: #fff;
+      padding: 2px 10px;
+      opacity: 1;
+      font-weight: bold;
+      right: 37px;
+      font-size: 68px;
+      /* text-shadow: 0.1em 0.1em 0.2em #fff; */
+      text-shadow: -2px -2px 1px #000, 2px 2px 1px #000, -2px 2px 1px #000, 2px -2px 1px #000;
+
+      -webkit-text-fill-color: yellowgreen;
+      -webkit-text-stroke: 1px black;
+
+}
+
+}
 </style>
 @endsection
 
@@ -86,13 +107,13 @@
   <div class="row">
       <div class="col-md-12">
           <div class="white-box">
-            <h4 class="font-bold m-t-0">¿Qué es REMI? </h4>
+            <h4 class="font-bold m-t-0">¿Qué es RIME? </h4>
             <hr>
             <div class="media m-b-30 p-t-20">
                   <div class="media-body"> <span class="media-meta pull-right">-</span>
-                    <h4 class="text-danger m-0">Registro, Evaluación y Monitoreo de Indicadores</h4>
+                    <h4 class="text-danger m-0">Registro de Indicadores Monitoreo  y Evaluación </h4>
                     <p class="text-muted">
-                      El Registro, Evaluación y Monitoreo de Indicadores (REMI), es una herramienta que nos permite realizar el seguimiento y monitoreo
+                      El Registro de Indicadores Monitoreo y Evaluación (RIME), es una herramienta que nos permite realizar el seguimiento y monitoreo
                       para el logro de los resultados y metas del PDES relacionados a los ODS, coherente con las políticas de cada sector involucrado.
                     </p>
                   </div>
@@ -132,42 +153,54 @@
             <h4 class="font-bold m-t-0">Indicadores por Pilar</h4>
             <hr>
             <div class="row">
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_1.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_1.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(1)" />
+                  <div>{{$pdes[1]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_2.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_2.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(2)"/>
+                  <div>{{$pdes[2]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_3.jpg" height="150" alt="-" class="box"  />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_3.jpg" height="150" alt="-" class="box"  onclick="filtrarPdes(3)"/>
+                  <div>{{$pdes[3]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_4.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_4.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(4)"/>
+                  <div>{{$pdes[4]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_5.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_5.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(5)"/>
+                  <div>{{$pdes[5]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_6.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_6.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(6)"/>
+                  <div>{{$pdes[6]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_7.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_7.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(7)"/>
+                  <div>{{$pdes[7]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_8.jpg" height="150" alt="-" class="box"  />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_8.jpg" height="150" alt="-" class="box"  onclick="filtrarPdes(8)"/>
+                  <div>{{$pdes[8]}}</div>
                 </div>
 
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_9.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_9.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(9)"/>
+                  <div>{{$pdes[9]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_10.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_10.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(10)"/>
+                  <div>{{$pdes[10]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_11.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_11.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(11)"/>
+                  <div>{{$pdes[11]}}</div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/PILAR_12.jpg" height="150" alt="-"  class="box" />
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_12.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(12)"/>
+                  <div>{{$pdes[12]}}</div>
                 </div>
             </div>
           </div>
@@ -393,6 +426,12 @@
       chartActui.axes[0].setTopText(value);
       // adjust darker band to new value
       chartActui.axes[0].bands[1].setEndValue(value);
+    }
+
+    function filtrarPdes(ele){
+      var concat = "";
+      concat += "pdes="+ele+"&";
+      $(location).attr('href', '/sistemaremi/setIndicadores/?'+concat);
     }
   </script>
 @endpush

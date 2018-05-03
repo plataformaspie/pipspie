@@ -46,6 +46,18 @@ class IndexController extends Controller
   }
   public function index()
   {
-    return view('SistemaRemi.index');
+    $pdes = array();
+    for($i=1;$i<=12;$i++){
+      $countPilar = \DB::select("SELECT count(i.id) as total
+                            FROM pdes_vista_catalogo_pmr c
+                            LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
+                            LEFT JOIN remi_indicadores i ON ir.id_indicador = i.id AND i.activo = true
+                            WHERE cod_p = ".$i);
+      $countPilar =$countPilar[0];
+      $pdes[$i]=$countPilar->total;
+    }
+
+
+    return view('SistemaRemi.index',compact('pdes'));
   }
 }

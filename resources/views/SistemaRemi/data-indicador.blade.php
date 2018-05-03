@@ -289,8 +289,28 @@
                             <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Descargar ficha indicador </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body text-center">
-                                    <a onclick="HTMLtoPDF()"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
+                                    <a onclick="HTMLtoPDF()" style="cursor: pointer;"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
+                        <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
+                            <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Descargar archivos respaldo </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                @foreach ($archivos as $item)
+                                  <div class="panel-body text-center">
+                                      <a href="/respaldos/{{$item->archivo}}" style="cursor: pointer;">
+                                        <p>
+                                          <img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo ">
+                                        </p>
+                                          {{$item->nombre}}
+
+                                      </a>
+                                  </div>
+                                @endforeach
+
                             </div>
                         </div>
                     </div>

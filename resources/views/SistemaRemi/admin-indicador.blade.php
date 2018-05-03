@@ -66,7 +66,7 @@
   </div>
   <div id="option2" class="row hidden">
       <div class="col-lg-12 ">
-          <form id="formAdd" name="formAdd" action="javascript:save();" data-toggle="validator">
+          <form id="formAdd" name="formAdd" action="javascript:save();" data-toggle="validator" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" name="id_indicador" value="">
             <!-- .row -->
@@ -128,8 +128,14 @@
                                       </li>
                                       <li class="tab nav-item">
                                           <a id="tab-ini5" data-toggle="tab" class="nav-link ctrl-btn" href="#info5" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-eye" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-eye" style="font-size: 25px"></i> Fuente de datos</span>
+                                            <span class="visible-xs"><i class="fa fa-briefcase" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="fa fa-briefcase" style="font-size: 25px"></i> Fuente de datos</span>
+                                          </a>
+                                      </li>
+                                      <li class="tab nav-item">
+                                          <a id="tab-ini6" data-toggle="tab" class="nav-link ctrl-btn" href="#info6" aria-expanded="false">
+                                            <span class="visible-xs"><i class="fa fa-cloud-upload" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="fa fa-cloud-upload" style="font-size: 25px"></i> Archivos respaldo</span>
                                           </a>
                                       </li>
 
@@ -534,6 +540,46 @@
 
                                              </div>
 
+                                           </div>
+                                       </div>
+
+                                       <div id="info6" class="tab-pane">
+                                           <div class="col-md-12 list-group-item-success">
+                                               <h4 style="width:100%;">Archivos respaldo</h4>
+                                           </div>
+                                           <div class="col-md-12">
+
+
+
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre de Respaldo</label>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <div class="select2-wrapper">
+                                                     <input id="arc_nombre" name="arc_nombre" type="text" class="form-control" placeholder="Nombre de respaldo" >
+                                                   </div>
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                             </div>
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Adjuntar</label>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <div class="select2-wrapper">
+                                                     <input type="file" id ="arc_archivo" class="form-control p-t-0"  name="arc_archivo" accept=".xls,.xlsx,.cvs">
+                                                   </div>
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                               <div class="col-md-12 p-l-0 text-center">
+                                                   <button type="button" class="btn btn-info btn-sm agregarARC m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                               </div>
+                                             </div>
+                                             <h5>Archivos subidos</h5>                                             
+                                             <div id="datosARC">
+
+                                             </div>
                                            </div>
                                        </div>
 
@@ -1039,7 +1085,7 @@
     $(".ctrl-btn").click(function () {
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
-      if(next == 5){
+      if(next == 6){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
       }else{
@@ -1054,7 +1100,7 @@
 
       var next =  activo.substr(-1,1) ;
       next++;
-      if(next == 5){
+      if(next == 6){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
       }
@@ -1294,6 +1340,7 @@
        $('.form-group').removeClass('has-error');
        $("#variables_desagregacion").val('').trigger('change');
        $("#datosART").html("");
+       $("#datosARC").html("");
        $("#fuente_datos").val('').trigger('change');
        $("#fd_cobertura_geografica").val('').trigger('change');
        $("#fd_variable").val('').trigger('change');
@@ -1392,6 +1439,28 @@
                       idAV.push(data.id);
                   });
                   actualizarListaAvance();
+
+
+                  $.each(data.archivos, function(i, data) {
+                   var html = '<table class="table table-hover">'+
+                                 '<thead>'+
+                                   '<th>Descripcion de archivos</th>'+
+                                   '<th>-</th>'+
+                                 '</thead>'+
+                                 '<tbody>'+
+                                   '<td>'+
+                                     '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
+                                     '<p>'+
+                                       '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo ">'+
+                                        data.nombre+
+                                     '</p>'+
+                                     '</a>'+
+                                   '</td>'+
+                                   '<td><a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarARC(1);"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                                 '</tbody>'+
+                               '</table>';
+                   $("#datosARC").append(html);
+                  });
 
                }else{
                    $.toast({

@@ -19,6 +19,7 @@ use App\Models\SistemaRemi\Frecuencia;
 use App\Models\SistemaRemi\FuenteDatos;
 use App\Models\SistemaRemi\FuenteDatosResponsable;
 use App\Models\SistemaRemi\FuenteTipos;
+use App\Models\SistemaRemi\IndicadoresArchivosRespaldos;
 
 class IndicadorController extends Controller
 {
@@ -59,7 +60,7 @@ class IndicadorController extends Controller
     });
 
   }
-  public function setIndicadores(Request $request)
+  /*public function setIndicadores(Request $request)
   {
     //$indicadores = Indicadores::paginate();
     $sw=0;
@@ -101,6 +102,68 @@ class IndicadorController extends Controller
     $unidadesMedidas = UnidadesMedidas::get();
 
     return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','tiposMedicion','unidadesMedidas','buscar'));
+  }*/
+
+  public function setIndicadores(Request $request)
+  {
+    //$indicadores = Indicadores::paginate();
+    $sw=0;
+    $sb=0;
+    $tipo = "";
+    $unidad = "";
+    $buscar = "";
+    $pdes = 1;
+    $where = array();
+    $orwhere = array();
+
+    if($request->has('buscar')){
+        $sb=1;
+        $orwhere[] = array(\DB::raw("upper(lower(nombre))"),'LIKE','%'.mb_strtoupper($request->buscar,'utf-8') .'%');
+        $buscar = $request->buscar;
+        $sw++;
+    }
+    if($request->has('tipo')){
+        $where[] = array("tipo","=",$request->tipo);
+        $tipo = $request->tipo;
+        $sw++;
+    }
+    if($request->has('unidad')){
+        $where[] = array("unidad_medida","=",$request->unidad);
+        $unidad = $request->unidad;
+        $sw++;
+    }
+    if($request->has('pdes')){
+        $pdes = $request->pdes;
+    }
+
+    if($sw > 0){
+
+          $indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->paginate(5)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar);
+
+    }else{
+          $indicadores = Indicadores::where('activo',true)->paginate(5);
+    }
+
+
+    $filtropdes = \DB::select("SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
+                              FROM pdes_vista_catalogo_pmr c
+                              LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
+                              LEFT JOIN remi_indicadores i ON ir.id_indicador = i.id
+                              WHERE cod_p = ".$pdes."
+                              ORDER BY cod_p,cod_m,cod_r ASC");
+
+    $countPilar = \DB::select("SELECT count(i.id) as total
+                          FROM pdes_vista_catalogo_pmr c
+                          LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
+                          LEFT JOIN remi_indicadores i ON ir.id_indicador = i.id AND i.activo = true
+                          WHERE cod_p = ".$pdes);
+    $countPilar =$countPilar[0];
+
+
+    $tiposMedicion = TiposMedicion::get();
+    $unidadesMedidas = UnidadesMedidas::get();
+
+    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar'));
   }
 
 
@@ -126,10 +189,12 @@ class IndicadorController extends Controller
                             LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
                             WHERE m.id_indicador = ".$id."
                             ORDER BY m.gestion ASC");
+    $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->get();
+
 
     $grafica = json_encode($dataMetasAvance);
 
-    return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes','avance','grafica','metasAvance'));
+    return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes','avance','grafica','metasAvance','archivos'));
   }
 
   public function adminIndicador()
@@ -417,6 +482,7 @@ class IndicadorController extends Controller
                            WHERE ir.id_indicador = ".$request->id);
       $metas = Metas::where('id_indicador',$request->id)->get();
       $avances = IndicadorAvance::where('id_indicador',$request->id)->get();
+      $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$request->id)->get();
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
@@ -424,7 +490,8 @@ class IndicadorController extends Controller
           'indicador' => $indicador,
           'pdes' => $pdes,
           'metas' => $metas,
-          'avances' => $avances)
+          'avances' => $avances,
+          'archivos' => $archivos)
       );
   }
 

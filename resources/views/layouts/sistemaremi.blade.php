@@ -59,7 +59,7 @@
                 <div class="top-left-part">
                     <a class="logo" href="{{ url('/sistemaremi/index') }}">
                         <!-- Logo icon image, you can use font-icon also -->
-                        <b class="m-l-10"><img src="/img/remi.png" height="60" alt="-" /></b>
+                        <b class="m-l-10"><img src="/img/rime.png" height="60" alt="-" /></b>
                         <!-- Logo text image you can use text also -->
 
                     </a>
