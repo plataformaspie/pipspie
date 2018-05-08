@@ -145,7 +145,7 @@
                                           <div class="col-md-12 list-group-item-success" style="margin-top: -9px;">
                                               <h4 style="width:100%;">Alinar al PDES </h4>
                                           </div>
-                                          <p><h5>Ingrese los codigos PDES para agregar la articulación</h5></p>
+                                          <p><h5>Ingrese los codigos PDES para agregar la articulación (Ayuda F9)</h5></p>
                                           <div class="col-md-12">
                                                 <div class="row m-b-5 m-l-5 m-t-5" >
                                                     <div class="form-group col-md-2 p-l-0 p-r-0">
@@ -266,11 +266,15 @@
                                                 </div>
                                                 <div class="col-md-9 p-l-0">
                                                     <div class="select2-wrapper">
+                                                      <?php /*
                                                       <select id="variables_desagregacion" name="variables_desagregacion[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
                                                           @foreach ($variables as  $item)
                                                                 <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                           @endforeach
                                                       </select>
+                                                      */ ?>
+                                                      <textarea id="variables_desagregacion" name="variables_desagregacion" class="form-control" placeholder="Variables"></textarea>
+
                                                     </div>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
@@ -522,6 +526,7 @@
                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                <div class="col-md-3 p-l-0 p-r-0">
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Fuente</label>
+                                                 <h5>(<b>F8</b> agregar uno nuevo a la lista)</h5>
                                                </div>
                                                <div class="col-md-9 p-l-0">
                                                    <div class="select2-wrapper">
@@ -551,35 +556,45 @@
 
 
 
-                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre de Respaldo</label>
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre de Respaldo</label>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <input id="arc_nombre_input" name="arc_nombre_input" type="text" class="form-control" placeholder="Nombre de respaldo" >
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
                                                </div>
-                                               <div class="col-md-9 p-l-0">
-                                                   <div class="select2-wrapper">
-                                                     <input id="arc_nombre" name="arc_nombre" type="text" class="form-control" placeholder="Nombre de respaldo" >
-                                                   </div>
-                                                   <div class="help-block with-errors"></div>
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Adjuntar</label>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <input type="file" id ="arc_archivo_input" name="arc_archivo_input" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                                 <div class="col-md-12 p-l-0 text-center">
+                                                     <button type="button" class="btn btn-info btn-sm agregarARC m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                 </div>
                                                </div>
-                                             </div>
-                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Adjuntar</label>
-                                               </div>
-                                               <div class="col-md-9 p-l-0">
-                                                   <div class="select2-wrapper">
-                                                     <input type="file" id ="arc_archivo" class="form-control p-t-0"  name="arc_archivo" accept=".xls,.xlsx,.cvs">
-                                                   </div>
-                                                   <div class="help-block with-errors"></div>
-                                               </div>
-                                               <div class="col-md-12 p-l-0 text-center">
-                                                   <button type="button" class="btn btn-info btn-sm agregarARC m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                               </div>
-                                             </div>
-                                             <h5>Archivos subidos</h5>                                             
-                                             <div id="datosARC">
 
-                                             </div>
+
+                                             <h5>Archivos subidos</h5>
+                                             <table id="datosARC" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                     <th>Descripcion de archivos</th>
+                                                     <th>-</th>
+                                                   </tr>
+                                               </thead>
+                                               <tbody >
+
+                                               </tbody>
+                                             </table>
                                            </div>
                                        </div>
 
@@ -701,11 +716,14 @@
                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Variables</label>
                       </div>
                       <div class="col-md-10 p-l-0">
+                          <?php /*
                           <select id="fd_variable" name="fd_variable[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
                               @foreach ($variables as  $item)
                                     <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                               @endforeach
                           </select>
+                          */ ?>
+                          <textarea id="fd_variable" name="fd_variable" class="form-control" placeholder="Variables"></textarea>
                           <div class="help-block with-errors"></div>
                       </div>
                     </div>
@@ -769,7 +787,7 @@
                                             <div class="help-block with-errors"></div>
                                           </div>
 
-                                          <div class="col-md-4 p-l-0 p-r-0">
+                                          <div class="col-md-4 p-l-0 p-r-0 text-right">
                                             <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Nombre sub entidad</label>
                                           </div>
                                           <div class="col-md-8 p-l-0">
@@ -777,7 +795,7 @@
                                             <div class="help-block with-errors"></div>
                                           </div>
 
-                                          <div class="col-md-4 p-l-0 p-r-0">
+                                          <div class="col-md-4 p-l-0 p-r-0 text-right">
                                             <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Nombre sub entidad</label>
                                           </div>
                                           <div class="col-md-8 p-l-0">
@@ -951,6 +969,80 @@
         }
 
       });
+
+
+      $(".agregarARC").click(function () {
+         var nombre = $('input[name=arc_nombre_input]').val();
+         nombre = nombre.replace(/\s/g,"_");
+
+         var formData = new FormData($("#formAdd")[0]);
+         if(!$('#datosARC').find("#ARC"+nombre).length){
+            $.ajax({
+                    url: "{{ url('/api/sistemaremi/apiUploadArchivoRespaldo') }}",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data){
+                          if(data.error == false){
+                          var html = '<tr id="ARC'+ nombre +'" class="">'+
+                                          '<td>'+
+                                              '<input type="hidden" name="arc_id[]" value="" />'+
+                                              '<input type="hidden" name="arc_nombre[]" value="'+ data.item.nombre +'" />'+
+                                              '<input type="hidden" name="arc_archivo[]" value="'+ data.item.archivo +'" />'+
+                                              '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
+                                              '<a href="/respaldos/'+data.item.archivo+'" style="cursor: pointer;">'+
+                                              '<p>'+
+                                                '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo "> '+
+                                                 data.item.nombre +
+                                              '</p>'+
+                                              '</a>'+
+                                          '</td>'+
+                                          '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarARC(\''+nombre+'\',\''+data.item.archivo+'\',1);"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                                      '</tr>';
+                            $("#datosARC > tbody").append(html);
+                            $('input[name=arc_nombre_input]').val('');
+                            $('input[name=arc_archivo_input]').val('');
+                          }else{
+                              $.toast({
+                               heading: data.title,
+                               text: data.msg,
+                               position: 'top-right',
+                               loaderBg:'#ff6849',
+                               icon: 'warning',
+                               hideAfter: 3500
+                             });
+                          }
+                    },
+                    error:function(data){
+                      $.toast({
+                       heading: 'Error:',
+                       text: 'Error al recuperar los datos.',
+                       position: 'top-right',
+                       loaderBg:'#ff6849',
+                       icon: 'error',
+                       hideAfter: 3500
+
+                     });
+                    }
+          });
+                  // hacer algo aquí si el elemento existe
+        }else{
+            $.toast({
+             heading: 'Alerta:',
+             text: 'Ya existe un archivo con ese nombre.',
+             position: 'top-right',
+             loaderBg:'#ff6849',
+             icon: 'warning',
+             hideAfter: 3500
+
+           });
+        }
+
+      });
+
+
+
 
 
 
@@ -1295,6 +1387,7 @@
         }
 
     }
+
     function quitarAV(ele,tipo,index){
 
         if(tipo == 1){
@@ -1320,6 +1413,33 @@
 
         actualizarListaResponsable();
     }
+
+    function quitarARC(ele,archivo,tipo){
+      var res = confirm("Esta seguro de quitar el archivo?");
+          if (res == true) {
+            if(tipo == 1){
+                 $.ajax({
+                       type: "GET",
+                       dataType: 'json',
+                       url: "{{ url('/api/sistemaremi/apiDeleteArchivo') }}",
+                       data: {archivo: archivo},
+                       success: function(data){
+                           $('#ARC'+ele).remove();
+                       },
+                       error:function(data){
+                         alert("Error recuperar al eliminar.");
+                       }
+                   });
+            }else{
+              $('#ARC'+ele).addClass('hidden');
+              $('#EST'+ele).val(0);
+              $('#ARC'+ele).attr("id",'0ARC'+ele);
+            }
+        }
+
+    }
+
+
     function editarI(ele){
        alert(ele);
     }
@@ -1338,12 +1458,11 @@
        $("#formAddFuente")[0].reset();
        $('.with-errors').html('');
        $('.form-group').removeClass('has-error');
-       $("#variables_desagregacion").val('').trigger('change');
+       //$("#variables_desagregacion").val('').trigger('change');
        $("#datosART").html("");
-       $("#datosARC").html("");
        $("#fuente_datos").val('').trigger('change');
        $("#fd_cobertura_geografica").val('').trigger('change');
-       $("#fd_variable").val('').trigger('change');
+       //$("#fd_variable").val('').trigger('change');
        $("#cont_resp").html(0);
        $("#datosFD").html("");
        fechaAV = [];
@@ -1356,6 +1475,7 @@
        referenciaA = [];
        idAV = [];
        $("#set_avance > tbody").html("");
+       $("#datosARC > tbody").html("");
        $("#set_responsables > tbody").html("");
        $('input[name="id_indicador"]').val(null);
        $("#tab-ini1" ).trigger( "click" );
@@ -1383,9 +1503,11 @@
                    $('select[name=tipo]').val(data.indicador[0].tipo);
                    $('select[name=unidad_medida]').val(data.indicador[0].unidad_medida);
                    $('select[name=frecuencia]').val(data.indicador[0].frecuencia);
-                   if(data.indicador[0].variables_desagregacion){
+                   /*if(data.indicador[0].variables_desagregacion){
                      $("#variables_desagregacion").val(data.indicador[0].variables_desagregacion.split(",")).trigger('change');
-                   }
+                   }*/
+                   $('textarea[name="variables_desagregacion"]').val(data.indicador[0].variables_desagregacion);
+
                    if(data.indicador[0].linea_base_mes){
                      $('input[name="linea_base_fecha"]').val(data.indicador[0].linea_base_mes+'/'+data.indicador[0].linea_base_anio);
                    }
@@ -1442,24 +1564,23 @@
 
 
                   $.each(data.archivos, function(i, data) {
-                   var html = '<table class="table table-hover">'+
-                                 '<thead>'+
-                                   '<th>Descripcion de archivos</th>'+
-                                   '<th>-</th>'+
-                                 '</thead>'+
-                                 '<tbody>'+
-                                   '<td>'+
-                                     '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
-                                     '<p>'+
-                                       '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo ">'+
-                                        data.nombre+
-                                     '</p>'+
-                                     '</a>'+
-                                   '</td>'+
-                                   '<td><a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarARC(1);"> <i class="fa fa-close text-danger"></i> </a></td>'+
-                                 '</tbody>'+
-                               '</table>';
-                   $("#datosARC").append(html);
+                      var nombre = data.nombre.replace(/\s/g,"_");
+                      var html = '<tr id="ARC'+ nombre +'" class="">'+
+                                      '<td>'+
+                                          '<input type="hidden" name="arc_id[]" value="'+data.id+'" />'+
+                                          '<input type="hidden" name="arc_nombre[]" value="'+ data.nombre +'" />'+
+                                          '<input type="hidden" name="arc_archivo[]" value="'+ data.archivo +'" />'+
+                                          '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
+                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
+                                          '<p>'+
+                                            '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo "> '+
+                                             data.nombre +
+                                          '</p>'+
+                                          '</a>'+
+                                      '</td>'+
+                                      '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarARC(\''+nombre+'\',\''+data.archivo+'\',2);"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                                  '</tr>';
+                       $("#datosARC > tbody").append(html);
                   });
 
                }else{
@@ -1612,7 +1733,7 @@
           $('#window').jqxWindow('focus');
           $("#formAddFuente")[0].reset();
           $("#fd_cobertura_geografica").val('').trigger('change');
-          $("#fd_variable").val('').trigger('change');
+          //$("#fd_variable").val('').trigger('change');
           $("#set_responsables > tbody").html("");
           $("#cont_resp").html(0);
     }
@@ -1625,7 +1746,7 @@
                 $('#window').jqxWindow('focus');
                 $("#formAddFuente")[0].reset();
                 $("#fd_cobertura_geografica").val('').trigger('change');
-                $("#fd_variable").val('').trigger('change');
+                //$("#fd_variable").val('').trigger('change');
                 $("#set_responsables > tbody").html("");
                 $("#cont_resp").html(0);
           }
@@ -1643,7 +1764,7 @@
                     $('#window').jqxWindow('close');
                     $("#formAddFuente")[0].reset();
                     $("#fd_cobertura_geografica").val('').trigger('change');
-                    $("#fd_variable").val('').trigger('change');
+                    //$("#fd_variable").val('').trigger('change');
                     $("#set_responsables > tbody").html("");
                 });
               },
@@ -1660,6 +1781,10 @@
               }
         });
     }
+
+
+
+
 
   </script>
 @endpush

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SistemaRemi;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Http\Controllers\Controller;
 
 use App\Models\SistemaRemi\Indicadores;
@@ -189,7 +190,7 @@ class IndicadorController extends Controller
                             LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
                             WHERE m.id_indicador = ".$id."
                             ORDER BY m.gestion ASC");
-    $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->get();
+    $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->where('activo', true)->get();
 
 
     $grafica = json_encode($dataMetasAvance);
@@ -202,11 +203,11 @@ class IndicadorController extends Controller
     $tipos = TiposMedicion::get();
     $unidades = UnidadesMedidas::where('activo',true)->get();
     $dimensiones = Dimensiones::where('id_variable',4)->get();
-    $variables = Variables::get();
+    //$variables = Variables::get();
     $frecuencia = Frecuencia::get();
     $fuente_datos = FuenteDatos::get();
     $fuente_tipos = FuenteTipos::get();
-    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','variables','frecuencia','fuente_datos','fuente_tipos','dimensiones'));
+    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','frecuencia','fuente_datos','fuente_tipos','dimensiones'));
   }
 
   public function setDataPdes(Request $request)
@@ -270,7 +271,8 @@ class IndicadorController extends Controller
             $indicador->nombre = $request->nombre;
             $indicador->etapa = $request->etapa;
             $indicador->tipo = $request->tipo;
-            $indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
+            //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
+            $indicador->variables_desagregacion = $request->variables_desagregacion;
             $indicador->unidad_medida = $request->unidad_medida;
             $indicador->frecuencia = $request->frecuencia;
             $indicador->definicion = $request->definicion;
@@ -341,6 +343,17 @@ class IndicadorController extends Controller
               }
             }
 
+            if(isset($request->arc_archivo)){
+              foreach ($request->arc_archivo as $k => $v) {
+                    $archivos = new IndicadoresArchivosRespaldos();
+                    $archivos->id_indicador = $indicador->id;
+                    $archivos->nombre =  $request->arc_nombre[$k];
+                    $archivos->archivo = $request->arc_archivo[$k];
+                    $archivos->activo = true;
+                    $archivos->save();
+              }
+            }
+
             return \Response::json(array(
                 'error' => false,
                 'title' => "Success!",
@@ -374,7 +387,8 @@ class IndicadorController extends Controller
             $indicador->nombre = $request->nombre;
             $indicador->etapa = $request->etapa;
             $indicador->tipo = $request->tipo;
-            $indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
+            //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
+            $indicador->variables_desagregacion = $request->variables_desagregacion;
             $indicador->unidad_medida = $request->unidad_medida;
             $indicador->frecuencia = $request->frecuencia;
             $indicador->definicion = $request->definicion;
@@ -455,6 +469,26 @@ class IndicadorController extends Controller
             }
 
 
+            if(isset($request->arc_archivo)){
+              foreach ($request->arc_archivo as $k => $v) {
+                    if(!$request->arc_id[$k]){
+                        $archivos = new IndicadoresArchivosRespaldos();
+                        $archivos->id_indicador = $indicador->id;
+                        $archivos->nombre =  $request->arc_nombre[$k];
+                        $archivos->archivo = $request->arc_archivo[$k];
+                        $archivos->activo = true;
+                        $archivos->save();
+                    }else{
+                        if($request->arc_estado[$k]==0){
+                          $archivos = IndicadoresArchivosRespaldos::find($request->arc_id[$k]);
+                          $archivos->activo = false;
+                          $archivos->save();
+                        }
+                    }
+              }
+            }
+
+
             return \Response::json(array(
                 'error' => false,
                 'title' => "Success!",
@@ -482,7 +516,7 @@ class IndicadorController extends Controller
                            WHERE ir.id_indicador = ".$request->id);
       $metas = Metas::where('id_indicador',$request->id)->get();
       $avances = IndicadorAvance::where('id_indicador',$request->id)->get();
-      $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$request->id)->get();
+      $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$request->id)->where('activo', true)->get();
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
@@ -641,7 +675,7 @@ class IndicadorController extends Controller
             $fuente->serie_datos = $request->fd_serie_datos;
             $fuente->cobertura_geografica = ($request->fd_cobertura_geografica)?implode(",", $request->fd_cobertura_geografica):null;
             $fuente->nivel_representatividad_datos = $request->fd_nivel_representatividad_datos;
-            $fuente->variable =($request->fd_variable)?implode(",", $request->fd_variable):null;
+            $fuente->variable = $request->fd_variable;
             $fuente->observacion = $request->fd_observacion;
             $fuente->activo = true;
             $fuente->save();
@@ -722,6 +756,61 @@ class IndicadorController extends Controller
     }
     return $formated;
   }
+
+  public function apiUploadArchivoRespaldo(Request $request)
+  {
+    $carpeta = "respaldos/";
+    $nombreDataBase = "";
+    $msgFile = "";
+      if ( $request->arc_archivo_input )
+      {
+          $file = $request->arc_archivo_input;
+          $nombre = $file->getClientOriginalName();
+          $tipo = $file->getMimeType();
+          $extension = $file->getClientOriginalExtension();
+          $ruta_provisional = $file->getPathName();
+          $size = $file->getSize();
+          $nombreSystem = uniqid('ARC-');
+          $src = $carpeta.$nombreSystem.'.'.$extension;
+          if(move_uploaded_file($ruta_provisional, $src)){
+              $msgFile ="Archivo Subido Correctamente.";
+              $nombreDataBase = $nombreSystem.'.'.$extension;
+          }else{
+              $msgFile = "Error al Subir el Archivo.";
+          }
+          $resp['archivo'] = $nombreDataBase;
+          $resp['nombre'] = $request->arc_nombre_input;
+
+          return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'item' => $resp,
+              'msg' => $msgFile)
+          );
+      }else{
+        return \Response::json(array(
+            'error' => true,
+            'title' => "Error!",
+            'item' => "",
+            'msg' => $request->arc_nombre_input)
+        );
+      }
+
+
+
+  }
+
+  public function apiDeleteArchivo(Request $request)
+  {
+      unlink('respaldos/'.$request->input('archivo'));
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Archivo eliminado")
+      );
+
+  }
+
 
 
 }

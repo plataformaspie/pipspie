@@ -1,0 +1,1 @@
+{"result":{"text":"P A subíndice paréntesis izquierdo 4 menos 17 a ñ o s paréntesis derecho fin subíndice igual fracción numerador P A subíndice paréntesis izquierdo 4 menos 17 a ñ o s paréntesis derecho fin subíndice entre denominador P T subíndice paréntesis izquierdo 4 menos 17 a ñ o s paréntesis derecho fin subíndice fin fracción"},"status":"ok"}

@@ -110,13 +110,19 @@
             <h4 class="font-bold m-t-0">¿Qué es RIME? </h4>
             <hr>
             <div class="media m-b-30 p-t-20">
-                  <div class="media-body"> <span class="media-meta pull-right">-</span>
-                    <h4 class="text-danger m-0">Registro de Indicadores Monitoreo  y Evaluación </h4>
-                    <p class="text-muted">
-                      El Registro de Indicadores Monitoreo y Evaluación (RIME), es una herramienta que nos permite realizar el seguimiento y monitoreo
-                      para el logro de los resultados y metas del PDES relacionados a los ODS, coherente con las políticas de cada sector involucrado.
-                    </p>
+                  <div class="col-1">
+                      <img class="metro-icon" src="{{ asset('img/logo_remi.png') }}" width="80" alt="" />
                   </div>
+                  <div class="col-11">
+                    <div class="media-body"> <span class="media-meta pull-right"><i class="fa fa-info-circle" style="font-size: 25px"></i></span>
+                      <h4 class="text-danger m-0">Registro de Indicadores Monitoreo  y Evaluación </h4>
+                      <p class="text-muted">
+                        El Registro de Indicadores Monitoreo y Evaluación (RIME), es una herramienta que nos permite realizar el seguimiento y monitoreo
+                        para el logro de los resultados y metas del PDES relacionados a los ODS, coherente con las políticas de cada sector involucrado.
+                      </p>
+                    </div>
+                  </div>
+
             </div>
 
           </div>

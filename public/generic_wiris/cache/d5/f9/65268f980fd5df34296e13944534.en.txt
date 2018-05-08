@@ -1,0 +1,1 @@
+{"result":{"text":"A equals V fraction numerator begin display style s s d a s end style over denominator begin display style s d a s d a s end style end fraction"},"status":"ok"}

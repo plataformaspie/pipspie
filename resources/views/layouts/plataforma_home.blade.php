@@ -26,6 +26,7 @@
       <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
       <!-- Menu CSS -->
       <link href="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
+      <link href="{{ asset('plugins/bower_components/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
       <link href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}" rel="stylesheet" type="text/css" />
       <!-- animation CSS -->
       <link href="{{ asset('sty-home/css/animate.css') }}" rel="stylesheet">
@@ -115,8 +116,8 @@
                                 <li><b>Opciones</b></li>
                             </ul>
                             <ul class="">
-                                <li><a href="#"><i class="ti-user"></i> Mi perfil</a></li>
-                                <li><a href="#"><i class="ti-wallet"></i> Cambiar contraseña</a></li>
+                                <li><a href="{{ url('settingPerfil') }}"><i class="ti-user"></i> Mi perfil</a></li>
+                                <li><a href="{{ url('settingPassword') }}"><i class="ti-wallet"></i> Cambiar contraseña</a></li>
 
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ url('/home') }}"><i class="fa icon-logout"></i> Cerrar Modulos </a></li>
@@ -147,6 +148,7 @@
     <script src="{{ asset('plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js') }}"></script>
     <!-- Menu Plugin JavaScript -->
     <script src="{{ asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}" type="text/javascript"></script>
     <!--slimscroll JavaScript -->
     <script src="{{ asset('sty-home/js/jquery.slimscroll.js') }}"></script>
@@ -154,6 +156,7 @@
     <script src="{{ asset('sty-home/js/waves.js') }}"></script>
     <!-- Custom Theme JavaScript -->
     <script src="{{ asset('sty-home/js/custom.js') }}"></script>
+    <script src="{{ asset('sty-home/js/validator.js') }}"></script>
     <!--Style Switcher -->
     <script src="{{ asset('plugins/bower_components/styleswitcher/jQuery.style.switcher.js') }}"></script>
 

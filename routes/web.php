@@ -21,6 +21,10 @@ Route::get('home', 'HomeController@index')->name('home');
 Route::get('siep/dashboard', 'HomeController@siepRedirect');
 Route::get('sp/dashboard', 'HomeController@spRedirect');
 Route::get('fichas/index', 'HomeController@fichasRedirect');
+Route::get('settingPerfil', 'SettingController@settingPerfil');
+Route::get('settingPassword', 'SettingController@settingPassword');
+Route::post('apiSavePerfil', 'SettingController@apiSavePerfil');
+Route::post('apiSavePassword', 'SettingController@apiSavePassword');
 
 /* -----------------------------------------------------------------------------
 | Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro
@@ -281,17 +285,22 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'sistemaremi'),
           function() {
               Route::get('/', 'SistemaRemi\IndexController@index');
+              Route::get('settingPerfil', 'SistemaRemi\SettingController@settingPerfil');
+              Route::get('settingPassword', 'SistemaRemi\SettingController@settingPassword');
               Route::get('index', 'SistemaRemi\IndexController@index');
               Route::get('setIndicadores', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
+
           }
       );
       Route::group(
           array('prefix' => 'api/sistemaremi'),
           function() {
               Route::get('demo', 'SistemaRemi\IndicadorController@demo');
+              Route::post('apiSavePerfil', 'SistemaRemi\SettingController@apiSavePerfil');
+              Route::post('apiSavePassword', 'SistemaRemi\SettingController@apiSavePassword');
               Route::get('setDataPdes', 'SistemaRemi\IndicadorController@setDataPdes');
               Route::get('apiSetIndicadores', 'SistemaRemi\IndicadorController@apiSetIndicadores');
               Route::post('apiSaveIndicador', 'SistemaRemi\IndicadorController@apiSaveIndicador');
@@ -303,6 +312,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('apiSaveFuente', 'SistemaRemi\IndicadorController@apiSaveFuente');
               Route::get('apiUpdateComboFuente', 'SistemaRemi\IndicadorController@apiUpdateComboFuente');
               Route::get('setPdes', 'SistemaRemi\IndicadorController@setPdes');
+              Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldo');
+              Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
 
           }
       );

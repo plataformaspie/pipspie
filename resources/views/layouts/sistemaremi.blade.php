@@ -14,7 +14,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_remi.png">
-    <title>::REMI::</title>
+    <title>::RIME::</title>
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}">
     <link href="{{ asset('plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css') }}" rel="stylesheet">
@@ -150,6 +150,7 @@
                     <li class="mega-dropdown">
                         <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#"><span class="hidden-xs">MOD</span> <i class="fa fa-th"></i></a>
                         <ul class="dropdown-menu mega-dropdown-menu animated bounceInDown">
+                          <h5>Módulos activos para su usuario:</h5>
                             @foreach($modulos as $m)
                               <li id="mod-{{ $m["id_html"] }}" class="col-sm-1 text-center">
                                   <ul>
@@ -239,8 +240,8 @@
                                 <li><b>Opciones</b></li>
                             </ul>
                             <ul class="">
-                                <li><a href="#"><i class="ti-user"></i> Mi perfil</a></li>
-                                <li><a href="#"><i class="ti-wallet"></i> Cambiar contraseña</a></li>
+                                <li><a href="{{ url('sistemaremi/settingPerfil') }}"><i class="ti-user"></i> Mi perfil</a></li>
+                                <li><a href="{{ url('sistemaremi/settingPassword') }}"><i class="ti-wallet"></i> Cambiar contraseña</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ url('/home') }}"><i class="fa icon-logout"></i> Cerrar Modulos </a></li>
                                 <li>
@@ -359,7 +360,7 @@
                resizable: false,
                isModal: false,
                autoOpen: false,
-               width: '25%',
+               width: '15%',
                height: '45%',
                minWidth: 330,
                minHeight: '10%',

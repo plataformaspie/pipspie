@@ -1,0 +1,1 @@
+{"result":{"text":"A igual V fracción numerador estilo mostrar s s d a s fin estilo entre denominador estilo mostrar s d a s d a s fin estilo fin fracción"},"status":"ok"}

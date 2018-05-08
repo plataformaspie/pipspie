@@ -1,0 +1,1 @@
+{"result":{"text":"P A subscript left parenthesis 4 minus 17 a ñ o s right parenthesis end subscript equals fraction numerator P A subscript left parenthesis 4 minus 17 a ñ o s right parenthesis end subscript over denominator P T subscript left parenthesis 4 minus 17 a ñ o s right parenthesis end subscript end fraction"},"status":"ok"}

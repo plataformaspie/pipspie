@@ -690,7 +690,7 @@
 
       <div class="view-content">
           <div class="views-row">
-    <div class="views-field views-field-title"><span class="field-content"><a href="/es/planes/agenda-patriotica-2025-plan-de-desarrollo-general-economico-y-social-para-el-vivir-bien" hreflang="es">Agenda Patriótica 2025- Plan de Desarrollo General Económico y Social para el Vivir Bien (PDGES) de Bolivia</a></span></div>
+    <div class="views-field views-field-title"><span class="field-content"><a href="#" hreflang="es">Agenda Patriótica 2025- Plan de Desarrollo General Económico y Social para el Vivir Bien (PDGES) de Bolivia</a></span></div>
   </div>
 
     </div>
@@ -708,13 +708,13 @@
 
       <div class="view-content">
           <div class="views-row">
-    <div class="views-field views-field-title"><span class="field-content"><a href="/es/marcos-regulatorios/decreto-supremo-no-29894-2009-de-bolivia" hreflang="es">Decreto Supremo No. 29894-2009 de Bolivia</a></span></div>
+    <div class="views-field views-field-title"><span class="field-content"><a href="#" hreflang="es">Decreto Supremo No. 29894-2009 de Bolivia</a></span></div>
   </div>
     <div class="views-row">
-    <div class="views-field views-field-title"><span class="field-content"><a href="/es/marcos-regulatorios/constitucion-politica-de-2009-del-estado-plurinacional-de-bolivia" hreflang="es">Constitución Política de 2009 del Estado Plurinacional de Bolivia </a></span></div>
+    <div class="views-field views-field-title"><span class="field-content"><a href="#" hreflang="es">Constitución Política de 2009 del Estado Plurinacional de Bolivia </a></span></div>
   </div>
     <div class="views-row">
-    <div class="views-field views-field-title"><span class="field-content"><a href="/es/marcos-regulatorios/ley-no-777-del-sistema-de-planificacion-integral-del-estado-spie-de-bolivia" hreflang="es">Ley No. 777 del Sistema de Planificación Integral del Estado (SPIE) de Bolivia </a></span></div>
+    <div class="views-field views-field-title"><span class="field-content"><a href="#" hreflang="es">Ley No. 777 del Sistema de Planificación Integral del Estado (SPIE) de Bolivia </a></span></div>
   </div>
 
     </div>
@@ -727,10 +727,10 @@
     <div class="col-12 col-md-4">
       <h2>Actores</h2>
       <ul>
-              <li><a href="/node/56">Ministerio de Planificación del Desarrollo (MPD) de Bolivia</a></li>
-              <li><a href="/node/58">Asamblea Legislativa Plurinacional de Bolivia</a></li>
-              <li><a href="/node/60">Autoridades Públicas de Bolivia</a></li>
-              <li><a href="/node/57">Presidencia de Bolivia</a></li>
+              <li><a href="#">Ministerio de Planificación del Desarrollo (MPD) de Bolivia</a></li>
+              <li><a href="#">Asamblea Legislativa Plurinacional de Bolivia</a></li>
+              <li><a href="#">Autoridades Públicas de Bolivia</a></li>
+              <li><a href="#">Presidencia de Bolivia</a></li>
             </ul>
     </div>
 
