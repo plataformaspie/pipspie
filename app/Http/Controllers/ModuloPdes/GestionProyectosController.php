@@ -286,7 +286,7 @@ class GestionProyectosController extends Controller
                                 p.cod_p, m.cod_m, r.cod_r, a.cod_a,
                                 pr.codigo, pr.nombre_proyecto, r.descripcion AS desc_r, a.descripcion AS desc_a,
                                 concat(p.cod_p,'.',m.cod_m,'.',r.cod_r,'.',a.cod_a) AS cod_pmra,
-                                ai.id as id_accion, ai.sisin,
+                                ai.id as id_accion, ai.sisin, ai.desc_indicador_proceso,
                                  e.nombre as ejecutor, sb.nombre as responsable
                                 FROM
                                 pilar AS p
@@ -294,7 +294,7 @@ class GestionProyectosController extends Controller
                                 JOIN resultado AS r ON r.meta = m.id
                                 JOIN acciones AS a ON a.resultado = r.id
                                 LEFT JOIN accion AS ai ON ai.accion = a.id AND ai.estado = 1 AND ai.tipo <> 1
-                                LEFT JOIN entidad AS e ON ai.entidad = e.id
+                                LEFT JOIN entidad AS e ON ai.entidad = e.id AND e.tipo <> -1
                                 LEFT JOIN entidad_responsable AS er ON er.accion = ai.id
                                 LEFT JOIN sub_entidad AS sb ON er.entidad_responsable = sb.id
                                 LEFT JOIN proyectos as pr ON ai.proyecto = pr.id
@@ -320,6 +320,7 @@ class GestionProyectosController extends Controller
                 $pmraa->desc_a = $item->desc_a;
                 $pmraa->cod_pmra = $item->cod_pmra;
                 $pmraa->sisin = $item->sisin;
+                $pmraa->desc_indicador_proceso = $item->desc_indicador_proceso;
                 $pmraa->ejecutor = $item->ejecutor;
                 $responsables = $items->reduce(function($carry, $item){
                     if($carry == null)

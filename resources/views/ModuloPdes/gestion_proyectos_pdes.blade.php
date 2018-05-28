@@ -535,7 +535,7 @@ $(function ()
             };
             var htmlInf = function(){
                 var badgeCountPullRight = '';
-                var htmlinf ='<h5 class="p10"><b>Pilar, Meta, Res, Accion de Proyecto en SP </b>  $badgeCountPullRight </h5>' ;
+                var htmlinf ='<h5 class="p10"><b>Pilar, Meta, Res, Accion de Proyecto en SP </b>  ......- </h5>' ; // los caracteres ......- se remplazaran mas adelante por el numero correspondiente en la variable badgeCountPullRight
                 ctxElem.inf.html(htmlinf);
                 $.get(cnf.urlBase + '/gestionproyectos/sp/obtener_proyecto_sp/' + ctxList.objSel.codigo, function(res){
                     var proyectoSP = res.data;
@@ -578,6 +578,7 @@ $(function ()
                                     return anterior + '<li>' + item + '</li>';
                                 },'') 
                                 +'          </ul>'
+                                +'          <br><b>Indicadores de Proceso: </b>' + r.desc_indicador_proceso
                                 +'      </div>'
                                 +'</li>';                        }
                                 htmlinf += '</ul>';
@@ -589,7 +590,7 @@ $(function ()
                         }
 
                         htmlinf += '</div>' ;
-                        htmlinf = htmlinf.replace('$badgeCountPullRight', badgeCountPullRight);
+                        htmlinf = htmlinf.replace('......-', badgeCountPullRight);
                         ctxElem.inf.html(htmlinf);
                     }
                 });
