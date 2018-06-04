@@ -32,9 +32,12 @@
             <div id="contenido_proys" class="col-md-8">
                 <div class="box white-box p-10">
                     <h3 class="box-title"> Lista de proyectos PDES <b><span id="cantidad_proyectos"></span></b>
+                        <a href="{{ url("api/modulopdes/gestionproyectos/export/excel") }}"  target="blank" class="btn btn-success pull-right">excel</a>
+
                         <button id="btnAgregarEditar" class="btn btn-primary  waves-effect waves-light pull-right"  >  <!-- data-toggle="modal" data-target="#form_proyecto"  --> 
                             <i class="fa fa-plus m-l-5"></i><span> Agregar Proyecto</span> 
                         </button>
+
                     </h3>
                     <div id='jqxNavBarList'>
                         <div>

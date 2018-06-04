@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\ModuloPdes;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ModuloPdes\ProyectoPdes as Proyecto;
+use Illuminate\Http\Request;
 
 class GestionProyectosController extends Controller
 {
@@ -16,33 +16,35 @@ class GestionProyectosController extends Controller
      */
     public function __construct()
     {
-       // $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            $this->user= \Auth::user();
+        // $this->middleware('auth');
+        $this->middleware(function ($request, $next)
+        {
+            $this->user = \Auth::user();
             return $next($request);
         });
     }
 
-
     public function index()
     {
-        $this->user= \Auth::user();
-        $rol = (int) $this->user->id_rol;
-        $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
+        $this->user    = \Auth::user();
+        $rol           = (int) $this->user->id_rol;
+        $sql           = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = " . $rol . " ORDER BY orden ASC");
         $this->modulos = array();
-        foreach ($sql as $mn) {
-            array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
+        foreach ($sql as $mn)
+        {
+            array_push($this->modulos, array('id' => $mn->id, 'titulo' => $mn->titulo, 'descripcion' => $mn->descripcion, 'url' => $mn->url, 'icono' => $mn->icono, 'target' => $mn->target, 'id_html' => $mn->id_html));
         }
 
-        $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 1 ORDER BY m.orden ASC");
+        $sql         = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = " . $rol . " AND id_modulo = 1 ORDER BY m.orden ASC");
         $this->menus = array();
 
-        foreach ($sql as $mn) {
-            $submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = ".$mn->id." ORDER BY orden ASC");
-            array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'submenus' => $submenu));
+        foreach ($sql as $mn)
+        {
+            $submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " ORDER BY orden ASC");
+            array_push($this->menus, array('id' => $mn->id, 'titulo' => $mn->titulo, 'descripcion' => $mn->descripcion, 'url' => $mn->url, 'icono' => $mn->icono, 'id_html' => $mn->id_html, 'submenus' => $submenu));
         }
 
-        \View::share(['modulos'=> $this->modulos,'menus'=>$this->menus]);
+        \View::share(['modulos' => $this->modulos, 'menus' => $this->menus]);
 
         return view('ModuloPdes.gestion_proyectos_pdes');
     }
@@ -54,51 +56,57 @@ class GestionProyectosController extends Controller
      */
     public function insertar(Request $request)
     {
-        $estado = '';
+        $estado   = '';
         $proyecto = null;
         if ($request->id == null)
         {
-            $proyNuevo = new Proyecto();
+            $proyNuevo                  = new Proyecto();
             $proyNuevo->nombre_proyecto = strtoupper(trim($request->nombre_proyecto));
-            $proyNuevo->codigo = $request->codigo;
-            $proyNuevo->sector = strtoupper(trim($request->sector));
-            $proyNuevo->costo_total = $request->costo_total;
-            $proyNuevo->responsable = ($request->responsable == null) ? '' : $request->responsable;
+            $proyNuevo->codigo          = $request->codigo;
+            $proyNuevo->sector          = strtoupper(trim($request->sector));
+            $proyNuevo->costo_total     = $request->costo_total;
+            $proyNuevo->responsable     = ($request->responsable == null) ? '' : $request->responsable;
             $proyNuevo->save();
-            $estado = 'insertado';
+            $estado   = 'insertado';
             $proyecto = $proyNuevo;
         }
         else
         {
-            $proyExist = Proyecto::find($request->id);
+            $proyExist                  = Proyecto::find($request->id);
             $proyExist->nombre_proyecto = strtoupper(trim($request->nombre_proyecto));
-            $proyExist->codigo = $request->codigo;
-            $proyExist->sector = strtoupper(trim($request->sector));
-            $proyExist->costo_total = $request->costo_total;
-            $proyExist->responsable = ($request->responsable == null) ? '' : $request->responsable;
+            $proyExist->codigo          = $request->codigo;
+            $proyExist->sector          = strtoupper(trim($request->sector));
+            $proyExist->costo_total     = $request->costo_total;
+            $proyExist->responsable     = ($request->responsable == null) ? '' : $request->responsable;
             $proyExist->save();
-            $estado = 'actualizado';
+            $estado   = 'actualizado';
             $proyecto = $proyExist;
         }
 
-        if(count($request->resultados) > 0)
+        if (count($request->resultados) > 0)
         {
-            \DB::table('spie_resultados_proyectos_pdes')->where('id_proyecto_pdes', $proyecto->id )->delete();
-            for($i=0; $i<count($request->resultados); $i++)
+            \DB::table('spie_resultados_proyectos_pdes')->where('id_proyecto_pdes', $proyecto->id)->delete();
+            for ($i = 0; $i < count($request->resultados); $i++)
+            {
                 \DB::table('spie_resultados_proyectos_pdes')->insert(['id_proyecto_pdes' => $proyecto->id, 'id_resultado' => $request->resultados[$i]]);
+            }
+
         }
 
-        if(count($request->sisinweb > 0) )
+        if (count($request->sisinweb > 0))
         {
-            \DB::table('spie_proyectos_pdes_sisinweb')->where('id_proyecto_pdes', $proyecto->id )->delete();
-            for($i=0; $i<count($request->sisinweb); $i++)
+            \DB::table('spie_proyectos_pdes_sisinweb')->where('id_proyecto_pdes', $proyecto->id)->delete();
+            for ($i = 0; $i < count($request->sisinweb); $i++)
+            {
                 \DB::table('spie_proyectos_pdes_sisinweb')->insert(['id_proyecto_pdes' => $proyecto->id, 'id_sisinweb' => $request->sisinweb[$i]]);
+            }
+
         }
 
         return response()->json([
-                        'mensaje' => 'ok',
-                        'estado' => $estado,
-                        'data' => $proyecto
+            'mensaje' => 'ok',
+            'estado'  => $estado,
+            'data'    => $proyecto,
         ]);
     }
 
@@ -112,8 +120,8 @@ class GestionProyectosController extends Controller
     {
         $proyecto = Proyecto::find($id);
         return response()->json([
-                        'mensaje' => 'ok',
-                        'data' => $proyecto
+            'mensaje' => 'ok',
+            'data'    => $proyecto,
         ]);
     }
 
@@ -133,7 +141,7 @@ class GestionProyectosController extends Controller
                                                 LEFT JOIN spie_metas m ON p.cod_m = m.cod_m AND m.pilar = pi.id
                                                 LEFT JOIN spie_resultados_proyectos_pdes rp ON p.id = rp.id_proyecto_pdes
                                                 LEFT JOIN spie_resultados r ON rp.id_resultado = r.id
-                                                ORDER BY pi.cod_p, m.cod_m, p.codigo  " ) );
+                                                ORDER BY pi.cod_p, m.cod_m, p.codigo  "));
 
         $proyectosResGroup = $proyectosRes->groupBy('id_proyecto');
 
@@ -155,7 +163,8 @@ class GestionProyectosController extends Controller
         foreach ($proyectosResGroup as $keyP => $valP)
         {
             $id_proyectoPDES = $keyP;
-            $existeProySisin =  $proyectoSisinGroup->contains(function($item, $key) use ($id_proyectoPDES){
+            $existeProySisin = $proyectoSisinGroup->contains(function ($item, $key) use ($id_proyectoPDES)
+            {
                 return $key == $id_proyectoPDES;
             });
 
@@ -163,29 +172,30 @@ class GestionProyectosController extends Controller
 
             $proy = $valP[0];
 
-            $resultadosAsoc = ($valP[0]->id_r == null) ? [] : $valP->map(function($item){
-                                                                        return [
-                                                                                'cod_r' => $item->cod_r,
-                                                                                'desc_r' => $item->desc_r,
-                                                                                'id_r' => $item->id_r,
-                                                                                'cod_pmr' => $item->cod_pmr
-                                                                            ];
-                                                                    });
+            $resultadosAsoc = ($valP[0]->id_r == null) ? [] : $valP->map(function ($item)
+            {
+                return [
+                    'cod_r'   => $item->cod_r,
+                    'desc_r'  => $item->desc_r,
+                    'id_r'    => $item->id_r,
+                    'cod_pmr' => $item->cod_pmr,
+                ];
+            });
             $item = [
-                'id'                =>  $proy->id_proyecto,
-                'cod_pm'            =>  $proy->cod_pm,
-                'nombre_proyecto'   =>  $proy->nombre_proyecto,
-                'codigo'            =>  $proy->codigo,
-                'sector'            =>  $proy->sector,
-                'costo_total'       =>  $proy->costo_total,
-                'responsable'       =>  $proy->responsable,
-                'cod_p'             =>  $proy->cod_p,
-                'desc_p'            =>  $proy->desc_p,
-                'cod_m'             =>  $proy->cod_m,
-                'desc_m'            =>  $proy->desc_m,
-                'resultados_count'  =>  count($resultadosAsoc),
-                'resultados'        =>  $resultadosAsoc,
-                'sisinweb_count'    =>  count($sisinAsoc),
+                'id'               => $proy->id_proyecto,
+                'cod_pm'           => $proy->cod_pm,
+                'nombre_proyecto'  => $proy->nombre_proyecto,
+                'codigo'           => $proy->codigo,
+                'sector'           => $proy->sector,
+                'costo_total'      => $proy->costo_total,
+                'responsable'      => $proy->responsable,
+                'cod_p'            => $proy->cod_p,
+                'desc_p'           => $proy->desc_p,
+                'cod_m'            => $proy->cod_m,
+                'desc_m'           => $proy->desc_m,
+                'resultados_count' => count($resultadosAsoc),
+                'resultados'       => $resultadosAsoc,
+                'sisinweb_count'   => count($sisinAsoc),
                 // 'sisinweb'          =>  $sisinAsoc,
             ];
 
@@ -194,8 +204,8 @@ class GestionProyectosController extends Controller
 
         return response()->json([
             'mensaje' => 'ProyectosPdes',
-            'estado' => 'ok',
-            'datos' => $respuesta
+            'estado'  => 'ok',
+            'datos'   => $respuesta,
         ]);
     }
 
@@ -222,7 +232,6 @@ class GestionProyectosController extends Controller
     //                         AND ps.id_sisinweb = s.id"));
 
     //     $proyectoSisinGroup = $proyectosSisin->groupBy('id_proyecto');
-
 
     //     $respuesta = array();
     //     foreach ($proyectosResGroup as $keyP => $valP)
@@ -271,7 +280,6 @@ class GestionProyectosController extends Controller
     //     ]);
     // }
 
-
     /*--------------------------------------------------------------------------------------
     |   Obtiene el proyecto asosciado al SP , con codigo PMRA
     |
@@ -282,7 +290,7 @@ class GestionProyectosController extends Controller
                                     FROM proyectos where estado = 1 AND  codigo = {$codigoDemanda} "))->first();
 
         $contextoProyecto = array();
-        $ctxProyecto = collect(\DB::connection('dbsp')->select("SELECT distinct
+        $ctxProyecto      = collect(\DB::connection('dbsp')->select("SELECT distinct
                                 p.cod_p, m.cod_m, r.cod_r, a.cod_a,
                                 pr.codigo, pr.nombre_proyecto, r.descripcion AS desc_r, a.descripcion AS desc_a,
                                 concat(p.cod_p,'.',m.cod_m,'.',r.cod_r,'.',a.cod_a) AS cod_pmra,
@@ -300,33 +308,40 @@ class GestionProyectosController extends Controller
                                 LEFT JOIN proyectos as pr ON ai.proyecto = pr.id
                                 WHERE pr.codigo = {$codigoDemanda}"));
 
-
         /*-----------------------------------------------------------------------------------------------------------
         |   un proyecto puede estar en mas de un pmra, solo tiene un ejecutor y puede tener varios responsables,
         |   por lo tanto se hace un groupBy por la tabla accion que es el vinculante, y se transforman las collectiones resultantes
          */
-        if($ctxProyecto->count() > 0)
+        if ($ctxProyecto->count() > 0)
         {
-            $groups = $ctxProyecto->groupBy('id_accion')->values();
-            $transfomadoPMRAA = $groups->map(function($items){
-                $item = $items->first();
-                $pmraa = new \stdClass();
-                $pmraa->id_accion = $item->id_accion;
-                $pmraa->cod_p = $item->cod_p;
-                $pmraa->cod_m = $item->cod_m;
-                $pmraa->cod_r = $item->cod_r;
-                $pmraa->cod_a = $item->cod_a;
-                $pmraa->desc_r = $item->desc_r;
-                $pmraa->desc_a = $item->desc_a;
-                $pmraa->cod_pmra = $item->cod_pmra;
-                $pmraa->sisin = $item->sisin;
+            $groups           = $ctxProyecto->groupBy('id_accion')->values();
+            $transfomadoPMRAA = $groups->map(function ($items)
+            {
+                $item                          = $items->first();
+                $pmraa                         = new \stdClass();
+                $pmraa->id_accion              = $item->id_accion;
+                $pmraa->cod_p                  = $item->cod_p;
+                $pmraa->cod_m                  = $item->cod_m;
+                $pmraa->cod_r                  = $item->cod_r;
+                $pmraa->cod_a                  = $item->cod_a;
+                $pmraa->desc_r                 = $item->desc_r;
+                $pmraa->desc_a                 = $item->desc_a;
+                $pmraa->cod_pmra               = $item->cod_pmra;
+                $pmraa->sisin                  = $item->sisin;
                 $pmraa->desc_indicador_proceso = $item->desc_indicador_proceso;
-                $pmraa->ejecutor = $item->ejecutor;
-                $responsables = $items->reduce(function($carry, $item){
-                    if($carry == null)
+                $pmraa->ejecutor               = $item->ejecutor;
+                $responsables                  = $items->reduce(function ($carry, $item)
+                {
+                    if ($carry == null)
+                    {
                         $carry = array();
-                    if($item->responsable != null)
+                    }
+
+                    if ($item->responsable != null)
+                    {
                         $carry[] = $item->responsable;
+                    }
+
                     return $carry;
                 });
                 $pmraa->responsables = $responsables;
@@ -336,12 +351,12 @@ class GestionProyectosController extends Controller
             $proyectoSP->contextoProyecto = $transfomadoPMRAA;
         }
 
-        $mensaje = ($proyectoSP  == null) ? 'No existe el Proyecto en SP' : 'ok';
+        $mensaje = ($proyectoSP == null) ? 'No existe el Proyecto en SP' : 'ok';
         return response()->json([
-            'estado'=>'ok',
-            'mensaje'=> $mensaje,
-            'data' => $proyectoSP
-        ]) ;
+            'estado'  => 'ok',
+            'mensaje' => $mensaje,
+            'data'    => $proyectoSP,
+        ]);
     }
 
     /**------------------------------------------------------------------------------------------------
@@ -353,9 +368,9 @@ class GestionProyectosController extends Controller
     public function buscarSisin(Request $params)
     {
         $sisin = [];
-        if($params->term)
+        if ($params->term)
         {
-            $term = $params->term;
+            $term  = $params->term;
             $sisin = \DB::select("SELECT s.id as id_sisinweb, s.codigo_sisin,  s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra
 
                 -- s.depto, s.prov, s.mun, s.monto_presupuestado
@@ -365,10 +380,10 @@ class GestionProyectosController extends Controller
                 ilike '%{$term}%'
                 order by s.nombre_proyecto");
         }
-        if($params->id_proyecto_pdes)
+        if ($params->id_proyecto_pdes)
         {
             $id_proyecto_pdes = $params->id_proyecto_pdes;
-            $sisin = \DB::select("SELECT s.id as id_sisinweb, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra,
+            $sisin            = \DB::select("SELECT s.id as id_sisinweb, s.nombre_proyecto, s.entidad, s.sector, s.cod_accion_plan as cod_pmra,
                 n_pilar as cod_p, n_meta as cod_m, n_resultado as cod_r, n_accion as cod_a,
                 s.codigo_sisin, d.depto, d.prov, d.mun, d.monto_presupuestado
                 FROM sisin_web s, sisin_web_datos d, spie_proyectos_pdes_sisinweb ps
@@ -376,9 +391,9 @@ class GestionProyectosController extends Controller
         }
 
         return response()->json([
-            'mensaje'=>'Proyectos_SISINWEB',
-            'estado'=>'ok',
-            'datos' => $sisin
+            'mensaje' => 'Proyectos_SISINWEB',
+            'estado'  => 'ok',
+            'datos'   => $sisin,
         ]);
     }
 
@@ -386,20 +401,20 @@ class GestionProyectosController extends Controller
     |   Funcion que devuelve lista segun la Op que se envie, mediante GET.
     |   Usada para cargar los combos de la aplicacion
     |   op:['sectores','instituciones','sisinweb','resultados']
-    */
+     */
     public function listar($op)
     {
         $op = strtolower($op);
-        if(str_contains('sectores', $op))
+        if (str_contains('sectores', $op))
         {
             $sectores = \DB::table('spie_proyectos_pdes')->select('sector')->distinct()->orderBy('sector')->get();
             return response()->json([
-                'mensaje'=>'Sectores',
-                'estado'=>'ok',
-                'datos' => $sectores]);
+                'mensaje' => 'Sectores',
+                'estado'  => 'ok',
+                'datos'   => $sectores]);
         }
 
-        if(str_contains('resultados', $op))
+        if (str_contains('resultados', $op))
         {
             $resultados = \DB::select("SELECT r.id as id_r, p.cod_p, m.cod_m, r.cod_r, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r) as cod_pmr,
                 r.descripcion, (p.cod_p|| '.' || m.cod_m||'.'|| r.cod_r||' - '|| r.descripcion) as  descripcion_pmr
@@ -407,19 +422,19 @@ class GestionProyectosController extends Controller
                 WHERE p.id = m.pilar AND m.id = r.meta
                 ORDER BY p.cod_p, m.cod_m, r.cod_r");
             return response()->json([
-                'mensaje'=>'Resultados',
-                'estado'=>'ok',
-                'datos' => $resultados
+                'mensaje' => 'Resultados',
+                'estado'  => 'ok',
+                'datos'   => $resultados,
             ]);
         }
-        if(str_contains('instituciones', $op))
+        if (str_contains('instituciones', $op))
         {
             $instituciones = \DB::select("SELECT s.id, s.nombre, s.codigo, s.sigla, (s.codigo || ' - ' || s.nombre) as descripcion
                 FROM spie_instituciones s order by s.codigo");
             return response()->json([
-                'mensaje'=>'Instituciones',
-                'estado'=>'ok',
-                'datos' => $instituciones
+                'mensaje' => 'Instituciones',
+                'estado'  => 'ok',
+                'datos'   => $instituciones,
             ]);
         }
         // if(str_contains('sisinweb', $op))
@@ -437,29 +452,82 @@ class GestionProyectosController extends Controller
 
     }
 
-    /**-----------------------------------------------------------------------------------------------------------------------
-     |  NO EJECUTAR, solo la primera vez o con suma observacion , TODO: modificar para solo insertar los nuevos datos ????
-     |  Funcion para introducir en la tabla spie_resultados_proyectos_pdes en los campos id_proyecto_pdes y id_resultado ,
-     |  la vinculacion que se tiene en el SP entre las tablas proyectos, accion, acciones y resultado
+    /*--------------------------------------------------------------------------
+    |   Funcion para exportar EXCEL
+    |   
      */
-    function insertarResultadosProyectosPdes()
+    public function exportExcel()
+    {
+        $proyectos = collect(\DB::connection('dbsp')->select("SELECT pr.id, pr.codigo AS cod_demanda, pr.nombre_proyecto, pr.sector, pr.pilar, pr.meta
+                                , p.cod_p AS P, m.cod_m AS M, r.cod_r AS R, a.cod_a AS A, a.descripcion AS descripcion_accion
+                                , ai.desc_indicador_proceso, e.nombre AS entidad
+                                FROM proyectos pr 
+                                LEFT JOIN accion ai on ai.proyecto = pr.id and ai.estado = 1 and ai.tipo <> 1 
+                                LEFT JOIN acciones a on ai.accion = a.id
+                                LEFT JOIN resultado r on a.resultado = r.id
+                                LEFT JOIN meta m on m.id = r.meta
+                                LEFT JOIN pilar p on p.id = m.pilar
+                                LEFT JOIN entidad e on ai.entidad = e.id and entidad <> -1
+
+                                WHERE 1 = 1 and LENGTH(pr.codigo) >= 9 
+                                -- group by pr.id
+                                ORDER BY pr.codigo"));
+
+        \Excel::create('d_excel', function ($excel) use ($proyectos)
+        {
+            $excel->sheet('misdatos', function ($hoja) use($proyectos)
+            {                
+                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'P', 'M', 'R', 'A', 'DESCRIPCION_ACCION', 'INDICADOR_PROCESO', 'ENTIDAD'];
+                $hoja->row(1, $cabecera);
+
+                foreach ($proyectos as $index => $proy) {
+                    $fila = [
+                        $proy->cod_demanda,
+                        $proy->nombre_proyecto,
+                        $proy->sector,
+                        $proy->pilar, $proy->meta,
+                        $proy->P, $proy->M, $proy->R, $proy->A, $proy->descripcion_accion,
+                        $proy->desc_indicador_proceso, $proy->entidad
+                    ];
+                    $hoja->row($index+2, $fila);
+                }
+
+                $hoja->row(1, function($row) { 
+                    $row->setBackground('#22CC33'); 
+                    $row->setAlignment('center');
+                    $row->setFontWeight('bold');
+                });
+                // $endCell = str_repeat(chr(count($cabecera) % 26 + 64), ceil(count($cabecera)/26)) . (count($proyectos)+1);
+                $hoja->setBorder('A1:L'  . (count($proyectos)+1), 'thin');     
+                $hoja->setWidth(array('B'=>70, 'J'=>70, 'K'=>70, 'F'=>3,'G'=>3,'H'=>5,'I'=>3 )) ;      
+            });
+
+        })->export('xlsx');
+    }
+
+    /**-----------------------------------------------------------------------------------------------------------------------
+    |  NO EJECUTAR, solo la primera vez o con suma observacion , TODO: modificar para solo insertar los nuevos datos ????
+    |  Funcion para introducir en la tabla spie_resultados_proyectos_pdes en los campos id_proyecto_pdes y id_resultado ,
+    |  la vinculacion que se tiene en el SP entre las tablas proyectos, accion, acciones y resultado
+     */
+    public function insertarResultadosProyectosPdes()
     {
         $proyectosResultadosSP = collect(\DB::connection("dbsp")->select(" SELECT DISTINCT pr.id AS id_proyecto, r.id AS id_resultado
                                                 FROM proyectos pr, accion ai, acciones a, resultado r
                                                 WHERE ai.proyecto = pr.id AND ai.estado = 1 AND ai.tipo <> 1
                                                 AND ai.accion = a.id AND a.resultado = r.id "));
 
-        foreach ($proyectosResultadosSP as $item) {
+        foreach ($proyectosResultadosSP as $item)
+        {
             \DB::table('spie_resultados_proyectos_pdes')->insert(['id_proyecto_pdes' => $item->id_proyecto, 'id_resultado' => $item->id_resultado]);
         }
 
         $datosNuevos = \DB::select("SELECT * from spie_resultados_proyectos_pdes");
 
         return response()->json([
-                    'msg'=>'Insertados en spie_resultado_proyecto_pdes',
-                    'data'=>$datosNuevos
-                ]);
-
+            'msg'  => 'Insertados en spie_resultado_proyecto_pdes',
+            'data' => $datosNuevos,
+        ]);
 
     }
 

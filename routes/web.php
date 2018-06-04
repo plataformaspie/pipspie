@@ -202,8 +202,9 @@ Route::group(['middleware' => 'auth'],function(){
               // Route::get('gestionproyectos/sp/insetar_resultados_proyectos_pdes',  'ModuloPdes\GestionProyectosController@insertarResultadosProyectosPdes');
               Route::get('gestionproyectos/sp/obtener_proyecto_sp/{codigo}',  'ModuloPdes\GestionProyectosController@obtenerProyectoSP');
 
+              Route::get('gestionproyectos/export/excel',  'ModuloPdes\GestionProyectosController@exportExcel');
 
-		  }
+            }
       );
 });
 
