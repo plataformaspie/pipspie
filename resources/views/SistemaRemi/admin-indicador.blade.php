@@ -944,15 +944,19 @@
                   }
                 },
                 error:function(data){
-                  $.toast({
-                   heading: 'Error:',
-                   text: 'Error al recuperar los datos.',
-                   position: 'top-right',
-                   loaderBg:'#ff6849',
-                   icon: 'error',
-                   hideAfter: 3500
+                  if(data.status != 401){
+                    $.toast({
+                      heading: 'Error:',
+                      text: 'Error al recuperar los datos.',
+                      position: 'top-right',
+                      loaderBg:'#ff6849',
+                      icon: 'error',
+                      hideAfter: 3500
 
-                 });
+                    });
+                  }else{
+                    window.location = '/login';
+                  }
                 }
           });
           // hacer algo aquí si el elemento existe
@@ -1015,15 +1019,19 @@
                           }
                     },
                     error:function(data){
-                      $.toast({
-                       heading: 'Error:',
-                       text: 'Error al recuperar los datos.',
-                       position: 'top-right',
-                       loaderBg:'#ff6849',
-                       icon: 'error',
-                       hideAfter: 3500
+                      if(data.status != 401){
+                        $.toast({
+                          heading: 'Error:',
+                          text: 'Error al recuperar los datos.',
+                          position: 'top-right',
+                          loaderBg:'#ff6849',
+                          icon: 'error',
+                          hideAfter: 3500
 
-                     });
+                        });
+                      }else{
+                        window.location = '/login';
+                      }
                     }
           });
                   // hacer algo aquí si el elemento existe
@@ -1222,38 +1230,40 @@
 
 
      $("#fuente_datos").change(function () {
-       $("#datosFD").html('');
-       $.ajax({
-             url: "{{ url('/api/sistemaremi/apiSetFuenteDatos') }}",
-             data: { 'fuente': $(this).val()},
-             type: "get",
-             dataType: 'json',
-             success: function(date){
-               $.each(date.item, function(i, data) {
-                   var html= '<div class="row">'+
-                                   '<div class="media row col-lg-12 ">'+
-                                       '<div class="row col-lg-12">'+
-                                            '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
-                                            '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
-                                            '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'.</div>'+
-                                            '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'.</div>'+
-                                            '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
-                                            '<div class="col-6"><b>Principales variables:</b> '+data.variable+'.</div>'+
-                                            '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
-                                            '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'.</div>'+
-                                      '</div>'+
-                                  '</div>'+
-                               '</div>';
-                   $("#datosFD").append(html);
-               });
+         $("#datosFD").html('');
+         $.ajax({
+               url: "{{ url('/api/sistemaremi/apiSetFuenteDatos') }}",
+               data: { 'fuente': $(this).val()},
+               type: "get",
+               dataType: 'json',
+               success: function(date){
+                 $.each(date.item, function(i, data) {
+                     var html= '<div class="row">'+
+                                     '<div class="media row col-lg-12 ">'+
+                                         '<div class="row col-lg-12">'+
+                                              '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
+                                              '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
+                                              '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'.</div>'+
+                                              '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'.</div>'+
+                                              '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
+                                              '<div class="col-6"><b>Principales variables:</b> '+data.variable+'.</div>'+
+                                              '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
+                                              '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'.</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                 '</div>';
+                     $("#datosFD").append(html);
+                 });
 
-             },
-             error:function(data){
-               console.log("no se recupero nada");
-             }
-       });
-
-
+               },
+               error:function(data){
+                 if(data.status != 401){
+                   console.log("no se recupero nada");
+                 }else{
+                   window.location = '/login';
+                 }
+               }
+         });
      });
 
 
@@ -1427,7 +1437,11 @@
                            $('#ARC'+ele).remove();
                        },
                        error:function(data){
-                         alert("Error recuperar al eliminar.");
+                         if(data.status != 401){
+                           alert("Error recuperar al eliminar.");
+                         }else{
+                           window.location = '/login';
+                         }
                        }
                    });
             }else{
@@ -1595,15 +1609,18 @@
                }
              },
              error:function(data){
-               $.toast({
-                heading: 'Error:',
-                text: 'Error al recuperar los datos.',
-                position: 'top-right',
-                loaderBg:'#ff6849',
-                icon: 'error',
-                hideAfter: 3500
-
-              });
+               if(data.status != 401){
+                 $.toast({
+                   heading: 'Error:',
+                   text: 'Error al recuperar los datos.',
+                   position: 'top-right',
+                   loaderBg:'#ff6849',
+                   icon: 'error',
+                   hideAfter: 3500
+                 });
+               }else{
+                 window.location = '/login';
+               }
              }
        });
 
@@ -1629,7 +1646,12 @@
                        swal("Eliminado!", "Se ha eliminado tu registro.", "success");
                    },
                    error:function(data){
-                     alert("Error recuperar los datos.");
+                     if(data.status != 401){
+                       alert("Error recuperar los datos.");
+                     }else{
+                       window.location = '/login';
+                     }
+
                    }
              });
         });
@@ -1668,15 +1690,20 @@
                     }
                   },
                   error:function(data){
-                    $.toast({
-                     heading: 'Error:',
-                     text: 'Error al recuperar los datos.',
-                     position: 'top-right',
-                     loaderBg:'#ff6849',
-                     icon: 'error',
-                     hideAfter: 3500
+                    if(data.status != 401){
+                      $.toast({
+                        heading: 'Error:',
+                        text: 'Error al recuperar los datos.',
+                        position: 'top-right',
+                        loaderBg:'#ff6849',
+                        icon: 'error',
+                        hideAfter: 3500
 
-                   });
+                      });
+                    }else{
+                      window.location = '/login';
+                    }
+
                   }
             });
       });
@@ -1706,15 +1733,20 @@
                 }
               },
               error:function(data){
-                $.toast({
-                 heading: 'Error:',
-                 text: 'Error al recuperar los datos.',
-                 position: 'top-right',
-                 loaderBg:'#ff6849',
-                 icon: 'error',
-                 hideAfter: 3500
+                if(data.status != 401){
+                  $.toast({
+                    heading: 'Error:',
+                    text: 'Error al recuperar los datos.',
+                    position: 'top-right',
+                    loaderBg:'#ff6849',
+                    icon: 'error',
+                    hideAfter: 3500
 
-               });
+                  });
+                }else{
+                  window.location = '/login';
+                }
+
               }
         });
       } else {
@@ -1753,31 +1785,41 @@
     });
 
     function updateComboFuente(){
+        var combo = $("#fuente_datos").val();
+        var arraySel = JSON.parse("[" + combo + "]");
         $("#fuente_datos").empty();
         $.ajax({
               type: "get",
               url: "{{ url('/api/sistemaremi/apiUpdateComboFuente') }}",
               dataType: 'json',
               success: function(data){
-                $.each(data.item, function(i, data) {
-                    $("#fuente_datos").append('<option value="'+data.id+'">'+data.nombre+'</option>');
-                    $('#window').jqxWindow('close');
-                    $("#formAddFuente")[0].reset();
-                    $("#fd_cobertura_geografica").val('').trigger('change');
-                    //$("#fd_variable").val('').trigger('change');
-                    $("#set_responsables > tbody").html("");
-                });
+                  $.each(data.item, function(i, data) {
+                      if($.inArray(data.id, arraySel) == -1){
+                        $("#fuente_datos").append('<option value="'+data.id+'">'+data.nombre+'</option>');
+                      }else{
+                        $("#fuente_datos").append('<option value="'+data.id+'" selected>'+data.nombre+'</option>');
+                      }
+                  });
+                  $('#window').jqxWindow('close');
+                  $("#formAddFuente")[0].reset();
+                  $("#fd_cobertura_geografica").val('').trigger('change');
+                  //$("#fd_variable").val('').trigger('change');
+                  $("#set_responsables > tbody").html("");
               },
               error:function(data){
-                $.toast({
-                 heading: 'Error:',
-                 text: 'Error al recuperar los datos.',
-                 position: 'top-right',
-                 loaderBg:'#ff6849',
-                 icon: 'error',
-                 hideAfter: 3500
+                if(data.status != 401){
+                  $.toast({
+                    heading: 'Error:',
+                    text: 'Error al recuperar los datos.',
+                    position: 'top-right',
+                    loaderBg:'#ff6849',
+                    icon: 'error',
+                    hideAfter: 3500
+                  });
+                }else{
+                  window.location = '/login';
+                }
 
-               });
               }
         });
     }

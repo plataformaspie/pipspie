@@ -349,7 +349,11 @@
                             $('#myTable').html(data);
                     },
                     error:function(data){
-                      alert("Error recuperar los datos.");
+                      if(data.status != 401){
+                        alert("Error recuperar los datos.");
+                      }else{
+                        window.location = '/login';
+                      }
                     }
               });
             }
@@ -385,7 +389,11 @@
                        $('#myTable').html(data);
                },
                error:function(data){
-                 alert("Error recuperar los datos.");
+                 if(data.status != 401){
+                   alert("Error recuperar los datos.");
+                 }else{
+                   window.location = '/login';
+                 }
                }
          });
        }

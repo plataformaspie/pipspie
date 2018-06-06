@@ -254,6 +254,8 @@ class IndicadorController extends Controller
 
   public function apiSaveIndicador(Request $request)
   {
+    $this->user= \Auth::user();
+
     $codigo = "";
     if(!$request->id_indicador){
 
@@ -285,6 +287,7 @@ class IndicadorController extends Controller
             $indicador->observacion = $request->observacion;
             $indicador->estado = 1;
             $indicador->logo = "default.png";
+            $indicador->id_user = $this->user->id;
             $dia = null;
             $mes = null;
             $anio = null;
@@ -310,6 +313,7 @@ class IndicadorController extends Controller
                     $indicadorPdes = new IndicadorResultado();
                     $indicadorPdes->id_indicador = $indicador->id;
                     $indicadorPdes->id_resultado = $request->resultado_articulado[$k];
+                    $indicadorPdes->id_user = $this->user->id;
                     $indicadorPdes->save();
               }
             }
@@ -320,6 +324,7 @@ class IndicadorController extends Controller
                 $metas->id_indicador = $indicador->id;
                 $metas->gestion = $metasList[$i];
                 $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
+                $metas->id_user = $this->user->id;
                 $metas->save();
             }
 
@@ -339,6 +344,7 @@ class IndicadorController extends Controller
                     $avance->fecha_generado_anio = $anio;
                     $avance->fecha_reportado = date('Y-m-d');
                     $avance->valor =  ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
+                    $avance->id_user = $this->user->id;
                     $avance->save();
               }
             }
@@ -350,6 +356,7 @@ class IndicadorController extends Controller
                     $archivos->nombre =  $request->arc_nombre[$k];
                     $archivos->archivo = $request->arc_archivo[$k];
                     $archivos->activo = true;
+                    $archivos->id_user = $this->user->id;
                     $archivos->save();
               }
             }
@@ -400,6 +407,7 @@ class IndicadorController extends Controller
             $indicador->serie_disponible = $request->serie_disponible;
             $indicador->observacion = $request->observacion;
             $indicador->logo = "default.png";
+            $indicador->id_user_updated = $this->user->id;
             $dia = null;
             $mes = null;
             $anio = null;
@@ -424,10 +432,13 @@ class IndicadorController extends Controller
                         $indicadorPdes = new IndicadorResultado();
                         $indicadorPdes->id_indicador = $indicador->id;
                         $indicadorPdes->id_resultado = $request->resultado_articulado[$k];
+                        $indicadorPdes->id_user = $this->user->id;
                         $indicadorPdes->save();
                     }else{
                         if($request->estado_resultado_articulado[$k]==0){
                           $indicadorPdes = IndicadorResultado::find($request->id_resultado_articulado[$k]);
+                          $indicadorPdes->id_user_updated = $this->user->id;
+                          $indicadorPdes->save();
                           $indicadorPdes->delete();
                         }
                     }
@@ -451,10 +462,13 @@ class IndicadorController extends Controller
                         $avance->fecha_generado_anio = $anio;
                         $avance->fecha_reportado = date('Y-m-d');
                         $avance->valor = ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
+                        $avance->id_user = $this->user->id;
                         $avance->save();
                    }else{
                         if($request->avance_estado[$k]==0){
                           $avance = IndicadorAvance::find($request->id_avance[$k]);
+                          $avance->id_user_updated = $this->user->id;
+                          $avance->save();
                           $avance->delete();
                         }
                    }
@@ -465,6 +479,7 @@ class IndicadorController extends Controller
             for($i=1; $i <= count($metasList); $i++){
                 $metas = Metas::find($request->input('id_meta_'.$metasList[$i]));
                 $metas->valor = ($request->input('meta_'.$metasList[$i]))? $this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
+                $metas->id_user_updated = $this->user->id;
                 $metas->save();
             }
 
@@ -477,11 +492,13 @@ class IndicadorController extends Controller
                         $archivos->nombre =  $request->arc_nombre[$k];
                         $archivos->archivo = $request->arc_archivo[$k];
                         $archivos->activo = true;
+                        $archivos->id_user = $this->user->id;
                         $archivos->save();
                     }else{
                         if($request->arc_estado[$k]==0){
                           $archivos = IndicadoresArchivosRespaldos::find($request->arc_id[$k]);
                           $archivos->activo = false;
+                          $archivos->id_user_updated = $this->user->id;
                           $archivos->save();
                         }
                     }
@@ -531,8 +548,10 @@ class IndicadorController extends Controller
 
   public function apiDeleteIndicador(Request $request)
   {
+      $this->user= \Auth::user();
       $indicador = Indicadores::find($request->id_indicador);
       $indicador->activo = false;
+      $indicador->id_user_updated = $this->user->id;
       $indicador->save();
       return \Response::json(array(
           'error' => false,
@@ -662,7 +681,7 @@ class IndicadorController extends Controller
 
   public function apiSaveFuente(Request $request)
   {
-
+    $this->user= \Auth::user();
     if(!$request->id_fuente){
 
         try{
@@ -678,6 +697,7 @@ class IndicadorController extends Controller
             $fuente->variable = $request->fd_variable;
             $fuente->observacion = $request->fd_observacion;
             $fuente->activo = true;
+            $fuente->id_user = $this->user->id;
             $fuente->save();
 
 
@@ -689,6 +709,7 @@ class IndicadorController extends Controller
                     $responsable->responsable_nivel_2 = $request->responsable_nivel_2[$k];
                     $responsable->responsable_nivel_3 = $request->responsable_nivel_3[$k];
                     $responsable->numero_referencia = $request->numero_referencia[$k];
+                    $responsable->id_user = $this->user->id;
                     $responsable->save();
               }
             }

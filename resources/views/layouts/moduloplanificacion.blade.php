@@ -255,7 +255,8 @@
                 <ul class="nav sidebar-menu">
                   <li class="sidebar-label pt20">PDES</li>
 
-                  <?php $g=0;
+                  <?php
+                  $g = 0;
                   $grupo = "";
                   ?>
                   @foreach($menus as $m)
@@ -268,32 +269,32 @@
                       </li>
                       @endif
 
-                    <li>
-                        <a id="G{{ $g }}" class="accordion-toggle" href="#">
-                            <span class="glyphicons glyphicons-fire"></span>
-                            <span class="sidebar-title"> {{ $m["tipo_menu"] }}</span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="nav sub-nav">
+                      <li>
+                          <a id="G{{ $g }}" class="accordion-toggle" href="#">
+                              <span class="glyphicons glyphicons-fire"></span>
+                              <span class="sidebar-title"> {{ $m["tipo_menu"] }}</span>
+                              <span class="caret"></span>
+                          </a>
+                          <ul class="nav sub-nav">
 
-                          <li id="G{{ $g }}-{{ $m["id"] }}" class="">
-                            @if( $m["submenus"] )
-                              <a href="{{ url( $m["url"] ) }}">
+                            <li id="G{{ $g }}-{{ $m["id"] }}" class="">
+                              @if( $m["submenus"] )
+                                <a href="{{ url( $m["url"] ) }}">
+                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                                </a>
+                                <ul class="nav sub-nav">
+                                  @foreach($m["submenus"] as $sm)
+                                    <li id="sm-{{ $sm->id }}" class="">
+                                      <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
+                                    </li>
+                                  @endforeach
+                                </ul>
+                              @else
+                                <a href="{{ url( $m["url"] ) }}">
                                   <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                              </a>
-                              <ul class="nav sub-nav">
-                                @foreach($m["submenus"] as $sm)
-                                  <li id="sm-{{ $sm->id }}" class="">
-                                    <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
-                                  </li>
-                                @endforeach
-                              </ul>
-                            @else
-                              <a href="{{ url( $m["url"] ) }}">
-                                <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                              </a>
-                            @endif
-                          </li>
+                                </a>
+                              @endif
+                            </li>
                     @else
                       <li id="G{{ $g }}-{{ $m["id"] }}" class="">
                         @if( $m["submenus"] )

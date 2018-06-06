@@ -188,7 +188,10 @@
                                           <b>Formula de cálculo</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>: {{$indicador->formula}}</p>
+                                          <p><textarea name="name" rows="4" style="width:100%" readonly disabled>{{ $indicador->formula }}</textarea></p>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-12">
+                                          <br/>
                                         </div>
                                         <div class="col-lg-12">
                                             <h5><b>Parámetros de la formula</b></h5>
@@ -286,7 +289,7 @@
 
                     <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
                         <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
-                            <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Descargar ficha indicador </div>
+                            <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Ficha indicador </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body text-center">
                                     <a onclick="HTMLtoPDF()" style="cursor: pointer;"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
@@ -297,19 +300,26 @@
 
                     <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
                         <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
-                            <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Descargar archivos respaldo </div>
+                            <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Archivos respaldo </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
-                                @foreach ($archivos as $item)
+                                @if(!$archivos)
                                   <div class="panel-body text-center">
-                                      <a href="/respaldos/{{$item->archivo}}" style="cursor: pointer;">
                                         <p>
-                                          <img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo ">
+                                          Ningún archivo
                                         </p>
-                                          {{$item->nombre}}
-
-                                      </a>
                                   </div>
-                                @endforeach
+                                @else
+                                  @foreach ($archivos as $item)
+                                    <div class="panel-body text-center">
+                                        <a href="/respaldos/{{$item->archivo}}" style="cursor: pointer;">
+                                          <p>
+                                            <img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo ">
+                                          </p>
+                                            {{$item->nombre}}
+                                        </a>
+                                    </div>
+                                  @endforeach
+                                @endif
 
                             </div>
                         </div>

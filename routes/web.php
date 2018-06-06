@@ -292,7 +292,6 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
-
           }
       );
       Route::group(
