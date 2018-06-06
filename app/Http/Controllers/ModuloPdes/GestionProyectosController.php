@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 class GestionProyectosController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function __construct()
     {
         // $this->middleware('auth');
@@ -49,11 +44,6 @@ class GestionProyectosController extends Controller
         return view('ModuloPdes.gestion_proyectos_pdes');
     }
 
-    /**
-     * Funcion ara insertar y actualizar, Mediante POST
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
     public function insertar(Request $request)
     {
         $estado   = '';
@@ -110,12 +100,6 @@ class GestionProyectosController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Proyecto  $proyecto
-     * @return \Illuminate\Http\Response
-     */
     public function obtieneProyecto($id)
     {
         $proyecto = Proyecto::find($id);
@@ -209,76 +193,7 @@ class GestionProyectosController extends Controller
         ]);
     }
 
-    // public function listarProyectosPdesAsociados()
-    // {
-    //     $proyectosRes = collect(\DB::select("SELECT p.id as id_proyecto, p.nombre_proyecto, p.codigo, p.sector, trim(to_char(p.costo_total,'999G999G999G999D99')) as costo_total, p.responsable,
-    //                         pi.cod_p, pi.descripcion as desc_p, m.cod_m, m.descripcion as desc_m, r.cod_r, r.descripcion as desc_r, r.id as id_r,
-    //                         pi.cod_p||'.'||m.cod_m||'.'||r.cod_r as cod_pmr
-    //                         FROM spie_proyectos_pdes p
-    //                         LEFT JOIN spie_resultados_proyectos_pdes rp ON p.id = rp.id_proyecto_pdes
-    //                         LEFT JOIN spie_resultados r ON rp.id_resultado = r.id
-    //                         LEFT JOIN spie_metas m ON r.meta = m.id
-    //                         LEFT JOIN spie_pilares pi ON pi.id = m.pilar
-    //                         OrDER BY p.id -- pi.cod_p, m.cod_m, r.cod_r, p.nombre_proyecto "));
-
-    //     $proyectosResGroup = $proyectosRes->groupBy('id_proyecto');
-
-    //     $proyectosSisin = collect(\DB::select("SELECT pry.id as id_proyecto, --pry.nombre_proyecto, pry.codigo, pry.costo_total,
-    //                         s.id as id_sisinweb, s.nombre_proyecto as sw_nombre_proyecto, s.codigo_sisin as sw_codigo, s.entidad as sw_entidad,
-    //                         s.cod_accion_plan as sw_cod_pmra,  trim(to_char(s.monto_presupuestado,'999G999G999G999D99')) as sw_monto_presupuestado,
-    //                         s.depto as sw_depto, s.prov as sw_prov, s.mun as sw_mun
-    //                         FROM spie_proyectos_pdes pry, spie_proyectos_pdes_sisinweb ps, sisin_web s
-    //                         WHERE pry.id = ps.id_proyecto_pdes
-    //                         AND ps.id_sisinweb = s.id"));
-
-    //     $proyectoSisinGroup = $proyectosSisin->groupBy('id_proyecto');
-
-    //     $respuesta = array();
-    //     foreach ($proyectosResGroup as $keyP => $valP)
-    //     {
-    //         $id_proyectoPDES = $keyP;
-    //         $existeProySisin =  $proyectoSisinGroup->contains(function($item, $key) use ($id_proyectoPDES){
-    //             return $key == $id_proyectoPDES;
-    //         });
-
-    //         $sisinAsoc = ($existeProySisin) ? $proyectoSisinGroup[$id_proyectoPDES] : [];
-
-    //         $proy = $valP[0];
-
-    //         $resultadosAsoc = $valP->map(function($item){
-    //             return [
-    //                     'cod_p' => $item->cod_p,
-    //                     'desc_p' => $item->desc_p,
-    //                     'cod_m' => $item->cod_m,
-    //                     'desc_m' => $item->desc_m,
-    //                     'cod_r' => $item->cod_r,
-    //                     'desc_r' => $item->desc_r,
-    //                     'id_r' => $item->id_r,
-    //                     'cod_pmr' => $item->cod_pmr
-    //                 ];
-    //         });
-    //         $item = [
-    //             'id'                =>  $proy->id_proyecto,
-    //             'nombre_proyecto'   =>  $proy->nombre_proyecto,
-    //             'codigo'            =>  $proy->codigo,
-    //             'sector'            =>  $proy->sector,
-    //             'costo_total'       =>  $proy->costo_total,
-    //             'responsable'       =>  $proy->responsable,
-    //             'resultados_count'  =>  count($resultadosAsoc),
-    //             'resultados'        =>  $resultadosAsoc,
-    //             'sisinweb_count'    =>  count($sisinAsoc),
-    //             'sisinweb'          =>  $sisinAsoc,
-    //         ];
-
-    //         $respuesta[] = $item;
-    //     }
-
-    //     return response()->json([
-    //         'mensaje' => 'ProyectosPdes',
-    //         'estado' => 'ok',
-    //         'datos' => $respuesta
-    //     ]);
-    // }
+   
 
     /*--------------------------------------------------------------------------------------
     |   Obtiene el proyecto asosciado al SP , con codigo PMRA
@@ -458,48 +373,141 @@ class GestionProyectosController extends Controller
      */
     public function exportExcel()
     {
-        $proyectos = collect(\DB::connection('dbsp')->select("SELECT pr.id, pr.codigo AS cod_demanda, pr.nombre_proyecto, pr.sector, pr.pilar, pr.meta
-                                , p.cod_p AS P, m.cod_m AS M, r.cod_r AS R, a.cod_a AS A, a.descripcion AS descripcion_accion
-                                , ai.desc_indicador_proceso, e.nombre AS entidad
-                                FROM proyectos pr 
-                                LEFT JOIN accion ai on ai.proyecto = pr.id and ai.estado = 1 and ai.tipo <> 1 
-                                LEFT JOIN acciones a on ai.accion = a.id
-                                LEFT JOIN resultado r on a.resultado = r.id
-                                LEFT JOIN meta m on m.id = r.meta
-                                LEFT JOIN pilar p on p.id = m.pilar
-                                LEFT JOIN entidad e on ai.entidad = e.id and entidad <> -1
+ 
+        $proyectos = collect(\DB::connection('dbsp')->select("SELECT distinct  pr.id, pr.codigo AS codigo_demanda, pr.nombre_proyecto, pr.sector, pr.pilar, pr.meta
+                                                    , sp.cod_p AS P, sp.cod_m AS M, sp.cod_r AS R, sp.cod_a AS A, sp.descripcion_accion
+                                                    , sp.desc_indicador_proceso, sp.entidad
+                                                    FROM proyectos pr LEFT JOIN
+                                                    (   SELECT p.cod_p , m.cod_m , r.cod_r , a.cod_a , a.descripcion AS descripcion_accion
+                                                        , ai.desc_indicador_proceso, ai.proyecto, e.nombre AS entidad
+                                                        FROM accion ai LEFT JOIN acciones a on ai.accion = a.id 
+                                                        LEFT JOIN resultado r on a.resultado = r.id
+                                                        LEFT JOIN meta m on m.id = r.meta
+                                                        LEFT JOIN pilar p on p.id = m.pilar
+                                                        LEFT JOIN entidad e on ai.entidad = e.id  -- and e.tipo <> -1
 
-                                WHERE 1 = 1 and LENGTH(pr.codigo) >= 9 
-                                -- group by pr.id
-                                ORDER BY pr.codigo"));
+                                                        WHERE 1 = 1   and e.tipo <> -1 and ai.estado = 1 and ai.tipo <> 1 
+                                                    ) AS sp 
+                                                    ON sp.proyecto = pr.id
+                                                    where 1 = 1 and LENGTH(pr.codigo) >= 9
+                                                    ORDER BY pr.sector, pr.codigo " ));
 
-        \Excel::create('d_excel', function ($excel) use ($proyectos)
+        // //////////////////////////////////////
+        // $proyGroup = $proyectos->groupBy('codigo_demanda');
+        //         //////////////////////////////////
+         // return response()->json(['data' => $proyGroup])      ;
+            
+        \Excel::create('proyectos_pdes_vinculaciones', function ($excel) use ($proyectos)
         {
-            $excel->sheet('misdatos', function ($hoja) use($proyectos)
-            {                
-                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'P', 'M', 'R', 'A', 'DESCRIPCION_ACCION', 'INDICADOR_PROCESO', 'ENTIDAD'];
-                $hoja->row(1, $cabecera);
-
-                foreach ($proyectos as $index => $proy) {
-                    $fila = [
-                        $proy->cod_demanda,
-                        $proy->nombre_proyecto,
-                        $proy->sector,
-                        $proy->pilar, $proy->meta,
-                        $proy->P, $proy->M, $proy->R, $proy->A, $proy->descripcion_accion,
-                        $proy->desc_indicador_proceso, $proy->entidad
-                    ];
-                    $hoja->row($index+2, $fila);
-                }
-
-                $hoja->row(1, function($row) { 
+            $paletaColor = ['#F1948A', '#C39BD3' , '#7FB3D5', '#AED6F1', '#76D7C4', '#F9E79F', '#F8C471', '#F5CBA7', '#E59866', '#D4E6F1'];
+            $excel->sheet('ProyPDES-SP', function ($hoja) use($proyectos, $paletaColor)
+            {   
+                $fila = 1;
+                $codDemanda = 0;  
+                $color = 0;       
+                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'P', 'M', 'R', 'A', 'DESCRIPCION_ACCION', 'INDICADOR_PROCESO', 'ENTIDAD', 'N sisin'];
+                $hoja->row( $fila, $cabecera );
+                $hoja->row($fila, function($row) { 
                     $row->setBackground('#22CC33'); 
                     $row->setAlignment('center');
                     $row->setFontWeight('bold');
                 });
+
+                foreach ($proyectos as $index => $proy) {
+                     $valoresFila = array( $proy->codigo_demanda, $proy->nombre_proyecto,
+                                    $proy->sector, $proy->pilar, $proy->meta,
+                                    $proy->P, $proy->M, $proy->R, $proy->A, $proy->descripcion_accion,
+                                    $proy->desc_indicador_proceso, $proy->entidad  );                    
+
+                    $sisin = \DB::select("SELECT sw.codigo_sisin, sw.cod_entidad, sw.entidad, sw.nombre_proyecto, sw.fecha_inicio_proyecto, 
+                                        sw.fecha_termino_proyecto, sw.sector, sw.n_pilar, sw.n_meta, sw.n_resultado, sw.n_accion, sw.codigo_proyectos
+                                        -- , sd.depto, sd.prov, sd.mun, sd.fte_presup, sd.fte_sigla, 
+                                        -- sd.org_presup, sd.org_sigla, sd.monto_presupuestado
+                                        FROM spie_proyectos_pdes_sisinweb ps, sisin_web sw -- , sisin_web_datos sd
+                                        WHERE ps.codigo_sisin = sw.codigo_sisin -- AND sw.codigo_sisin = sd.codigo_sisin
+                                        AND ps.codigo_demanda = {$proy->codigo_demanda}
+                                        ORDER BY  sw.codigo_sisin ");
+
+                    if(count($sisin) > 0)
+                        $valoresFila[] = count($sisin);
+                    
+                    if($codDemanda != $proy->codigo_demanda)
+                    {
+                        $codDemanda = $proy->codigo_demanda;
+                        $color++;
+                    }
+                    $hoja->row(++$fila, $valoresFila);
+                    $hoja->row($fila, function($row) use ($color, $paletaColor)
+                    {
+                        $row->setBackground($paletaColor[$color % count($paletaColor)]); 
+                    });
+                }
+
                 // $endCell = str_repeat(chr(count($cabecera) % 26 + 64), ceil(count($cabecera)/26)) . (count($proyectos)+1);
-                $hoja->setBorder('A1:L'  . (count($proyectos)+1), 'thin');     
-                $hoja->setWidth(array('B'=>70, 'J'=>70, 'K'=>70, 'F'=>3,'G'=>3,'H'=>5,'I'=>3 )) ;      
+                $hoja->setBorder('A1:L'  . $fila, 'thin');  
+                $hoja->setAutoSize(true);   
+                $hoja->setWidth(array('B'=>50, 'J'=>50, 'K'=>50, 'L'=>30, 'F'=>3,'G'=>3,'H'=>5,'I'=>3 )) ;      
+            });
+
+            $excel->sheet('Proy_PDES-SISIN', function($hoja) use ($proyectos, $paletaColor)
+            {
+                $fila = 1;
+                $codDemanda = 0;  
+                $color = 0;     
+                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'CODIGO_SISIN', 'NOMBRE_PROYECTO_Sisin', 'Pi', 'Me', 'Re', 'Ac', 'SECTOR_Sisin', 'COD_ENTIDAD', 'ENTIDAD_Sisin', 'FECHA_INICIO_PROYECTO', 'FECHA_FIN_PROYECTO', 'CODIGO_PROYECTOS'];
+                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'P', 'M', 'R', 'A', 'DESCRIPCION_ACCION', 'INDICADOR_PROCESO', 'ENTIDAD', 'N sisin'];
+                $hoja->row( $fila, $cabecera );
+                $hoja->row($fila, function($row) { 
+                    $row->setBackground('#226699'); 
+                    $row->setAlignment('center');
+                    $row->setFontWeight('bold');
+                });
+                // $data[] = $cabecera;
+
+                $proys = collect(\DB::connection('dbsp')->select("SELECT distinct  pr.id, pr.codigo AS codigo_demanda, pr.nombre_proyecto, pr.sector, pr.pilar, pr.meta
+                                                             FROM proyectos pr 
+                                                            where 1 = 1 and LENGTH(pr.codigo) >= 9
+                                                            ORDER BY pr.sector, pr.codigo "));
+                foreach ($proys as $index => $value) 
+                {
+                    $proy = $value;
+                    $color++;
+                    $valoresProy = array($proy->codigo_demanda, $proy->nombre_proyecto, $proy->sector, $proy->pilar, $proy->meta );
+
+                    $sisin = \DB::select("SELECT sw.codigo_sisin, sw.cod_entidad, sw.entidad, sw.nombre_proyecto, sw.fecha_inicio_proyecto, 
+                                        sw.fecha_termino_proyecto, sw.sector, sw.n_pilar, sw.n_meta, sw.n_resultado, sw.n_accion, sw.codigo_proyectos
+                                        -- , sd.depto, sd.prov, sd.mun, sd.fte_presup, sd.fte_sigla, 
+                                        -- sd.org_presup, sd.org_sigla, sd.monto_presupuestado
+                                        FROM spie_proyectos_pdes_sisinweb ps, sisin_web sw -- , sisin_web_datos sd
+                                        WHERE ps.codigo_sisin = sw.codigo_sisin -- AND sw.codigo_sisin = sd.codigo_sisin
+                                        AND ps.codigo_demanda = {$proy->codigo_demanda}
+                                        ORDER BY  sw.codigo_sisin ");
+
+                    if(count($sisin) > 0)
+                    {
+                        foreach ($sisin as $sw) 
+                        {
+                            $sisindata = array($sw->codigo_sisin, $sw->nombre_proyecto, $sw->n_pilar, $sw->n_meta, $sw->n_resultado, $sw->n_accion,  $sw->sector, $sw->cod_entidad, $sw->entidad,  
+                              $sw->fecha_inicio_proyecto, $sw->fecha_termino_proyecto, $sw->codigo_proyectos);
+
+                            $hoja->row(++$fila, array_collapse([$valoresProy , $sisindata]) );   
+                            $hoja->row($fila, function($row) use ($color, $paletaColor)  {
+                                $row->setBackground($paletaColor[$color % count($paletaColor)]); 
+                            });
+                        }
+                    }
+                    else{
+                        $hoja->row(++$fila, $valoresProy);
+                        $hoja->row($fila, function($row) use ($color, $paletaColor)  {
+                                $row->setBackground($paletaColor[$color % count($paletaColor)]); 
+                            });
+                    }
+                } 
+
+                 // $endCell = str_repeat(chr(count($cabecera) % 26 + 64), ceil(count($cabecera)/26)) . (count($proyectos)+1);
+                $hoja->setBorder('A1:Q'  . $fila, 'thin');  
+                $hoja->setAutoSize(true);
+                $hoja->setWidth(array('B'=>50, 'C'=>25, 'G'=>50, 'N'=>25, 'H'=>3,'I'=>3,'J'=>5,'K'=>3 )) ;     
             });
 
         })->export('xlsx');

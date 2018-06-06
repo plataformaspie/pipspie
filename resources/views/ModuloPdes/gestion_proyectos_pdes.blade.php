@@ -32,8 +32,7 @@
             <div id="contenido_proys" class="col-md-8">
                 <div class="box white-box p-10">
                     <h3 class="box-title"> Lista de proyectos PDES <b><span id="cantidad_proyectos"></span></b>
-                        <a href="{{ url("api/modulopdes/gestionproyectos/export/excel") }}"  target="blank" class="btn btn-success pull-right">excel</a>
-
+                        <button id="btnExcel" class="btn btn-success pull-right" ><i class="fa fa-file-excel-o fa-lg"></i> </button>
                         <button id="btnAgregarEditar" class="btn btn-primary  waves-effect waves-light pull-right"  >  <!-- data-toggle="modal" data-target="#form_proyecto"  --> 
                             <i class="fa fa-plus m-l-5"></i><span> Agregar Proyecto</span> 
                         </button>
@@ -198,6 +197,7 @@ $(function ()
         objSel: null, //objeto seleccionado
         source : {},
         btnAgregar: $("#btnAgregarEditar"),
+        btnExcel: $("#btnExcel"),
         cantidad_proyectos: $("#cantidad_proyectos"),
         grid : $("#gridP"),
 
@@ -617,7 +617,7 @@ $(function ()
                             + '<div><h5 clas="bg-warning-light"><b>Codigo sisin: ' + sw.codigo_sisin +'</b></h5>'
                             + '<b> Nombre proy. SISIN: ' + sw.nombre_proyecto + '</b>'
                             + '</br>Pilar: ' + sw.cod_p + ', Meta: ' + sw.cod_m + ', Resultado: ' + sw.cod_r + ', Accion: '+ sw.cod_a + ' ('+ sw.cod_pmra + ')</b>'
-                            + '</br><b>Proyecto por lugares y presupuesto </b> <span class="badge bg-default">' + sisingroup[i].length + '</span>' 
+                            + '</br><b>Proyectos por lugares y presupuesto </b> <span class="badge bg-default">' + sisingroup[i].length + '</span>' 
                             + '</div>';
 
                             var desagregados = _.reduce(sisingroup[i], function(anterior, item){
@@ -712,6 +712,10 @@ $(function ()
         }
         else
             return false;
+    });
+
+    ctxList.btnExcel.click(function(){
+        location.href = cnf.urlBase + '/gestionproyectos/export/excel'
     });
 
 
