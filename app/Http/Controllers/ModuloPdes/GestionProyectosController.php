@@ -508,7 +508,7 @@ class GestionProyectosController extends Controller
     { 
         $proyectos = collect(\DB::connection('dbsp')->select("SELECT distinct  pr.id, pr.codigo AS codigo_demanda, pr.nombre_proyecto, pr.sector, pr.pilar, pr.meta
                                                     , sp.cod_p AS P, sp.cod_m AS M, sp.cod_r AS R, sp.cod_a AS A, sp.descripcion_accion
-                                                    , sp.desc_indicador_proceso, sp.entidad, concat_ws('.', pr.codigo, sp.cod_p, sp.cod_m, sp.cod_r, sp.cod_a) AS ppmra
+                                                    , concat('* ' , sp.desc_indicador_proceso) as desc_indicador_proceso , sp.entidad, concat_ws('.', pr.codigo, sp.cod_p, sp.cod_m, sp.cod_r, sp.cod_a) AS ppmra
                                                     FROM proyectos pr LEFT JOIN
                                                     (   SELECT p.cod_p , m.cod_m , r.cod_r , a.cod_a , a.descripcion AS descripcion_accion
                                                         , ai.desc_indicador_proceso, ai.proyecto, e.nombre AS entidad
@@ -645,7 +645,7 @@ class GestionProyectosController extends Controller
                 $fila = 1;
                 $codDemanda = 0;  
                 $color = 0;    
-                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'P', 'M', 'R', 'A', 'DESCRIPCION_ACCION', 'N Ind Proc', 'INDICADOR_PROCESO', 'ENTIDAD', 'CODIGO_SISIN', 'NOMBRE_PROYECTO_Sisin', 'Pi', 'Me', 'Re', 'Ac', 'SECTOR_Sisin', 'COD_ENTIDAD', 'ENTIDAD_Sisin', 'FECHA_INICIO_PROYECTO', 'FECHA_FIN_PROYECTO', 'CODIGO_PROYECTOS'];
+                $cabecera =  ['COD_DEMANDA', 'NOMBRE_PROYECTO', 'SECTOR', 'PILAR', 'META', 'P', 'M', 'R', 'A', 'DESCRIPCION_ACCION', 'N_Ind_P', 'INDICADOR_PROCESO', 'ENTIDAD', 'CODIGO_SISIN', 'NOMBRE_PROYECTO_Sisin', 'Pi', 'Me', 'Re', 'Ac', 'SECTOR_Sisin', 'COD_ENTIDAD', 'ENTIDAD_Sisin', 'FECHA_INICIO_PROYECTO', 'FECHA_FIN_PROYECTO', 'CODIGO_PROYECTOS'];
                 $hoja->row( $fila, $cabecera );
                 $hoja->row($fila, function($row) { 
                     $row->setBackground('#cc4433'); 
