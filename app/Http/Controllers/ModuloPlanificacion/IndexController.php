@@ -2,50 +2,55 @@
 
 namespace App\Http\Controllers\ModuloPlanificacion;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
-  /**
-   * Create a new controller instance.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-    // $this->middleware('auth');
-    $this->middleware(function ($request, $next) {
-    $this->user= \Auth::user();
-    $rol = (int) $this->user->id_rol;
-    $sql = \DB::select("SELECT  m.* FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol = ".$rol." ORDER BY orden ASC");
-    $this->modulos = array();
-    foreach ($sql as $mn) {
-        array_push($this->modulos, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'target' => $mn->target,'id_html' => $mn->id_html));
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $middleware('auth');
+        $this->middleware(function ($request, $next)
+        {
+            $user    = \Auth::user();
+            $ModulosMenus = IndexController::GeneraMenus($user);
+
+            \View::share($ModulosMenus);
+
+            return $next($request);
+        });
     }
 
-
-    $sql = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = ".$rol." AND id_modulo = 7 AND activo = true ORDER BY m.tipo_menu,m.orden ASC");
-    $this->menus = array();
-    foreach ($sql as $mn) {
-
-        $submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = ".$mn->id." AND activo = true ORDER BY orden ASC");
-        array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'tipo_menu'=>$mn->tipo_menu,'submenus' => $submenu));
+    public function index()
+    {
+        return view('ModuloPlanificacion.index');
     }
 
+    public static function GeneraMenus($user)
+    {
+        $modulos = \DB::select("SELECT m.id, m.titulo, m.descripcion, m.url, m.icono, m.target, m.id_html FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol =  {$user->id_rol} ORDER BY orden ASC");
 
+        $autorizado = count(array_where($modulos, function($value){
+            return $value->id == 7;
+        })) > 0;
 
-    \View::share(['modulos'=> $this->modulos,'menus'=>$this->menus]);
+        if(!$autorizado){                
+        }
 
+        $menus         = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = {$user->id_rol} AND id_modulo = 7 AND activo = true ORDER BY m.tipo_menu, m.orden ASC");
 
+        foreach ($menus as $mn)
+            $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
 
-    return $next($request);
+        $planes = \DB::table('sp_entidad_plan')->where('id_entidad', $user->id_institucion)->get();
 
-    });
+        if(count($planes) == 0)
+            $menus = array_where($menus, function($menu){ return $menu->tipo_menu == 'Estructuración';});
 
-  }
-  public function index()
-  {
-    return view('ModuloPlanificacion.index');
-  }
+        return ['modulos' => $modulos, 'menus' => $menus];
+    }
 }

@@ -260,67 +260,63 @@
                   $grupo = "";
                   ?>
                   @foreach($menus as $m)
-                    @if( $grupo !=  $m["tipo_menu"])
+                    @if( $grupo !=  $m->tipo_menu)
                       <?php $g++;
-                      $grupo = $m["tipo_menu"];
+                      $grupo = $m->tipo_menu;
                       ?>
                       @if( $g > 1 )
                           </ul>
                       </li>
                       @endif
+                        {{-- <<<<<<<<<<< --}}
+                   <li>
+                        <a id="G{{ $g }}" class="accordion-toggle" href="#">
+                            <span class="glyphicons glyphicons-fire"></span>
+                            <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav">
 
-                      <li>
-                          <a id="G{{ $g }}" class="accordion-toggle" href="#">
-                              <span class="glyphicons glyphicons-fire"></span>
-                              <span class="sidebar-title"> {{ $m["tipo_menu"] }}</span>
-                              <span class="caret"></span>
-                          </a>
-                          <ul class="nav sub-nav">
-
-                            <li id="G{{ $g }}-{{ $m["id"] }}" class="">
-                              @if( $m["submenus"] )
-                                <a href="{{ url( $m["url"] ) }}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                                </a>
-                                <ul class="nav sub-nav">
-                                  @foreach($m["submenus"] as $sm)
-                                    <li id="sm-{{ $sm->id }}" class="">
-                                      <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
-                                    </li>
-                                  @endforeach
-                                </ul>
-                              @else
-                                <a href="{{ url( $m["url"] ) }}">
-                                  <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                                </a>
-                              @endif
-                            </li>
+                          <li id="G{{ $g }}-{{ $m->id }}" class="">
+                            @if( $m->submenus )
+                              <a href="{{ url( $m->url ) }}">
+                                  <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
+                              </a>
+                              <ul class="nav sub-nav">
+                                @foreach($m->submenus as $sm)
+                                  <li id="sm-{{ $sm->id }}" class="">
+                                    <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
+                                  </li>
+                                @endforeach
+                              </ul>
+                            @else
+                              <a href="{{ url( $m->url ) }}">
+                                <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
+                              </a>
+                            @endif
+                          </li>
+                    {{-- era aqui <<<<<<<<<<<<<<<--}}
                     @else
-                      <li id="G{{ $g }}-{{ $m["id"] }}" class="">
-                        @if( $m["submenus"] )
-                          <a href="{{ url( $m["url"] ) }}">
-                              <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                      <li id="G{{ $g }}-{{ $m->id }}" class="">
+                        @if( $m->submenus )
+                          <a href="{{ url( $m->url ) }}">
+                              <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
                           </a>
                           <ul class="nav sub-nav">
-                            @foreach($m["submenus"] as $sm)
+                            @foreach($m->submenus as $sm)
                               <li id="sm-{{ $sm->id }}" class="">
                                 <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
                               </li>
                             @endforeach
                           </ul>
                         @else
-                          <a href="{{ url( $m["url"] ) }}">
-                            <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                          <a href="{{ url( $m->url ) }}">
+                            <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
                           </a>
                         @endif
                       </li>
 
                     @endif
-
-
-
-
-
 
                   @endforeach
 
@@ -371,9 +367,9 @@
                 <div class="topbar-menu row">
                   @foreach($modulos as $m)
                      <div class="col-xs-4 col-sm-2">
-                         <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="metro-tile bg-success">
-                             <img class="metro-icon" src="{{ asset('img/'.$m["icono"]) }}" width="60" alt="" />
-                             <p class="metro-title">{{ $m["titulo"] }}</p>
+                         <a id="mod-{{ $m->id_html }}" href="{{ url($m->url)}}" class="metro-tile bg-success">
+                             <img class="metro-icon" src="{{ asset('img/'.$m->icono) }}" width="60" alt="" />
+                             <p class="metro-title">{{ $m->titulo }}</p>
                          </a>
                      </div>
                   @endforeach
@@ -500,20 +496,20 @@
     <!-- BEGIN: PAGE SCRIPTS -->
 
     <!-- jQuery -->
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery-1.11.1.min.js') }}"></script>
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery_ui/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery-1.11.1.min.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery_ui/jquery-ui.min.js') }}"></script>
 
-		<!-- Bootstrap -->
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
+        <!-- Bootstrap -->
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
 
-		<script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
 
-		<!-- Theme Javascript -->
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
+        <!-- Theme Javascript -->
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
 
 
 
