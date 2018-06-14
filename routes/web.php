@@ -26,6 +26,7 @@ Route::get('settingPassword', 'SettingController@settingPassword');
 Route::post('apiSavePerfil', 'SettingController@apiSavePerfil');
 Route::post('apiSavePassword', 'SettingController@apiSavePassword');
 
+
 /* -----------------------------------------------------------------------------
 | Ruta general para llamar a una vista de la carpeta Resources/view , en el parametro
 | omitir .blase.php y debe ser separado por puntos ej. modulopdes.dashboard
@@ -292,6 +293,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
+              Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
+              Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
           }
       );
       Route::group(
@@ -313,6 +316,20 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('setPdes', 'SistemaRemi\IndicadorController@setPdes');
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldo');
               Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
+          }
+      );
+      Route::group(
+          array('prefix' => 'sistemarime'),
+          function() {
+              Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
+              Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
+          }
+      );
+      Route::group(
+          array('prefix' => 'api/sistemarime'),
+          function() {
+              //fuente de datos
+              Route::get('apiSetListFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSetListFuenteDatos');
 
           }
       );
