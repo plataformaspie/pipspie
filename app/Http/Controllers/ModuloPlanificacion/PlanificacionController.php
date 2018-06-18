@@ -36,7 +36,7 @@ class PlanificacionController extends Controller
   public function showDiagnostico()
   {
       $metricas = Metricas::orderBy('simbolo','asc')->get();
-       return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
+      return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
   }
   public function showEnfoque(Request $request)
   {

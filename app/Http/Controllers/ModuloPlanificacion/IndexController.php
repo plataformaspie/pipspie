@@ -6,18 +6,21 @@ use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
+    // propiedades publicas
+    public $user;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
-    {
+    {        
         // $middleware('auth');
         $this->middleware(function ($request, $next)
         {
-            $user    = \Auth::user();
-            $ModulosMenus = IndexController::GeneraMenus($user);
+            $this->user = \Auth::user();
+            $ModulosMenus = IndexController::GeneraMenus($this->user);
 
             \View::share($ModulosMenus);
 
@@ -41,7 +44,7 @@ class IndexController extends Controller
         if(!$autorizado){                
         }
 
-        $menus         = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = {$user->id_rol} AND id_modulo = 7 AND activo = true ORDER BY m.tipo_menu, m.orden ASC");
+        $menus         = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = {$user->id_rol} AND id_modulo = 7 AND activo = true ORDER BY m.orden ASC");
 
         foreach ($menus as $mn)
             $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
@@ -53,4 +56,6 @@ class IndexController extends Controller
 
         return ['modulos' => $modulos, 'menus' => $menus];
     }
+
+
 }

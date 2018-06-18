@@ -239,7 +239,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
               Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
 
-              Route::get('setEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@setEntidadPlan');
+              Route::get('listEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@listEntidadPlan');
+              Route::post('saveEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@saveEntidadPlan');
+              Route::get('deleteEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@deleteEntidadPlan');
 
               Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
               Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');

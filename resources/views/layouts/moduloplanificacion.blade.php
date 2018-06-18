@@ -268,7 +268,6 @@
                           </ul>
                       </li>
                       @endif
-                        {{-- <<<<<<<<<<< --}}
                    <li>
                         <a id="G{{ $g }}" class="accordion-toggle" href="#">
                             <span class="glyphicons glyphicons-fire"></span>
@@ -295,7 +294,6 @@
                               </a>
                             @endif
                           </li>
-                    {{-- era aqui <<<<<<<<<<<<<<<--}}
                     @else
                       <li id="G{{ $g }}-{{ $m->id }}" class="">
                         @if( $m->submenus )
@@ -502,6 +500,7 @@
         <!-- Bootstrap -->
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
 
+        <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/advanced/steps/jquery.steps.js') }}"></script>
         <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
@@ -510,9 +509,6 @@
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
-
-
-
 
 
 

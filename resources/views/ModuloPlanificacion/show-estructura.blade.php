@@ -198,7 +198,7 @@
 
 @section('header')
 <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 
 <style media="screen">
@@ -494,11 +494,11 @@
   <div id="modal-nuevo-ofi"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
       <div class="panel">
           <div class="panel-heading">
-              <span class="panel-title"><i class="fa fa-pencil"></i>Agregar Oficina</span>
+              <span class="panel-title"><i class="fa fa-pencil"></i>Agregar Oficina_</span>
           </div>
           <!-- end .panel-heading section -->
           <form method="post" action="/" id="form-nuevo-ofi" name="form-nuevo-ofi">
-            {{ csrf_field() }}
+            {{-- {{ csrf_field() }} --}}
 
               <div class="panel-body mnw500 of-a">
                   <div class="row">
@@ -624,7 +624,8 @@
 @endsection
 
 @push('script-head')
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+{{--       <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script> --}}
+      <script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
       <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
       <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
       <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
@@ -809,8 +810,6 @@
                     submitHandler: function(form) {
                       saveFormNew();
                     }
-
-
             });
 
             $('#editar').on('click', function(event) {
@@ -920,8 +919,6 @@
                     submitHandler: function(form) {
                       saveFormEdit();
                     }
-
-
             });
 
             $('#eliminar').on('click', function(event) {

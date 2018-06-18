@@ -893,14 +893,14 @@
                             $(element).closest('.field').removeClass(errorClass).addClass(validClass);
                     },
                     errorPlacement: function(error, element) {
-                       if (element.is(":radio") || element.is(":checkbox")) {
+                        if (element.is(":radio") || element.is(":checkbox")) {
                                 element.closest('.option-group').after(error);
-                       } else {
+                        } else {
                                 error.insertAfter(element.parent());
-                       }
+                        }
                     },
                     submitHandler: function(form) {
-                      saveFormNew();
+                        saveFormNew();
                     }
 
 
@@ -910,43 +910,42 @@
 
     });
     function saveFormNew(){
-
-    var formData = new FormData($("#form-nuevo")[0]);
-      $.ajax({
-              url: "{{ url('/api/moduloplanificacion/saveDataNew') }}",
-              type: "POST",
-              data: formData,
-              contentType: false,
-              processData: false,
-              success: function(data){
-                  new PNotify({
-                      title: data.title,
-                      text: data.msg,
-                      shadow: true,
-                      opacity: 1,
-                      addclass: noteStack,
-                      type: "success",
-                      stack: Stacks[noteStack],
-                      width: findWidth(),
-                      delay: 1400
-                  });
-                  $("#dataTable").jqxDataTable("updateBoundData");
-                  $("#form-nuevo")[0].reset();
-              },
-              error:function(data){
-                  new PNotify({
-                      title: data.title,
-                      text: data.msg,
-                      shadow: true,
-                      opacity: 1,
-                      addclass: noteStack,
-                      type: "danger",
-                      stack: Stacks[noteStack],
-                      width: findWidth(),
-                      delay: 1400
-                  });
-              }
-      });
+        var formData = new FormData($("#form-nuevo")[0]);
+        $.ajax({
+                url: "{{ url('/api/moduloplanificacion/saveDataNew') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data){
+                    new PNotify({
+                        title: data.title,
+                        text: data.msg,
+                        shadow: true,
+                        opacity: 1,
+                        addclass: noteStack,
+                        type: "success",
+                        stack: Stacks[noteStack],
+                        width: findWidth(),
+                        delay: 1400
+                    });
+                    $("#dataTable").jqxDataTable("updateBoundData");
+                    $("#form-nuevo")[0].reset();
+                },
+                error:function(data){
+                    new PNotify({
+                        title: data.title,
+                        text: data.msg,
+                        shadow: true,
+                        opacity: 1,
+                        addclass: noteStack,
+                        type: "danger",
+                        stack: Stacks[noteStack],
+                        width: findWidth(),
+                        delay: 1400
+                    });
+                }
+        });
     }
 
     function saveFormEdit(){

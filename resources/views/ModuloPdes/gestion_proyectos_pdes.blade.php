@@ -253,16 +253,16 @@ $(function ()
                     columnsresize: true,
                     enabletooltips: true,
                     columns: [
-                        // {text: 'id', datafield: 'id', sortable: false},
-                        {text: 'P.M.', datafield: 'cod_pm', width: 35},
-                        {text: 'Cód dem', datafield: 'codigo', cellsalign: 'right', width: 80},
-                        {text: 'Proyecto PDES', datafield: 'nombre_proyecto', width: '50%'},
-                        {text: 'Sector', datafield: 'sector', },
-                        {text: 'Responsable', datafield: 'responsable', },
-                        {text: 'Costo ', datafield: 'costo_total', cellsformat: 'f', cellsalign: 'right'},
-                        {text: 'Result.', datafield: 'resultados_count', cellsalign: 'center', cellsrenderer: rendererCount, width: 50},
-                        {text: 'Sisin', datafield: 'sisinweb_count', cellsalign: 'center', cellsrenderer : rendererCount, width: 50},
-                        {text: ' ', datafield: 'id', cellsrenderer: rendererEdit, width: 30},
+                            // {text: 'id', datafield: 'id', sortable: false},
+                            {text: 'P.M.', datafield: 'cod_pm', width: 35},
+                            {text: 'Cód dem', datafield: 'codigo', cellsalign: 'right', width: 80},
+                            {text: 'Proyecto PDES', datafield: 'nombre_proyecto', width: '50%'},
+                            {text: 'Sector', datafield: 'sector', },
+                            {text: 'Responsable', datafield: 'responsable', },
+                            {text: 'Costo ', datafield: 'costo_total', cellsformat: 'f', cellsalign: 'right'},
+                            {text: 'Result.', datafield: 'resultados_count', cellsalign: 'center', cellsrenderer: rendererCount, width: 50},
+                            {text: 'Sisin', datafield: 'sisinweb_count', cellsalign: 'center', cellsrenderer : rendererCount, width: 50},
+                            {text: ' ', datafield: 'id', cellsrenderer: rendererEdit, width: 30},
                         ]
                     });
                 ctxList.cantidad_proyectos = ctxList.listaProyectos.length;
