@@ -216,7 +216,7 @@ Route::group(['middleware' => 'auth'],function(){
               // Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
               // Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
               // Route::get('res', 'ModuloPlanificacion\PruebaController@res');
-              Route::get('index', 'ModuloPlanificacion\IndexController@index');              
+              Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');              
               Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
               Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
               Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');    
@@ -227,6 +227,8 @@ Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'api/moduloplanificacion'),
           function() {
+              Route::get('menus', 'ModuloPlanificacion\PlanificacionBaseController@getMenus');
+
               Route::get('setEstructuraEntidad', 'ModuloPlanificacion\AdministracionController@setEstructuraEntidad');
               Route::post('saveEntidadNew', 'ModuloPlanificacion\AdministracionController@saveEntidadNew');
               Route::get('dataSetEntidad', 'ModuloPlanificacion\AdministracionController@dataSetEntidad');
@@ -242,6 +244,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@listEntidadPlan');
               Route::post('saveEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@saveEntidadPlan');
               Route::get('deleteEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@deleteEntidadPlan');
+              Route::get('getParametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
+
 
               Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
               Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');

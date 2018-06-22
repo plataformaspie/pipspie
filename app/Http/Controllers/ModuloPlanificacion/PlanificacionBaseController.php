@@ -4,10 +4,11 @@ namespace App\Http\Controllers\ModuloPlanificacion;
 
 use App\Http\Controllers\Controller;
 
-class IndexController extends Controller
+class PlanificacionBaseController extends Controller
 {
     // propiedades publicas
     public $user;
+
 
     /**
      * Create a new controller instance.
@@ -20,7 +21,7 @@ class IndexController extends Controller
         $this->middleware(function ($request, $next)
         {
             $this->user = \Auth::user();
-            $ModulosMenus = IndexController::GeneraMenus($this->user);
+            $ModulosMenus = PlanificacionBaseController::GeneraMenus($this->user);
 
             \View::share($ModulosMenus);
 
@@ -55,6 +56,51 @@ class IndexController extends Controller
             $menus = array_where($menus, function($menu){ return $menu->tipo_menu == 'Estructuración';});
 
         return ['modulos' => $modulos, 'menus' => $menus];
+    }
+
+    public function getMenus()
+    {
+        $menus         = \DB::select("SELECT m.* FROM menus m INNER JOIN roles_menu rm ON m.id = rm.id_menu WHERE rm.id_rol = {$this->user->id_rol} AND id_modulo = 7 AND activo = true ORDER BY m.orden ASC");
+
+        foreach ($menus as $mn)
+            $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
+
+        $planes = \DB::table('sp_entidad_plan')->where('id_entidad', $this->user->id_institucion)->get();
+
+        if(count($planes) == 0)
+            $menus = array_where($menus, function($menu){ return $menu->tipo_menu == 'Estructuración';});
+
+        return response()->json([
+            'estaod' => 'success',
+            'data' => $menus,
+        ]);
+    }
+
+    public  function getIdEntidadFoco($req)
+    {
+        $idEntidad = -1;
+        if($this->user->id_rol == 4){
+            $idEntidad = $this->user->id_institucion;
+        }
+        if($this->user->id_rol == 3){
+            $idEntidad = $req->id_entidad;
+        }
+        return $idEntidad;
+    }
+
+    public function getParametros($categoria, $a = null, $b = null)
+    {
+        $params = \DB::table("sp_parametros")->where('activo', true)->where("categoria", $categoria);
+        if($a && $b)
+        {
+            $params = $params->where($a, $b);
+        } 
+
+        $params = $params->orderBy("orden")->get();
+        return response()->json([
+                "estado" => "success", 
+                "data"=> $params, 
+            ]);
     }
 
 

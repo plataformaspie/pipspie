@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\ModuloPlanificacion;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ModuloPlanificacion\IndexController;
 use App\Models\ModuloPlanificacion\Entidades;
 use App\Models\ModuloPlanificacion\EntidadPlan;
 use App\Models\ModuloPlanificacion\TiposEntidades;
 use Illuminate\Http\Request;
 
-class EntidadPlanController extends IndexController
+class EntidadPlanController extends PlanificacionBaseController
 {     
 
     public function showPlanesInstitucion(Request $request)
@@ -19,19 +18,12 @@ class EntidadPlanController extends IndexController
 
     public function listEntidadPlan(Request $request)
     {
-        $idEntidad = $this->idEntidadFoco($request);
+        $idEntidad = $this->getIdEntidadFoco($request);
         $entidadPlanes = \DB::select("SELECT ep.id, ep.id_tipo_plan, ep.gestion_inicio, ep.gestion_fin, e.nombre, e.sigla, tp.sigla as plan
                                         FROM sp_entidad_plan ep, sp_entidades e, sp_tipos_planes tp 
                                         WHERE ep.activo = true AND ep.id_entidad = e.id 
                                         AND  ep.id_tipo_plan = tp.id AND e.institucion = {$idEntidad} 
                                         ORDER BY ep.id_tipo_plan"); 
-               
-        // $entidadPlan = \DB::table('sp_entidad_plan')->join('sp_entidades as e', 'sp_entidad_plan.id_entidad', '=', 'e.id')
-        //     ->join('sp_tipos_planes as tp', 'sp_entidad_plan.id_tipo_plan', '=', 'tp.id')
-        //     ->where('e.institucion', $idEntidad)
-        //     ->where('sp_entidad_plan.activo', true)
-        //     ->select('sp_entidad_plan.id', 'sp_entidad_plan.gestion_inicio', 'sp_entidad_plan.gestion_fin', 'e.nombre', 'e.sigla', 'tp.sigla as plan')
-        //     ->get();
         return \Response::json($entidadPlanes);
     }
 
@@ -99,16 +91,5 @@ class EntidadPlanController extends IndexController
         }
     }
 
-    public function idEntidadFoco($req)
-    {
-        $idEntidad = -1;
-        if($this->user->id_rol == 4){
-            $idEntidad = $this->user->id_institucion;
-        }
-        if($this->user->id_rol == 3){
-            $idEntidad = $req->id_entidad;
-        }
-        return $idEntidad;
-    }
 
 }

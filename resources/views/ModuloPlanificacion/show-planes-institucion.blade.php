@@ -1,7 +1,7 @@
 @extends('layouts.moduloplanificacion')
 
 @section('header')
-<link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" /> --}}
 <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
@@ -69,107 +69,112 @@
 @section('content')
 
 <div id="contenedor">
-<div class="tray tray-center p40 va-t posr">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-visible" >
-                <div class="panel-heading text-center">
-                    <span class="panel-title"> Listado de Planes de la institución</span>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div id="estructura" class="col-md-12" >
-                            <button id="nuevo" type="button" class="btn btn-sm btn-default m5 btn-alt  "><i class="fa fa-edit icon-primary"></i> Agregar Plan</button>
-                            <button id="editar" type="button" class="btn btn-sm btn-default m5 btn-alt"><i class="fa fa-edit icon-warning"></i> Editar</button>
-                            <button id="eliminar" type="button" class="btn btn-sm btn-default m5 btn-alt"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar</button>
-                            <div id="dataTable"></div>
+
+
+    <div class="tray tray-center p40 va-t posr">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-visible" >
+                    <div class="panel-heading text-center">
+                        <span class="panel-title"> Listado de Planes de la institución</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div id="estructura" class="col-md-12" >
+                                <button id="nuevo" type="button" class="btn btn-sm btn-default m5 btn-alt  "><i class="fa fa-edit icon-primary"></i> Agregar Plan</button>
+                                <button id="editar" type="button" class="btn btn-sm btn-default m5 btn-alt"><i class="fa fa-edit icon-warning"></i> Editar</button>
+                                <button id="eliminar" type="button" class="btn btn-sm btn-default m5 btn-alt"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar</button>
+                                <div id="dataTable"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Admin Form Popup -->
-<div id="frm_modal"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide ">
-    <div class="panel">
-        <div class="panel-heading">
-              <span class="panel-title" id="tituloModal"><i class="fa fa-pencil"></i> <span> </span></span>
-        </div>
-              <!-- end .panel-heading section -->
-        <form method="post" action="/" id="form-plan" name="form-plan">
-            {{ csrf_field() }}
-            <input class="hidden" name="id" id="id" >
-            <div class="panel-body mnw700 of-a" id="val">
-                <div class="row">
-                    <div class="col-md-7 pln br-r mvn15">
-                        <h5 class="ml5 mt20 ph10 pb5 br-b fw700">Datos del plan<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h5>
-                        <div class="section">
-                            <label class="field-label" for="id_tipo_plan">Tipo de Plan</label>
-                            <label class="field select">
-                                <select id="id_tipo_plan" name="id_tipo_plan" class="" style="width:100%;">
-                                    <option value="">...</option>
-                                    <option value="1">Plan Sectorial de Desarrollo Integral para Vivir Bien</option>
-                                    <option value="2">Plan Territorial de Desarrollo Integral para Vivir Bien</option>
-                                    <option value="3">Plan Estratégico Ministerial</option>
-                                    <option value="4">Plan Estratégico Institucional</option>
-                                </select>
-                                <i class="arrow double"></i>                    
-                            </label>
+
+    <!-- Admin Form Popup -->
+    <div id="frm_modal"  class="popup-basic popup-lg admin-form mfp-with-anim mfp-hide ">
+        <div class="panel">
+            <div class="panel-heading">
+                  <span class="panel-title" id="tituloModal"><i class="fa fa-pencil"></i> <span> </span></span>
+            </div>
+                  <!-- end .panel-heading section -->
+                  <form method="post" action="/" id="form-plan" name="form-plan">
+                      <div class="panel-body of-a" id="val">
+                        {{ csrf_field() }}
+                        <input class="hidden" name="id" id="id" >
+                        <div class="row">
+                            <div class=" pl5 br-r mvn15">
+                                <h5 class="ml5 mt20 ph10 pb5 br-b fw700">Datos del plan<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h5>
+                                <div class="section">
+                                    <label class="field-label" for="id_tipo_plan">Tipo de Plan</label>
+                                    <label class="field select">
+                                        <select id="id_tipo_plan" name="id_tipo_plan" class="" style="width:100%;">
+                                            <option value="">...</option>
+                                        {{--        <option value="1">Plan Sectorial de Desarrollo Integral para Vivir Bien</option>
+                                            <option value="2">Plan Territorial de Desarrollo Integral para Vivir Bien</option>
+                                            <option value="3">Plan Estratégico Ministerial</option>
+                                            <option value="4">Plan Estratégico Institucional</option> --}}
+                                        </select>
+                                        <i class="arrow double"> </i>                    
+                                    </label>
+                                </div>
+
+                                <div class="section">
+                                    <label class="field-label" for="gestion_inicio">Gestión inicio</label>
+                                    <label for="gestion_inicio" class="field prepend-icon">
+                                        <input type="text" class="gui-input" id="gestion_inicio" name="gestion_inicio" placeholder="Gestión inicio">
+                                        <label for="gestion_inicio" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
+                                        </label>
+                                    </label>
+                                </div>
+                                <div class="section">
+                                    <label class="field-label" for="gestion_fin">Gestión fin</label>
+                                    <label for="gestion_fin" class="field prepend-icon">
+                                        <input type="text" class="gui-input" id="gestion_fin" name="gestion_fin" placeholder="Gestión fin">
+                                        <label for="gestion_fin" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
+                                        </label>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="section">
-                            <label class="field-label" for="gestion_inicio">Gestión inicio</label>
-                            <label for="gestion_inicio" class="field prepend-icon">
-                                <input type="text" class="gui-input" id="gestion_inicio" name="gestion_inicio" placeholder="Gestión inicio">
-                                <label for="gestion_inicio" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                </label>
-                            </label>
-                        </div>
-                        <div class="section">
-                            <label class="field-label" for="gestion_fin">Gestión fin</label>
-                                <label for="gestion_fin" class="field prepend-icon">
-                                    <input type="text" class="gui-input" id="gestion_fin" name="gestion_fin" placeholder="Gestión fin">
-                                    <label for="gestion_fin" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                </label>
-                            </label>
-                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="panel-footer">
-                <button type="submit" id="guardar"  class="button btn-primary">Guardar</button>
-            </div>
+                    <div class="panel-footer">
+                        <button type="submit" id="guardar"  class="button btn-primary">Guardar</button>
+                        <a href="#"  id="cancelar"  class="button btn-danger ml25">Cancelar</a>
+                    </div>
+                </form>
 
-        </form>
+        </div>
+      <!-- end: .panel -->
     </div>
-  <!-- end: .panel -->
-</div>
-  <!-- end: .admin-form -->
+      <!-- end: .admin-form -->
 
 </div>
 @endsection
 
 @push('script-head')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdatatable.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdraw.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxtreegrid.js') }} "></script>
+<script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdatatable.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdraw.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxtreegrid.js "></script>
 
 <script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
 <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
-<script type="text/javascript" src="{{ asset('js/jqwidgets-localization.js') }}"></script>
+<script src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript">
 $(function(){
-    var cnf = {
-        urlBase : '/api/moduloplanificacion/',
-    }
+    // var cnf = {
+    //     urlBase : '/api/moduloplanificacion/',
+    // }
 
     var planes = {
         dataTable : $("#dataTable"),
@@ -278,6 +283,14 @@ $(function(){
                 midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
             });
         }, 
+        cargarCombos : function(){
+            $.get(cnf.urlBase + "getParametros/tipo_plan/valor/SECTORIAL", function(res){
+                opts = res.data;
+                opts.forEach(function(op){
+                    $("#id_tipo_plan").append('<option value="' + op.id + '">' + op.nombre + '</option>');
+                })
+            })
+        },
         getDataForm: function(){
             var objPlan = {
                             id: $("#id").val(),
@@ -326,11 +339,58 @@ $(function(){
                         }
                     },
                     submitHandler: function(form) {
-                        ctxForm.saveForm();
+                        ctxForm.saveData();
                     }
             }
             return reglasVal; 
         }, 
+        nuevo: function(){
+            $("#tituloModal span").html("Crear Plan");
+            $('#form-plan select, #form-plan input:text').val('');
+            ctxForm.showModal();
+        },
+        editar: function(){
+            var rowSelected = planes.dataTable.jqxDataTable('getSelection');
+            if(rowSelected.length > 0)
+            {
+                rowSel = rowSelected[0]; 
+                ctxForm.setDataForm(rowSel);
+                $("#tituloModal span").html("Modificar Plan");
+                ctxForm.showModal();
+            }
+            else{
+                swal("Seleccione el registro para modificar.");
+            }
+        },
+        eliminar: function(){
+            var rowSelected = planes.dataTable.jqxDataTable('getSelection');
+            if(rowSelected.length > 0)
+            {
+                rowSel = rowSelected[0];
+                ctxForm.deletePlan(rowSel.id);             
+            }
+            else{
+                swal("Seleccione el registro que desea eliminar.");
+            }
+        },
+        saveData: function(){    
+            var objPlan = this.getDataForm();
+            $.post(cnf.urlBase + 'saveEntidadPlan', objPlan, function(res){
+                new PNotify({
+                            title: !res.error ? (res.accion=='insert' ? 'Plan Creado' : 'Modificado') : 'Error!!',
+                            text: res.msg,
+                            shadow: true,
+                            opacity: 1,
+                            // addclass: noteStack,
+                            type: !res.error ? "success" : "danger",
+                            // stack: Stacks[noteStack],
+                            width: findWidth(),
+                            delay: 1500
+                        });
+                planes.dataTable.jqxDataTable("updateBoundData");
+                $.magnificPopup.close();
+            });  
+        },
         deletePlan: function(id){
             swal({
                   title: "Está seguro de eliminar el Plan?",
@@ -339,7 +399,7 @@ $(function(){
                   showCancelButton: true,
                   confirmButtonColor: "#DD6B55",
                   confirmButtonText: "Si, eliminar!",
-                  closeOnConfirm: false
+                  closeOnConfirm: true
                 }, function(){
                     $.get(cnf.urlBase + 'deleteEntidadPlan', {'id': id}, function(res){
                         new PNotify({
@@ -357,24 +417,6 @@ $(function(){
                     });
                 });
         },
-  
-        saveForm: function(){    
-            var objPlan = this.getDataForm();
-            $.post(cnf.urlBase + 'saveEntidadPlan', objPlan, function(res){
-                new PNotify({
-                            title: !res.error ? (res.accion=='insert' ? 'Plan Creado' : 'Modificado') : 'Error!!',
-                            text: res.msg,
-                            shadow: true,
-                            opacity: 1,
-                            addclass: noteStack,
-                            type: !res.error ? "success" : "danger",
-                            stack: Stacks[noteStack],
-                            width: findWidth(),
-                            delay: 4000
-                        });
-                planes.dataTable.jqxDataTable("updateBoundData");
-            });  
-        },
     }
 
 
@@ -382,37 +424,24 @@ $(function(){
     planes.fillPlanes();
 
     $('#nuevo').click(function(){
-        $("#tituloModal span").html("Crear Plan");
-        $('#form-plan select, #form-plan input:text').val('');
-        ctxForm.showModal();
+        ctxForm.nuevo();
     });
 
     $("#contenedor").on('click', '.sel_edit, #editar', function(){
-        var rowSelected = planes.dataTable.jqxDataTable('getSelection');
-        if(rowSelected.length > 0)
-        {
-            rowSel = rowSelected[0]; 
-            ctxForm.setDataForm(rowSel);
-        }
-        $("#tituloModal span").html("Modificar Plan");
-        ctxForm.showModal();
+        ctxForm.editar();
     });
 
     $("#contenedor").on('click', '.sel_delete, #eliminar', function(){
-        var rowSelected = planes.dataTable.jqxDataTable('getSelection');
-        if(rowSelected.length > 0)
-        {
-            rowSel = rowSelected[0];
-            ctxForm.deletePlan(rowSel.id);             
-        }
-        else{
-            swal("Seleccione el registro que desea eliminar.");
-        }
+        ctxForm.eliminar();
     });
+
+    $("#cancelar").click(function(){
+        $.magnificPopup.close();
+    })
 
     $("#form-plan").validate(ctxForm.validateRules());
 
-   
+    ctxForm.cargarCombos();
 });
 </script>
 @endpush

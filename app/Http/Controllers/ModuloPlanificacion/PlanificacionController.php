@@ -12,26 +12,26 @@ use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
 use App\Models\ModuloPlanificacion\Entidades;
 use App\Models\ModuloPdes\Pilares;
 
-class PlanificacionController extends Controller
+class PlanificacionController extends PlanificacionBaseController
 {
-  /**
-   * Create a new controller instance.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-    // $this->middleware('auth');
-   $this->middleware(function ($request, $next)
-   {
-    $user    = \Auth::user();
-    $ModulosMenus = IndexController::GeneraMenus($user);
+   //  /**
+   //   * Create a new controller instance.
+   //   *
+   //   * @return void
+   //   */
+   //  public function __construct()
+   //  {
+   //    // $this->middleware('auth');
+   //   $this->middleware(function ($request, $next)
+   //   {
+   //    $user    = \Auth::user();
+   //    $ModulosMenus = IndexController::GeneraMenus($user);
 
-    \View::share($ModulosMenus);
+   //    \View::share($ModulosMenus);
 
-    return $next($request);
-  });
- }
+   //    return $next($request);
+   //  });
+   // }
   
   public function showDiagnostico()
   {

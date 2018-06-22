@@ -8,26 +8,26 @@ use App\Models\ModuloPlanificacion\EntidadPlan;
 use App\Models\ModuloPlanificacion\TiposEntidades;
 use Illuminate\Http\Request;
 
-class AdministracionController extends Controller
+class AdministracionController extends PlanificacionBaseController
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Request $request)
-    {
-         // $middleware('auth');
-        $this->middleware(function ($request, $next)
-        {
-          $user    = \Auth::user();
-          $ModulosMenus = IndexController::GeneraMenus($user);
+    // public function __construct(Request $request)
+    // {
+    //      // $middleware('auth');
+    //     $this->middleware(function ($request, $next)
+    //     {
+    //       $user    = \Auth::user();
+    //       $ModulosMenus = IndexController::GeneraMenus($user);
 
-          \View::share($ModulosMenus);
+    //       \View::share($ModulosMenus);
 
-          return $next($request);
-        });
-    }
+    //       return $next($request);
+    //     });
+    // }
 
     public function showEstructura(Request $request)
     {

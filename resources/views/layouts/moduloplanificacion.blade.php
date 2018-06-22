@@ -15,24 +15,33 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300">
 
     <!-- Required Plugin CSS -->
-    <!--link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
+    <!--link rel="stylesheet" type="text/css" href="sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
 
     @yield('headerIni')
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/vendor/plugins/magnific/magnific-popup.css') }}">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/magnific/magnific-popup.css">
     <!-- Admin Forms CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/css/admin-forms.css') }}">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-forms/css/admin-forms.css">
     <!-- Admin Modals CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-plugins/admin-modal/adminmodal.css') }}">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-modal/adminmodal.css">
     <!-- Theme CSS -->
-    <link rel="stylesheet" type="text/css" href=" {{ asset('sty-mode-2/assets/skin/default_skin/css/theme.css') }} ">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/skin/default_skin/css/theme.css">
 
     <!-- Admin Panels CSS -->
-    <!--link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css') }}"-->
+    <!--link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"-->
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('sty-mode-2/assets/img/favicon.ico') }} ">
+    <link rel="shortcut icon" href="/sty-mode-2/assets/img/favicon.ico ">
+
+    <style media="screen">
+        .activo{
+            background-color: #e5e5ee;
+        }
+}
+
+</style>
+
     @yield('header')
 
 </head>
@@ -41,7 +50,7 @@
     <!-- Start: Main -->
     <div id="main">
         <!-- Start: Header -->
-        <header class="navbar navbar-fixed-top bg-light">
+        <header class="navbar navbar-fixed-top bg-light ">
             <div class="navbar-branding">
                 <a class="navbar-brand" href="dashboard.html"> <img src="{{ asset('img/spie-ico-b.png') }}" width="50" alt="home" /> <b></b>Plataforma </a>
                 <span id="toggle_sidemenu_l" class="glyphicons glyphicons-show_lines"></span>
@@ -99,80 +108,10 @@
             </ul>
             <form class="navbar-form navbar-left navbar-search ml5" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Buscar..." value="Buscar...">
+                    <input type="text" class="form-control" placeholder="Buscar..." value="">
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-
-                <!--li class="dropdown dropdown-item-slide">
-                    <a class="dropdown-toggle pl10 pr10" data-toggle="dropdown" href="#">
-                        <span class="octicon octicon-radio-tower fs18"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-hover dropdown-persist pn w350 bg-white animated animated-shorter fadeIn" role="menu">
-                        <li class="bg-light p8">
-                            <span class="fw600 pl5 lh30"> Notifications</span>
-                            <span class="label label-warning label-sm pull-right lh20 h-20 mt5 mr5">12</span>
-                        </li>
-                        <li class="p10 br-t item-1">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/2.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="p10 br-t item-2">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/3.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="p10 br-t item-3">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/4.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="p10 br-t item-4">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/5.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li-->
-
-                <!--li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="flag-xs flag-us"></span>
-                        <span class="fw600">US</span>
-                    </a>
-                    <ul class="dropdown-menu animated animated-short flipInX" role="menu">
-                        <li>
-                            <a href="javascript:void(0);" class="fw600">
-                                <span class="flag-xs flag-in mr10"></span> Hindu </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="fw600">
-                                <span class="flag-xs flag-tr mr10"></span> Turkish </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="fw600">
-                                <span class="flag-xs flag-es mr10"></span> Spanish </a>
-                        </li>
-                    </ul>
-                </li-->
-
                 <li class="ph10 pv20 hidden-xs"> <i class="fa fa-circle text-tp fs8"></i>
                 </li>
 
@@ -253,7 +192,8 @@
 
                 <!-- sidebar menu -->
                 <ul class="nav sidebar-menu">
-                  <li class="sidebar-label pt20">PDES</li>
+
+                   <li class="sidebar-label pt20">PDES</li>
 
                   <?php
                   $g = 0;
@@ -549,17 +489,12 @@
             //     hljs.highlightBlock(block);
             // });
 
-
-
-
-
-
-
         });
 
         function activarMenu(gr,mn){
+            $("u li").removeClass('activo');
             $('#G'+gr).addClass('menu-open');
-            $('#G'+gr+'-'+mn).addClass('active');
+            $('#G'+gr+'-'+mn).addClass('active  activo');
         }
         function number_format(amount, decimals) {
 
@@ -644,6 +579,17 @@
                 return "290px";
             }
         }
+
+        var cnf = {
+            urlBase : '/api/moduloplanificacion/',
+        }
+        function generarMenu(plan){
+            $.get(cnf.urlBase +  "menus", function(res){
+                console.log(res.data)
+            })
+        }
+
+        generarMenu()
     </script>
     <!-- END: PAGE SCRIPTS -->
   @stack('script-head')
