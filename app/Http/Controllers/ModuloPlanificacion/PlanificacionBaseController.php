@@ -71,7 +71,7 @@ class PlanificacionBaseController extends Controller
             $menus = array_where($menus, function($menu){ return $menu->tipo_menu == 'Estructuración';});
 
         return response()->json([
-            'estaod' => 'success',
+            'estado' => 'success',
             'data' => $menus,
         ]);
     }

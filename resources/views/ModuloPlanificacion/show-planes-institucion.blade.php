@@ -172,20 +172,17 @@
 <script src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript">
 $(function(){
-    // var cnf = {
-    //     urlBase : '/api/moduloplanificacion/',
-    // }
 
     var planes = {
         dataTable : $("#dataTable"),
         source : {},
         fillPlanes : function() {
-            // $.get(cnf.urlBase + 'listEntidadPlan', function(resp)
-            // {
-                this.source =
+            $.get(globalSP.urlBase + 'listEntidadPlan', function(resp)
+            {
+                planes.source =
                 {
                     dataType: "json",
-                    // localdata: resp,
+                    localdata: resp.data,
                     dataFields: [
                         { name: 'id', type: 'number' },
                         { name: 'gestion_inicio', type: 'number' },
@@ -196,10 +193,10 @@ $(function(){
                         { name: 'id_tipo_plan', type: 'number' }
                     ],
                     id: 'id',
-                    url: cnf.urlBase + 'listEntidadPlan' 
+                    // url: globalSP.urlBase + 'listEntidadPlan' 
                 };
                 //Configuracion de la tabla
-                var dataAdapter = new $.jqx.dataAdapter(this.source);
+                var dataAdapter = new $.jqx.dataAdapter(planes.source);
 
                 var NoteRenderer = function (row, datafield, value) {
                     var html = '<button type="button" class="btn btn-xs btn-primary btn-rounded  " onclick="change_panelEstOrg();"><i class="glyphicons glyphicons-eye_open icon-success"></i> ver</button>';
@@ -210,7 +207,7 @@ $(function(){
                     return html;
                 };
 
-                this.dataTable.jqxDataTable({
+                planes.dataTable.jqxDataTable({
                     source: dataAdapter,
                     altRows: false,
                     sortable: true,
@@ -258,7 +255,42 @@ $(function(){
                         { text: ' ', dataField: 'id', cellsrenderer: rendererEditDel},
                     ]
                 });
-            // });
+            });
+        },
+        refresh: function(){
+            $.get(globalSP.urlBase + 'listEntidadPlan', function(resp) {
+                planes.source.localdata = resp.data;
+                planes.dataTable.jqxDataTable("updateBoundData");
+            })   
+        },
+        nuevo: function(){
+            $("#tituloModal span").html("Crear Plan");
+            $('#form-plan select, #form-plan input:text').val('');
+            ctxForm.showModal();
+        },
+        editar: function(){
+            var rowSelected = planes.dataTable.jqxDataTable('getSelection');
+            if(rowSelected.length > 0)
+            {
+                rowSel = rowSelected[0]; 
+                ctxForm.setDataForm(rowSel);
+                $("#tituloModal span").html("Modificar Plan");
+                ctxForm.showModal();
+            }
+            else{
+                swal("Seleccione el registro para modificar.");
+            }
+        },
+        eliminar: function(){
+            var rowSelected = planes.dataTable.jqxDataTable('getSelection');
+            if(rowSelected.length > 0)
+            {
+                rowSel = rowSelected[0];
+                ctxForm.deletePlan(rowSel.id);             
+            }
+            else{
+                swal("Seleccione el registro que desea eliminar.");
+            }
         },
     }
 
@@ -284,7 +316,7 @@ $(function(){
             });
         }, 
         cargarCombos : function(){
-            $.get(cnf.urlBase + "getParametros/tipo_plan/valor/SECTORIAL", function(res){
+            $.get(globalSP.urlBase + "getParametros/tipo_plan/valor/SECTORIAL", function(res){
                 opts = res.data;
                 opts.forEach(function(op){
                     $("#id_tipo_plan").append('<option value="' + op.id + '">' + op.nombre + '</option>');
@@ -307,6 +339,7 @@ $(function(){
             $("#gestion_inicio").val(objPlan.gestion_inicio);
             $("#gestion_fin").val(objPlan.gestion_fin);
         },
+
         validateRules: function(){
             var reglasVal = {
                     errorClass: "state-error",
@@ -344,50 +377,21 @@ $(function(){
             }
             return reglasVal; 
         }, 
-        nuevo: function(){
-            $("#tituloModal span").html("Crear Plan");
-            $('#form-plan select, #form-plan input:text').val('');
-            ctxForm.showModal();
-        },
-        editar: function(){
-            var rowSelected = planes.dataTable.jqxDataTable('getSelection');
-            if(rowSelected.length > 0)
-            {
-                rowSel = rowSelected[0]; 
-                ctxForm.setDataForm(rowSel);
-                $("#tituloModal span").html("Modificar Plan");
-                ctxForm.showModal();
-            }
-            else{
-                swal("Seleccione el registro para modificar.");
-            }
-        },
-        eliminar: function(){
-            var rowSelected = planes.dataTable.jqxDataTable('getSelection');
-            if(rowSelected.length > 0)
-            {
-                rowSel = rowSelected[0];
-                ctxForm.deletePlan(rowSel.id);             
-            }
-            else{
-                swal("Seleccione el registro que desea eliminar.");
-            }
-        },
         saveData: function(){    
             var objPlan = this.getDataForm();
-            $.post(cnf.urlBase + 'saveEntidadPlan', objPlan, function(res){
+            $.post(globalSP.urlBase + 'saveEntidadPlan', objPlan, function(res){
                 new PNotify({
                             title: !res.error ? (res.accion=='insert' ? 'Plan Creado' : 'Modificado') : 'Error!!',
                             text: res.msg,
                             shadow: true,
                             opacity: 1,
-                            // addclass: noteStack,
+                            addclass: noteStack,
                             type: !res.error ? "success" : "danger",
-                            // stack: Stacks[noteStack],
+                            stack: Stacks[noteStack],
                             width: findWidth(),
                             delay: 1500
                         });
-                planes.dataTable.jqxDataTable("updateBoundData");
+                planes.refresh();
                 $.magnificPopup.close();
             });  
         },
@@ -401,7 +405,7 @@ $(function(){
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.get(cnf.urlBase + 'deleteEntidadPlan', {'id': id}, function(res){
+                    $.get(globalSP.urlBase + 'deleteEntidadPlan', {'id': id}, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -413,26 +417,27 @@ $(function(){
                                   width: findWidth(),
                                   delay: 1400
                               });
-                        $("#dataTable").jqxDataTable("updateBoundData");
+                        planes.refresh();
                     });
                 });
         },
+
     }
 
 
-    activarMenu('1','30');
+    globalSP.activarMenu('30');
     planes.fillPlanes();
 
     $('#nuevo').click(function(){
-        ctxForm.nuevo();
+        planes.nuevo();
     });
 
     $("#contenedor").on('click', '.sel_edit, #editar', function(){
-        ctxForm.editar();
+        planes.editar();
     });
 
     $("#contenedor").on('click', '.sel_delete, #eliminar', function(){
-        ctxForm.eliminar();
+        planes.eliminar();
     });
 
     $("#cancelar").click(function(){

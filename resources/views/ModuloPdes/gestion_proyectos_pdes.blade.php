@@ -706,9 +706,9 @@ $(function ()
         if(ctxForm.validarForm(proyecto)) 
         {
             proyecto._token =  $('input[name=_token]').val();
-            // $.post(cnf.urlBase + '/gestionproyectos', proyecto, function () {
-            //     ctxList.refreshLista(proyecto.id);
-            // }); 
+            $.post(cnf.urlBase + '/gestionproyectos', proyecto, function () {
+                ctxList.refreshLista(proyecto.id);
+            }); 
         }
         else
             return false;

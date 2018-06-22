@@ -38,9 +38,9 @@
         .activo{
             background-color: #e5e5ee;
         }
-}
 
-</style>
+
+    </style>
 
     @yield('header')
 
@@ -191,24 +191,24 @@
                 <!-- End: Sidebar Header -->
 
                 <!-- sidebar menu -->
-                <ul class="nav sidebar-menu">
+            <ul class="nav sidebar-menu" id="menuSP">
 
-                   <li class="sidebar-label pt20">PDES</li>
+                <li class="sidebar-label pt20">PDES</li>
 
-                  <?php
-                  $g = 0;
-                  $grupo = "";
+            <?php
+            $g = 0;
+            $grupo = "";
+            ?>
+            @foreach($menus as $m)
+                @if( $grupo !=  $m->tipo_menu)
+                  <?php $g++;
+                  $grupo = $m->tipo_menu;
                   ?>
-                  @foreach($menus as $m)
-                    @if( $grupo !=  $m->tipo_menu)
-                      <?php $g++;
-                      $grupo = $m->tipo_menu;
-                      ?>
-                      @if( $g > 1 )
-                          </ul>
-                      </li>
-                      @endif
-                   <li>
+                  @if( $g > 1 )
+                      </ul>
+                  </li>
+                  @endif
+                    <li>
                         <a id="G{{ $g }}" class="accordion-toggle" href="#">
                             <span class="glyphicons glyphicons-fire"></span>
                             <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
@@ -216,79 +216,69 @@
                         </a>
                         <ul class="nav sub-nav">
 
-                          <li id="G{{ $g }}-{{ $m->id }}" class="">
-                            @if( $m->submenus )
-                              <a href="{{ url( $m->url ) }}">
-                                  <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
-                              </a>
-                              <ul class="nav sub-nav">
-                                @foreach($m->submenus as $sm)
-                                  <li id="sm-{{ $sm->id }}" class="">
-                                    <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
-                                  </li>
-                                @endforeach
-                              </ul>
-                            @else
-                              <a href="{{ url( $m->url ) }}">
-                                <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
-                              </a>
-                            @endif
-                          </li>
-                    @else
-                      <li id="G{{ $g }}-{{ $m->id }}" class="">
+                            <li id="M{{ $m->id }}" class="">
+                                <a href="{{ url( $m->url ) }}">
+                                      <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
+                                </a>
+                                @if( $m->submenus )
+                                  <ul class="nav sub-nav">
+                                    @foreach($m->submenus as $sm)
+                                      <li id="sm-{{ $sm->id }}" class="">
+                                        <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
+                                      </li>
+                                    @endforeach
+                                  </ul>
+                                @endif
+                            </li>
+                @else
+                    <li id="M{{ $m->id }}" class="">                        
+                        <a href="{{ url( $m->url ) }}">
+                          <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }} <i class="fa fa-tags pull-right icon-primary" style="font-size: 10px; "></i>
+                        </a>
                         @if( $m->submenus )
-                          <a href="{{ url( $m->url ) }}">
-                              <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
-                          </a>
-                          <ul class="nav sub-nav">
+                        <ul class="nav sub-nav">
                             @foreach($m->submenus as $sm)
                               <li id="sm-{{ $sm->id }}" class="">
                                 <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
                               </li>
                             @endforeach
-                          </ul>
-                        @else
-                          <a href="{{ url( $m->url ) }}">
-                            <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
-                          </a>
+                        </ul>
                         @endif
-                      </li>
-
-                    @endif
-
-                  @endforeach
+                    </li>
+                @endif
+            @endforeach
 
                       </ul>
                     </li>
 
 
-                    <!-- sidebar progress bars -->
-                    <li class="sidebar-label pt25 pb10">User Stats</li>
-                    <li class="sidebar-stat mb10">
-                        <a href="#projectOne" class="fs11">
-                            <span class="fa fa-inbox text-info"></span>
-                            <span class="sidebar-title text-muted">Email Storage</span>
-                            <span class="pull-right mr20 text-muted">35%</span>
-                            <div class="progress progress-bar-xs ml20 mr20">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 35%">
-                                    <span class="sr-only">35% Complete</span>
-                                </div>
+                <!-- sidebar progress bars -->
+                <li class="sidebar-label pt25 pb10">User Stats</li>
+                <li class="sidebar-stat mb10">
+                    <a href="#projectOne" class="fs11">
+                        <span class="fa fa-inbox text-info"></span>
+                        <span class="sidebar-title text-muted">Email Storage</span>
+                        <span class="pull-right mr20 text-muted">35%</span>
+                        <div class="progress progress-bar-xs ml20 mr20">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 35%">
+                                <span class="sr-only">35% Complete</span>
                             </div>
-                        </a>
-                    </li>
-                    <li class="sidebar-stat mb10">
-                        <a href="#projectOne" class="fs11">
-                            <span class="fa fa-dropbox text-warning"></span>
-                            <span class="sidebar-title text-muted">Bandwidth</span>
-                            <span class="pull-right mr20 text-muted">58%</span>
-                            <div class="progress progress-bar-xs ml20 mr20">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 58%">
-                                    <span class="sr-only">58% Complete</span>
-                                </div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sidebar-stat mb10">
+                    <a href="#projectOne" class="fs11">
+                        <span class="fa fa-dropbox text-warning"></span>
+                        <span class="sidebar-title text-muted">Bandwidth</span>
+                        <span class="pull-right mr20 text-muted">58%</span>
+                        <div class="progress progress-bar-xs ml20 mr20">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 58%">
+                                <span class="sr-only">58% Complete</span>
                             </div>
-                        </a>
-                    </li>
-                </ul>
+                        </div>
+                    </a>
+                </li>
+            </ul>
                 <div class="sidebar-toggle-mini">
                     <a href="#">
                         <span class="fa fa-sign-out"></span>
@@ -491,11 +481,8 @@
 
         });
 
-        function activarMenu(gr,mn){
-            $("u li").removeClass('activo');
-            $('#G'+gr).addClass('menu-open');
-            $('#G'+gr+'-'+mn).addClass('active  activo');
-        }
+
+
         function number_format(amount, decimals) {
 
             amount += ''; // por si pasan un numero en vez de un string
@@ -580,16 +567,30 @@
             }
         }
 
-        var cnf = {
+
+        globalSP = {
             urlBase : '/api/moduloplanificacion/',
-        }
-        function generarMenu(plan){
-            $.get(cnf.urlBase +  "menus", function(res){
-                console.log(res.data)
-            })
+
+            activarMenu: function(mn){
+                $("u li").removeClass('activo');            
+                $('#M'+mn).addClass('active  activo');
+                padre = $('#M'+mn).parent().parent();
+                padre.children('a').addClass('menu-open');
+            },
+            generarMenu: function(plan){
+                $.get(this.urlBase +  "menus", function(res){
+                    menus = res.data;
+                    var html = '<li class="sidebar-label pt20">PDES</li>';
+
+                })
+            },
+            configuraMenu: function(plan){
+                etapas = plan.etapas_completadas.split('|');
+                console.log(etapas)
+            }
+
         }
 
-        generarMenu()
     </script>
     <!-- END: PAGE SCRIPTS -->
   @stack('script-head')

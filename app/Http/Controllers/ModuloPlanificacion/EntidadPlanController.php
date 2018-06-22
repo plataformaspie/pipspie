@@ -19,12 +19,13 @@ class EntidadPlanController extends PlanificacionBaseController
     public function listEntidadPlan(Request $request)
     {
         $idEntidad = $this->getIdEntidadFoco($request);
-        $entidadPlanes = \DB::select("SELECT ep.id, ep.id_tipo_plan, ep.gestion_inicio, ep.gestion_fin, e.nombre, e.sigla, tp.sigla as plan
+        $entidadPlanes = \DB::select("SELECT ep.id, ep.id_tipo_plan, ep.gestion_inicio, ep.gestion_fin, ep.etapas_completadas, e.nombre, e.sigla, tp.sigla as plan
                                         FROM sp_entidad_plan ep, sp_entidades e, sp_tipos_planes tp 
                                         WHERE ep.activo = true AND ep.id_entidad = e.id 
                                         AND  ep.id_tipo_plan = tp.id AND e.institucion = {$idEntidad} 
                                         ORDER BY ep.id_tipo_plan"); 
-        return \Response::json($entidadPlanes);
+        return \Response::json([
+            'data' => $entidadPlanes]);
     }
 
     public function saveEntidadPlan(Request $request)
