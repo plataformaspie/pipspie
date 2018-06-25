@@ -41,37 +41,44 @@
 @endsection
 
 @section('title-topbar')
-<div class="topbar-left">
-    <ol class="breadcrumb">
-        <li class="crumb-active">
-            <a href="dashboard.html">Planes de la Institución</a>
-        </li>
-        <li class="crumb-icon">
-            <a href="/sistemasisgri/index">
-                <span class="glyphicon glyphicon-home"></span>
+<div class="row">
+    <div class="topbar-left ">
+        <ol class="breadcrumb">
+            <li class="crumb-active">
+                <a href="/moduloplanificacion/showPlanesInstitucion">Planes de la Institución</a>
+            </li>
+            <li class="crumb-icon">
+                <a href="/moduloplanificacion/index">
+                    <span class="glyphicon glyphicon-home"></span>
+                </a>
+            </li>
+            <li class="crumb-link">
+                  <a href="/moduloplanificacion/showPlanesInstitucion">Home</a>
+              </li>
+            <li class="crumb-trail">Administrar Planes</li>
+        </ol>
+    </div>
+    <div class="topbar-right ">
+        <div class="ml15 ib va-m" id="toggle_sidemenu_r">
+            <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
+                <span class="badge badge-hero badge-danger">3</span>
             </a>
-        </li>
-        <li class="crumb-link">
-            <a href="/sistemasisgri/index">Home</a>
-        </li>
-        <li class="crumb-trail">Administrar Planes</li>
-    </ol>
-</div>
-<div class="topbar-right">
-    <div class="ml15 ib va-m" id="toggle_sidemenu_r">
-        <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
-            <span class="badge badge-hero badge-danger">3</span>
-        </a>
+        </div>
     </div>
 </div>
+<div class="row">
+    <div class="text-center">
+        <h4 id="tituloCabecera"></h4>
+        <h5 id="titulo2Cabecera"></h5>
+    </div>
+</div>
+
 @endsection
 
 @section('content')
 
 <div id="contenedor">
-
-
-    <div class="tray tray-center p40 va-t posr">
+    <div class="tray tray-center va-t posr">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-visible" >
@@ -113,10 +120,6 @@
                                     <label class="field select">
                                         <select id="id_tipo_plan" name="id_tipo_plan" class="" style="width:100%;">
                                             <option value="">...</option>
-                                        {{--        <option value="1">Plan Sectorial de Desarrollo Integral para Vivir Bien</option>
-                                            <option value="2">Plan Territorial de Desarrollo Integral para Vivir Bien</option>
-                                            <option value="3">Plan Estratégico Ministerial</option>
-                                            <option value="4">Plan Estratégico Institucional</option> --}}
                                         </select>
                                         <i class="arrow double"> </i>                    
                                     </label>
@@ -172,10 +175,10 @@
 <script src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript">
 $(function(){
-
     var planes = {
         dataTable : $("#dataTable"),
         source : {},
+
         fillPlanes : function() {
             $.get(globalSP.urlBase + 'listEntidadPlan', function(resp)
             {
@@ -187,10 +190,11 @@ $(function(){
                         { name: 'id', type: 'number' },
                         { name: 'gestion_inicio', type: 'number' },
                         { name: 'gestion_fin', type: 'number' },
-                        { name: 'nombre', type: 'string' },
-                        { name: 'sigla', type: 'string' },
-                        { name: 'plan', type: 'string' },
-                        { name: 'id_tipo_plan', type: 'number' }
+                        { name: 'nombre_entidad', type: 'string' },
+                        { name: 'sigla_entidad', type: 'string' },
+                        { name: 'cod_tipo_plan', type: 'string' },
+                        { name: 'id_tipo_plan', type: 'number' },
+                        { name: 'etapas_completadas', type: 'string' }
                     ],
                     id: 'id',
                     // url: globalSP.urlBase + 'listEntidadPlan' 
@@ -198,11 +202,11 @@ $(function(){
                 //Configuracion de la tabla
                 var dataAdapter = new $.jqx.dataAdapter(planes.source);
 
-                var NoteRenderer = function (row, datafield, value) {
-                    var html = '<button type="button" class="btn btn-xs btn-primary btn-rounded  " onclick="change_panelEstOrg();"><i class="glyphicons glyphicons-eye_open icon-success"></i> ver</button>';
+                var cargarRenderer = function (row, datafield, value) {
+                    var html = '<button class="sel_cargar_plan btn btn-xs btn-primary btn-rounded  "><i class="glyphicons glyphicons-eye_open icon-success"></i> cargar</button>';
                     return html;
                 };
-                var rendererEditDel = function (row, columnfield, value, defaulthtml, columnproperties) {
+                var editDelRenderer = function (row, columnfield, value, defaulthtml, columnproperties) {
                     html = '<a href="#" id="edit-' + value + '" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Plan" ><i class="fa fa-edit icon-warning fa-lg"></i></a> <a href="#" id="del-' + value + '" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar Plan" ><i class="glyphicons glyphicons-bin icon-danger "></i></a> ' 
                     return html;
                 };
@@ -217,10 +221,10 @@ $(function(){
                     selectionMode: 'singleRow',
                     localization: getLocalization('es'),
                     columns: [
-                        { text: '*', cellsRenderer: NoteRenderer, width: 75 },
+                        { text: '*', cellsRenderer: cargarRenderer, width: 75 },
                         { text: '-', width: 90, cellsRenderer: function (row, column, value, rowData) {
                               var image = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                              var imgurl = '/img/ico_' + rowData.plan + '.png';
+                              var imgurl = '/img/ico_' + rowData.cod_tipo_plan + '.png';
                               var img = '<img width="60" height="80" style="display: block;" src="' + imgurl + '"/>';
                               image += img;
                               image += "</div>";
@@ -232,10 +236,10 @@ $(function(){
                                 var container = '<div style="width: 100%; height: 100%;">'
                                 var leftcolumn = '<div style="float: left; width: 100%;">';
 
-                                var nombre = "<div style='margin: 10px;'><b>Nombre Entidad:</b> " + rowData.nombre + "</div>";
-                                var sigla = "<div style='margin: 10px;'><b>Sigla:</b> " + rowData.sigla + "</div>";
+                                var nombre = "<div style='margin: 10px;'><b>Nombre Entidad:</b> " + rowData.nombre_entidad + "</div>";
+                                var sigla = "<div style='margin: 10px;'><b>Sigla:</b> " + rowData.sigla_entidad + "</div>";
                                 var periodo = "<div style='margin: 10px;'><b>Periodo Plan:</b> " + rowData.gestion_inicio + " - " + rowData.gestion_fin + "</div>";
-                                var tipoPlan = "<div style='margin: 10px;'><b>Documento Planificación:</b> " + rowData.plan + "</div>";
+                                var tipoPlan = "<div style='margin: 10px;'><b>Documento Planificación:</b> " + rowData.cod_tipo_plan + "</div>";
 
                                 leftcolumn += nombre;
                                 leftcolumn += sigla;
@@ -248,11 +252,11 @@ $(function(){
                                 return container;
                             }
                         },
-                        { text: 'Sigla', dataField: 'sigla', hidden: true },
+                        { text: 'Sigla', dataField: 'sigla_entidad', hidden: true },
                         { text: 'Inicio', dataField: 'gestion_inicio', hidden: true },
                         { text: 'Fin', dataField: 'gestion_fin', hidden: true },
-                        { text: 'Plan', dataField: 'plan', hidden: true },
-                        { text: ' ', dataField: 'id', cellsrenderer: rendererEditDel},
+                        { text: 'Plan', dataField: 'cod_tipo_plan', hidden: true },
+                        { text: ' ', dataField: 'id', cellsrenderer: editDelRenderer},
                     ]
                 });
             });
@@ -272,7 +276,7 @@ $(function(){
             var rowSelected = planes.dataTable.jqxDataTable('getSelection');
             if(rowSelected.length > 0)
             {
-                rowSel = rowSelected[0]; 
+                var rowSel = rowSelected[0]; 
                 ctxForm.setDataForm(rowSel);
                 $("#tituloModal span").html("Modificar Plan");
                 ctxForm.showModal();
@@ -285,13 +289,31 @@ $(function(){
             var rowSelected = planes.dataTable.jqxDataTable('getSelection');
             if(rowSelected.length > 0)
             {
-                rowSel = rowSelected[0];
+                var rowSel = rowSelected[0];
                 ctxForm.deletePlan(rowSel.id);             
             }
             else{
                 swal("Seleccione el registro que desea eliminar.");
             }
         },
+        cargar: function(){
+            var rowsel = planes.dataTable.jqxDataTable('getSelection')[0];
+            globalSP.setGlobalPlanActivo(rowsel); 
+            globalSP.configuraMenu(rowsel);  
+
+            $('#menuSP .sp_menu').each(function(index, elem){
+                var ref = $(elem).attr('href');
+                ref = ref.split('=')[0] + '=' + globalSP.planActivo.id;
+                $(elem).attr('href', ref);
+                // console.log(ref);
+            });
+
+
+    
+            globalSP.setTitulo2();
+
+        },
+
     }
 
     var ctxForm = {
@@ -426,7 +448,9 @@ $(function(){
 
 
     globalSP.activarMenu('30');
+    globalSP.cargarGlobales();
     planes.fillPlanes();
+
 
     $('#nuevo').click(function(){
         planes.nuevo();
@@ -438,6 +462,9 @@ $(function(){
 
     $("#contenedor").on('click', '.sel_delete, #eliminar', function(){
         planes.eliminar();
+    });
+    $("#contenedor").on('click', '.sel_cargar_plan', function(){
+        planes.cargar();
     });
 
     $("#cancelar").click(function(){

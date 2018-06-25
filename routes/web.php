@@ -216,10 +216,10 @@ Route::group(['middleware' => 'auth'],function(){
               // Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
               // Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
               // Route::get('res', 'ModuloPlanificacion\PruebaController@res');
-              Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');              
+              Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
               Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
               Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
-              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');    
+              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
           
           }
@@ -227,7 +227,10 @@ Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'api/moduloplanificacion'),
           function() {
-              Route::get('menus', 'ModuloPlanificacion\PlanificacionBaseController@getMenus');
+              Route::get('getmenu', 'ModuloPlanificacion\PlanificacionBaseController@getMenuPlan');
+              Route::get('getuser', 'ModuloPlanificacion\PlanificacionBaseController@getUser');
+              Route::get('getplan', 'ModuloPlanificacion\PlanificacionBaseController@getPlan');
+              Route::get('getParametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
 
               Route::get('setEstructuraEntidad', 'ModuloPlanificacion\AdministracionController@setEstructuraEntidad');
               Route::post('saveEntidadNew', 'ModuloPlanificacion\AdministracionController@saveEntidadNew');
@@ -244,7 +247,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@listEntidadPlan');
               Route::post('saveEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@saveEntidadPlan');
               Route::get('deleteEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@deleteEntidadPlan');
-              Route::get('getParametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
+              
 
 
               Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');

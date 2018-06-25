@@ -192,7 +192,7 @@
 
                 <!-- sidebar menu -->
             <ul class="nav sidebar-menu" id="menuSP">
-
+                <input type="hidden" name="id_plan" id="id_plan" value="{{ $id_plan }}">
                 <li class="sidebar-label pt20">PDES</li>
 
             <?php
@@ -209,7 +209,7 @@
                   </li>
                   @endif
                     <li>
-                        <a id="G{{ $g }}" class="accordion-toggle" href="#">
+                        <a id="G{{ $g }}" class="accordion-toggle sp_tipo_menu" href="#">
                             <span class="glyphicons glyphicons-fire"></span>
                             <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
                             <span class="caret"></span>
@@ -217,8 +217,14 @@
                         <ul class="nav sub-nav">
 
                             <li id="M{{ $m->id }}" class="">
-                                <a href="{{ url( $m->url ) }}">
-                                      <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }}
+                                <?php
+                                    $qstring = '';
+                                    if($m->tipo_menu <> "Estructuración")
+                                        $qstring = '?p=' . $id_plan;
+                                ?>
+                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="sp_menu">
+                                      <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}"> 
+                                      <span>{{ $m->titulo }}</span> 
                                 </a>
                                 @if( $m->submenus )
                                   <ul class="nav sub-nav">
@@ -231,9 +237,10 @@
                                 @endif
                             </li>
                 @else
-                    <li id="M{{ $m->id }}" class="">                        
-                        <a href="{{ url( $m->url ) }}">
-                          <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  {{ $m->titulo }} <i class="fa fa-tags pull-right icon-primary" style="font-size: 10px; "></i>
+                    <li id="M{{ $m->id }}">                        
+                        <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="sp_menu">
+                          <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  
+                          <span>{{ $m->titulo }}</span>
                         </a>
                         @if( $m->submenus )
                         <ul class="nav sub-nav">
@@ -439,7 +446,7 @@
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
         <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
-
+        <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
 
     <script type="text/javascript">
@@ -569,27 +576,101 @@
 
 
         globalSP = {
-            urlBase : '/api/moduloplanificacion/',
-
+            urlBase: '/api/moduloplanificacion/',
+            planActivo: {},
+            usuario: {},
             activarMenu: function(mn){
-                $("u li").removeClass('activo');            
-                $('#M'+mn).addClass('active  activo');
-                padre = $('#M'+mn).parent().parent();
-                padre.children('a').addClass('menu-open');
+                if(mn=='0')  // si es 0 se abren todos los menus
+                    $("#menuSP .sp_tipo_menu").addClass('menu-open');
+                else {
+                    $("u li").removeClass('activo');            
+                    $('#M'+mn).addClass('active  activo');
+                    padre = $('#M'+mn).parent().parent();
+                    padre.children('a').addClass('menu-open');                  
+                }
             },
-            generarMenu: function(plan){
-                $.get(this.urlBase +  "menus", function(res){
-                    menus = res.data;
-                    var html = '<li class="sidebar-label pt20">PDES</li>';
+            // generarMenu: function(idplan){
+            //     $.get(this.urlBase +  "getmenu", {'id_plan': idplan}, function(res){
+            //         grupos = _.groupBy(res.menu, function(m){
+            //             return m.tipo_menu;
+            //         });
 
-                })
-            },
+            //         console.log(grupos);
+            //         var html = '<li class="sidebar-label pt20">PDES</li>';
+            //         _.mapObject(grupos, function(val, key){
+            //             html += '<li>';
+            //             html += '<a id="G' + key +' " class="accordion-toggle grupo" href="#">\
+            //                         <span class="glyphicons glyphicons-fire"></span>\
+            //                         <span class="sidebar-title">' +key + ' </span>\
+            //                         <span class="caret"></span>\
+            //                     </a>';
+
+            //             html += '</li>' ;
+
+            //                     // TODO completar menu para que se llame de manera dinamica
+            //         });
+            //         $("#menuSP").append(html)
+            //     })
+            // },
             configuraMenu: function(plan){
-                etapas = plan.etapas_completadas.split('|');
-                console.log(etapas)
+                etapas = plan.etapas_completadas.split('|').filter(function(val){
+                    return val != '';
+                });
+                $("#menuSP i").remove();
+                var icon = '<i class="fa fa-tags pull-right icon-primary" style="font-size: 10px; "></i>';
+                etapas.forEach(function(idmenu){
+                    $("#" + idmenu).append(icon);
+                });
+
+                // coloca el titulo del menu Politica Sectorial
+                (plan.plan == 'PSDI') ? $("#27 span").html('Política Sectorial') 
+                                    :  $("#27 span").html('Política Institucional'); 
+
+            }, 
+            cargarGlobales: function(){
+                $.get(globalSP.urlBase + 'getuser', function(res){
+                    globalSP.usuario = res.data;
+                    globalSP.setTitulo1();
+                });
+                $.get(globalSP.urlBase + 'getplan', { 'p' : $('input[name=id_plan]').val() }, function(res){
+                    globalSP.planActivo = res.data;
+                    if(globalSP.planActivo == ''){
+                        globalSP.setTitulo2('');
+                    }
+                    else{
+                        globalSP.setTitulo2();
+                        globalSP.configuraMenu( globalSP.planActivo)
+                    }
+
+
+                    
+                });
+            },
+            setGlobalPlanActivo : function(plan)
+            {
+                $('input[name=id_plan]').val(plan.id) ;
+                globalSP.planActivo = {
+                    id : plan.id,
+                    sigla_entidad : plan.sigla_entidad,
+                    cod_tipo_plan : plan.cod_tipo_plan,
+                    gestion_inicio : plan.gestion_inicio,
+                    gestion_fin : plan.gestion_fin
+                }
+            },
+            setTitulo1: function(titulo)
+            {
+                var titulo_ = (titulo)? titulo : globalSP.usuario.institucion.nombre;
+                $("#tituloCabecera").html(titulo_);
+            },
+            setTitulo2: function(op)
+            {
+                titulo = (op == '') ? '' : 'Plan cargado: ' + globalSP.planActivo.sigla_entidad + ' - ' + globalSP.planActivo.cod_tipo_plan + ' - ' + globalSP.planActivo.gestion_inicio + '-' + globalSP.planActivo.gestion_fin;
+                $("#titulo2Cabecera").html(titulo);
             }
 
+
         }
+
 
     </script>
     <!-- END: PAGE SCRIPTS -->

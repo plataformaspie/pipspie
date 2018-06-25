@@ -442,7 +442,7 @@ $(function ()
                     cache: false,
                     // language: "es",
                 })
-            })a
+            })
         },
         iniciarInstituciones: function(){
             $.get(cnf.urlBase + '/gestionproyectos/listar/instituciones', function(res){

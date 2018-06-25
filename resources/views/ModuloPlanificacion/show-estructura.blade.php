@@ -642,8 +642,7 @@
 
     var idSelectedEntidad;
     $(document).ready(function(){
-          activarMenu('1','24');
-          activarMenu('2','0');
+          globalSP.activarMenu('24');
             // prepare the data
             var source =
             {

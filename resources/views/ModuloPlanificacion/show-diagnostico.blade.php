@@ -472,8 +472,8 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-        activarMenu('1','0');
-        activarMenu('2','26');
+        // activarMenu('1','0');
+        globalSP.activarMenu('26');
         $(document).keydown(function(tecla){
               if (tecla.keyCode == 113) {
 
