@@ -216,8 +216,8 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-        activarMenu('1','0');
-        activarMenu('2','25');
+        // activarMenu('1','0');
+        globalSP.activarMenu('25');
         // Init Summernote
         $('.summernote').summernote({
             height: 350, //set editable area's height

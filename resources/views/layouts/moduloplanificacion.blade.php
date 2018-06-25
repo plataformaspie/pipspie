@@ -15,24 +15,33 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300">
 
     <!-- Required Plugin CSS -->
-    <!--link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
+    <!--link rel="stylesheet" type="text/css" href="sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
 
     @yield('headerIni')
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/vendor/plugins/magnific/magnific-popup.css') }}">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/magnific/magnific-popup.css">
     <!-- Admin Forms CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/css/admin-forms.css') }}">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-forms/css/admin-forms.css">
     <!-- Admin Modals CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-plugins/admin-modal/adminmodal.css') }}">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-modal/adminmodal.css">
     <!-- Theme CSS -->
-    <link rel="stylesheet" type="text/css" href=" {{ asset('sty-mode-2/assets/skin/default_skin/css/theme.css') }} ">
+    <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/skin/default_skin/css/theme.css">
 
     <!-- Admin Panels CSS -->
-    <!--link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css') }}"-->
+    <!--link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"-->
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('sty-mode-2/assets/img/favicon.ico') }} ">
+    <link rel="shortcut icon" href="/sty-mode-2/assets/img/favicon.ico ">
+
+    <style media="screen">
+        .activo{
+            background-color: #e5e5ee;
+        }
+
+
+    </style>
+
     @yield('header')
 
 </head>
@@ -41,7 +50,7 @@
     <!-- Start: Main -->
     <div id="main">
         <!-- Start: Header -->
-        <header class="navbar navbar-fixed-top bg-light">
+        <header class="navbar navbar-fixed-top bg-light ">
             <div class="navbar-branding">
                 <a class="navbar-brand" href="dashboard.html"> <img src="{{ asset('img/spie-ico-b.png') }}" width="50" alt="home" /> <b></b>Plataforma </a>
                 <span id="toggle_sidemenu_l" class="glyphicons glyphicons-show_lines"></span>
@@ -99,80 +108,10 @@
             </ul>
             <form class="navbar-form navbar-left navbar-search ml5" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Buscar..." value="Buscar...">
+                    <input type="text" class="form-control" placeholder="Buscar..." value="">
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-
-                <!--li class="dropdown dropdown-item-slide">
-                    <a class="dropdown-toggle pl10 pr10" data-toggle="dropdown" href="#">
-                        <span class="octicon octicon-radio-tower fs18"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-hover dropdown-persist pn w350 bg-white animated animated-shorter fadeIn" role="menu">
-                        <li class="bg-light p8">
-                            <span class="fw600 pl5 lh30"> Notifications</span>
-                            <span class="label label-warning label-sm pull-right lh20 h-20 mt5 mr5">12</span>
-                        </li>
-                        <li class="p10 br-t item-1">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/2.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="p10 br-t item-2">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/3.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="p10 br-t item-3">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/4.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="p10 br-t item-4">
-                            <div class="media">
-                                <a class="media-left" href="#"> <img src="assets/img/avatars/5.jpg" class="mw40" alt="holder-img"> </a>
-                                <div class="media-body va-m">
-                                    <h5 class="media-heading mv5">Article <small class="text-muted">- 08/16/22</small> </h5> Last Updated 36 days ago by
-                                    <a class="text-system" href="#"> Max </a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li-->
-
-                <!--li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="flag-xs flag-us"></span>
-                        <span class="fw600">US</span>
-                    </a>
-                    <ul class="dropdown-menu animated animated-short flipInX" role="menu">
-                        <li>
-                            <a href="javascript:void(0);" class="fw600">
-                                <span class="flag-xs flag-in mr10"></span> Hindu </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="fw600">
-                                <span class="flag-xs flag-tr mr10"></span> Turkish </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="fw600">
-                                <span class="flag-xs flag-es mr10"></span> Spanish </a>
-                        </li>
-                    </ul>
-                </li-->
-
                 <li class="ph10 pv20 hidden-xs"> <i class="fa fa-circle text-tp fs8"></i>
                 </li>
 
@@ -252,109 +191,101 @@
                 <!-- End: Sidebar Header -->
 
                 <!-- sidebar menu -->
-                <ul class="nav sidebar-menu">
-                  <li class="sidebar-label pt20">PDES</li>
+            <ul class="nav sidebar-menu" id="menuSP">
+                <input type="hidden" name="id_plan" id="id_plan" value="{{ $id_plan }}">
+                <li class="sidebar-label pt20">PDES</li>
 
-                  <?php
-                  $g = 0;
-                  $grupo = "";
+            <?php
+            $g = 0;
+            $grupo = "";
+            ?>
+            @foreach($menus as $m)
+                @if( $grupo !=  $m->tipo_menu)
+                  <?php $g++;
+                  $grupo = $m->tipo_menu;
                   ?>
-                  @foreach($menus as $m)
-                    @if( $grupo !=  $m["tipo_menu"])
-                      <?php $g++;
-                      $grupo = $m["tipo_menu"];
-                      ?>
-                      @if( $g > 1 )
-                          </ul>
-                      </li>
-                      @endif
+                  @if( $g > 1 )
+                      </ul>
+                  </li>
+                  @endif
+                    <li>
+                        <a id="G{{ $g }}" class="accordion-toggle sp_tipo_menu" href="#">
+                            <span class="glyphicons glyphicons-fire"></span>
+                            <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav">
 
-                      <li>
-                          <a id="G{{ $g }}" class="accordion-toggle" href="#">
-                              <span class="glyphicons glyphicons-fire"></span>
-                              <span class="sidebar-title"> {{ $m["tipo_menu"] }}</span>
-                              <span class="caret"></span>
-                          </a>
-                          <ul class="nav sub-nav">
-
-                            <li id="G{{ $g }}-{{ $m["id"] }}" class="">
-                              @if( $m["submenus"] )
-                                <a href="{{ url( $m["url"] ) }}">
-                                    <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
+                            <li id="M{{ $m->id }}" class="">
+                                <?php
+                                    $qstring = '';
+                                    if($m->tipo_menu <> "Estructuración")
+                                        $qstring = '?p=' . $id_plan;
+                                ?>
+                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="sp_menu">
+                                      <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}"> 
+                                      <span>{{ $m->titulo }}</span> 
                                 </a>
-                                <ul class="nav sub-nav">
-                                  @foreach($m["submenus"] as $sm)
-                                    <li id="sm-{{ $sm->id }}" class="">
-                                      <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
-                                    </li>
-                                  @endforeach
-                                </ul>
-                              @else
-                                <a href="{{ url( $m["url"] ) }}">
-                                  <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                                </a>
-                              @endif
+                                @if( $m->submenus )
+                                  <ul class="nav sub-nav">
+                                    @foreach($m->submenus as $sm)
+                                      <li id="sm-{{ $sm->id }}" class="">
+                                        <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
+                                      </li>
+                                    @endforeach
+                                  </ul>
+                                @endif
                             </li>
-                    @else
-                      <li id="G{{ $g }}-{{ $m["id"] }}" class="">
-                        @if( $m["submenus"] )
-                          <a href="{{ url( $m["url"] ) }}">
-                              <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                          </a>
-                          <ul class="nav sub-nav">
-                            @foreach($m["submenus"] as $sm)
+                @else
+                    <li id="M{{ $m->id }}">                        
+                        <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="sp_menu">
+                          <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  
+                          <span>{{ $m->titulo }}</span>
+                        </a>
+                        @if( $m->submenus )
+                        <ul class="nav sub-nav">
+                            @foreach($m->submenus as $sm)
                               <li id="sm-{{ $sm->id }}" class="">
                                 <a href="{{ $sm->url }}">{{ $sm->titulo }}</a>
                               </li>
                             @endforeach
-                          </ul>
-                        @else
-                          <a href="{{ url( $m["url"] ) }}">
-                            <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m["icono"] }}">  {{ $m["titulo"] }}
-                          </a>
+                        </ul>
                         @endif
-                      </li>
-
-                    @endif
-
-
-
-
-
-
-                  @endforeach
+                    </li>
+                @endif
+            @endforeach
 
                       </ul>
                     </li>
 
 
-                    <!-- sidebar progress bars -->
-                    <li class="sidebar-label pt25 pb10">User Stats</li>
-                    <li class="sidebar-stat mb10">
-                        <a href="#projectOne" class="fs11">
-                            <span class="fa fa-inbox text-info"></span>
-                            <span class="sidebar-title text-muted">Email Storage</span>
-                            <span class="pull-right mr20 text-muted">35%</span>
-                            <div class="progress progress-bar-xs ml20 mr20">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 35%">
-                                    <span class="sr-only">35% Complete</span>
-                                </div>
+                <!-- sidebar progress bars -->
+                <li class="sidebar-label pt25 pb10">User Stats</li>
+                <li class="sidebar-stat mb10">
+                    <a href="#projectOne" class="fs11">
+                        <span class="fa fa-inbox text-info"></span>
+                        <span class="sidebar-title text-muted">Email Storage</span>
+                        <span class="pull-right mr20 text-muted">35%</span>
+                        <div class="progress progress-bar-xs ml20 mr20">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 35%">
+                                <span class="sr-only">35% Complete</span>
                             </div>
-                        </a>
-                    </li>
-                    <li class="sidebar-stat mb10">
-                        <a href="#projectOne" class="fs11">
-                            <span class="fa fa-dropbox text-warning"></span>
-                            <span class="sidebar-title text-muted">Bandwidth</span>
-                            <span class="pull-right mr20 text-muted">58%</span>
-                            <div class="progress progress-bar-xs ml20 mr20">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 58%">
-                                    <span class="sr-only">58% Complete</span>
-                                </div>
+                        </div>
+                    </a>
+                </li>
+                <li class="sidebar-stat mb10">
+                    <a href="#projectOne" class="fs11">
+                        <span class="fa fa-dropbox text-warning"></span>
+                        <span class="sidebar-title text-muted">Bandwidth</span>
+                        <span class="pull-right mr20 text-muted">58%</span>
+                        <div class="progress progress-bar-xs ml20 mr20">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 58%">
+                                <span class="sr-only">58% Complete</span>
                             </div>
-                        </a>
-                    </li>
-                </ul>
+                        </div>
+                    </a>
+                </li>
+            </ul>
                 <div class="sidebar-toggle-mini">
                     <a href="#">
                         <span class="fa fa-sign-out"></span>
@@ -371,9 +302,9 @@
                 <div class="topbar-menu row">
                   @foreach($modulos as $m)
                      <div class="col-xs-4 col-sm-2">
-                         <a id="mod-{{ $m["id_html"] }}" href="{{ url($m["url"])}}" class="metro-tile bg-success">
-                             <img class="metro-icon" src="{{ asset('img/'.$m["icono"]) }}" width="60" alt="" />
-                             <p class="metro-title">{{ $m["titulo"] }}</p>
+                         <a id="mod-{{ $m->id_html }}" href="{{ url($m->url)}}" class="metro-tile bg-success">
+                             <img class="metro-icon" src="{{ asset('img/'.$m->icono) }}" width="60" alt="" />
+                             <p class="metro-title">{{ $m->titulo }}</p>
                          </a>
                      </div>
                   @endforeach
@@ -500,24 +431,22 @@
     <!-- BEGIN: PAGE SCRIPTS -->
 
     <!-- jQuery -->
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery-1.11.1.min.js') }}"></script>
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery_ui/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery-1.11.1.min.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/vendor/jquery/jquery_ui/jquery-ui.min.js') }}"></script>
 
-		<!-- Bootstrap -->
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
+        <!-- Bootstrap -->
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/bootstrap/bootstrap.min.js') }}"></script>
 
-		<script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/advanced/steps/jquery.steps.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/jquery.validate.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/assets/admin-tools/admin-forms/js/additional-methods.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sty-mode-2/vendor/plugins/magnific/jquery.magnific-popup.js') }}"></script>
 
-		<!-- Theme Javascript -->
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
-		<script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
-
-
-
-
+        <!-- Theme Javascript -->
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/utility/utility.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/main.js') }}"></script>
+        <script type="text/javascript" src=" {{ asset('sty-mode-2/assets/js/demo.js') }}"></script>
+        <script type="text/javascript" src="/plugins/underscore/underscore-min.js"></script>
 
 
     <script type="text/javascript">
@@ -557,18 +486,10 @@
             //     hljs.highlightBlock(block);
             // });
 
-
-
-
-
-
-
         });
 
-        function activarMenu(gr,mn){
-            $('#G'+gr).addClass('menu-open');
-            $('#G'+gr+'-'+mn).addClass('active');
-        }
+
+
         function number_format(amount, decimals) {
 
             amount += ''; // por si pasan un numero en vez de un string
@@ -652,6 +573,105 @@
                 return "290px";
             }
         }
+
+
+        globalSP = {
+            urlBase: '/api/moduloplanificacion/',
+            planActivo: {},
+            usuario: {},
+            activarMenu: function(mn){
+                if(mn=='0')  // si es 0 se abren todos los menus
+                    $("#menuSP .sp_tipo_menu").addClass('menu-open');
+                else {
+                    $("u li").removeClass('activo');            
+                    $('#M'+mn).addClass('active  activo');
+                    padre = $('#M'+mn).parent().parent();
+                    padre.children('a').addClass('menu-open');                  
+                }
+            },
+            // generarMenu: function(idplan){
+            //     $.get(this.urlBase +  "getmenu", {'id_plan': idplan}, function(res){
+            //         grupos = _.groupBy(res.menu, function(m){
+            //             return m.tipo_menu;
+            //         });
+
+            //         console.log(grupos);
+            //         var html = '<li class="sidebar-label pt20">PDES</li>';
+            //         _.mapObject(grupos, function(val, key){
+            //             html += '<li>';
+            //             html += '<a id="G' + key +' " class="accordion-toggle grupo" href="#">\
+            //                         <span class="glyphicons glyphicons-fire"></span>\
+            //                         <span class="sidebar-title">' +key + ' </span>\
+            //                         <span class="caret"></span>\
+            //                     </a>';
+
+            //             html += '</li>' ;
+
+            //                     // TODO completar menu para que se llame de manera dinamica
+            //         });
+            //         $("#menuSP").append(html)
+            //     })
+            // },
+            configuraMenu: function(plan){
+                etapas = plan.etapas_completadas.split('|').filter(function(val){
+                    return val != '';
+                });
+                $("#menuSP i").remove();
+                var icon = '<i class="fa fa-tags pull-right icon-primary" style="font-size: 10px; "></i>';
+                etapas.forEach(function(idmenu){
+                    $("#" + idmenu).append(icon);
+                });
+
+                // coloca el titulo del menu Politica Sectorial
+                (plan.plan == 'PSDI') ? $("#27 span").html('Política Sectorial') 
+                                    :  $("#27 span").html('Política Institucional'); 
+
+            }, 
+            cargarGlobales: function(){
+                $.get(globalSP.urlBase + 'getuser', function(res){
+                    globalSP.usuario = res.data;
+                    globalSP.setTitulo1();
+                });
+                $.get(globalSP.urlBase + 'getplan', { 'p' : $('input[name=id_plan]').val() }, function(res){
+                    globalSP.planActivo = res.data;
+                    if(globalSP.planActivo == ''){
+                        globalSP.setTitulo2('');
+                    }
+                    else{
+                        globalSP.setTitulo2();
+                        globalSP.configuraMenu( globalSP.planActivo)
+                    }
+
+
+                    
+                });
+            },
+            setGlobalPlanActivo : function(plan)
+            {
+                $('input[name=id_plan]').val(plan.id) ;
+                globalSP.planActivo = {
+                    id : plan.id,
+                    sigla_entidad : plan.sigla_entidad,
+                    cod_tipo_plan : plan.cod_tipo_plan,
+                    gestion_inicio : plan.gestion_inicio,
+                    gestion_fin : plan.gestion_fin
+                }
+            },
+            setTitulo1: function(titulo)
+            {
+                var titulo_ = (titulo)? titulo : globalSP.usuario.institucion.nombre;
+                $("#tituloCabecera").html(titulo_);
+            },
+            setTitulo2: function(op)
+            {
+                titulo = (op == '') ? '' : 'Plan cargado: ' + globalSP.planActivo.sigla_entidad + ' - ' + globalSP.planActivo.cod_tipo_plan + ' - ' + globalSP.planActivo.gestion_inicio + '-' + globalSP.planActivo.gestion_fin;
+                $("#titulo2Cabecera").html(titulo);
+            }
+
+
+        }
+
+
     </script>
     <!-- END: PAGE SCRIPTS -->
   @stack('script-head')

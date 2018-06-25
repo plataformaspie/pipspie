@@ -203,8 +203,10 @@ Route::group(['middleware' => 'auth'],function(){
               // Route::get('gestionproyectos/sp/insetar_resultados_proyectos_pdes',  'ModuloPdes\GestionProyectosController@insertarResultadosProyectosPdes');
               Route::get('gestionproyectos/sp/obtener_proyecto_sp/{codigo}',  'ModuloPdes\GestionProyectosController@obtenerProyectoSP');
 
+              Route::get('gestionproyectos/export/excel',  'ModuloPdes\GestionProyectosController@exportExcel');
+              Route::get('gestionproyectos/export/excel1',  'ModuloPdes\GestionProyectosController@exportExcel1');
 
-		  }
+            }
       );
 });
 
@@ -212,27 +214,25 @@ Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'moduloplanificacion'),
           function() {
-              Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
-              Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
-              Route::get('res', 'ModuloPlanificacion\PruebaController@res');
-              Route::get('index', 'ModuloPlanificacion\IndexController@index');
-              Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
-              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
+              // Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
+              // Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
+              // Route::get('res', 'ModuloPlanificacion\PruebaController@res');
+              Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
               Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
-              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\AdministracionController@showPlanesInstitucion');
+              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
+              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
+              Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+          
           }
       );
       Route::group(
           array('prefix' => 'api/moduloplanificacion'),
           function() {
-              Route::get('demo', 'ModuloPlanificacion\DashboardController@demo');
-              Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
-              Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');
-              Route::post('saveDataEdit', 'ModuloPlanificacion\PlanificacionController@saveDataEdit');
-              Route::get('deleteDiagnostico', 'ModuloPlanificacion\PlanificacionController@deleteDiagnostico');
-              Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
-              Route::get('dataEntidadEnfoque', 'ModuloPlanificacion\PlanificacionController@dataEntidadEnfoque');
-              Route::post('saveEnfoqueEdit', 'ModuloPlanificacion\PlanificacionController@saveEnfoqueEdit');
+              Route::get('getmenu', 'ModuloPlanificacion\PlanificacionBaseController@getMenuPlan');
+              Route::get('getuser', 'ModuloPlanificacion\PlanificacionBaseController@getUser');
+              Route::get('getplan', 'ModuloPlanificacion\PlanificacionBaseController@getPlan');
+              Route::get('getParametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
+
               Route::get('setEstructuraEntidad', 'ModuloPlanificacion\AdministracionController@setEstructuraEntidad');
               Route::post('saveEntidadNew', 'ModuloPlanificacion\AdministracionController@saveEntidadNew');
               Route::get('dataSetEntidad', 'ModuloPlanificacion\AdministracionController@dataSetEntidad');
@@ -244,7 +244,22 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
               Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
               Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
-              Route::get('setEntidadPlan', 'ModuloPlanificacion\AdministracionController@setEntidadPlan');
+
+              Route::get('listEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@listEntidadPlan');
+              Route::post('saveEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@saveEntidadPlan');
+              Route::get('deleteEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@deleteEntidadPlan');
+              
+
+
+              Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
+              Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');
+              Route::post('saveDataEdit', 'ModuloPlanificacion\PlanificacionController@saveDataEdit');
+              Route::get('deleteDiagnostico', 'ModuloPlanificacion\PlanificacionController@deleteDiagnostico');
+              Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
+              Route::get('dataEntidadEnfoque', 'ModuloPlanificacion\PlanificacionController@dataEntidadEnfoque');
+              Route::post('saveEnfoqueEdit', 'ModuloPlanificacion\PlanificacionController@saveEnfoqueEdit');
+
+
           }
       );
 });

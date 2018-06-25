@@ -1,8 +1,8 @@
 @extends('layouts.moduloplanificacion')
 
 @section('header')
-  <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
+  <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
   <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 
 <style media="screen">
@@ -459,22 +459,21 @@
 
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdatatable.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdraw.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxchart.core.js') }} "></script>
-
+  <script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxbuttons.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxscrollbar.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdatatable.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdraw.js"></script>
+  <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxchart.core.js "></script>
   <script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
   <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 
   <script type="text/javascript">
     $(document).ready(function(){
-        activarMenu('1','0');
-        activarMenu('2','26');
+        // activarMenu('1','0');
+        globalSP.activarMenu('26');
         $(document).keydown(function(tecla){
               if (tecla.keyCode == 113) {
 
@@ -893,14 +892,14 @@
                             $(element).closest('.field').removeClass(errorClass).addClass(validClass);
                     },
                     errorPlacement: function(error, element) {
-                       if (element.is(":radio") || element.is(":checkbox")) {
+                        if (element.is(":radio") || element.is(":checkbox")) {
                                 element.closest('.option-group').after(error);
-                       } else {
+                        } else {
                                 error.insertAfter(element.parent());
-                       }
+                        }
                     },
                     submitHandler: function(form) {
-                      saveFormNew();
+                        saveFormNew();
                     }
 
 
@@ -910,43 +909,42 @@
 
     });
     function saveFormNew(){
-
-    var formData = new FormData($("#form-nuevo")[0]);
-      $.ajax({
-              url: "{{ url('/api/moduloplanificacion/saveDataNew') }}",
-              type: "POST",
-              data: formData,
-              contentType: false,
-              processData: false,
-              success: function(data){
-                  new PNotify({
-                      title: data.title,
-                      text: data.msg,
-                      shadow: true,
-                      opacity: 1,
-                      addclass: noteStack,
-                      type: "success",
-                      stack: Stacks[noteStack],
-                      width: findWidth(),
-                      delay: 1400
-                  });
-                  $("#dataTable").jqxDataTable("updateBoundData");
-                  $("#form-nuevo")[0].reset();
-              },
-              error:function(data){
-                  new PNotify({
-                      title: data.title,
-                      text: data.msg,
-                      shadow: true,
-                      opacity: 1,
-                      addclass: noteStack,
-                      type: "danger",
-                      stack: Stacks[noteStack],
-                      width: findWidth(),
-                      delay: 1400
-                  });
-              }
-      });
+        var formData = new FormData($("#form-nuevo")[0]);
+        $.ajax({
+                url: "{{ url('/api/moduloplanificacion/saveDataNew') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data){
+                    new PNotify({
+                        title: data.title,
+                        text: data.msg,
+                        shadow: true,
+                        opacity: 1,
+                        addclass: noteStack,
+                        type: "success",
+                        stack: Stacks[noteStack],
+                        width: findWidth(),
+                        delay: 1400
+                    });
+                    $("#dataTable").jqxDataTable("updateBoundData");
+                    $("#form-nuevo")[0].reset();
+                },
+                error:function(data){
+                    new PNotify({
+                        title: data.title,
+                        text: data.msg,
+                        shadow: true,
+                        opacity: 1,
+                        addclass: noteStack,
+                        type: "danger",
+                        stack: Stacks[noteStack],
+                        width: findWidth(),
+                        delay: 1400
+                    });
+                }
+        });
     }
 
     function saveFormEdit(){
