@@ -190,9 +190,11 @@
                 </header>
                 <!-- End: Sidebar Header -->
 
+                <!-- ID_PLAN ............ -->
+            <input type="hidden" name="id_plan" id="id_plan" value="{{ $id_plan }}">
                 <!-- sidebar menu -->
             <ul class="nav sidebar-menu" id="menuSP">
-                <input type="hidden" name="id_plan" id="id_plan" value="{{ $id_plan }}">
+                
                 <li class="sidebar-label pt20">PDES</li>
 
             <?php
@@ -576,7 +578,17 @@
 
 
         globalSP = {
-            urlBase: '/api/moduloplanificacion/',
+            menu:{
+                EstructuraInstitucional:24,
+                AdminPlanes:30,
+                EnfoquePolitico: 25,
+                Diagnostico: 26,
+                PoliticaSectorial: 27,
+                Planificacion:28,
+                GestionDocumental:29,
+            },
+            urlApi: '/api/moduloplanificacion/',
+            idPlanActivo : $('input[name=id_plan]').val(),
             planActivo: {},
             usuario: {},
             activarMenu: function(mn){
@@ -628,11 +640,11 @@
 
             }, 
             cargarGlobales: function(){
-                $.get(globalSP.urlBase + 'getuser', function(res){
+                $.get(globalSP.urlApi + 'getuser', function(res){
                     globalSP.usuario = res.data;
                     globalSP.setTitulo1();
                 });
-                $.get(globalSP.urlBase + 'getplan', { 'p' : $('input[name=id_plan]').val() }, function(res){
+                $.get(globalSP.urlApi + 'getplan', { 'p' : globalSP.idPlanActivo }, function(res){
                     globalSP.planActivo = res.data;
                     if(globalSP.planActivo == ''){
                         globalSP.setTitulo2('');

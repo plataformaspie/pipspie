@@ -14,48 +14,30 @@ use App\Models\ModuloPdes\Pilares;
 
 class PlanificacionController extends PlanificacionBaseController
 {
-   //  /**
-   //   * Create a new controller instance.
-   //   *
-   //   * @return void
-   //   */
-   //  public function __construct()
-   //  {
-   //    // $this->middleware('auth');
-   //   $this->middleware(function ($request, $next)
-   //   {
-   //    $user    = \Auth::user();
-   //    $ModulosMenus = IndexController::GeneraMenus($user);
-
-   //    \View::share($ModulosMenus);
-
-   //    return $next($request);
-   //  });
-   // }
   
   public function showDiagnostico()
   {
       $metricas = Metricas::orderBy('simbolo','asc')->get();
       return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
   }
-  public function showEnfoque(Request $request)
-  {
-      if($request->id_entidad)
-      {
-        $idEntidad = $request->id_entidad;
-      }
-      else
-      {
-        $this->user = \Auth::user();
-        $idEntidad = $this->user->id_institucion;
-      }
+  // public function showEnfoque(Request $request)
+  // {
+  //     if($request->id_entidad)
+  //     {
+  //       $idEntidad = $request->id_entidad;
+  //     }
+  //     else
+  //     {
+  //       $this->user = \Auth::user();
+  //       $idEntidad = $this->user->id_institucion;
+  //     }
 
 
-      $pilares = Pilares::orderBy('cod_p','asc')->get();
-      $enfoque = EnfoquesPoliticos::where('id_entidad',$idEntidad)->get();
+  //     $pilares = Pilares::orderBy('cod_p','asc')->get();
+  //     $enfoque = EnfoquesPoliticos::where('id_entidad',$idEntidad)->get();
 
-       return view('ModuloPlanificacion.show-enfoque',['pilares' => $pilares,'enfoque' => $enfoque[0]->enfoque_politico]);
-  }
+  //      return view('ModuloPlanificacion.show-enfoque',['pilares' => $pilares,'enfoque' => $enfoque[0]->enfoque_politico]);
+  // }
 
   public function setDiagnostico(Request $request)
   {

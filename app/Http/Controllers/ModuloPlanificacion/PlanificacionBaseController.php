@@ -12,8 +12,7 @@ class PlanificacionBaseController extends Controller
 
     public function __construct(Request $req)
     {
-        // $middleware('auth');
-        
+        // $middleware('auth');        
         $this->middleware(function ($request, $next) use ($req)
         {
             $this->user = \Auth::user();
@@ -40,9 +39,10 @@ class PlanificacionBaseController extends Controller
             $plan = \DB::select("SELECT ep.id, ep.id_entidad, ep.id_tipo_plan, ep.gestion_inicio, ep.gestion_fin,
                                 ep.etapas_completadas, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan,
                                 e.nombre AS nombre_entidad, e.sigla AS sigla_entidad
-                                FROM sp_entidad_plan ep, sp_parametros p, sp_entidades e
+                                FROM sp_planes ep, sp_parametros p, sp_entidades e
                                 WHERE ep.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
                                 and ep.id_entidad = e.id AND ep.id = ?  ", [$id_plan])[0];
+
             $condicion = $plan->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
         }
         else
@@ -66,6 +66,11 @@ class PlanificacionBaseController extends Controller
         ]);
     }
 
+    /**-------------------------------------------------------------------------------
+    | obtiene los parametros en orden de una categoria
+    | se puede filtrar segun los campos a y b : 
+    | Where a = b
+     */
     public function getParametros($categoria, $a = null, $b = null)
     {
         $params = \DB::table("sp_parametros")->where('activo', true)->where("categoria", $categoria);
@@ -95,7 +100,7 @@ class PlanificacionBaseController extends Controller
         $planes = \DB::select("SELECT ep.id, ep.id_entidad, ep.id_tipo_plan, ep.gestion_inicio, ep.gestion_fin,
                                 ep.etapas_completadas, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan,
                                 e.nombre AS nombre_entidad, e.sigla AS sigla_entidad
-                                FROM sp_entidad_plan ep, sp_parametros p, sp_entidades e
+                                FROM sp_planes ep, sp_parametros p, sp_entidades e
                                 WHERE ep.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
                                 and ep.id_entidad = e.id AND ep.id = ?  ", [$id_p]);
         $plan = (count($planes) > 0)  ? $planes[0] : '';
@@ -103,18 +108,21 @@ class PlanificacionBaseController extends Controller
             'estado' => 'success',
             'data' => $plan
         ]);
+    }
 
-
+    public function getPilares()
+    {
+        $pilares = \DB::table('pdes_pilares')->orderBy('cod_p')->get();
+        return response()->json(['data' => $pilares]);
     }
 
     private static function GeneraMenus($user, $req)
     {
         $modulos = \DB::select("SELECT m.id, m.titulo, m.descripcion, m.url, m.icono, m.target, m.id_html FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol =  {$user->id_rol} ORDER BY orden ASC");
 
-        $autorizado = count(array_where($modulos, function ($value)
-        {
-            return $value->id == 7;
-        })) > 0;
+        $autorizado = count(array_where($modulos, function ($value){
+                                    return $value->id == 7;
+                            })) > 0;
 
         if (!$autorizado)
         {
@@ -126,23 +134,21 @@ class PlanificacionBaseController extends Controller
             $id_plan = $req->p;
 
             $plan = \DB::select("SELECT ep.*, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan                                
-                                FROM sp_entidad_plan ep, sp_parametros p, sp_entidades e
+                                FROM sp_planes ep, sp_parametros p, sp_entidades e
                                 WHERE ep.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
                                 AND ep.id = ? AND ep.id_entidad = ? ", [$id_plan, $user->id_institucion]);
             if(count($plan) >0)
             {
                   $condicion = $plan[0]->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
             }
-        }
-         
+        }         
         
         $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
                          WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
                          AND id_modulo = 7 AND activo = true AND {$condicion} 
                          ORDER BY m.orden ASC");
 
-        foreach ($menus as $mn)
-        {
+        foreach ($menus as $mn){
             $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
         }
 

@@ -76,9 +76,7 @@
 @endsection
 
 @section('content')
-
-<div id="contenedor">
-    <div class="tray tray-center va-t posr">
+    <div class="tray tray-center va-t posr sp_planes">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-visible" >
@@ -100,7 +98,6 @@
         </div>
     </div>
 
-
     <!-- Admin Form Popup -->
     <div id="frm_modal"  class="popup-basic popup-lg admin-form mfp-with-anim mfp-hide ">
         <div class="panel">
@@ -110,7 +107,6 @@
                   <!-- end .panel-heading section -->
                   <form method="post" action="/" id="form-plan" name="form-plan">
                       <div class="panel-body of-a" id="val">
-                        {{ csrf_field() }}
                         <input class="hidden" name="id" id="id" >
                         <div class="row">
                             <div class=" pl5 br-r mvn15">
@@ -118,7 +114,7 @@
                                 <div class="section">
                                     <label class="field-label" for="id_tipo_plan">Tipo de Plan</label>
                                     <label class="field select">
-                                        <select id="id_tipo_plan" name="id_tipo_plan" class="" style="width:100%;">
+                                        <select id="id_tipo_plan" name="id_tipo_plan" class="required" style="width:100%;">
                                             <option value="">...</option>
                                         </select>
                                         <i class="arrow double"> </i>                    
@@ -157,7 +153,7 @@
     </div>
       <!-- end: .admin-form -->
 
-</div>
+
 @endsection
 
 @push('script-head')
@@ -180,7 +176,7 @@ $(function(){
         source : {},
 
         fillPlanes : function() {
-            $.get(globalSP.urlBase + 'listEntidadPlan', function(resp)
+            $.get(globalSP.urlApi + 'listEntidadPlan', function(resp)
             {
                 planes.source =
                 {
@@ -197,7 +193,7 @@ $(function(){
                         { name: 'etapas_completadas', type: 'string' }
                     ],
                     id: 'id',
-                    // url: globalSP.urlBase + 'listEntidadPlan' 
+                    // url: globalSP.urlApi + 'listEntidadPlan' 
                 };
                 //Configuracion de la tabla
                 var dataAdapter = new $.jqx.dataAdapter(planes.source);
@@ -262,7 +258,7 @@ $(function(){
             });
         },
         refresh: function(){
-            $.get(globalSP.urlBase + 'listEntidadPlan', function(resp) {
+            $.get(globalSP.urlApi + 'listEntidadPlan', function(resp) {
                 planes.source.localdata = resp.data;
                 planes.dataTable.jqxDataTable("updateBoundData");
             })   
@@ -306,14 +302,9 @@ $(function(){
                 ref = ref.split('=')[0] + '=' + globalSP.planActivo.id;
                 $(elem).attr('href', ref);
                 // console.log(ref);
-            });
-
-
-    
+            });    
             globalSP.setTitulo2();
-
         },
-
     }
 
     var ctxForm = {
@@ -338,7 +329,7 @@ $(function(){
             });
         }, 
         cargarCombos : function(){
-            $.get(globalSP.urlBase + "getParametros/tipo_plan/valor/SECTORIAL", function(res){
+            $.get(globalSP.urlApi + "getparametros/tipo_plan/valor/SECTORIAL", function(res){
                 opts = res.data;
                 opts.forEach(function(op){
                     $("#id_tipo_plan").append('<option value="' + op.id + '">' + op.nombre + '</option>');
@@ -401,7 +392,7 @@ $(function(){
         }, 
         saveData: function(){    
             var objPlan = this.getDataForm();
-            $.post(globalSP.urlBase + 'saveEntidadPlan', objPlan, function(res){
+            $.post(globalSP.urlApi + 'saveEntidadPlan', objPlan, function(res){
                 new PNotify({
                             title: !res.error ? (res.accion=='insert' ? 'Plan Creado' : 'Modificado') : 'Error!!',
                             text: res.msg,
@@ -427,7 +418,7 @@ $(function(){
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.get(globalSP.urlBase + 'deleteEntidadPlan', {'id': id}, function(res){
+                    $.get(globalSP.urlApi + 'deleteEntidadPlan', {'id': id}, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -447,7 +438,7 @@ $(function(){
     }
 
 
-    globalSP.activarMenu('30');
+    globalSP.activarMenu(globalSP.menu.AdminPlanes);
     globalSP.cargarGlobales();
     planes.fillPlanes();
 
@@ -456,14 +447,14 @@ $(function(){
         planes.nuevo();
     });
 
-    $("#contenedor").on('click', '.sel_edit, #editar', function(){
+    $(".sp_planes").on('click', '.sel_edit, #editar', function(){
         planes.editar();
     });
 
-    $("#contenedor").on('click', '.sel_delete, #eliminar', function(){
+    $(".sp_planes").on('click', '.sel_delete, #eliminar', function(){
         planes.eliminar();
     });
-    $("#contenedor").on('click', '.sel_cargar_plan', function(){
+    $(".sp_planes").on('click', '.sel_cargar_plan', function(){
         planes.cargar();
     });
 
@@ -474,6 +465,7 @@ $(function(){
     $("#form-plan").validate(ctxForm.validateRules());
 
     ctxForm.cargarCombos();
+
 });
 </script>
 @endpush
