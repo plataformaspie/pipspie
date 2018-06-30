@@ -75,16 +75,39 @@
               <div class="col-sm-12">
                   <div class="white-box">
                       <h3 class="box-title m-b-0">Información de Fuente de Datos</h3>
-                      <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left"></i></button></p>
+                      <p class="text-muted m-b-30">
+                        La documentación de todos los elementos marcados con “<label class="text-danger">(o)</label>” es de carácter obligatorio.<br/>
+                        La documentación de todos los elementos marcados con “<label class="text-success">(r)</label>” es de carácter recomendado
+                        <button id ="btn-back" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;">
+                          <i class="fa fa-arrow-left"></i>
+                        </button>
+                      </p>
 
                       <div class="form-group row m-b-10">
                         <div class="col-md-2 p-l-0 p-r-0">
-                          <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Nombre</label>
+                            <a class="mytooltip" href="javascript:void(0)">
+                              <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 200px;padding: 7px 20px 7px 3px;">Nombre de Fuente <label class="text-danger">(o)</label></label>
+                              <span class="tooltip-content5">
+                                <span class="tooltip-text3">
+                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                    Nombre oficial completo de la encuesta, censo o registro administrativo,
+                                    incluyendo el año de referencia. No deben usarse abreviaciones en esta casilla.
+                                    Utilizar solo mayúsculas. Formato adecuado del nombre, años (si más de uno en el caso de series)
+                                    separados por guión.<br/>
+                                    <b class="text-info">Ejemplo:</b> ENCUESTA DE HOGARES 2017.
+                                    REGISTROS ADMINISTRATIVOS DEL PARQUE AUTOMOTOR 2006-2007
+                                    CENSO  AGROPECUARIO 2013
+                                    SISTEMA DE INFORMACIÓN EDUCATIVA 2006 - 2018
+                                  </span>
+                                </span>
+                              </span>
+                            </a>
                         </div>
                         <div class="col-md-10 p-l-0">
                             <textarea class="form-control" placeholder="Ingrese nombre fuente de datos" rows="2" id="nombre" name="nombre" required></textarea>
                             <div class="help-block with-errors"></div>
                         </div>
+
                       </div>
 
                     <hr>
@@ -94,14 +117,14 @@
                                   <ul class="nav tabs-vertical media p-t-0 p-l-0 p-r-0" style="width:300px;">
                                       <li class="tab nav-item">
                                           <a id="tab-ini1" data-toggle="tab" class="nav-link ctrl-btn active" href="#info1" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-sitemap" style="font-size: 25px"></i> Identificación</span>
+                                            <span class="visible-xs"><i class="fa fa-book" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="fa fa-book" style="font-size: 25px"></i> Identificación</span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
                                           <a id="tab-ini2" data-toggle="tab" class="nav-link ctrl-btn" href="#info2" aria-expanded="true">
-                                            <span class="visible-xs"><i class="fa fa-book" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-book" style="font-size: 25px"></i> Categoria Temática  </span>
+                                            <span class="visible-xs"><i class="icon-layers" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="icon-layers" style="font-size: 25px"></i> Categoria Temática  </span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
@@ -113,32 +136,32 @@
 
                                       <li class="tab nav-item">
                                           <a id="tab-ini4" data-toggle="tab" class="nav-link ctrl-btn" href="#info4" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-eye" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-eye" style="font-size: 25px"></i> Cobertura</span>
+                                            <span class="visible-xs"><i class="fa fa-globe " style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="fa fa-globe " style="font-size: 25px"></i> Cobertura</span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
                                           <a id="tab-ini5" data-toggle="tab" class="nav-link ctrl-btn" href="#info5" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-briefcase" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-briefcase" style="font-size: 25px"></i> Responsables</span>
+                                            <span class="visible-xs"><i class="icon-home " style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="icon-home " style="font-size: 25px"></i> Responsables</span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
                                           <a id="tab-ini6" data-toggle="tab" class="nav-link ctrl-btn" href="#info6" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-cloud-upload" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-cloud-upload" style="font-size: 25px"></i> Documentos respaldo</span>
+                                            <span class="visible-xs"><i class="fa fa-briefcase" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="fa fa-briefcase" style="font-size: 25px"></i> Documentos respaldo</span>
                                           </a>
                                       </li>
                                       <li class="tab nav-item">
                                           <a id="tab-ini7" data-toggle="tab" class="nav-link ctrl-btn" href="#info7" aria-expanded="false">
-                                            <span class="visible-xs"><i class="fa fa-cloud-upload" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-cloud-upload" style="font-size: 25px"></i> Acceso a la información</span>
+                                            <span class="visible-xs"><i class="icon-lock" style="font-size: 25px"></i></span>
+                                            <span class="hidden-xs"><i class="icon-lock" style="font-size: 25px"></i> Acceso a la información</span>
                                           </a>
                                       </li>
 
                                   </ul>
-                                  <div class="tab-content media p-t-0 p-l-0 p-r-0" style="width: 80%;">
-                                      <div id="info1" class="tab-pane active">
+                                  <div class="tab-content p-t-0 p-l-0 p-r-0" style="width: 80%;">
+                                      <div id="info1" class="tab-pane active m-t-10">
                                           <div class="col-md-12 list-group-item-success" style="margin-top: -9px;">
                                               <h4 style="width:100%;">Identificación  </h4>
                                           </div>
@@ -146,7 +169,18 @@
                                           <div class="col-md-12">
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Abreviación</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Abreviación <label class="text-success">(r)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Abreviación o siglas de la Operación Estadística. Todas en mayúsculas; incluye el año de referencia. Si no existe, crear una abreviación oficialmente para identificar de forma única la Operación estadística.
+                                                        <br/><b class="text-info">Ejemplo</b>: RPA-RUAT-2006-2007, EH-2017, CA-2013, SIE-2006-2018
+
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <input id="acronimo" name="acronimo" type="text" class="form-control" placeholder="Abreviación de la Fuente de Datos " >
@@ -156,7 +190,22 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tipo</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tipo <label class="text-danger">(o)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Tipo de fuente de datos: distingue las siguientes categorías
+                                                        <br/><b class="text-info">Captura directa de datos estadísticos:</b> Censos, Encuestas, Conteos.
+                                                        <br/><b class="text-info">Captura de fuentes administrativas:</b> Registros administrativos, Directorios, Inventarios, Padrones (Electoral/Biométrico/Contribuyentes, etc.)
+                                                        <br/><b class="text-info">Estadísticas derivadas y recopilaciones:</b>
+                                                        Agregados Nacionales (Cuentas Nacionales, Balanza de Pagos, Contabilidad Fiscal, Inversiones),
+                                                        Indicadores,Bases integradas (por interoperabilidad)
+                                                        <br/><b class="text-info">Infraestructura estadística:</b> Marcos Muestrales, Cartografía, Nomenclatura, Clasificadores/Nomenclaturas/Catálogos
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="form-group col-md-4 p-l-0">
                                                   <select id="tipo" name="tipo" class="custom-select col-12 form-control" required>
@@ -171,7 +220,16 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Objetivo</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Objetivo <label class="text-danger">(o)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Síntesis del propósito, metodología y alcance de la fuente de datos. Destacar las características especiales de la operación estadística y las principales áreas de interés.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
@@ -183,7 +241,18 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Serie disponible</label>
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Serie disponible <label class="text-danger">(o)</label></label>
+                                                        <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Año de referencia de los datos es el periodo de tiempo al cual los datos se refieren, no las fechas de codificación o elaboración de documentos. Esta fecha puede coincidir con las fechas de recolección de los datos, pero no siempre.
+                                                            Si existe la serie disponible, mencionar el año de inicio y fin de la serie.
+                                                            <br/><b class="text-info">Ejemplo:</b> 2017, 2006 – 2007, 2013, 2006–2018
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
                                                   </div>
                                                   <div class="col-md-9 p-l-0">
                                                       <input id="serie_datos" name="serie_datos" type="text" class="form-control" placeholder="Serie disponible" >
@@ -193,7 +262,16 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Periodicidad</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Periodicidad <label class="text-danger">(o)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Frecuencia con que se recopilan los datos.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="form-group col-md-4 p-l-0">
                                                   <select id="periodicidad" name="periodicidad" class="custom-select col-12 form-control">
@@ -207,7 +285,16 @@
                                             </div>
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Variables/Campos clave</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Variables/Campos clave<label class="text-success">(r)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Lista de variables o campos clave que se recopilan en la fuente de datos. Mencionar secciones del registro o encuesta, variables o campos clave, indicadores derivados u otra información relevante, separados por comas.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
@@ -219,7 +306,17 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Modo de recolección de Datos</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Modo de recolección de Datos <label class="text-success">(r)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Información sobre la modalidad de recolección de datos. Elegir alternativa del listado proporcionado.
+                                                        <br/>Para el campo (Otro): campo de captura abierta Formato Alfanumérico
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <select id="modo_recoleccion_datos" name="modo_recoleccion_datos" class="custom-select col-12 form-control controlOtro" >
@@ -235,7 +332,17 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de análisis</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de análisis<label class="text-danger">(o)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Descripción de la unidad de análisis bajo estudio de la fuente de datos (población, hogares, individuos, establecimientos, empresas, inmuebles, etc.).
+                                                        <br/><b class="text-info">Ejemplo:</b> El registro administrativo de educación regular recopila información a nivel de Centros Educativos, por lo que su unidad de análisis son los centros educativos de educación regular
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
@@ -247,7 +354,17 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Universo de estudio</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Universo de estudio<label class="text-danger">(o)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Descripción de la población bajo estudio de la fuente de datos (hogares, individuos, establecimientos, etc.). Este campo casi nunca deberá ser “Toda la población”. Por ejemplo, un censo no cubre a diplomáticos. Un registro administrativo no cubre a toda la población objetivo, sino a una porción de ella que,  normalmente,  acude para recibir un servicio.
+                                                        <br/><b class="text-info">Ejemplo:</b> El universo de estudio del registro administrativo de educación regular son los estudiantes que asisten a centros educativos de educación regular, no siempre comprende a toda la población de niños y adolescentes.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
@@ -259,7 +376,16 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Diseño y tamaño de muestra</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Diseño y tamaño de muestra<label class="text-success">(r)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Información del marco muestral y los procedimientos utilizados para seleccionar a los encuestados. Indicar el tamaño de muestra seleccionado y su distribución.  No aplica a censos y RRAA.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
@@ -271,7 +397,16 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tasa de respuesta</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tasa de respuesta<label class="text-success">(r)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        El porcentaje de los miembros de la muestra que proveen información: rechazos, unidades no existentes, etc. No aplica a censos y RRAA.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
@@ -284,11 +419,11 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Observaciones</label>
+                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Observaciones<label class="text-success">(r)</label></label>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <div class="select2-wrapper">
-                                                    <textarea id="observacion" name="observacion" class="form-control" placeholder="Observaciones"></textarea>
+                                                    <textarea id="observacion" name="observacion" class="form-control" rows="7" placeholder="Observaciones"></textarea>
                                                   </div>
                                                   <div class="help-block with-errors"></div>
                                               </div>
@@ -303,7 +438,17 @@
                                           <div class="col-md-12">
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Demografia y estadisticas sociales</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Demografia y estadisticas sociales<label class="text-danger">(o)</label></label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        De preferencia, tomado de la lista provista. Seleccionar todas las temáticas que correspondan.
+                                                        Se permite agregar una nueva temática si no estuviera reflejada en la lista sugerida tomando en cuenta temas a nivel agregado.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <select id="demografia_estadistica_social" name="demografia_estadistica_social[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
@@ -319,7 +464,17 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estadisticas Económicas</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estadisticas Económicas<label class="text-danger">(o)</label></label>
+                                                    <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        De preferencia, tomado de la lista provista. Seleccionar todas las temáticas que correspondan.
+                                                        Se permite agregar una nueva temática si no estuviera reflejada en la lista sugerida tomando en cuenta temas a nivel agregado.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <select id="estadistica_economica" name="estadistica_economica[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
@@ -334,7 +489,17 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estadisticas Medioambientales</label>
+                                                <a class="mytooltip" href="javascript:void(0)">
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estadisticas Medioambientales<label class="text-danger">(o)</label></label>
+                                                    <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        De preferencia, tomado de la lista provista. Seleccionar todas las temáticas que correspondan.
+                                                        Se permite agregar una nueva temática si no estuviera reflejada en la lista sugerida tomando en cuenta temas a nivel agregado.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
                                                   <select id="estadistica_medioambiental" name="estadistica_medioambiental[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
@@ -349,7 +514,17 @@
 
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Informacion Geoespacial</label>
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Informacion Geoespacial<label class="text-danger">(o)</label></label>
+                                                        <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            De preferencia, tomado de la lista provista. Seleccionar todas las temáticas que correspondan.
+                                                            Se permite agregar una nueva temática si no estuviera reflejada en la lista sugerida tomando en cuenta temas a nivel agregado.
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
                                                   </div>
                                                   <div class="col-md-9 p-l-0">
                                                       <select id="informacion_geoespacial" name="informacion_geoespacial[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
@@ -374,7 +549,17 @@
                                           <div class="col-md-12">
                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                 <div class="col-md-5 p-l-0 p-r-0">
-                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Cantidad de Cuestionarios/Formularios</label>
+                                                  <a class="mytooltip" href="javascript:void(0)">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Cantidad de Cuestionarios/Formularios<label class="text-success">(r)</label></label>
+                                                    <span class="tooltip-content5" style="">
+                                                      <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                          Mencionar la cantidad de cuestionarios/formularios/registros contemplados en la Fuente de Datos y completar y el nombre o la sección.
+                                                          <br/><b class="text-info">Ejemplo:</b> El Sistema Nacional de Información Sobre Comercialización y Exportaciones Mineras (SINACOM) se alimenta  y/o integra de 3 registros básicos: FORM M-01 Formulario de Registro Único de Operadores Mineros, FORM M-02 Formulario de compra y venta  de Minerales y Metales y FORM M-03 Formulario Único de Exportación de Minerales y Metales.
+                                                        </span>
+                                                      </span>
+                                                    </span>
+                                                  </a>
                                                 </div>
                                                 <div class="col-md-7 p-l-0">
                                                     <div class="select2-wrapper">
@@ -414,14 +599,27 @@
 
 
                                        <div id="info5" class="tab-pane">
-                                           <div class="col-md-12 list-group-item-success">
+                                           <div class="col-md-12 list-group-item-success p-t-10">
                                                <h4 style="width:100%;"> Responsables</h4>
                                            </div>
-
-                                           <div class="col-md-12">
-                                               <h3 class="box-title m-b-0">Relacionar Responsables</h3>
+                                           <!--div class="col-md-5 p-l-0 p-r-0 m-t-10 m-b-5 ">
+                                               <a class="mytooltip" href="javascript:void(0)">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Relacionar Responsables</label>
+                                                  <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        <b class="text-info">Institución Propietaria/Custodia:</b> Nombre de la Institución propietaria o custodia de la Fuente de Datos.
+                                                        <br/><b class="text-info">Dependencia ejecutiva:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
+                                                        <br/><b class="text-info">Dependencia técnica:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la explotación/análisis de la fuente de datos (si corresponde)
+                                                        <br/><b class="text-info">Dependencia informática:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la gestión de la base de datos de la fuente de datos (si corresponde)
+                                                        <br/><b class="text-info">Teléfono de referencia:</b> Teléfono de referencia de la Institución – interno de la Dependencia Ejecutiva.
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
+                                           </div-->
+                                           <div class="col-md-12 m-t-5">
                                                <ul class="nav nav-tabs" role="tablist">
-
                                                    <li role="presentation" class="active nav-item">
                                                      <a href="#lista" class="nav-link" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
                                                        <span class="visible-xs"><i class="ti-user"></i></span>
@@ -434,7 +632,6 @@
                                                        <span class="hidden-xs"> Registrar</span>
                                                      </a>
                                                    </li>
-
                                                </ul>
                                                <!-- Tab panes -->
                                                <div class="tab-content">
@@ -457,7 +654,16 @@
                                                              <div class="col-md-12">
                                                                <div class="row">
                                                                      <div class="col-md-4 p-l-0 p-r-0">
-                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;" >Institución Propietaria/Custodia</label>
+                                                                       <a class="mytooltip" href="javascript:void(0)">
+                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;" >Institución Propietaria/Custodia<label class="text-danger">(o)</label></label>
+                                                                            <span class="tooltip-content5" style="">
+                                                                            <span class="tooltip-text3">
+                                                                              <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                <b class="text-info">Institución Propietaria/Custodia:</b> Nombre de la Institución propietaria o custodia de la Fuente de Datos.
+                                                                              </span>
+                                                                            </span>
+                                                                          </span>
+                                                                        </a>
                                                                      </div>
                                                                      <div class="col-md-8 p-l-0">
                                                                        <input id="responsable_1" name="responsable_1" type="text" class="form-control"  placeholder="Institución Propietaria/Custodia" required>
@@ -465,7 +671,16 @@
                                                                      </div>
 
                                                                      <div class="col-md-4 p-l-0 p-r-0 text-right">
-                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Ejecutiva</label>
+                                                                       <a class="mytooltip" href="javascript:void(0)">
+                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Ejecutiva<label class="text-danger">(o)</label></label>
+                                                                            <span class="tooltip-content5" style="">
+                                                                            <span class="tooltip-text3">
+                                                                              <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                  <b class="text-info">Dependencia ejecutiva:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
+                                                                              </span>
+                                                                            </span>
+                                                                          </span>
+                                                                        </a>
                                                                      </div>
                                                                      <div class="col-md-8 p-l-0">
                                                                        <input id="responsable_2" name="responsable_2" type="text" class="form-control"  placeholder="Dependencia Ejecutiva" required>
@@ -473,14 +688,32 @@
                                                                      </div>
 
                                                                      <div class="col-md-4 p-l-0 p-r-0 text-right">
-                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Técnica</label>
+                                                                       <a class="mytooltip" href="javascript:void(0)">
+                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Técnica<label class="text-danger">(o)</label></label>
+                                                                            <span class="tooltip-content5" style="">
+                                                                            <span class="tooltip-text3">
+                                                                              <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                <b class="text-info">Dependencia técnica:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la explotación/análisis de la fuente de datos (si corresponde)
+                                                                              </span>
+                                                                            </span>
+                                                                          </span>
+                                                                        </a>
                                                                      </div>
                                                                      <div class="col-md-8 p-l-0">
                                                                        <input id="responsable_3" name="responsable_3" type="text" class="form-control"  placeholder="Dependencia Técnica" required>
                                                                        <div class="help-block with-errors"></div>
                                                                      </div>
                                                                      <div class="col-md-4 p-l-0 p-r-0 text-right">
-                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Informática</label>
+                                                                       <a class="mytooltip" href="javascript:void(0)">
+                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Informática<label class="text-success">(r)</label></label>
+                                                                            <span class="tooltip-content5" style="">
+                                                                            <span class="tooltip-text3">
+                                                                              <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                <b class="text-info">Dependencia informática:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la gestión de la base de datos de la fuente de datos (si corresponde)
+                                                                              </span>
+                                                                            </span>
+                                                                          </span>
+                                                                        </a>
                                                                      </div>
                                                                      <div class="col-md-8 p-l-0">
                                                                        <input id="responsable_4" name="responsable_4" type="text" class="form-control"  placeholder="Dependencia Informática" required>
@@ -488,7 +721,16 @@
                                                                      </div>
 
                                                                      <div class="col-md-4 p-l-0 p-r-0">
-                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Teléfono de referencia</label>
+                                                                       <a class="mytooltip" href="javascript:void(0)">
+                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 15px 0px 7px 3px;">Teléfono de referencia<label class="text-danger">(o)</label></label>
+                                                                            <span class="tooltip-content5" style="">
+                                                                            <span class="tooltip-text3">
+                                                                              <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                <b class="text-info">Teléfono de referencia:</b> Teléfono de referencia de la Institución – interno de la Dependencia Ejecutiva.
+                                                                              </span>
+                                                                            </span>
+                                                                          </span>
+                                                                        </a>
                                                                      </div>
                                                                      <div class="col-md-8 p-l-0">
                                                                        <input id="referencia" name="referencia" type="text" class="form-control"  placeholder="Teléfono de referencia" required>
@@ -513,8 +755,29 @@
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Documentos respaldo</h4>
                                            </div>
-                                           <div class="col-md-12">
+                                          <h5 class="m-l-10 m-t-10">Descargar las plantillas.</h5>
 
+                                           <div class="col-md-12">
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                               <div class="col-md-6 p-l-0">
+                                                 <p>
+                                                   <a href="{{ url('plantillas/rime_plantilla_diccionario.xlsx')}}">
+                                                     <img class="metro-icon" src="{{ asset('images/excel.png') }}" width="30" alt="" />
+                                                     Plantilla Diccionario de Variables.
+                                                   </a>
+                                                 </p>
+                                               </div>
+                                               <div class="col-md-6 p-l-0">
+                                                 <p>
+                                                   <a href="{{ url('plantillas/rime_plantilla_documentacion_campos.xlsx')}}">
+                                                     <img class="metro-icon" src="{{ asset('images/excel.png') }}" width="30" alt="" />
+                                                     Plantilla Documentación de los campos.
+                                                   </a>
+                                                 </p>
+                                               </div>
+                                             </div>
+                                             <hr/>
+                                             <h3 class="box-title m-b-0">Cargar documentos</h3>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                  <div class="col-md-3 p-l-0 p-r-0">
                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre de Archivo</label>
@@ -565,7 +828,16 @@
                                            <div class="col-md-12">
                                                <div class="form-group row m-b-5 m-l-5 m-t-5">
                                                  <div class="col-md-3 p-l-0 p-r-0">
-                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Confidencialidad</label>
+                                                   <a class="mytooltip" href="javascript:void(0)">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Confidencialidad<label class="text-success">(r)</label></label>
+                                                      <span class="tooltip-content5" style="">
+                                                      <span class="tooltip-text3">
+                                                        <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                          Descripción de las Condiciones de acceso a la fuente de datos (De uso público, Bajo licencia o convenio, confidencial)
+                                                        </span>
+                                                      </span>
+                                                    </span>
+                                                  </a>
                                                  </div>
                                                  <div class="col-md-9 p-l-0">
                                                      <select id="confidencialidad" name="confidencialidad" class="custom-select col-12 form-control" >
@@ -579,11 +851,20 @@
                                                </div>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                  <div class="col-md-3 p-l-0 p-r-0">
-                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Notas legales</label>
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Notas legales<label class="text-danger">(o)</label></label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Información relativa al marco legal sobre el que se respalda el registro administrativo, encuestas, censos y la responsabilidad de los usuarios de las base de datos.
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
                                                  </div>
                                                  <div class="col-md-9 p-l-0">
                                                      <div class="select2-wrapper">
-                                                       <textarea id="notas_legales" name="notas_legales" class="form-control" rows="8" placeholder="Notas legales"></textarea>
+                                                       <textarea id="notas_legales" name="notas_legales" class="form-control" rows="8" placeholder="Notas legales" required></textarea>
                                                      </div>
                                                      <div class="help-block with-errors"></div>
                                                  </div>
@@ -865,15 +1146,98 @@
          //alert(str.indexOf("Otro"));
          if(str){
            if(str.indexOf("Otro") >= 0){
-             $('#'+ele+'_otro').val("");
+
              $('#'+ele+'_otro').removeClass('hidden');
              $('#'+ele+'_otro').addClass('show');
            }else{
              $('#'+ele+'_otro').removeClass('show');
              $('#'+ele+'_otro').addClass('hidden');
            }
+         }else{
+           $('#'+ele+'_otro').removeClass('show');
+           $('#'+ele+'_otro').addClass('hidden');
          }
       });
+
+
+
+      $(".agregarARC").click(function () {
+         var nombre = $('input[name=arc_nombre_input]').val();
+         nombre = nombre.replace(/\s/g,"_");
+
+         var formData = new FormData($("#formAdd")[0]);
+         if(!$('#datosARC').find("#ARC"+nombre).length){
+            $.ajax({
+                    url: "{{ url('/api/sistemarime/apiUploadArchivoRespaldo') }}",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data){
+                          if(data.error == false){
+                          var html = '<tr id="ARC'+ nombre +'" class="">'+
+                                          '<td>'+
+                                              '<input type="hidden" name="arc_id[]" value="" />'+
+                                              '<input type="hidden" name="arc_nombre[]" value="'+ data.item.nombre +'" />'+
+                                              '<input type="hidden" name="arc_archivo[]" value="'+ data.item.archivo +'" />'+
+                                              '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
+                                              '<a href="/respaldos/'+data.item.archivo+'" style="cursor: pointer;">'+
+                                              '<p>'+
+                                                '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo "> '+
+                                                 data.item.nombre +
+                                              '</p>'+
+                                              '</a>'+
+                                          '</td>'+
+                                          '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarARC(\''+nombre+'\',\''+data.item.archivo+'\',1);"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                                      '</tr>';
+                            $("#datosARC > tbody").append(html);
+                            $('input[name=arc_nombre_input]').val('');
+                            $('input[name=arc_archivo_input]').val('');
+                          }else{
+                              $.toast({
+                               heading: data.title,
+                               text: data.msg,
+                               position: 'top-right',
+                               loaderBg:'#ff6849',
+                               icon: 'warning',
+                               hideAfter: 3500
+                             });
+                          }
+                    },
+                    error:function(data){
+                      if(data.status != 401){
+                        $.toast({
+                          heading: 'Error:',
+                          text: 'Error al recuperar los datos.',
+                          position: 'top-right',
+                          loaderBg:'#ff6849',
+                          icon: 'error',
+                          hideAfter: 3500
+
+                        });
+                      }else{
+                        window.location = '/login';
+                      }
+                    }
+          });
+                  // hacer algo aquí si el elemento existe
+        }else{
+            $.toast({
+             heading: 'Alerta:',
+             text: 'Ya existe un archivo con ese nombre.',
+             position: 'top-right',
+             loaderBg:'#ff6849',
+             icon: 'warning',
+             hideAfter: 3500
+
+           });
+        }
+
+      });
+
+
+
+
 
 
     });
@@ -933,7 +1297,7 @@
     function btn_update(ele) {
       $("#btn-new" ).trigger( "click" );
        $.ajax({
-             url: "{{ url('/api/sistemaremi/apiDataSetIndicador') }}",
+             url: "{{ url('/api/sistemarime/apiDataSetFuente') }}",
              type: "GET",
              dataType: 'json',
              data:{'id':ele},
@@ -941,32 +1305,80 @@
                if(data.error == false){
 
                    //$("#mod_cod_m").val(data.meta).trigger('change');
-                   $('input[name="id_indicador"]').val(data.indicador[0].id);
-                   $('input[name="nombre"]').val(data.indicador[0].nombre);
-                   $('textarea[name="definicion"]').val(data.indicador[0].definicion);
-                   $('select[name=etapa]').val(data.indicador[0].etapa);
-                   $('select[name=tipo]').val(data.indicador[0].tipo);
-                   $('select[name=unidad_medida]').val(data.indicador[0].unidad_medida);
-                   $('select[name=frecuencia]').val(data.indicador[0].frecuencia);
-                   /*if(data.indicador[0].variables_desagregacion){
-                     $("#variables_desagregacion").val(data.indicador[0].variables_desagregacion.split(",")).trigger('change');
-                   }*/
-                   $('textarea[name="variables_desagregacion"]').val(data.indicador[0].variables_desagregacion);
-
-                   if(data.indicador[0].linea_base_mes){
-                     $('input[name="linea_base_fecha"]').val(data.indicador[0].linea_base_mes+'/'+data.indicador[0].linea_base_anio);
+                   $('input[name="id_fuente"]').val(data.fuente[0].id);
+                   $('textarea[name="nombre"]').val(data.fuente[0].nombre);
+                   $('input[name="acronimo"]').val(data.fuente[0].acronimo);
+                   $('select[name=tipo]').val(data.fuente[0].tipo);
+                   $('textarea[name="objetivo"]').val(data.fuente[0].objetivo);
+                   $('input[name="serie_datos"]').val(data.fuente[0].serie_datos);
+                   $('select[name=periodicidad]').val(data.fuente[0].periodicidad);
+                   $('textarea[name="variable"]').val(data.fuente[0].variable);
+                   $('select[name=modo_recoleccion_datos]').val(data.fuente[0].modo_recoleccion_datos);
+                   if(data.fuente[0].modo_recoleccion_datos == 'Otro'){
+                     $('input[name="modo_recoleccion_datos_otro"]').removeClass('hidden');
+                     $('input[name="modo_recoleccion_datos_otro"]').addClass('show');
+                     $('input[name="modo_recoleccion_datos_otro"]').val(data.fuente[0].modo_recoleccion_datos_otro);
                    }
-                   $('input[name="linea_base_valor"]').val(data.indicador[0].linea_base_valor);
-                   $('textarea[name="formula"]').val(data.indicador[0].formula);
-                   $('textarea[name="numerador_detalle"]').val(data.indicador[0].numerador_detalle);
-                   $('input[name="numerador_fuente"]').val(data.indicador[0].numerador_fuente);
-                   $('textarea[name="denominador_detalle"]').val(data.indicador[0].denominador_detalle);
-                   $('input[name="denominador_fuente"]').val(data.indicador[0].denominador_fuente);
-                   $('input[name="serie_disponible"]').val(data.indicador[0].serie_disponible);
-                   $('textarea[name="observacion"]').val(data.indicador[0].observacion);
+                   $('textarea[name="unidad_analisis"]').val(data.fuente[0].unidad_analisis);
+                   $('textarea[name="universo_estudio"]').val(data.fuente[0].universo_estudio);
+                   $('textarea[name="disenio_tamanio_muestra"]').val(data.fuente[0].disenio_tamanio_muestra);
+                   $('textarea[name="tasa_respuesta"]').val(data.fuente[0].tasa_respuesta);
+                   $('textarea[name="observacion"]').val(data.fuente[0].observacion);
 
-                   if(data.indicador[0].fuente_datos){
-                     $("#fuente_datos").val(data.indicador[0].fuente_datos.split(",")).trigger('change');
+
+                   if(data.fuente[0].demografia_estadistica_social){
+                     $("#demografia_estadistica_social").val(data.fuente[0].demografia_estadistica_social.split(",")).trigger('change');
+                     var str = data.fuente[0].demografia_estadistica_social;
+                     //alert(str.indexOf("Otro"));
+                     if(str){
+                       if(str.indexOf("Otro") >= 0){
+                         $('#demografia_estadistica_social_otro').val(data.fuente[0].demografia_estadistica_social_otro);
+                         $('#demografia_estadistica_social_otro').removeClass('hidden');
+                         $('#demografia_estadistica_social_otro').addClass('show');
+                       }
+                     }
+                   }
+
+                   if(data.fuente[0].estadistica_economica){
+                     $("#estadistica_economica").val(data.fuente[0].estadistica_economica.split(",")).trigger('change');
+                     var str = data.fuente[0].estadistica_economica;
+                     //alert(str.indexOf("Otro"));
+                     if(str){
+                       if(str.indexOf("Otro") >= 0){
+                         $('#estadistica_economica_otro').val(data.fuente[0].estadistica_economica_otro);
+                         $('#estadistica_economica_otro').removeClass('hidden');
+                         $('#estadistica_economica_otro').addClass('show');
+                       }
+                     }
+                   }
+
+
+                   if(data.fuente[0].estadistica_medioambiental){
+                     $("#estadistica_medioambiental").val(data.fuente[0].estadistica_medioambiental.split(",")).trigger('change');
+                     var str = data.fuente[0].estadistica_medioambiental;
+                     //alert(str.indexOf("Otro"));
+                     if(str){
+                       if(str.indexOf("Otro") >= 0){
+                         $('#estadistica_medioambiental_otro').val(data.fuente[0].estadistica_medioambiental_otro);
+                         $('#estadistica_medioambiental_otro').removeClass('hidden');
+                         $('#estadistica_medioambiental_otro').addClass('show');
+                       }
+                     }
+                   }
+
+
+
+                   if(data.fuente[0].informacion_geoespacial){
+                     $("#informacion_geoespacial").val(data.fuente[0].informacion_geoespacial.split(",")).trigger('change');
+                     var str = data.fuente[0].informacion_geoespacial;
+                     //alert(str.indexOf("Otro"));
+                     if(str){
+                       if(str.indexOf("Otro") >= 0){
+                         $('#informacion_geoespacial_otro').val(data.fuente[0].informacion_geoespacial_otro);
+                         $('#informacion_geoespacial_otro').removeClass('hidden');
+                         $('#informacion_geoespacial_otro').addClass('show');
+                       }
+                     }
                    }
 
 
@@ -1212,6 +1624,35 @@
           referenciaA.splice(index, 1);
 
         actualizarListaResponsable();
+    }
+
+    function quitarARC(ele,archivo,tipo){
+      var res = confirm("Esta seguro de quitar el archivo?");
+          if (res == true) {
+            if(tipo == 1){
+                 $.ajax({
+                       type: "GET",
+                       dataType: 'json',
+                       url: "{{ url('/api/sistemarime/apiDeleteArchivo') }}",
+                       data: {archivo: archivo},
+                       success: function(data){
+                           $('#ARC'+ele).remove();
+                       },
+                       error:function(data){
+                         if(data.status != 401){
+                           alert("Error recuperar al eliminar.");
+                         }else{
+                           window.location = '/login';
+                         }
+                       }
+                   });
+            }else{
+              $('#ARC'+ele).addClass('hidden');
+              $('#EST'+ele).val(0);
+              $('#ARC'+ele).attr("id",'0ARC'+ele);
+            }
+        }
+
     }
 
 

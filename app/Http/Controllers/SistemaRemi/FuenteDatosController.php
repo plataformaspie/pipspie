@@ -14,6 +14,7 @@ use App\Models\SistemaRemi\FuenteTipos;
 use App\Models\SistemaRemi\Frecuencia;
 use App\Models\SistemaRemi\FuenteTiposRecoleccion;
 use App\Models\SistemaRemi\FuenteTiposCategoriaTematica;
+use App\Models\SistemaRemi\FuenteArchivosRespaldos;
 
 
 
@@ -153,6 +154,7 @@ class FuenteDatosController extends Controller
 
         try{
             $fuente = new FuenteDatos();
+            $fuente->nombre = $request->nombre;
             $fuente->acronimo = $request->acronimo;
             $fuente->tipo = $request->tipo;
             //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
@@ -162,50 +164,27 @@ class FuenteDatosController extends Controller
             $fuente->variable = $request->variable;
             $fuente->modo_recoleccion_datos = $request->modo_recoleccion_datos;
             $fuente->modo_recoleccion_datos_otro = $request->modo_recoleccion_datos_otro;
-            $fuente->unidad_analisis = $request->numerador_detalle;
+            $fuente->unidad_analisis = $request->unidad_analisis;
             $fuente->universo_estudio = $request->universo_estudio;
             $fuente->disenio_tamanio_muestra = $request->disenio_tamanio_muestra;
+            $fuente->tasa_respuesta = $request->tasa_respuesta;
             $fuente->observacion = $request->observacion;
 
-            $fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->fuente_datos):null;
+            $fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->demografia_estadistica_social):null;
             $fuente->demografia_estadistica_social_otro = $request->demografia_estadistica_social_otro;
-            $fuente->estadistica_economica = ($request->estadistica_economica)?implode(",", $request->fuente_datos):null;
+            $fuente->estadistica_economica = ($request->estadistica_economica)?implode(",", $request->estadistica_economica):null;
             $fuente->estadistica_economica_otro = $request->estadistica_economica_otro;
-            $fuente->estadistica_medioambiental = ($request->estadistica_medioambiental)?implode(",", $request->fuente_datos):null;
+            $fuente->estadistica_medioambiental = ($request->estadistica_medioambiental)?implode(",", $request->estadistica_medioambiental):null;
             $fuente->estadistica_medioambiental_otro = $request->estadistica_medioambiental_otro;
-            $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->fuente_datos):null;
+            $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->informacion_geoespacial):null;
             $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
 
             $fuente->numero_total_formulario = $request->numero_total_formulario;
             $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
 
-
-
-
-
-
-
-            $fuente->serie_disponible = $request->serie_disponible;
-            $fuente->observacion = $request->observacion;
-            $fuente->estado = 1;
-            $fuente->logo = "default.png";
+            $fuente->confidencialidad = $request->confidencialidad;
+            $fuente->notas_legales = $request->notas_legales;
             $fuente->id_user = $this->user->id;
-            $dia = null;
-            $mes = null;
-            $anio = null;
-            $fechaLB =null;
-            if($request->linea_base_fecha){
-              list ( $mes, $anio ) = explode ( "/", $request->linea_base_fecha );
-              $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
-      		    $fechaLB = $anio . "-" . $mes . "-" . $dia;
-            }
-            $fuente->linea_base_fecha = $fechaLB;
-            $fuente->linea_base_anio = $anio;
-            $fuente->linea_base_mes = $mes;
-            $fuente->linea_base_dia = $dia;
-            $fuente->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
-            $fuente->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
-
             $fuente->activo = true;
             $fuente->save();
 
@@ -225,14 +204,9 @@ class FuenteDatosController extends Controller
               }
             }
 
-
-
-
-
-
             if(isset($request->arc_archivo)){
               foreach ($request->arc_archivo as $k => $v) {
-                    $archivos = new IndicadoresArchivosRespaldos();
+                    $archivos = new FuenteArchivosRespaldos();
                     $archivos->id_fuente = $fuente->id;
                     $archivos->nombre =  $request->arc_nombre[$k];
                     $archivos->archivo = $request->arc_archivo[$k];
@@ -404,6 +378,76 @@ class FuenteDatosController extends Controller
       }
   }
 
+
+
+  public function apiUploadArchivoRespaldo(Request $request)
+  {
+    $carpeta = "respaldos/";
+    $nombreDataBase = "";
+    $msgFile = "";
+      if ( $request->arc_archivo_input )
+      {
+          $file = $request->arc_archivo_input;
+          $nombre = $file->getClientOriginalName();
+          $tipo = $file->getMimeType();
+          $extension = $file->getClientOriginalExtension();
+          $ruta_provisional = $file->getPathName();
+          $size = $file->getSize();
+          $nombreSystem = uniqid('FTD-');
+          $src = $carpeta.$nombreSystem.'.'.$extension;
+          if(move_uploaded_file($ruta_provisional, $src)){
+              $msgFile ="Archivo Subido Correctamente.";
+              $nombreDataBase = $nombreSystem.'.'.$extension;
+          }else{
+              $msgFile = "Error al Subir el Archivo.";
+          }
+          $resp['archivo'] = $nombreDataBase;
+          $resp['nombre'] = $request->arc_nombre_input;
+
+          return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'item' => $resp,
+              'msg' => $msgFile)
+          );
+      }else{
+        return \Response::json(array(
+            'error' => true,
+            'title' => "Error!",
+            'item' => "",
+            'msg' => $request->arc_nombre_input)
+        );
+      }
+
+
+
+  }
+
+  public function apiDeleteArchivo(Request $request)
+  {
+      unlink('respaldos/'.$request->input('archivo'));
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Archivo eliminado")
+      );
+
+  }
+
+  public function apiDataSetFuente(Request $request)
+  {
+      $fuente = FuenteDatos::where('id',$request->id)->get();
+      $resposables = FuenteDatosResponsable::where('id_fuente',$request->id)->get();
+      $archivos = FuenteArchivosRespaldos::where('id_fuente',$request->id)->where('activo', true)->get();
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.",
+          'fuente' => $fuente,
+          'responsables' => $resposables,
+          'archivos' => $archivos)
+      );
+  }
 
 
 

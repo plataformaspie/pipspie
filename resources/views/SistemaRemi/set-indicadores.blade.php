@@ -193,7 +193,6 @@ text-decoration: underline;
                                                                     </span>
                                                                   </span>
                                                               </a>
-
                                                             </div>
                                                             <div class="col-lg-11 p-t-0 p-b-0">
                                                               <div class="row">
