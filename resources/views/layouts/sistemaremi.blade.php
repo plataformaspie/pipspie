@@ -213,7 +213,7 @@
                     <li>
                         <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
                           <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe000; " style="font-size: 25px"></i>
-                          <span class="hide-menu"> Fuente Datos <span class="fa arrow"></span> </span>
+                          <span class="hide-menu"> Fuente Datos(en desarrollo) <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li> <a href="{{ url('/sistemarime/setFuenteDatos') }}">Detalle de Fuente</a> </li>
