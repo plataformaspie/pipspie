@@ -222,6 +222,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
               Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+              Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
 
           }
       );
