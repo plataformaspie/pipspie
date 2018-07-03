@@ -19,13 +19,16 @@ class PlanesController extends PlanificacionBaseController
     public function listEntidadPlan(Request $request)
     {
         $idEntidadFoco = $this->getIdEntidadFoco($request);
-        $entidadPlanes = \DB::select("SELECT ep.id, ep.id_tipo_plan, ep.gestion_inicio, ep.gestion_fin, ep.etapas_completadas, e.nombre as nombre_entidad, e.sigla as sigla_entidad, tp.codigo as cod_tipo_plan
-                                        FROM sp_planes ep, sp_entidades e, sp_parametros tp 
+        $entidadPlanes = \DB::select("SELECT ep.id, ep.id_tipo_plan, per.valor as gestion_inicio, per.valor2 as gestion_fin, ep.etapas_completadas, e.nombre as nombre_entidad, e.sigla as sigla_entidad, tp.codigo as cod_tipo_plan
+                                        FROM sp_planes ep, sp_entidades e, sp_parametros tp, sp_parametros per
                                         WHERE ep.activo = true AND ep.id_entidad = e.id 
-                                        AND  ep.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan' AND e.institucion = {$idEntidadFoco} 
+                                        AND  ep.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan' 
+                                        AND per.categoria = 'periodo_plan' AND per.activo AND per.codigo = ep.cod_periodo_plan 
+                                        AND e.institucion = {$idEntidadFoco} 
                                         ORDER BY ep.id_tipo_plan"); 
         return \Response::json([
-            'data' => $entidadPlanes]);
+            'data' => $entidadPlanes,         
+        ]);
     }
 
     public function saveEntidadPlan(Request $request)
@@ -93,6 +96,42 @@ class PlanesController extends PlanificacionBaseController
             ]);
         }
     }
+
+    /*
+    |------------------------------------------------------------------
+    | Actualiza el vector de la columna estapas_completadas en la tabla sp_planes
+    |                   req = { p: id_plan, id_menu: id_menu, agregar: true }  
+    | remove por defecto es false; si se manda true entonces quitara el elemento si es que existe
+     */    
+    public function actualizaEtapas(Request $req)
+    {
+
+        $plan = \DB::table('sp_planes')->where('id', $req->p)->get()->first();
+        $etapasComp = collect(array_where(explode('|', $plan->etapas_completadas), function ($idm) {
+                                                        return $idm != '';
+                                                    }));
+        if($req->agregar == '1'){
+            $etapasComp[] = $req->id_menu;
+            $etapasComp = $etapasComp->unique();
+        }
+        else{
+            $etapasComp = $etapasComp->filter(
+                function($val,$key) use ($req){
+                    return $val != $req->id_menu;
+                });
+        }
+
+        $etapasCompletadas = $etapasComp->reduce(
+            function($carry, $elem){
+                return $carry . $elem . '|';
+            }, '|');
+        
+        \DB::table('sp_planes')->where('id', $req->p)->update(['etapas_completadas' => $etapasCompletadas]);
+        return response()->json([
+            'r'=>$etapasCompletadas]);
+    }
+
+
 
 
 }

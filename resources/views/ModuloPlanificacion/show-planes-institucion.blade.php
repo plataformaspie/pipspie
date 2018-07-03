@@ -40,40 +40,6 @@
 
 @endsection
 
-@section('title-topbar')
-<div class="row">
-    <div class="topbar-left ">
-        <ol class="breadcrumb">
-            <li class="crumb-active">
-                <a href="/moduloplanificacion/showPlanesInstitucion">Planes de la Institución</a>
-            </li>
-            <li class="crumb-icon">
-                <a href="/moduloplanificacion/index">
-                    <span class="glyphicon glyphicon-home"></span>
-                </a>
-            </li>
-            <li class="crumb-link">
-                  <a href="/moduloplanificacion/showPlanesInstitucion">Home</a>
-              </li>
-            <li class="crumb-trail">Administrar Planes</li>
-        </ol>
-    </div>
-    <div class="topbar-right ">
-        <div class="ml15 ib va-m" id="toggle_sidemenu_r">
-            <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
-                <span class="badge badge-hero badge-danger">3</span>
-            </a>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="text-center">
-        <h4 id="tituloCabecera"></h4>
-        <h5 id="titulo2Cabecera"></h5>
-    </div>
-</div>
-
-@endsection
 
 @section('content')
     <div class="tray tray-center va-t posr sp_planes">
@@ -294,14 +260,27 @@ $(function(){
         },
         cargar: function(){
             var rowsel = planes.dataTable.jqxDataTable('getSelection')[0];
-            globalSP.setGlobalPlanActivo(rowsel); 
-            globalSP.configuraMenu(rowsel);  
+            planactivo = rowsel;
+                $('input[name=id_plan]').val(planactivo.id) ;
+                // globalSP.planActivo = {
+                //     id : planactivo.id,
+                //     sigla_entidad : planactivo.sigla_entidad,
+                //     cod_tipo_plan : planactivo.cod_tipo_plan,
+                //     gestion_inicio : planactivo.gestion_inicio,
+                //     gestion_fin : planactivo.gestion_fin
+                // } 
+            // $.get(globalSP.urlApi + 'getmenu', {p :rowsel.id}, function(res){
+                // globalSP.generarMenu(rowsel.id, res.data);
+                // globalSP.configuraMenu(rowsel); 
+                window.location = globalSP.url + 'showPlanesInstitucion?p=' + rowsel.id ; 
+            // })
+             
 
             $('#menuSP .sp_menu').each(function(index, elem){
-                var ref = $(elem).attr('href');
-                ref = ref.split('=')[0] + '=' + globalSP.planActivo.id;
-                $(elem).attr('href', ref);
-                // console.log(ref);
+                var urlhref = $(elem).attr('href');
+                // coloca el querystring en las urls del menu
+                urlhref = urlhref.split('=')[0] + '=' + globalSP.planActivo.id;
+                $(elem).attr('href', urlhref);
             });    
             globalSP.setTitulo2();
         },
@@ -440,8 +419,9 @@ $(function(){
 
     globalSP.activarMenu(globalSP.menu.AdminPlanes);
     globalSP.cargarGlobales();
-    planes.fillPlanes();
+    globalSP.setBreadcrumb('Planes de la Institución', 'Administrar Planes');
 
+    planes.fillPlanes();
 
     $('#nuevo').click(function(){
         planes.nuevo();

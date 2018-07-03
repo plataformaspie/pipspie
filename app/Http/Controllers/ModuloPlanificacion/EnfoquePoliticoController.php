@@ -120,10 +120,10 @@ class EnfoquePoliticoController extends PlanificacionBaseController
         //TODO verificar antes de modificar o eliminar que no se este utilizando
         $atribucion = new \stdClass();
         $atribucion->atribucion = $req->atribucion;
-        $ids_pilares = '';
-        foreach ($req->ids_pilares as $p) {
-            $ids_pilares.= '|' . $p . '|';
-        }
+        $ids_pilares = collect($req->ids_pilares)->reduce(function($carry, $id){
+                                    return $carry . $id . '|';
+                                },'|');
+
         $atribucion->ids_pilares = $ids_pilares;
         try {
             if ($req->id) // uPDATE

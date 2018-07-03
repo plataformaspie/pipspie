@@ -39,31 +39,7 @@
 
 @endsection
 
-@section('title-topbar')
-  <div class="topbar-left">
-      <ol class="breadcrumb">
-          <li class="crumb-active">
-              <a href="dashboard.html">Diagnostico</a>
-          </li>
-          <li class="crumb-icon">
-              <a href="/sistemasisgri/index">
-                  <span class="glyphicon glyphicon-home"></span>
-              </a>
-          </li>
-          <li class="crumb-link">
-              <a href="/sistemasisgri/index">Home</a>
-          </li>
-          <li class="crumb-trail">Diagnóstico</li>
-      </ol>
-  </div>
-  <div class="topbar-right">
-      <div class="ml15 ib va-m" id="toggle_sidemenu_r">
-          <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
-              <span class="badge badge-hero badge-danger">3</span>
-          </a>
-      </div>
-  </div>
-@endsection
+
 
 @section('content')
   <!-- begin: .tray-left -->
@@ -473,7 +449,7 @@
   <script type="text/javascript">
     $(document).ready(function(){
         // activarMenu('1','0');
-        globalSP.activarMenu('26');
+        // globalSP.activarMenu('26');
         $(document).keydown(function(tecla){
               if (tecla.keyCode == 113) {
 
@@ -984,7 +960,13 @@
                   });
               }
       });
+
+
     }
+
+    globalSP.activarMenu(globalSP.menu.Diagnostico);
+      globalSP.cargarGlobales();
+      globalSP.setBreadcrumb('Diagnóstico', 'Diagnóstico');
 
   </script>
 

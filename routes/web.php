@@ -229,7 +229,7 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'api/moduloplanificacion'),
           function() {
               /********** genericas de la plantilla *********/
-              Route::get('getmenu', 'ModuloPlanificacion\PlanificacionBaseController@getMenuPlan');
+              Route::get('getmenu', 'ModuloPlanificacion\PlanificacionBaseController@getMenu');
               Route::get('getuser', 'ModuloPlanificacion\PlanificacionBaseController@getUser');
               Route::get('getplan', 'ModuloPlanificacion\PlanificacionBaseController@getPlan');
               Route::get('getpilares', 'ModuloPlanificacion\PlanificacionBaseController@getPilares');
@@ -254,6 +254,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listEntidadPlan', 'ModuloPlanificacion\PlanesController@listEntidadPlan');
               Route::post('saveEntidadPlan', 'ModuloPlanificacion\PlanesController@saveEntidadPlan');
               Route::get('deleteEntidadPlan', 'ModuloPlanificacion\PlanesController@deleteEntidadPlan');
+              Route::post('actualizaEtapas', 'ModuloPlanificacion\PlanesController@actualizaEtapas');
               
               /********** Enfoque politico *****************/
               Route::get('getEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@getEnfoquePolitico');

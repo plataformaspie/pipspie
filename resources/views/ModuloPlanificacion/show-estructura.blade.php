@@ -234,7 +234,7 @@
 </style>
 @endsection
 
-@section('title-topbar')
+{{-- @section('title-topbar')
   <div class="topbar-left">
       <ol class="breadcrumb">
           <li class="crumb-active">
@@ -258,7 +258,7 @@
           </a>
       </div>
   </div>
-@endsection
+@endsection --}}
 
 @section('content')
   <?php  /*
@@ -642,7 +642,9 @@
 
     var idSelectedEntidad;
     $(document).ready(function(){
-          globalSP.activarMenu('24');
+          globalSP.activarMenu(globalSP.menu.EstructuraInstitucional);
+          globalSP.cargarGlobales();
+          globalSP.setBreadcrumb('Estructura Institucional', 'Estructura Institucional');
             // prepare the data
             var source =
             {

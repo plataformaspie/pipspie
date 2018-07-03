@@ -40,31 +40,6 @@
 
 @endsection
 
-@section('title-topbar')
-<div class="topbar-left">
-    <ol class="breadcrumb">
-        <li class="crumb-active">
-            <a href="dashboard.html">Enfoque Político</a>
-        </li>
-        <li class="crumb-icon">
-            <a href="/sistemasisgri/index">
-                <span class="glyphicon glyphicon-home"></span>
-            </a>
-        </li>
-        <li class="crumb-link">
-            <a href="/sistemasisgri/index">Home</a>
-        </li>
-        <li class="crumb-trail">Enfoque Político</li>
-    </ol>
-</div>
-<div class="topbar-right">
-    <div class="ml15 ib va-m" id="toggle_sidemenu_r">
-        <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
-            <span class="badge badge-hero badge-danger">3</span>
-        </a>
-    </div>
-</div>
-@endsection
 
 @section('content')
     <!-- ===========================================    begin: .tray-left         ========================================================== -->
@@ -83,13 +58,13 @@
             <ul class="nav tray-nav tray-nav-border custom-nav-animation affix " data-spy="affix" data-offset-top="180" style="width: 269px">
                 <li class="active">
                     <a href="#spy1">
-                    <span class="fa fa-newspaper-o fa-lg"></span>  Enfoque Político</a>
+                    <span class="glyphicon glyphicon-list-alt"></span> Enfoque Político <span class="sp_est_enfoque"></a></span>
                 </li>
                 <li>
                     <a href="#spy2">
-                    <span class="glyphicon glyphicon-tasks fa-lg"></span>  Atribuciones <span class="sp_atr badge bg-green">3</span></a>
+                    <span class="glyphicon glyphicon-tasks"></span> Atribuciones <span class="sp_est_atribuciones"></span></a>
                 </li>
-            </ul>
+            </Cul>
         </div>
 
     </aside>
@@ -102,8 +77,8 @@
                 <div class="panel panel-visible" id="spy1">
                     <div class="panel-heading">
                         <div class="panel-title hidden-xs">
-                            <span class="fa fa-newspaper-o"></span>  Enfoque Político
-                            <button id="editar" type="button" class="btn btn-sm btn-warning dark m5 btn-alt pull-right"><i class="fa fa-edit text-warning"></i> Modificar</button>
+                            <span class="glyphicon glyphicon-list-alt"></span>  Enfoque Político <span class="sp_est_enfoque"></span>
+                            <button id="editar_ep" type="button" class="btn btn-sm btn-warning dark m5 btn-alt pull-right"><i class="fa fa-edit text-warning"></i> Modificar</button>
                             <input type="hidden" name="id_enfoque_politico">
                         </div>
                     </div>
@@ -117,15 +92,15 @@
                 <div class="panel panel-visible" id="spy2">
                     <div class="panel-heading">
                         <div class="panel-title hidden-xs">
-                            <span class="glyphicon glyphicon-tasks"></span> Atribuciones principales del sector
+                            <span class="glyphicon glyphicon-tasks"></span> Atribuciones principales del sector <span class="sp_est_atribuciones"></a>
                         </div>
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
                             <div id="div_atribuciones" class="col-md-12" >
-                                <button id="atr_nuevo" type="button" class="btn btn-sm btn-success dark m5 btn-alt  "><i class="glyphicon glyphicon-plus-sign text-success"></i> Agregar atribución</button>
-                                <button id="atr_editar" type="button" class="btn btn-sm btn-warning dark m5  btn-alt  "><i class="fa fa-edit glyphicon-plus-sign text-warning"></i> Editar</button>
-                                <button id="atr_elimar" type="button" class="btn btn-sm btn-danger dark m5 btn-alt   "><i class="glyphicon glyphicon-minus-sign text-danger"></i> Eliminar</button>
+                                <button id="atr_nuevo" type="button" class="btn btn-sm btn-default dark m5 btn-alt  "><i class="glyphicon glyphicon-plus-sign text-success"></i> Agregar atribución</button>
+                                <button id="atr_editar" type="button" class="btn btn-sm btn-default dark m5  btn-alt  "><i class="fa fa-edit glyphicon-plus-sign text-warning"></i> Editar</button>
+                                <button id="atr_elimar" type="button" class="btn btn-sm btn-default dark m5 btn-alt   "><i class="glyphicon glyphicon-minus-sign text-danger"></i> Eliminar</button>
                                 
                                 <div id="dtAtribuciones"></div>
                             </div>
@@ -134,7 +109,6 @@
                 </div>
             </div>
         </div>
-
     </div>
       <!-- end: .tray-center -->
 
@@ -147,7 +121,7 @@
                 <span class="panel-title"><i class="fa fa-pencil"></i>Enfoque Politico</span>
             </div>
             <!-- end .panel-heading section -->
-            <form method="post" action="/" id="form-ep" name="form-ep">
+            <form method="post" action="/" id="form_ep" name="form_ep">
                 <input type="hidden" name="mod_id" id="mod_id" value="">
 
                 <div class="panel-body mnw700 of-a">
@@ -172,7 +146,7 @@
                 </div>
                 <div class="panel-footer">
                     <button type="submit" class="button btn-primary">Guardar</button>
-                    <a href="#"  id="cancelar"  class="button btn-danger ml25">Cancelar</a>
+                    <a href="#"  id="cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -220,7 +194,7 @@
                 </div>
                 <div class="panel-footer">
                     <button type="submit" class="button btn-primary">Guardar</button>
-                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25">Cancelar</a>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -255,9 +229,10 @@ $(function(){
 
             $.get(globalSP.urlApi + "getEnfoque", {p : globalSP.idPlanActivo}, function(res){      
                 ctxEP.epObj = res.data;
-                var enfoqueTexto = (res.data.enfoque_politico) ? res.data.enfoque_politico : '<span class="text-danger"> Enfoque Político No Definido  !!!!!!!! </span>';
+                var enfoqueTexto = (ctxEP.epObj.enfoque_politico) ? ctxEP.epObj.enfoque_politico : '<span class="text-danger"> Enfoque Político No Definido  !!!!!!!! </span>';
                 $(".dina4").html(enfoqueTexto);
                 ctxEP.input_idEnfoqueP.val(ctxEP.epObj ? ctxEP.epObj.id : '');
+                funciones.estadistics();
             } )
         },
 
@@ -296,7 +271,7 @@ $(function(){
         },
         showmodal: function(idModal){
             $(".state-error").removeClass("state-error")
-            $("#form-ep em").remove();
+            $("#form_ep em").remove();
                     // Inline Admin-Form example
             $.magnificPopup.open({
                 removalDelay: 500, //delay removal by X to allow out-animation,
@@ -368,7 +343,7 @@ $(function(){
                             width: findWidth(),
                             delay: 1500
                         });
-                
+                funciones.estadistics();
             });  
             $.magnificPopup.close();          
         }
@@ -424,12 +399,14 @@ $(function(){
                         { text: ' ', width: 50, cellsrenderer: editDelRenderer},
                     ]
                 });
+                funciones.estadistics();
             });
         },
         refreshList: function(){
             $.get(globalSP.urlApi + 'listAtribucionesPilares', {p:globalSP.idPlanActivo}, function(resp) {
                 atr.source.localdata = resp.data;
                 atr.dataTable.jqxDataTable("updateBoundData");
+                funciones.estadistics()
             })   
         },
         initCombos : function(){
@@ -485,13 +462,11 @@ $(function(){
             $("#id_atr").val(obj.id);
             $("#atribucion").val(obj.atribucion);
             $("#ids_pilares").val(obj.ids_pilares).change();
-            // $("#ids_pilares").select2('val', obj.ids_pilares);
         },
         nuevo: function(){
             $("#tituloModal span").html("Agregar una atribución");
             $('#form-atr input:text').val('');
             $("#ids_pilares").val('').change();
-            // $("#ids_pilares").select2('val', '').change();
             atr.showModal();
         },
         editar: function(){
@@ -568,8 +543,9 @@ $(function(){
                             width: findWidth(),
                             delay: 1500
                         });
+                $.magnificPopup.close();  
             });
-            $.magnificPopup.close();   
+             
         },
         deleteAtribucion: function(id){
             swal({
@@ -593,27 +569,53 @@ $(function(){
                                   width: findWidth(),
                                   delay: 1400
                               });
-                        atr.refresh();
+                        atr.refreshList();
                     });
                 });
         },
 
     }
 
-    //-------------------- del Enfoque politico --------------------------------
+    var funciones = {
+        estadistics : function()
+        {
+            try{ 
+                var atribs = atr.source.localdata;
+                $(".sp_est_atribuciones").removeClass('badge bg-success bg-danger');
+                $(".sp_est_atribuciones").addClass( (atribs.length > 0) ? 'badge bg-success' : 'badge bg-danger');
+                $(".sp_est_atribuciones").html(atribs.length);
+
+                var ep = ctxEP.epObj.enfoque_politico;
+                $(".sp_est_enfoque").removeClass('badge bg-success bg-danger');
+                $(".sp_est_enfoque").addClass( (ep) ? 'badge bg-success' : 'badge bg-danger');
+                $(".sp_est_enfoque").html( (ep) ? 'SI' : 'NO');
+
+                obj ={
+                    id_menu : globalSP.menu.EnfoquePolitico,
+                    p: globalSP.idPlanActivo,
+                    _token : $('input[name=_token]').val(),
+                    agregar: ((atribs.length > 0)  && (ep)) ? '1' : '0' ,
+                }
+                $.post(globalSP.urlApi + 'actualizaEtapas', obj, function() {});
+
+            }
+            catch(e){}
+        }
+    }
+
+
     globalSP.activarMenu(globalSP.menu.EnfoquePolitico);
     globalSP.cargarGlobales();
+    globalSP.setBreadcrumb('Enfoque Político', 'Enfoque político');
+
+    //-------------------- del Enfoque politico --------------------------------
     ctxEP.cargarEnfoquePolitico();
     ctxEP.inicializaSummerNote();
 
-    $("#form-ep").validate(ctxEP.validateRules());
+    $("#form_ep").validate(ctxEP.validateRules());
 
-    $("#editar").click(function(){
+    $("#editar_ep").click(function(){
         ctxEP.editar();
-    });
-
-    $("#cancelar").click(function(){
-        $.magnificPopup.close();
     });
 
     //-------------------- de las atribuciones --------------------------------
@@ -633,11 +635,13 @@ $(function(){
         atr.eliminar();
     });
 
-    $("#atr_cancelar").click(function(){
+
+    // ---------------------------------------------------------------------
+    // funciones.estadistics();
+    $(".spr_cancelar").click(function(){
         $.magnificPopup.close();
     });
-
-
+  
   
 })
 
