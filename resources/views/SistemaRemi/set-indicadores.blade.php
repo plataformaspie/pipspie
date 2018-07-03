@@ -52,7 +52,7 @@ text-decoration: underline;
   <div class="row bg-title">
       <!-- .page title -->
       <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">LISTA DE INDICADORES ALINEADOS AL PDES</h4>
+          <h4 class="page-title">Lista de indicadores alineados al PDES</h4>
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->
@@ -193,7 +193,6 @@ text-decoration: underline;
                                                                     </span>
                                                                   </span>
                                                               </a>
-
                                                             </div>
                                                             <div class="col-lg-11 p-t-0 p-b-0">
                                                               <div class="row">

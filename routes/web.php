@@ -222,7 +222,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('showPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showPlanesInstitucion');
               Route::get('showEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@showEnfoque');
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
-          
+              Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
+
           }
       );
       Route::group(
@@ -249,6 +250,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
               Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
               Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
+
               
               /********** Planes ***********************/
               Route::get('listEntidadPlan', 'ModuloPlanificacion\PlanesController@listEntidadPlan');
@@ -263,6 +265,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listAtribucionesPilares', 'ModuloPlanificacion\EnfoquePoliticoController@listAtribucionesPilares');
               Route::post('saveAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@saveAtribucion');
               Route::post('deleteAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@deleteAtribucion');
+
               /********** Diagnostico ******************/
               Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
               Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');
@@ -357,6 +360,11 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               //fuente de datos
               Route::get('apiSetListFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSetListFuenteDatos');
+              Route::get('apiSourceOrderbyArray2', 'SistemaRemi\FuenteDatosController@apiSourceOrderbyArray2');
+              Route::post('apiSaveFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSaveFuenteDatos');
+              Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\FuenteDatosController@apiUploadArchivoRespaldo');
+              Route::get('apiDeleteArchivo', 'SistemaRemi\FuenteDatosController@apiDeleteArchivo');
+              Route::get('apiDataSetFuente', 'SistemaRemi\FuenteDatosController@apiDataSetFuente');
 
           }
       );
