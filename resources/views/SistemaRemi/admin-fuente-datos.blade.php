@@ -208,7 +208,7 @@
                                                 </a>
                                               </div>
                                               <div class="form-group col-md-4 p-l-0">
-                                                  <select id="tipo" name="tipo" class="custom-select col-12 form-control" required>
+                                                  <select id="tipo" name="tipo" class="custom-select col-12 form-control enabledCampos" required>
                                                       <option value="">Seleccionar...</option>
                                                       @foreach ($fuente_tipos as  $item)
                                                             <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
@@ -374,7 +374,7 @@
                                               </div>
                                             </div>
 
-                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                            <div class="form-group row m-b-5 m-l-5 m-t-5 encuestasShow hidden" >
                                               <div class="col-md-3 p-l-0 p-r-0">
                                                 <a class="mytooltip" href="javascript:void(0)">
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Diseño y tamaño de muestra<label class="text-success">(r)</label></label>
@@ -387,7 +387,7 @@
                                                   </span>
                                                 </a>
                                               </div>
-                                              <div class="col-md-9 p-l-0">
+                                              <div class="col-md-9 p-l-0 ">
                                                   <div class="select2-wrapper">
                                                     <textarea id="disenio_tamanio_muestra" name="disenio_tamanio_muestra" class="form-control" placeholder="Diseño y tamaño de muestra"></textarea>
                                                   </div>
@@ -395,7 +395,7 @@
                                               </div>
                                             </div>
 
-                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                            <div class="form-group row m-b-5 m-l-5 m-t-5 encuestasShow hidden" >
                                               <div class="col-md-3 p-l-0 p-r-0">
                                                 <a class="mytooltip" href="javascript:void(0)">
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Tasa de respuesta<label class="text-success">(r)</label></label>
@@ -428,6 +428,8 @@
                                                   <div class="help-block with-errors"></div>
                                               </div>
                                             </div>
+
+
                                           </div>
                                       </div>
 
@@ -943,6 +945,9 @@
   var estadoAV = [];
   var origenAV = [];
 
+
+  var responsableIDA = [];
+  var responsableEstadoA = [];
   var responsable1A = [];
   var responsable2A = [];
   var responsable3A = [];
@@ -1072,7 +1077,7 @@
         }
         $("#datosForm > tbody").html('');
         total_form = $(this).val();
-        $("#datosForm > tbody").html("");
+        //$("#datosForm > tbody").html("");
          for(i=1; i<= $(this).val();i++){
            if(arrayForm[i]){
              var valorNombre = arrayForm[i];
@@ -1098,6 +1103,9 @@
 
        if( $("input[name=responsable_1]").val() != ""){
 
+
+             responsableIDA.push("");
+             responsableEstadoA.push(1);
              responsable1A.push($('input[name=responsable_1]').val());
              responsable2A.push($('input[name=responsable_2]').val());
              responsable3A.push($('input[name=responsable_3]').val());
@@ -1238,7 +1246,19 @@
 
 
 
+      $('.enabledCampos').change(function() {
+          if($(this).val() == 'Encuesta'){
+             $('.encuestasShow').removeClass('hidden');
+          }else{
+             $('.encuestasShow').addClass('hidden');
+          }
 
+          if($(this).val() == 'Registro Administrativo'){
+             $('.rraaShow').removeClass('hidden');
+          }else{
+             $('.rraaShow').addClass('hidden');
+          }
+      });
 
     });
     //fin document
@@ -1273,6 +1293,9 @@
        valorAV = [];
        estadoAV = [];
        origenAV = [];
+
+       responsableIDA = [];
+       responsableEstadoA = [];
        responsable1A = [];
        responsable2A = [];
        responsable3A = [];
@@ -1382,42 +1405,49 @@
                    }
 
 
-                  $.each(data.pdes, function(i, data) {
-                   var html = '<div id="ART'+data.cod_p+data.cod_m+data.cod_r+'" class="row">'+
-                                 '<div class="media row col-lg-12 ">'+
-                                     '<div class="col-lg-2 text-center">'+
-                                         '<img src="/img/'+data.logo+'" alt="Pliar" width="100">'+
-                                         '<a class="btn btn-block btn-info btn-sm m-t-10" onclick="quitarART('+data.cod_p+data.cod_m+data.cod_r+',2);">Quitar</a>'+
-                                     '</div>'+
-                                     '<div class="row col-lg-10">'+
-                                         '<input type="hidden" name="id_resultado_articulado[]" value="'+data.id+'" />'+
-                                         '<input type="hidden" name="resultado_articulado[]" value="'+data.id_resultado+'" />'+
-                                         '<input type="hidden" id="EST'+data.cod_p+data.cod_m+data.cod_r+'" name="estado_resultado_articulado[]" value="1" />'+
-                                         '<div class="col-12"><b>'+data.pilar+':</b> '+data.desc_p+
-                                         '</div>'+
-                                         '<div class="col-12"><b>'+data.meta+':</b> '+data.desc_m+
-                                         '</div>'+
-                                         '<div class="col-12"><b>'+data.resultado+':</b> '+data.desc_r+
-                                         '</div>'+
-                                     '</div>'+
-                                 '</div>'+
-                               '</div>';
-                   $("#datosART").append(html);
-                  });
-                  $.each(data.metas, function(i, data) {
-                     $('input[name="id_meta_'+data.gestion+'"]').val(data.id);
-                     $('input[name="meta_'+data.gestion+'"]').val(data.valor);
+                  $('input[name="numero_total_formulario"]').val(data.fuente[0].numero_total_formulario);
+                  total_form = data.fuente[0].numero_total_formulario;
+
+                  var form = data.fuente[0].nombre_formulario;
+                  var setForms = form.split('|');
+                  /*$.each(setForms, function(index, value) {
+                    alert(index + ': ' + value);
+                  });*/
+                  $.each(setForms, function(index, item) {
+                        var arrayForm = [];
+                        for(i=1;i<=total_form;i++){
+                          arrayForm[i] = $('#frm-nom-'+i).val();
+                        }
+                        var i = (index+1);
+                         if(arrayForm[i]){
+                           var valorNombre = arrayForm[i];
+                         }else{
+                           var valorNombre = "";
+                         }
+                         var html = '<tr id="FRM'+ i +'" class="">'+
+                                         '<td>'+
+                                           'Nombre formulario <input type="text" name="formulario_correlativo[]" class="text-center" value="'+i+'" style="width:30px;" /> :'+
+                                         '</td>'+
+                                         '<td>'+
+                                           '<input type="text" id="frm-nom-'+i+'" name="nombre_formulario[]" value="'+item+'" class="form-control"/>'+
+                                         '</td>'+
+                                         '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarFRM('+i+');"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                                    '</tr>';
+                         $("#datosForm > tbody").append(html);
                   });
 
-
-                  $.each(data.avances, function(i, data) {
-                      fechaAV.push(data.fecha_generado_mes+'/'+data.fecha_generado_anio);
-                      valorAV.push(data.valor);
-                      estadoAV.push(1);
-                      origenAV.push(2);
-                      idAV.push(data.id);
+                  $.each(data.responsables, function(index, item) {
+                            responsableIDA.push(item.id);
+                            responsableEstadoA.push(1);
+                            responsable1A.push(item.responsable_nivel_1);
+                            responsable2A.push(item.responsable_nivel_2);
+                            responsable3A.push(item.responsable_nivel_3);
+                            responsable4A.push(item.responsable_nivel_4);
+                            referenciaA.push(item.numero_referencia);
                   });
-                  actualizarListaAvance();
+                  actualizarListaResponsable();
+
+
 
 
                   $.each(data.archivos, function(i, data) {
@@ -1439,6 +1469,10 @@
                                   '</tr>';
                        $("#datosARC > tbody").append(html);
                   });
+
+                  $('select[name=confidencialidad]').val(data.fuente[0].confidencialidad);
+                  $('textarea[name="notas_legales"]').val(data.fuente[0].notas_legales);
+                  $(".enabledCampos" ).trigger( "change" );
 
                }else{
                    $.toast({
@@ -1569,7 +1603,7 @@
     function actualizarListaResponsable(){
       var cav= 1;
       $("#set_responsables > tbody").html("");
-
+      var totH = 0;
       $.ajax({
             url: "{{ url('/api/sistemarime/apiSourceOrderbyArray2') }}",
             type: "GET",
@@ -1578,11 +1612,19 @@
             success: function(date){
                   if(date.error == false){
                       $.each(date.item, function(i, data) {
-                            var html = '<tr id="RS'+cav+'">'+
+                            if(responsableEstadoA[data.index] != 0){
+                              var classE = "";
+                            }else{
+                              var classE = "hidden";
+                              totH++;
+                            }
+                            var html = '<tr id="RS'+cav+'" class="'+classE+'">'+
                                             '<td style="width: 5%;">'+
                                                cav+
                                             '</td>'+
                                             '<td style="width: 90%;">'+
+                                                 '<input type="hidden" name="id_responsable[]" value="'+ responsableIDA[data.index] +'" />'+
+                                                 '<input type="hidden" name="responsable_estado[]" value="'+ responsableEstadoA[data.index] +'" />'+
                                                  '<input type="hidden" name="responsable_nivel_1[]" value="'+ responsable1A[data.index] +'" />'+
                                                  '<input type="hidden" name="responsable_nivel_2[]" value="'+ responsable2A[data.index] +'" />'+
                                                  '<input type="hidden" name="responsable_nivel_3[]" value="'+ responsable3A[data.index] +'" />'+
@@ -1601,7 +1643,10 @@
                             $("#set_responsables > tbody").append(html);
                             cav++;
                      });
-                    $("#cont_resp").html(cav-1);
+
+
+                     $("#cont_resp").html((cav-1)-totH);
+
                }else{
                  $("#cont_resp").html(0);
                }
@@ -1616,13 +1661,18 @@
     }
     function quitarRS(ele,index){
 
-          $('#RS'+ele).remove();
-          responsable1A.splice(index, 1);
-          responsable2A.splice(index, 1);
-          responsable3A.splice(index, 1);
-          responsable4A.splice(index, 1);
-          referenciaA.splice(index, 1);
-
+          if(responsableIDA[index] == ""){
+            $('#RS'+ele).remove();
+            responsableIDA.splice(index, 1);
+            responsableEstadoA.splice(index, 1);
+            responsable1A.splice(index, 1);
+            responsable2A.splice(index, 1);
+            responsable3A.splice(index, 1);
+            responsable4A.splice(index, 1);
+            referenciaA.splice(index, 1);
+          }else{
+            responsableEstadoA[index] = 0;
+          }
         actualizarListaResponsable();
     }
 

@@ -151,7 +151,6 @@ class FuenteDatosController extends Controller
 
     $codigo = "";
     if(!$request->id_fuente){
-
         try{
             $fuente = new FuenteDatos();
             $fuente->nombre = $request->nombre;
@@ -200,6 +199,7 @@ class FuenteDatosController extends Controller
                     $responsable->responsable_nivel_4 = $request->responsable_nivel_4[$k];
                     $responsable->numero_referencia = $request->numero_referencia[$k];
                     $responsable->id_user = $this->user->id;
+                    $responsable->activo = true;
                     $responsable->save();
               }
             }
@@ -234,116 +234,83 @@ class FuenteDatosController extends Controller
 
 
         try{
-            $indicador = Indicadores::find($request->id_indicador);
-            if($indicador->codigo == ""){
-              if(isset($request->resultado_articulado)){
-                  $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();
-                  $codigo = $vistaPmr->codigo_ext.($vistaPmr->correlativo_indicador+1);
-                  $resultado = Resultados::find($vistaPmr->id_resultado);
-                  $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);
-                  $resultado->save();
-              }
-              $indicador->codigo = $codigo;
-            }
+          $fuente = FuenteDatos::find($request->id_fuente);
+          $fuente->nombre = $request->nombre;
+          $fuente->acronimo = $request->acronimo;
+          $fuente->tipo = $request->tipo;
+          //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
+          $fuente->objetivo = $request->objetivo;
+          $fuente->serie_datos = $request->serie_datos;
+          $fuente->periodicidad = $request->periodicidad;
+          $fuente->variable = $request->variable;
+          $fuente->modo_recoleccion_datos = $request->modo_recoleccion_datos;
+          $fuente->modo_recoleccion_datos_otro = $request->modo_recoleccion_datos_otro;
+          $fuente->unidad_analisis = $request->unidad_analisis;
+          $fuente->universo_estudio = $request->universo_estudio;
+          $fuente->disenio_tamanio_muestra = $request->disenio_tamanio_muestra;
+          $fuente->tasa_respuesta = $request->tasa_respuesta;
+          $fuente->observacion = $request->observacion;
 
-            $indicador->nombre = $request->nombre;
-            $indicador->etapa = $request->etapa;
-            $indicador->tipo = $request->tipo;
-            //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
-            $indicador->variables_desagregacion = $request->variables_desagregacion;
-            $indicador->unidad_medida = $request->unidad_medida;
-            $indicador->frecuencia = $request->frecuencia;
-            $indicador->definicion = $request->definicion;
-            $indicador->formula = $request->formula;
-            $indicador->numerador_detalle = $request->numerador_detalle;
-            $indicador->numerador_fuente = $request->numerador_fuente;
-            $indicador->denominador_detalle = $request->denominador_detalle;
-            $indicador->denominador_fuente = $request->denominador_fuente;
-            $indicador->serie_disponible = $request->serie_disponible;
-            $indicador->observacion = $request->observacion;
-            $indicador->logo = "default.png";
-            $indicador->id_user_updated = $this->user->id;
-            $dia = null;
-            $mes = null;
-            $anio = null;
-            $fechaLB =null;
-            if($request->linea_base_fecha){
-              list ( $mes, $anio ) = explode ( "/", $request->linea_base_fecha );
-              $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
-              $fechaLB = $anio . "-" . $mes . "-" . $dia;
-            }
-            $indicador->linea_base_fecha = $fechaLB;
-            $indicador->linea_base_anio = $anio;
-            $indicador->linea_base_mes = $mes;
-            $indicador->linea_base_dia = $dia;
-            $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
-            $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
-            $indicador->save();
+          $fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->demografia_estadistica_social):null;
+          $fuente->demografia_estadistica_social_otro = $request->demografia_estadistica_social_otro;
+          $fuente->estadistica_economica = ($request->estadistica_economica)?implode(",", $request->estadistica_economica):null;
+          $fuente->estadistica_economica_otro = $request->estadistica_economica_otro;
+          $fuente->estadistica_medioambiental = ($request->estadistica_medioambiental)?implode(",", $request->estadistica_medioambiental):null;
+          $fuente->estadistica_medioambiental_otro = $request->estadistica_medioambiental_otro;
+          $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->informacion_geoespacial):null;
+          $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
+
+          $fuente->numero_total_formulario = $request->numero_total_formulario;
+          $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
+
+          $fuente->confidencialidad = $request->confidencialidad;
+          $fuente->notas_legales = $request->notas_legales;
+          $fuente->id_user_updated = $this->user->id;
+
+          $fuente->save();
 
 
-            if(isset($request->resultado_articulado)){
-              foreach ($request->resultado_articulado as $k => $v) {
-                    if(!$request->id_resultado_articulado[$k]){
-                        $indicadorPdes = new IndicadorResultado();
-                        $indicadorPdes->id_indicador = $indicador->id;
-                        $indicadorPdes->id_resultado = $request->resultado_articulado[$k];
-                        $indicadorPdes->id_user = $this->user->id;
-                        $indicadorPdes->save();
+
+          if(isset($request->responsable_nivel_1)){
+            foreach ($request->responsable_nivel_1 as $k => $v) {
+                  if(!$request->id_responsable[$k]){
+                    $responsable = new FuenteDatosResponsable();
+                    $responsable->id_fuente = $fuente->id;
+                    $responsable->responsable_nivel_1 = $request->responsable_nivel_1[$k];
+                    $responsable->responsable_nivel_2 = $request->responsable_nivel_2[$k];
+                    $responsable->responsable_nivel_3 = $request->responsable_nivel_3[$k];
+                    $responsable->responsable_nivel_4 = $request->responsable_nivel_4[$k];
+                    $responsable->numero_referencia = $request->numero_referencia[$k];
+                    $responsable->id_user = $this->user->id;
+                    $responsable->activo = true;
+                    $responsable->save();
+                  }else{
+                    if($request->responsable_estado[$k]==0){
+                      $responsable = FuenteDatosResponsable::find($request->id_responsable[$k]);
+                      $responsable->activo = false;
+                      $responsable->id_user_updated = $this->user->id;
+                      $responsable->save();
                     }else{
-                        if($request->estado_resultado_articulado[$k]==0){
-                          $indicadorPdes = IndicadorResultado::find($request->id_resultado_articulado[$k]);
-                          $indicadorPdes->id_user_updated = $this->user->id;
-                          $indicadorPdes->save();
-                          $indicadorPdes->delete();
-                        }
+                      $responsable = FuenteDatosResponsable::find($request->id_responsable[$k]);
+                      $responsable->responsable_nivel_1 = $request->responsable_nivel_1[$k];
+                      $responsable->responsable_nivel_2 = $request->responsable_nivel_2[$k];
+                      $responsable->responsable_nivel_3 = $request->responsable_nivel_3[$k];
+                      $responsable->responsable_nivel_4 = $request->responsable_nivel_4[$k];
+                      $responsable->numero_referencia = $request->numero_referencia[$k];
+                      $responsable->id_user_updated = $this->user->id;
+                      $responsable->save();
                     }
-              }
+
+                  }
+
             }
+          }
 
-            if(isset($request->avance_fecha)){
-              foreach ($request->avance_fecha as $k => $v) {
-                  if(!$request->id_avance[$k]){
-                        $avance = new IndicadorAvance();
-                        $avance->id_indicador = $indicador->id;
-                        $fechaAV="";
-                        if($request->avance_fecha[$k]){
-                          list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
-                          $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
-                  		    $fechaAV = $anio . "-" . $mes . "-" . $dia;
-                        }
-                        $avance->fecha_generado = $fechaAV;
-                        $avance->fecha_generado_dia = $dia;
-                        $avance->fecha_generado_mes = $mes;
-                        $avance->fecha_generado_anio = $anio;
-                        $avance->fecha_reportado = date('Y-m-d');
-                        $avance->valor = ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
-                        $avance->id_user = $this->user->id;
-                        $avance->save();
-                   }else{
-                        if($request->avance_estado[$k]==0){
-                          $avance = IndicadorAvance::find($request->id_avance[$k]);
-                          $avance->id_user_updated = $this->user->id;
-                          $avance->save();
-                          $avance->delete();
-                        }
-                   }
-              }
-            }
-
-            $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
-            for($i=1; $i <= count($metasList); $i++){
-                $metas = Metas::find($request->input('id_meta_'.$metasList[$i]));
-                $metas->valor = ($request->input('meta_'.$metasList[$i]))? $this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
-                $metas->id_user_updated = $this->user->id;
-                $metas->save();
-            }
-
-
-            if(isset($request->arc_archivo)){
+          if(isset($request->arc_archivo)){
               foreach ($request->arc_archivo as $k => $v) {
                     if(!$request->arc_id[$k]){
-                        $archivos = new IndicadoresArchivosRespaldos();
-                        $archivos->id_indicador = $indicador->id;
+                        $archivos = new FuenteArchivosRespaldos();
+                        $archivos->id_fuente= $fuente->id;
                         $archivos->nombre =  $request->arc_nombre[$k];
                         $archivos->archivo = $request->arc_archivo[$k];
                         $archivos->activo = true;
@@ -351,7 +318,7 @@ class FuenteDatosController extends Controller
                         $archivos->save();
                     }else{
                         if($request->arc_estado[$k]==0){
-                          $archivos = IndicadoresArchivosRespaldos::find($request->arc_id[$k]);
+                          $archivos = FuenteArchivosRespaldos::find($request->arc_id[$k]);
                           $archivos->activo = false;
                           $archivos->id_user_updated = $this->user->id;
                           $archivos->save();
@@ -437,7 +404,7 @@ class FuenteDatosController extends Controller
   public function apiDataSetFuente(Request $request)
   {
       $fuente = FuenteDatos::where('id',$request->id)->get();
-      $resposables = FuenteDatosResponsable::where('id_fuente',$request->id)->get();
+      $resposables = FuenteDatosResponsable::where('id_fuente',$request->id)->where('activo', true)->get();
       $archivos = FuenteArchivosRespaldos::where('id_fuente',$request->id)->where('activo', true)->get();
       return \Response::json(array(
           'error' => false,
