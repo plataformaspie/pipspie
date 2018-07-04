@@ -85,8 +85,9 @@ class FuenteDatosController extends Controller
   public function apiSetListFuenteDatos(Request $request)
   {
       $dataFuente = FuenteDatos::join('remi_fuente_datos_responsable as fdr', 'remi_fuente_datos.id', '=', 'fdr.id_fuente')
+                  ->join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
                   ->orderBy('nombre','ASC')
-                  ->select('remi_fuente_datos.id','remi_fuente_datos.codigo','remi_fuente_datos.nombre', 'remi_fuente_datos.acronimo','remi_fuente_datos.tipo','fdr.responsable_nivel_1')
+                  ->select('remi_fuente_datos.id','remi_fuente_datos.codigo','remi_fuente_datos.nombre', 'remi_fuente_datos.acronimo','remi_fuente_datos.tipo','fdr.responsable_nivel_1','remi_fuente_datos.estado','et.nombre as estado','et.id as id_estado')
                   ->get();
       /*foreach ($dataFuente as $value) {
         $data[$value->id] = $value->nombre;
@@ -184,6 +185,7 @@ class FuenteDatosController extends Controller
             $fuente->confidencialidad = $request->confidencialidad;
             $fuente->notas_legales = $request->notas_legales;
             $fuente->id_user = $this->user->id;
+            $fuente->estado = 1;
             $fuente->activo = true;
             $fuente->save();
 
@@ -266,6 +268,7 @@ class FuenteDatosController extends Controller
           $fuente->confidencialidad = $request->confidencialidad;
           $fuente->notas_legales = $request->notas_legales;
           $fuente->id_user_updated = $this->user->id;
+          $fuente->estado =  $request->estado;
 
           $fuente->save();
 
@@ -403,7 +406,10 @@ class FuenteDatosController extends Controller
 
   public function apiDataSetFuente(Request $request)
   {
-      $fuente = FuenteDatos::where('id',$request->id)->get();
+      $fuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
+                          ->where('remi_fuente_datos.id',$request->id)
+                          ->select('remi_fuente_datos.*','et.nombre as estado','et.id as id_estado')
+                          ->get();
       $resposables = FuenteDatosResponsable::where('id_fuente',$request->id)->where('activo', true)->get();
       $archivos = FuenteArchivosRespaldos::where('id_fuente',$request->id)->where('activo', true)->get();
       return \Response::json(array(
@@ -417,6 +423,34 @@ class FuenteDatosController extends Controller
   }
 
 
+  public function apiRecuperarFuente(Request $request)
+  {
+      $this->user= \Auth::user();
+      $indicador = FuenteDatos::find($request->id_fuente);
+      $indicador->estado = 1;
+      $indicador->id_user_updated = $this->user->id;
+      $indicador->save();
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.")
+      );
+  }
+
+
+  public function apiDeleteFuente(Request $request)
+  {
+      $this->user= \Auth::user();
+      $indicador = FuenteDatos::find($request->id_fuente);
+      $indicador->activo = false;
+      $indicador->id_user_updated = $this->user->id;
+      $indicador->save();
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.")
+      );
+  }
 
 
 }
