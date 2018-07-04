@@ -82,7 +82,17 @@
                           <i class="fa fa-arrow-left"></i>
                         </button>
                       </p>
+                      <div class="form-group row m-b-10">
+                        <div class="col-md-2 p-l-0 p-r-0">
+                          <label for="label" class="col-form-label control-label list-group-item-info" style="width: 200px;padding: 7px 20px 7px 3px;">Estado </label>
 
+                        </div>
+                        <div class="col-md-10 p-l-0">
+                            <label id="estado_view" for="label" class="">Preliminar </label>
+                            <input id="estado" type="hidden" name="estado" value="1">
+                        </div>
+
+                      </div>
                       <div class="form-group row m-b-10">
                         <div class="col-md-2 p-l-0 p-r-0">
                             <a class="mytooltip" href="javascript:void(0)">
@@ -130,7 +140,7 @@
                                       <li class="tab nav-item">
                                           <a id="tab-ini3" aria-expanded="false" class="nav-link ctrl-btn" data-toggle="tab" href="#info3">
                                             <span class="visible-xs"><i class="fa fa-building-o" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-building-o" style="font-size: 25px"></i> Captura de información</span>
+                                            <span class="hidden-xs"><i class="fa fa-building-o" style="font-size: 25px"></i> Cuestionarios y formularios</span>
                                           </a>
                                       </li>
 
@@ -546,7 +556,7 @@
 
                                       <div id="info3" class="tab-pane">
                                           <div class="col-md-12 list-group-item-success">
-                                              <h4 style="width:100%;">Captura de información (Formularios/Cuestionarios)</h4>
+                                              <h4 style="width:100%;">Cuestionarios y Formularios</h4>
                                           </div>
                                           <div class="col-md-12">
                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
@@ -594,13 +604,56 @@
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Cobertura</h4>
                                            </div>
+                                           <div class="col-md-12">
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5 rraaShow hidden" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                   <a class="mytooltip" href="javascript:void(0)">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Cobertura del RRAA<label class="text-success">(r)</label></label>
+                                                     <span class="tooltip-content5" style="">
+                                                       <span class="tooltip-text3">
+                                                         <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                           <br/><b class="text-info">Ejemplo Número:</b> 99
+                                                           <br/><b class="text-info">Ejemplo Porcentaje:</b> 99%
+                                                         </span>
+                                                       </span>
+                                                     </span>
+                                                   </a>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <input id="cobertura_rraa" name="cobertura_rraa" type="text" class="form-control " placeholder="Cobertura RRAA" >
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
 
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5 rraaShow hidden" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Descripción del Supuesto</label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Relación porcentual del universo de estudio en relación a su universo objetivo (Solo para Registros Administrativos)
+                                                            <br/><b class="text-info">Ejemplo: </b>El registro administrativo de conexiones de agua contempla una cobertura poblacional del <b class="text-info">91%</b>, tomando en cuenta que por cada conexión se considera un hogar promedio de 7 personas (Supuesto)
 
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <textarea id="cobertura_rraa_descripcion" name="cobertura_rraa_descripcion" class="form-control" rows="4" placeholder="Descripción del Supuesto"></textarea>
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
 
-                                       </div>
+                                           </div>
+                                      </div>
 
-
-                                       <div id="info5" class="tab-pane">
+                                      <div id="info5" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success p-t-10">
                                                <h4 style="width:100%;"> Responsables</h4>
                                            </div>
@@ -750,10 +803,9 @@
 
                                                    </div>
                                           </div>
+                                      </div>
 
-                                       </div>
-
-                                       <div id="info6" class="tab-pane">
+                                      <div id="info6" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Documentos respaldo</h4>
                                            </div>
@@ -820,10 +872,9 @@
                                                </tbody>
                                              </table>
                                            </div>
-                                       </div>
+                                      </div>
 
-
-                                       <div id="info7" class="tab-pane">
+                                      <div id="info7" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Acceso a la información</h4>
                                            </div>
@@ -872,8 +923,7 @@
                                                  </div>
                                                </div>
                                             </div>
-
-                                       </div>
+                                      </div>
 
                                   </div>
                               </div>
@@ -884,6 +934,7 @@
                     <div class="col-sm-12">
                             <div class="form-group text-center">
                               <button id="bt_guardar" type="submit" class="btn btn-info hidden tap-btn">Guardar</button>
+                              <button id="bt_enviar" type="submit" class="btn btn-danger hidden tap-btn">Guardar y Enviar a revisión</button>
                               <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
                               <button type="button" class="btn btn-default btn-back">Cancelar</button>
                             </div>
@@ -933,6 +984,9 @@
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdatatable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcheckbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxlistbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdropdownlist.js') }}"></script>
     <script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
     <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
     <script type="text/javascript" src="{{ asset('js/jqwidgets-localization.js') }}"></script>
@@ -987,6 +1041,8 @@
               { name: 'nombre', type: 'string' },
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
+              { name: 'estado', type: 'string' },
+              { name: 'id_estado', type: 'int' },
               { name: 'responsable_nivel_1', type: 'string' }
           ],
           id: 'id',
@@ -1000,25 +1056,44 @@
           theme:theme,
           columnsResize: true,
           filterable: true,
-          filterMode: 'simple',
+          //filterMode: 'simple',
           pageable: true,
           pagerButtonsCount: 10,
           localization: getLocalization('es'),
-          pageSize: 5,
+          pageSize: 100,
           columns: [
-            { text: 'Codigo', dataField: 'codigo', width: 120, cellsAlign: 'center' },
+            { text: 'Estado', width: 100, dataField: 'estado' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
             { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
-                          var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                          var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Gestionar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                          var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
-                          abm += inputEdit;
-                          abm += inputDelete;
-                          abm += "</div>";
-                          return abm;
+                          if(rowData.id_estado == 1 || rowData.id_estado == 3){
+                              var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                              var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Gestionar</span> <i class="fa fa-pencil m-l-5"></i></button>';
+                              var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                              abm += inputEdit;
+                              abm += inputDelete;
+                              abm += "</div>";
+                              return abm;
+                          }else{
+                              if(rowData.id_estado == 4){
+                                var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                                var inputVer = '-';
+                                abm += inputVer;
+                                abm += "</div>";
+                                return abm;
+                              }
+
+                              if(rowData.id_estado == 2){
+                                var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                                var inputCans = '<button onclick="btn_recuperar('+rowData.id+')" class="btn btn-sm btn-info "><span>Recuperar</span> <i class="fa fa-mail-reply-all m-l-5"></i></button>';
+                                abm += inputCans;
+                                abm += "</div>";
+                                return abm;
+                              }
+
+                          }
 
                   }
             },
@@ -1033,9 +1108,11 @@
       if(next == 7){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
+        $("#bt_enviar").removeClass('hidden');
       }else{
         $("#bt_siguiente").removeClass('hidden');
         $("#bt_guardar").addClass('hidden');
+        $("#bt_enviar").addClass('hidden');
       }
     });
     $(".tap-btn").click(function () {
@@ -1046,6 +1123,7 @@
       if(next == 7){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
+        $("#bt_enviar").removeClass('hidden');
       }
       $("#tab-ini"+next ).trigger( "click" );
 
@@ -1260,6 +1338,15 @@
           }
       });
 
+
+      $("#bt_enviar").click(function () {
+        $("#estado").val(2);
+      });
+      $("#bt_guardar").click(function () {
+        $("#estado").val(1);
+      });
+
+
     });
     //fin document
 
@@ -1328,6 +1415,8 @@
                if(data.error == false){
 
                    //$("#mod_cod_m").val(data.meta).trigger('change');
+                   $('#estado_view').html(data.fuente[0].estado);
+                   $('#estado').html(data.fuente[0].id_estado);
                    $('input[name="id_fuente"]').val(data.fuente[0].id);
                    $('textarea[name="nombre"]').val(data.fuente[0].nombre);
                    $('input[name="acronimo"]').val(data.fuente[0].acronimo);
@@ -1344,8 +1433,10 @@
                    }
                    $('textarea[name="unidad_analisis"]').val(data.fuente[0].unidad_analisis);
                    $('textarea[name="universo_estudio"]').val(data.fuente[0].universo_estudio);
+
                    $('textarea[name="disenio_tamanio_muestra"]').val(data.fuente[0].disenio_tamanio_muestra);
                    $('textarea[name="tasa_respuesta"]').val(data.fuente[0].tasa_respuesta);
+
                    $('textarea[name="observacion"]').val(data.fuente[0].observacion);
 
 
@@ -1514,13 +1605,44 @@
           closeOnConfirm: false
         }, function(){
              $.ajax({
-                   url: "{{ url('/api/sistemaremi/apiDeleteIndicador') }}",
-                   data: { '_token': $('input[name=_token]').val(),'id_indicador': ele },
+                   url: "{{ url('/api/sistemarime/apiDeleteFuente') }}",
+                   data: { '_token': $('input[name=_token]').val(),'id_fuente': ele },
                    type: "delete",
                    dataType: 'json',
                    success: function(date){
                        $("#dataTable").jqxDataTable("updateBoundData");
                        swal("Eliminado!", "Se ha eliminado tu registro.", "success");
+                   },
+                   error:function(data){
+                     if(data.status != 401){
+                       alert("Error recuperar los datos.");
+                     }else{
+                       window.location = '/login';
+                     }
+
+                   }
+             });
+        });
+    }
+
+    function btn_recuperar(ele) {
+        swal({
+          title: "Está seguro?",
+          text: "Se cambiara el estado!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, recuperar!",
+          closeOnConfirm: false
+        }, function(){
+             $.ajax({
+                   url: "{{ url('/api/sistemarime/apiRecuperarFuente') }}",
+                   data: { '_token': $('input[name=_token]').val(),'id_fuente': ele },
+                   type: "post",
+                   dataType: 'json',
+                   success: function(date){
+                       $("#dataTable").jqxDataTable("updateBoundData");
+                       swal("Recuperado!", "Se cambio el estado de la fuente.", "success");
                    },
                    error:function(data){
                      if(data.status != 401){

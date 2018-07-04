@@ -68,13 +68,13 @@
                 <!-- Search input and Toggle icon -->
                 <ul class="nav navbar-top-links navbar-left hidden-xs">
                     <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
-                    <li>
+                    <!--li>
                         <form method="post" action="/sistemaremi/setIndicadoresSearch" role="search" class="app-search hidden-xs">
                           {{ csrf_field() }}
                             <input type="text" name="buscar" placeholder="Buscar Indicador..." class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>
-                    </li>
+                    </li-->
                 </ul>
                 <!-- This is the message dropdown -->
                 <ul class="nav navbar-top-links navbar-right pull-right">
@@ -200,7 +200,7 @@
                             <span class="hide-menu"> Inicio <span class="fa arrow"></span> </span>
                         </a>
                     </li>
-                    <li>
+                    <!--li>
                         <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
                           <i  class="linea-icon linea-ecommerce fa-fw" data-icon="U" style="font-size: 25px"></i>
                           <span class="hide-menu"> Indicadores <span class="fa arrow"></span> </span>
@@ -209,11 +209,11 @@
                             <li> <a href="{{ url('/sistemaremi/setIndicadores') }}">Detalle de Indicadores</a> </li>
                             <li> <a href="{{ url('/sistemaremi/adminIndicador') }}">Administrar Indicadores</a> </li>
                         </ul>
-                    </li>
+                    </li-->
                     <li>
                         <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
                           <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe000; " style="font-size: 25px"></i>
-                          <span class="hide-menu"> Fuente Datos(en desarrollo) <span class="fa arrow"></span> </span>
+                          <span class="hide-menu"> Fuente Datos <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li> <a href="{{ url('/sistemarime/setFuenteDatos') }}">Detalle de Fuente</a> </li>
@@ -221,7 +221,7 @@
                         </ul>
                     </li>
 
-                    <li>
+                    <!--li>
                         <a href="#4" class="waves-effect">
                           <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe005;" style="font-size: 25px"></i>
                           <span class="hide-menu"> Otros <span class="fa arrow"></span> </span>
@@ -230,7 +230,7 @@
                             <li> <a href="javascript:win_fuente()"><i  class="fa fa-external-link"></i> Fuente de datos (F8)</a> </li>
                             <li> <a href="javascript:win_pdes()"><i  class="fa fa-list-alt"></i> Codigos PDES (F9)</a> </li>
                         </ul>
-                    </li>
+                    </li-->
 
                 </ul>
             </div>
