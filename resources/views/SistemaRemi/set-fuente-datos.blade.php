@@ -591,16 +591,18 @@
                   total_form = data.fuente[0].numero_total_formulario;
 
                   var form = data.fuente[0].nombre_formulario;
-                  var setForms = form.split('|');
-                  var html ="";
-                  $.each(setForms, function(index, item) {
-                      var i = (index+1);
-                      html += '<tr>'+
-                                         '<td>Nombre formulario '+i+':</td>'+
-                                         '<td>'+item+'</td>'+
-                                    '</tr>';
-                  });
-                  $("#datosForm > tbody").html(html);
+                  if(data.fuente[0].nombre_formulario){
+                    var setForms = form.split('|');
+                    var html ="";
+                    $.each(setForms, function(index, item) {
+                        var i = (index+1);
+                        html += '<tr>'+
+                                           '<td>Nombre formulario '+i+':</td>'+
+                                           '<td>'+item+'</td>'+
+                                      '</tr>';
+                    });
+                    $("#datosForm > tbody").html(html);
+                  }
                   var html ="";
                   $.each(data.responsables, function(index, item) {
                             html +='<div class="col-lg-4 col-sm-6">'+

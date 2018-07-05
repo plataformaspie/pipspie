@@ -1500,10 +1500,9 @@
                   total_form = data.fuente[0].numero_total_formulario;
 
                   var form = data.fuente[0].nombre_formulario;
+
+                  if(data.fuente[0].nombre_formulario){
                   var setForms = form.split('|');
-                  /*$.each(setForms, function(index, value) {
-                    alert(index + ': ' + value);
-                  });*/
                   $.each(setForms, function(index, item) {
                         var arrayForm = [];
                         for(i=1;i<=total_form;i++){
@@ -1526,6 +1525,7 @@
                                     '</tr>';
                          $("#datosForm > tbody").append(html);
                   });
+                  }
 
                   $.each(data.responsables, function(index, item) {
                             responsableIDA.push(item.id);
