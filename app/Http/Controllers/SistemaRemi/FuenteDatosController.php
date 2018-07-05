@@ -86,6 +86,7 @@ class FuenteDatosController extends Controller
   {
       $dataFuente = FuenteDatos::join('remi_fuente_datos_responsable as fdr', 'remi_fuente_datos.id', '=', 'fdr.id_fuente')
                   ->join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
+                  ->where('remi_fuente_datos.activo', true)
                   ->orderBy('nombre','ASC')
                   ->select('remi_fuente_datos.id','remi_fuente_datos.codigo','remi_fuente_datos.nombre', 'remi_fuente_datos.acronimo','remi_fuente_datos.tipo','fdr.responsable_nivel_1','remi_fuente_datos.estado','et.nombre as estado','et.id as id_estado')
                   ->get();
