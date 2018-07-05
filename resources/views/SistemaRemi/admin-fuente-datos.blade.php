@@ -1274,6 +1274,7 @@
 
 
     $(".ctrl-btn").click(function () {
+      //validarSession();
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
       if(next == 7){
@@ -1527,6 +1528,7 @@
 
 
     $('#btn-back, .btn-back').click(function() {
+       validarSession();
        $('#option1').removeClass('hidden');
        //$('#nivel_1').addClass('show');
        $('#option2').removeClass('show');
@@ -1570,6 +1572,7 @@
     });
 
     $('#btn-new, .btn-new ').click(function() {
+        validarSession();
        $('#option2').removeClass('hidden');
        $('#option1').removeClass('show');
        $('#option1').addClass('hidden');
@@ -1991,6 +1994,7 @@
     }
 
     function quitarARC(ele,archivo,tipo){
+      validarSession();
       var res = confirm("Esta seguro de quitar el archivo?");
           if (res == true) {
             if(tipo == 1){
@@ -2017,6 +2021,25 @@
             }
         }
 
+    }
+
+    function validarSession(){
+      $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: "{{ url('/apiValidateSession') }}",
+            data: {"1": 1},
+            success: function(data){
+                console.log("todo perfecto");
+            },
+            error:function(data){
+              if(data.status != 401){
+                console.log("se persive algun error");
+              }else{
+                window.location = '/login';
+              }
+            }
+        });
     }
 
 

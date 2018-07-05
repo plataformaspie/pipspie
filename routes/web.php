@@ -25,6 +25,7 @@ Route::get('settingPerfil', 'SettingController@settingPerfil');
 Route::get('settingPassword', 'SettingController@settingPassword');
 Route::post('apiSavePerfil', 'SettingController@apiSavePerfil');
 Route::post('apiSavePassword', 'SettingController@apiSavePassword');
+Route::get('apiValidateSession', 'SettingController@apiValidateSession');
 
 
 /* -----------------------------------------------------------------------------
