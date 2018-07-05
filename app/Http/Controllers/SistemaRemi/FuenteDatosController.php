@@ -15,6 +15,7 @@ use App\Models\SistemaRemi\Frecuencia;
 use App\Models\SistemaRemi\FuenteTiposRecoleccion;
 use App\Models\SistemaRemi\FuenteTiposCategoriaTematica;
 use App\Models\SistemaRemi\FuenteArchivosRespaldos;
+use App\Models\SistemaRemi\FuenteTiposCobertura;
 
 
 
@@ -419,12 +420,19 @@ class FuenteDatosController extends Controller
                           ->get();
       $resposables = FuenteDatosResponsable::where('id_fuente',$request->id)->where('activo', true)->get();
       $archivos = FuenteArchivosRespaldos::where('id_fuente',$request->id)->where('activo', true)->get();
+      $tiposCobertura = FuenteTiposCobertura::where('activo', true)->get();
+
+      $cobertura = Array();
+      foreach ($tiposCobertura as $item) {
+        $cobertura[$item->id] = $item->nombre;
+      }
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
           'msg' => "Se guardo con exito.",
           'fuente' => $fuente,
           'responsables' => $resposables,
+          'cobertura' => $cobertura,
           'archivos' => $archivos)
       );
   }

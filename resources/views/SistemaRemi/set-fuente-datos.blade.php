@@ -103,7 +103,7 @@
                   <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Obtener fuente </div>
                   <div class="panel-wrapper collapse in" aria-expanded="true">
                       <div class="panel-body text-center">
-                          <a onclick="HTMLtoPDF()" style="cursor: pointer;"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato "></a>
+                          <a onclick="alert('No tiene permisos. Gracias.')" style="cursor: pointer;"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato ">Metadato</a>
                       </div>
                   </div>
               </div>
@@ -189,18 +189,24 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="universo_estudio"></span></p>
                                     </div>
-                                    <div class="col-lg-4 col-sm-6">
-                                      <b>Diseño y tamaño de muestra</b>
-                                    </div>
-                                    <div class="col-lg-8 col-sm-6">
-                                      <p>: <span id="disenio_tamanio_muestra"></span></p>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6">
-                                      <b>Tasa de respuesta</b>
-                                    </div>
-                                    <div class="col-lg-8 col-sm-6">
-                                      <p>: <span id="tasa_respuesta"></span></p>
-                                    </div>
+                              </div>
+                              <div class="row encuesta hidden">
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Diseño y tamaño de muestra</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: <span id="disenio_tamanio_muestra"></span></p>
+                                      </div>
+
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Tasa de respuesta</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: <span id="tasa_respuesta"></span></p>
+                                      </div>
+
+                               </div>
+                              <div class="row">
                                     <div class="col-lg-4 col-sm-6">
                                       <b>Observaciones</b>
                                     </div>
@@ -326,12 +332,32 @@
 
                       <div class="panel-wrapper collapse in" aria-expanded="true">
                           <div class="panel-body">
+                                <div class="row registro hidden">
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Cobertura del RRAA</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>:<span id="cobertura_rraa"></p>
+                                        <p>:<span id="cobertura_rraa_descripcion"></p>
+                                      </div>
+                                </div>
                                 <div class="row">
+
+
                                     <div class="col-lg-4 col-sm-6">
-                                      <b>Formula de cálculo</b>
+                                      <b>Cobertura Geográfica de la Fuente de Datos </b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                      <p>:</p>
+                                      <p>: <span id="cobertura_geografica"></p>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12">
+                                      <br/>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Nivel de Desagregación Geográfica </b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="nivel_representatividad_datos"></p>
                                     </div>
 
                                 </div>
@@ -513,6 +539,13 @@
                    $('#nombre').html(data.fuente[0].nombre);
                    $('#acronimo').html(data.fuente[0].acronimo);
                    $('#tipo').html(data.fuente[0].tipo);
+
+                  if(data.fuente[0].tipo == "Encuesta")
+                   $('.encuesta').removeClass('hidden');
+
+                  if(data.fuente[0].tipo == "Registro Administrativo")
+                   $('.registro').removeClass('hidden');
+
                    $('#objetivo').html(data.fuente[0].objetivo);
                    $('#serie_datos').html(data.fuente[0].serie_datos);
                    $('#periodicidad').html(data.fuente[0].periodicidad);
@@ -603,6 +636,26 @@
                     });
                     $("#datosForm > tbody").html(html);
                   }
+                  if(data.fuente[0].cobertura_geografica){
+                    var html ="";
+                    var cobertura = data.fuente[0].cobertura_geografica;
+                    var setCobe = cobertura.split(',');
+                    $.each(setCobe, function(index, item) {
+                          html += data.cobertura[item]+'<br/>';
+                    });
+                    $("#cobertura_geografica").html(html);
+                  }
+
+                  if(data.fuente[0].nivel_representatividad_datos){
+                    var html ="";
+                    var desagregacion = data.fuente[0].nivel_representatividad_datos;
+                    var setCobe = desagregacion.split(',');
+                    $.each(setCobe, function(index, item) {
+                          html += data.cobertura[item]+'<br/>';
+                    });
+                    $("#nivel_representatividad_datos").html(html);
+                  }
+
                   var html ="";
                   $.each(data.responsables, function(index, item) {
                             html +='<div class="col-lg-4 col-sm-6">'+
@@ -620,6 +673,8 @@
                                       '</div>';
                   });
                   $("#set_responsables").html(html);
+
+
 
 
                   $.each(data.archivos, function(i, data) {
