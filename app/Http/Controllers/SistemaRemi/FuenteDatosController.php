@@ -100,7 +100,7 @@ class FuenteDatosController extends Controller
           'item' =>$dataFuente)
       );
 
-  }
+   }
 
 
   public function apiSourceOrderbyArray2(Request $request)
@@ -179,6 +179,9 @@ class FuenteDatosController extends Controller
             $fuente->estadistica_medioambiental_otro = $request->estadistica_medioambiental_otro;
             $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->informacion_geoespacial):null;
             $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
+
+            $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
+            $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
 
             $fuente->numero_total_formulario = $request->numero_total_formulario;
             $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
@@ -265,6 +268,9 @@ class FuenteDatosController extends Controller
 
           $fuente->numero_total_formulario = $request->numero_total_formulario;
           $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
+
+          $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
+          $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
 
           $fuente->confidencialidad = $request->confidencialidad;
           $fuente->notas_legales = $request->notas_legales;

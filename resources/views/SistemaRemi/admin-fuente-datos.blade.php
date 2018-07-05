@@ -21,7 +21,7 @@
     }
     .scroll tbody {
         display:block;
-        height:200px;
+        height:500px;
         overflow:auto;
     }
     .scroll thead, .scroll tbody tr {
@@ -442,7 +442,6 @@
 
                                           </div>
                                       </div>
-
                                       <div id="info2" class="tab-pane ">
                                           <div class="col-md-12 list-group-item-success">
                                               <h4 style="width:100%;"> Categoria Temática </h4>
@@ -553,7 +552,6 @@
                                           </div>
 
                                       </div>
-
                                       <div id="info3" class="tab-pane">
                                           <div class="col-md-12 list-group-item-success">
                                               <h4 style="width:100%;">Cuestionarios y Formularios</h4>
@@ -599,7 +597,6 @@
                                           </div>
 
                                       </div>
-
                                       <div id="info4" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Cobertura</h4>
@@ -650,9 +647,185 @@
                                                  </div>
                                                </div>
 
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-6 p-l-0 p-r-0">
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Cobertura Geográfica de la Fuente de Datos <label class="text-danger">(o)</label></label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Áreas geográficas que cubre la operación estadística: urbana, rural, región departamento, municipio, macrodistrito, unidad vecinal (UV), zona, localidad, comunidad, etc.
+                                                            Elegir la(s) alternativa(s) que apliquen del listado proporcionado.
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
+                                                 </div>
+                                                 <div class="col-md-12 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <ul class="checkbox">
+                                                         <li><input type="checkbox" id="c1" name="cobertura[]" value="1" /><label>Internacional</label></li>
+                                                         <li>
+                                                           <input type="checkbox" id="c2" name="cobertura[]" value="2" class="padreck" /><label>Nacional (Todo el país)</label>
+                                                           <ul class="checkbox">
+                                                             <li><input type="checkbox" id="c3" name="cobertura[]" value="3" class="hijo2" /><label>Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="c4" name="cobertura[]" value="4" class="hijo2" /><label>Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li><input type="checkbox" id="c5" name="cobertura[]" value="5" class="hijo2" /><label>Nacional  Resto Urbano</label></li>
+                                                             <li><input type="checkbox" id="c6" name="cobertura[]" value="6" class="hijo2"/><label>Nacional Rural</label></li>
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="c7" name="cobertura[]" value="7" class="padreck" /><label>Departamental (Todos los Departamentos)</label>
+                                                           <ul class="checkbox">
+                                                             <li>
+                                                               <input type="checkbox" id="c8" name="cobertura[]" value="8" class="hijo2" /><label>Departamental Urbano (Todas las Ciudades Capitales)</label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="c9" name="cobertura[]" value="9" class="hijo2" /><label>Chuquisaca (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c10" name="cobertura[]" value="10" class="hijo2" /><label>La Paz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c11" name="cobertura[]" value="11" class="hijo2" /><label>El Alto (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c12" name="cobertura[]" value="12" class="hijo2"/><label>Cochabamba (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c13" name="cobertura[]" value="13" class="hijo2"/><label>Santa Cruz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c14" name="cobertura[]" value="14" class="hijo2"/><label>Tarija (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c15" name="cobertura[]" value="15" class="hijo2"/><label>Oruro (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c16" name="cobertura[]" value="16" class="hijo2"/><label>Potosí (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c17" name="cobertura[]" value="17" class="hijo2"/><label>Beni (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c18" name="cobertura[]" value="18" class="hijo2"/><label>Pando (Ciudad Capital)</label></li>
+                                                               </ul>
+                                                             </li>
+
+
+                                                             <li>
+                                                               <input type="checkbox" id="c19" name="cobertura[]" value="19" class="hijo2" /><label>Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="c20" name="cobertura[]" value="20" class="hijo2" /><label>Departamental Resto Urbano</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="c21" name="cobertura[]" value="21" class="hijo2" /><label>Departamental Rural</label>
+                                                             </li>
+
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="c22" name="cobertura[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
+                                                           <ul class="checkbox">
+                                                             <li><input type="checkbox" id="c23" name="cobertura[]" value="23" class="hijo2" /><label>Municipal Urbano </label></li>
+                                                             <li><input type="checkbox" id="c29" name="cobertura[]" value="24" class="hijo2" /><label>Municipal Rural</label></li>
+                                                           </ul>
+                                                         </li>
+                                                       </ul>
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
+
+
+
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-6 p-l-0 p-r-0">
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nivel de Desagregación Geográfica<label class="text-danger">(o)</label></label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Nivel más pequeño cubierto por los datos. Equivale a mencionar a qué nivel son representativos los datos. El nivel de desagregación geográfica más desagregada suele coincidir con el nivel geográfico al que se registra la unidad de análisis.
+                                                            Elegir la(s) alternativa(s) que apliquen del listado proporcionado
+
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
+                                                 </div>
+                                                 <div class="col-md-12 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <ul class="checkbox">
+                                                         <li><input type="checkbox" id="d1" name="desagregacion[]" value="1" /><label>Internacional</label></li>
+                                                         <li>
+                                                           <input type="checkbox" id="d2" name="desagregacion[]" value="2" class="padreck" /><label>Nacional (Todo el país)</label>
+                                                           <ul class="checkbox">
+                                                             <li><input type="checkbox" id="d3" name="desagregacion[]" value="3" class="hijo2" /><label>Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="d4" name="desagregacion[]" value="4" class="hijo2" /><label>Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li><input type="checkbox" id="d5" name="desagregacion[]" value="5" class="hijo2" /><label>Nacional  Resto Urbano</label></li>
+                                                             <li><input type="checkbox" id="d6" name="desagregacion[]" value="6" class="hijo2"/><label>Nacional Rural</label></li>
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="d7" name="desagregacion[]" value="7" class="padreck" /><label>Departamental (Todos los Departamentos)</label>
+                                                           <ul class="checkbox">
+                                                             <li>
+                                                               <input type="checkbox" id="d8" name="desagregacion[]" value="8" class="hijo2" /><label>Departamental Urbano (Todas las Ciudades Capitales)</label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="d9" name="desagregacion[]" value="9" class="hijo2" /><label>Chuquisaca (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d10" name="desagregacion[]" value="10" class="hijo2" /><label>La Paz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d11" name="desagregacion[]" value="11" class="hijo2" /><label>El Alto (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d12" name="desagregacion[]" value="12" class="hijo2"/><label>Cochabamba (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d13" name="desagregacion[]" value="13" class="hijo2"/><label>Santa Cruz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d14" name="desagregacion[]" value="14" class="hijo2"/><label>Tarija (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d15" name="desagregacion[]" value="15" class="hijo2"/><label>Oruro (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d16" name="desagregacion[]" value="16" class="hijo2"/><label>Potosí (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d17" name="desagregacion[]" value="17" class="hijo2"/><label>Beni (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d18" name="desagregacion[]" value="18" class="hijo2"/><label>Pando (Ciudad Capital)</label></li>
+                                                               </ul>
+                                                             </li>
+
+
+                                                             <li>
+                                                               <input type="checkbox" id="d19" name="desagregacion[]" value="19" class="hijo2" /><label>Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="d20" name="desagregacion[]" value="20" class="hijo2" /><label>Departamental Resto Urbano</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="d21" name="desagregacion[]" value="21" class="hijo2" /><label>Departamental Rural</label>
+                                                             </li>
+
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="d22" name="desagregacion[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
+                                                           <ul class="checkbox">
+                                                             <li>
+                                                               <input type="checkbox" id="d23" name="desagregacion[]" value="23" class="hijo2" /><label>Municipal Urbano </label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="d24" name="desagregacion[]" value="24" class="hijo2" /><label for="cb3">Macrodistrito/Distrito</label></li>
+                                                                 <li><input type="checkbox" id="d25" name="desagregacion[]" value="25" class="hijo2" /><label for="cb4">Unidad Vecinal</label></li>
+                                                                 <li><input type="checkbox" id="d26" name="desagregacion[]" value="26" class="hijo2" /><label for="cb5">Zona</label></li>
+                                                                 <li><input type="checkbox" id="d27" name="desagregacion[]" value="27" class="hijo2"/><label for="cb6">Manzano</label></li>
+                                                                 <li><input type="checkbox" id="d28" name="desagregacion[]" value="28" class="hijo2"/><label for="cb6">Lote</label></li>
+                                                               </ul>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="d29" name="desagregacion[]" value="24" class="hijo2" /><label>Municipal Rural</label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="d30" name="desagregacion[]" value="30" class="hijo2" /><label for="cb3">Predio/Lote</label></li>
+                                                                 <li><input type="checkbox" id="d31" name="desagregacion[]" value="31" class="hijo2" /><label for="cb4">Localidad</label></li>
+                                                                 <li><input type="checkbox" id="d32" name="desagregacion[]" value="32" class="hijo2" /><label for="cb5">Comunidad</label></li>
+                                                                 <li><input type="checkbox" id="d33" name="desagregacion[]" value="33" class="hijo2"/><label for="cb6">Zona</label></li>
+                                                               </ul>
+                                                             </li>
+                                                           </ul>
+                                                         </li>
+                                                       </ul>
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                            </div>
                                       </div>
-
                                       <div id="info5" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success p-t-10">
                                                <h4 style="width:100%;"> Responsables</h4>
@@ -804,7 +977,6 @@
                                                    </div>
                                           </div>
                                       </div>
-
                                       <div id="info6" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Documentos respaldo</h4>
@@ -873,7 +1045,6 @@
                                              </table>
                                            </div>
                                       </div>
-
                                       <div id="info7" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Acceso a la información</h4>
@@ -1525,6 +1696,27 @@
                                     '</tr>';
                          $("#datosForm > tbody").append(html);
                   });
+                  }
+
+
+
+
+
+
+
+                  if(data.fuente[0].cobertura_geografica){
+                    var cobertura = data.fuente[0].cobertura_geografica;
+                    var setCobe = cobertura.split(',');
+                    $.each(setCobe, function(index, item) {
+                          $("#c"+item).attr('checked',true);
+                    });
+                  }
+                  if(data.fuente[0].nivel_representatividad_datos){
+                    var desagregacion = data.fuente[0].nivel_representatividad_datos;
+                    var setCobe = desagregacion.split(',');
+                    $.each(setCobe, function(index, item) {
+                          $("#d"+item).attr('checked',true);
+                    });
                   }
 
                   $.each(data.responsables, function(index, item) {
