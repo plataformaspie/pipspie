@@ -710,7 +710,7 @@
                                                            <input type="checkbox" id="c22" name="cobertura[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
                                                            <ul class="checkbox">
                                                              <li><input type="checkbox" id="c23" name="cobertura[]" value="23" class="hijo2" /><label>Municipal Urbano </label></li>
-                                                             <li><input type="checkbox" id="c29" name="cobertura[]" value="24" class="hijo2" /><label>Municipal Rural</label></li>
+                                                             <li><input type="checkbox" id="c29" name="cobertura[]" value="29" class="hijo2" /><label>Municipal Rural</label></li>
                                                            </ul>
                                                          </li>
                                                        </ul>
@@ -795,7 +795,7 @@
                                                                </ul>
                                                              </li>
                                                              <li>
-                                                               <input type="checkbox" id="d29" name="desagregacion[]" value="24" class="hijo2" /><label>Municipal Rural</label>
+                                                               <input type="checkbox" id="d29" name="desagregacion[]" value="29" class="hijo2" /><label>Municipal Rural</label>
                                                                <ul class="checkbox">
                                                                  <li><input type="checkbox" id="d30" name="desagregacion[]" value="30" class="hijo2" /><label for="cb3">Predio/Lote</label></li>
                                                                  <li><input type="checkbox" id="d31" name="desagregacion[]" value="31" class="hijo2" /><label for="cb4">Localidad</label></li>
