@@ -133,7 +133,7 @@
   <div class="row">
       <div class="col-md-12">
           <div class="white-box">
-            <h4 class="font-bold m-t-0"></h4>
+            <h4 class="font-bold m-t-0">DEMO</h4>
             <hr>
             <div class="row" >
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">

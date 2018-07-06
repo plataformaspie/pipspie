@@ -25,6 +25,7 @@ Route::get('settingPerfil', 'SettingController@settingPerfil');
 Route::get('settingPassword', 'SettingController@settingPassword');
 Route::post('apiSavePerfil', 'SettingController@apiSavePerfil');
 Route::post('apiSavePassword', 'SettingController@apiSavePassword');
+Route::get('apiValidateSession', 'SettingController@apiValidateSession');
 
 
 /* -----------------------------------------------------------------------------
@@ -222,7 +223,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
               Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
               Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
-          
+              Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
+
           }
       );
       Route::group(
@@ -248,7 +250,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@listEntidadPlan');
               Route::post('saveEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@saveEntidadPlan');
               Route::get('deleteEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@deleteEntidadPlan');
-              
+
 
 
               Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
@@ -345,6 +347,13 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               //fuente de datos
               Route::get('apiSetListFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSetListFuenteDatos');
+              Route::get('apiSourceOrderbyArray2', 'SistemaRemi\FuenteDatosController@apiSourceOrderbyArray2');
+              Route::post('apiSaveFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSaveFuenteDatos');
+              Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\FuenteDatosController@apiUploadArchivoRespaldo');
+              Route::get('apiDeleteArchivo', 'SistemaRemi\FuenteDatosController@apiDeleteArchivo');
+              Route::get('apiDataSetFuente', 'SistemaRemi\FuenteDatosController@apiDataSetFuente');
+              Route::post('apiRecuperarFuente', 'SistemaRemi\FuenteDatosController@apiRecuperarFuente');
+              Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');
 
           }
       );
