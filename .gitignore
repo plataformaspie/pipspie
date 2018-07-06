@@ -11,3 +11,6 @@ npm-debug.log
 yarn-error.log
 .env
 /nbproject
+/public/sp-files
+/public/respaldos
+.gitignore
