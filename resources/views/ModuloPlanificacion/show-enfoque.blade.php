@@ -43,7 +43,7 @@
 
 @section('content')
     <!-- ===========================================    begin: .tray-left         ========================================================== -->
-    <aside class="tray tray-left tray250 va-t pn" data-tray-height="match">
+    <aside class="tray tray-left tray225 va-t pn" data-tray-height="match">
 
         <div class="animated-delay p20" data-animate='["300","fadeIn"]'>
             <h4 class="mt5 mb20"> Completar datos </h4>
@@ -55,7 +55,7 @@
             </ul>
         </div>
         <div id="nav-spy" >
-            <ul class="nav tray-nav tray-nav-border custom-nav-animation affix " data-spy="affix" data-offset-top="180" style="width: 269px">
+            <ul class="nav tray-nav tray-nav-border custom-nav-animation affix " data-spy="affix" data-offset-top="180" style="width: 225px">
                 <li class="active">
                     <a href="#spy1">
                     <span class="glyphicon glyphicon-list-alt"></span> Enfoque Político <span class="sp_est_enfoque"></a></span>
@@ -75,10 +75,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-visible" id="spy1">
-                    <div class="panel-heading">
-                        <div class="panel-title hidden-xs">
+                    <div class="panel-heading bg-dark ">
+                        <div class="panel-title hidden-xs ">
                             <span class="glyphicon glyphicon-list-alt"></span>  Enfoque Político <span class="sp_est_enfoque"></span>
-                            <button id="editar_ep" type="button" class="btn btn-sm btn-warning dark m5 btn-alt pull-right"><i class="fa fa-edit text-warning"></i> Modificar</button>
+                            <button id="editar_ep" type="button" class="btn btn-sm btn-warning dark br4  m5  pull-right"><i class="fa fa-edit text-white"></i> Modificar</button>
                             <input type="hidden" name="id_enfoque_politico">
                         </div>
                     </div>
@@ -90,17 +90,17 @@
 
             <div class="col-md-12">
                 <div class="panel panel-visible" id="spy2">
-                    <div class="panel-heading">
+                    <div class="panel-heading  bg-dark ">
                         <div class="panel-title hidden-xs">
-                            <span class="glyphicon glyphicon-tasks"></span> Atribuciones principales del sector <span class="sp_est_atribuciones"></a>
+                            <span class="glyphicon glyphicon-tasks"></span> Atribuciones principales del sector <span class="sp_est_atribuciones"></span>
                         </div>
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
                             <div id="div_atribuciones" class="col-md-12" >
-                                <button id="atr_nuevo" type="button" class="btn btn-sm btn-default dark m5 btn-alt  "><i class="glyphicon glyphicon-plus-sign text-success"></i> Agregar atribución</button>
-                                <button id="atr_editar" type="button" class="btn btn-sm btn-default dark m5  btn-alt  "><i class="fa fa-edit glyphicon-plus-sign text-warning"></i> Editar</button>
-                                <button id="atr_elimar" type="button" class="btn btn-sm btn-default dark m5 btn-alt   "><i class="glyphicon glyphicon-minus-sign text-danger"></i> Eliminar</button>
+                                <button id="atr_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar atribución</button>
+                                <button id="atr_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button>
+                                <button id="atr_elimar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
                                 
                                 <div id="dtAtribuciones"></div>
                             </div>
@@ -117,8 +117,8 @@
     <!-- -----------------------------------------          Modal Enfoque Politico --------------------------------------------------- -->
     <div id="modal-ep"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
-            <div class="panel-heading">
-                <span class="panel-title"><i class="fa fa-pencil"></i>Enfoque Politico</span>
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white"><i class="fa fa-pencil"></i>Enfoque Politico</span>
             </div>
             <!-- end .panel-heading section -->
             <form method="post" action="/" id="form_ep" name="form_ep">
@@ -156,8 +156,8 @@
     <!-- -----------------------------------------          Modal Atribuciones Pilares --------------------------------------------------- -->
     <div id="modal-atr"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
-            <div class="panel-heading">
-                <span class="panel-title" id="tituloModal"><i class="fa fa-pencil"></i> <span>Modificar Enfoque Politico</span></span>
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white" id="tituloModal"><i class="fa fa-pencil"></i> <span>__</span></span>
             </div>
             <!-- end .panel-heading section -->
             <form method="post" action="/" id="form-atr" name="form-atr">
@@ -228,7 +228,7 @@ $(function(){
         cargarEnfoquePolitico: function(){
 
             $.get(globalSP.urlApi + "getEnfoque", {p : globalSP.idPlanActivo}, function(res){      
-                ctxEP.epObj = res.data;
+                ctxEP.epObj = res.data || {};
                 var enfoqueTexto = (ctxEP.epObj.enfoque_politico) ? ctxEP.epObj.enfoque_politico : '<span class="text-danger"> Enfoque Político No Definido  !!!!!!!! </span>';
                 $(".dina4").html(enfoqueTexto);
                 ctxEP.input_idEnfoqueP.val(ctxEP.epObj ? ctxEP.epObj.id : '');
@@ -371,8 +371,8 @@ $(function(){
                 };
                 var dataAdapter = new $.jqx.dataAdapter(atr.source);
                 var editDelRenderer = function (row, columnfield, value, defaulthtml, rowData) {
-                    html = '<a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar " ><i class="fa fa-edit text-warning fa-lg"></i></a>\
-                            <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="glyphicon glyphicon-minus-sign text-danger "></i></a> ' 
+                    html = `<a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar " ><i class="fa fa-edit fa-lg text-warning "></i></a>
+                            <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>`
                     return html;
                 };
                 atr.dataTable.jqxDataTable({
@@ -415,7 +415,6 @@ $(function(){
                 opts.forEach(function(op){
                     $("#ids_pilares").append('<option value="' + op.id + '">' + op.nombre + ' - ' + op.descripcion + '</option>');
                 });
-                // $("#ids_pilares").select2()
                 $("#ids_pilares").select2({
                     placeholder: 'Seleccione los pilares asociados a la Atribución',
                     dropdownParent: $('#form-atr'),
@@ -505,7 +504,7 @@ $(function(){
                     },
 
                     messages:{
-                        atribucion: { required: 'Seleccione el tipo de plan' },
+                        atribucion: { required: 'Debe escribir la atribución' },
                         ids_pilares:  { required: 'Seleccionar los pilares asociados a la atribución' },
                     },
 
@@ -581,13 +580,13 @@ $(function(){
         {
             try{ 
                 var atribs = atr.source.localdata;
-                $(".sp_est_atribuciones").removeClass('badge bg-success bg-danger');
-                $(".sp_est_atribuciones").addClass( (atribs.length > 0) ? 'badge bg-success' : 'badge bg-danger');
+                $(".sp_est_atribuciones").removeClass('badge bg-success bg-danger dark');
+                $(".sp_est_atribuciones").addClass( (atribs.length > 0) ? 'badge bg-system dark' : 'badge bg-danger');
                 $(".sp_est_atribuciones").html(atribs.length);
 
                 var ep = ctxEP.epObj.enfoque_politico;
                 $(".sp_est_enfoque").removeClass('badge bg-success bg-danger');
-                $(".sp_est_enfoque").addClass( (ep) ? 'badge bg-success' : 'badge bg-danger');
+                $(".sp_est_enfoque").addClass( (ep) ? 'badge bg-system dark' : 'badge bg-danger');
                 $(".sp_est_enfoque").html( (ep) ? 'SI' : 'NO');
 
                 obj ={
@@ -638,7 +637,7 @@ $(function(){
 
     // ---------------------------------------------------------------------
     // funciones.estadistics();
-    $(".spr_cancelar").click(function(){
+    $(".sp_cancelar").click(function(){
         $.magnificPopup.close();
     });
   

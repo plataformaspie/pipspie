@@ -27,14 +27,18 @@ class PlanificacionBaseController extends Controller
         });
     }
 
+    /*---------------------------------------------------------------------------------
+    | Devuelve la vista Index
+    */
     public function index()
     {
         return view('ModuloPlanificacion.index');
     }
 
 
-    /*---------------------------------------------------------
-    | Obtiene los menus segun el plan, mediante ruta devuelve REST, para generacion de menus AJAX
+    /*-------------------------------------------------------------------------------
+    | Obtiene los menus segun el plan, mediante ruta devuelve REST, 
+    | para generacion de menus AJAX
      */
     public function getMenu(Request $request)
     {

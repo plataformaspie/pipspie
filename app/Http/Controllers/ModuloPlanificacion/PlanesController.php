@@ -13,48 +13,54 @@ class PlanesController extends PlanificacionBaseController
 
     public function showPlanesInstitucion(Request $request)
     {
-        return view('ModuloPlanificacion.show-planes-institucion');
+        return view('ModuloPlanificacion.show-planes');
     }
 
-    public function listEntidadPlan(Request $request)
+    public function listPlanes(Request $request)
     {
         $idEntidadFoco = $this->getIdEntidadFoco($request);
-        $entidadPlanes = \DB::select("SELECT ep.id, ep.id_tipo_plan, per.valor as gestion_inicio, per.valor2 as gestion_fin, ep.etapas_completadas, e.nombre as nombre_entidad, e.sigla as sigla_entidad, tp.codigo as cod_tipo_plan
-                                        FROM sp_planes ep, sp_entidades e, sp_parametros tp, sp_parametros per
-                                        WHERE ep.activo = true AND ep.id_entidad = e.id 
-                                        AND  ep.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan' 
-                                        AND per.categoria = 'periodo_plan' AND per.activo AND per.codigo = ep.cod_periodo_plan 
+        $planes = \DB::select("SELECT p.id, p.id_tipo_plan, p.descripcion as descripcion_plan, per.valor as gestion_inicio, per.valor2 as gestion_fin, per.descripcion as periodo_descripcion, p.etapas_completadas, e.nombre as nombre_entidad, e.sigla as sigla_entidad, tp.codigo as cod_tipo_plan
+                                        FROM sp_planes p, sp_entidades e, sp_parametros tp, sp_parametros per
+                                        WHERE p.activo = true AND p.id_entidad = e.id 
+                                        AND  p.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan' 
+                                        AND per.categoria = 'periodo_plan' AND per.activo AND per.codigo = p.cod_periodo_plan 
                                         AND e.institucion = {$idEntidadFoco} 
-                                        ORDER BY ep.id_tipo_plan"); 
+                                        ORDER BY p.id_tipo_plan"); 
+        $periodoVigente = \DB::select("SELECT * from sp_parametros WHERE categoria = 'periodo_plan' AND activo ")[0];
         return \Response::json([
-            'data' => $entidadPlanes,         
+            'data' => $planes,
+            'periodo_vigente' => $periodoVigente         
         ]);
     }
 
-    public function saveEntidadPlan(Request $request)
-    {   
+    public function savePlan(Request $request)
+    {  
         $accion  = $request->id == null ? 'insert' : 'update';
-        $entidadPlan = new \stdClass();
-        $entidadPlan->id_entidad = $this->user->id_institucion;
-        $entidadPlan->id_tipo_plan = $request->id_tipo_plan;
-        $entidadPlan->gestion_inicio = $request->gestion_inicio;
-        $entidadPlan->gestion_fin = $request->gestion_fin;
+        $plan = new \stdClass();
+        $plan->id_entidad = $this->user->id_institucion;
+        $plan->id_tipo_plan = $request->id_tipo_plan;
+        $plan->descripcion = $request->descripcion;
+
+        // $plan->gestion_inicio = $request->gestion_inicio;
+        // $plan->gestion_fin = $request->gestion_fin;
 
         try
         {
             if($accion == 'insert')
             {
-                $entidadPlan->id_user = $this->user->id;
-                $entidadPlan->activo = true;
-                $entidadPlan->etapas_completadas = '';
-                $entidadPlan->created_at = \Carbon\Carbon::now(-4);
-                $entidadPlan->id             = \DB::table('sp_planes')->insertGetId(get_object_vars($entidadPlan));
+                $periodoVigente = \DB::select("SELECT * from sp_parametros WHERE categoria = 'periodo_plan' AND activo ")[0];
+                $plan->id_user = $this->user->id;
+                $plan->activo = true;
+                $plan->etapas_completadas = '';
+                $plan->cod_periodo_plan = $periodoVigente->codigo;
+                $plan->created_at = \Carbon\Carbon::now(-4);
+                $plan->id  = \DB::table('sp_planes')->insertGetId(get_object_vars($plan));
             }
             if($accion == 'update')
             {
-                $entidadPlan->updated_at = \Carbon\Carbon::now(-4);
-                $entidadPlan->id_user_updated = $this->user->id;
-                \DB::table('sp_planes')->where('id', $request->id)->update(get_object_vars($entidadPlan));
+                $plan->updated_at = \Carbon\Carbon::now(-4);
+                $plan->id_user_updated = $this->user->id;
+                \DB::table('sp_planes')->where('id', $request->id)->update(get_object_vars($plan));
             }
 
             return \Response::json([
@@ -62,7 +68,7 @@ class PlanesController extends PlanificacionBaseController
                 'accion'=> $accion,
                 'estado' => "Success",
                 'msg'   => "Se guardó con exito.",
-                'data'  => $entidadPlan,
+                'data'  => $plan,
             ]);
         }
         catch (Exception $e) 
@@ -75,13 +81,13 @@ class PlanesController extends PlanificacionBaseController
         }
     }
 
-    public function deleteEntidadPlan(Request $request)
+    public function deletePlan(Request $request)
     {
         try{
 
-            $entidadPlan = Planes::find($request->id);
-            $entidadPlan->activo = false;
-            $entidadPlan->save()    ;
+            $plan = Planes::find($request->id);
+            $plan->activo = false;
+            $plan->save()    ;
             return \Response::json([ 
                 'error' => false,
                 'estado' => "Success",

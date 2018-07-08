@@ -191,7 +191,7 @@
                 <!-- End: Sidebar Header -->
 
                 <!-- ID_PLAN ............ -->
-            <input type="hidden" name="id_plan" id="id_plan" value="{{ $id_plan }}">
+            <input type="hidden" name="id_p_act" id="id_p_act" value="{{ $id_plan }}">
                 <!-- sidebar menu -->
             <ul class="nav sidebar-menu" id="menuSP">
                 
@@ -211,13 +211,13 @@
                   </li>
                   @endif
                     <li>
-                        <a  class="accordion-toggle sp_tipo_menu" href="#">
+                        <a  class=" sp_tipo_menu" href="#{{$m->tipo_menu}}" data-toggle="collapse" >
                             <span class="glyphicons glyphicons-fire"></span>
                             <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
                             <span class="caret"></span>
                         </a>
-                        <ul class="nav sub-nav">
-
+                        <div id="{{$m->tipo_menu}}" class="collapse">
+                        <ul  class="nav sub-nav " >
                             <li id="M{{ $m->id }}" class="">
                                 <?php
                                     $qstring = '';
@@ -257,7 +257,8 @@
                 @endif
             @endforeach
 
-                      </ul>
+                        </ul>
+                        </div>
                     </li>
 
 
@@ -315,7 +316,7 @@
             <!-- End: Topbar-Dropdown -->
 
             <!-- Start: Topbar -->
-            <header id="topbar">
+            <header id="topbar" >
                {{-- @yield('title-topbar') --}}
                <div class="row">
                     <div class="topbar-left ">
@@ -620,7 +621,7 @@
             },
             urlApi: '/api/moduloplanificacion/',
             url: '/moduloplanificacion/',
-            idPlanActivo : $('input[name=id_plan]').val(),
+            idPlanActivo : $('input[name=id_p_act]').val(),
             planActivo: {},
             usuario: {},
             activarMenu: function(mn){
@@ -628,9 +629,9 @@
                     $("#menuSP .sp_tipo_menu").addClass('menu-open');
                 else {
                     $("u li").removeClass('activo');            
-                    $('#M'+mn).addClass('active  activo');
+                    $('#M'+mn).addClass('activo');
                     padre = $('#M'+mn).parent().parent();
-                    padre.children('a').addClass('menu-open');                  
+                    padre.addClass('in');                
                 }
             },
             // generarMenu: function(idplan, menus){
@@ -686,16 +687,16 @@
                 });
 
                 // coloca el titulo del menu Politica Sectorial
-                (plan.plan == 'PSDI') ? $("#27 span").html('Política Sectorial') 
+                (plan.cod_tipo_plan == 'PSDI') ? $("#27 span").html('Política Sectorial') 
                                     :  $("#27 span").html('Política Institucional'); 
 
             }, 
-            cargarGlobales: function(){
+            cargarGlobales: function(fn){
                 $.get(globalSP.urlApi + 'getuser', function(res){
                     globalSP.usuario = res.data;
                     globalSP.setTitulo1();
-                });
-                $.get(globalSP.urlApi + 'getplan', { 'p' : globalSP.idPlanActivo }, 
+
+                    $.get(globalSP.urlApi + 'getplan', { 'p' : globalSP.idPlanActivo }, 
                     function(res){
                         globalSP.planActivo = res.data;
                         if(globalSP.planActivo == ''){
@@ -704,8 +705,14 @@
                         else{
                             globalSP.setTitulo2();
                             globalSP.configuraMenu( globalSP.planActivo)
-                        }                        
+                        } 
+
+                        if(fn){
+                            fn();
+                        }                       
                     });
+                });
+                
             },
             setTitulo1: function(titulo)
             {
