@@ -848,16 +848,22 @@
                                            </div-->
                                            <div class="col-md-12 m-t-5">
                                                <ul class="nav nav-tabs" role="tablist">
-                                                   <li role="presentation" class="active nav-item">
-                                                     <a href="#lista" class="nav-link" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+                                                   <li role="presentation" class="active nav-item disUpdateRS ">
+                                                     <a href="#lista" class="nav-link panelIniRs" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
                                                        <span class="visible-xs"><i class="ti-user"></i></span>
                                                        <span class="hidden-xs">Lista </span>
                                                        <span id="cont_resp"class="label label-warning" style="font-size:15px;font-weight:bold;">0</span></a>
                                                    </li>
-                                                   <li role="presentation" class="nav-item">
+                                                   <li role="presentation" class="nav-item disUpdateRS">
                                                      <a href="#registro" class="nav-link" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
                                                        <span class="visible-xs"><i class="ti-home"></i></span>
                                                        <span class="hidden-xs"> Registrar</span>
+                                                     </a>
+                                                   </li>
+                                                   <li id="tab_modificar" role="modificar" class="nav-item hidden">
+                                                     <a href="#modificar" class="nav-link tab_modificar" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
+                                                       <span class="visible-xs"><i class="ti-home"></i></span>
+                                                       <span class="hidden-xs"> Modificar</span>
                                                      </a>
                                                    </li>
                                                </ul>
@@ -973,6 +979,104 @@
 
 
                                                        </div>
+
+                                                       <div role="tabpanel" class="tab-pane" id="modificar">
+                                                             <div class="row">
+                                                                 <div class="col-md-12">
+                                                                   <div class="row">
+                                                                         <div class="col-md-4 p-l-0 p-r-0">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;" >Institución Propietaria/Custodia<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Institución Propietaria/Custodia:</b> Nombre de la Institución propietaria o custodia de la Fuente de Datos.
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input type="hidden" name="mod_index" value="">
+                                                                           <input id="mod_responsable_1" name="mod_responsable_1" type="text" class="form-control"  placeholder="Institución Propietaria/Custodia" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+
+                                                                         <div class="col-md-4 p-l-0 p-r-0 text-right">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Ejecutiva<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                      <b class="text-info">Dependencia ejecutiva:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_responsable_2" name="mod_responsable_2" type="text" class="form-control"  placeholder="Dependencia Ejecutiva" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+
+                                                                         <div class="col-md-4 p-l-0 p-r-0 text-right">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Técnica<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Dependencia técnica:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la explotación/análisis de la fuente de datos (si corresponde)
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_responsable_3" name="mod_responsable_3" type="text" class="form-control"  placeholder="Dependencia Técnica" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+                                                                         <div class="col-md-4 p-l-0 p-r-0 text-right">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Informática<label class="text-success">(r)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Dependencia informática:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la gestión de la base de datos de la fuente de datos (si corresponde)
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_responsable_4" name="mod_responsable_4" type="text" class="form-control"  placeholder="Dependencia Informática" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+
+                                                                         <div class="col-md-4 p-l-0 p-r-0">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Teléfono de referencia<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Teléfono de referencia:</b> Teléfono de referencia de la Institución – interno de la Dependencia Ejecutiva.
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_referencia" name="mod_referencia" type="text" class="form-control"  placeholder="Teléfono de referencia" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+                                                                   </div>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-md-12 p-l-0 text-center">
+                                                                 <button type="button" class="btn btn-info btn-sm  m-t-5 updateRS"><i class="fa fa-plus-square"></i> Actualizar datos</button>
+                                                             </div>
+
+
+                                                           </div>
 
                                                    </div>
                                           </div>
@@ -1286,6 +1390,7 @@
         $("#bt_guardar").addClass('hidden');
         $("#bt_enviar").addClass('hidden');
       }
+      $(".panelIniRs" ).trigger( "click" );
     });
     $(".tap-btn").click(function () {
       var activo = $(".nav-item a.active").attr('href');
@@ -1353,7 +1458,7 @@
 
        if( $("input[name=responsable_1]").val() != ""){
 
-
+            $(".panelIniRs" ).trigger( "click" );
              responsableIDA.push("");
              responsableEstadoA.push(1);
              responsable1A.push($('input[name=responsable_1]').val());
@@ -1569,6 +1674,7 @@
        $("#set_responsables > tbody").html("");
        $('input[name="id_fuente"]').val(null);
        $("#tab-ini1" ).trigger( "click" );
+       $(".panelIniRs" ).trigger( "click" );
     });
 
     $('#btn-new, .btn-new ').click(function() {
@@ -1954,7 +2060,8 @@
                                                  '<b>Teléfono de referencia:</b> '+ referenciaA[data.index]+
                                             '</td>'+
                                             '<td style="width: 5%;">'+
-                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a>'+
+                                              '<p><a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a></p>'+
+                                              '<p><a data-toggle="tooltip" data-original-title="Borrar" onclick="showUpdateRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-pencil text-danger"></i> </a></p>'+
                                             '</td>'+
                                       '</tr>';
                             $("#set_responsables > tbody").append(html);
@@ -1992,6 +2099,33 @@
           }
         actualizarListaResponsable();
     }
+    function showUpdateRS(ele,index){
+      $('#tab_modificar').removeClass('hidden');
+      $(".tab_modificar" ).trigger( "click" );
+      $('input[name="mod_index"]').val(index);
+      $('input[name="mod_responsable_1"]').val($('input[name="responsable_nivel_1[]"]:eq('+index+')').val());
+      $('input[name="mod_responsable_2"]').val($('input[name="responsable_nivel_2[]"]:eq('+index+')').val());
+      $('input[name="mod_responsable_3"]').val($('input[name="responsable_nivel_3[]"]:eq('+index+')').val());
+      $('input[name="mod_responsable_4"]').val($('input[name="responsable_nivel_4[]"]:eq('+index+')').val());
+      $('input[name="mod_referencia"]').val($('input[name="numero_referencia[]"]:eq('+index+')').val());
+
+    }
+    $(".disUpdateRS").click(function () {
+      $('#tab_modificar').removeClass('hidden');
+      $('#tab_modificar').addClass('hidden');
+    });
+
+    $(".updateRS").click(function () {
+        $(".disUpdateRS" ).trigger( "click" );
+        $(".panelIniRs" ).trigger( "click" );
+        var index = $('input[name="mod_index"]').val();
+        responsable1A[index] = $('input[name="mod_responsable_1"]').val();
+        responsable2A[index] = $('input[name="mod_responsable_2"]').val();
+        responsable3A[index] = $('input[name="mod_responsable_3"]').val();
+        responsable4A[index] = $('input[name="mod_responsable_4"]').val();
+        referenciaA[index] = $('input[name="mod_referencia"]').val();
+        actualizarListaResponsable();
+    });
 
     function quitarARC(ele,archivo,tipo){
       validarSession();

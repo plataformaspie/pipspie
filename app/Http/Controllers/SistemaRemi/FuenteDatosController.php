@@ -129,7 +129,7 @@ class FuenteDatosController extends Controller
               }
           }
 
-          $orderby = "filtro"; //change this to whatever key you want from the array
+          $orderby = "index"; //change this to whatever key you want from the array
           array_multisort($sortArray[$orderby],SORT_ASC,$orderByAr);
           return \Response::json(array(
               'error' => false,
