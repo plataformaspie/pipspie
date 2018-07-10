@@ -184,7 +184,7 @@ class AdministracionController extends PlanificacionBaseController
 
     public function saveEntidadEdit(Request $request)
     {
-    	
+    	//dd($request->mod_logo_Editar);
 
         $this->user = \Auth::user();
         if ($request->id_entidad)
@@ -219,14 +219,14 @@ class AdministracionController extends PlanificacionBaseController
 
             //salvando organigrama
             $carpeta = "sp-files/organigramas/";
-            //$nombreDatabase = "";
+           
             $mensajeFile ="";
             $nombreDataBase = "";
-            //$file=$request->organigrama;
+           
             
             if($request->mod_logo_Editar){
 
-            	$file=$request->mod_logo_Editar;
+            	$file = $request->mod_logo_Editar;
 
             	$nombre = $file->getClientOriginalName();
             	$tipo   = $file->getMimeType();
@@ -246,6 +246,8 @@ class AdministracionController extends PlanificacionBaseController
             	//guardando la ruta en el campo ruta_org
             	$entidad->ruta_org = $nombreSystem.'.'.$extension;
 
+            }else{
+            	$entidad->ruta_org = "";
             }
 
             //fin salvando organigrama

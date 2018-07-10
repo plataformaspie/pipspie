@@ -727,24 +727,26 @@
                   { text: 'Codigo', dataField: 'codigo_mef', width: 60 },
                   { text: 'Tipo', dataField: 'tipo', width: 150 },
                   { 
-                  	text: 'Organigrama', dataField:'ruta_org', width: 150,
+                  	text: 'Organigrama', dataField:'ruta_org', width: 100,
                   	cellsRenderer: function (row, column, value, rowData){
 
                   		var saludo = "organigrama";
                   		var mensaje = "no tiene organigrama";
                   		var ruta = "/sp-files/organigramas/";
                   		var img = ruta + rowData.ruta_org;
-                  		
+                  		//console.log("Hola estoy en la tabla" +"        " + rowData.ruta_org + rowData.nombre );
                   		if(rowData.ruta_org){
 
-                  			var link = "<a  href='"+ img +"' target='_blank'>organigrama</a>";
+                  			
+                  			
+                  			var link = "<a  href='"+ img +"' target='_blank'><i class='fa fa-sitemap fa-3x text-primary '></i></a>";
                   			return link;
+
 
                   		}else{
 
-                  			var link = "<p>"+ mensaje +"</p>";
+                  			var link = "<i class='fa fa-spinner fa-spin fa-fw text-danger '></i>";
                   			return link;
-
                   		}
                   		
                   		
@@ -956,7 +958,7 @@
 					        				default:{
 
 					        					var carpeta_Default = "/sp-files/organigramas/iconoOrg.png";
-					        					$('#mod_img_logo').attr("src",carpeta_Default);
+					        					$('#mod_img_logo_Editar').attr("src",carpeta_Default);
 					        					break;
 					        				}
 					        			}
