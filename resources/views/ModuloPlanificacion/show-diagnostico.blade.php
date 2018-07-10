@@ -691,7 +691,7 @@ $(document).ready(function(){
                 midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
             });
         }else {
-            swal("Seleccione el registro que modificara.");
+            swal("Seleccione el registro para modificar.");
         }
     });
 
@@ -747,7 +747,7 @@ $(document).ready(function(){
             });
 
         }else {
-            swal("Seleccione el registro que eliminará.");
+            swal("Seleccione el registro que desea eliminar.");
         }
     });
 
@@ -768,7 +768,7 @@ $(document).ready(function(){
                     mod_producto_final: { required: 'Ingresar el producto final' },
                     mod_variable: { required: 'Ingresar la Variable' },
                     mod_indicador:  { required: 'Ingresar el Indicador' },
-                    mod_unidad:  { required: 'Por favor, selecciones una opcion' }
+                    mod_unidad:  { required: 'Por favor, selecciones una opción' }
 
             },
 
@@ -806,7 +806,7 @@ $(document).ready(function(){
                     producto_final: { required: 'Ingresar el producto final' },
                     variable: { required: 'Ingresar la Variable' },
                     indicador:  { required: 'Ingresar el Indicador' },
-                    unidad:  { required: 'Por favor, selecciones una opcion' }
+                    unidad:  { required: 'Por favor, selecciones una opción' }
             },
 
             highlight: function(element, errorClass, validClass) {

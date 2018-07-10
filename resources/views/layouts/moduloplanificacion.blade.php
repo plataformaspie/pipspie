@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/skin/default_skin/css/theme.css">
 
     <!-- Admin Panels CSS -->
-    <!--link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"-->
+    {{-- <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"> --}}
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/sty-mode-2/assets/img/favicon.ico ">

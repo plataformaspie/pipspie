@@ -19,7 +19,7 @@ class PlanificacionBaseController extends Controller
             $this->complementaUser();
             $autorizado = $modulosMenus = $this->GeneraMenus($this->user, $req);    
             if(!$autorizado)
-                return response()->view('ModuloPlanificacion.error',['mensaje' => 'No tiene autorización para ingresar a este módulo']); // TODO mostrar pagina de no autorizado
+                return response()->view('ModuloPlanificacion.error',['mensaje' => 'No tiene autorización para ingresar a este módulo']); 
                   
             \View::share($modulosMenus);
 
