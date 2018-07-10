@@ -1661,15 +1661,15 @@
     	//var file = e.target.files[0];
     	
     	var archivoInput = document.getElementById('mod_logo');
-    	console.log(archivoInput);//aqui esta recibiendo todo el input
+    	
     	var archivoRuta = archivoInput.value;
-    	console.log(archivoRuta);
+    	
     	var extension=archivoRuta.split('.').pop();
-    	console.log(extension);
+    	
     	var extePermitida = /(.pdf|.xlsx|.xlt|.jpeg|.png|.jpg|.JPG|.PDF|.doc|.docx|.vsd|.vsdx)$/i;
 
     	if(!extePermitida.exec(archivoRuta)){
-    		alert("asegurece de elegir una imagen en pdf");
+    		
     		archivoInput.value="";
     		return false;
     	}else{
@@ -1681,32 +1681,32 @@
     			switch(extension){
     				case 'pdf':{
     					
-        				var carpeta_Pdf = "/sp-files/organigramas/iconoPdf.jpeg";
+        				var carpeta_Pdf = "/img/iconoPdf.jpeg";
         				$('#mod_img_logo').attr("src",carpeta_Pdf);
         				break;
 
     				} ;
     				case 'xlsx':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoExcel.png";
+    					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'xls':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoExcel.png";
+    					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'docx':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoWord.png";
+    					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'doc':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoWord.png";
+    					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
@@ -1721,7 +1721,7 @@
     					
     				case 'jpg':{
 
-    					console.log("pase por la verificacion extensio imagen");
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload;
@@ -1731,7 +1731,7 @@
     				};
     				case 'png':{
 
-    					console.log("pase por la verificacion extensio imagen");
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload;
@@ -1741,7 +1741,7 @@
     				};
     				default:{
 
-    					var carpeta_Excel = "/sp-files/organigramas/iconoOrg.png";
+    					var carpeta_Excel = "/img/iconoOrg.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				}
@@ -1798,32 +1798,32 @@
     			switch(extension){
     				case 'pdf':{
     					
-        				var carpeta_Pdf = "/sp-files/organigramas/iconoPdf.jpeg";
+        				var carpeta_Pdf = "/img/iconoPdf.jpeg";
         				$('#mod_img_logo_Editar').attr("src",carpeta_Pdf);
         				break;
 
     				} ;
     				case 'xlsx':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoExcel.png";
+    					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'xls':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoExcel.png";
+    					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'docx':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoWord.png";
+    					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'doc':{
     					
-    					var carpeta_Excel = "/sp-files/organigramas/iconoWord.png";
+    					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
@@ -1838,7 +1838,7 @@
     					
     				case 'jpg':{
 
-    					console.log("pase por la verificacion extensio imagen");
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload_Editar;
@@ -1850,7 +1850,7 @@
 
     					//console.log("pase por la verificacion extensio imagen");
     					var file = e.target.files[0];
-    					console.log("este es el resultado de e.target.files[0]" + file);
+    					
         				var reader = new FileReader();
           				reader.onload = fileOnload_Editar;
           				reader.readAsDataURL(file);
@@ -1859,7 +1859,7 @@
     				};
     				default:{
 
-    					var carpeta_Excel = "/sp-files/organigramas/iconoOrg.png";
+    					var carpeta_Excel = "/img/iconoOrg.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				}
