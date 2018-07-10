@@ -21,7 +21,7 @@
     }
     .scroll tbody {
         display:block;
-        height:200px;
+        height:500px;
         overflow:auto;
     }
     .scroll thead, .scroll tbody tr {
@@ -82,7 +82,17 @@
                           <i class="fa fa-arrow-left"></i>
                         </button>
                       </p>
+                      <div class="form-group row m-b-10">
+                        <div class="col-md-2 p-l-0 p-r-0">
+                          <label for="label" class="col-form-label control-label list-group-item-info" style="width: 200px;padding: 7px 20px 7px 3px;">Estado </label>
 
+                        </div>
+                        <div class="col-md-10 p-l-0">
+                            <label id="estado_view" for="label" class="">Preliminar </label>
+                            <input id="estado" type="hidden" name="estado" value="1">
+                        </div>
+
+                      </div>
                       <div class="form-group row m-b-10">
                         <div class="col-md-2 p-l-0 p-r-0">
                             <a class="mytooltip" href="javascript:void(0)">
@@ -130,7 +140,7 @@
                                       <li class="tab nav-item">
                                           <a id="tab-ini3" aria-expanded="false" class="nav-link ctrl-btn" data-toggle="tab" href="#info3">
                                             <span class="visible-xs"><i class="fa fa-building-o" style="font-size: 25px"></i></span>
-                                            <span class="hidden-xs"><i class="fa fa-building-o" style="font-size: 25px"></i> Captura de información</span>
+                                            <span class="hidden-xs"><i class="fa fa-building-o" style="font-size: 25px"></i> Cuestionarios y formularios</span>
                                           </a>
                                       </li>
 
@@ -432,7 +442,6 @@
 
                                           </div>
                                       </div>
-
                                       <div id="info2" class="tab-pane ">
                                           <div class="col-md-12 list-group-item-success">
                                               <h4 style="width:100%;"> Categoria Temática </h4>
@@ -543,10 +552,9 @@
                                           </div>
 
                                       </div>
-
                                       <div id="info3" class="tab-pane">
                                           <div class="col-md-12 list-group-item-success">
-                                              <h4 style="width:100%;">Captura de información (Formularios/Cuestionarios)</h4>
+                                              <h4 style="width:100%;">Cuestionarios y Formularios</h4>
                                           </div>
                                           <div class="col-md-12">
                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
@@ -589,18 +597,236 @@
                                           </div>
 
                                       </div>
-
                                       <div id="info4" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Cobertura</h4>
                                            </div>
+                                           <div class="col-md-12">
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5 rraaShow hidden" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                   <a class="mytooltip" href="javascript:void(0)">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Cobertura del RRAA<label class="text-success">(r)</label></label>
+                                                     <span class="tooltip-content5" style="">
+                                                       <span class="tooltip-text3">
+                                                         <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                           <br/><b class="text-info">Ejemplo Número:</b> 99
+                                                           <br/><b class="text-info">Ejemplo Porcentaje:</b> 99%
+                                                         </span>
+                                                       </span>
+                                                     </span>
+                                                   </a>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <input id="cobertura_rraa" name="cobertura_rraa" type="text" class="form-control " placeholder="Cobertura RRAA" >
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
+
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5 rraaShow hidden" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Descripción del Supuesto</label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Relación porcentual del universo de estudio en relación a su universo objetivo (Solo para Registros Administrativos)
+                                                            <br/><b class="text-info">Ejemplo: </b>El registro administrativo de conexiones de agua contempla una cobertura poblacional del <b class="text-info">91%</b>, tomando en cuenta que por cada conexión se considera un hogar promedio de 7 personas (Supuesto)
+
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <textarea id="cobertura_rraa_descripcion" name="cobertura_rraa_descripcion" class="form-control" rows="4" placeholder="Descripción del Supuesto"></textarea>
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
+
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-6 p-l-0 p-r-0">
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Cobertura Geográfica de la Fuente de Datos <label class="text-danger">(o)</label></label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Áreas geográficas que cubre la operación estadística: urbana, rural, región departamento, municipio, macrodistrito, unidad vecinal (UV), zona, localidad, comunidad, etc.
+                                                            Elegir la(s) alternativa(s) que apliquen del listado proporcionado.
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
+                                                 </div>
+                                                 <div class="col-md-12 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <ul class="checkbox">
+                                                         <li><input type="checkbox" id="c1" name="cobertura[]" value="1" /><label>Internacional</label></li>
+                                                         <li>
+                                                           <input type="checkbox" id="c2" name="cobertura[]" value="2" class="padreck" /><label>Nacional (Todo el país)</label>
+                                                           <ul class="checkbox">
+                                                             <li><input type="checkbox" id="c3" name="cobertura[]" value="3" class="hijo2" /><label>Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="c4" name="cobertura[]" value="4" class="hijo2" /><label>Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li><input type="checkbox" id="c5" name="cobertura[]" value="5" class="hijo2" /><label>Nacional  Resto Urbano</label></li>
+                                                             <li><input type="checkbox" id="c6" name="cobertura[]" value="6" class="hijo2"/><label>Nacional Rural</label></li>
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="c7" name="cobertura[]" value="7" class="padreck" /><label>Departamental (Todos los Departamentos)</label>
+                                                           <ul class="checkbox">
+                                                             <li>
+                                                               <input type="checkbox" id="c8" name="cobertura[]" value="8" class="hijo2" /><label>Departamental Urbano (Todas las Ciudades Capitales)</label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="c9" name="cobertura[]" value="9" class="hijo2" /><label>Chuquisaca (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c10" name="cobertura[]" value="10" class="hijo2" /><label>La Paz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c11" name="cobertura[]" value="11" class="hijo2" /><label>El Alto (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c12" name="cobertura[]" value="12" class="hijo2"/><label>Cochabamba (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c13" name="cobertura[]" value="13" class="hijo2"/><label>Santa Cruz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c14" name="cobertura[]" value="14" class="hijo2"/><label>Tarija (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c15" name="cobertura[]" value="15" class="hijo2"/><label>Oruro (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c16" name="cobertura[]" value="16" class="hijo2"/><label>Potosí (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c17" name="cobertura[]" value="17" class="hijo2"/><label>Beni (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c18" name="cobertura[]" value="18" class="hijo2"/><label>Pando (Ciudad Capital)</label></li>
+                                                               </ul>
+                                                             </li>
+
+
+                                                             <li>
+                                                               <input type="checkbox" id="c19" name="cobertura[]" value="19" class="hijo2" /><label>Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="c20" name="cobertura[]" value="20" class="hijo2" /><label>Departamental Resto Urbano</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="c21" name="cobertura[]" value="21" class="hijo2" /><label>Departamental Rural</label>
+                                                             </li>
+
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="c22" name="cobertura[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
+                                                           <ul class="checkbox">
+                                                             <li><input type="checkbox" id="c23" name="cobertura[]" value="23" class="hijo2" /><label>Municipal Urbano </label></li>
+                                                             <li><input type="checkbox" id="c29" name="cobertura[]" value="29" class="hijo2" /><label>Municipal Rural</label></li>
+                                                           </ul>
+                                                         </li>
+                                                       </ul>
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
 
 
 
-                                       </div>
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-6 p-l-0 p-r-0">
+                                                    <a class="mytooltip" href="javascript:void(0)">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nivel de Desagregación Geográfica<label class="text-danger">(o)</label></label>
+                                                      <span class="tooltip-content5" style="">
+                                                        <span class="tooltip-text3">
+                                                          <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                            Nivel más pequeño cubierto por los datos. Equivale a mencionar a qué nivel son representativos los datos. El nivel de desagregación geográfica más desagregada suele coincidir con el nivel geográfico al que se registra la unidad de análisis.
+                                                            Elegir la(s) alternativa(s) que apliquen del listado proporcionado
+
+                                                          </span>
+                                                        </span>
+                                                      </span>
+                                                    </a>
+                                                 </div>
+                                                 <div class="col-md-12 p-l-0">
+                                                     <div class="select2-wrapper">
+                                                       <ul class="checkbox">
+                                                         <li><input type="checkbox" id="d1" name="desagregacion[]" value="1" /><label>Internacional</label></li>
+                                                         <li>
+                                                           <input type="checkbox" id="d2" name="desagregacion[]" value="2" class="padreck" /><label>Nacional (Todo el país)</label>
+                                                           <ul class="checkbox">
+                                                             <li><input type="checkbox" id="d3" name="desagregacion[]" value="3" class="hijo2" /><label>Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="d4" name="desagregacion[]" value="4" class="hijo2" /><label>Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li><input type="checkbox" id="d5" name="desagregacion[]" value="5" class="hijo2" /><label>Nacional  Resto Urbano</label></li>
+                                                             <li><input type="checkbox" id="d6" name="desagregacion[]" value="6" class="hijo2"/><label>Nacional Rural</label></li>
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="d7" name="desagregacion[]" value="7" class="padreck" /><label>Departamental (Todos los Departamentos)</label>
+                                                           <ul class="checkbox">
+                                                             <li>
+                                                               <input type="checkbox" id="d8" name="desagregacion[]" value="8" class="hijo2" /><label>Departamental Urbano (Todas las Ciudades Capitales)</label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="d9" name="desagregacion[]" value="9" class="hijo2" /><label>Chuquisaca (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d10" name="desagregacion[]" value="10" class="hijo2" /><label>La Paz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d11" name="desagregacion[]" value="11" class="hijo2" /><label>El Alto (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d12" name="desagregacion[]" value="12" class="hijo2"/><label>Cochabamba (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d13" name="desagregacion[]" value="13" class="hijo2"/><label>Santa Cruz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d14" name="desagregacion[]" value="14" class="hijo2"/><label>Tarija (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d15" name="desagregacion[]" value="15" class="hijo2"/><label>Oruro (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d16" name="desagregacion[]" value="16" class="hijo2"/><label>Potosí (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d17" name="desagregacion[]" value="17" class="hijo2"/><label>Beni (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d18" name="desagregacion[]" value="18" class="hijo2"/><label>Pando (Ciudad Capital)</label></li>
+                                                               </ul>
+                                                             </li>
 
 
-                                       <div id="info5" class="tab-pane">
+                                                             <li>
+                                                               <input type="checkbox" id="d19" name="desagregacion[]" value="19" class="hijo2" /><label>Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="d20" name="desagregacion[]" value="20" class="hijo2" /><label>Departamental Resto Urbano</label>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="d21" name="desagregacion[]" value="21" class="hijo2" /><label>Departamental Rural</label>
+                                                             </li>
+
+                                                           </ul>
+                                                         </li>
+                                                         <li>
+                                                           <input type="checkbox" id="d22" name="desagregacion[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
+                                                           <ul class="checkbox">
+                                                             <li>
+                                                               <input type="checkbox" id="d23" name="desagregacion[]" value="23" class="hijo2" /><label>Municipal Urbano </label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="d24" name="desagregacion[]" value="24" class="hijo2" /><label for="cb3">Macrodistrito/Distrito</label></li>
+                                                                 <li><input type="checkbox" id="d25" name="desagregacion[]" value="25" class="hijo2" /><label for="cb4">Unidad Vecinal</label></li>
+                                                                 <li><input type="checkbox" id="d26" name="desagregacion[]" value="26" class="hijo2" /><label for="cb5">Zona</label></li>
+                                                                 <li><input type="checkbox" id="d27" name="desagregacion[]" value="27" class="hijo2"/><label for="cb6">Manzano</label></li>
+                                                                 <li><input type="checkbox" id="d28" name="desagregacion[]" value="28" class="hijo2"/><label for="cb6">Lote</label></li>
+                                                               </ul>
+                                                             </li>
+                                                             <li>
+                                                               <input type="checkbox" id="d29" name="desagregacion[]" value="29" class="hijo2" /><label>Municipal Rural</label>
+                                                               <ul class="checkbox">
+                                                                 <li><input type="checkbox" id="d30" name="desagregacion[]" value="30" class="hijo2" /><label for="cb3">Predio/Lote</label></li>
+                                                                 <li><input type="checkbox" id="d31" name="desagregacion[]" value="31" class="hijo2" /><label for="cb4">Localidad</label></li>
+                                                                 <li><input type="checkbox" id="d32" name="desagregacion[]" value="32" class="hijo2" /><label for="cb5">Comunidad</label></li>
+                                                                 <li><input type="checkbox" id="d33" name="desagregacion[]" value="33" class="hijo2"/><label for="cb6">Zona</label></li>
+                                                               </ul>
+                                                             </li>
+                                                           </ul>
+                                                         </li>
+                                                       </ul>
+                                                     </div>
+                                                     <div class="help-block with-errors"></div>
+                                                 </div>
+                                               </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           </div>
+                                      </div>
+                                      <div id="info5" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success p-t-10">
                                                <h4 style="width:100%;"> Responsables</h4>
                                            </div>
@@ -622,16 +848,22 @@
                                            </div-->
                                            <div class="col-md-12 m-t-5">
                                                <ul class="nav nav-tabs" role="tablist">
-                                                   <li role="presentation" class="active nav-item">
-                                                     <a href="#lista" class="nav-link" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+                                                   <li role="presentation" class="active nav-item disUpdateRS ">
+                                                     <a href="#lista" class="nav-link panelIniRs" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
                                                        <span class="visible-xs"><i class="ti-user"></i></span>
                                                        <span class="hidden-xs">Lista </span>
                                                        <span id="cont_resp"class="label label-warning" style="font-size:15px;font-weight:bold;">0</span></a>
                                                    </li>
-                                                   <li role="presentation" class="nav-item">
+                                                   <li role="presentation" class="nav-item disUpdateRS">
                                                      <a href="#registro" class="nav-link" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
                                                        <span class="visible-xs"><i class="ti-home"></i></span>
                                                        <span class="hidden-xs"> Registrar</span>
+                                                     </a>
+                                                   </li>
+                                                   <li id="tab_modificar" role="modificar" class="nav-item hidden">
+                                                     <a href="#modificar" class="nav-link tab_modificar" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
+                                                       <span class="visible-xs"><i class="ti-home"></i></span>
+                                                       <span class="hidden-xs"> Modificar</span>
                                                      </a>
                                                    </li>
                                                </ul>
@@ -748,12 +980,108 @@
 
                                                        </div>
 
+                                                       <div role="tabpanel" class="tab-pane" id="modificar">
+                                                             <div class="row">
+                                                                 <div class="col-md-12">
+                                                                   <div class="row">
+                                                                         <div class="col-md-4 p-l-0 p-r-0">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;" >Institución Propietaria/Custodia<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Institución Propietaria/Custodia:</b> Nombre de la Institución propietaria o custodia de la Fuente de Datos.
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input type="hidden" name="mod_index" value="">
+                                                                           <input id="mod_responsable_1" name="mod_responsable_1" type="text" class="form-control"  placeholder="Institución Propietaria/Custodia" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+
+                                                                         <div class="col-md-4 p-l-0 p-r-0 text-right">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Ejecutiva<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                      <b class="text-info">Dependencia ejecutiva:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_responsable_2" name="mod_responsable_2" type="text" class="form-control"  placeholder="Dependencia Ejecutiva" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+
+                                                                         <div class="col-md-4 p-l-0 p-r-0 text-right">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Técnica<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Dependencia técnica:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la explotación/análisis de la fuente de datos (si corresponde)
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_responsable_3" name="mod_responsable_3" type="text" class="form-control"  placeholder="Dependencia Técnica" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+                                                                         <div class="col-md-4 p-l-0 p-r-0 text-right">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Dependencia Informática<label class="text-success">(r)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Dependencia informática:</b> Nombre y Acrónimo de  Dirección/Unidad a cargo de la gestión de la base de datos de la fuente de datos (si corresponde)
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_responsable_4" name="mod_responsable_4" type="text" class="form-control"  placeholder="Dependencia Informática" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+
+                                                                         <div class="col-md-4 p-l-0 p-r-0">
+                                                                           <a class="mytooltip" href="javascript:void(0)">
+                                                                             <label for="textarea" class="col-form-label control-label list-group-item-warning" style="width: 100%;padding: 15px 0px 7px 3px;">Teléfono de referencia<label class="text-danger">(o)</label></label>
+                                                                                <span class="tooltip-content5" style="">
+                                                                                <span class="tooltip-text3">
+                                                                                  <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                                                    <b class="text-info">Teléfono de referencia:</b> Teléfono de referencia de la Institución – interno de la Dependencia Ejecutiva.
+                                                                                  </span>
+                                                                                </span>
+                                                                              </span>
+                                                                            </a>
+                                                                         </div>
+                                                                         <div class="col-md-8 p-l-0">
+                                                                           <input id="mod_referencia" name="mod_referencia" type="text" class="form-control"  placeholder="Teléfono de referencia" required>
+                                                                           <div class="help-block with-errors"></div>
+                                                                         </div>
+                                                                   </div>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-md-12 p-l-0 text-center">
+                                                                 <button type="button" class="btn btn-info btn-sm  m-t-5 updateRS"><i class="fa fa-plus-square"></i> Actualizar datos</button>
+                                                             </div>
+
+
+                                                           </div>
+
                                                    </div>
                                           </div>
-
-                                       </div>
-
-                                       <div id="info6" class="tab-pane">
+                                      </div>
+                                      <div id="info6" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Documentos respaldo</h4>
                                            </div>
@@ -820,10 +1148,8 @@
                                                </tbody>
                                              </table>
                                            </div>
-                                       </div>
-
-
-                                       <div id="info7" class="tab-pane">
+                                      </div>
+                                      <div id="info7" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Acceso a la información</h4>
                                            </div>
@@ -872,8 +1198,7 @@
                                                  </div>
                                                </div>
                                             </div>
-
-                                       </div>
+                                      </div>
 
                                   </div>
                               </div>
@@ -884,6 +1209,7 @@
                     <div class="col-sm-12">
                             <div class="form-group text-center">
                               <button id="bt_guardar" type="submit" class="btn btn-info hidden tap-btn">Guardar</button>
+                              <button id="bt_enviar" type="submit" class="btn btn-danger hidden tap-btn">Guardar y Enviar a revisión</button>
                               <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
                               <button type="button" class="btn btn-default btn-back">Cancelar</button>
                             </div>
@@ -933,6 +1259,9 @@
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdatatable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcheckbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxlistbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdropdownlist.js') }}"></script>
     <script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
     <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
     <script type="text/javascript" src="{{ asset('js/jqwidgets-localization.js') }}"></script>
@@ -987,6 +1316,8 @@
               { name: 'nombre', type: 'string' },
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
+              { name: 'estado', type: 'string' },
+              { name: 'id_estado', type: 'int' },
               { name: 'responsable_nivel_1', type: 'string' }
           ],
           id: 'id',
@@ -1000,25 +1331,44 @@
           theme:theme,
           columnsResize: true,
           filterable: true,
-          filterMode: 'simple',
+          //filterMode: 'simple',
           pageable: true,
           pagerButtonsCount: 10,
           localization: getLocalization('es'),
-          pageSize: 5,
+          pageSize: 100,
           columns: [
-            { text: 'Codigo', dataField: 'codigo', width: 120, cellsAlign: 'center' },
+            { text: 'Estado', width: 100, dataField: 'estado' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
             { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
-                          var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                          var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Gestionar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                          var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
-                          abm += inputEdit;
-                          abm += inputDelete;
-                          abm += "</div>";
-                          return abm;
+                          if(rowData.id_estado == 1 || rowData.id_estado == 3){
+                              var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                              var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Gestionar</span> <i class="fa fa-pencil m-l-5"></i></button>';
+                              var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                              abm += inputEdit;
+                              abm += inputDelete;
+                              abm += "</div>";
+                              return abm;
+                          }else{
+                              if(rowData.id_estado == 4){
+                                var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                                var inputVer = '-';
+                                abm += inputVer;
+                                abm += "</div>";
+                                return abm;
+                              }
+
+                              if(rowData.id_estado == 2){
+                                var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                                var inputCans = '<button onclick="btn_recuperar('+rowData.id+')" class="btn btn-sm btn-info "><span>Recuperar</span> <i class="fa fa-mail-reply-all m-l-5"></i></button>';
+                                abm += inputCans;
+                                abm += "</div>";
+                                return abm;
+                              }
+
+                          }
 
                   }
             },
@@ -1028,15 +1378,19 @@
 
 
     $(".ctrl-btn").click(function () {
+      //validarSession();
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
       if(next == 7){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
+        $("#bt_enviar").removeClass('hidden');
       }else{
         $("#bt_siguiente").removeClass('hidden');
         $("#bt_guardar").addClass('hidden');
+        $("#bt_enviar").addClass('hidden');
       }
+      $(".panelIniRs" ).trigger( "click" );
     });
     $(".tap-btn").click(function () {
       var activo = $(".nav-item a.active").attr('href');
@@ -1046,6 +1400,7 @@
       if(next == 7){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
+        $("#bt_enviar").removeClass('hidden');
       }
       $("#tab-ini"+next ).trigger( "click" );
 
@@ -1103,7 +1458,7 @@
 
        if( $("input[name=responsable_1]").val() != ""){
 
-
+            $(".panelIniRs" ).trigger( "click" );
              responsableIDA.push("");
              responsableEstadoA.push(1);
              responsable1A.push($('input[name=responsable_1]').val());
@@ -1260,6 +1615,15 @@
           }
       });
 
+
+      $("#bt_enviar").click(function () {
+        $("#estado").val(2);
+      });
+      $("#bt_guardar").click(function () {
+        $("#estado").val(1);
+      });
+
+
     });
     //fin document
 
@@ -1269,6 +1633,7 @@
 
 
     $('#btn-back, .btn-back').click(function() {
+       validarSession();
        $('#option1').removeClass('hidden');
        //$('#nivel_1').addClass('show');
        $('#option2').removeClass('show');
@@ -1309,9 +1674,11 @@
        $("#set_responsables > tbody").html("");
        $('input[name="id_fuente"]').val(null);
        $("#tab-ini1" ).trigger( "click" );
+       $(".panelIniRs" ).trigger( "click" );
     });
 
     $('#btn-new, .btn-new ').click(function() {
+        validarSession();
        $('#option2').removeClass('hidden');
        $('#option1').removeClass('show');
        $('#option1').addClass('hidden');
@@ -1328,6 +1695,8 @@
                if(data.error == false){
 
                    //$("#mod_cod_m").val(data.meta).trigger('change');
+                   $('#estado_view').html(data.fuente[0].estado);
+                   $('#estado').html(data.fuente[0].id_estado);
                    $('input[name="id_fuente"]').val(data.fuente[0].id);
                    $('textarea[name="nombre"]').val(data.fuente[0].nombre);
                    $('input[name="acronimo"]').val(data.fuente[0].acronimo);
@@ -1344,8 +1713,10 @@
                    }
                    $('textarea[name="unidad_analisis"]').val(data.fuente[0].unidad_analisis);
                    $('textarea[name="universo_estudio"]').val(data.fuente[0].universo_estudio);
+
                    $('textarea[name="disenio_tamanio_muestra"]').val(data.fuente[0].disenio_tamanio_muestra);
                    $('textarea[name="tasa_respuesta"]').val(data.fuente[0].tasa_respuesta);
+
                    $('textarea[name="observacion"]').val(data.fuente[0].observacion);
 
 
@@ -1409,10 +1780,9 @@
                   total_form = data.fuente[0].numero_total_formulario;
 
                   var form = data.fuente[0].nombre_formulario;
+
+                  if(data.fuente[0].nombre_formulario){
                   var setForms = form.split('|');
-                  /*$.each(setForms, function(index, value) {
-                    alert(index + ': ' + value);
-                  });*/
                   $.each(setForms, function(index, item) {
                         var arrayForm = [];
                         for(i=1;i<=total_form;i++){
@@ -1435,6 +1805,28 @@
                                     '</tr>';
                          $("#datosForm > tbody").append(html);
                   });
+                  }
+
+
+
+
+
+
+
+                  if(data.fuente[0].cobertura_geografica){
+                    var cobertura = data.fuente[0].cobertura_geografica;
+                    var setCobe = cobertura.split(',');
+                    $.each(setCobe, function(index, item) {
+                          $("#c"+item).attr('checked',true);
+                    });
+                  }
+                  if(data.fuente[0].nivel_representatividad_datos){
+                    var desagregacion = data.fuente[0].nivel_representatividad_datos;
+                    var setCobe = desagregacion.split(',');
+                    $.each(setCobe, function(index, item) {
+                          $("#d"+item).attr('checked',true);
+                    });
+                  }
 
                   $.each(data.responsables, function(index, item) {
                             responsableIDA.push(item.id);
@@ -1514,13 +1906,44 @@
           closeOnConfirm: false
         }, function(){
              $.ajax({
-                   url: "{{ url('/api/sistemaremi/apiDeleteIndicador') }}",
-                   data: { '_token': $('input[name=_token]').val(),'id_indicador': ele },
+                   url: "{{ url('/api/sistemarime/apiDeleteFuente') }}",
+                   data: { '_token': $('input[name=_token]').val(),'id_fuente': ele },
                    type: "delete",
                    dataType: 'json',
                    success: function(date){
                        $("#dataTable").jqxDataTable("updateBoundData");
                        swal("Eliminado!", "Se ha eliminado tu registro.", "success");
+                   },
+                   error:function(data){
+                     if(data.status != 401){
+                       alert("Error recuperar los datos.");
+                     }else{
+                       window.location = '/login';
+                     }
+
+                   }
+             });
+        });
+    }
+
+    function btn_recuperar(ele) {
+        swal({
+          title: "Está seguro?",
+          text: "Se cambiara el estado!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, recuperar!",
+          closeOnConfirm: false
+        }, function(){
+             $.ajax({
+                   url: "{{ url('/api/sistemarime/apiRecuperarFuente') }}",
+                   data: { '_token': $('input[name=_token]').val(),'id_fuente': ele },
+                   type: "post",
+                   dataType: 'json',
+                   success: function(date){
+                       $("#dataTable").jqxDataTable("updateBoundData");
+                       swal("Recuperado!", "Se cambio el estado de la fuente.", "success");
                    },
                    error:function(data){
                      if(data.status != 401){
@@ -1637,7 +2060,8 @@
                                                  '<b>Teléfono de referencia:</b> '+ referenciaA[data.index]+
                                             '</td>'+
                                             '<td style="width: 5%;">'+
-                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a>'+
+                                              '<p><a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a></p>'+
+                                              '<p><a data-toggle="tooltip" data-original-title="Borrar" onclick="showUpdateRS('+cav+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-pencil text-danger"></i> </a></p>'+
                                             '</td>'+
                                       '</tr>';
                             $("#set_responsables > tbody").append(html);
@@ -1675,8 +2099,36 @@
           }
         actualizarListaResponsable();
     }
+    function showUpdateRS(ele,index){
+      $('#tab_modificar').removeClass('hidden');
+      $(".tab_modificar" ).trigger( "click" );
+      $('input[name="mod_index"]').val(index);
+      $('input[name="mod_responsable_1"]').val($('input[name="responsable_nivel_1[]"]:eq('+index+')').val());
+      $('input[name="mod_responsable_2"]').val($('input[name="responsable_nivel_2[]"]:eq('+index+')').val());
+      $('input[name="mod_responsable_3"]').val($('input[name="responsable_nivel_3[]"]:eq('+index+')').val());
+      $('input[name="mod_responsable_4"]').val($('input[name="responsable_nivel_4[]"]:eq('+index+')').val());
+      $('input[name="mod_referencia"]').val($('input[name="numero_referencia[]"]:eq('+index+')').val());
+
+    }
+    $(".disUpdateRS").click(function () {
+      $('#tab_modificar').removeClass('hidden');
+      $('#tab_modificar').addClass('hidden');
+    });
+
+    $(".updateRS").click(function () {
+        $(".disUpdateRS" ).trigger( "click" );
+        $(".panelIniRs" ).trigger( "click" );
+        var index = $('input[name="mod_index"]').val();
+        responsable1A[index] = $('input[name="mod_responsable_1"]').val();
+        responsable2A[index] = $('input[name="mod_responsable_2"]').val();
+        responsable3A[index] = $('input[name="mod_responsable_3"]').val();
+        responsable4A[index] = $('input[name="mod_responsable_4"]').val();
+        referenciaA[index] = $('input[name="mod_referencia"]').val();
+        actualizarListaResponsable();
+    });
 
     function quitarARC(ele,archivo,tipo){
+      validarSession();
       var res = confirm("Esta seguro de quitar el archivo?");
           if (res == true) {
             if(tipo == 1){
@@ -1703,6 +2155,25 @@
             }
         }
 
+    }
+
+    function validarSession(){
+      $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: "{{ url('/apiValidateSession') }}",
+            data: {"1": 1},
+            success: function(data){
+                console.log("todo perfecto");
+            },
+            error:function(data){
+              if(data.status != 401){
+                console.log("se persive algun error");
+              }else{
+                window.location = '/login';
+              }
+            }
+        });
     }
 
 

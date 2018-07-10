@@ -25,6 +25,7 @@ Route::get('settingPerfil', 'SettingController@settingPerfil');
 Route::get('settingPassword', 'SettingController@settingPassword');
 Route::post('apiSavePerfil', 'SettingController@apiSavePerfil');
 Route::post('apiSavePassword', 'SettingController@apiSavePassword');
+Route::get('apiValidateSession', 'SettingController@apiValidateSession');
 
 
 /* -----------------------------------------------------------------------------
@@ -378,6 +379,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\FuenteDatosController@apiUploadArchivoRespaldo');
               Route::get('apiDeleteArchivo', 'SistemaRemi\FuenteDatosController@apiDeleteArchivo');
               Route::get('apiDataSetFuente', 'SistemaRemi\FuenteDatosController@apiDataSetFuente');
+              Route::post('apiRecuperarFuente', 'SistemaRemi\FuenteDatosController@apiRecuperarFuente');
+              Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');
 
           }
       );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ModuloPlanificacion;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Http\Controllers\Controller;
 use App\Models\ModuloPlanificacion\Entidades;
 use App\Models\ModuloPlanificacion\EntidadPlan;
@@ -94,10 +95,11 @@ class AdministracionController extends PlanificacionBaseController
     public function saveEntidadNew(Request $request)
     {
         $this->user = \Auth::user();
-        if ($request->id_entidad)
-        {
-            $idEntidad = $request->id_entidad;
-        }
+       
+       if ($request->id_entidad)
+	        {
+	            $idEntidad = $request->id_entidad;
+	        }
         else
         {
             $idEntidad = $this->user->id_institucion;
@@ -123,13 +125,46 @@ class AdministracionController extends PlanificacionBaseController
                 $entidad->id_tuicion = $request->tuicion;
             }
 
-            $entidad->id_user = $this->user->id;
+            $entidad->id_user = $this->user->id;//capturando el id del usuario logueado
+
+            //salvando organigrama
+            $carpeta = "sp-files/organigramas/";
+            $nombreDatabase = "";
+            $mensajeFile ="";
+
+            //$file=$request->organigrama;
+            
+            if($request->mod_logo){
+
+            	$file=$request->mod_logo;
+
+            	$nombre = $file->getClientOriginalName();
+            	$tipo   = $file->getMimeType();
+            	$extension = $file->getClientOriginalExtension();
+            	$ruta_provisional = $file->getPathName();
+            	$size = $file->getSize();
+            	$nombreSystem = uniqid('ORG-');
+            	$src = $carpeta.$nombreSystem.'.'.$extension;
+
+            	if(move_uploaded_file($ruta_provisional,$src)){
+
+            		$msgFile="Archivo subido correctamente";
+            		$nombreDatabase = $nombreSystem.'.'.$extension;
+            	}else{
+            		$msgFile = "Error al subir el Archivo";
+            	}
+            	//guardando la ruta en el campo ruta_org
+            	$entidad->ruta_org = $nombreSystem.'.'.$extension;
+
+            }
+
+            //fin salvando organigrama
             $entidad->save();
 
             $entidadID             = Entidades::find($entidad->id);
             $entidadID->id_entidad = $entidad->id;
             $entidadID->save();
-
+            
             return \Response::json(array(
                 'error' => false,
                 'title' => "Success!",
@@ -149,6 +184,8 @@ class AdministracionController extends PlanificacionBaseController
 
     public function saveEntidadEdit(Request $request)
     {
+    	//dd($request->mod_logo_Editar);
+
         $this->user = \Auth::user();
         if ($request->id_entidad)
         {
@@ -179,6 +216,43 @@ class AdministracionController extends PlanificacionBaseController
             }
 
             $entidad->id_user_updated = $this->user->id;
+
+            //salvando organigrama
+            $carpeta = "sp-files/organigramas/";
+           
+            $mensajeFile ="";
+            $nombreDataBase = "";
+           
+            
+            if($request->mod_logo_Editar){
+
+            	$file = $request->mod_logo_Editar;
+
+            	$nombre = $file->getClientOriginalName();
+            	$tipo   = $file->getMimeType();
+            	$extension = $file->getClientOriginalExtension();
+            	$ruta_provisional = $file->getPathName();
+            	$size = $file->getSize();
+            	$nombreSystem = uniqid('ORG-');
+            	$src = $carpeta.$nombreSystem.'.'.$extension;
+
+            	if(move_uploaded_file($ruta_provisional,$src)){
+
+            		$msgFile="Archivo subido correctamente";
+            		$nombreDatabase = $nombreSystem.'.'.$extension;
+            	}else{
+            		$msgFile = "Error al subir el Archivo";
+            	}
+            	//guardando la ruta en el campo ruta_org
+            	$entidad->ruta_org = $nombreSystem.'.'.$extension;
+
+            }else{
+            	$entidad->ruta_org = "";
+            }
+
+            //fin salvando organigrama
+
+
             $entidad->save();
 
             return \Response::json(array(
