@@ -4,7 +4,7 @@ namespace App\Models\ModuloPlanificacion;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EntidadPlan extends Model
+class Planes extends Model
 {
-  protected $table = 'sp_entidad_plan';
+  protected $table = 'sp_planes';
 }

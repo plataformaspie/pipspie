@@ -24,6 +24,7 @@ Bienvenido...!!!
     $(document).ready(function(){
       globalSP.activarMenu('0');
       // activarMenu('2','0');
+      globalSP.cargarGlobales();
 
     });
   </script>

@@ -6,6 +6,14 @@
 @endsection
 
 @section('content')
+
+<style>
+	.bigblack{
+		background-color: #000;
+		padding: 200px;
+	}
+
+</style>
 Estoy en la <b> ______________________________________________ RESSSSS</b> 
 <div class="bg-primary-dark">
 	aaaa lmllmmll----------------------
@@ -21,6 +29,8 @@ Estoy en la <b> ______________________________________________ RESSSSS</b>
 		$("#btn").click(function(){
 			i = 0;
 			console.log('EE _______________SSS');
+
+			$(this).addClass("bigblack")
 		})
 
 		var vari="es RESSSS";

@@ -14,15 +14,7 @@
     max-width: 500px;
     margin: 40px auto;
 }
-.icon-danger {
-    color: #E63F24;
-}
-.icon-primary {
-    color: #5BC24C;
-}
-.icon-warning {
-    color: #F5B025;
-}
+
 ##.admin-form .panel-heading{
     background-color: #fafafa;
     border-color: transparent -moz-use-text-color #ddd;
@@ -40,57 +32,22 @@
 
 @endsection
 
-@section('title-topbar')
-<div class="row">
-    <div class="topbar-left ">
-        <ol class="breadcrumb">
-            <li class="crumb-active">
-                <a href="/moduloplanificacion/showPlanesInstitucion">Planes de la Institución</a>
-            </li>
-            <li class="crumb-icon">
-                <a href="/moduloplanificacion/index">
-                    <span class="glyphicon glyphicon-home"></span>
-                </a>
-            </li>
-            <li class="crumb-link">
-                  <a href="/moduloplanificacion/showPlanesInstitucion">Home</a>
-              </li>
-            <li class="crumb-trail">Administrar Planes</li>
-        </ol>
-    </div>
-    <div class="topbar-right ">
-        <div class="ml15 ib va-m" id="toggle_sidemenu_r">
-            <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
-                <span class="badge badge-hero badge-danger">3</span>
-            </a>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="text-center">
-        <h4 id="tituloCabecera"></h4>
-        <h5 id="titulo2Cabecera"></h5>
-    </div>
-</div>
-
-@endsection
 
 @section('content')
-
-<div id="contenedor">
-    <div class="tray tray-center va-t posr">
+    <div class="tray tray-center va-t posr sp_planes">
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-visible" >
-                    <div class="panel-heading text-center">
+                <div class="panel" >
+                    <div class="panel-heading text-center bg-dark">
                         <span class="panel-title"> Listado de Planes de la institución</span>
                     </div>
                     <div class="panel-body">
+                        <h4>Periodo vigente en curso: <strong  class="sp_periodo text"></strong></h4>
                         <div class="row">
                             <div id="estructura" class="col-md-12" >
-                                <button id="nuevo" type="button" class="btn btn-sm btn-default m5 btn-alt  "><i class="fa fa-edit icon-primary"></i> Agregar Plan</button>
-                                <button id="editar" type="button" class="btn btn-sm btn-default m5 btn-alt"><i class="fa fa-edit icon-warning"></i> Editar</button>
-                                <button id="eliminar" type="button" class="btn btn-sm btn-default m5 btn-alt"><i class="glyphicons glyphicons-bin icon-danger"></i> Eliminar</button>
+                                <button id="nuevo" type="button" class="btn btn-sm btn-success dark m5  br6 "><i class="fa fa-plus-circle text-white"></i> Agregar Plan</button>
+                                <button id="editar" type="button" class="btn btn-sm btn-warning dark m5 br6 "><i class="fa fa-edit text-white"></i> Editar</button>
+                                <button id="eliminar" type="button" class="btn btn-sm btn-danger dark m5 br6 "><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
                                 <div id="dataTable"></div>
                             </div>
                         </div>
@@ -100,46 +57,41 @@
         </div>
     </div>
 
-
     <!-- Admin Form Popup -->
     <div id="frm_modal"  class="popup-basic popup-lg admin-form mfp-with-anim mfp-hide ">
         <div class="panel">
-            <div class="panel-heading">
-                  <span class="panel-title" id="tituloModal"><i class="fa fa-pencil"></i> <span> </span></span>
+            <div class="panel-heading bg-dark ">
+                  <span class="panel-title text-white" id="tituloModal"><i class="fa fa-pencil"></i> <span> </span></span>
             </div>
                   <!-- end .panel-heading section -->
                   <form method="post" action="/" id="form-plan" name="form-plan">
                       <div class="panel-body of-a" id="val">
-                        {{ csrf_field() }}
                         <input class="hidden" name="id" id="id" >
                         <div class="row">
                             <div class=" pl5 br-r mvn15">
-                                <h5 class="ml5 mt20 ph10 pb5 br-b fw700">Datos del plan<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h5>
+                                <h3 class="ml5 mt20 ph10 pb5 br-b fw700">Periodo en curso: <strong  class="sp_periodo text"></strong><small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h3>
                                 <div class="section">
                                     <label class="field-label" for="id_tipo_plan">Tipo de Plan</label>
                                     <label class="field select">
-                                        <select id="id_tipo_plan" name="id_tipo_plan" class="" style="width:100%;">
-                                            <option value="">...</option>
+                                        <select id="id_tipo_plan" name="id_tipo_plan" class="required" style="width:100%;">
+                                            <option value="">Seleccione el tipo de plan</option>
                                         </select>
                                         <i class="arrow double"> </i>                    
                                     </label>
                                 </div>
 
                                 <div class="section">
-                                    <label class="field-label" for="gestion_inicio">Gestión inicio</label>
-                                    <label for="gestion_inicio" class="field prepend-icon">
-                                        <input type="text" class="gui-input" id="gestion_inicio" name="gestion_inicio" placeholder="Gestión inicio">
-                                        <label for="gestion_inicio" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                        </label>
+                                    <label class="field-label" for="descripcion">Descripción</label>
+                                    <label for="descripcion" class="field prepend-icon">
+                                        <textarea class="gui-textarea " id="descripcion" name="descripcion" placeholder="Breve descripción" style="height: 70px"></textarea>
+                                        <label for="descripcion" class="field-icon"><i class="fa fa-text-width"></i></label>
                                     </label>
                                 </div>
+
                                 <div class="section">
-                                    <label class="field-label" for="gestion_fin">Gestión fin</label>
-                                    <label for="gestion_fin" class="field prepend-icon">
-                                        <input type="text" class="gui-input" id="gestion_fin" name="gestion_fin" placeholder="Gestión fin">
-                                        <label for="gestion_fin" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                        </label>
-                                    </label>
+                                    <strong class="field-label ">Periodo de Planificación</strong>
+                                    <strong>Gestion inicio: </strong><span id="gestion_inicio"></span>
+                                    <strong class='ml10'>Gestion fin: </strong><span id="gestion_fin"></span>                                    
                                 </div>
                             </div>
                         </div>
@@ -157,7 +109,7 @@
     </div>
       <!-- end: .admin-form -->
 
-</div>
+
 @endsection
 
 @push('script-head')
@@ -174,14 +126,20 @@
 <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <script src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript">
-$(function(){
+// $(function(){
     var planes = {
         dataTable : $("#dataTable"),
+        periodo_planificacion: {},
         source : {},
 
         fillPlanes : function() {
-            $.get(globalSP.urlBase + 'listEntidadPlan', function(resp)
+            $.get(globalSP.urlApi + 'listPlanes', function(resp)
             {
+                planes.periodo_planificacion = resp.periodo_vigente;
+                $(".sp_periodo").html(planes.periodo_planificacion.nombre);
+                $("#gestion_inicio").html(planes.periodo_planificacion.valor);
+                $("#gestion_fin").html(planes.periodo_planificacion.valor2);
+
                 planes.source =
                 {
                     dataType: "json",
@@ -190,6 +148,7 @@ $(function(){
                         { name: 'id', type: 'number' },
                         { name: 'gestion_inicio', type: 'number' },
                         { name: 'gestion_fin', type: 'number' },
+                        { name: 'descripcion_plan', type: 'string' },
                         { name: 'nombre_entidad', type: 'string' },
                         { name: 'sigla_entidad', type: 'string' },
                         { name: 'cod_tipo_plan', type: 'string' },
@@ -197,17 +156,18 @@ $(function(){
                         { name: 'etapas_completadas', type: 'string' }
                     ],
                     id: 'id',
-                    // url: globalSP.urlBase + 'listEntidadPlan' 
+                    // url: globalSP.urlApi + 'listEntidadPlan' 
                 };
                 //Configuracion de la tabla
                 var dataAdapter = new $.jqx.dataAdapter(planes.source);
 
                 var cargarRenderer = function (row, datafield, value) {
-                    var html = '<button class="sel_cargar_plan btn btn-xs btn-primary btn-rounded  "><i class="glyphicons glyphicons-eye_open icon-success"></i> cargar</button>';
+                    var html = '<button class="sel_cargar_plan btn btn-xs bg-system dark btn-rounded "><i class="fa fa-arrow-circle-up icon-success"></i> <span>cargar</span></button>';
                     return html;
                 };
                 var editDelRenderer = function (row, columnfield, value, defaulthtml, columnproperties) {
-                    html = '<a href="#" id="edit-' + value + '" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Plan" ><i class="fa fa-edit icon-warning fa-lg"></i></a> <a href="#" id="del-' + value + '" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar Plan" ><i class="glyphicons glyphicons-bin icon-danger "></i></a> ' 
+                    html = `<a href="#" id="edit-${value}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Plan" ><i class="fa fa-edit text-warning fa-lg"></i></a> 
+                        <a href="#" id="del-${value}" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar Plan" ><i class="fa fa-minus-circle text-danger fa-lg"></i></a> ` 
                     return html;
                 };
 
@@ -216,60 +176,46 @@ $(function(){
                     altRows: false,
                     sortable: true,
                     width: "100%",
-                    filterable: true,
+                    filterable: false,
                     filterMode: 'simple',
                     selectionMode: 'singleRow',
                     localization: getLocalization('es'),
                     columns: [
-                        { text: '*', cellsRenderer: cargarRenderer, width: 75 },
+                        { text: '*', cellsRenderer: cargarRenderer, width: 80 },
                         { text: '-', width: 90, cellsRenderer: function (row, column, value, rowData) {
-                              var image = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                              var imgurl = '/img/ico_' + rowData.cod_tipo_plan + '.png';
-                              var img = '<img width="60" height="80" style="display: block;" src="' + imgurl + '"/>';
-                              image += img;
-                              image += "</div>";
+                              var image = `<div style='margin: 5px; margin-bottom: 3px;'>
+                                          <img width="60" height="80" style="display: block;" src="/img/ico_${rowData.cod_tipo_plan}.png"/>
+                                          </div>`
                               return image;
                               }
                         },
                         { text: 'Descripcion', dataField: 'nombre', align: 'center',
                             cellsRenderer: function (row, column, value, rowData) {
-                                var container = '<div style="width: 100%; height: 100%;">'
-                                var leftcolumn = '<div style="float: left; width: 100%;">';
-
-                                var nombre = "<div style='margin: 10px;'><b>Nombre Entidad:</b> " + rowData.nombre_entidad + "</div>";
-                                var sigla = "<div style='margin: 10px;'><b>Sigla:</b> " + rowData.sigla_entidad + "</div>";
-                                var periodo = "<div style='margin: 10px;'><b>Periodo Plan:</b> " + rowData.gestion_inicio + " - " + rowData.gestion_fin + "</div>";
-                                var tipoPlan = "<div style='margin: 10px;'><b>Documento Planificación:</b> " + rowData.cod_tipo_plan + "</div>";
-
-                                leftcolumn += nombre;
-                                leftcolumn += sigla;
-                                leftcolumn += periodo;
-                                leftcolumn += tipoPlan;
-                                leftcolumn += "</div>";
-
-                                container += leftcolumn;
-                                container += "</div>";
+                                var container = `<div style="width: 100%; height: 100%;">
+                                                    <div style="float: left; width: 100%;">
+                                                    <div class="ml10"><b>Nombre Entidad:</b> ${rowData.nombre_entidad}</div>
+                                                    <div class="ml10"><b>Sigla:</b> ${rowData.sigla_entidad}"</div>
+                                                    <div class="ml10"><b>Periodo Plan:</b> ${rowData.gestion_inicio} - ${rowData.gestion_fin}</div>
+                                                    <div class="ml10"><b>Documento Planificación:</b> ${rowData.cod_tipo_plan} </div>
+                                                    <div class="ml10"><b>Descripción:</b> ${rowData.descripcion_plan ? rowData.descripcion_plan : '' } </div>  
+                                                </div>`
                                 return container;
                             }
                         },
-                        { text: 'Sigla', dataField: 'sigla_entidad', hidden: true },
-                        { text: 'Inicio', dataField: 'gestion_inicio', hidden: true },
-                        { text: 'Fin', dataField: 'gestion_fin', hidden: true },
-                        { text: 'Plan', dataField: 'cod_tipo_plan', hidden: true },
                         { text: ' ', dataField: 'id', cellsrenderer: editDelRenderer},
                     ]
                 });
             });
         },
         refresh: function(){
-            $.get(globalSP.urlBase + 'listEntidadPlan', function(resp) {
+            $.get(globalSP.urlApi + 'listPlanes', function(resp) {
                 planes.source.localdata = resp.data;
                 planes.dataTable.jqxDataTable("updateBoundData");
             })   
         },
         nuevo: function(){
             $("#tituloModal span").html("Crear Plan");
-            $('#form-plan select, #form-plan input:text').val('');
+            $('#form-plan select, #form-plan input:text, textarea').val('');
             ctxForm.showModal();
         },
         editar: function(){
@@ -298,22 +244,30 @@ $(function(){
         },
         cargar: function(){
             var rowsel = planes.dataTable.jqxDataTable('getSelection')[0];
-            globalSP.setGlobalPlanActivo(rowsel); 
-            globalSP.configuraMenu(rowsel);  
+            planactivo = rowsel;
+                $('input[name=id_plan]').val(planactivo.id) ;
+                // globalSP.planActivo = {
+                //     id : planactivo.id,
+                //     sigla_entidad : planactivo.sigla_entidad,
+                //     cod_tipo_plan : planactivo.cod_tipo_plan,
+                //     gestion_inicio : planactivo.gestion_inicio,
+                //     gestion_fin : planactivo.gestion_fin
+                // } 
+            // $.get(globalSP.urlApi + 'getmenu', {p :rowsel.id}, function(res){
+                // globalSP.generarMenu(rowsel.id, res.data);
+                // globalSP.configuraMenu(rowsel); 
+                window.location = globalSP.url + 'showPlanesInstitucion?p=' + rowsel.id ; 
+            // })
+             
 
             $('#menuSP .sp_menu').each(function(index, elem){
-                var ref = $(elem).attr('href');
-                ref = ref.split('=')[0] + '=' + globalSP.planActivo.id;
-                $(elem).attr('href', ref);
-                // console.log(ref);
-            });
-
-
-    
+                var urlhref = $(elem).attr('href');
+                // coloca el querystring en las urls del menu
+                urlhref = urlhref.split('=')[0] + '=' + globalSP.planActivo.id;
+                $(elem).attr('href', urlhref);
+            });    
             globalSP.setTitulo2();
-
         },
-
     }
 
     var ctxForm = {
@@ -338,7 +292,7 @@ $(function(){
             });
         }, 
         cargarCombos : function(){
-            $.get(globalSP.urlBase + "getParametros/tipo_plan/valor/SECTORIAL", function(res){
+            $.get(globalSP.urlApi + "getparametros/tipo_plan/valor/SECTORIAL", function(res){
                 opts = res.data;
                 opts.forEach(function(op){
                     $("#id_tipo_plan").append('<option value="' + op.id + '">' + op.nombre + '</option>');
@@ -349,8 +303,9 @@ $(function(){
             var objPlan = {
                             id: $("#id").val(),
                             id_tipo_plan:$("#id_tipo_plan").val(),
-                            gestion_inicio: $("#gestion_inicio").val(),
-                            gestion_fin: $("#gestion_fin").val(),
+                            descripcion: $("#descripcion").val(),
+                            // gestion_inicio: $("#gestion_inicio").val(),
+                            // gestion_fin: $("#gestion_fin").val(),
                             _token : $('input[name=_token]').val()
                         }
             return objPlan;
@@ -358,10 +313,10 @@ $(function(){
         setDataForm: function(objPlan){
             $("#id").val(objPlan.id);
             $("#id_tipo_plan").val(objPlan.id_tipo_plan);
-            $("#gestion_inicio").val(objPlan.gestion_inicio);
-            $("#gestion_fin").val(objPlan.gestion_fin);
+            $("#descripcion").val(objPlan.descripcion_plan);
+            // $("#gestion_inicio").val(objPlan.gestion_inicio);
+            // $("#gestion_fin").val(objPlan.gestion_fin);
         },
-
         validateRules: function(){
             var reglasVal = {
                     errorClass: "state-error",
@@ -401,7 +356,7 @@ $(function(){
         }, 
         saveData: function(){    
             var objPlan = this.getDataForm();
-            $.post(globalSP.urlBase + 'saveEntidadPlan', objPlan, function(res){
+            $.post(globalSP.urlApi + 'savePlan', objPlan, function(res){
                 new PNotify({
                             title: !res.error ? (res.accion=='insert' ? 'Plan Creado' : 'Modificado') : 'Error!!',
                             text: res.msg,
@@ -427,7 +382,7 @@ $(function(){
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.get(globalSP.urlBase + 'deleteEntidadPlan', {'id': id}, function(res){
+                    $.get(globalSP.urlApi + 'deletePlan', {'id': id}, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -447,23 +402,25 @@ $(function(){
     }
 
 
-    globalSP.activarMenu('30');
+    globalSP.activarMenu(globalSP.menu.AdminPlanes);
     globalSP.cargarGlobales();
-    planes.fillPlanes();
+    globalSP.setBreadcrumb('Planes de la Institución', 'Administrar Planes');
 
+    planes.fillPlanes();
+    ctxForm.cargarCombos();
 
     $('#nuevo').click(function(){
         planes.nuevo();
     });
 
-    $("#contenedor").on('click', '.sel_edit, #editar', function(){
+    $(".sp_planes").on('click', '.sel_edit, #editar', function(){
         planes.editar();
     });
 
-    $("#contenedor").on('click', '.sel_delete, #eliminar', function(){
+    $(".sp_planes").on('click', '.sel_delete, #eliminar', function(){
         planes.eliminar();
     });
-    $("#contenedor").on('click', '.sel_cargar_plan', function(){
+    $(".sp_planes").on('click', '.sel_cargar_plan', function(){
         planes.cargar();
     });
 
@@ -473,7 +430,8 @@ $(function(){
 
     $("#form-plan").validate(ctxForm.validateRules());
 
-    ctxForm.cargarCombos();
-});
+    
+
+// })
 </script>
 @endpush

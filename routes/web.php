@@ -218,48 +218,75 @@ Route::group(['middleware' => 'auth'],function(){
               // Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
               // Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
               // Route::get('res', 'ModuloPlanificacion\PruebaController@res');
+
               Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
               Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
-              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
-              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
-              Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showPlanesInstitucion');
+              Route::get('showEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@showEnfoque');
+              Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
+              Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
+
+
               Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
 
+              Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
+                  return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
+              });
           }
       );
       Route::group(
           array('prefix' => 'api/moduloplanificacion'),
           function() {
-              Route::get('getmenu', 'ModuloPlanificacion\PlanificacionBaseController@getMenuPlan');
+              /********** genericas de la plantilla *********/
+              Route::get('getmenu', 'ModuloPlanificacion\PlanificacionBaseController@getMenu');
               Route::get('getuser', 'ModuloPlanificacion\PlanificacionBaseController@getUser');
               Route::get('getplan', 'ModuloPlanificacion\PlanificacionBaseController@getPlan');
-              Route::get('getParametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
+              Route::get('getpilares', 'ModuloPlanificacion\PlanificacionBaseController@getPilares');
+              Route::get('getparametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
 
+              /********** Etidades *************************/
               Route::get('setEstructuraEntidad', 'ModuloPlanificacion\AdministracionController@setEstructuraEntidad');
               Route::post('saveEntidadNew', 'ModuloPlanificacion\AdministracionController@saveEntidadNew');
               Route::get('dataSetEntidad', 'ModuloPlanificacion\AdministracionController@dataSetEntidad');
               Route::post('saveEntidadEdit', 'ModuloPlanificacion\AdministracionController@saveEntidadEdit');
               Route::get('deleteEntidad', 'ModuloPlanificacion\AdministracionController@deleteEntidad');
               Route::get('setEntidadOrganigrama', 'ModuloPlanificacion\AdministracionController@setEntidadOrganigrama');
+
+              /********** oficinas **********************/
               Route::post('saveOficinaNew', 'ModuloPlanificacion\AdministracionController@saveOficinaNew');
               Route::post('saveOficinaEdit', 'ModuloPlanificacion\AdministracionController@saveOficinaEdit');
               Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
               Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
               Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
+              
+              /********** Planes ***********************/
+              Route::get('listPlanes', 'ModuloPlanificacion\PlanesController@listPlanes');
+              Route::post('savePlan', 'ModuloPlanificacion\PlanesController@savePlan');
+              Route::get('deletePlan', 'ModuloPlanificacion\PlanesController@deletePlan');
+              Route::post('actualizaEtapas', 'ModuloPlanificacion\PlanesController@actualizaEtapas');
+              
+              /********** Enfoque politico *****************/
+              Route::get('getEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@getEnfoquePolitico');
+              Route::post('saveEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@saveEnfoque');
 
-              Route::get('listEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@listEntidadPlan');
-              Route::post('saveEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@saveEntidadPlan');
-              Route::get('deleteEntidadPlan', 'ModuloPlanificacion\EntidadPlanController@deleteEntidadPlan');
+              Route::get('listAtribucionesPilares', 'ModuloPlanificacion\EnfoquePoliticoController@listAtribucionesPilares');
+              Route::post('saveAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@saveAtribucion');
+              Route::post('deleteAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@deleteAtribucion');
+
+              /********** Diagnostico ******************/
+              Route::get('setDiagnostico', 'ModuloPlanificacion\DiagnosticoController@setDiagnostico');
+              Route::get('dataSetDiagnostico', 'ModuloPlanificacion\DiagnosticoController@dataSetDiagnostico');
+              Route::post('saveDataEdit', 'ModuloPlanificacion\DiagnosticoController@saveDataEdit');
+              Route::get('deleteDiagnostico', 'ModuloPlanificacion\DiagnosticoController@deleteDiagnostico');
+              Route::post('saveDataNew', 'ModuloPlanificacion\DiagnosticoController@saveDataNew');
+
+              /********** Politica Sectorial/institucional ******************/
+              Route::get('getPilaresPlan', 'ModuloPlanificacion\PoliticaController@getPilaresVinculadosAlPlan');     
+              Route::get('listPoliticasPilares', 'ModuloPlanificacion\PoliticaController@listPoliticasPilares');
+              Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
+              Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
 
 
-
-              Route::get('setDiagnostico', 'ModuloPlanificacion\PlanificacionController@setDiagnostico');
-              Route::get('dataSetDiagnostico', 'ModuloPlanificacion\PlanificacionController@dataSetDiagnostico');
-              Route::post('saveDataEdit', 'ModuloPlanificacion\PlanificacionController@saveDataEdit');
-              Route::get('deleteDiagnostico', 'ModuloPlanificacion\PlanificacionController@deleteDiagnostico');
-              Route::post('saveDataNew', 'ModuloPlanificacion\PlanificacionController@saveDataNew');
-              Route::get('dataEntidadEnfoque', 'ModuloPlanificacion\PlanificacionController@dataEntidadEnfoque');
-              Route::post('saveEnfoqueEdit', 'ModuloPlanificacion\PlanificacionController@saveEnfoqueEdit');
 
 
           }
