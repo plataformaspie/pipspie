@@ -1396,7 +1396,7 @@
 
 
     $(".ctrl-btn").click(function () {
-      //validarSession();
+      validarSession();
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
       if(next == 7){
@@ -2025,6 +2025,7 @@
     }
 
     function save(){
+      validarSession();
       swal({
         title: "Guardar?",
         text: "Se completo el llenado de los datos solicitados!",
