@@ -475,7 +475,7 @@
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
               { name: 'estado', type: 'string' },
-              { name: 'responsable_nivel_1', type: 'string' }
+              { name: 'responsable', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -497,7 +497,7 @@
             { text: 'Estado', dataField: 'estado', width: 120, cellsAlign: 'center' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
+            { text: 'Responsable', width: 200, dataField: 'responsable' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
                           var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
