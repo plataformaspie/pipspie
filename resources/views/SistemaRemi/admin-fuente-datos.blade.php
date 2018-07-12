@@ -60,8 +60,20 @@
       <div class="col-lg-12 ">
           <div class="white-box">
             <h3 class="box-title m-b-0">Lista de Fuente de datos</h3>
-            <p class="text-muted m-b-30">Fuente de Datos registrados <button id ="btn-new" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i></button></p>
-            <div id="dataTable"></div>
+            <p class="text-muted m-b-30">Fuente de Datos registrados
+              <button id ="btn-new" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i> Agregar Nuevo</button>
+              <!--button id="excelExport" type="button" class="btn btn-info btn-sm m-t-5"><i class="fa fa-plus-square"></i> Excel</button-->
+            </p>
+            <div class="row">
+              <div id="filtAvanzado" class="col-lg-3 hidden">
+                aaaaa
+              </div>
+              <div id="jqxDataTable" class="col-lg-12">
+                <!--p><button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-circle"><i class="fa fa-filter"></i></button></p-->
+                <div id="dataTable"></div>
+              </div>
+            </div>
+
           </div>
       </div>
   </div>
@@ -78,8 +90,8 @@
                       <p class="text-muted m-b-30">
                         La documentación de todos los elementos marcados con “<label class="text-danger">(o)</label>” es de carácter obligatorio.<br/>
                         La documentación de todos los elementos marcados con “<label class="text-success">(r)</label>” es de carácter recomendado
-                        <button id ="btn-back" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;">
-                          <i class="fa fa-arrow-left"></i>
+                        <button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;">
+                          <i class="fa fa-arrow-left"> Atras</i>
                         </button>
                       </p>
                       <div class="form-group row m-b-10">
@@ -1286,6 +1298,8 @@
   var total_form = 0;
     $(document).ready(function(){
       //$(".select2").select2();
+
+
       var theme = 'darkblue';
 
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
@@ -1318,7 +1332,7 @@
               { name: 'tipo', type: 'string' },
               { name: 'estado', type: 'string' },
               { name: 'id_estado', type: 'int' },
-              { name: 'responsable_nivel_1', type: 'string' }
+              { name: 'responsable', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -1328,19 +1342,23 @@
       {
           source: dataAdapter,
           width:"100%",
+          height:"400px",
           theme:theme,
           columnsResize: true,
           filterable: true,
-          //filterMode: 'simple',
-          pageable: true,
-          pagerButtonsCount: 10,
+          filterMode: 'simple',
+          //pageable: true,
+          //pagerButtonsCount: 10,
+          //ready:function(){
+        //    $("#filterdataTable").append('<p><button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-circle"><i class="fa fa-filter"></i></button></p>');
+          //},
           localization: getLocalization('es'),
-          pageSize: 100,
+          //pageSize: 100,
           columns: [
             { text: 'Estado', width: 100, dataField: 'estado' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
+            { text: 'Responsable', width: 200, dataField: 'responsable' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
                           if(rowData.id_estado == 1 || rowData.id_estado == 3){
@@ -1624,6 +1642,55 @@
       });
 
 
+
+      $("#excelExport").click(function() {
+          //cantidad de datos
+          var rows = $('#dataTable').jqxDataTable('getRows');
+          var ids = "";
+          $('#tabledataTable > tbody > tr').each(function() {
+             ids += $(this).attr("data-key")+",";
+          });
+
+          console.log(ids);
+
+
+          /*var group = $('#jqxgrid').jqxGrid('groups');
+
+          try {
+              //intento algo que puede producir un error
+              var orden = $('#jqxgrid').jqxGrid('sortcolumn');
+          } catch (mierror) {
+              //hago algo cuando el error se ha detectado
+              var orden = false;
+          }
+          var direccion = 'ASC';
+          if (orden) {
+              var dir = $('#jqxgrid').jqxGrid('sortdirection');
+              direccion = dir.ascending ? 'ASC' : 'DESC';
+          }
+          else
+          {
+              orden = ""
+          }
+          var columnas = "";
+          var tituls = "";
+          var columns = $('#jqxgrid').jqxGrid('columns');
+          $.each(columns.records, function(i, e) {
+              if (e.datafield != null && e.hidden != true)
+              {
+                  if(e.datafield != "Edit"){
+                      columnas += e.datafield + ",";
+                      tituls += e.text + ",";
+                  }
+              }
+          });
+          location.href = " path('accion_xls_listaidentificacion') ?datos=" + ids + "&columnas=" + columnas + "&titulos=" + tituls + "&grupo=" + group + "&orden=" + orden + "&dir=" + direccion;*/
+      });
+
+
+
+
+
     });
     //fin document
 
@@ -1683,6 +1750,8 @@
        $('#option1').removeClass('show');
        $('#option1').addClass('hidden');
     });
+
+
 
     function btn_update(ele) {
       $("#btn-new" ).trigger( "click" );
@@ -1808,10 +1877,8 @@
                   }
 
 
-
-
-
-
+                  $('input[name="cobertura_rraa"]').val(data.fuente[0].cobertura_rraa);
+                  $('textarea[name="cobertura_rraa_descripcion"]').val(data.fuente[0].cobertura_rraa_descripcion);
 
                   if(data.fuente[0].cobertura_geografica){
                     var cobertura = data.fuente[0].cobertura_geografica;
@@ -2174,6 +2241,18 @@
               }
             }
         });
+    }
+
+    function showFilterAdvanced() {
+      if ($('#filtAvanzado').hasClass('hidden')){
+            $('#filtAvanzado').removeClass('hidden')
+            $('#jqxDataTable').removeClass('col-lg-12');
+            $('#jqxDataTable').fadeIn(2000).addClass('col-lg-9');
+      }else{
+          $('#filtAvanzado').addClass('hidden')
+          $('#jqxDataTable').removeClass('col-lg-9');
+          $('#jqxDataTable').fadeIn(2000).addClass('col-lg-12');
+        }
     }
 
 
