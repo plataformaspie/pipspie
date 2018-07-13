@@ -67,7 +67,6 @@ class FuenteDatosController extends Controller
 
   public function adminFuenteDatos()
   {
-
     $tipos = TiposMedicion::get();
     $unidades = UnidadesMedidas::where('activo',true)->get();
     $dimensiones = Dimensiones::where('id_variable',4)->get();
