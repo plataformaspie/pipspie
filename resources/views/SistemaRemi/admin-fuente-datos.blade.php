@@ -1717,7 +1717,7 @@
                                               '<input type="hidden" name="arc_nombre[]" value="'+ data.item.nombre +'" />'+
                                               '<input type="hidden" name="arc_archivo[]" value="'+ data.item.archivo +'" />'+
                                               '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
-                                              '<a href="/respaldos/'+data.item.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo ">'+
+                                              '<a href="/respaldos/'+data.item.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
                                               '<p>'+
                                                 '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
                                                  data.item.nombre +
@@ -2081,7 +2081,7 @@
                                           '<input type="hidden" name="arc_nombre[]" value="'+ data.nombre +'" />'+
                                           '<input type="hidden" name="arc_archivo[]" value="'+ data.archivo +'" />'+
                                           '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
-                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo ">'+
+                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
                                           '<p>'+
                                             '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
                                              data.nombre +
