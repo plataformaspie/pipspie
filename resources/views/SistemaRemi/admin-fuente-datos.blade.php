@@ -2070,6 +2070,10 @@
 
 
                   $.each(data.archivos, function(i, data) {
+                      var filepath = data.archivo;
+                      var ico = filepath.split(".");
+                      var iconoSel = iconos(ico[1]);
+
                       var nombre = data.nombre.replace(/\s/g,"_");
                       var html = '<tr id="ARC'+ nombre +'" class="">'+
                                       '<td>'+
@@ -2077,9 +2081,9 @@
                                           '<input type="hidden" name="arc_nombre[]" value="'+ data.nombre +'" />'+
                                           '<input type="hidden" name="arc_archivo[]" value="'+ data.archivo +'" />'+
                                           '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
-                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
+                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo ">'+
                                           '<p>'+
-                                            '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo "> '+
+                                            '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
                                              data.nombre +
                                           '</p>'+
                                           '</a>'+
