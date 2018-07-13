@@ -105,12 +105,7 @@ class FuenteDatosController extends Controller
                                               'id_estado'=>$item->id_estado,
                                               'responsable' => $responsable[0]->responsable));
       }
-      return \Response::json(array(
-          'error' => false,
-          'title' => "Success!",
-          'msg' => "Datos recuperados con exito.",
-          'item' =>$this->listFuente)
-      );
+      return \Response::json($this->listFuente);
 
    }
 
@@ -287,7 +282,7 @@ class FuenteDatosController extends Controller
 
           $fuente->cobertura_rraa = $request->cobertura_rraa;
           $fuente->cobertura_rraa_descripcion = $request->cobertura_rraa_descripcion;
-          
+
           $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
           $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
 
@@ -378,6 +373,7 @@ class FuenteDatosController extends Controller
 
   public function apiUploadArchivoRespaldo(Request $request)
   {
+    //ini_set('max_execution_time', 300);
     $carpeta = "respaldos/";
     $nombreDataBase = "";
     $msgFile = "";
