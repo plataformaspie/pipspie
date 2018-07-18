@@ -3,7 +3,7 @@
    This is a starter template page. Use this page to start your new project from
    scratch. This page gets rid of all links and provides the needed markup only.
    -->
-<html lang="en">
+<html lang="lang="{{ app()->getLocale() }}"">
 
 <head>
     <meta charset="utf-8">
@@ -14,6 +14,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_remi.png">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>::RIME::</title>
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}">

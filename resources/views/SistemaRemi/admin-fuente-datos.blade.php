@@ -82,13 +82,13 @@
                           <option value="excel">Excel</option>
                       </select>
                       <label>
-                        <input name="optionsRadios2" value="option1" type="radio"> Contenido de tabla
+                        <input name="option_data" value="1" type="radio"> Contenido de tabla
                       </label>
                       <label>
-                        <input name="optionsRadios2" value="option1" type="radio"> Registro seleccionado
+                        <input name="option_data" value="2" type="radio"> Registro seleccionado
                       </label>
                       <div style="float: left; margin-left: 20px; margin-top: 10px;">
-                        <button id="excelExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a Excel</button>
+                        <button id="excelExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
                       </div>
                   </div>
               </div>
@@ -1146,7 +1146,7 @@
                                                </div>
                                              </div>
                                              <hr/>
-                                             <h3 class="box-title m-b-0">Cargar documentos(menor a 40Mb)</h3>
+                                             <h3 class="box-title m-b-0">Cargar documentos(menor a 300Mb)</h3>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                  <div class="col-md-3 p-l-0 p-r-0">
                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre de Archivo</label>
@@ -1747,7 +1747,7 @@
                       if(data.status != 401){
                         $.toast({
                           heading: 'Error:',
-                          text: 'Error al cargar el documento. Verifique que el tamaño sea menor a 40Mb',
+                          text: 'Error al cargar el documento. Verifique que el tamaño sea menor a 300Mb',
                           position: 'top-right',
                           loaderBg:'#ff6849',
                           icon: 'error',
@@ -1803,16 +1803,38 @@
 
       $("#excelExport").click(function() {
           //cantidad de datos
+          switch($('input:radio[name=option_data]:checked').val()) {
+              case 1:
+                  var ids = "";
+                  $('#tabledataTable > tbody > tr').each(function() {
+                     ids += $(this).attr("data-key")+",";
+                  });
+                  break;
+              case 2:
+                  return 'fa-file-excel-o';
+                  break;
+              default:
+                  return 'fa-file-o';
+          }
+          try {
+              //intento algo que puede producir un error
+              var orden = $('#dataTable').jqxDataTable('sortcolumn');
+          } catch (mierror) {
+              //hago algo cuando el error se ha detectado
+              var orden = false;
+          }
+          var direccion = 'ASC';
+          if (orden) {
+              var dir = $('#dataTable').jqxDataTable('sortdirection');
+              direccion = dir.ascending ? 'ASC' : 'DESC';
+          }
+          else
+          {
+              orden = ""
+          }
+          location.href = "{{ url('/api/sistemarime/apiExportData') }}?datos=" + ids + "&orden=" + orden + "&dir=" + direccion;
 
-          var rows = $('#dataTable').jqxDataTable('getRows');
-          var ids = "";
-          $('#tabledataTable > tbody > tr').each(function() {
-             ids += $(this).attr("data-key")+",";
-          });
-
-          console.log(ids);
-
-
+          //var rows = $('#dataTable').jqxDataTable('getRows');
           /*var group = $('#jqxgrid').jqxGrid('groups');
 
           try {
@@ -2005,6 +2027,7 @@
 
 
                   $('input[name="numero_total_formulario"]').val(data.fuente[0].numero_total_formulario);
+
                   total_form = data.fuente[0].numero_total_formulario;
 
                   var form = data.fuente[0].nombre_formulario;
@@ -2012,11 +2035,11 @@
                   if(data.fuente[0].nombre_formulario){
                     var setForms = form.split('|');
                     $.each(setForms, function(index, item) {
-                          var arrayForm = [];
-                          for(i=1;i<=total_form;i++){
-                            arrayForm[i] = $('#frm-nom-'+i).val();
-                          }
-                          var i = (index+1);
+                           var arrayForm = [];
+                           for(i=1;i<=total_form;i++){
+                             arrayForm[i] = $('#frm-nom-'+i).val();
+                           }
+                           var i = (index+1);
                            if(arrayForm[i]){
                              var valorNombre = arrayForm[i];
                            }else{

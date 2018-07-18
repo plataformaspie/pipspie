@@ -488,7 +488,7 @@
           theme:theme,
           columnsResize: true,
           filterable: true,
-          //filterMode: 'advanced',
+          filterMode: 'simple',
           pageable: true,
           pagerButtonsCount: 10,
           localization: getLocalization('es'),
