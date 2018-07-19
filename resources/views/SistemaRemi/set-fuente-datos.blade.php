@@ -105,7 +105,7 @@
                       <div class="panel-body text-center">
 
 
-                          <a href="javascript:myFunction('You clicked!')"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato ">Metadato</a>
+                          <a href="javascript:myFunction('You clicked!')"><i class="fa fa-file-excel-o"  style="font-size: 30px;" title="Descargar Metadato"></i> Metadato</a>
 
 
                           <!--Aqui hay que cambiar AQUI HAY QUE EMPEZAR AQUI EMPEZAR-->
@@ -492,14 +492,15 @@
       {
           source: dataAdapter,
           width:"100%",
+          height:"400px",
           theme:theme,
           columnsResize: true,
           filterable: true,
           filterMode: 'simple',
-          pageable: true,
-          pagerButtonsCount: 10,
+          //pageable: true,
+          //pagerButtonsCount: 10,
           localization: getLocalization('es'),
-          pageSize: 50,
+          //pageSize: 50,
           columns: [
             { text: 'Estado', dataField: 'estado', width: 120, cellsAlign: 'center' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
@@ -525,6 +526,7 @@
          $('#option2').addClass('hidden');
          $('.tagHidden').removeClass('hidden');
          $('.tagHidden').addClass('hidden');
+         $("#datosARC > tbody").html("");
       });
 
 
@@ -691,14 +693,17 @@
 
                   $.each(data.archivos, function(i, data) {
                       var nombre = data.nombre.replace(/\s/g,"_");
+                      var filepath = data.archivo;
+                      var ico = filepath.split(".");
+                      var iconoSel = iconos(ico[1]);
                       var html = '<tr id="ARC'+ nombre +'" class="">'+
                                       '<td>'+
-                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
-                                          '<p>'+
-                                            '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo" width="35"> '+
-                                             data.nombre +
-                                          '</p>'+
-                                          '</a>'+
+                                        '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
+                                        '<p>'+
+                                          '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
+                                           data.nombre +
+                                        '</p>'+
+                                        '</a>'+
                                       '</td>'+
                                   '</tr>';
                        $("#datosARC > tbody").append(html);
@@ -741,6 +746,55 @@ function myFunction(){
   //alert("hola desde el link" + idSeleccionar);
   location.href = '/api/sistemarime/descagarExcelMetadatosOnly/'+ idSeleccionar;
 
+}
+
+function iconos(ele){
+    switch(ele) {
+        case 'xls':
+            return 'fa-file-excel-o';
+            break;
+        case 'xlsx':
+            return 'fa-file-excel-o';
+            break;
+        case 'doc':
+            return 'fa-file-word-o';
+            break;
+        case 'docx':
+            return 'fa-file-word-o';
+            break;
+        case 'txt':
+            return 'fa-file-text-o';
+            break;
+        case 'ppt':
+            return 'fa-file-powerpoint-o';
+            break;
+        case 'pptx':
+            return 'fa-file-powerpoint-o';
+            break;
+        case 'rar':
+            return 'fa-file-zip-o';
+            break;
+        case 'zip':
+            return 'fa-file-zip-o';
+            break;
+        case 'pdf':
+            return 'fa-file-pdf-o';
+            break;
+        case 'jpg':
+            return 'fa-file-image-o';
+            break;
+        case 'jpgeg':
+            return 'fa-file-image-o';
+            break;
+        case 'png':
+            return 'fa-file-image-o';
+            break;
+        case 'gif':
+            return 'fa-file-image-o';
+            break;
+        default:
+            return 'fa-file-o';
+    }
 }
 
 
