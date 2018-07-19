@@ -88,7 +88,7 @@
                         <input name="option_data" value="2" type="radio"> Registro seleccionado
                       </label>
                       <div style="float: left; margin-left: 20px; margin-top: 10px;">
-                        <button id="excelExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
+                        <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
                       </div>
                   </div>
               </div>
@@ -1378,6 +1378,7 @@
           columnsResize: true,
           filterable: true,
           filterMode: 'simple',
+          selectionMode: 'multipleRows',
           //pageable: true,
           //pagerButtonsCount: 10,
           sortable: true,
@@ -1801,71 +1802,60 @@
 
 
 
-      $("#excelExport").click(function() {
+      $("#generarExport").click(function() {
           //cantidad de datos
-          switch($('input:radio[name=option_data]:checked').val()) {
-              case 1:
-                  var ids = "";
+          var selection = $("#dataTable").jqxDataTable('getSelection');
+          var optionSel = $('input:radio[name=option_data]:checked').val();
+          var orden = false;//agregar configuracion de la tabla
+          var direccion = 'ASC';//agregar configuracion de la tabla
+          var ids = "";
+          switch(optionSel) {
+              case "1":
                   $('#tabledataTable > tbody > tr').each(function() {
                      ids += $(this).attr("data-key")+",";
                   });
+                  location.href = "{{ url('/api/sistemarime/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
                   break;
-              case 2:
-                  return 'fa-file-excel-o';
-                  break;
-              default:
-                  return 'fa-file-o';
-          }
-          try {
-              //intento algo que puede producir un error
-              var orden = $('#dataTable').jqxDataTable('sortcolumn');
-          } catch (mierror) {
-              //hago algo cuando el error se ha detectado
-              var orden = false;
-          }
-          var direccion = 'ASC';
-          if (orden) {
-              var dir = $('#dataTable').jqxDataTable('sortdirection');
-              direccion = dir.ascending ? 'ASC' : 'DESC';
-          }
-          else
-          {
-              orden = ""
-          }
-          location.href = "{{ url('/api/sistemarime/apiExportData') }}?datos=" + ids + "&orden=" + orden + "&dir=" + direccion;
-
-          //var rows = $('#dataTable').jqxDataTable('getRows');
-          /*var group = $('#jqxgrid').jqxGrid('groups');
-
-          try {
-              //intento algo que puede producir un error
-              var orden = $('#jqxgrid').jqxGrid('sortcolumn');
-          } catch (mierror) {
-              //hago algo cuando el error se ha detectado
-              var orden = false;
-          }
-          var direccion = 'ASC';
-          if (orden) {
-              var dir = $('#jqxgrid').jqxGrid('sortdirection');
-              direccion = dir.ascending ? 'ASC' : 'DESC';
-          }
-          else
-          {
-              orden = ""
-          }
-          var columnas = "";
-          var tituls = "";
-          var columns = $('#jqxgrid').jqxGrid('columns');
-          $.each(columns.records, function(i, e) {
-              if (e.datafield != null && e.hidden != true)
-              {
-                  if(e.datafield != "Edit"){
-                      columnas += e.datafield + ",";
-                      tituls += e.text + ",";
+              case "2":
+                  if(selection.length > 0){
+                    if (selection && selection.length > 0) {
+                        var rows = $("#dataTable").jqxDataTable('getRows');
+                        for (var i = 0; i < selection.length; i++) {
+                            var rowData = selection[i];
+                            ids += rowData.id;
+                            if (i < selection.length - 1) {
+                              ids += ", ";
+                            }
+                        }
+                      location.href = "{{ url('/api/sistemarime/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                    }
+                  }else{
+                    $.toast({
+                      heading: 'Error:',
+                      text: 'Seleccione algún registro de la tabla.',
+                      position: 'top-right',
+                      loaderBg:'#ff6849',
+                      icon: 'error',
+                      hideAfter: 3500
+                    });
                   }
-              }
-          });
-          location.href = " path('accion_xls_listaidentificacion') ?datos=" + ids + "&columnas=" + columnas + "&titulos=" + tituls + "&grupo=" + group + "&orden=" + orden + "&dir=" + direccion;*/
+              break;
+              default:
+                $.toast({
+                  heading: 'Error:',
+                  text: 'Configure su reporte.',
+                  position: 'top-right',
+                  loaderBg:'#ff6849',
+                  icon: 'error',
+                  hideAfter: 3500
+                });
+              break;
+          }
+
+
+
+
+
       });
 
 
