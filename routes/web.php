@@ -258,13 +258,13 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
               Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
               Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
-              
+
               /********** Planes ***********************/
               Route::get('listPlanes', 'ModuloPlanificacion\PlanesController@listPlanes');
               Route::post('savePlan', 'ModuloPlanificacion\PlanesController@savePlan');
               Route::get('deletePlan', 'ModuloPlanificacion\PlanesController@deletePlan');
               Route::post('actualizaEtapas', 'ModuloPlanificacion\PlanesController@actualizaEtapas');
-              
+
               /********** Enfoque politico *****************/
               Route::get('getEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@getEnfoquePolitico');
               Route::post('saveEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@saveEnfoque');
@@ -281,7 +281,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('saveDataNew', 'ModuloPlanificacion\DiagnosticoController@saveDataNew');
 
               /********** Politica Sectorial/institucional ******************/
-              Route::get('getPilaresPlan', 'ModuloPlanificacion\PoliticaController@getPilaresVinculadosAlPlan');     
+              Route::get('getPilaresPlan', 'ModuloPlanificacion\PoliticaController@getPilaresVinculadosAlPlan');
               Route::get('listPoliticasPilares', 'ModuloPlanificacion\PoliticaController@listPoliticasPilares');
               Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
               Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
@@ -380,8 +380,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('apiDeleteArchivo', 'SistemaRemi\FuenteDatosController@apiDeleteArchivo');
 
               Route::get('apiDataSetFuente', 'SistemaRemi\FuenteDatosController@apiDataSetFuente');
-              Route::get('descagarExcel/{id}', 'SistemaRemi\FuenteDatosController@descagarExcel');
-              
+              Route::get('descagarExcelMetadatosOnly/{id}', 'SistemaRemi\ExportReportController@descagarExcelMetadatosOnly');
+
 
               Route::post('apiRecuperarFuente', 'SistemaRemi\FuenteDatosController@apiRecuperarFuente');
               Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');

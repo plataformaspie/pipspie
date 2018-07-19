@@ -103,11 +103,11 @@
                   <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Obtener fuente </div>
                   <div class="panel-wrapper collapse in" aria-expanded="true">
                       <div class="panel-body text-center">
-                          
-                          
+
+
                           <a href="javascript:myFunction('You clicked!')"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato ">Metadato</a>
-                          
-                          
+
+
                           <!--Aqui hay que cambiar AQUI HAY QUE EMPEZAR AQUI EMPEZAR-->
                       </div>
                   </div>
@@ -733,18 +733,18 @@
                }
              }
        });
-        
+
     };
 
 
 function myFunction(){
   //alert("hola desde el link" + idSeleccionar);
-  location.href = '/api/sistemarime/descagarExcel/'+ idSeleccionar;
+  location.href = '/api/sistemarime/descagarExcelMetadatosOnly/'+ idSeleccionar;
 
 }
 
-   
-    
+
+
 
   </script>
 @endpush
