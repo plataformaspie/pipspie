@@ -179,7 +179,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="modo_recoleccion_datos"></span>
                                            <br/>
-                                           <span id="modo_recoleccion_datos_otro" class="hidden"></span>
+                                           <span id="modo_recoleccion_datos_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -195,7 +195,7 @@
                                       <p>: <span id="universo_estudio"></span></p>
                                     </div>
                               </div>
-                              <div class="row encuesta hidden">
+                              <div class="tagHidden row encuesta hidden">
                                       <div class="col-lg-4 col-sm-6">
                                         <b>Diseño y tamaño de muestra</b>
                                       </div>
@@ -243,7 +243,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="demografia_estadistica_social"></span>
                                            <br/>
-                                           <span id="demografia_estadistica_social_otro" class="hidden"></span>
+                                           <span id="demografia_estadistica_social_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -252,7 +252,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="estadistica_economica"></span>
                                            <br/>
-                                           <span id="estadistica_economica_otro" class="hidden"></span>
+                                           <span id="estadistica_economica_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -261,7 +261,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="estadistica_medioambiental"></span>
                                            <br/>
-                                           <span id="estadistica_medioambiental_otro" class="hidden"></span>
+                                           <span id="estadistica_medioambiental_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -270,7 +270,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="informacion_geoespacial"></span>
                                            <br/>
-                                           <span id="informacion_geoespacial_otro" class="hidden"></span>
+                                           <span id="informacion_geoespacial_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
 
@@ -337,7 +337,7 @@
 
                       <div class="panel-wrapper collapse in" aria-expanded="true">
                           <div class="panel-body">
-                                <div class="row registro hidden">
+                                <div class="tagHidden row registro hidden">
                                       <div class="col-lg-4 col-sm-6">
                                         <b>Cobertura del RRAA</b>
                                       </div>
@@ -482,7 +482,7 @@
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
               { name: 'estado', type: 'string' },
-              { name: 'responsable_nivel_1', type: 'string' }
+              { name: 'responsable', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -495,7 +495,7 @@
           theme:theme,
           columnsResize: true,
           filterable: true,
-          //filterMode: 'advanced',
+          filterMode: 'simple',
           pageable: true,
           pagerButtonsCount: 10,
           localization: getLocalization('es'),
@@ -504,7 +504,7 @@
             { text: 'Estado', dataField: 'estado', width: 120, cellsAlign: 'center' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
+            { text: 'Responsable', width: 200, dataField: 'responsable' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
                           var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
@@ -518,11 +518,15 @@
         ]
       });
 
-    $('#btn-back, .btn-back').click(function() {
-       $('#option1').removeClass('hidden');
-       $('#option2').removeClass('show');
-       $('#option2').addClass('hidden');
-    });
+
+      $('#btn-back, .btn-back').click(function() {
+         $('#option1').removeClass('hidden');
+         $('#option2').removeClass('show');
+         $('#option2').addClass('hidden');
+         $('.tagHidden').removeClass('hidden');
+         $('.tagHidden').addClass('hidden');
+      });
+
 
     });
     var show_panel = function(){

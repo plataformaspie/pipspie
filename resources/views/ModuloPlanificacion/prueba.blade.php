@@ -33,7 +33,11 @@ Estoy en la <b>PRUEBA</b>
 			console.log(vari)
 		})
 		var varj = 'es prueba'
-		
+		$("#dvp").append('<button >ol</button>');
+
+		$("#dvp button").click(function(){
+			console.log("desde el boton creado");
+		})
 	})
 	
 </script>

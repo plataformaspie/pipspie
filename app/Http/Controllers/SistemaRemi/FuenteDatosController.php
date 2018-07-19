@@ -46,7 +46,7 @@ class FuenteDatosController extends Controller
     foreach ($sql as $mn) {
 
         $submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = ".$mn->id." AND activo = true ORDER BY orden ASC");
-        array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'tipo_menu'=>$mn->tipo_menu,'submenus' => $submenu));
+        array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'tipo_menu'=>$mn->tipo_menu,'class'=>$mn->class,'submenus' => $submenu));
     }
 
 
@@ -69,7 +69,6 @@ class FuenteDatosController extends Controller
 
   public function adminFuenteDatos()
   {
-
     $tipos = TiposMedicion::get();
     $unidades = UnidadesMedidas::where('activo',true)->get();
     $dimensiones = Dimensiones::where('id_variable',4)->get();
@@ -87,21 +86,27 @@ class FuenteDatosController extends Controller
 
   public function apiSetListFuenteDatos(Request $request)
   {
-      $dataFuente = FuenteDatos::join('remi_fuente_datos_responsable as fdr', 'remi_fuente_datos.id', '=', 'fdr.id_fuente')
-                  ->join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
+      $dataFuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
                   ->where('remi_fuente_datos.activo', true)
                   ->orderBy('nombre','ASC')
-                  ->select('remi_fuente_datos.id','remi_fuente_datos.codigo','remi_fuente_datos.nombre', 'remi_fuente_datos.acronimo','remi_fuente_datos.tipo','fdr.responsable_nivel_1','remi_fuente_datos.estado','et.nombre as estado','et.id as id_estado')
+                  ->select('remi_fuente_datos.*','et.nombre as estado','et.id as id_estado')
                   ->get();
       /*foreach ($dataFuente as $value) {
         $data[$value->id] = $value->nombre;
       }*/
-      return \Response::json(array(
-          'error' => false,
-          'title' => "Success!",
-          'msg' => "Se guardo con exito.",
-          'item' =>$dataFuente)
-      );
+      $this->listFuente = array();
+      foreach ($dataFuente as $item) {
+          $responsable = \DB::select("SELECT string_agg(responsable_nivel_1, ',') as responsable FROM remi_fuente_datos_responsable WHERE id_fuente = ".$item->id." AND activo = true");
+          array_push($this->listFuente, array('id' => $item->id,
+                                              'codigo' => $item->codigo,
+                                              'nombre' => $item->nombre,
+                                              'acronimo' => $item->acronimo,
+                                              'tipo' => $item->tipo,
+                                              'estado' => $item->estado,
+                                              'id_estado'=>$item->id_estado,
+                                              'responsable' => $responsable[0]->responsable));
+      }
+      return \Response::json($this->listFuente);
 
    }
 
@@ -182,6 +187,9 @@ class FuenteDatosController extends Controller
             $fuente->estadistica_medioambiental_otro = $request->estadistica_medioambiental_otro;
             $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->informacion_geoespacial):null;
             $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
+
+            $fuente->cobertura_rraa = $request->cobertura_rraa;
+            $fuente->cobertura_rraa_descripcion = $request->cobertura_rraa_descripcion;
 
             $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
             $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
@@ -271,6 +279,10 @@ class FuenteDatosController extends Controller
 
           $fuente->numero_total_formulario = $request->numero_total_formulario;
           $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
+
+
+          $fuente->cobertura_rraa = $request->cobertura_rraa;
+          $fuente->cobertura_rraa_descripcion = $request->cobertura_rraa_descripcion;
 
           $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
           $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
@@ -362,6 +374,7 @@ class FuenteDatosController extends Controller
 
   public function apiUploadArchivoRespaldo(Request $request)
   {
+    //ini_set('max_execution_time', 300);
     $carpeta = "respaldos/";
     $nombreDataBase = "";
     $msgFile = "";

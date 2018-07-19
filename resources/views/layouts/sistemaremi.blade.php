@@ -3,7 +3,7 @@
    This is a starter template page. Use this page to start your new project from
    scratch. This page gets rid of all links and provides the needed markup only.
    -->
-<html lang="en">
+<html lang="lang="{{ app()->getLocale() }}"">
 
 <head>
     <meta charset="utf-8">
@@ -14,6 +14,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_remi.png">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>::RIME::</title>
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -184,23 +185,48 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
+
+
                     <li class="sidebar-search hidden-sm hidden-md hidden-lg">
                         <!-- input-group -->
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Buscar Indicadorssss...">
+                            <input type="text" class="form-control" placeholder="Buscar...">
                             <span class="input-group-btn">
                         <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
                         </span>
                         </div>
                         <!-- /input-group -->
                     </li>
-                    <li>
+
+
+                    @foreach($menus as $m)
+                      <li>
+                        @if( $m["submenus"] )
+                          <a id="mp-{{ $m["id_html"] }}"  href="{{ url( $m["url"] ) }}" class="waves-effect">
+                            <i class="linea-icon {{ $m["class"] }} fa-fw"  data-icon="{{ $m["icono"] }}" style="font-size: 25px"></i>
+                            <span class="hide-menu"> {{ $m["titulo"] }} <span class="fa arrow"></span> </span>
+                          </a>
+                          <ul class="nav nav-second-level">
+                            @foreach($m["submenus"] as $sm)
+                              <li id="{{ $sm->id }}" ><a href="{{ $sm->url }}">{{ $sm->titulo }}</a></li>
+                            @endforeach
+                          </ul>
+                        @else
+                          <a id="mp-{{ $m["id_html"] }}"  href="{{ url( $m["url"] ) }}" class="waves-effect">
+                            <i class="linea-icon {{ $m["class"] }} fa-fw" data-icon="{{ $m["icono"] }}" style="font-size: 25px"></i>
+                            <span class="hide-menu"> {{ $m["titulo"] }} <span class="fa arrow"></span> </span>
+                          </a>
+                        @endif
+                      </li>
+                    @endforeach
+
+                    <!--li>
                         <a href="{{ url('/sistemaremi/index') }}" class="waves-effect">
                             <i class="linea-icon linea-basic fa-fw" data-icon="v" style="font-size: 25px"></i>
                             <span class="hide-menu"> Inicio <span class="fa arrow"></span> </span>
                         </a>
                     </li>
-                    <!--li>
+                    <li>
                         <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
                           <i  class="linea-icon linea-ecommerce fa-fw" data-icon="U" style="font-size: 25px"></i>
                           <span class="hide-menu"> Indicadores <span class="fa arrow"></span> </span>
@@ -209,17 +235,17 @@
                             <li> <a href="{{ url('/sistemaremi/setIndicadores') }}">Detalle de Indicadores</a> </li>
                             <li> <a href="{{ url('/sistemaremi/adminIndicador') }}">Administrar Indicadores</a> </li>
                         </ul>
-                    </li-->
+                    </li>
                     <li>
-                        <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
-                          <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe000; " style="font-size: 25px"></i>
+                        <a href="{{ url('/sistemaremi/setFuenteDatos') }}" class="waves-effect">
+                          <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe000;" style="font-size: 25px"></i>
                           <span class="hide-menu"> Fuente Datos <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li> <a href="{{ url('/sistemarime/setFuenteDatos') }}">Detalle de Fuente</a> </li>
                             <li> <a href="{{ url('/sistemarime/adminFuenteDatos') }}">Administrar Fuente</a> </li>
                         </ul>
-                    </li>
+                    </li-->
 
                     <!--li>
                         <a href="#4" class="waves-effect">

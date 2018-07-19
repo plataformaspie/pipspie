@@ -48,10 +48,13 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-      $this->vitacora("Salio del sistema",'logout');
-      $this->guard()->logout();
-      $request->session()->invalidate();
-      return redirect('/');
+      $this->user = \Auth::user();
+      if($this->user){
+        $this->vitacora("Salio del sistema",'logout');
+        $this->guard()->logout();
+        $request->session()->invalidate();
+      }
+      return redirect('/');      
     }
     public function login(Request $request) {
 
