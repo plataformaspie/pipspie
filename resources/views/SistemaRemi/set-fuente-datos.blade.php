@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-  <div id="option1">
+  <div id="option1"><!--opcion 1-->
       <div class="row bg-title">
           <!-- .page title -->
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
@@ -31,26 +31,26 @@
       </div>
       <!-- .row -->
       <div class="row">
-      <div class="col-md-12">
-          <div class="panel panel-inverse ">
-              <div class="panel-heading"> Lista
-                  <div class="pull-right">
-                      <a href="#" data-perform="panel-collapse">
-                        <i class="ti-minus"></i>
-                      </a>
-                  </div>
-              </div>
-              <div class="panel-wrapper collapse in" aria-expanded="true">
-                  <div class="panel-body">
-                      <div id="dataTable"></div>
-                  </div>
-              </div>
-          </div>
+        <div class="col-md-12">
+            <div class="panel panel-inverse ">
+                <div class="panel-heading"> Lista
+                    <div class="pull-right">
+                        <a href="#" data-perform="panel-collapse">
+                          <i class="ti-minus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <div id="dataTable"></div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
       </div>
-  </div>
-  </div>
-  <div id="option2" class="hidden">
+  </div><!--fin opcion 1-->
+  <div id="option2" class="hidden"><!-- opcion 2-->
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
@@ -68,10 +68,10 @@
     </div>
     <!-- .row -->
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3"><!--iNFORMACION IZQUIERDA-->
           <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
               <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
-                  <div class="panel-heading panel-heading-c2" style="color: #fff; background-color: #468E9B;border-color: #d6e9c6;"><b>Titulo de la Fuente de Datos:</b></div>
+                  <div class="panel-heading panel-heading-c2" style="color: #fff; background-color: #468E9B;border-color: #d6e9c6;"><b> Titulo de la Fuente de Datos:</b></div>
                   <div class="panel-wrapper collapse in" aria-expanded="true">
                       <div class="panel-body text-left">
                           <p><label id="nombre" style="color:#000000;font-weight: bold;"></label></p>
@@ -103,14 +103,19 @@
                   <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Obtener fuente </div>
                   <div class="panel-wrapper collapse in" aria-expanded="true">
                       <div class="panel-body text-center">
-                          <a onclick="alert('No tiene permisos. Gracias.')" style="cursor: pointer;"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato ">Metadato</a>
+                          
+                          
+                          <a href="javascript:myFunction('You clicked!')"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato ">Metadato</a>
+                          
+                          
+                          <!--Aqui hay que cambiar AQUI HAY QUE EMPEZAR AQUI EMPEZAR-->
                       </div>
                   </div>
               </div>
           </div>
 
-      </div>
-      <div class="col-sm-9 center">
+      </div><!--FIN iNFORMACION IZQUIERDA-->
+      <div class="col-sm-9 center"><!--iNFORMACION DERECHA-->
           <div class="white-box">
               <h3 class="box-title m-b-0">Información de Fuente de Datos</h3>
               <p class="text-muted m-b-30">
@@ -416,10 +421,10 @@
                   </div>
               </div>
           </div>
-      </div>
+      </div><!--FIN iNFORMACION IZQUIERDA-->
 
     </div>
-  </div>
+  </div><!-- fin opcion 2-->
 
 
 
@@ -461,7 +466,9 @@
 
 
   <script type="text/javascript">
+    var idSeleccionar = "";
     $(document).ready(function(){
+
 
       var url = '{{ url('api/sistemarime/apiSetListFuenteDatos') }}';
       // prepare the data
@@ -511,6 +518,7 @@
         ]
       });
 
+
       $('#btn-back, .btn-back').click(function() {
          $('#option1').removeClass('hidden');
          $('#option2').removeClass('show');
@@ -518,6 +526,7 @@
          $('.tagHidden').removeClass('hidden');
          $('.tagHidden').addClass('hidden');
       });
+
 
     });
     var show_panel = function(){
@@ -528,7 +537,8 @@
 
 
     var btn_show = function(ele){
-       show_panel();
+        idSeleccionar = ele;
+       show_panel();//aqui es donde se oculta el otro panel donde estan los datos
        $.ajax({
              url: "{{ url('/api/sistemarime/apiDataSetFuente') }}",
              type: "GET",
@@ -723,6 +733,18 @@
                }
              }
        });
+        
     };
+
+
+function myFunction(){
+  //alert("hola desde el link" + idSeleccionar);
+  location.href = '/api/sistemarime/descagarExcel/'+ idSeleccionar;
+
+}
+
+   
+    
+
   </script>
 @endpush
