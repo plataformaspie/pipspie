@@ -205,7 +205,7 @@ class IndicadorController extends Controller
     $dimensiones = Dimensiones::where('id_variable',4)->get();
     //$variables = Variables::get();
     $frecuencia = Frecuencia::get();
-    $fuente_datos = FuenteDatos::get();
+    $fuente_datos = FuenteDatos::where('activo', true)->get();
     $fuente_tipos = FuenteTipos::get();
     return view('SistemaRemi.admin-indicador',compact('tipos','unidades','frecuencia','fuente_datos','fuente_tipos','dimensiones'));
   }
@@ -618,7 +618,7 @@ class IndicadorController extends Controller
 
       //$fuenteId = explode(",", $request->fuente);
       if($request->fuente){
-      $dataFuente = FuenteDatos::whereIn('id',$request->fuente)->get();
+      $dataFuente = FuenteDatos::whereIn('id',$request->fuente)->where('activo', true)->get();
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
@@ -690,18 +690,19 @@ class IndicadorController extends Controller
             $fuente->acronimo = $request->fd_acronimo;
             $fuente->nombre = $request->fd_nombre;
             $fuente->tipo = $request->fd_tipo;
-            $fuente->periodicidad = $request->fd_periodicidad;
+            /*$fuente->periodicidad = $request->fd_periodicidad;
             $fuente->serie_datos = $request->fd_serie_datos;
             $fuente->cobertura_geografica = ($request->fd_cobertura_geografica)?implode(",", $request->fd_cobertura_geografica):null;
             $fuente->nivel_representatividad_datos = $request->fd_nivel_representatividad_datos;
             $fuente->variable = $request->fd_variable;
-            $fuente->observacion = $request->fd_observacion;
+            $fuente->observacion = $request->fd_observacion;*/
             $fuente->activo = true;
+            $fuente->estado = 1;
             $fuente->id_user = $this->user->id;
             $fuente->save();
 
 
-            if(isset($request->responsable_nivel_1)){
+            /*if(isset($request->responsable_nivel_1)){
               foreach ($request->responsable_nivel_1 as $k => $v) {
                     $responsable = new FuenteDatosResponsable();
                     $responsable->id_fuente = $fuente->id;
@@ -712,7 +713,7 @@ class IndicadorController extends Controller
                     $responsable->id_user = $this->user->id;
                     $responsable->save();
               }
-            }
+            }*/
 
 
 
@@ -739,7 +740,7 @@ class IndicadorController extends Controller
 
   public function apiUpdateComboFuente(Request $request)
   {
-      $dataFuente = FuenteDatos::select('id','nombre')->get();
+      $dataFuente = FuenteDatos::where('activo', true)->select('id','nombre')->get();
       /*foreach ($dataFuente as $value) {
         $data[$value->id] = $value->nombre;
       }*/
