@@ -95,7 +95,7 @@
               <div id="jqxDataTable" class="col-lg-12">
                 <p class="m-b-5">
                   <button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
-                  <button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
+                  <!--button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button-->
                 </p>
                 <div id="dataTable"></div>
               </div>
