@@ -339,10 +339,12 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
               Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
+
           }
       );
       Route::group(
           array('prefix' => 'api/sistemaremi'),
+
           function() {
               Route::get('demo', 'SistemaRemi\IndicadorController@demo');
               Route::post('apiSavePerfil', 'SistemaRemi\SettingController@apiSavePerfil');
@@ -360,6 +362,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('setPdes', 'SistemaRemi\IndicadorController@setPdes');
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldo');
               Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
+              Route::get('apiExportData', 'SistemaRemi\ExportReportController@descagarExcelAdminFuente');
+              
+
           }
       );
       Route::group(
