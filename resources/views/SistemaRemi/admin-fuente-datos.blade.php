@@ -95,7 +95,7 @@
               <div id="jqxDataTable" class="col-lg-12">
                 <p class="m-b-5">
                   <button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
-                  <!--button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button-->
+                  <button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
                 </p>
                 <div id="dataTable"></div>
               </div>
@@ -1814,7 +1814,7 @@
                   $('#tabledataTable > tbody > tr').each(function() {
                      ids += $(this).attr("data-key")+",";
                   });
-                  location.href = "{{ url('/api/sistemarime/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                  location.href = "{{ url('/api/sistemaremi/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
                   break;
               case "2":
                   if(selection.length > 0){
@@ -1827,7 +1827,7 @@
                               ids += ", ";
                             }
                         }
-                      location.href = "{{ url('/api/sistemarime/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                      location.href = "{{ url('/api/sistemaremi/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
                     }
                   }else{
                     $.toast({
