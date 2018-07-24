@@ -589,16 +589,29 @@ class ExportReportController extends Controller
               }
 
               $hoja->row( ++$fila, $filaContenido );
-              /*$hoja->row($fila, function($row) {
+             
 
-                $row->setAlignment('center');
+              //centreando los valores
 
-              });*/
+              $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');  
+            
+              $hoja->getStyle('A1:'.$uTamano.$fila , $hoja->getHighestRow())->getAlignment()->setWrapText(true);
+              $tamanoColumnas = [];
 
-               // $endCell = str_repeat(chr(count($cabecera) % 26 + 64), ceil(count($cabecera)/26)) . (count($proyectos)+1);
-               //$hoja->setBorder('A1:L'  . $fila, 'thin');
-               $hoja->setAutoSize(true);
-               //$hoja->setWidth(array('B'=>50, 'J'=>50, 'K'=>50, 'L'=>30, 'F'=>3,'G'=>3,'H'=>5,'I'=>3 )) ;
+             
+              for ($i=0; $i < $rf ; $i++) { 
+                $clave = $cabeceraExcel[$i];
+                $tamanoColumnas[$clave] = 20;
+                
+                
+               
+              }
+              $hoja->setWidth($tamanoColumnas);
+
+
+
+
+
            });
 
 
@@ -615,9 +628,9 @@ class ExportReportController extends Controller
                                                 ->max('numero_total_formulario');
 
     //controlar tamaño de campos Responsable mandar string  
-    //$registros = implode(',', $ids);
-    //$registros = '('.$registros.')'; 
-    $registros = '(10,77)';                                        
+    $registros = implode(',', $ids);
+    $registros = '('.$registros.')'; 
+                                           
     $mayorCantidadResponsable = \DB::select("SELECT MAX(count_num) FROM 
                           (SELECT id_fuente, count(*) as count_num
                           FROM remi_fuente_datos_responsable 
@@ -655,8 +668,8 @@ class ExportReportController extends Controller
                       'MODO RECOLECCION DATOS',
                       'UNIDAD DE ANALISIS',
                       'UNIVERSO DE ESTUDIO',
-                      'DISEÑO Y TAMAÑO DE MUESTRA',
-                      'TASA DE RESPUESTA',
+                      'DISEÑO Y TAMAÑO DE MUESTRA(Aplica solo Encuesta)',
+                      'TASA DE RESPUESTA(Aplica solo Encuesta)',
                       'OBSERVACIONES',
                       'DEMOGRAFIA Y ESTADISTICAS SOCIALES',
                       'ESTADISTICAS ECONOMICAS',
@@ -675,7 +688,7 @@ class ExportReportController extends Controller
     
     array_push($tamanoTitulos,$cFor+1);
 
-    array_push($cabeceraDatos,'COBERTURA DEL RRAA','DESCRIPCION DEL RRAA','COBERTURA GEOGRAFICA','NIVEL DE DESAGREGACION');
+    array_push($cabeceraDatos,'COBERTURA DEL RRAA(Aplica Registro Administrativo)','DESCRIPCION DEL RRAA(Aplica Registro Administrativo)','COBERTURA GEOGRAFICA','NIVEL DE DESAGREGACION');
 
     array_push($tamanoTitulos,4);
     //CALCULAR  
