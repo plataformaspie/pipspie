@@ -77,34 +77,145 @@ class ExportReportController extends Controller
                   $identificacion['Serie_Disponible']              = $f->serie_datos;
                   $identificacion['Periodicidad']                  = $f->periodicidad;
                   $identificacion['Variable_campo_clave']          = $f->variable;
-                  $identificacion['recoleccion_datos']             = $f->modo_recoleccion_datos;
-                  $identificacion['unidad_analisis']               = $f->unidad_analisis;
-                  $identificacion['universo_estudio']              = $f->universo_estudio;
-                  $identificacion['observacion']                   = $f->observacion;
+          
+          //MODO RECOLECCION DATOS OTRO  
+          //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
+          $otroModo = explode(',',$f->modo_recoleccion_datos);
+          
+          for ($i=0; $i < count($otroModo) ; $i++) { 
+            if($otroModo[$i] == 'Otro'){
 
-                  array_push($cabeceraTitulos, 'IDENTIFICACION');
+              $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
 
-                  $categoriaTematica['demografia_estadistica_social'] = $f->demografia_estadistica_social;
-                  $categoriaTematica['estadistica_economica']         = $f->estadistica_economica;
-                  $categoriaTematica['estadistica_medioambiental']    = $f->estadistica_medioambiental;
-                  $categoriaTematica['informacion_geoespacial']       = $f->informacion_geoespacial;
+            }else{
+              $cadenaOtroModo = $otroModo[$i].',';
+            }
+          }
+          $cadenaOtroModo = trim(',',$cadenaOtroModo);
+          
+          
+          $identificacion['recoleccion_datos']             = $cadenaOtroModo;
+          $identificacion['unidad_analisis']               = $f->unidad_analisis;
+          $identificacion['universo_estudio']              = $f->universo_estudio;
+          $identificacion['observacion']                   = $f->observacion;
 
-                  array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
+          array_push($cabeceraTitulos, 'IDENTIFICACION');
+
+          //Demografia estadistica social OTRO
+
+          $otroEstadisticaSocial = explode(',',$f->demografia_estadistica_social);
+
+          for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+            if($otroEstadisticaSocial[$i] == 'Otro'){
+                
+              $cadenaOtroEstadisticaSocial = 'Otro:'.$f->demografia_estadistica_social_otro.',';
+              
+
+            }else{
+              $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
+            }
+          }
+          
+          $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
+          $categoriaTematica['demografia_estadistica_social'] = $cadenaOtroEstadisticaSocial;
+
+          //estadistica_economica
+
+          $otroEstadisticaEconomica = explode(',',$f->estadistica_economica);
+          
+
+
+          for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+            if($otroEstadisticaEconomica[$i] == 'Otro'){
+                
+              $cadenaOtroEstadisticaEconomica = 'Otro:'.$f->demografia_estadistica_economica_otro.',';
+              
+
+            }else{
+              $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
+            }
+          }
+          
+          $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
+          $categoriaTematica['estadistica_economica']         = $cadenaOtroEstadisticaEconomica ;
+          
+          
+
+          //estadistica_ambiental
+
+          $otroEstadisticaAmbiental = explode(',',$f->estadistica_medioambiental);
+          
+
+
+          for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+            if($otroEstadisticaAmbiental[$i] == 'Otro'){
+                
+              $cadenaOtroEstadisticaAmbiental = 'Otro:'.$f->estadistica_medioambiental_otro.',';
+              
+
+            }else{
+              $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
+            }
+          }
+          
+          $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
+          $categoriaTematica['estadistica_medioambiental']    = $cadenaOtroEstadisticaAmbiental;
+          
+          
+
+          //informacion georeferencial
+
+          $otroInformacionGeoespacial = explode(',',$f->informacion_geoespacial);
+
+
+          for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+            if($otroInformacionGeoespacial[$i] == 'Otro'){
+                
+              $cadenaOtroInformacionGeoespacial = 'Otro:'.$fuenteDatos->informacion_geoespacial_otro.',';
+              
+
+            }else{
+              $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
+            }
+          }
+          
+          $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
+          
+          
+
+                  
+          $categoriaTematica['informacion_geoespacial']       = $cadenaOtroInformacionGeoespacial;
+
+          array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
+
+
+
+
+
+
                   //trabajando numero de formulario
+
                   array_push($formularios,$f->numero_total_formulario);
 
-
+                  
 
                   array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
-                  $formulario = explode("|",$f->nombre_formulario);
-                  $varFor = 1;
-                  for($i=0;$i<count($formulario);$i++){
-                    $key = 'FORM_'.$varFor;
 
-                    array_push($formularios, $formulario[$i]);
-                    array_push($cabeceraFormularios, $key);
-                    $varFor++;
+                  if(isset($f->numero_total_formulario)){
+
+                    $formulario = explode("|",$f->nombre_formulario);
+
+                    $varFor = 1;
+                    for($i=0;$i<sizeof($formulario);$i++){
+                      $key = 'FORM_'.$varFor;
+
+                      array_push($formularios, $formulario[$i]);
+                      array_push($cabeceraFormularios, $key);
+                      $varFor++;
+                    }
+                    
                   }
+                  
 
                   array_push($cabeceraTitulos, 'FORMULARIOS');
 
@@ -217,7 +328,21 @@ class ExportReportController extends Controller
               $identificacion['Serie_Disponible'] = $f->serie_datos;
               $identificacion['Periodicidad'] = $f->periodicidad;
               $identificacion['Variable_campo_clave'] = $f->variable;
-              $identificacion['recoleccion_datos'] = $f->modo_recoleccion_datos;
+              //MODO RECOLECCION DATOS OTRO  
+              //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
+              $otroModo = explode(',',$f->modo_recoleccion_datos);
+              
+              for ($i=0; $i < count($otroModo) ; $i++) { 
+                if($otroModo[$i] == 'Otro'){
+
+                  $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
+
+                }else{
+                  $cadenaOtroModo = $otroModo[$i].',';
+                }
+              }
+              $cadenaOtroModo = trim(',',$cadenaOtroModo);
+              $identificacion['recoleccion_datos']             = $cadenaOtroModo;
 
 
               $identificacion['unidad_analisis'] = $f->unidad_analisis;
@@ -227,24 +352,106 @@ class ExportReportController extends Controller
               $identificacion['observacion'] = $f->observacion;
               array_push($cabeceraTitulos,'IDENTIFICACION');
 
-              $categoriaTematica['demografia_estadistica_social'] = $f->demografia_estadistica_social;
-              $categoriaTematica['estadistica_economica'] = $f->estadistica_economica;
-              $categoriaTematica['estadistica_medioambiental'] = $f->estadistica_medioambiental;
-              $categoriaTematica['informacion_geoespacial'] = $f->informacion_geoespacial;
+              //ESTADISTICA SOCIAL
+              $otroEstadisticaSocial = explode(',',$f->demografia_estadistica_social);
+
+              for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+                if($otroEstadisticaSocial[$i] == 'Otro'){
+                    
+                  $cadenaOtroEstadisticaSocial = 'Otro:'.$f->demografia_estadistica_social_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
+                }
+              }
+              
+              $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
+              $categoriaTematica['demografia_estadistica_social'] = $cadenaOtroEstadisticaSocial;
+
+              //estadistica_economica
+
+              $otroEstadisticaEconomica = explode(',',$f->estadistica_economica);
+              
+
+
+              for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+                if($otroEstadisticaEconomica[$i] == 'Otro'){
+                    
+                  $cadenaOtroEstadisticaEconomica = 'Otro:'.$f->demografia_estadistica_economica_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
+                }
+              }
+              
+              $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
+              $categoriaTematica['estadistica_economica']         = $cadenaOtroEstadisticaEconomica ;
+              
+              
+
+              //estadistica_ambiental
+
+              $otroEstadisticaAmbiental = explode(',',$f->estadistica_medioambiental);
+              
+
+
+              for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+                if($otroEstadisticaAmbiental[$i] == 'Otro'){
+                    
+                  $cadenaOtroEstadisticaAmbiental = 'Otro:'.$f->estadistica_medioambiental_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
+                }
+              }
+              
+              $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
+              $categoriaTematica['estadistica_medioambiental']    = $cadenaOtroEstadisticaAmbiental;
+              
+              
+
+              //informacion georeferencial
+
+              $otroInformacionGeoespacial = explode(',',$f->informacion_geoespacial);
+
+
+              for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+                if($otroInformacionGeoespacial[$i] == 'Otro'){
+                    
+                  $cadenaOtroInformacionGeoespacial = 'Otro:'.$f->informacion_geoespacial_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
+                }
+              }
+              
+              $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
+                      
+              $categoriaTematica['informacion_geoespacial']       = $cadenaOtroInformacionGeoespacial;
 
               array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
 
               array_push($formularios,$f->numero_total_formulario);
-              array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
-                  $formulario = explode("|",$f->nombre_formulario);
-                  $varFor = 1;
-                  for($i=0;$i<count($formulario);$i++){
-                    $key = 'FORM_'.$varFor;
 
-                    array_push($formularios, $formulario[$i]);
-                    array_push($cabeceraFormularios, $key);
-                    $varFor++;
+              array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
+
+                  if (!isset($f->nombre_formulario)) {
+                    $formulario = explode("|",$f->nombre_formulario);
+                    
+                    $varFor = 1;
+                    for($i=0;$i<count($formulario);$i++){
+                      $key = 'FORM_'.$varFor;
+
+                      array_push($formularios, $formulario[$i]);
+                      array_push($cabeceraFormularios, $key);
+                      $varFor++;
+                    }
                   }
+
 
               array_push($cabeceraTitulos, 'FORMULARIOS');
 
@@ -353,7 +560,21 @@ class ExportReportController extends Controller
               $identificacion['Serie_Disponible'] = $f->serie_datos;
               $identificacion['Periodicidad'] = $f->periodicidad;
               $identificacion['Variable_campo_clave'] = $f->variable;
-              $identificacion['recoleccion_datos'] = $f->modo_recoleccion_datos;
+              //MODO RECOLECCION DATOS OTRO  
+              //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
+              $otroModo = explode(',',$f->modo_recoleccion_datos);
+              
+              for ($i=0; $i < count($otroModo) ; $i++) { 
+                if($otroModo[$i] == 'Otro'){
+
+                  $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
+
+                }else{
+                  $cadenaOtroModo = $otroModo[$i].',';
+                }
+              }
+              $cadenaOtroModo = trim(',',$cadenaOtroModo);
+              $identificacion['recoleccion_datos']             = $cadenaOtroModo;
 
 
               $identificacion['unidad_analisis'] = $f->unidad_analisis;
@@ -362,24 +583,106 @@ class ExportReportController extends Controller
               $identificacion['observacion'] = $f->observacion;
               array_push($cabeceraTitulos,'IDENTIFICACION');
 
-              $categoriaTematica['demografia_estadistica_social'] = $f->demografia_estadistica_social;
-              $categoriaTematica['estadistica_economica'] = $f->estadistica_economica;
-              $categoriaTematica['estadistica_medioambiental'] = $f->estadistica_medioambiental;
-              $categoriaTematica['informacion_geoespacial'] = $f->informacion_geoespacial;
+              //ESTADISTICA SOCIAL
+              $otroEstadisticaSocial = explode(',',$f->demografia_estadistica_social);
+
+              for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+                if($otroEstadisticaSocial[$i] == 'Otro'){
+                    
+                  $cadenaOtroEstadisticaSocial = 'Otro:'.$f->demografia_estadistica_social_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
+                }
+              }
+              
+              $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
+              $categoriaTematica['demografia_estadistica_social'] = $cadenaOtroEstadisticaSocial;
+
+              //estadistica_economica
+
+              $otroEstadisticaEconomica = explode(',',$f->estadistica_economica);
+              
+
+
+              for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+                if($otroEstadisticaEconomica[$i] == 'Otro'){
+                    
+                  $cadenaOtroEstadisticaEconomica = 'Otro:'.$f->demografia_estadistica_economica_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
+                }
+              }
+              
+              $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
+              $categoriaTematica['estadistica_economica']         = $cadenaOtroEstadisticaEconomica ;
+              
+              
+
+              //estadistica_ambiental
+
+              $otroEstadisticaAmbiental = explode(',',$f->estadistica_medioambiental);
+              
+
+
+              for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+                if($otroEstadisticaAmbiental[$i] == 'Otro'){
+                    
+                  $cadenaOtroEstadisticaAmbiental = 'Otro:'.$f->estadistica_medioambiental_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
+                }
+              }
+              
+              $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
+              $categoriaTematica['estadistica_medioambiental']    = $cadenaOtroEstadisticaAmbiental;
+              
+              
+
+              //informacion georeferencial
+
+              $otroInformacionGeoespacial = explode(',',$f->informacion_geoespacial);
+
+
+              for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+                if($otroInformacionGeoespacial[$i] == 'Otro'){
+                    
+                  $cadenaOtroInformacionGeoespacial = 'Otro:'.$f->informacion_geoespacial_otro.',';
+                  
+
+                }else{
+                  $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
+                }
+              }
+              
+              $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
+                      
+              $categoriaTematica['informacion_geoespacial']       = $cadenaOtroInformacionGeoespacial;
 
               array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
 
+
+
+              //formularios  
               array_push($formularios,$f->numero_total_formulario);
               array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
-                  $formulario = explode("|",$f->nombre_formulario);
-                  $varFor = 1;
-                  for($i=0;$i<count($formulario);$i++){
-                    $key = 'FORM_'.$varFor;
+              if (isset($f->numero_total_formulario)) {
+                $formulario = explode("|",$f->nombre_formulario);
+                $varFor = 1;
+                for($i=0;$i<count($formulario);$i++){
+                  $key = 'FORM_'.$varFor;
 
-                    array_push($formularios, $formulario[$i]);
-                    array_push($cabeceraFormularios, $key);
-                    $varFor++;
-                  }
+                  array_push($formularios, $formulario[$i]);
+                  array_push($cabeceraFormularios, $key);
+                  $varFor++;
+                }
+              }
+                  
 
               array_push($cabeceraTitulos, 'FORMULARIOS');
 
@@ -635,6 +938,7 @@ class ExportReportController extends Controller
                           (SELECT id_fuente, count(*) as count_num
                           FROM remi_fuente_datos_responsable 
                           where id_fuente IN ".$registros."
+                          and activo = true
                           GROUP BY id_fuente) x");
 
     $cabeceraTitulos = ['IDENTIFICACION',
@@ -724,22 +1028,114 @@ class ExportReportController extends Controller
                               $fuenteDatos->objetivo,
                               $fuenteDatos->serie_datos,
                               $fuenteDatos->periodicidad,
-                              $fuenteDatos->variable,
-                              $fuenteDatos->modo_recoleccion_datos,
-                              $fuenteDatos->unidad_analisis,
-                              $fuenteDatos->universo_estudio,
-                              $fuenteDatos->disenio_tamanio_muestra,
-                              $fuenteDatos->tasa_respuesta,
-                              $fuenteDatos->observacion,
-
-                              $fuenteDatos->demografia_estadistica_social,
-                              $fuenteDatos->estadistica_economica,
-                              $fuenteDatos->estadistica_medioambiental,
-                              $fuenteDatos->informacion_geoespacial,
-    
-                            );
+                              $fuenteDatos->variable);
+          //MODO RECOLECCION DATOS OTRO  
+          //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
+          $otroModo = explode(',',$fuenteDatos->modo_recoleccion_datos);
           
-          //calculo de los formularios
+          for ($i=0; $i < count($otroModo) ; $i++) { 
+            if($otroModo[$i] == 'Otro'){
+
+              $cadenaOtroModo = 'Otro:'.$fuenteDatos->modo_recoleccion_datos_otro.',';
+
+            }else{
+              $cadenaOtroModo = $otroModo[$i].',';
+            }
+          }
+          $cadenaOtroModo = trim(',',$cadenaOtroModo);
+          
+          array_push($filaFuente,$cadenaOtroModo);
+
+          array_push($filaFuente, $fuenteDatos->unidad_analisis);
+          array_push($filaFuente, $fuenteDatos->universo_estudio);
+          array_push($filaFuente, $fuenteDatos->disenio_tamanio_muestra);
+          array_push($filaFuente, $fuenteDatos->tasa_respuesta);
+          array_push($filaFuente, $fuenteDatos->observacion);
+
+          //Demografia estadistica social OTRO
+          $otroEstadisticaSocial = explode(',',$fuenteDatos->demografia_estadistica_social);
+          
+          
+
+          for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+            if($otroEstadisticaSocial[$i] == 'Otro'){
+                
+              $cadenaOtroEstadisticaSocial = 'Otro:'.$fuenteDatos->demografia_estadistica_social_otro.',';
+              
+
+            }else{
+              $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
+            }
+          }
+          
+          $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
+          
+          array_push($filaFuente,$cadenaOtroEstadisticaSocial);
+
+          //estadistica_economica
+
+          $otroEstadisticaEconomica = explode(',',$fuenteDatos->estadistica_economica);
+          
+
+
+          for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+            if($otroEstadisticaEconomica[$i] == 'Otro'){
+                
+              $cadenaOtroEstadisticaEconomica = 'Otro:'.$fuenteDatos->demografia_estadistica_economica_otro.',';
+              
+
+            }else{
+              $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
+            }
+          }
+          
+          $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
+          
+          array_push($filaFuente,$cadenaOtroEstadisticaEconomica);
+
+          //estadistica_ambiental
+
+          $otroEstadisticaAmbiental = explode(',',$fuenteDatos->estadistica_medioambiental);
+          
+
+
+          for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+            if($otroEstadisticaAmbiental[$i] == 'Otro'){
+                
+              $cadenaOtroEstadisticaAmbiental = 'Otro:'.$fuenteDatos->estadistica_medioambiental_otro.',';
+              
+
+            }else{
+              $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
+            }
+          }
+          
+          $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
+          
+          array_push($filaFuente,$cadenaOtroEstadisticaAmbiental);
+
+          //informacion georeferencial
+
+          $otroInformacionGeoespacial = explode(',',$fuenteDatos->informacion_geoespacial);
+
+
+          for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+            if($otroInformacionGeoespacial[$i] == 'Otro'){
+                
+              $cadenaOtroInformacionGeoespacial = 'Otro:'.$fuenteDatos->informacion_geoespacial_otro.',';
+              
+
+            }else{
+              $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
+            }
+          }
+          
+          $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
+          
+          array_push($filaFuente,$cadenaOtroInformacionGeoespacial);
+
+          
+          //calculo de los FORMULARIOS
 
           array_push($filaFuente,$fuenteDatos->numero_total_formulario);
          
@@ -846,7 +1242,8 @@ class ExportReportController extends Controller
           
 
           //trabajando responsable
-          $nResponsables = FuenteDatosResponsable::where('id_fuente',$fuenteDatos->id)->get();
+          $nResponsables = FuenteDatosResponsable::where('id_fuente',$fuenteDatos->id)
+                                                    ->where('activo',true)->get();
           foreach ($nResponsables as $varRes) {
             array_push($filaFuente,$varRes->responsable_nivel_1,$varRes->responsable_nivel_2,$varRes->responsable_nivel_3,$varRes->responsable_nivel_4,$varRes->numero_referencia);
           }
