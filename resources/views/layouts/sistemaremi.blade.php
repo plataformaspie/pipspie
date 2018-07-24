@@ -79,34 +79,36 @@
                 </ul>
                 <!-- This is the message dropdown -->
                 <ul class="nav navbar-top-links navbar-right pull-right">
-                    <?php /*
+
                     <li class="dropdown">
                         <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
-                            <i class="icon-envelope"></i>
+                            <i class="ti-help-alt"></i> Ayuda
                             <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
                         </a>
                         <!-- .dropdown-messages -->
                         <ul class="dropdown-menu mailbox animated bounceInDown">
                             <li>
-                                <div class="drop-title">You have 4 new messages</div>
+                                <div class="drop-title">Recursos Ayuda</div>
                             </li>
                             <li>
                                 <div class="message-center">
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                                    <a href="/recursos/Guia_llenado_SistemaRIME_FuenteDatos_V1.pdf" target="_blank">
+                                        <div class="user-img"><i class="fa fa-file-pdf-o img-circle"  style="font-size: 30px;"></i> <span class="profile-status online pull-right"></span> </div>
                                         <div class="mail-contnet">
-                                            <h5>Pavan kumar</h5>
-                                            <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
+                                            <h6><b style="font-size: 12px;">Guía llenado sistema RIME</b></h6>
+                                            <span class="mail-desc">Fecha: 20 Julio 2018</span> <span class="time"> 1.39 MB</span>
                                         </div>
                                     </a>
                                 </div>
                             </li>
-                            <li>
+                            <!--li>
                                 <a class="text-center" href="javascript:void(0);"> <strong>See all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                            </li>
+                            </li-->
                         </ul>
                         <!-- /.dropdown-messages -->
                     </li>
+
+                    <?php /*
                     <!-- .Task dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
