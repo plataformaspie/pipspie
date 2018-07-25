@@ -79,22 +79,34 @@ class ExportReportController extends Controller
                   $identificacion['Variable_campo_clave']          = $f->variable;
           
           //MODO RECOLECCION DATOS OTRO  
-          //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
-          $otroModo = explode(',',$f->modo_recoleccion_datos);
           
-          for ($i=0; $i < count($otroModo) ; $i++) { 
-            if($otroModo[$i] == 'Otro'){
 
-              $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
+          if(isset($f->modo_recoleccion_datos)){
+            $otroModo = explode(',',$f->modo_recoleccion_datos);
+            
+            
+            for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+              if($otroModo[$i] == 'Otro'){
 
-            }else{
-              $cadenaOtroModo = $otroModo[$i].',';
+                $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
+
+              }else{
+                $cadenaOtroModo = $otroModo[$i].',';
+                //dd($cadenaOtroModo);
+              }
             }
+            //dd($cadenaOtroModo);
+            $cadenaOtroModo = trim($cadenaOtroModo,',');
+            $identificacion['recoleccion_datos']  = $cadenaOtroModo;
+            
+            //dd($filaFuente);
+          }else{
+            
+            $identificacion['recoleccion_datos']  = "";
           }
-          $cadenaOtroModo = trim(',',$cadenaOtroModo);
-          
-          
-          $identificacion['recoleccion_datos']             = $cadenaOtroModo;
+
+
+
           $identificacion['unidad_analisis']               = $f->unidad_analisis;
           $identificacion['universo_estudio']              = $f->universo_estudio;
           $identificacion['observacion']                   = $f->observacion;
@@ -330,19 +342,29 @@ class ExportReportController extends Controller
               $identificacion['Variable_campo_clave'] = $f->variable;
               //MODO RECOLECCION DATOS OTRO  
               //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
-              $otroModo = explode(',',$f->modo_recoleccion_datos);
-              
-              for ($i=0; $i < count($otroModo) ; $i++) { 
-                if($otroModo[$i] == 'Otro'){
+              if(isset($f->modo_recoleccion_datos)){
+                $otroModo = explode(',',$f->modo_recoleccion_datos);
+                
+                
+                for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+                  if($otroModo[$i] == 'Otro'){
 
-                  $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
+                    $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
 
-                }else{
-                  $cadenaOtroModo = $otroModo[$i].',';
+                  }else{
+                    $cadenaOtroModo = $otroModo[$i].',';
+                    //dd($cadenaOtroModo);
+                  }
                 }
+                //dd($cadenaOtroModo);
+                $cadenaOtroModo = trim($cadenaOtroModo,',');
+                $identificacion['recoleccion_datos']  = $cadenaOtroModo;
+                
+                //dd($filaFuente);
+              }else{
+                
+                $identificacion['recoleccion_datos']  = "";
               }
-              $cadenaOtroModo = trim(',',$cadenaOtroModo);
-              $identificacion['recoleccion_datos']             = $cadenaOtroModo;
 
 
               $identificacion['unidad_analisis'] = $f->unidad_analisis;
@@ -439,18 +461,20 @@ class ExportReportController extends Controller
 
               array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
 
-                  if (!isset($f->nombre_formulario)) {
-                    $formulario = explode("|",$f->nombre_formulario);
-                    
-                    $varFor = 1;
-                    for($i=0;$i<count($formulario);$i++){
-                      $key = 'FORM_'.$varFor;
+              if(isset($f->numero_total_formulario)){
 
-                      array_push($formularios, $formulario[$i]);
-                      array_push($cabeceraFormularios, $key);
-                      $varFor++;
-                    }
-                  }
+                $formulario = explode("|",$f->nombre_formulario);
+
+                $varFor = 1;
+                for($i=0;$i<sizeof($formulario);$i++){
+                  $key = 'FORM_'.$varFor;
+
+                  array_push($formularios, $formulario[$i]);
+                  array_push($cabeceraFormularios, $key);
+                  $varFor++;
+                }
+                
+              }
 
 
               array_push($cabeceraTitulos, 'FORMULARIOS');
@@ -561,20 +585,29 @@ class ExportReportController extends Controller
               $identificacion['Periodicidad'] = $f->periodicidad;
               $identificacion['Variable_campo_clave'] = $f->variable;
               //MODO RECOLECCION DATOS OTRO  
-              //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
-              $otroModo = explode(',',$f->modo_recoleccion_datos);
-              
-              for ($i=0; $i < count($otroModo) ; $i++) { 
-                if($otroModo[$i] == 'Otro'){
+              if(isset($f->modo_recoleccion_datos)){
+                $otroModo = explode(',',$f->modo_recoleccion_datos);
+                
+                
+                for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+                  if($otroModo[$i] == 'Otro'){
 
-                  $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
+                    $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
 
-                }else{
-                  $cadenaOtroModo = $otroModo[$i].',';
+                  }else{
+                    $cadenaOtroModo = $otroModo[$i].',';
+                    //dd($cadenaOtroModo);
+                  }
                 }
+                //dd($cadenaOtroModo);
+                $cadenaOtroModo = trim($cadenaOtroModo,',');
+                $identificacion['recoleccion_datos']  = $cadenaOtroModo;
+                
+                //dd($filaFuente);
+              }else{
+                
+                $identificacion['recoleccion_datos']  = "";
               }
-              $cadenaOtroModo = trim(',',$cadenaOtroModo);
-              $identificacion['recoleccion_datos']             = $cadenaOtroModo;
 
 
               $identificacion['unidad_analisis'] = $f->unidad_analisis;
@@ -948,6 +981,7 @@ class ExportReportController extends Controller
     
                         
     $r = intval($mayorCantidadResponsable[0]->max);
+    $numeroMayorResponsables = $r;
 
     
     if(isset($r)){
@@ -1010,6 +1044,7 @@ class ExportReportController extends Controller
     array_push($cabeceraDatos,'CONFIDENCIALIDAD','NOTAS LEGALES');
     array_push($tamanoTitulos,2);
     $sql = FuenteDatos::whereIn('remi_fuente_datos.id',$ids)
+                        ->orderBy('id', 'asc')
                         ->get();
     
   
@@ -1030,21 +1065,30 @@ class ExportReportController extends Controller
                               $fuenteDatos->periodicidad,
                               $fuenteDatos->variable);
           //MODO RECOLECCION DATOS OTRO  
-          //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
-          $otroModo = explode(',',$fuenteDatos->modo_recoleccion_datos);
           
-          for ($i=0; $i < count($otroModo) ; $i++) { 
-            if($otroModo[$i] == 'Otro'){
+          // dd($fuenteDatos->modo_recoleccion_datos);//hasta aqui muestra e valor modo recoleccion datos
+          if(isset($fuenteDatos->modo_recoleccion_datos)){
+            $otroModo = explode(',',$fuenteDatos->modo_recoleccion_datos);
+            
+            
+            for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+              if($otroModo[$i] == 'Otro'){
 
-              $cadenaOtroModo = 'Otro:'.$fuenteDatos->modo_recoleccion_datos_otro.',';
+                $cadenaOtroModo = 'Otro:'.$fuenteDatos->modo_recoleccion_datos_otro.',';
 
-            }else{
-              $cadenaOtroModo = $otroModo[$i].',';
+              }else{
+                $cadenaOtroModo = $otroModo[$i].',';
+                //dd($cadenaOtroModo);
+              }
             }
+            //dd($cadenaOtroModo);
+            $cadenaOtroModo = trim($cadenaOtroModo,',');
+            
+            array_push($filaFuente,$cadenaOtroModo);
+            //dd($filaFuente);
+          }else{
+            array_push($filaFuente,"");
           }
-          $cadenaOtroModo = trim(',',$cadenaOtroModo);
-          
-          array_push($filaFuente,$cadenaOtroModo);
 
           array_push($filaFuente, $fuenteDatos->unidad_analisis);
           array_push($filaFuente, $fuenteDatos->universo_estudio);
@@ -1081,7 +1125,7 @@ class ExportReportController extends Controller
           for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
             if($otroEstadisticaEconomica[$i] == 'Otro'){
                 
-              $cadenaOtroEstadisticaEconomica = 'Otro:'.$fuenteDatos->demografia_estadistica_economica_otro.',';
+              $cadenaOtroEstadisticaEconomica = 'Otro:'.$fuenteDatos->estadistica_economica_otro.',';
               
 
             }else{
@@ -1138,40 +1182,48 @@ class ExportReportController extends Controller
           //calculo de los FORMULARIOS
 
           array_push($filaFuente,$fuenteDatos->numero_total_formulario);
-         
-          $nombreformularios = explode("|",$fuenteDatos->nombre_formulario);
-          
-          //verificar si tiene algun formulario
-          if(isset($fuenteDatos->numero_total_formulario)){
-            $varFor = 0;
-            //verificar si es mayor o igual que el maximo de los formularios
-            $nfor = $fuenteDatos->numero_total_formulario;
-            if($nfor==$mayorCantidadFormularios){
+          if(isset($fuenteDatos->nombre_formulario)){
 
-                for ($i=0; $i < $nfor ; $i++) { 
+            $nombreformularios = explode("|",$fuenteDatos->nombre_formulario);
+            $numFor = sizeof($nombreformularios);
+            //dd($numFor);
+            $varFor = 0;
+
+            //verificar si es mayor o igual que el maximo de los formularios
+            
+            //dd($fuenteDatos->numero_total_formulario);
+            
+            if($numFor==$mayorCantidadFormularios){
+
+                for ($i=0; $i < $numFor ; $i++) { 
                     
                   array_push($filaFuente,$nombreformularios[$i]);
                 } 
             }else{
-                $aumentarFormulario = 0;
 
-                for ($i=0; $i < $nfor ; $i++) { 
+                $aumentarFormulario = 0;
+                
+
+                for ($i=0; $i < $numFor ; $i++) { 
                   array_push($filaFuente,$nombreformularios[$i]);
                   $aumentarFormulario++;
                 }
-                for ($i=0; $i <$aumentarFormulario ; $i++) { 
+                for ($i=$aumentarFormulario; $i < $mayorCantidadFormularios ; $i++) { 
                   array_push($filaFuente,"");
                 }
 
             }
-            
-              
+
           }else{
-            for ($i=0; $i < $mayorCantidadFormularios ; $i++) { 
+             for ($i=0; $i < $mayorCantidadFormularios ; $i++) { 
 
                 array_push($filaFuente, "");
             }
+
           }
+         
+          //dd($filaFuente);
+          
           //COBERTURA        
           array_push($filaFuente,$fuenteDatos->cobertura_rraa);
           array_push($filaFuente,$fuenteDatos->cobertura_rraa_descripcion);
@@ -1211,42 +1263,63 @@ class ExportReportController extends Controller
           
           //dd($fuenteDatos->nivel_representatividad_datos);
            //trabajando  nivel de representatividad/nivel de desagregacion
+          if(isset($fuenteDatos->nivel_representatividad_datos)){
+            $nivelDesagregacion = explode(",", $fuenteDatos->nivel_representatividad_datos);
 
-          $nivelDesagregacion = explode(",", $fuenteDatos->nivel_representatividad_datos);
+            //dd($nivelDesagregacion);
 
-          if(count($nivelDesagregacion)>1){
-            $co = FuenteTiposCobertura::whereIn('id', $nivelDesagregacion)->get();
-            $cadenaDesagregacion = "";
-            foreach ($co as $c) {
-                $cadenaDesagregacion = $cadenaDesagregacion.$c->nombre.',';
-            }
-            $cadenaDesagregacion = trim($cadenaDesagregacion,',');
-            array_push($filaFuente,$cadenaDesagregacion);
+            if(sizeof($nivelDesagregacion)> 1){
 
-          }else{
-            //verificar que en el string no exita letras
-            if(!isset($fuenteDatos->nivel_representatividad_datos)){
-
-              $co = FuenteTiposCobertura::where('id', $fuenteDatos->nivel_representatividad_datos)->get();
+              $co = FuenteTiposCobertura::whereIn('id', $nivelDesagregacion)->get();
               $cadenaDesagregacion = "";
               foreach ($co as $c) {
                   $cadenaDesagregacion = $cadenaDesagregacion.$c->nombre.',';
               }
               $cadenaDesagregacion = trim($cadenaDesagregacion,',');
               array_push($filaFuente,$cadenaDesagregacion);
+
             }else{
-              array_push($filaFuente,"");
+              $soloId = intval($nivelDesagregacion[0]);
+              $co = FuenteTiposCobertura::where('id', $soloId)->get();
+              $cadenaDesagregacion = "";
+              foreach ($co as $c) {
+                  $cadenaDesagregacion = $cadenaDesagregacion.$c->nombre.',';
+              }
+              $cadenaDesagregacion = trim($cadenaDesagregacion,',');
+              array_push($filaFuente,$cadenaDesagregacion);
             }
-            
+          }else{
+            array_push($filaFuente,"");
           }
+
+          
           
 
           //trabajando responsable
           $nResponsables = FuenteDatosResponsable::where('id_fuente',$fuenteDatos->id)
                                                     ->where('activo',true)->get();
-          foreach ($nResponsables as $varRes) {
-            array_push($filaFuente,$varRes->responsable_nivel_1,$varRes->responsable_nivel_2,$varRes->responsable_nivel_3,$varRes->responsable_nivel_4,$varRes->numero_referencia);
-          }
+         // dd($nResponsables);                                                    
+          $responsableFila = sizeof($nResponsables); 
+          
+          if($responsableFila == $mayorCantidadResponsable){
+            foreach ($nResponsables as $varRes) {
+              array_push($filaFuente,$varRes->responsable_nivel_1,$varRes->responsable_nivel_2,$varRes->responsable_nivel_3,$varRes->responsable_nivel_4,$varRes->numero_referencia);
+            }
+          }else{
+            $cContadorResponsable = 0;
+            foreach ($nResponsables as $varRes) {
+              array_push($filaFuente,$varRes->responsable_nivel_1,$varRes->responsable_nivel_2,$varRes->responsable_nivel_3,$varRes->responsable_nivel_4,$varRes->numero_referencia);
+              $cContadorResponsable++;
+            }
+            //dd($numeroMayorResponsables);
+            
+            for ($i=$cContadorResponsable; $i <$r ; $i++) { 
+              array_push($filaFuente,"","","","","");
+               
+            }
+            //dd($filaFuente);
+          }                                        
+          
           //Acceso a informacion
           array_push($filaFuente,$fuenteDatos->confidencialidad);
           array_push($filaFuente,$fuenteDatos->notas_legales);  
