@@ -1236,9 +1236,10 @@ class ExportReportController extends Controller
           
             $cadenaCobertura = "";
             foreach ($co as $c) {
-                $cadenaCobertura = '-'.$cadenaCobertura.$c->nombre;
+                $cadenaCobertura = $cadenaCobertura.$c->nombre.',';
             }
-            array_push($filaFuente,$cadenaCobertura);//llenando...coberura
+            
+            array_push($filaFuente,trim($cadenaCobertura,','));//llenando...coberura
 
           }else{
             if($fuenteDatos->cobertura_geografica){
