@@ -1,9 +1,9 @@
 @extends('layouts.moduloplanificacion')
 
 @section('header')
-  <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
-  <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
-  <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
+<link rel="stylesheet" href="/plugins/bower_components/sweetalert/sweetalert.css" type="text/css">
 
 <style media="screen">
 .popup-basic {
@@ -38,11 +38,11 @@
   <aside class="tray tray-left tray225 va-t pn" data-tray-height="match">
 
     <div class="animated-delay p20" data-animate='["300","fadeIn"]'>
-        <h4 class="mt5 mb20"> Completar datos </h4>
+        <h4 class="mt5 mb20"> Información </h4>
         <ul class="fs14 list-unstyled list-spacing-10 mb10 pl5">
             <li>
-                <i class="fa fa-exclamation-circle text-warning fa-lg pr10"></i>
-                Llene la información solicitada por el sistema
+             {{--    <i class="fa fa-exclamation-circle text-warning fa-lg pr10"></i>
+                Llene la información solicitada por el sistema --}}
             </li>
         </ul>
     </div>

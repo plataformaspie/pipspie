@@ -3,8 +3,7 @@
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
-{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" /> --}}
-<link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/plugins/bower_components/sweetalert/sweetalert.css" type="text/css">
 
 <style media="screen">
 .popup-basic {
@@ -74,7 +73,7 @@
                                     <label class="field-label" for="id_tipo_plan">Tipo de Plan</label>
                                     <label class="field select">
                                         <select id="id_tipo_plan" name="id_tipo_plan" class="required" style="width:100%;">
-                                            <option value="">Seleccione el tipo de plan</option>
+                                            <option></option>
                                         </select>
                                         <i class="arrow double"> </i>                    
                                     </label>
@@ -126,7 +125,7 @@
 <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
 <script src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript">
-// $(function(){
+$(function(){
     var planes = {
         dataTable : $("#dataTable"),
         periodo_planificacion: {},
@@ -160,17 +159,6 @@
                 };
                 //Configuracion de la tabla
                 var dataAdapter = new $.jqx.dataAdapter(planes.source);
-
-                var cargarRenderer = function (row, datafield, value) {
-                    var html = '<button class="sel_cargar_plan btn btn-xs bg-system dark btn-rounded "><i class="fa fa-arrow-circle-up icon-success"></i> <span>cargar</span></button>';
-                    return html;
-                };
-                var editDelRenderer = function (row, columnfield, value, defaulthtml, columnproperties) {
-                    html = `<a href="#" id="edit-${value}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Plan" ><i class="fa fa-edit text-warning fa-lg"></i></a> 
-                        <a href="#" id="del-${value}" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar Plan" ><i class="fa fa-minus-circle text-danger fa-lg"></i></a> ` 
-                    return html;
-                };
-
                 planes.dataTable.jqxDataTable({
                     source: dataAdapter,
                     altRows: false,
@@ -181,7 +169,13 @@
                     selectionMode: 'singleRow',
                     localization: getLocalization('es'),
                     columns: [
-                        { text: '*', cellsRenderer: cargarRenderer, width: 80 },
+                        /* boton de cargar */
+                        { text: '*', width: 80, cellsRenderer: function (row, datafield, value) {
+                                        var html = '<button class="sel_cargar_plan btn btn-xs bg-system dark btn-rounded text-white-lighter"><i class="fa fa-arrow-circle-up icon-success"></i> <span>cargar</span></button>';
+                                        return html;
+                                    },  
+                        },
+                        /* imagen segun el tipo de plan */
                         { text: '-', width: 90, cellsRenderer: function (row, column, value, rowData) {
                               var image = `<div style='margin: 5px; margin-bottom: 3px;'>
                                           <img width="60" height="80" style="display: block;" src="/img/ico_${rowData.cod_tipo_plan}.png"/>
@@ -189,6 +183,7 @@
                               return image;
                               }
                         },
+                        /* descripcion armada */
                         { text: 'Descripcion', dataField: 'nombre', align: 'center',
                             cellsRenderer: function (row, column, value, rowData) {
                                 var container = `<div style="width: 100%; height: 100%;">
@@ -202,7 +197,13 @@
                                 return container;
                             }
                         },
-                        { text: ' ', dataField: 'id', cellsrenderer: editDelRenderer},
+                        /* botones de edicion*/
+                        { text: ' ', dataField: 'id', cellsrenderer: function (row, columnfield, value, defaulthtml, columnproperties) {
+                                html = `<a href="#" id="edit-${value}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Plan" ><i class="fa fa-edit text-warning fa-lg"></i></a> 
+                                <a href="#" id="del-${value}" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar Plan" ><i class="fa fa-minus-circle text-danger fa-lg"></i></a> ` ;
+                                return html;
+                            }
+                        },
                     ]
                 });
             });
@@ -432,6 +433,6 @@
 
     
 
-// })
+})
 </script>
 @endpush

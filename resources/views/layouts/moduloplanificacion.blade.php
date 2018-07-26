@@ -193,7 +193,7 @@
                 <!-- ID_PLAN ............ -->
             <input type="hidden" name="id_p_act" id="id_p_act" value="{{ $id_plan }}">
                 <!-- sidebar menu -->
-            <ul class="nav sidebar-menu" id="menuSP">
+            <ul class="nav sidebar-menu" id="menu-principal-sp">
                 
                 <li class="sidebar-label pt20">PDES</li>
 
@@ -211,12 +211,11 @@
                   </li>
                   @endif
                     <li>
-                        <a  class=" sp_tipo_menu" href="#{{$m->tipo_menu}}" data-toggle="collapse" >
+                        <a  class="accordion-toggle grupo" href="#">
                             <span class="glyphicons glyphicons-fire"></span>
                             <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
                             <span class="caret"></span>
                         </a>
-                        <div id="{{$m->tipo_menu}}" class="collapse">
                         <ul  class="nav sub-nav " >
                             <li id="M{{ $m->id }}" class="">
                                 <?php
@@ -224,8 +223,8 @@
                                     if($m->tipo_menu <> "Estructuración")
                                         $qstring = '?p=' . $id_plan;
                                 ?>
-                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="sp_menu">
-                                      <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}"> 
+                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="menu-item-sp">
+                                      <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}"> 
                                       <span>{{ $m->titulo }}</span> 
                                 </a>
                                 @if( $m->submenus )
@@ -240,8 +239,8 @@
                             </li>
                 @else
                     <li id="M{{ $m->id }}">                        
-                        <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="sp_menu">
-                          <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  
+                        <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="menu-item-sp">
+                          <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  
                           <span>{{ $m->titulo }}</span>
                         </a>
                         @if( $m->submenus )
@@ -258,7 +257,7 @@
             @endforeach
 
                         </ul>
-                        </div>
+                        
                     </li>
 
 
@@ -608,6 +607,8 @@
             }
         }
 
+$(function(){
+
 
         globalSP = {
             menu:{
@@ -626,61 +627,86 @@
             usuario: {},
             activarMenu: function(mn){
                 if(mn=='0')  // si es 0 se abren todos los menus
-                    $("#menuSP .sp_tipo_menu").addClass('menu-open');
+                    $("#menu-principal-sp .grupo").addClass('menu-open');
                 else {
-                    $("u li").removeClass('activo');            
+                    $("#menu-principal-sp  li").removeClass('activo');            
                     $('#M'+mn).addClass('activo');
                     padre = $('#M'+mn).parent().parent();
-                    padre.addClass('in');                
+                    padre.find('a').addClass('menu-open');               
                 }
             },
-            // generarMenu: function(idplan, menus){
-            //     // $.get(this.urlBase +  "getmenu", {'p': idplan}, function(menus){
-            //         grupos = _.groupBy(menus, function(m){
+            // generarMenu: function(idplan, idMenuActivo){
+            //     $.get(this.urlApi +  "getmenu", {'p': idplan}, function(menus){
+            //         grupos = _.groupBy(menus.data, function(m){
             //             return m.tipo_menu;
             //         });
             //         var html = '<li class="sidebar-label pt20">PDES</li>';
             //         _.mapObject(grupos, function(menuGrupo, key){
-            //             html += '<li>';
-            //             html += '<a  " class="accordion-toggle grupo" href="#">\
-            //                         <span class="glyphicons glyphicons-fire"></span>\
-            //                         <span class="sidebar-title">' + key + ' </span>\
-            //                         <span class="caret"></span>\
-            //                     </a>';
+            //             html += `<li>
+            //                         <a  class="accordion-toggle grupo" href="#">
+            //                             <span class="glyphicons glyphicons-fire"></span>
+            //                             <span class="sidebar-title">${key}</span>
+            //                             <span class="caret"></span>
+            //                         </a>`
 
                         
             //             html += '<ul class="nav sub-nav">';
             //             _.mapObject(menuGrupo, function(m){
-            //                 html += '<li id="M' + m.id + '">'                         
-            //                     +'<a href="' + m.url+'?p='+ idplan + '"  id="' + m.id + '" class="sp_menu">'
-            //                     + '<img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="' +m.icono + '">  '
-            //                     +  '<span>' + m.titulo +' </span>'
-            //                     + '</a>';
-            //                     if( m.submenus )
-            //                     { 
-            //                         html += '<ul class="nav sub-nav"';
-            //                         m.submenus.forEach(function(sm){
-            //                             html += '<li id="sm-' + sm.id +'" class="">\
-            //                             <a href="' + sm.url+'">' + sm.titulo +'</a>\
-            //                           </li>';
-            //                         })
+            //                 html +=`<li id="M${m.id}">                        
+            //                             <a href="/${m.url}?p=${idplan}"  id="${m.id}" class="menu-item-sp">
+            //                                 <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="${m.icono}">
+            //                                 <span>${m.titulo}</span>
+            //                              </a>`;
+            //                     // if( m.submenus ) { 
+            //                     //     html += '<ul class="nav sub-nav"';
+            //                     //     m.submenus.forEach(function(sm){
+            //                     //         html += '<li id="sm-' + sm.id +'" class="">\
+            //                     //         <a href="' + sm.url+'">' + sm.titulo +'</a>\
+            //                     //       </li>';
+            //                     //     })
 
-            //                         html += '</ul>';
-            //                     }
+            //                     //     html += '</ul>';
+            //                     // }
             //                  html +=  '</li>';
             //             } );
+            //             html += '</ul>';
             //             html += '</li>' ;
-
-            //                     // TODO completar menu para que se llame de manera dinamica
             //         });
-            //         $("#menuSP").html(html)
-            //     // })
+            //         $("#menu-principal-sp").html(html);
+
+            //         if(globalSP.coreInit){
+            //                 // var defaults = {
+            //                 //             sbl: "sb-l-o", // sidebar left open onload 
+            //                 //             sbr: "sb-r-c", // sidebar right closed onload
+
+            //                 //             collapse: "sb-l-m", // sidebar left collapse style
+            //                 //             siblingRope: true
+            //                 //             // Setting this true will reopen the left sidebar
+            //                 //             // when the right sidebar is closed
+            //                 //          };
+            //                 //          var options = $.extend({}, defaults, options);
+            //              var opt =  {
+            //                             sbl: "sb-l-o", // sidebar left open onload 
+            //                             sbr: "",
+            //                             collapse: "", // sidebar left collapse style
+
+            //                          };           
+            //             Core.init2(opt);
+            //             globalSP.coreInit = 1;
+            //         }
+            //         else{
+            //             Core.init2();
+            //             globalSP.coreInit = 1;
+            //         }
+
+            //         globalSP.activarMenu(idMenuActivo);
+            //     })
             // },
             configuraMenu: function(plan){
                 etapas = plan.etapas_completadas.split('|').filter(function(val){                    
                     return val != '';
                 });
-                $("#menuSP i").remove();
+                $("#menu-principal-sp i").remove();
                 var icon = '<i class="fa fa-tags pull-right text-success" style="font-size: 10px; "></i>';
                 etapas.forEach(function(idmenu){
                     $("#" + idmenu).append(icon);
@@ -719,9 +745,9 @@
                 var titulo_ = (typeof titulo =='string')? titulo : globalSP.usuario.institucion.nombre;
                 $("#tituloCabecera").html(titulo_);
             },
-            setTitulo2: function(titulo2)
-            {
-                titulo = ( typeof titulo2 =='string') ? titulo2 : 'Plan cargado: ' + globalSP.planActivo.sigla_entidad + ' - ' + globalSP.planActivo.cod_tipo_plan + ' - ' + globalSP.planActivo.gestion_inicio + '-' + globalSP.planActivo.gestion_fin;
+            setTitulo2: function(titulo2){
+                titulo = (typeof titulo2 =='string') ? 
+                            titulo2 : `Plan cargado: ${globalSP.planActivo.sigla_entidad} -  ${globalSP.planActivo.cod_tipo_plan} - ${globalSP.planActivo.gestion_inicio} - ${globalSP.planActivo.gestion_fin} (${globalSP.planActivo.id})`;
                 $("#titulo2Cabecera").html(titulo);
             },
             setBreadcrumb: function(bread1, bread4){
@@ -729,11 +755,11 @@
                 $("#breadcrumb4").html(bread4);
             }
 
-
-
-
         }
 
+
+
+})
 
     </script>
     <!-- END: PAGE SCRIPTS -->

@@ -103,8 +103,41 @@ class PlanificacionBaseController extends Controller
      */
     public function getPilares()
     {
-        $pilares = \DB::select('SELECT * from pdes_pilares order by cod_p');
+        $pilares = \DB::select('SELECT id, cod_p, nombre, descripcion, logo, cod_pex from pdes_pilares order by cod_p');
         return response()->json(['data' => $pilares]);
+    }
+
+    /*
+    |  Obtiene las metas pertenecientes a un plan
+    | $req = {id_pilar: id_pilar}
+     */
+    public function getMetasPilar($req)
+    {
+        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex from pdes_metas 
+                                WHERE id_pilar = ? ORDER BY cod_m', [$req->id_pilar]);
+        return response()->json(['data' => $metas]);
+    }
+
+    /*
+    |  Obtiene los resultados pertenecientes a una meta
+    | $req = {id_meta: id_meta}
+     */
+    public function getResultadosMeta($req)
+    {
+        $resultados = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex 
+                                    FROM pdes_resultados WHERE id_meta = ? ORDER by cod_r', [$req->id_meta]);
+        return response()->json(['data' => $resultados]);
+    }
+
+    /*
+    |  Obtiene las acciones vinculadas a un Resultado
+    | $req = {id_resultado: id_resultado}
+     */
+    public function getAccionesResultado($req)
+    {
+        $acciones = \DB::select('SELECT id, cod_a, nombre, descripcion, id_resultado
+                                    FROM pdes_acciones WHERE id_resultado = ? ORDER by cod_r', [$req->id_resultado]);
+        return response()->json(['data' => $acciones]);
     }
 
 
@@ -174,6 +207,23 @@ class PlanificacionBaseController extends Controller
             $idEntidad = $req->id_entidad;
         
         return $idEntidad;
+    }
+
+    public static function encriptar($cadena, $llave='sp')
+    {
+        $cifrado = MCRYPT_RIJNDAEL_256;
+        $modo = MCRYPT_MODE_ECB;
+        $encriptado = mcrypt_encrypt($cifrado, $llave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
+        return base64_encode($encriptado);
+    }
+    
+    public static function desencriptar($cadena, $llave='sp')
+    {
+        $cadena = base64_decode($cadena);    
+        $cifrado = MCRYPT_RIJNDAEL_256;
+        $modo = MCRYPT_MODE_ECB;
+        $desencriptado = mcrypt_decrypt($cifrado, $llave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
+        return ($desencriptado);
     }
 
 
