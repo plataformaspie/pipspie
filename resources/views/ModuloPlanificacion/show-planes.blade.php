@@ -73,7 +73,7 @@
                                     <label class="field-label" for="id_tipo_plan">Tipo de Plan</label>
                                     <label class="field select">
                                         <select id="id_tipo_plan" name="id_tipo_plan" class="required" style="width:100%;">
-                                            <option value="">Seleccione el tipo de plan</option>
+                                            <option></option>
                                         </select>
                                         <i class="arrow double"> </i>                    
                                     </label>

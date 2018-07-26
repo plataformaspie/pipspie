@@ -634,27 +634,25 @@
           <!-- .row -->
           <div class="row" style="margin-right: 0px;">
             <div class="col-sm-12">
-                <div class="white-box p-t-0 p-b-0 m-b-0">
-
+                <div class="white-box p-t-0">
                     <h3 class="box-title m-b-0">Registro de fuente de datos</h3>
-                    <p class="text-muted m-b-10">Completar los datos minimos de la Fuente de Datos. <button id ="btn-new-fuente" type="submit" class="btn btn-info btn-sm" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i>Guardar</button></p>
-                    <p class="text-warning m-t-0">Debe completar la informacion en Administracion de Fuente de Datos</p>
+                    <p class="text-muted m-b-10">Completar los datos solicitados en el formulario <button id ="btn-new-fuente" type="submit" class="btn btn-info btn-sm" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i>Guardar</button></p>
+
                     <div class="form-group row m-b-10">
                       <div class="col-md-2 p-l-0 p-r-0">
                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Nombre</label>
                       </div>
                       <div class="col-md-10 p-l-0">
-                          <!--input id="fd_nombre" name="fd_nombre" type="text" class="form-control"  placeholder="Nombre de la fuente" !-->
-                          <textarea id="fd_nombre" name="fd_nombre" class="form-control" placeholder="Nombre de la fuente" required></textarea>
+                          <input id="fd_nombre" name="fd_nombre" type="text" class="form-control"  placeholder="Nombre de la fuente" required>
                           <div class="help-block with-errors"></div>
                       </div>
                     </div>
                     <div class=" row m-b-10">
                       <div class="col-md-2 p-l-0 p-r-0">
-                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Abreviación</label>
+                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Acrónimo</label>
                       </div>
                       <div class="form-group col-md-4 p-l-0">
-                          <input id="fd_acronimo" name="fd_acronimo" type="text" class="form-control"  placeholder="Abreviación" required>
+                          <input id="fd_acronimo" name="fd_acronimo" type="text" class="form-control"  placeholder="Acrónimo" required>
                           <div class="help-block with-errors"></div>
                       </div>
                       <div class="col-md-2 p-l-0 p-r-0">
@@ -670,9 +668,6 @@
                           <div class="help-block with-errors"></div>
                       </div>
                     </div>
-
-
-                    <?php /*
                     <div class=" row m-b-10">
                       <div class="col-md-2 p-l-0 p-r-0">
                         <label for="fd_periodicidad" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Periodicidad</label>
@@ -721,6 +716,13 @@
                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Variables</label>
                       </div>
                       <div class="col-md-10 p-l-0">
+                          <?php /*
+                          <select id="fd_variable" name="fd_variable[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                              @foreach ($variables as  $item)
+                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                              @endforeach
+                          </select>
+                          */ ?>
                           <textarea id="fd_variable" name="fd_variable" class="form-control" placeholder="Variables"></textarea>
                           <div class="help-block with-errors"></div>
                       </div>
@@ -821,7 +823,6 @@
                         </div>
 
 
-                        */ ?>
                     </div>
 
 
@@ -1214,7 +1215,7 @@
              isModal: true,
              autoOpen: false,
              width: '40%',
-             height: '35%',
+             height: '45%',
              minWidth: 330,
              minHeight: '10%',
              //cancelButton: $("#Cancel"),

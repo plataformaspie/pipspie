@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-  <div id="option1">
+  <div id="option1"><!--opcion 1-->
       <div class="row bg-title">
           <!-- .page title -->
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
@@ -31,26 +31,26 @@
       </div>
       <!-- .row -->
       <div class="row">
-      <div class="col-md-12">
-          <div class="panel panel-inverse ">
-              <div class="panel-heading"> Lista
-                  <div class="pull-right">
-                      <a href="#" data-perform="panel-collapse">
-                        <i class="ti-minus"></i>
-                      </a>
-                  </div>
-              </div>
-              <div class="panel-wrapper collapse in" aria-expanded="true">
-                  <div class="panel-body">
-                      <div id="dataTable"></div>
-                  </div>
-              </div>
-          </div>
+        <div class="col-md-12">
+            <div class="panel panel-inverse ">
+                <div class="panel-heading"> Lista
+                    <div class="pull-right">
+                        <a href="#" data-perform="panel-collapse">
+                          <i class="ti-minus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <div id="dataTable"></div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
       </div>
-  </div>
-  </div>
-  <div id="option2" class="hidden">
+  </div><!--fin opcion 1-->
+  <div id="option2" class="hidden"><!-- opcion 2-->
     <div class="row bg-title">
         <!-- .page title -->
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
@@ -68,10 +68,10 @@
     </div>
     <!-- .row -->
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3"><!--iNFORMACION IZQUIERDA-->
           <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
               <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
-                  <div class="panel-heading panel-heading-c2" style="color: #fff; background-color: #468E9B;border-color: #d6e9c6;"><b>Titulo de la Fuente de Datos:</b></div>
+                  <div class="panel-heading panel-heading-c2" style="color: #fff; background-color: #468E9B;border-color: #d6e9c6;"><b> Titulo de la Fuente de Datos:</b></div>
                   <div class="panel-wrapper collapse in" aria-expanded="true">
                       <div class="panel-body text-left">
                           <p><label id="nombre" style="color:#000000;font-weight: bold;"></label></p>
@@ -103,14 +103,19 @@
                   <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Obtener fuente </div>
                   <div class="panel-wrapper collapse in" aria-expanded="true">
                       <div class="panel-body text-center">
-                          <a onclick="alert('No tiene permisos. Gracias.')" style="cursor: pointer;"><img src="/img/icono_indicadores/xls.png" title="Descargar metadato ">Metadato</a>
+
+
+                          <a href="javascript:myFunction('You clicked!')"><i class="fa fa-file-excel-o"  style="font-size: 30px;" title="Descargar Metadato"></i> Metadato</a>
+
+
+                          <!--Aqui hay que cambiar AQUI HAY QUE EMPEZAR AQUI EMPEZAR-->
                       </div>
                   </div>
               </div>
           </div>
 
-      </div>
-      <div class="col-sm-9 center">
+      </div><!--FIN iNFORMACION IZQUIERDA-->
+      <div class="col-sm-9 center"><!--iNFORMACION DERECHA-->
           <div class="white-box">
               <h3 class="box-title m-b-0">Información de Fuente de Datos</h3>
               <p class="text-muted m-b-30">
@@ -174,7 +179,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="modo_recoleccion_datos"></span>
                                            <br/>
-                                           <span id="modo_recoleccion_datos_otro" class="hidden"></span>
+                                           <span id="modo_recoleccion_datos_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -190,7 +195,7 @@
                                       <p>: <span id="universo_estudio"></span></p>
                                     </div>
                               </div>
-                              <div class="row encuesta hidden">
+                              <div class="tagHidden row encuesta hidden">
                                       <div class="col-lg-4 col-sm-6">
                                         <b>Diseño y tamaño de muestra</b>
                                       </div>
@@ -238,7 +243,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="demografia_estadistica_social"></span>
                                            <br/>
-                                           <span id="demografia_estadistica_social_otro" class="hidden"></span>
+                                           <span id="demografia_estadistica_social_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -247,7 +252,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="estadistica_economica"></span>
                                            <br/>
-                                           <span id="estadistica_economica_otro" class="hidden"></span>
+                                           <span id="estadistica_economica_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -256,7 +261,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="estadistica_medioambiental"></span>
                                            <br/>
-                                           <span id="estadistica_medioambiental_otro" class="hidden"></span>
+                                           <span id="estadistica_medioambiental_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
@@ -265,7 +270,7 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: <span id="informacion_geoespacial"></span>
                                            <br/>
-                                           <span id="informacion_geoespacial_otro" class="hidden"></span>
+                                           <span id="informacion_geoespacial_otro" class="tagHidden hidden"></span>
                                       </p>
                                     </div>
 
@@ -332,7 +337,7 @@
 
                       <div class="panel-wrapper collapse in" aria-expanded="true">
                           <div class="panel-body">
-                                <div class="row registro hidden">
+                                <div class="tagHidden row registro hidden">
                                       <div class="col-lg-4 col-sm-6">
                                         <b>Cobertura del RRAA</b>
                                       </div>
@@ -416,10 +421,10 @@
                   </div>
               </div>
           </div>
-      </div>
+      </div><!--FIN iNFORMACION IZQUIERDA-->
 
     </div>
-  </div>
+  </div><!-- fin opcion 2-->
 
 
 
@@ -461,7 +466,9 @@
 
 
   <script type="text/javascript">
+    var idSeleccionar = "";
     $(document).ready(function(){
+
 
       var url = '{{ url('api/sistemarime/apiSetListFuenteDatos') }}';
       // prepare the data
@@ -475,7 +482,7 @@
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
               { name: 'estado', type: 'string' },
-              { name: 'responsable_nivel_1', type: 'string' }
+              { name: 'responsable', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -485,19 +492,20 @@
       {
           source: dataAdapter,
           width:"100%",
+          height:"400px",
           theme:theme,
           columnsResize: true,
           filterable: true,
-          //filterMode: 'advanced',
-          pageable: true,
-          pagerButtonsCount: 10,
+          filterMode: 'simple',
+          //pageable: true,
+          //pagerButtonsCount: 10,
           localization: getLocalization('es'),
-          pageSize: 50,
+          //pageSize: 50,
           columns: [
             { text: 'Estado', dataField: 'estado', width: 120, cellsAlign: 'center' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
+            { text: 'Responsable', width: 200, dataField: 'responsable' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
                           var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
@@ -511,11 +519,16 @@
         ]
       });
 
+
       $('#btn-back, .btn-back').click(function() {
          $('#option1').removeClass('hidden');
          $('#option2').removeClass('show');
          $('#option2').addClass('hidden');
+         $('.tagHidden').removeClass('hidden');
+         $('.tagHidden').addClass('hidden');
+         $("#datosARC > tbody").html("");
       });
+
 
     });
     var show_panel = function(){
@@ -526,7 +539,8 @@
 
 
     var btn_show = function(ele){
-       show_panel();
+        idSeleccionar = ele;
+       show_panel();//aqui es donde se oculta el otro panel donde estan los datos
        $.ajax({
              url: "{{ url('/api/sistemarime/apiDataSetFuente') }}",
              type: "GET",
@@ -679,14 +693,17 @@
 
                   $.each(data.archivos, function(i, data) {
                       var nombre = data.nombre.replace(/\s/g,"_");
+                      var filepath = data.archivo;
+                      var ico = filepath.split(".");
+                      var iconoSel = iconos(ico[1]);
                       var html = '<tr id="ARC'+ nombre +'" class="">'+
                                       '<td>'+
-                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
-                                          '<p>'+
-                                            '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo" width="35"> '+
-                                             data.nombre +
-                                          '</p>'+
-                                          '</a>'+
+                                        '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
+                                        '<p>'+
+                                          '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
+                                           data.nombre +
+                                        '</p>'+
+                                        '</a>'+
                                       '</td>'+
                                   '</tr>';
                        $("#datosARC > tbody").append(html);
@@ -721,6 +738,67 @@
                }
              }
        });
+
     };
+
+
+function myFunction(){
+  //alert("hola desde el link" + idSeleccionar);
+  location.href = '/api/sistemarime/descagarExcelMetadatosOnly/'+ idSeleccionar;
+
+}
+
+function iconos(ele){
+    switch(ele) {
+        case 'xls':
+            return 'fa-file-excel-o';
+            break;
+        case 'xlsx':
+            return 'fa-file-excel-o';
+            break;
+        case 'doc':
+            return 'fa-file-word-o';
+            break;
+        case 'docx':
+            return 'fa-file-word-o';
+            break;
+        case 'txt':
+            return 'fa-file-text-o';
+            break;
+        case 'ppt':
+            return 'fa-file-powerpoint-o';
+            break;
+        case 'pptx':
+            return 'fa-file-powerpoint-o';
+            break;
+        case 'rar':
+            return 'fa-file-zip-o';
+            break;
+        case 'zip':
+            return 'fa-file-zip-o';
+            break;
+        case 'pdf':
+            return 'fa-file-pdf-o';
+            break;
+        case 'jpg':
+            return 'fa-file-image-o';
+            break;
+        case 'jpgeg':
+            return 'fa-file-image-o';
+            break;
+        case 'png':
+            return 'fa-file-image-o';
+            break;
+        case 'gif':
+            return 'fa-file-image-o';
+            break;
+        default:
+            return 'fa-file-o';
+    }
+}
+
+
+
+
   </script>
 @endpush

@@ -212,6 +212,7 @@ Route::group(['middleware' => 'auth'],function(){
 });
 
 Route::group(['middleware' => 'auth'],function(){
+
     Route::group(
         array('prefix' => 'moduloplanificacion'),
         function() {
@@ -299,6 +300,7 @@ Route::group(['middleware' => 'auth'],function(){
 
         }
     );
+
 });
 
 Route::group(['middleware' => 'auth'],function(){
@@ -347,10 +349,12 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
               Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
+
           }
       );
       Route::group(
           array('prefix' => 'api/sistemaremi'),
+
           function() {
               Route::get('demo', 'SistemaRemi\IndicadorController@demo');
               Route::post('apiSavePerfil', 'SistemaRemi\SettingController@apiSavePerfil');
@@ -368,6 +372,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('setPdes', 'SistemaRemi\IndicadorController@setPdes');
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldo');
               Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
+              Route::get('apiExportData', 'SistemaRemi\ExportReportController@descagarExcelAdminFuente');
+              
+
           }
       );
       Route::group(
@@ -386,7 +393,11 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('apiSaveFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSaveFuenteDatos');
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\FuenteDatosController@apiUploadArchivoRespaldo');
               Route::get('apiDeleteArchivo', 'SistemaRemi\FuenteDatosController@apiDeleteArchivo');
+
               Route::get('apiDataSetFuente', 'SistemaRemi\FuenteDatosController@apiDataSetFuente');
+              Route::get('descagarExcelMetadatosOnly/{id}', 'SistemaRemi\ExportReportController@descagarExcelMetadatosOnly');
+
+
               Route::post('apiRecuperarFuente', 'SistemaRemi\FuenteDatosController@apiRecuperarFuente');
               Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');
 

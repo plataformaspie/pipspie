@@ -60,8 +60,46 @@
       <div class="col-lg-12 ">
           <div class="white-box">
             <h3 class="box-title m-b-0">Lista de Fuente de datos</h3>
-            <p class="text-muted m-b-30">Fuente de Datos registrados <button id ="btn-new" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i></button></p>
-            <div id="dataTable"></div>
+            <p class="text-muted m-b-30">Fuente de Datos registrados
+              <button id ="btn-new" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i> Agregar Nuevo</button>
+            </p>
+            <div class="row">
+              <div id="FilterAdvanced" class="col-lg-3 hidden">
+                  <div style="margin-top: 30px;">
+                      <div>Filtrado por:</div>
+                      <div id="columnchooser"></div>
+                      <div style="float: left;  margin-top: 10px;" id="filterbox"></div>
+                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
+                          <input type="button" id="applyFilter" value="Aplicar filtro" />
+                          <input type="button" id="clearfilter" style="margin-top:20px;" value="Limpiar" />
+                      </div>
+                  </div>
+              </div>
+              <div id="exportarData" class="col-lg-3 hidden">
+                  <div style="margin-top: 30px;">
+                      <div>Exportar a:</div>
+                      <select class="form-control">
+                          <option value="excel">Excel</option>
+                      </select>
+                      <label>
+                        <input name="option_data" value="1" type="radio"> Contenido de tabla
+                      </label>
+                      <label>
+                        <input name="option_data" value="2" type="radio"> Registro seleccionado
+                      </label>
+                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
+                        <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
+                      </div>
+                  </div>
+              </div>
+              <div id="jqxDataTable" class="col-lg-12">
+                <p class="m-b-5">
+                  <button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
+                  <button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
+                </p>
+                <div id="dataTable"></div>
+              </div>
+            </div>
           </div>
       </div>
   </div>
@@ -78,8 +116,8 @@
                       <p class="text-muted m-b-30">
                         La documentación de todos los elementos marcados con “<label class="text-danger">(o)</label>” es de carácter obligatorio.<br/>
                         La documentación de todos los elementos marcados con “<label class="text-success">(r)</label>” es de carácter recomendado
-                        <button id ="btn-back" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;">
-                          <i class="fa fa-arrow-left"></i>
+                        <button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;">
+                          <i class="fa fa-arrow-left"> Atras</i>
                         </button>
                       </p>
                       <div class="form-group row m-b-10">
@@ -446,6 +484,7 @@
                                           <div class="col-md-12 list-group-item-success">
                                               <h4 style="width:100%;"> Categoria Temática </h4>
                                           </div>
+                                          <p class="m-t-10"><h5 class="text-info">*Para cada caso puede seleccionar mas de una opción si fuera necesario.</h3></p>
                                           <div class="col-md-12">
                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-3 p-l-0 p-r-0">
@@ -664,53 +703,53 @@
                                                  <div class="col-md-12 p-l-0">
                                                      <div class="select2-wrapper">
                                                        <ul class="checkbox">
-                                                         <li><input type="checkbox" id="c1" name="cobertura[]" value="1" /><label>Internacional</label></li>
+                                                         <li><input type="checkbox" id="c1" name="cobertura[]" value="1" /><label> Internacional</label></li>
                                                          <li>
-                                                           <input type="checkbox" id="c2" name="cobertura[]" value="2" class="padreck" /><label>Nacional (Todo el país)</label>
-                                                           <ul class="checkbox">
-                                                             <li><input type="checkbox" id="c3" name="cobertura[]" value="3" class="hijo2" /><label>Nacional Urbano (Ciudades Capitales)</label></li>
-                                                             <li><input type="checkbox" id="c4" name="cobertura[]" value="4" class="hijo2" /><label>Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
-                                                             <li><input type="checkbox" id="c5" name="cobertura[]" value="5" class="hijo2" /><label>Nacional  Resto Urbano</label></li>
-                                                             <li><input type="checkbox" id="c6" name="cobertura[]" value="6" class="hijo2"/><label>Nacional Rural</label></li>
+                                                           <input type="checkbox" id="c2" name="cobertura[]" value="2" class="padreck" /><label> Nacional (Todo el país)</label>
+                                                           <ul class="">
+                                                             <li><input type="checkbox" id="c3" name="cobertura[]" value="3" class="hijo2" /><label> Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="c4" name="cobertura[]" value="4" class="hijo2" /><label> Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li><input type="checkbox" id="c5" name="cobertura[]" value="5" class="hijo2" /><label> Nacional  Resto Urbano</label></li>
+                                                             <li><input type="checkbox" id="c6" name="cobertura[]" value="6" class="hijo2"/><label> Nacional Rural</label></li>
                                                            </ul>
                                                          </li>
                                                          <li>
-                                                           <input type="checkbox" id="c7" name="cobertura[]" value="7" class="padreck" /><label>Departamental (Todos los Departamentos)</label>
-                                                           <ul class="checkbox">
+                                                           <input type="checkbox" id="c7" name="cobertura[]" value="7" class="padreck" /><label> Departamental (Todos los Departamentos)</label>
+                                                           <ul class="">
                                                              <li>
-                                                               <input type="checkbox" id="c8" name="cobertura[]" value="8" class="hijo2" /><label>Departamental Urbano (Todas las Ciudades Capitales)</label>
-                                                               <ul class="checkbox">
-                                                                 <li><input type="checkbox" id="c9" name="cobertura[]" value="9" class="hijo2" /><label>Chuquisaca (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c10" name="cobertura[]" value="10" class="hijo2" /><label>La Paz (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c11" name="cobertura[]" value="11" class="hijo2" /><label>El Alto (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c12" name="cobertura[]" value="12" class="hijo2"/><label>Cochabamba (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c13" name="cobertura[]" value="13" class="hijo2"/><label>Santa Cruz (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c14" name="cobertura[]" value="14" class="hijo2"/><label>Tarija (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c15" name="cobertura[]" value="15" class="hijo2"/><label>Oruro (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c16" name="cobertura[]" value="16" class="hijo2"/><label>Potosí (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c17" name="cobertura[]" value="17" class="hijo2"/><label>Beni (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="c18" name="cobertura[]" value="18" class="hijo2"/><label>Pando (Ciudad Capital)</label></li>
+                                                               <input type="checkbox" id="c8" name="cobertura[]" value="8" class="hijo2" /><label> Departamental Urbano (Todas las Ciudades Capitales)</label>
+                                                               <ul class="">
+                                                                 <li><input type="checkbox" id="c9" name="cobertura[]" value="9" class="hijo2" /><label> Chuquisaca (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c10" name="cobertura[]" value="10" class="hijo2" /><label> La Paz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c11" name="cobertura[]" value="11" class="hijo2" /><label> El Alto (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c12" name="cobertura[]" value="12" class="hijo2"/><label> Cochabamba (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c13" name="cobertura[]" value="13" class="hijo2"/><label> Santa Cruz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c14" name="cobertura[]" value="14" class="hijo2"/><label> Tarija (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c15" name="cobertura[]" value="15" class="hijo2"/><label> Oruro (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c16" name="cobertura[]" value="16" class="hijo2"/><label> Potosí (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c17" name="cobertura[]" value="17" class="hijo2"/><label> Beni (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="c18" name="cobertura[]" value="18" class="hijo2"/><label> Pando (Ciudad Capital)</label></li>
                                                                </ul>
                                                              </li>
 
 
                                                              <li>
-                                                               <input type="checkbox" id="c19" name="cobertura[]" value="19" class="hijo2" /><label>Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
+                                                               <input type="checkbox" id="c19" name="cobertura[]" value="19" class="hijo2" /><label> Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
                                                              </li>
                                                              <li>
-                                                               <input type="checkbox" id="c20" name="cobertura[]" value="20" class="hijo2" /><label>Departamental Resto Urbano</label>
+                                                               <input type="checkbox" id="c20" name="cobertura[]" value="20" class="hijo2" /><label> Departamental Resto Urbano</label>
                                                              </li>
                                                              <li>
-                                                               <input type="checkbox" id="c21" name="cobertura[]" value="21" class="hijo2" /><label>Departamental Rural</label>
+                                                               <input type="checkbox" id="c21" name="cobertura[]" value="21" class="hijo2" /><label> Departamental Rural</label>
                                                              </li>
 
                                                            </ul>
                                                          </li>
                                                          <li>
-                                                           <input type="checkbox" id="c22" name="cobertura[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
-                                                           <ul class="checkbox">
-                                                             <li><input type="checkbox" id="c23" name="cobertura[]" value="23" class="hijo2" /><label>Municipal Urbano </label></li>
-                                                             <li><input type="checkbox" id="c29" name="cobertura[]" value="29" class="hijo2" /><label>Municipal Rural</label></li>
+                                                           <input type="checkbox" id="c22" name="cobertura[]" value="22" class="hijo2"/><label> Municipal (Todos los municipios)</label>
+                                                           <ul class="">
+                                                             <li><input type="checkbox" id="c23" name="cobertura[]" value="23" class="hijo2" /><label> Municipal Urbano </label></li>
+                                                             <li><input type="checkbox" id="c29" name="cobertura[]" value="29" class="hijo2" /><label> Municipal Rural</label></li>
                                                            </ul>
                                                          </li>
                                                        </ul>
@@ -739,68 +778,68 @@
                                                  <div class="col-md-12 p-l-0">
                                                      <div class="select2-wrapper">
                                                        <ul class="checkbox">
-                                                         <li><input type="checkbox" id="d1" name="desagregacion[]" value="1" /><label>Internacional</label></li>
+                                                         <li><input type="checkbox" id="d1" name="desagregacion[]" value="1" /><label> Internacional</label></li>
                                                          <li>
-                                                           <input type="checkbox" id="d2" name="desagregacion[]" value="2" class="padreck" /><label>Nacional (Todo el país)</label>
-                                                           <ul class="checkbox">
-                                                             <li><input type="checkbox" id="d3" name="desagregacion[]" value="3" class="hijo2" /><label>Nacional Urbano (Ciudades Capitales)</label></li>
-                                                             <li><input type="checkbox" id="d4" name="desagregacion[]" value="4" class="hijo2" /><label>Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
-                                                             <li><input type="checkbox" id="d5" name="desagregacion[]" value="5" class="hijo2" /><label>Nacional  Resto Urbano</label></li>
-                                                             <li><input type="checkbox" id="d6" name="desagregacion[]" value="6" class="hijo2"/><label>Nacional Rural</label></li>
+                                                           <input type="checkbox" id="d2" name="desagregacion[]" value="2" class="padreck" /><label> Nacional (Todo el país)</label>
+                                                           <ul class="">
+                                                             <li><input type="checkbox" id="d3" name="desagregacion[]" value="3" class="hijo2" /><label> Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="d4" name="desagregacion[]" value="4" class="hijo2" /><label> Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li><input type="checkbox" id="d5" name="desagregacion[]" value="5" class="hijo2" /><label> Nacional  Resto Urbano</label></li>
+                                                             <li><input type="checkbox" id="d6" name="desagregacion[]" value="6" class="hijo2"/><label> Nacional Rural</label></li>
                                                            </ul>
                                                          </li>
                                                          <li>
-                                                           <input type="checkbox" id="d7" name="desagregacion[]" value="7" class="padreck" /><label>Departamental (Todos los Departamentos)</label>
-                                                           <ul class="checkbox">
+                                                           <input type="checkbox" id="d7" name="desagregacion[]" value="7" class="padreck" /><label> Departamental (Todos los Departamentos)</label>
+                                                           <ul class="">
                                                              <li>
-                                                               <input type="checkbox" id="d8" name="desagregacion[]" value="8" class="hijo2" /><label>Departamental Urbano (Todas las Ciudades Capitales)</label>
-                                                               <ul class="checkbox">
-                                                                 <li><input type="checkbox" id="d9" name="desagregacion[]" value="9" class="hijo2" /><label>Chuquisaca (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d10" name="desagregacion[]" value="10" class="hijo2" /><label>La Paz (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d11" name="desagregacion[]" value="11" class="hijo2" /><label>El Alto (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d12" name="desagregacion[]" value="12" class="hijo2"/><label>Cochabamba (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d13" name="desagregacion[]" value="13" class="hijo2"/><label>Santa Cruz (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d14" name="desagregacion[]" value="14" class="hijo2"/><label>Tarija (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d15" name="desagregacion[]" value="15" class="hijo2"/><label>Oruro (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d16" name="desagregacion[]" value="16" class="hijo2"/><label>Potosí (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d17" name="desagregacion[]" value="17" class="hijo2"/><label>Beni (Ciudad Capital)</label></li>
-                                                                 <li><input type="checkbox" id="d18" name="desagregacion[]" value="18" class="hijo2"/><label>Pando (Ciudad Capital)</label></li>
+                                                               <input type="checkbox" id="d8" name="desagregacion[]" value="8" class="hijo2" /><label> Departamental Urbano (Todas las Ciudades Capitales)</label>
+                                                               <ul class="">
+                                                                 <li><input type="checkbox" id="d9" name="desagregacion[]" value="9" class="hijo2" /><label> Chuquisaca (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d10" name="desagregacion[]" value="10" class="hijo2" /><label> La Paz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d11" name="desagregacion[]" value="11" class="hijo2" /><label> El Alto (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d12" name="desagregacion[]" value="12" class="hijo2"/><label> Cochabamba (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d13" name="desagregacion[]" value="13" class="hijo2"/><label> Santa Cruz (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d14" name="desagregacion[]" value="14" class="hijo2"/><label> Tarija (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d15" name="desagregacion[]" value="15" class="hijo2"/><label> Oruro (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d16" name="desagregacion[]" value="16" class="hijo2"/><label> Potosí (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d17" name="desagregacion[]" value="17" class="hijo2"/><label> Beni (Ciudad Capital)</label></li>
+                                                                 <li><input type="checkbox" id="d18" name="desagregacion[]" value="18" class="hijo2"/><label> Pando (Ciudad Capital)</label></li>
                                                                </ul>
                                                              </li>
 
 
                                                              <li>
-                                                               <input type="checkbox" id="d19" name="desagregacion[]" value="19" class="hijo2" /><label>Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
+                                                               <input type="checkbox" id="d19" name="desagregacion[]" value="19" class="hijo2" /><label> Departamental Urbano (Conurbaciones, Regiones Metropolitanas)</label>
                                                              </li>
                                                              <li>
-                                                               <input type="checkbox" id="d20" name="desagregacion[]" value="20" class="hijo2" /><label>Departamental Resto Urbano</label>
+                                                               <input type="checkbox" id="d20" name="desagregacion[]" value="20" class="hijo2" /><label> Departamental Resto Urbano</label>
                                                              </li>
                                                              <li>
-                                                               <input type="checkbox" id="d21" name="desagregacion[]" value="21" class="hijo2" /><label>Departamental Rural</label>
+                                                               <input type="checkbox" id="d21" name="desagregacion[]" value="21" class="hijo2" /><label> Departamental Rural</label>
                                                              </li>
 
                                                            </ul>
                                                          </li>
                                                          <li>
-                                                           <input type="checkbox" id="d22" name="desagregacion[]" value="22" class="hijo2"/><label>Municipal (Todos los municipios)</label>
-                                                           <ul class="checkbox">
+                                                           <input type="checkbox" id="d22" name="desagregacion[]" value="22" class="hijo2"/><label> Municipal (Todos los municipios)</label>
+                                                           <ul class="">
                                                              <li>
-                                                               <input type="checkbox" id="d23" name="desagregacion[]" value="23" class="hijo2" /><label>Municipal Urbano </label>
-                                                               <ul class="checkbox">
-                                                                 <li><input type="checkbox" id="d24" name="desagregacion[]" value="24" class="hijo2" /><label for="cb3">Macrodistrito/Distrito</label></li>
-                                                                 <li><input type="checkbox" id="d25" name="desagregacion[]" value="25" class="hijo2" /><label for="cb4">Unidad Vecinal</label></li>
-                                                                 <li><input type="checkbox" id="d26" name="desagregacion[]" value="26" class="hijo2" /><label for="cb5">Zona</label></li>
-                                                                 <li><input type="checkbox" id="d27" name="desagregacion[]" value="27" class="hijo2"/><label for="cb6">Manzano</label></li>
-                                                                 <li><input type="checkbox" id="d28" name="desagregacion[]" value="28" class="hijo2"/><label for="cb6">Lote</label></li>
+                                                               <input type="checkbox" id="d23" name="desagregacion[]" value="23" class="hijo2" /><label> Municipal Urbano </label>
+                                                               <ul class="">
+                                                                 <li><input type="checkbox" id="d24" name="desagregacion[]" value="24" class="hijo2" /><label for="cb3"> Macrodistrito/Distrito</label></li>
+                                                                 <li><input type="checkbox" id="d25" name="desagregacion[]" value="25" class="hijo2" /><label for="cb4"> Unidad Vecinal</label></li>
+                                                                 <li><input type="checkbox" id="d26" name="desagregacion[]" value="26" class="hijo2" /><label for="cb5"> Zona</label></li>
+                                                                 <li><input type="checkbox" id="d27" name="desagregacion[]" value="27" class="hijo2"/><label for="cb6"> Manzano</label></li>
+                                                                 <li><input type="checkbox" id="d28" name="desagregacion[]" value="28" class="hijo2"/><label for="cb6"> Lote</label></li>
                                                                </ul>
                                                              </li>
                                                              <li>
-                                                               <input type="checkbox" id="d29" name="desagregacion[]" value="29" class="hijo2" /><label>Municipal Rural</label>
-                                                               <ul class="checkbox">
-                                                                 <li><input type="checkbox" id="d30" name="desagregacion[]" value="30" class="hijo2" /><label for="cb3">Predio/Lote</label></li>
-                                                                 <li><input type="checkbox" id="d31" name="desagregacion[]" value="31" class="hijo2" /><label for="cb4">Localidad</label></li>
-                                                                 <li><input type="checkbox" id="d32" name="desagregacion[]" value="32" class="hijo2" /><label for="cb5">Comunidad</label></li>
-                                                                 <li><input type="checkbox" id="d33" name="desagregacion[]" value="33" class="hijo2"/><label for="cb6">Zona</label></li>
+                                                               <input type="checkbox" id="d29" name="desagregacion[]" value="29" class="hijo2" /><label> Municipal Rural</label>
+                                                               <ul class="">
+                                                                 <li><input type="checkbox" id="d30" name="desagregacion[]" value="30" class="hijo2" /><label for="cb3"> Predio/Lote</label></li>
+                                                                 <li><input type="checkbox" id="d31" name="desagregacion[]" value="31" class="hijo2" /><label for="cb4"> Localidad</label></li>
+                                                                 <li><input type="checkbox" id="d32" name="desagregacion[]" value="32" class="hijo2" /><label for="cb5"> Comunidad</label></li>
+                                                                 <li><input type="checkbox" id="d33" name="desagregacion[]" value="33" class="hijo2"/><label for="cb6"> Zona</label></li>
                                                                </ul>
                                                              </li>
                                                            </ul>
@@ -1107,7 +1146,7 @@
                                                </div>
                                              </div>
                                              <hr/>
-                                             <h3 class="box-title m-b-0">Cargar documentos</h3>
+                                             <h3 class="box-title m-b-0">Cargar documentos(menor a 300Mb)</h3>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                  <div class="col-md-3 p-l-0 p-r-0">
                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre de Archivo</label>
@@ -1125,12 +1164,16 @@
                                                  </div>
                                                  <div class="col-md-9 p-l-0">
                                                      <div class="select2-wrapper">
-                                                       <input type="file" id ="arc_archivo_input" name="arc_archivo_input" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                       <input type="file" id ="arc_archivo_input" name="arc_archivo_input" class="form-control p-t-0" accept="all">
                                                      </div>
                                                      <div class="help-block with-errors"></div>
                                                  </div>
                                                  <div class="col-md-12 p-l-0 text-center">
-                                                     <button type="button" class="btn btn-info btn-sm agregarARC m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                     <p>
+                                                       <button type="button" class="btn btn-info btn-sm agregarARC m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                       <i id="icoLoad" class="fa fa-spin fa-spinner hidden" style="font-size:30px;"></i>
+                                                      </p>
+
                                                  </div>
                                                </div>
 
@@ -1286,6 +1329,8 @@
   var total_form = 0;
     $(document).ready(function(){
       //$(".select2").select2();
+
+
       var theme = 'darkblue';
 
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
@@ -1318,7 +1363,7 @@
               { name: 'tipo', type: 'string' },
               { name: 'estado', type: 'string' },
               { name: 'id_estado', type: 'int' },
-              { name: 'responsable_nivel_1', type: 'string' }
+              { name: 'responsable', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -1328,19 +1373,25 @@
       {
           source: dataAdapter,
           width:"100%",
+          height:"400px",
           theme:theme,
           columnsResize: true,
           filterable: true,
-          //filterMode: 'simple',
-          pageable: true,
-          pagerButtonsCount: 10,
+          filterMode: 'simple',
+          selectionMode: 'multipleRows',
+          //pageable: true,
+          //pagerButtonsCount: 10,
+          sortable: true,
+          //ready:function(){
+          //$("#filterdataTable").append('<p><button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-circle"><i class="fa fa-filter"></i></button></p>');
+          //},
           localization: getLocalization('es'),
-          pageSize: 100,
+          //pageSize: 100,
           columns: [
             { text: 'Estado', width: 100, dataField: 'estado' },
             { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
             { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable_nivel_1' },
+            { text: 'Responsable', width: 200, dataField: 'responsable' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
                           if(rowData.id_estado == 1 || rowData.id_estado == 3){
@@ -1377,8 +1428,127 @@
 
 
 
+      // create buttons, listbox and the columns chooser dropdownlist.
+            $("#applyFilter").jqxButton();
+            $("#clearfilter").jqxButton();
+            $("#filterbox").jqxListBox({
+              checkboxes: true,
+              filterable: false,
+              //searchMode: 'containsignorecase',
+              width: "100%",
+              height: 150
+            });
+            $("#columnchooser").jqxDropDownList({
+                autoDropDownHeight: true, selectedIndex: 0, width: 160, height: 25,
+                source: [
+                  { label: 'Responsable', value: 'responsable' },
+                  { label: 'Estado', value: 'estado' },
+                  { label: 'Nombre', value: 'nombre' },
+                  { label: 'Tipo', value: 'tipo' }
+
+                ]
+            });
+            // updates the listbox with unique records depending on the selected column.
+            var updateFilterBox = function (dataField) {
+
+                $("#dataTable").jqxDataTable('clearFilters');
+                var filterBoxAdapter = new $.jqx.dataAdapter(source,
+                {
+                    uniqueDataFields: [dataField],
+                    autoBind: true,
+                    async:false
+                });
+                var uniqueRecords = filterBoxAdapter.records;
+                uniqueRecords.splice(0, 0, '(Todo)');
+                $("#filterbox").jqxListBox({ source: uniqueRecords, displayMember: dataField });
+                $("#filterbox").jqxListBox('checkAll');
+            }
+            updateFilterBox('responsable');
+            // handle select all item.
+            var handleCheckChange = true;
+            $("#filterbox").on('checkChange', function (event) {
+                if (!handleCheckChange)
+                    return;
+
+                if (event.args.label != '(Todo)') {
+                    // update the state of the "Select All" listbox item.
+                    handleCheckChange = false;
+                    $("#filterbox").jqxListBox('checkIndex', 0);
+                    var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
+                    var items = $("#filterbox").jqxListBox('getItems');
+                    if (checkedItems.length == 1) {
+                        $("#filterbox").jqxListBox('uncheckIndex', 0);
+                    }
+                    else if (items.length != checkedItems.length) {
+                        $("#filterbox").jqxListBox('indeterminateIndex', 0);
+                    }
+                    handleCheckChange = true;
+                }
+                else {
+                    // check/uncheck all items if "Select All" is clicked.
+                    handleCheckChange = false;
+                    if (event.args.checked) {
+                        $("#filterbox").jqxListBox('checkAll');
+                    }
+                    else {
+                        $("#filterbox").jqxListBox('uncheckAll');
+                    }
+                    handleCheckChange = true;
+                }
+            });
+            // handle columns selection.
+            $("#columnchooser").on('select', function (event) {
+                updateFilterBox(event.args.item.value);
+            });
+            // builds and applies the filter.
+            var applyFilter = function (dataField) {
+                $("#dataTable").jqxDataTable('clearFilters');
+                var filtertype = 'stringfilter';
+                if (dataField == 'date') filtertype = 'datefilter';
+                if (dataField == 'price' || dataField == 'quantity') filtertype = 'numericfilter';
+                // create a new group of filters.
+                var filtergroup = new $.jqx.filter();
+                // get listbox's checked items.
+                var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
+                if (checkedItems.length == 0) {
+                    var filter_or_operator = 1;
+                    var filtervalue = "Empty";
+                    var filtercondition = 'equal';
+                    var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
+                    filtergroup.addfilter(filter_or_operator, filter);
+                }
+                else {
+                    for (var i = 0; i < checkedItems.length; i++) {
+                        var filter_or_operator = 1;
+                        // set filter's value.
+                        var filtervalue = checkedItems[i].label;
+                        // set filter's condition.
+                        var filtercondition = 'equal';
+                        // create new filter.
+                        var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
+                        // add the filter to the filter group.
+                        filtergroup.addfilter(filter_or_operator, filter);
+                    }
+                }
+                // add the filters.
+                $("#dataTable").jqxDataTable('addFilter', dataField, filtergroup);
+                // apply the filters.
+                $("#dataTable").jqxDataTable('applyFilters');
+            }
+            // clears the filter.
+            $("#clearfilter").click(function () {
+                $("#dataTable").jqxDataTable('clearFilters');
+            });
+            // applies the filter.
+            $("#applyFilter").click(function () {
+                var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
+                applyFilter(dataField);
+            });
+
+
+
     $(".ctrl-btn").click(function () {
-      //validarSession();
+      validarSession();
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
       if(next == 7){
@@ -1525,6 +1695,7 @@
 
 
       $(".agregarARC").click(function () {
+        $('#icoLoad').removeClass('hidden');
          var nombre = $('input[name=arc_nombre_input]').val();
          nombre = nombre.replace(/\s/g,"_");
 
@@ -1538,15 +1709,18 @@
                     processData: false,
                     success: function(data){
                           if(data.error == false){
+                          var filepath = data.item.archivo;
+                          var ico = filepath.split(".");
+                          var iconoSel = iconos(ico[1]);
                           var html = '<tr id="ARC'+ nombre +'" class="">'+
                                           '<td>'+
                                               '<input type="hidden" name="arc_id[]" value="" />'+
                                               '<input type="hidden" name="arc_nombre[]" value="'+ data.item.nombre +'" />'+
                                               '<input type="hidden" name="arc_archivo[]" value="'+ data.item.archivo +'" />'+
                                               '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
-                                              '<a href="/respaldos/'+data.item.archivo+'" style="cursor: pointer;">'+
+                                              '<a href="/respaldos/'+data.item.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
                                               '<p>'+
-                                                '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo "> '+
+                                                '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
                                                  data.item.nombre +
                                               '</p>'+
                                               '</a>'+
@@ -1556,7 +1730,9 @@
                             $("#datosARC > tbody").append(html);
                             $('input[name=arc_nombre_input]').val('');
                             $('input[name=arc_archivo_input]').val('');
+                            $('#icoLoad').addClass('hidden');
                           }else{
+                              $('#icoLoad').addClass('hidden');
                               $.toast({
                                heading: data.title,
                                text: data.msg,
@@ -1568,10 +1744,11 @@
                           }
                     },
                     error:function(data){
+                      $('#icoLoad').addClass('hidden');
                       if(data.status != 401){
                         $.toast({
                           heading: 'Error:',
-                          text: 'Error al recuperar los datos.',
+                          text: 'Error al cargar el documento. Verifique que el tamaño sea menor a 300Mb',
                           position: 'top-right',
                           loaderBg:'#ff6849',
                           icon: 'error',
@@ -1622,6 +1799,67 @@
       $("#bt_guardar").click(function () {
         $("#estado").val(1);
       });
+
+
+
+      $("#generarExport").click(function() {
+          //cantidad de datos
+          var selection = $("#dataTable").jqxDataTable('getSelection');
+          var optionSel = $('input:radio[name=option_data]:checked').val();
+          var orden = false;//agregar configuracion de la tabla
+          var direccion = 'ASC';//agregar configuracion de la tabla
+          var ids = "";
+          switch(optionSel) {
+              case "1":
+                  $('#tabledataTable > tbody > tr').each(function() {
+                     ids += $(this).attr("data-key")+",";
+                  });
+                  location.href = "{{ url('/api/sistemaremi/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                  break;
+              case "2":
+                  if(selection.length > 0){
+                    if (selection && selection.length > 0) {
+                        var rows = $("#dataTable").jqxDataTable('getRows');
+                        for (var i = 0; i < selection.length; i++) {
+                            var rowData = selection[i];
+                            ids += rowData.id;
+                            if (i < selection.length - 1) {
+                              ids += ", ";
+                            }
+                        }
+                      location.href = "{{ url('/api/sistemaremi/apiExportData') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                    }
+                  }else{
+                    $.toast({
+                      heading: 'Error:',
+                      text: 'Seleccione algún registro de la tabla.',
+                      position: 'top-right',
+                      loaderBg:'#ff6849',
+                      icon: 'error',
+                      hideAfter: 3500
+                    });
+                  }
+              break;
+              default:
+                $.toast({
+                  heading: 'Error:',
+                  text: 'Configure su reporte.',
+                  position: 'top-right',
+                  loaderBg:'#ff6849',
+                  icon: 'error',
+                  hideAfter: 3500
+                });
+              break;
+          }
+
+
+
+
+
+      });
+
+
+
 
 
     });
@@ -1683,6 +1921,8 @@
        $('#option1').removeClass('show');
        $('#option1').addClass('hidden');
     });
+
+
 
     function btn_update(ele) {
       $("#btn-new" ).trigger( "click" );
@@ -1777,54 +2017,54 @@
 
 
                   $('input[name="numero_total_formulario"]').val(data.fuente[0].numero_total_formulario);
+
                   total_form = data.fuente[0].numero_total_formulario;
 
                   var form = data.fuente[0].nombre_formulario;
 
                   if(data.fuente[0].nombre_formulario){
-                  var setForms = form.split('|');
-                  $.each(setForms, function(index, item) {
-                        var arrayForm = [];
-                        for(i=1;i<=total_form;i++){
-                          arrayForm[i] = $('#frm-nom-'+i).val();
-                        }
-                        var i = (index+1);
-                         if(arrayForm[i]){
-                           var valorNombre = arrayForm[i];
-                         }else{
-                           var valorNombre = "";
-                         }
-                         var html = '<tr id="FRM'+ i +'" class="">'+
-                                         '<td>'+
-                                           'Nombre formulario <input type="text" name="formulario_correlativo[]" class="text-center" value="'+i+'" style="width:30px;" /> :'+
-                                         '</td>'+
-                                         '<td>'+
-                                           '<input type="text" id="frm-nom-'+i+'" name="nombre_formulario[]" value="'+item+'" class="form-control"/>'+
-                                         '</td>'+
-                                         '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarFRM('+i+');"> <i class="fa fa-close text-danger"></i> </a></td>'+
-                                    '</tr>';
-                         $("#datosForm > tbody").append(html);
-                  });
+                    var setForms = form.split('|');
+                    $.each(setForms, function(index, item) {
+                           var arrayForm = [];
+                           for(i=1;i<=total_form;i++){
+                             arrayForm[i] = $('#frm-nom-'+i).val();
+                           }
+                           var i = (index+1);
+                           if(arrayForm[i]){
+                             var valorNombre = arrayForm[i];
+                           }else{
+                             var valorNombre = "";
+                           }
+                           var html = '<tr id="FRM'+ i +'" class="">'+
+                                           '<td>'+
+                                             'Nombre formulario <input type="text" name="formulario_correlativo[]" class="text-center" value="'+i+'" style="width:30px;" /> :'+
+                                           '</td>'+
+                                           '<td>'+
+                                             '<input type="text" id="frm-nom-'+i+'" name="nombre_formulario[]" value="'+item+'" class="form-control"/>'+
+                                           '</td>'+
+                                           '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarFRM('+i+');"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                                      '</tr>';
+                           $("#datosForm > tbody").append(html);
+                    });
                   }
 
-
-
-
-
+                  $('input[name="cobertura_rraa"]').val(data.fuente[0].cobertura_rraa);
+                  $('textarea[name="cobertura_rraa_descripcion"]').val(data.fuente[0].cobertura_rraa_descripcion);
 
 
                   if(data.fuente[0].cobertura_geografica){
                     var cobertura = data.fuente[0].cobertura_geografica;
                     var setCobe = cobertura.split(',');
                     $.each(setCobe, function(index, item) {
-                          $("#c"+item).attr('checked',true);
+                          document.getElementById("c"+item).checked=true;
                     });
                   }
                   if(data.fuente[0].nivel_representatividad_datos){
                     var desagregacion = data.fuente[0].nivel_representatividad_datos;
                     var setCobe = desagregacion.split(',');
                     $.each(setCobe, function(index, item) {
-                          $("#d"+item).attr('checked',true);
+                          //$("#d"+item).attr('checked',true);
+                          document.getElementById("d"+item).checked = true;
                     });
                   }
 
@@ -1843,6 +2083,10 @@
 
 
                   $.each(data.archivos, function(i, data) {
+                      var filepath = data.archivo;
+                      var ico = filepath.split(".");
+                      var iconoSel = iconos(ico[1]);
+
                       var nombre = data.nombre.replace(/\s/g,"_");
                       var html = '<tr id="ARC'+ nombre +'" class="">'+
                                       '<td>'+
@@ -1850,9 +2094,9 @@
                                           '<input type="hidden" name="arc_nombre[]" value="'+ data.nombre +'" />'+
                                           '<input type="hidden" name="arc_archivo[]" value="'+ data.archivo +'" />'+
                                           '<input type="hidden" id="EST'+nombre+'"name="arc_estado[]" value="1" />'+
-                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;">'+
+                                          '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
                                           '<p>'+
-                                            '<img src="/img/icono_indicadores/xls.png" title="Descargar Archivos respaldo "> '+
+                                            '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
                                              data.nombre +
                                           '</p>'+
                                           '</a>'+
@@ -1958,6 +2202,7 @@
     }
 
     function save(){
+      validarSession();
       swal({
         title: "Guardar?",
         text: "Se completo el llenado de los datos solicitados!",
@@ -2176,7 +2421,89 @@
         });
     }
 
+    function showFilterAdvanced() {
 
+      if ($('#FilterAdvanced').hasClass('hidden')){
+            $('#exportarData').removeClass('hidden')
+            $('#exportarData').addClass('hidden')
+            $("#dataTable").jqxDataTable({filterable: false});
+            $('#FilterAdvanced').removeClass('hidden')
+            $('#jqxDataTable').removeClass('col-lg-12');
+            $('#jqxDataTable').fadeIn(500).addClass('col-lg-9');
+      }else{
+        $("#dataTable").jqxDataTable({filterable: true});
+          $('#FilterAdvanced').addClass('hidden')
+          $('#jqxDataTable').removeClass('col-lg-9');
+          $('#jqxDataTable').fadeIn(500).addClass('col-lg-12');
+        }
+    }
+    function showExportarData() {
+
+      if ($('#exportarData').hasClass('hidden')){
+            $("#dataTable").jqxDataTable({filterable: true});
+            $('#FilterAdvanced').removeClass('hidden')
+            $('#FilterAdvanced').addClass('hidden')
+
+            $('#exportarData').removeClass('hidden')
+            $('#jqxDataTable').removeClass('col-lg-12');
+            $('#jqxDataTable').fadeIn(1000).addClass('col-lg-9');
+
+      }else{
+
+          $('#exportarData').addClass('hidden')
+          $('#jqxDataTable').removeClass('col-lg-9');
+          $('#jqxDataTable').fadeIn(1000).addClass('col-lg-12');
+        }
+    }
+
+  function iconos(ele){
+      switch(ele) {
+          case 'xls':
+              return 'fa-file-excel-o';
+              break;
+          case 'xlsx':
+              return 'fa-file-excel-o';
+              break;
+          case 'doc':
+              return 'fa-file-word-o';
+              break;
+          case 'docx':
+              return 'fa-file-word-o';
+              break;
+          case 'txt':
+              return 'fa-file-text-o';
+              break;
+          case 'ppt':
+              return 'fa-file-powerpoint-o';
+              break;
+          case 'pptx':
+              return 'fa-file-powerpoint-o';
+              break;
+          case 'rar':
+              return 'fa-file-zip-o';
+              break;
+          case 'zip':
+              return 'fa-file-zip-o';
+              break;
+          case 'pdf':
+              return 'fa-file-pdf-o';
+              break;
+          case 'jpg':
+              return 'fa-file-image-o';
+              break;
+          case 'jpgeg':
+              return 'fa-file-image-o';
+              break;
+          case 'png':
+              return 'fa-file-image-o';
+              break;
+          case 'gif':
+              return 'fa-file-image-o';
+              break;
+          default:
+              return 'fa-file-o';
+      }
+  }
 
 
 
