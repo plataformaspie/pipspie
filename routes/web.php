@@ -216,10 +216,6 @@ Route::group(['middleware' => 'auth'],function(){
     Route::group(
         array('prefix' => 'moduloplanificacion'),
         function() {
-            // Route::get('dashboard', 'ModuloPlanificacion\DashboardController@index');
-            // Route::get('prueba', 'ModuloPlanificacion\PruebaController@index');
-            // Route::get('res', 'ModuloPlanificacion\PruebaController@res');
-
             Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
             Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
             Route::get('showPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showPlanesInstitucion');
