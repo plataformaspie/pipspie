@@ -1,4 +1,5 @@
 @extends('layouts.moduloplanificacion')
+
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
@@ -33,25 +34,31 @@
 
 
     <!--  ===========================================    begin: .tray-center    =============================================================== -->
-    <div class="tray tray-center p40 va-t posr">
+
+    <div class="tray tray-center ph40 va-t posr">
+        <div class="row col-md-12">
+            <h3>Planificación Sectorial</h3>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-visible" id="spy2">
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title ">
-                            <i class="glyphicon glyphicon-tasks" ></i><span class="sp_politica"></span> <span class="sp_est_politica"></span>
+                            <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel">Identificación de Acciones</span><span class="sp_est_planificacion"></span> 
                         </div>
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
-                            <div id="div_politicas" class="col-md-12" >
+
+                            <div id="planif_pmra" class="col-md-12" >
                                 <button id="pol_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar </button>
                                 <button id="pol_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button>
                                 <button id="pol_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>                                
-                                
+                                <div id="dt_pmra"></div>
                             </div>
+
+
                         </div>
-                        <div id="dtPoliticas"></div>
                     </div>
                 </div>
             </div>
@@ -62,15 +69,14 @@
 
 
 
-    <!-- -----------------------------------------          Modal  --------------------------------------------------- -->
-    <div id="modal-pol"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+    <!-- -----------------------------------------          Modal PMRA  --------------------------------------------------- -->
+    <div id="modal_pmra"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
             <div class="panel-heading bg-dark">
                 <span class="panel-title text-white" id="tituloModal"><i class="fa fa-pencil"></i> <span>__</span></span>
             </div>
             <!-- end .panel-heading section -->
-            <form method="post" action="/" id="form-pol" name="form-pol">
-                {{-- <input type="hidden" name="mod_id" id="mod_id" value=""> --}}
+            <form method="post" action="/" id="form-pmra" name="form-pmra">
 
                 <div class="panel-body mnw700 of-a">
                     <div class="row">
@@ -78,20 +84,41 @@
                             <input class="hidden" name="id_pol" id="id_pol" >
                             <div class="row">
                                 <div class=" pl5 br-r mvn15">
-                                    <h5 class="ml5 mt20 ph10 pb5 br-b fw700">Defina su <span class="sp_politica"></span><small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h5>
-                                    <div class="section">
-                                        <label class="field-label sp_politica" for="atribucion"></label>
-                                        <label for="politica" class="field prepend-icon">
-                                            <input type="text" class="gui-input" id="politica" name="politica" placeholder="Politica sectorial / institucional ">
-                                            <label for="politica" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                            </label>
+                                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Defina su pilar meta resultado y acciones<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                                     <div class="section">
+                                        <label class="field-label" for="pmra_id_pilar">Pilare </label>
+                                        <label class="field select">
+                                            <select id="pmra_id_pilar" name="pmra_id_pilar" class="required" style="width:100%;">
+                                                {{-- <option value="">...</option> --}}
+                                            </select>
+                                            <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="ids_pilares">Pilares según sus atribuciones </label>
+                                        <label class="field-label" for="pmra_id_meta">Meta </label>
                                         <label class="field select">
-                                            <select id="ids_pilares" name="ids_pilares" class="required" multiple="multiple"  style="width:100%;">
+                                            <select id="pmra_id_meta" name="pmra_id_meta" class="required" style="width:100%;">
+                                                {{-- <option value="">...</option> --}}
+                                            </select>
+                                            <i class="arrow"></i>                  
+                                        </label>
+                                    </div>
+
+                                    <div class="section">
+                                        <label class="field-label" for="pmra_resultado">Pilares según sus atribuciones </label>
+                                        <label class="field select">
+                                            <select id="pmra_resultado" name="pmra_resultado" class="required" style="width:100%;">
+                                                {{-- <option value="">...</option> --}}
+                                            </select>
+                                            <i class="arrow"></i>                  
+                                        </label>
+                                    </div>
+
+                                    <div class="section">
+                                        <label class="field-label" for="pmra_accion">Pilares según sus atribuciones </label>
+                                        <label class="field select">
+                                            <select id="pmra_accion" name="pmra_accion" class="required" style="width:100%;">
                                                 {{-- <option value="">...</option> --}}
                                             </select>
                                             <i class="arrow"></i>                  
@@ -103,7 +130,7 @@
                 </div>
                 <div class="panel-footer">
                     <button type="submit" class="button btn-primary">Guardar</button>
-                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cerrar</a>
                 </div>
             </form>
         </div>
@@ -133,7 +160,7 @@ $(function(){
         dataTable : $("#dtPoliticas"),
         source : {},
 
-        fillPolitics : function() {
+        fillPPmra : function() {
             $.get(globalSP.urlApi + 'listPoliticasPilares', {p : globalSP.idPlanActivo}, function(resp)
             {
                 pol.source =
@@ -189,14 +216,14 @@ $(function(){
             })   
         },
         init : function(){
-            $.get(globalSP.urlApi + "getPilaresVinculadosAlPlan", {p:globalSP.idPlanActivo}, function(res){
+            $.get(globalSP.urlApi + "getPilaresPlan", {p:globalSP.idPlanActivo}, function(res){
                 opts = res.data;
                 opts.forEach(function(op){
                     $("#ids_pilares").append('<option value="' + op.id + '">' + op.nombre + ' - ' + op.descripcion + '</option>');
                 });
                 $("#ids_pilares").select2({
                     placeholder: 'Seleccione los pilares de la política',
-                    dropdownParent: $('#form-pol'),
+                    dropdownParent: $('#form-pmra'),
                     cache: false,
                     language: "es",
                     templateSelection: function (val) {
@@ -210,12 +237,12 @@ $(function(){
         },
         showModal : function(){
             $(".state-error").removeClass("state-error")
-            $("#form-pol em").remove();
+            $("#form-pmra em").remove();
                 $.magnificPopup.open({
                 removalDelay: 500, //delay removal by X to allow out-animation,
                 focus: '#politica',
                 items: {
-                    src: "#modal-pol"
+                    src: "#modal_pmra"
                 },
                 // overflowY: 'hidden', //
                 callbacks: {
@@ -245,7 +272,7 @@ $(function(){
         },
         nuevo: function(){
             $("#tituloModal span").html(`Agregar ${funciones.tipoPolitica()}`);
-            $('#form-pol input:text').val('');
+            $('#form-pmra input:text').val('');
             $("#ids_pilares").val('').change();
             pol.showModal();
         },
@@ -383,37 +410,39 @@ $(function(){
     }
 
 
-    globalSP.activarMenu(globalSP.menu.PoliticaSectorial);
+
+
+    globalSP.activarMenu(globalSP.menu.Planificacion);
     globalSP.cargarGlobales(function(){
-        pol.init();
+        // pol.init();
     });
     globalSP.setBreadcrumb('Politica', 'Politica');
 
     
 
-    //-------------------- de las Politicas --------------------------------
-    pol.fillPolitics();
+   
+    // pol.fillPPmra();
     
 
-    $("#form-pol").validate(pol.validateRules());
+    // $("#form-pmra").validate(pol.validateRules());
 
-    $("#pol_nuevo").click(function(){
-        pol.nuevo();
-    });
+    // $("#pol_nuevo").click(function(){
+    //     pol.nuevo();
+    // });
 
-    $("#div_politicas").on('click','.sel_edit, #pol_editar', function(){
-        pol.editar();
-    });
+    // $("#div_politicas").on('click','.sel_edit, #pol_editar', function(){
+    //     pol.editar();
+    // });
 
-    $("#div_politicas").on('click','.sel_delete, #pol_eliminar', function(){
-        pol.eliminar();
-    });
+    // $("#div_politicas").on('click','.sel_delete, #pol_eliminar', function(){
+    //     pol.eliminar();
+    // });
 
 
 
-    $(".sp_cancelar").click(function(){
-        $.magnificPopup.close();
-    });
+    // $(".sp_cancelar").click(function(){
+    //     $.magnificPopup.close();
+    // });
   
  
 })

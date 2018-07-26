@@ -4,9 +4,9 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('sty-mode-2/vendor/editors/summernote/summernote-bs3.css') }}">
 @endsection
 @section('header')
-  <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
-  <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
+<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
+<link rel="stylesheet" href="/plugins/bower_components/sweetalert/sweetalert.css" type="text/css">
 <style media="screen">
 .popup-basic {
   position: relative;
@@ -46,11 +46,11 @@
     <aside class="tray tray-left tray225 va-t pn" data-tray-height="match">
 
         <div class="animated-delay p20" data-animate='["300","fadeIn"]'>
-            <h4 class="mt5 mb20"> Completar datos </h4>
+            <h4 class="mt5 mb20"> Información </h4>
             <ul class="fs14 list-unstyled list-spacing-10 mb10 pl5">
                 <li>
                     <i class="fa fa-exclamation-circle text-warning fa-lg pr10"></i>
-                    Llene la información solicitada por el sistema
+                    Datos introducidos:
                 </li>
             </ul>
         </div>
@@ -256,7 +256,7 @@ $(function(){
         getFormData: function(){
             var objEnfoque = {
                 id: this.input_idEnfoqueP.val(),
-                enfoque_politico : $("#txt_enfoque_politico").val(),
+                enfoque_politico : $("#txt_enfoque_politico").code(),
                 id_plan: globalSP.idPlanActivo,
                 p:  globalSP.idPlanActivo,
                 _token : $('input[name=_token]').val(),                
@@ -264,10 +264,12 @@ $(function(){
             return objEnfoque;
         },
         setFormData: function(obj){
-            if(ctxEP.input_idEnfoqueP.val() == '')
-                $('#txt_enfoque_politico').val('');
-            else
+            // if(ctxEP.input_idEnfoqueP.val() == '')
+            //     $('#txt_enfoque_politico').val('');
+            // else
+            // console.log(obj.enfoque_politico)
                 $('#txt_enfoque_politico').val(obj.enfoque_politico);
+                ctxEP.inicializaSummerNote();
         },
         showmodal: function(idModal){
             $(".state-error").removeClass("state-error")
@@ -609,7 +611,7 @@ $(function(){
 
     //-------------------- del Enfoque politico --------------------------------
     ctxEP.cargarEnfoquePolitico();
-    ctxEP.inicializaSummerNote();
+    // ctxEP.inicializaSummerNote();
 
     $("#form_ep").validate(ctxEP.validateRules());
 
