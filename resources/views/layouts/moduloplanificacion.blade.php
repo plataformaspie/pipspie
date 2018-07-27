@@ -194,8 +194,8 @@
             <input type="hidden" name="id_p_act" id="id_p_act" value="{{ $id_plan }}">
                 <!-- sidebar menu -->
             <ul class="nav sidebar-menu" id="menu-principal-sp">
-                
-                <li class="sidebar-label pt20">PDES</li>
+
+                <li class="sidebar-label pt20">Planificació-Sectorial</li>
 
             <?php
             $g = 0;
@@ -224,8 +224,8 @@
                                         $qstring = '?p=' . $id_plan;
                                 ?>
                                 <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="menu-item-sp">
-                                      <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}"> 
-                                      <span>{{ $m->titulo }}</span> 
+                                      <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">
+                                      <span>{{ $m->titulo }}</span>
                                 </a>
                                 @if( $m->submenus )
                                   <ul class="nav sub-nav">
@@ -238,9 +238,9 @@
                                 @endif
                             </li>
                 @else
-                    <li id="M{{ $m->id }}">                        
+                    <li id="M{{ $m->id }}">
                         <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="menu-item-sp">
-                          <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  
+                          <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">
                           <span>{{ $m->titulo }}</span>
                         </a>
                         @if( $m->submenus )
@@ -257,7 +257,7 @@
             @endforeach
 
                         </ul>
-                        
+
                     </li>
 
 
@@ -619,6 +619,7 @@ $(function(){
                 PoliticaSectorial: 27,
                 Planificacion:28,
                 GestionDocumental:29,
+                ListaDePlanes:37,
             },
             urlApi: '/api/moduloplanificacion/',
             url: '/moduloplanificacion/',
@@ -629,10 +630,10 @@ $(function(){
                 if(mn=='0')  // si es 0 se abren todos los menus
                     $("#menu-principal-sp .grupo").addClass('menu-open');
                 else {
-                    $("#menu-principal-sp  li").removeClass('activo');            
+                    $("#menu-principal-sp  li").removeClass('activo');
                     $('#M'+mn).addClass('activo');
                     padre = $('#M'+mn).parent().parent();
-                    padre.find('a').addClass('menu-open');               
+                    padre.find('a').addClass('menu-open');
                 }
             },
             // generarMenu: function(idplan, idMenuActivo){
@@ -649,15 +650,15 @@ $(function(){
             //                             <span class="caret"></span>
             //                         </a>`
 
-                        
+
             //             html += '<ul class="nav sub-nav">';
             //             _.mapObject(menuGrupo, function(m){
-            //                 html +=`<li id="M${m.id}">                        
+            //                 html +=`<li id="M${m.id}">
             //                             <a href="/${m.url}?p=${idplan}"  id="${m.id}" class="menu-item-sp">
             //                                 <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="${m.icono}">
             //                                 <span>${m.titulo}</span>
             //                              </a>`;
-            //                     // if( m.submenus ) { 
+            //                     // if( m.submenus ) {
             //                     //     html += '<ul class="nav sub-nav"';
             //                     //     m.submenus.forEach(function(sm){
             //                     //         html += '<li id="sm-' + sm.id +'" class="">\
@@ -676,7 +677,7 @@ $(function(){
 
             //         if(globalSP.coreInit){
             //                 // var defaults = {
-            //                 //             sbl: "sb-l-o", // sidebar left open onload 
+            //                 //             sbl: "sb-l-o", // sidebar left open onload
             //                 //             sbr: "sb-r-c", // sidebar right closed onload
 
             //                 //             collapse: "sb-l-m", // sidebar left collapse style
@@ -686,11 +687,11 @@ $(function(){
             //                 //          };
             //                 //          var options = $.extend({}, defaults, options);
             //              var opt =  {
-            //                             sbl: "sb-l-o", // sidebar left open onload 
+            //                             sbl: "sb-l-o", // sidebar left open onload
             //                             sbr: "",
             //                             collapse: "", // sidebar left collapse style
 
-            //                          };           
+            //                          };
             //             Core.init2(opt);
             //             globalSP.coreInit = 1;
             //         }
@@ -703,7 +704,7 @@ $(function(){
             //     })
             // },
             configuraMenu: function(plan){
-                etapas = plan.etapas_completadas.split('|').filter(function(val){                    
+                etapas = plan.etapas_completadas.split('|').filter(function(val){
                     return val != '';
                 });
                 $("#menu-principal-sp i").remove();
@@ -713,16 +714,16 @@ $(function(){
                 });
 
                 // coloca el titulo del menu Politica Sectorial
-                (plan.cod_tipo_plan == 'PSDI') ? $("#27 span").html('Política Sectorial') 
-                                    :  $("#27 span").html('Política Institucional'); 
+                (plan.cod_tipo_plan == 'PSDI') ? $("#27 span").html('Política Sectorial')
+                                    :  $("#27 span").html('Política Institucional');
 
-            }, 
+            },
             cargarGlobales: function(fn){
                 $.get(globalSP.urlApi + 'getuser', function(res){
                     globalSP.usuario = res.data;
                     globalSP.setTitulo1();
 
-                    $.get(globalSP.urlApi + 'getplan', { 'p' : globalSP.idPlanActivo }, 
+                    $.get(globalSP.urlApi + 'getplan', { 'p' : globalSP.idPlanActivo },
                     function(res){
                         globalSP.planActivo = res.data;
                         if(globalSP.planActivo == ''){
@@ -731,14 +732,14 @@ $(function(){
                         else{
                             globalSP.setTitulo2();
                             globalSP.configuraMenu( globalSP.planActivo)
-                        } 
+                        }
 
                         if(fn){
                             fn();
-                        }                       
+                        }
                     });
                 });
-                
+
             },
             setTitulo1: function(titulo)
             {
@@ -746,7 +747,7 @@ $(function(){
                 $("#tituloCabecera").html(titulo_);
             },
             setTitulo2: function(titulo2){
-                titulo = (typeof titulo2 =='string') ? 
+                titulo = (typeof titulo2 =='string') ?
                             titulo2 : `Plan cargado: ${globalSP.planActivo.sigla_entidad} -  ${globalSP.planActivo.cod_tipo_plan} - ${globalSP.planActivo.gestion_inicio} - ${globalSP.planActivo.gestion_fin} (${globalSP.planActivo.id})`;
                 $("#titulo2Cabecera").html(titulo);
             },

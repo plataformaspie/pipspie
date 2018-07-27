@@ -9,7 +9,7 @@ use App\Models\ModuloPlanificacion\TiposEntidades;
 use Illuminate\Http\Request;
 
 class PlanesController extends PlanificacionBaseController
-{     
+{
 
     public function showPlanesInstitucion(Request $request)
     {
@@ -21,20 +21,20 @@ class PlanesController extends PlanificacionBaseController
         $idEntidadFoco = $this->getIdEntidadFoco($request);
         $planes = \DB::select("SELECT p.id, p.id_tipo_plan, p.descripcion as descripcion_plan, per.valor as gestion_inicio, per.valor2 as gestion_fin, per.descripcion as periodo_descripcion, p.etapas_completadas, e.nombre as nombre_entidad, e.sigla as sigla_entidad, tp.codigo as cod_tipo_plan
                                         FROM sp_planes p, sp_entidades e, sp_parametros tp, sp_parametros per
-                                        WHERE p.activo = true AND p.id_entidad = e.id 
-                                        AND  p.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan' 
-                                        AND per.categoria = 'periodo_plan' AND per.activo AND per.codigo = p.cod_periodo_plan 
-                                        AND e.institucion = {$idEntidadFoco} 
-                                        ORDER BY p.id_tipo_plan"); 
+                                        WHERE p.activo = true AND p.id_entidad = e.id
+                                        AND  p.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan'
+                                        AND per.categoria = 'periodo_plan' AND per.activo AND per.codigo = p.cod_periodo_plan
+                                        AND e.institucion = {$idEntidadFoco}
+                                        ORDER BY p.id_tipo_plan");
         $periodoVigente = \DB::select("SELECT * from sp_parametros WHERE categoria = 'periodo_plan' AND activo ")[0];
         return \Response::json([
             'data' => $planes,
-            'periodo_vigente' => $periodoVigente         
+            'periodo_vigente' => $periodoVigente
         ]);
     }
 
     public function savePlan(Request $request)
-    {  
+    {
         $accion  = $request->id == null ? 'insert' : 'update';
         $plan = new \stdClass();
         $plan->id_entidad = $this->user->id_institucion;
@@ -71,7 +71,7 @@ class PlanesController extends PlanificacionBaseController
                 'data'  => $plan,
             ]);
         }
-        catch (Exception $e) 
+        catch (Exception $e)
         {
             return \Response::json(array(
               'error' => true,
@@ -88,7 +88,7 @@ class PlanesController extends PlanificacionBaseController
             $plan = Planes::find($request->id);
             $plan->activo = false;
             $plan->save()    ;
-            return \Response::json([ 
+            return \Response::json([
                 'error' => false,
                 'estado' => "Success",
                 'msg' => "Se eliminó el plan."
@@ -106,9 +106,9 @@ class PlanesController extends PlanificacionBaseController
     /*
     |------------------------------------------------------------------
     | Actualiza el vector de la columna estapas_completadas en la tabla sp_planes
-    |                   req = { p: id_plan, id_menu: id_menu, agregar: true }  
+    |                   req = { p: id_plan, id_menu: id_menu, agregar: true }
     | remove por defecto es false; si se manda true entonces quitara el elemento si es que existe
-     */    
+     */
     public function actualizaEtapas(Request $req)
     {
 
@@ -131,10 +131,16 @@ class PlanesController extends PlanificacionBaseController
             function($carry, $elem){
                 return $carry . $elem . '|';
             }, '|');
-        
+
         \DB::table('sp_planes')->where('id', $req->p)->update(['etapas_completadas' => $etapasCompletadas]);
         return response()->json([
             'r'=>$etapasCompletadas]);
+    }
+
+
+    public function showReviewPlanesInstitucion(Request $request)
+    {
+        return view('ModuloPlanificacion.show-review-planes');
     }
 
 

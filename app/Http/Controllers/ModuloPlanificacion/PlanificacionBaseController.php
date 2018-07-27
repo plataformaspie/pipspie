@@ -12,15 +12,15 @@ class PlanificacionBaseController extends Controller
 
     public function __construct(Request $req)
     {
-        // $middleware('auth');        
+        // $middleware('auth');
         $this->middleware(function ($request, $next) use ($req)
         {
             $this->user = \Auth::user();
             $this->complementaUser();
-            $autorizado = $modulosMenus = $this->GeneraMenus($this->user, $req);    
+            $autorizado = $modulosMenus = $this->GeneraMenus($this->user, $req);
             if(!$autorizado)
-                return response()->view('ModuloPlanificacion.error',['mensaje' => 'No tiene autorización para ingresar a este módulo']); 
-                  
+                return response()->view('ModuloPlanificacion.error',['mensaje' => 'No tiene autorización para ingresar a este módulo']);
+
             \View::share($modulosMenus);
 
             return $next($request);
@@ -37,7 +37,7 @@ class PlanificacionBaseController extends Controller
 
 
     /*-------------------------------------------------------------------------------
-    | Obtiene los menus segun el plan, mediante ruta devuelve REST, 
+    | Obtiene los menus segun el plan, mediante ruta devuelve REST,
     | para generacion de menus AJAX
      */
     public function getMenu(Request $request)
@@ -51,7 +51,7 @@ class PlanificacionBaseController extends Controller
 
     /**-------------------------------------------------------------------------------
     | obtiene los parametros en orden de una categoria
-    | se puede filtrar segun los campos a y b : 
+    | se puede filtrar segun los campos a y b :
     | Where a = b
      */
     public function getParametros($categoria, $a = null, $b = null)
@@ -113,7 +113,7 @@ class PlanificacionBaseController extends Controller
      */
     public function getMetasPilar($req)
     {
-        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex from pdes_metas 
+        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex from pdes_metas
                                 WHERE id_pilar = ? ORDER BY cod_m', [$req->id_pilar]);
         return response()->json(['data' => $metas]);
     }
@@ -124,7 +124,7 @@ class PlanificacionBaseController extends Controller
      */
     public function getResultadosMeta($req)
     {
-        $resultados = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex 
+        $resultados = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex
                                     FROM pdes_resultados WHERE id_meta = ? ORDER by cod_r', [$req->id_meta]);
         return response()->json(['data' => $resultados]);
     }
@@ -143,19 +143,19 @@ class PlanificacionBaseController extends Controller
 
     // ================================================= Funciones privadas y protegidas=====================================================
     // ======================================================================================================================================
-     
-    
+
+
     private function GeneraMenus($user, $req)
     {
         // Verifica los modulos del usuario y verifica si puede acceder al modulo que corresponde ejmp: de planificacion = 7
         $modulos = \DB::select("SELECT m.id, m.titulo, m.descripcion, m.url, m.icono, m.target, m.id_html FROM roles_modulos um INNER JOIN modulos m ON um.id_modulo = m.id WHERE um.id_rol =  {$user->id_rol} ORDER BY orden ASC");
-        
+
         $autorizado = count(array_where($modulos, function ($value){
                                     return $value->id == 7;
                             })) > 0;
         if (!$autorizado)
             return false;
-        
+
 
         $menus = $this->menus($user, $req->p);
         return ['modulos' => $modulos, 'menus' => $menus, 'id_plan' => $req->p];
@@ -163,33 +163,66 @@ class PlanificacionBaseController extends Controller
 
     private function menus($user, $idplan)
     {
-        $condicion = "  m.tipo_menu = 'Estructuración' "; 
-        $plan = '';
-        if ($idplan)
-        {
-            $plan = \DB::select("SELECT pl.*, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan                                
-                                FROM sp_planes pl, sp_parametros p
-                                WHERE pl.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
-                                AND pl.id = ? AND pl.id_entidad = ? ", [$idplan, $user->id_institucion]);
-            if(count($plan) >0)
-                  $condicion = $plan[0]->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
-        }         
-        
-        $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
-                         WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
-                         AND id_modulo = 7 AND activo = true AND {$condicion} 
-                         ORDER BY m.orden ASC");
+        if($user->id_rol == 4){
+            $condicion = "  m.tipo_menu = 'Estructuración' ";
+            $plan = '';
+            if ($idplan)
+            {
+                $plan = \DB::select("SELECT pl.*, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan
+                                    FROM sp_planes pl, sp_parametros p
+                                    WHERE pl.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
+                                    AND pl.id = ? AND pl.id_entidad = ? ", [$idplan, $user->id_institucion]);
+                if(count($plan) >0)
+                      $condicion = $plan[0]->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
+            }
 
-        foreach ($menus as $mn){
-            $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
+            $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
+                             WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
+                             AND id_modulo = 7 AND activo = true AND {$condicion}
+                             ORDER BY m.orden ASC");
+
+            foreach ($menus as $mn){
+                $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
+            }
+        }elseif($user->id_rol == 3){
+            $condicion = "  m.tipo_menu = 'Planes' ";
+            $plan = '';
+            if ($idplan)
+            {
+                $plan = \DB::select("SELECT pl.*, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan
+                                    FROM sp_planes pl, sp_parametros p
+                                    WHERE pl.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
+                                    AND pl.id = ? AND pl.id_entidad = ? ", [$idplan, $user->id_institucion]);
+                if(count($plan) >0)
+                      $condicion = $plan[0]->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
+            }
+
+            $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
+                             WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
+                             AND id_modulo = 7 AND activo = true AND {$condicion}
+                             ORDER BY m.orden ASC");
+
+            foreach ($menus as $mn){
+                $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
+            }
+        }else{
+          $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
+                           WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
+                           AND id_modulo = 7 AND activo = true
+                           ORDER BY m.orden ASC");
+
+          foreach ($menus as $mn){
+              $mn->submenus = \DB::select("SELECT * FROM sub_menus WHERE id_menu = " . $mn->id . " AND activo = true ORDER BY orden ASC");
+          }
         }
+
         return $menus;
     }
 
 
     private function complementaUser($req = null)
     {
-        $id_entidad = $this->user->id_institucion == null ? -9991 : $this->user->id_institucion; 
+        $id_entidad = $this->user->id_institucion == null ? -9991 : $this->user->id_institucion;
         $inst                    = \DB::select("SELECT id, nombre, sigla FROM sp_entidades WHERE id = " . $id_entidad);
         $this->user->institucion = count($inst) > 0 ? $inst[0] : null;
         // $idInstFoco = $this->getIdEntidadFoco($req);
@@ -202,10 +235,10 @@ class PlanificacionBaseController extends Controller
         $idEntidad = -1;
         if ($this->user->id_rol == 4)
             $idEntidad = $this->user->id_institucion;
-        
+
         if ($this->user->id_rol == 3)
             $idEntidad = $req->id_entidad;
-        
+
         return $idEntidad;
     }
 
@@ -216,10 +249,10 @@ class PlanificacionBaseController extends Controller
         $encriptado = mcrypt_encrypt($cifrado, $llave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
         return base64_encode($encriptado);
     }
-    
+
     public static function desencriptar($cadena, $llave='sp')
     {
-        $cadena = base64_decode($cadena);    
+        $cadena = base64_decode($cadena);
         $cifrado = MCRYPT_RIJNDAEL_256;
         $modo = MCRYPT_MODE_ECB;
         $desencriptado = mcrypt_decrypt($cifrado, $llave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));

@@ -223,6 +223,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
+            Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showReviewPlanesInstitucion');
 
 
             Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
@@ -242,7 +243,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('getpilares', 'ModuloPlanificacion\PlanificacionBaseController@getPilares');
             Route::get('getmetaspilar', 'ModuloPlanificacion\PlanificacionBaseController@getMetasPilar');
             Route::get('getresultadosmeta', 'ModuloPlanificacion\PlanificacionBaseController@getResultadosMeta');
-            Route::get('getaccionesresultado', 'ModuloPlanificacion\PlanificacionBaseController@getAccionesResultado');            
+            Route::get('getaccionesresultado', 'ModuloPlanificacion\PlanificacionBaseController@getAccionesResultado');
             Route::get('getparametros/{categoria}/{a?}/{b?}', 'ModuloPlanificacion\PlanificacionBaseController@getParametros');
 
             /********** Etidades *************************/
@@ -259,13 +260,13 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('deleteOficina', 'ModuloPlanificacion\AdministracionController@deleteOficina');
             Route::get('setEstructuraOfi', 'ModuloPlanificacion\AdministracionController@setEstructuraOfi');
             Route::get('setEstructuraEnti', 'ModuloPlanificacion\AdministracionController@setEstructuraEnti');
-            
+
             /********** Planes ***********************/
             Route::get('listPlanes', 'ModuloPlanificacion\PlanesController@listPlanes');
             Route::post('savePlan', 'ModuloPlanificacion\PlanesController@savePlan');
             Route::get('deletePlan', 'ModuloPlanificacion\PlanesController@deletePlan');
             Route::post('actualizaEtapas', 'ModuloPlanificacion\PlanesController@actualizaEtapas');
-            
+
             /********** Enfoque politico *****************/
             Route::get('getEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@getEnfoquePolitico');
             Route::post('saveEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@saveEnfoque');
@@ -282,12 +283,12 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveDataNew', 'ModuloPlanificacion\DiagnosticoController@saveDataNew');
 
             /********** Politica Sectorial/institucional ******************/
-            Route::get('getPilaresVinculadosAlPlan', 'ModuloPlanificacion\PoliticaController@getPilaresVinculadosAlPlan');     
+            Route::get('getPilaresVinculadosAlPlan', 'ModuloPlanificacion\PoliticaController@getPilaresVinculadosAlPlan');
             Route::get('listPoliticasPilares', 'ModuloPlanificacion\PoliticaController@listPoliticasPilares');
             Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
             Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
 
-            /********** Planificacion PMRA ******************/            
+            /********** Planificacion PMRA ******************/
             Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificacionPMRAController@listaPmraPlan');
             Route::post('save_pmra', 'ModuloPlanificacion\PlanificacionPMRAController@savePMRA');
             Route::post('delete_pmra', 'ModuloPlanificacion\PlanificacionPMRAController@deletePMRA');
@@ -369,7 +370,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldo');
               Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
               Route::get('apiExportData', 'SistemaRemi\ExportReportController@descagarExcelAdminFuente');
-              
+
 
           }
       );
