@@ -21,69 +21,75 @@ class PlanificaPMRAController extends PlanificacionBaseController
      */
     public function listaPmraPlan(Request $req)
     {
-        $acciones = \DB::select("SELECT id, politica, id_plan, ids_pilares 
-                                FROM sp_politica_pilares 
-                                where activo AND id_plan =  ? ORDER BY id",[$req->p]);
-        if (count($politicas) > 0)  {
-            $pilares = collect(\DB::table('pdes_pilares')->orderBy('cod_p')->get())->groupBy('id');
-
-            foreach ($politicas as $pol) {
-                $pol->pilares = collect(explode('|', $pol->ids_pilares))
-                                    ->filter(function($val){
-                                        return $val != '';
-                                    })->unique()->sort()->values()
-                                    ->map(function($id, $key) use ($pilares){
-                                        return $pilares[$id]->first();
-                                    });
-                $pol->ids_pilares = $pol->pilares->map(function($elem){
-                    return $elem->id;
-                });
-            }
-
-        }
+        $listpmra = \DB::select("
+                SELECT pmra.id, pmra.id_p, p.cod_p, p.nombre as nombre_p, 
+                    p.descripcion as desc_p, p.logo as logo_p,
+                    pmra.id_m, m.cod_m, m.nombre as nombre_m, m.descripcion as desc_m,
+                    pmra.id_r, r.cod_r, r.nombre as nombre_r, r.descripcion as desc_r, r.sector,
+                    pmra.id_a, a.cod_a, a.nombre as nombre_a, a.descripcion as desc_a, 
+                    pmra.id_plan
+                FROM sp_plan_articulacion_pdes pmra, pdes_pilares p, pdes_metas m, 
+                            pdes_resultados r, pdes_acciones a, sp_planes pl
+                WHERE pmra.id_a = a.id AND a.id_resultado = r.id AND r.id_meta = m.id AND m.id_pilar = p.id 
+                AND pmra.id_plan = pl.id AND pmra.activo AND pl.activo 
+                AND pmra.id_plan = ? 
+                ORDER BY p.cod_p, m.cod_m, r.cod_r, a.cod_a ",[$req->p]);
 
         return response()->json([
-            'data'=> $politicas,
+            'data'=> $listpmra,
         ]);
     }
 
-    /*---------------------------------------------------------------------------------------
-    | Insert o Update en sp_politicas_pilares
-    | contiene $req{ politica:politica, ids_pilares: [1,2,..13], p: id_plan }
+    /*-------------------------------------------------------------------------------------------------
+    | Inserta una articulacion PDES a un plan en la tabla sp_plan_articulacion_pdes  (p,m,r,a, id_plan)
+    | contiene $req{ id:id, id_a: id_accion, id_plan:id_plan, p: id_plan }
     | trae la propiedad $req->p: id_plan
      */
-    public function savePolitica(Request $req)
+    public function savePMRA(Request $req)
     {
         //TODO verificar antes de modificar o eliminar que no se este utilizando
-        $politica = new \stdClass();
-        $politica->politica = $req->politica;
-        $ids_pilares = collect($req->ids_pilares)
-                                ->unique()->sort()->values()
-                                ->reduce(function($carry, $id){
-                                    return $carry . $id . '|';
-                                },'|');
+        $exist = \DB::select("SELECT * from sp_plan_articulacion_pdes WHERE id_plan = ? AND id_a = ? AND activo ", [$req->id_plan, $req->id_a]);
+        if(count($exist)>0){
+            return response()->json([
+                'estado' => "error",
+                'msg'    => 'La articulación entre la accion y el plan ya existe. ' 
+            ]);
+        }
 
-        $politica->ids_pilares = $ids_pilares;
+        $arti = collect(\DB::select("SELECT p.id as id_p, m.id as id_m, r.id as id_r, a.id as id_a,
+                                    p.cod_p, m.cod_m, r.cod_r, a.cod_a         
+                            FROM pdes_pilares p, pdes_metas m, pdes_resultados r, pdes_acciones a
+                            WHERE p.id = m.id_pilar AND m.id = r.id_meta AND r.id = a.id_resultado 
+                            AND a.id = ? ", [$req->id_a]))->first();
+        
+        $plan_arti = new \stdClass();
 
+        $plan_arti->id_p = $arti->id_p;
+        $plan_arti->cod_p = $arti->cod_p;
+        $plan_arti->id_m = $arti->id_m;
+        $plan_arti->cod_m = $arti->cod_m;
+        $plan_arti->id_r = $arti->id_r;
+        $plan_arti->cod_r = $arti->cod_r;
+        $plan_arti->id_a = $arti->id_a;
+        $plan_arti->cod_a = $arti->cod_a;
         try {
             if ($req->id) // uPDATE
             {
-                $politica->id_user_updated = $this->user->id;
-                $politica->updated_at      = \Carbon\Carbon::now(-4);
-                \DB::table('sp_politica_pilares')->where('id', $req->id)->update(get_object_vars($politica));
+                $plan_arti->id_user_updated = $this->user->id;
+                $plan_arti->updated_at = \Carbon\Carbon::now(-4);
+                \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(get_object_vars($plan_arti));
             }
             else // INSERT
             {
-                $politica->activo     = true;
-                $politica->id_plan    = $req->id_plan;
-                $politica->id_user    = $this->user->id;
-                $politica->created_at = \Carbon\Carbon::now(-4);
-                $politica->id         = \DB::table('sp_politica_pilares')->insertGetId(get_object_vars($politica));
+                $plan_arti->id_plan = $req->id_plan;
+                $plan_arti->activo = true;
+                $plan_arti->id_user = $this->user->id;
+                $plan_arti->created_at = \Carbon\Carbon::now(-4);                
+                $plan_arti->id = \DB::table('sp_plan_articulacion_pdes')->insertGetId(get_object_vars($plan_arti));
             }
 
             return \Response::json([
                 'accion' => $req->id ? 'update' : 'insert',
-                // 'data'   => $politica,
                 'estado' => "success",
                 'msg'    => "Se guardo con éxito."]);
         }
@@ -97,13 +103,13 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
     /*---------------------------------------------------------------------------------------
-    | delete $req = {id: id_politica}
+    | delete $req = {id: id_plan_articulacion_pdes}
      */
-    public function deletePolitica(Request $req)
+    public function deletePMRA(Request $req)
     {
         try{
 
-            \DB::table('sp_politica_pilares')->where('id', $req->id)->update(['activo'=>false]);
+            \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
             return \Response::json([ 
                 'estado' => "success",
                 'msg' => "Se eliminó correctamente."
@@ -117,34 +123,6 @@ class PlanificaPMRAController extends PlanificacionBaseController
         }
     }
 
-
-
-
-    /*-----------------------------------------------------------------------------------------------------------
-    |  obtiene los pilares vinculados con los atributos del plan,
-    |  $req = { p : id_plan }
-     */
-    public function getPilaresVinculadosAlPlan(Request $req)
-    {
-        $atribuciones = collect(\DB::select("SELECT * from sp_atribuciones_pilares where activo AND id_plan = ? " , [$req->p]));
-        $idsPilares = $atribuciones->map(function($elem){
-                                return explode('|', $elem->ids_pilares);
-                            })->collapse()->unique()
-                            ->filter(function($val, $key){
-                                return $val != '';
-                            })->sort()->values();
-
-
-        $pilares = \DB::table('pdes_pilares')->get()->groupBy('id');
-        $pilaresPlan = [];
-        foreach ($idsPilares as $idp) {
-             $pilaresPlan[] = $pilares[$idp]->first();
-         } 
-
-        return response()->json([
-            'data' => $pilaresPlan,
-        ]);
-    }
 
 
 

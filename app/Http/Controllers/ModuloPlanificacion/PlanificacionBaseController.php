@@ -111,7 +111,7 @@ class PlanificacionBaseController extends Controller
     |  Obtiene las metas pertenecientes a un plan
     | $req = {id_pilar: id_pilar}
      */
-    public function getMetasPilar($req)
+    public function getMetasPilar(Request $req)
     {
         $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex from pdes_metas 
                                 WHERE id_pilar = ? ORDER BY cod_m', [$req->id_pilar]);
@@ -122,7 +122,7 @@ class PlanificacionBaseController extends Controller
     |  Obtiene los resultados pertenecientes a una meta
     | $req = {id_meta: id_meta}
      */
-    public function getResultadosMeta($req)
+    public function getResultadosMeta(Request $req)
     {
         $resultados = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex 
                                     FROM pdes_resultados WHERE id_meta = ? ORDER by cod_r', [$req->id_meta]);
@@ -133,10 +133,10 @@ class PlanificacionBaseController extends Controller
     |  Obtiene las acciones vinculadas a un Resultado
     | $req = {id_resultado: id_resultado}
      */
-    public function getAccionesResultado($req)
+    public function getAccionesResultado(Request $req)
     {
         $acciones = \DB::select('SELECT id, cod_a, nombre, descripcion, id_resultado
-                                    FROM pdes_acciones WHERE id_resultado = ? ORDER by cod_r', [$req->id_resultado]);
+                                    FROM pdes_acciones WHERE id_resultado = ? ORDER by cod_a', [$req->id_resultado]);
         return response()->json(['data' => $acciones]);
     }
 

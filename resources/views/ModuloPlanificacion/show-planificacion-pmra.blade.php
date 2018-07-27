@@ -40,24 +40,36 @@
             <h3>Planificación Sectorial</h3>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-visible" id="spy2">
+            <div class="col-md-12" id="planificacion_pmra">
+                <div class="panel panel-visible" >
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title ">
-                            <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel">Identificación de Acciones</span><span class="sp_est_planificacion"></span> 
+                            <div>
+                                <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel"> Identificación de la Articulación PDES</span><span id="sp_est_pmra" class="ml5 badge bg-dark dark"></span>                                 
+                                <span class="pull-right">
+                                    <button id="pmra_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar </button>
+                                    {{-- <button id="pmra_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button> --}}
+                                    <button id="pmra_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
-
-                            <div id="planif_pmra" class="col-md-12" >
-                                <button id="pol_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar </button>
-                                <button id="pol_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button>
-                                <button id="pol_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>                                
+                            <div class="col-sm-3">
+                                <div class="panel ">
+{{--                                     <div class="panel-heading">
+                                        <span class="panel-icon"><i class="fa fa-pencil"></i>
+                                        </span>
+                                        <span class="panel-title">Pilares</span>
+                                    </div> --}}
+                                    <div id="sp_est_pilar_acciones">                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="" class="col-sm-9" >                                
                                 <div id="dt_pmra"></div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -80,46 +92,43 @@
 
                 <div class="panel-body mnw700 of-a">
                     <div class="row">
-
-                            <input class="hidden" name="id_pol" id="id_pol" >
+                            <input class="hidden" name="id_pmra" id="id_pmra" >
                             <div class="row">
                                 <div class=" pl5 br-r mvn15">
                                     <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Defina su pilar meta resultado y acciones<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+
                                      <div class="section">
-                                        <label class="field-label" for="pmra_id_pilar">Pilare </label>
+                                        <label class="field-label" for="pmra_id_p">Pilares según sus atribuciones</label>
                                         <label class="field select">
-                                            <select id="pmra_id_pilar" name="pmra_id_pilar" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_p" name="pmra_id_p" class="required" style="width:100%;">
+                                                <option value=""></option>
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="pmra_id_meta">Meta </label>
+                                        <label class="field-label" for="pmra_id_m">Metas </label>
                                         <label class="field select">
-                                            <select id="pmra_id_meta" name="pmra_id_meta" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_m" name="pmra_id_m" class="required" style="width:100%;">
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="pmra_resultado">Pilares según sus atribuciones </label>
+                                        <label class="field-label" for="pmra_id_r">Resultados</label>
                                         <label class="field select">
-                                            <select id="pmra_resultado" name="pmra_resultado" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_r" name="pmra_id_r" class="required" style="width:100%;">
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="pmra_accion">Pilares según sus atribuciones </label>
+                                        <label class="field-label" for="pmra_id_a">Acciones</label>
                                         <label class="field select">
-                                            <select id="pmra_accion" name="pmra_accion" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_a" name="pmra_id_a" class="required" style="width:100%;">
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
@@ -156,32 +165,39 @@
 <script type="text/javascript">
 $(function(){
 
-    var pol = {
-        dataTable : $("#dtPoliticas"),
+    var ctxpmra = {
+        dataTable : $("#dt_pmra"),
         source : {},
 
         fillPPmra : function() {
-            $.get(globalSP.urlApi + 'listPoliticasPilares', {p : globalSP.idPlanActivo}, function(resp)
+            $.get(globalSP.urlApi + 'lista_pmraPlan', {p : globalSP.idPlanActivo}, function(resp)
             {
-                pol.source =
+                ctxpmra.source =
                 {
                     dataType: "json",
                     localdata: resp.data,
                     dataFields: [
                         { name: 'id', type: 'number' },
-                        { name: 'politica', type: 'string' },
-                        { name: 'ids_pilares', type: 'string' },
-                        { name: 'pilares', type: 'object' },
+                        { name: 'cod_p', type: 'string' },
+                        { name: 'cod_m', type: 'string' },
+                        { name: 'cod_r', type: 'string' },
+                        { name: 'cod_a', type: 'string' },                        
+                        { name: 'nombre_p', type: 'string' },
+                        { name: 'nombre_m', type: 'string' },
+                        { name: 'nombre_r', type: 'string' },
+                        { name: 'nombre_a', type: 'string' },
+                        { name: 'desc_p', type: 'string' },
+                        { name: 'desc_m', type: 'string' },
+                        { name: 'desc_r', type: 'string' },
+                        { name: 'desc_a', type: 'string' },
+                        { name: 'logo_p', type: 'string' },
+                        { name: 'sector', type: 'object' },
                     ],
                     id: 'id',
                 };
-                var dataAdapter = new $.jqx.dataAdapter(pol.source);
-                var editDelRenderer = function (row, columnfield, value, defaulthtml, rowData) {
-                    html = `<a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar " ><i class="fa fa-edit fa-lg text-warning "></i></a>
-                            <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>`
-                    return html;
-                };
-                pol.dataTable.jqxDataTable({
+                ctxpmra.estadistics();
+                var dataAdapter = new $.jqx.dataAdapter(ctxpmra.source);
+                ctxpmra.dataTable.jqxDataTable({
                     source: dataAdapter,
                     altRows: false,
                     sortable: true,
@@ -191,56 +207,56 @@ $(function(){
                     selectionMode: 'singleRow',
                     localization: getLocalization('es'),
                     columns: [
-                        { text: 'Política ', dataField: 'politica', align:'center'},
-                        { text: 'Pilares Asociados', dataField: 'id', align:'center',
+                        // { text: 'Pilar',  dataField: 'cod_p',align:'center',
+                        //         cellsrenderer: function(row, column, value, rowData){
+                        //             return `<div class="col-sm-4"> <img width="30" class="img-circle"  src="/img/${rowData.logo_p}"/> </div> <div class="col-sm-8"><b>  ${rowData.cod_p}</b> </div>`
+                        //     } 
+                        // },                        
+                        { text: '-', width: 60, align:'center',
                                 cellsrenderer: function(row, column, value, rowData){
-                                    var pilares = rowData.pilares;
-                                    html = "";
-                                    pilares.forEach(function(pilar){
-                                        html += "<div class='br-b m10 pv5'><b>" + pilar.nombre + "</b> - "+ pilar.descripcion + "</div>" 
-                                    });
-                                   return html;
+                                    return `<img width="30" class="img-circle"  src="/img/${rowData.logo_p}"/> `
                             } 
                         },
-                        { text: ' ', width: 50, cellsrenderer: editDelRenderer},
+                        { text: 'Pilar ', dataField: 'cod_p', align:'center', cellsrenderer: function(row, column, value, rowData){
+                                    return `<span title="${rowData.nombre_p} - ${rowData.desc_p}">${rowData.nombre_p}</span>`
+                            }  
+                        },
+                        { text: 'Meta ', align:'center', cellsrenderer: function(row, column, value, rowData){
+                                    return `<span title="${rowData.nombre_m} - ${rowData.desc_m}">${rowData.nombre_m}</span>`
+                            }  
+                        },
+                        { text: 'Resultado ',  dataField: 'cod_r', align:'center', cellsrenderer: function(row, column, value, rowData){
+                                    return `<span title="${rowData.nombre_r} - ${rowData.desc_r}">${rowData.nombre_r}</span>`
+                            } 
+                        },
+                        { text: 'Descripción Accion ',  dataField: 'cod_a', width:'50%', align:'center', cellsrenderer: function(row, column, value, rowData){
+                                    return `<span title="${rowData.nombre_a} - ${rowData.desc_a}">${rowData.nombre_a} - ${rowData.desc_a}</span>`
+                            } 
+                        },
+                        { text: ' ', width: 50, cellsalign: 'center', cellsrenderer: function (row, column, value, rowData) {
+                                return `<!-- <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar " ><i class="fa fa-edit fa-lg text-warning "></i></a> -->
+                                        <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>`;
+                            }
+                        },
                     ]
                 });
-                funciones.estadistics();
+
+
             });
         },
         refreshList: function(){
-            $.get(globalSP.urlApi + 'listPoliticasPilares', {p:globalSP.idPlanActivo}, function(resp) {
-                pol.source.localdata = resp.data;
-                pol.dataTable.jqxDataTable("updateBoundData");
-                funciones.estadistics()
+            $.get(globalSP.urlApi + 'lista_pmraPlan', {p:globalSP.idPlanActivo}, function(resp) {
+                ctxpmra.source.localdata = resp.data;
+                ctxpmra.dataTable.jqxDataTable("updateBoundData");
+                ctxpmra.estadistics();
             })   
-        },
-        init : function(){
-            $.get(globalSP.urlApi + "getPilaresPlan", {p:globalSP.idPlanActivo}, function(res){
-                opts = res.data;
-                opts.forEach(function(op){
-                    $("#ids_pilares").append('<option value="' + op.id + '">' + op.nombre + ' - ' + op.descripcion + '</option>');
-                });
-                $("#ids_pilares").select2({
-                    placeholder: 'Seleccione los pilares de la política',
-                    dropdownParent: $('#form-pmra'),
-                    cache: false,
-                    language: "es",
-                    templateSelection: function (val) {
-                        return $("<div class='list-group-item' style='width:100%;' title ='" + val.text + "'>" +val.text + "</div>");
-                    },
-                });
-            });
-
-
-            $(".sp_politica").html(funciones.tipoPolitica());
         },
         showModal : function(){
             $(".state-error").removeClass("state-error")
             $("#form-pmra em").remove();
                 $.magnificPopup.open({
                 removalDelay: 500, //delay removal by X to allow out-animation,
-                focus: '#politica',
+                focus: '#pmra_id_pilar',
                 items: {
                     src: "#modal_pmra"
                 },
@@ -256,45 +272,44 @@ $(function(){
         }, 
         getDataForm: function(){
             var obj = {
-                id: $("#id_pol").val(),
-                politica: $("#politica").val(),
-                ids_pilares: $("#ids_pilares").val(),
+                id : $("#id_pmra").val(),
+                id_a: $("#pmra_id_a").val(),
                 _token : $('input[name=_token]').val(),
                 id_plan : globalSP.idPlanActivo,
                 p: globalSP.idPlanActivo
             }
             return obj;
         },
-        setDataForm: function(obj){
-            $("#id_pol").val(obj.id);
-            $("#politica").val(obj.politica);
-            $("#ids_pilares").val(obj.ids_pilares).change();
-        },
+        // setDataForm: function(obj){
+        //     $("#id_pol").val(obj.id);
+        //     $("#politica").val(obj.politica);
+        //     $("#ids_pilares").val(obj.ids_pilares).change();
+        // },
         nuevo: function(){
-            $("#tituloModal span").html(`Agregar ${funciones.tipoPolitica()}`);
+            $("#tituloModal span").html(`Agregar articulación pdes`);
             $('#form-pmra input:text').val('');
-            $("#ids_pilares").val('').change();
-            pol.showModal();
+            $("select").val('').change();
+            ctxpmra.showModal();
         },
-        editar: function(){
-            var rowSelected = pol.dataTable.jqxDataTable('getSelection');
-            if(rowSelected.length > 0)
-            {
-                var rowSel = rowSelected[0]; 
-                pol.setDataForm(rowSel);
-                $("#tituloModal span").html(`Modificar ${funciones.tipoPolitica()}`);
-                pol.showModal();
-            }
-            else{
-                swal("Seleccione el registro para modificar.");
-            }
-        },
+        // editar: function(){
+        //     var rowSelected = ctxpmra.dataTable.jqxDataTable('getSelection');
+        //     if(rowSelected.length > 0)
+        //     {
+        //         var rowSel = rowSelected[0]; 
+        //         ctxpmra.setDataForm(rowSel);
+        //         $("#tituloModal span").html(`Modificar ${funciones.tipoPolitica()}`);
+        //         ctxpmra.showModal();
+        //     }
+        //     else{
+        //         swal("Seleccione el registro para modificar.");
+        //     }
+        // },
         eliminar: function(){
-            var rowSelected = pol.dataTable.jqxDataTable('getSelection');
+            var rowSelected = ctxpmra.dataTable.jqxDataTable('getSelection');
             if(rowSelected.length > 0)
             {
                 var rowSel = rowSelected[0];
-                pol.delete(rowSel.id);             
+                ctxpmra.delete(rowSel.id);             
             }
             else{
                 swal("Seleccione el registro que desea eliminar.");
@@ -307,13 +322,17 @@ $(function(){
                     errorElement: "em",
 
                     rules: {
-                        politica: { required: true },
-                        ids_pilares:  { required: true },
+                        pmra_id_p: { required: true },
+                        pmra_id_m: { required: true },
+                        pmra_id_r: { required: true },
+                        pmra_id_a: { required: true },
                     },
 
                     messages:{
-                        politica: { required: 'Debe escribir su política sectorial/institucional' },
-                        ids_pilares:  { required: 'Seleccionar los pilares asociados a la política' },
+                        pmra_id_p:  { required: 'Falta pilar' },
+                        pmra_id_m:  { required: 'Falta meta' },
+                        pmra_id_r:  { required: 'Falta resultado' },
+                        pmra_id_a:  { required: 'Debe seleccionar una acción' },
                     },
 
                     highlight: function(element, errorClass, validClass) {
@@ -330,20 +349,20 @@ $(function(){
                         }
                     },
                     submitHandler: function(form) {
-                        pol.saveData();
+                        ctxpmra.saveData();
                     }
             }
             return reglasVal; 
         }, 
         saveData: function(){
-            var obj = pol.getDataForm();
-            $.post(globalSP.urlApi + 'savePolitica', obj, function(resp){
-                pol.refreshList();
+            var obj = ctxpmra.getDataForm();
+            $.post(globalSP.urlApi + 'save_pmra', obj, function(resp){
+                ctxpmra.refreshList();
                 new PNotify({
                             title: resp.estado == 'success' ? 'Guardado' : 'Error',
                             text: resp.msg,
                             shadow: true,
-                            opacity: 1,
+                            opacity: 0.9,
                             addclass: noteStack,
                             type: (resp.estado == 'success') ? "success" : "danger",
                             stack: Stacks[noteStack],
@@ -351,12 +370,11 @@ $(function(){
                             delay: 1500
                         });
                 $.magnificPopup.close();  
-            });
-             
+            });             
         },
         delete: function(id){
             swal({
-                  title: `Está seguro de eliminar  la ${funciones.tipoPolitica()}?`,
+                  title: `Está seguro de eliminar la articulación PDES del plan?`,
                   text: "No podrá recuperar este registro!",
                   type: "warning",
                   showCancelButton: true,
@@ -364,7 +382,7 @@ $(function(){
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.post(globalSP.urlApi + 'deletePolitica', {'id': id, _token : $('input[name=_token]').val(), }, function(res){
+                    $.post(globalSP.urlApi + 'delete_pmra', {'id': id, _token : $('input[name=_token]').val(), }, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -376,74 +394,118 @@ $(function(){
                                   width: findWidth(),
                                   delay: 1400
                               });
-                        pol.refreshList();
+                        ctxpmra.refreshList();
                     });
                 });
         },
-
-    }
-
-    var funciones = {
-        estadistics : function()
-        {
-            try{ 
-                var politicas = pol.source.localdata;
-                $(".sp_est_politica").removeClass('badge bg-success bg-danger dark');
-                $(".sp_est_politica").addClass( (politicas.length > 0) ? 'badge bg-system dark' : 'badge bg-danger');
-                $(".sp_est_politica").html(politicas.length);
-
-                obj ={
-                    id_menu : globalSP.menu.PoliticaSectorial,
-                    p: globalSP.idPlanActivo,
-                    _token : $('input[name=_token]').val(),
-                    agregar: (politicas.length > 0)   ? '1' : '0' ,
-                }
-                $.post(globalSP.urlApi + 'actualizaEtapas', obj, function() {});
-
-            }
-            catch(e){}
-        },
-        tipoPolitica: function(){
-            tipoPolitica = globalSP.planActivo.cod_tipo_plan == 'PSDI' ? 'Política Sectorial' : 'Política Institucional';
-            return tipoPolitica;
+        estadistics: function(){
+            $("#sp_est_pmra").html( ctxpmra.source.localdata.length);
+            var pils = _.groupBy(ctxpmra.source.localdata, function(elem){
+                return elem.cod_p;
+            });
+            var html = `<div class="panel-heading">
+                                        <span class="panel-icon"><i class="glyphicons glyphicons-bank"></i>
+                                        </span>
+                                        <span class="panel-title">Pilares</span>
+                                    </div>`;
+            _.mapObject(pils, function(elem, key){
+                var pilar = elem[0];
+                html += `<div class="panel-body"> 
+                                <div class="col-sm-3">
+                                    <img width="50" class=""  src="/img/${pilar.logo_p}"/>
+                                    <span class="badge badge-hero bg-system dark">${elem.length}</span> 
+                                </div> 
+                                <div class="col-sm-9"><span><b>${pilar.nombre_p}</b>- ${pilar.desc_p}</span>  </div>
+                            </div>`;               
+            });
+             $("#sp_est_pilar_acciones").html(html);
         }
+
     }
 
+    var init = (function(){
+        var gerera_opciones = function(arr){
+            var html = '';
+            arr.forEach(function(op){
+                html += `<option value="${op.id}">${op.nombre} - ${op.descripcion} </option>`;
+            });            
+            return html;
+        }
 
+        var listeners =  function(){
+            $.get(globalSP.urlApi + "getPilaresVinculadosAlPlan", {p:globalSP.idPlanActivo}, function(res){
+                $("#pmra_id_p").append(gerera_opciones(res.data));
+                // opts = res.data;
+                // opts.forEach(function(op){
+                //     $("#pmra_id_p").append(`<option value="${op.id}">${op.nombre} - ${op.descripcion} </option>`);
+                // });
+                $("#pmra_id_p").select2({
+                    placeholder: 'Pilar ...',
+                });
+            });
 
+            $("#pmra_id_m").select2({
+                placeholder: 'Meta ...',
+            });   
+            $("#pmra_id_r").select2({
+                placeholder: 'Resultado ...',
+            });   
+            $("#pmra_id_a").select2({
+                placeholder: 'Acción ...',
+            });   
+
+            $("#pmra_id_p").change(function(){
+                $.get(globalSP.urlApi + "getmetaspilar", {id_pilar: $("#pmra_id_p").val()}, function(res){
+                    $("#pmra_id_m").html('<option></option>' + gerera_opciones(res.data) );
+                    $("label attr[for=pmra_id_m]").html('Metas (' + res.data.length)
+                })
+            });
+
+            $("#pmra_id_m").change(function(){
+                $.get(globalSP.urlApi + "getresultadosmeta", {id_meta: $("#pmra_id_m").val()}, function(res){
+                    $("#pmra_id_r").html('<option></option>' + gerera_opciones(res.data) );
+                })
+            });
+
+            $("#pmra_id_r").change(function(){
+                $.get(globalSP.urlApi + "getaccionesresultado", {id_resultado: $("#pmra_id_r").val()}, function(res){
+                    $("#pmra_id_a").html('<option></option>' + gerera_opciones(res.data) );
+                })
+            });
+        }
+
+        listeners();
+
+    })();
+
+    // init();
 
     globalSP.activarMenu(globalSP.menu.Planificacion);
-    globalSP.cargarGlobales(function(){
-        // pol.init();
+    globalSP.cargarGlobales(function(){/* */});
+    globalSP.setBreadcrumb('Planificación', 'Planificación');
+    // init();
+
+    ctxpmra.fillPPmra();
+
+    $("#form-pmra").validate(ctxpmra.validateRules());
+
+    $("#pmra_nuevo").click(function(){
+        ctxpmra.nuevo();
     });
-    globalSP.setBreadcrumb('Politica', 'Politica');
 
-    
-
-   
-    // pol.fillPPmra();
-    
-
-    // $("#form-pmra").validate(pol.validateRules());
-
-    // $("#pol_nuevo").click(function(){
-    //     pol.nuevo();
+    // $("#planificacion_pmra").on('click','.sel_edit, #pmra_editar', function(){
+    //     ctxpmra.editar();
     // });
 
-    // $("#div_politicas").on('click','.sel_edit, #pol_editar', function(){
-    //     pol.editar();
-    // });
+    $("#planificacion_pmra").on('click','.sel_delete, #pmra_eliminar', function(){
+        ctxpmra.eliminar();
+    });
 
-    // $("#div_politicas").on('click','.sel_delete, #pol_eliminar', function(){
-    //     pol.eliminar();
-    // });
+    $(".sp_cancelar").click(function(){
+        $.magnificPopup.close();
+    });
 
 
-
-    // $(".sp_cancelar").click(function(){
-    //     $.magnificPopup.close();
-    // });
-  
  
 })
 

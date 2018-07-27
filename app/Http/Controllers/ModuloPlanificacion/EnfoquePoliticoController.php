@@ -180,5 +180,32 @@ class EnfoquePoliticoController extends PlanificacionBaseController
     }
 
 
+        /*-----------------------------------------------------------------------------------------------------------
+    |  obtiene los pilares vinculados con los atributos del plan,
+    |  $req = { p : id_plan }
+     */
+    public function getPilaresVinculadosAlPlan(Request $req)
+    {
+        $atribuciones = collect(\DB::select("SELECT * from sp_atribuciones_pilares where activo AND id_plan = ? " , [$req->p]));
+        $idsPilares = $atribuciones->map(function($elem){
+                                return explode('|', $elem->ids_pilares);
+                            })->collapse()->unique()
+                            ->filter(function($val, $key){
+                                return $val != '';
+                            })->sort()->values();
+
+
+        $pilares = \DB::table('pdes_pilares')->get()->groupBy('id');
+        $pilaresPlan = [];
+        foreach ($idsPilares as $idp) {
+             $pilaresPlan[] = $pilares[$idp]->first();
+         } 
+
+        return response()->json([
+            'data' => $pilaresPlan,
+        ]);
+    }
+
+
 
 }
