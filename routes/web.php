@@ -223,7 +223,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
-            Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showReviewPlanesInstitucion');
+            Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
 
 
             Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
@@ -292,6 +292,11 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificacionPMRAController@listaPmraPlan');
             Route::post('save_pmra', 'ModuloPlanificacion\PlanificacionPMRAController@savePMRA');
             Route::post('delete_pmra', 'ModuloPlanificacion\PlanificacionPMRAController@deletePMRA');
+
+            /********** Review ******************/
+            Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');
+            Route::get('apiSetListSinCabeza', 'ModuloPlanificacion\ReviewController@apiSetListSinCabeza');
+            Route::get('apiSetListMultis', 'ModuloPlanificacion\ReviewController@apiSetListMultis');
 
 
 
