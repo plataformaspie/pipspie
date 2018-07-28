@@ -192,11 +192,10 @@ class PlanificacionBaseController extends Controller
                 $plan = \DB::select("SELECT pl.*, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan
                                     FROM sp_planes pl, sp_parametros p
                                     WHERE pl.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
-                                    AND pl.id = ? AND pl.id_entidad = ? ", [$idplan, $user->id_institucion]);
+                                    AND pl.id = ? ", [$idplan]);
                 if(count($plan) >0)
                       $condicion = $plan[0]->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
             }
-
             $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
                              WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
                              AND id_modulo = 7 AND activo = true AND {$condicion}

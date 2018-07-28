@@ -138,12 +138,4 @@ class PlanesController extends PlanificacionBaseController
     }
 
 
-    public function showReviewPlanesInstitucion(Request $request)
-    {
-        return view('ModuloPlanificacion.show-review-planes');
-    }
-
-
-
-
 }
