@@ -288,10 +288,14 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
             Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
 
-            /********** Planificacion PMRA ******************/            
+            /********** Planificacion 1 PMRA ******************/            
             Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificaPMRAController@listaPmraPlan');
             Route::post('save_pmra', 'ModuloPlanificacion\PlanificaPMRAController@savePMRA');
             Route::post('delete_pmra', 'ModuloPlanificacion\PlanificaPMRAController@deletePMRA');
+            /********** Planificacion 2 programacion ******************/            
+            Route::get('listaprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@listaProgramacion');
+            Route::post('saveprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@saveProgramacion');
+            Route::post('deleteProgramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
 
 
 

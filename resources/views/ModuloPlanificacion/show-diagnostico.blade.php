@@ -76,9 +76,11 @@
                   <div class="panel-heading bg-dark">
                       <div class="panel-title hidden-xs">
                          <span class="glyphicon glyphicon-tasks"></span>Diagnóstico
-                         <button id="nuevo"  class="btn btn-sm btn-success dark m5  br6 pull-right"><i class="fa fa-plus-circle text-white"></i> Agregar variable</button>
-                         <button id="editar"  class="btn btn-sm btn-warning dark m5 br6  pull-right "><i class="fa fa-edit text-white"></i> Editar</button>
-                         <button id="eliminar"  class="btn btn-sm btn-danger dark m5 br6  pull-right"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                         <div class="pull-right">
+                           <button id="nuevo"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar variable</button>
+                           <button id="editar"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>
+                           <button id="eliminar"  class="btn btn-sm btn-danger dark m5 br6 "><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                         </div>
                       </div>
                   </div>
                   <div class="panel-body pn">
@@ -174,7 +176,7 @@
                               <label for="unidad" class="field select ">
                                   <select id="unidad" name="unidad" class="required"  style="width:100%;">
                                       @foreach($metricas as $m)
-                                          <option value="{{$m->id}}"> {{$m->simbolo}} </option>                                
+                                          <option value="{{$m->codigo}}"> {{$m->codigo}} </option>                                
                                       @endforeach
                                   </select>
                                   <i class="arrow"> </i> 
@@ -330,7 +332,7 @@
                                  <label for="mod_unidad" class="field ">
                                     <select id="mod_unidad" name="mod_unidad" class="field prepend-icon" style="width:100%;">
                                         @foreach($metricas as $m)
-                                          <option value="{{$m->id}}"> {{$m->simbolo}} </option>
+                                          <option value="{{$m->codigo}}"> {{$m->codigo}} </option>
                                         @endforeach
                                     </select>
                                   </label>

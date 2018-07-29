@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 
 use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
-use App\Models\ModuloPlanificacion\Metricas;
 use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
 use App\Models\ModuloPlanificacion\Entidades;
 use App\Models\ModuloPdes\Pilares;
@@ -17,7 +16,7 @@ class DiagnosticoController extends PlanificacionBaseController
   
     public function showDiagnostico()
     {
-        $metricas = Metricas::orderBy('simbolo','asc')->get();
+        $metricas = \DB::select("SELECT * FROM sp_parametros where categoria = 'metricas' AND activo ORDER BY codigo ");
         return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
     }
 
@@ -58,9 +57,9 @@ class DiagnosticoController extends PlanificacionBaseController
                                       ) as _2015
                                       FROM (
 
-                                      SELECT d.*, m.simbolo
+                                      SELECT d.*, p.codigo as simbolo
                                       FROM sp_diagnostico d
-                                      INNER JOIN sp_metricas m ON d.unidad = m.id
+                                      INNER JOIN sp_parametros p ON d.unidad = p.codigo and p.categoria = 'metricas'
                                       WHERE d.entidad = ".$idEntidad."
                                       AND d.activo = true
                                       ) tab");

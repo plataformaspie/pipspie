@@ -47,7 +47,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
      */
     public function savePMRA(Request $req)
     {
-        //TODO verificar antes de modificar o eliminar que no se este utilizando
+        //TODO verificar antes de modificar o eliminar que no se este utilizando 
         $exist = \DB::select("SELECT * from sp_plan_articulacion_pdes WHERE id_plan = ? AND id_a = ? AND activo ", [$req->id_plan, $req->id_a]);
         if(count($exist)>0){
             return response()->json([
@@ -82,10 +82,21 @@ class PlanificaPMRAController extends PlanificacionBaseController
             else // INSERT
             {
                 $plan_arti->id_plan = $req->id_plan;
+                $plan_arti->codp_nivel_articulacion = 'a';
                 $plan_arti->activo = true;
                 $plan_arti->id_user = $this->user->id;
                 $plan_arti->created_at = \Carbon\Carbon::now(-4);                
-                $plan_arti->id = \DB::table('sp_plan_articulacion_pdes')->insertGetId(get_object_vars($plan_arti));
+                \DB::table('sp_plan_articulacion_pdes')->insertGetId(get_object_vars($plan_arti));
+
+                /* introduce a nivel de resultado si no existe*/
+                $artiRPlan = \DB::select("SELECT * FROM sp_plan_articulacion_pdes WHERE id_plan = ? AND id_r = ? AND activo AND codp_nivel_articulacion = 'r' ", [$plan_arti->id_plan, $plan_arti->id_r]);
+                if(count($artiRPlan) == 0){
+                    $plan_arti->id_a = null;
+                    $plan_arti->cod_a = null;
+                    $plan_arti->codp_nivel_articulacion = 'r';
+                    \DB::table('sp_plan_articulacion_pdes')->insertGetId(get_object_vars($plan_arti));
+                }
+
             }
 
             return \Response::json([
@@ -108,6 +119,49 @@ class PlanificaPMRAController extends PlanificacionBaseController
     public function deletePMRA(Request $req)
     {
         try{
+            $arti_a_plan = \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id);
+            $arti_a_elem = $arti_a_plan->first();
+            $arti_a = \DB::table('sp_plan_articulacion_pdes')->where(['id_plan'=>$arti_a_elem->id_plan, 'id_r'=>$arti_a_elem->id_r, 'activo'=>true, 'codp_nivel_articulacion'=>'a'])->get();
+
+            if(count($arti_a) > 1){
+                $arti_a_plan->update(['activo'=>false]);
+            }
+            if($req->confirma == '1' && count($arti_a) == 1)  // si viene con una confirmacion y es el ultimo articulado_accion con nivel de accion, se debe inactivar tambien el de nivel_resultado
+            {
+                $arti_a_plan->update(['activo'=>false]);
+                $arti_r = \DB::table('sp_plan_articulacion_pdes')->where(['id_plan'=>$arti_a_elem->id_plan, 'id_r'=>$arti_a_elem->id_r, 'activo'=>true, 'codp_nivel_articulacion'=>'r'])->first();
+                $arti_r->update(['activo'=>false]);
+
+            }
+            if(!$req->confirma  && count($arti_a) == 1)
+            {
+                return \Response::json([ 
+                    'estado' => "confirm",
+                    'msg' => "No se puede Eliminar ya que se se tiene una programacion de Resultado asociada. Desea Eliminar de todos modos (se eliminará la programacion de reultado tambien)?"
+                ]);
+            }
+
+            
+            return \Response::json([ 
+                'estado' => "success",
+                'msg' => "Se eliminó correctamente."
+            ]);
+        }
+        catch (Exception $e) {
+            return \Response::json([
+                'estado' => "error",
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /*---------------------------------------------------------------------------------------
+    | lista las programaciones de los resultados de un plan $req = { p: id_plan }
+     */
+    
+    public function listaProgramacion(Request $req)
+    {
+        try{
 
             \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
             return \Response::json([ 
@@ -122,6 +176,53 @@ class PlanificaPMRAController extends PlanificacionBaseController
             ]);
         }
     }
+
+    /*---------------------------------------------------------------------------------------
+    | Insert o Update de una programacion 
+    | $req = { p: id_plan }
+     */
+    public function saveProgramacion(Request $req)
+    {
+        try{
+
+            \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
+            return \Response::json([ 
+                'estado' => "success",
+                'msg' => "Se eliminó correctamente."
+            ]);
+        }
+        catch (Exception $e) {
+            return \Response::json([
+                'estado' => "error",
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /*---------------------------------------------------------------------------------------
+    | delete $req = {id: id_plan_articulacion_pdes}
+     */
+    public function deleteProgramacion(Request $req)
+    {
+        try{
+
+            \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
+            return \Response::json([ 
+                'estado' => "success",
+                'msg' => "Se eliminó correctamente."
+            ]);
+        }
+        catch (Exception $e) {
+            return \Response::json([
+                'estado' => "error",
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+
+
+
 
 
 

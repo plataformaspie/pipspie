@@ -103,22 +103,51 @@ class PlanificacionBaseController extends Controller
      */
     public function getPilares()
     {
-        $pilares = \DB::select('SELECT id, cod_p, nombre, descripcion, logo, cod_pex from pdes_pilares order by cod_p');
+        $pilares = \DB::select('SELECT id, cod_p, nombre, descripcion, logo, cod_pex FROM pdes_pilares ORDER BY cod_p');
         return response()->json(['data' => $pilares]);
     }
 
-    /*
+    /*-----------------------------------------------------------------------------
+    | Obtiene los metas activos
+     */
+    public function getMetas()
+    {
+        $pilares = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex FROM pdes_metas  ORDER BY cod_p');
+        return response()->json(['data' => $pilares]);
+    }
+
+    /*-----------------------------------------------------------------------------
+    | Obtiene los Resultados activos
+     */
+    public function getResultados()
+    {
+        $pilares = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex 
+                                    FROM pdes_resultados ORDER BY cod_p');
+        return response()->json(['data' => $pilares]);
+    }
+
+    /*-----------------------------------------------------------------------------
+    | Obtiene los Acciones activos
+     */
+    public function getAcciones()
+    {
+        $pilares = \DB::select('SELECT id, cod_a, nombre, descripcion, id_resultado
+                                    FROM pdes_accionesORDER BY cod_p');
+        return response()->json(['data' => $pilares]);
+    }
+
+    /* ------------------------------------------------------------------------------
     |  Obtiene las metas pertenecientes a un plan
     | $req = {id_pilar: id_pilar}
      */
     public function getMetasPilar(Request $req)
     {
-        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex from pdes_metas 
+        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex FROM pdes_metas 
                                 WHERE id_pilar = ? ORDER BY cod_m', [$req->id_pilar]);
         return response()->json(['data' => $metas]);
     }
 
-    /*
+    /* ------------------------------------------------------------------------------
     |  Obtiene los resultados pertenecientes a una meta
     | $req = {id_meta: id_meta}
      */
@@ -129,7 +158,7 @@ class PlanificacionBaseController extends Controller
         return response()->json(['data' => $resultados]);
     }
 
-    /*
+    /* ------------------------------------------------------------------------------
     |  Obtiene las acciones vinculadas a un Resultado
     | $req = {id_resultado: id_resultado}
      */
