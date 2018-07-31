@@ -20,10 +20,14 @@ class EnfoquePoliticoController extends PlanificacionBaseController
     public function getEnfoquePolitico(Request $req)
     {
         $idEntidadFoco   = $this->getIdEntidadFoco($req);
+        /*$enfoquePolitico = collect(\DB::select("SELECT ep.id, ep.id_plan, ep.enfoque_politico
+                                        FROM sp_enfoque_politico ep, sp_planes pl
+                                        WHERE pl.activo AND ep.activo
+                                        AND pl.id = ep.id_plan AND pl.id = ? AND ep.id_entidad = ?  ", [$req->p, $idEntidadFoco]))->first();*/
         $enfoquePolitico = collect(\DB::select("SELECT ep.id, ep.id_plan, ep.enfoque_politico
                                         FROM sp_enfoque_politico ep, sp_planes pl
                                         WHERE pl.activo AND ep.activo
-                                        AND pl.id = ep.id_plan AND pl.id = ? AND ep.id_entidad = ?  ", [$req->p, $idEntidadFoco]))->first();
+                                        AND pl.id = ep.id_plan AND pl.id = ? AND ep.id_entidad = pl.id_entidad  ", [$req->p]))->first();
 
         return response()->json([
             'data' => $enfoquePolitico,
@@ -80,8 +84,8 @@ class EnfoquePoliticoController extends PlanificacionBaseController
      */
     public function listAtribucionesPilares(Request $req)
     {
-        $atribs = \DB::select("SELECT id, atribucion, id_plan, ids_pilares 
-                                FROM sp_atribuciones_pilares 
+        $atribs = \DB::select("SELECT id, atribucion, id_plan, ids_pilares
+                                FROM sp_atribuciones_pilares
                                 where activo AND id_plan =  ? ",[$req->p]);
         if (count($atribs) > 0)  {
             $pilares = collect(\DB::table('pdes_pilares')->orderBy('cod_p')->get())->groupBy('id');
@@ -164,7 +168,7 @@ class EnfoquePoliticoController extends PlanificacionBaseController
         try{
 
             \DB::table('sp_atribuciones_pilares')->where('id', $req->id)->update(['activo'=>false]);
-            return \Response::json([ 
+            return \Response::json([
                 'error' => false,
                 'estado' => "Success",
                 'msg' => "Se eliminó correctamente."
