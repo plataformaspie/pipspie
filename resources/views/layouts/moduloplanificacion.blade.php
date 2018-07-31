@@ -18,7 +18,7 @@
     <!--link rel="stylesheet" type="text/css" href="sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
 
     @yield('headerIni')
-
+{{-- <link href="{{ asset('sty-home/css/style.css') }}" rel="stylesheet"> --}}
     <!-- Vendor CSS -->
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/magnific/magnific-popup.css">
     <!-- Admin Forms CSS -->

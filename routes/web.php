@@ -306,23 +306,30 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@saveAtribucion');
             Route::post('deleteAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@deleteAtribucion');
 
+            Route::get('getPilaresVinculadosAlPlan', 'ModuloPlanificacion\EnfoquePoliticoController@getPilaresVinculadosAlPlan');  
+
             /********** Diagnostico ******************/
             Route::get('setDiagnostico', 'ModuloPlanificacion\DiagnosticoController@setDiagnostico');
             Route::get('dataSetDiagnostico', 'ModuloPlanificacion\DiagnosticoController@dataSetDiagnostico');
             Route::post('saveDataEdit', 'ModuloPlanificacion\DiagnosticoController@saveDataEdit');
             Route::get('deleteDiagnostico', 'ModuloPlanificacion\DiagnosticoController@deleteDiagnostico');
             Route::post('saveDataNew', 'ModuloPlanificacion\DiagnosticoController@saveDataNew');
+            Route::get('listvariables_lb', 'ModuloPlanificacion\DiagnosticoController@listVariablesConLineaBase');
 
-            /********** Politica Sectorial/institucional ******************/
-            Route::get('getPilaresVinculadosAlPlan', 'ModuloPlanificacion\PoliticaController@getPilaresVinculadosAlPlan');
+
+            /********** Politica Sectorial/institucional ******************/   
             Route::get('listPoliticasPilares', 'ModuloPlanificacion\PoliticaController@listPoliticasPilares');
             Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
             Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
 
-            /********** Planificacion PMRA ******************/
-            Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificacionPMRAController@listaPmraPlan');
-            Route::post('save_pmra', 'ModuloPlanificacion\PlanificacionPMRAController@savePMRA');
-            Route::post('delete_pmra', 'ModuloPlanificacion\PlanificacionPMRAController@deletePMRA');
+            /********** Planificacion 1 PMRA ******************/            
+            Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificaPMRAController@listaPmraPlan');
+            Route::post('save_pmra', 'ModuloPlanificacion\PlanificaPMRAController@savePMRA');
+            Route::post('delete_pmra', 'ModuloPlanificacion\PlanificaPMRAController@deletePMRA');
+            /********** Planificacion 2 programacion ******************/            
+            Route::get('listaprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@listaProgramacion');
+            Route::post('saveprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@saveProgramacion');
+            Route::post('deleteProgramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
 
             /********** Review ******************/
             Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');

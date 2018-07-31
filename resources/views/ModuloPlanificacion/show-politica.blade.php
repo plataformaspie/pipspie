@@ -158,7 +158,7 @@ $(function(){
                     source: dataAdapter,
                     altRows: false,
                     sortable: true,
-                    width: "100%",
+                    width: "70%",
                     filterable: false,
                     filterMode: 'simple',
                     selectionMode: 'singleRow',
