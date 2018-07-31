@@ -32,7 +32,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
                             pdes_resultados r, pdes_acciones a, sp_planes pl
                 WHERE pmra.id_a = a.id AND a.id_resultado = r.id AND r.id_meta = m.id AND m.id_pilar = p.id 
                 AND pmra.id_plan = pl.id AND pmra.activo AND pl.activo 
-                AND pmra.id_plan = ? 
+                AND pmra.id_plan = ? AND codp_nivel_articulacion = 'a'
                 ORDER BY p.cod_p, m.cod_m, r.cod_r, a.cod_a ",[$req->p]);
 
         return response()->json([
@@ -154,59 +154,121 @@ class PlanificaPMRAController extends PlanificacionBaseController
             ]);
         }
     }
+    /*======================================================= PROGRAMACION DE RESULTADO ==============================================*/
 
     /*---------------------------------------------------------------------------------------
     | lista las programaciones de los resultados de un plan $req = { p: id_plan }
-     */
-    
+     */    
     public function listaProgramacion(Request $req)
     {
-        try{
+        $listpmr = collect(\DB::select("
+                SELECT pmra.id, pmra.id_p, p.cod_p, p.nombre as nombre_p, 
+                    p.descripcion as desc_p, p.logo as logo_p,
+                    pmra.id_m, m.cod_m, m.nombre as nombre_m, m.descripcion as desc_m,
+                    pmra.id_r, r.cod_r, r.nombre as nombre_r, r.descripcion as desc_r, r.sector,
+                    -- pmra.id_a, a.cod_a, a.nombre as nombre_a, a.descripcion as desc_a, 
+                    pmra.id_plan, pl.cod_periodo_plan, pa.valor as gestion_ini, pa.valor2 as gestion_fin
+                FROM sp_plan_articulacion_pdes pmra, pdes_pilares p, pdes_metas m, 
+                            pdes_resultados r,  sp_planes pl, sp_parametros pa
+                WHERE pmra.id_r = r.id AND  r.id_meta = m.id AND m.id_pilar = p.id 
+                AND pmra.id_plan = pl.id AND pl.cod_periodo_plan = pa.codigo AND pa.categoria='periodo_plan' 
+                AND pmra.activo AND pl.activo 
+                AND pmra.id_plan = ? AND codp_nivel_articulacion = 'r'
+                ORDER BY p.cod_p, m.cod_m, r.cod_r", [$req->p]));
 
-            \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
-            return \Response::json([ 
-                'estado' => "success",
-                'msg' => "Se eliminó correctamente."
-            ]);
-        }
-        catch (Exception $e) {
-            return \Response::json([
-                'estado' => "error",
-                'msg' => $e->getMessage()
-            ]);
-        }
+
+        $listpmr = $listpmr->map(function($elemPmr ){
+
+            $ariGroup = collect(\DB::select("SELECT ari.id as id_ari, i.id as id_i, i.nombre as nombre_indicador,  
+                            i.variable, p.codigo as unidad, i.linea_base, i.alcance                                          
+                            ,ip.id as id_ip, ip.gestion, ip.dato
+                             FROM sp_arti_resultado_indicador ari, sp_indicadores i, 
+                             sp_parametros p, sp_indicadores_programacion ip
+                            WHERE ari.id_indicador = i.id AND ari.activo AND i.activo 
+                            AND ip.id_arti_indicador = ari.id AND ip.codp_nivel_pmra = 'r'
+                            AND i.idp_unidad = p.id AND ari.id_plan_articulacion_pdes = {$elemPmr->id} 
+                            ORDER BY ari.id, ip.gestion "))->groupBy('id_ari') ;
+            $ariList = [];
+            foreach ($ariGroup as $key => $arr) {
+                $ind = $arr[0];
+                $ari = new \stdClass();
+                $ari->id_arti_resultado_indicador = $ind->id_ari;
+                $ari->id_indicador = $ind->id_i;
+                $ari->nombre_indicador = $ind->nombre_indicador;
+                $ari->variable = $ind->variable;
+                $ari->unidad = $ind->unidad; 
+                $ari->linea_base = $ind->linea_base;
+                $ari->alcance = $ind->alcance;
+                $ari->programacion = $arr->map(function($prog){
+                    return [
+                        'id_ip' => $prog->id_ip,
+                        'gestion' => $prog->gestion,
+                        'dato' => $prog->dato
+                    ];
+                });
+                $ariList[] = $ari;
+
+
+            }
+            $elemPmr->indicadores = $ariGroup->count() > 0 ? $ariList : [];
+
+            return $elemPmr;
+        });        
+
+        return response()->json([
+            'data'=> $listpmr,
+        ]);
     }
 
     /*---------------------------------------------------------------------------------------
     | Insert o Update de una programacion 
-    | $req = { p: id_plan }
+    | $req = { id_plan_articulacion_pdes: id_ppmr,  nombre_indicador_res: ?, idp_unidad: ? ,
+    | linea_base:?, alcance:?, indicadoresProgramacion:[{dato, gestion}, {dato, gestion}], p: id_plan }
      */
     public function saveProgramacion(Request $req)
     {
-        try{
+        $req->nombre = $req->nombre_indicador;
+        $req->codp_tipo_indicador = '';
+        $req->codp_nivel_pmra = 'r';
+        try {
+            $req->id_indicador = $this->saveIndicador($req);
+            $id_arti_indicador = $this->saveArtiResultadoIndicador($req);
+            foreach ($req->indicadoresProgramacion as $pr)
+            {
+                $pr = (object)$pr;
+                $pr->id = null;
+                $pr->id_arti_indicador = $id_arti_indicador;
+                $pr->codp_nivel_pmra = 'r';
+                if($pr->dato)
+                    $this->saveIndicadoresProgramacion($pr);
+            }
 
-            \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
-            return \Response::json([ 
-                'estado' => "success",
-                'msg' => "Se eliminó correctamente."
-            ]);
-        }
-        catch (Exception $e) {
             return \Response::json([
+                'accion' => 'insert',
+                'estado' => "success",
+                'msg'    => "Se guardo con éxito."]);
+        }
+        catch (Exception $e)
+        {
+            return \Response::json(array(
                 'estado' => "error",
-                'msg' => $e->getMessage()
-            ]);
+                'msg'    => $e->getMessage())
+            );
         }
     }
 
     /*---------------------------------------------------------------------------------------
-    | delete $req = {id: id_plan_articulacion_pdes}
+    | delete $req = {id_arti_indicador: id_arti_indicador}
      */
     public function deleteProgramacion(Request $req)
     {
         try{
+            $arti_res_ind = \DB::table('sp_arti_resultado_indicador')->where('id', $req->id_arti_indicador);
+            //TODO eliminar de los sp_indicadores si es que no hay mas asociaciones
+            // $elem_arti_ind = $arti_res_ind->first();
+            // $indicadores = \DB::select('UPDATE sp_indicadores set activo= false WHERE  ')
 
-            \DB::table('sp_plan_articulacion_pdes')->where('id', $req->id)->update(['activo'=>false]);
+            $arti_res_ind->update(['activo'=>false]);
             return \Response::json([ 
                 'estado' => "success",
                 'msg' => "Se eliminó correctamente."
@@ -219,6 +281,112 @@ class PlanificaPMRAController extends PlanificacionBaseController
             ]);
         }
     }
+
+
+
+    private function saveIndicador($ind)
+    {
+        $indi = new \stdClass();
+        $indi->nombre = $ind->nombre;
+        $indi->codp_tipo_indicador = $ind->codp_tipo_indicador;
+        $indi->codp_nivel_pmra = $ind->codp_nivel_pmra;
+        $indi->idp_unidad = $ind->idp_unidad;
+        $indi->linea_base = $ind->linea_base;
+        $indi->alcance = $ind->alcance;
+        $indi->id_diagnostico = $ind->id_diagnostico;
+        $indi->variable = $ind->variable;
+        
+        try{
+            if ($ind->id_indicador) // uPDATE
+            {
+                $indi->id_user_updated = $this->user->id;
+                $indi->updated_at = \Carbon\Carbon::now(-4);
+                \DB::table('sp_indicadores')->where('id', $ind->id_indicador)->update(get_object_vars($indi));
+            }
+            else // INSERT
+            {
+                $indi->activo = true;
+                $indi->id_user =  $this->user->id;
+                $indi->created_at = \Carbon\Carbon::now(-4);
+                return \DB::table('sp_indicadores')->insertGetId(get_object_vars($indi));
+            }
+        }
+        catch (Exception $e)
+        {
+            return response()->json(array(
+                'estado' => "error",
+                'msg'    => $e->getMessage())
+            );
+        }
+    }
+
+    private function saveArtiResultadoIndicador($ari)
+    {
+        $obj = new \stdClass();
+        $obj->id_plan_articulacion_pdes = $ari->id_plan_articulacion_pdes;
+        $obj->id_indicador = $ari->id_indicador;
+        // $obj->linea_base = $ari->linea_base;
+        // $obj->alcance = $ari->alcance;
+        
+        try{
+            if ($ari->id_arti_indicador) // uPDATE
+            {
+                $obj->id_user_updated = $this->user->id;
+                $obj->updated_at = \Carbon\Carbon::now(-4);
+                \DB::table('sp_arti_resultado_indicador')->where('id', $ari->id_arti_indicador)->update(get_object_vars($obj));
+            }
+            else // INSERT
+            {
+                $obj->activo = true;
+                $obj->id_user =  $this->user->id;
+                $obj->created_at = \Carbon\Carbon::now(-4);
+                return \DB::table('sp_arti_resultado_indicador')->insertGetId(get_object_vars($obj));
+            }
+        }
+        catch (Exception $e)
+        {
+            return response()->json(array(
+                'estado' => "error",
+                'msg'    => $e->getMessage())
+            );
+        }   
+    }
+
+    private function saveIndicadoresProgramacion($ip)
+    {
+        $obj = new \stdClass();
+        $obj->gestion = $ip->gestion;
+        $obj->dato = $ip->dato;
+        $obj->id_arti_indicador = $ip->id_arti_indicador;
+        $obj->codp_nivel_pmra = $ip->codp_nivel_pmra;
+        
+        try{
+            if ($ip->id) // uPDATE
+            {
+                $obj->id_user_updated = $this->user->id;
+                $obj->updated_at = \Carbon\Carbon::now(-4);
+                \DB::table('sp_indicadores_programacion')->where('id', $ip->id)->update(get_object_vars($obj));
+            }
+            else // INSERT
+            {
+                // $obj->activo = true;
+                $obj->id_user =  $this->user->id;
+                $obj->created_at = \Carbon\Carbon::now(-4);
+
+                $id = \DB::table('sp_indicadores_programacion')->insertGetId(get_object_vars($obj));
+                return $id;
+            }
+        }
+        catch (Exception $e)
+        {
+            return response()->json(array(
+                'estado' => "error",
+                'msg'    => $e->getMessage())
+            );
+        }   
+    }
+
+    
 
 
 

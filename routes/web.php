@@ -282,6 +282,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveDataEdit', 'ModuloPlanificacion\DiagnosticoController@saveDataEdit');
             Route::get('deleteDiagnostico', 'ModuloPlanificacion\DiagnosticoController@deleteDiagnostico');
             Route::post('saveDataNew', 'ModuloPlanificacion\DiagnosticoController@saveDataNew');
+            Route::get('listvariables_lb', 'ModuloPlanificacion\DiagnosticoController@listVariablesConLineaBase');
 
             /********** Politica Sectorial/institucional ******************/   
             Route::get('listPoliticasPilares', 'ModuloPlanificacion\PoliticaController@listPoliticasPilares');
