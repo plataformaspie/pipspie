@@ -12,12 +12,13 @@
 @section('content')
  
 
+
 <fieldset> 
 <p id="p01"></p> 
           <table class="table table-hover" border="5" >
             <tr>
               <td colspan="3" style="background: #0074e8">
-                <strong><font style="font-family: sans-serif;color: white"><h1>Formulario de Planificación</h1></font></strong>
+                <strong><font style="font-family: sans-serif;color: white"><h1>Formulario Actualizar</h1></font></strong>
               </td>   
             </tr>     
             <tr>
@@ -39,7 +40,8 @@
 </td>
             </tr>          
             <tr>
-              <td>                  
+              <td>
+                  
                   <table border="2" width="100%">
                     <tr>
                       <td style="background: #0074e8">
@@ -58,16 +60,15 @@
                   </table>
                   
                   
-                  <table border="2" >
-                   <font style="font-family: sans-serif;color: white">Programación Anualizada del Indicador de Proceso
-                   </font>
-                   <p>Tipo de Unidad:
-                    <input type="text" name="tipocantidad" id="tipocantidad" maxlength="5" >
-                   </p>
+                  <table border="2" >Programación Anualizada del Indicador de Proceso</font>
+                    <p>Tipo de Unidad:<!--select id="tipocantidad" name="tipocantidad"><option value="0">Seleccione el tipo Unidad</option>
+                      <option value="1">Pieza</option>
+                      <option value="2">Unidad</option>
+                      <option value="3"></option>
+                    </select--><input type="text" name="tipocantidad" id="tipocantidad" maxlength="5" ></p>
                 <tr style="background: #0074e8;">
                   
-                  <td><font color="white">Cantidad de Unidad</font>
-                  </td>
+                  <td><font color="white">Cantidad de Unidad</font> </td>
                   <td><font color="white">2016</font></td>
                   <td><font color="white">2017</font></td>
                   <td><font color="white">2018</font></td>
@@ -166,11 +167,12 @@
             </tr> 
           </table>
         </fieldset>
+ 
+ 
 @endsection
 
 @push('script-head')
-
- <script>
+<script>
   
   
 function sumar(){
@@ -758,4 +760,7 @@ function verificar()
     }    
   }
 </script>
+    
+   
+ 
 @endpush
