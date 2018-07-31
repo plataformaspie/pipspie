@@ -14,7 +14,7 @@ use App\Models\ModuloPdes\Pilares;
 
 class DiagnosticoController extends PlanificacionBaseController
 {
-  
+
     public function showDiagnostico()
     {
         $metricas = Metricas::orderBy('simbolo','asc')->get();
@@ -60,13 +60,14 @@ class DiagnosticoController extends PlanificacionBaseController
 
                                       SELECT d.*, m.simbolo
                                       FROM sp_diagnostico d
+                                      INNER JOIN sp_planes pl ON d.id_plan = pl.id
                                       INNER JOIN sp_metricas m ON d.unidad = m.id
-                                      WHERE d.entidad = ".$idEntidad."
+                                      WHERE d.entidad = pl.id_entidad
                                       AND d.activo = true
                                       ) tab");
         $i=1;
         $datos = array();
-        foreach ($diagnostico as $d) 
+        foreach ($diagnostico as $d)
         {
             $datos[$i] = array(
                       'id' => $d->id,
@@ -142,7 +143,7 @@ class DiagnosticoController extends PlanificacionBaseController
         $idEntidad = $this->getIdEntidadFoco($request);
 
 
-        $periodo = array(2011,2012,2013,2014,2015);   
+        $periodo = array(2011,2012,2013,2014,2015);
         //$this->user= \Auth::user();
 
         try{
@@ -207,7 +208,7 @@ class DiagnosticoController extends PlanificacionBaseController
     }
 
 
- 
+
 
 
 
