@@ -15,6 +15,9 @@ use App\Models\SistemaRemi\Frecuencia;
 use App\Models\SistemaRemi\FuenteTiposRecoleccion;
 use App\Models\SistemaRemi\FuenteTiposCategoriaTematica;
 use App\Models\SistemaRemi\FuenteArchivosRespaldos;
+use App\Models\SistemaRemi\FuenteTiposCobertura;
+use App\Models\ModuloPdes\ProyectoPdes as Proyecto;
+use Excel;
 
 
 
@@ -43,7 +46,7 @@ class FuenteDatosController extends Controller
     foreach ($sql as $mn) {
 
         $submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = ".$mn->id." AND activo = true ORDER BY orden ASC");
-        array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'tipo_menu'=>$mn->tipo_menu,'submenus' => $submenu));
+        array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'tipo_menu'=>$mn->tipo_menu,'class'=>$mn->class,'submenus' => $submenu));
     }
 
 
@@ -66,7 +69,6 @@ class FuenteDatosController extends Controller
 
   public function adminFuenteDatos()
   {
-
     $tipos = TiposMedicion::get();
     $unidades = UnidadesMedidas::where('activo',true)->get();
     $dimensiones = Dimensiones::where('id_variable',4)->get();
@@ -84,21 +86,29 @@ class FuenteDatosController extends Controller
 
   public function apiSetListFuenteDatos(Request $request)
   {
-      $dataFuente = FuenteDatos::join('remi_fuente_datos_responsable as fdr', 'remi_fuente_datos.id', '=', 'fdr.id_fuente')
+      $dataFuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
+                  ->where('remi_fuente_datos.activo', true)
                   ->orderBy('nombre','ASC')
-                  ->select('remi_fuente_datos.id','remi_fuente_datos.codigo','remi_fuente_datos.nombre', 'remi_fuente_datos.acronimo','remi_fuente_datos.tipo','fdr.responsable_nivel_1')
+                  ->select('remi_fuente_datos.*','et.nombre as estado','et.id as id_estado')
                   ->get();
       /*foreach ($dataFuente as $value) {
         $data[$value->id] = $value->nombre;
       }*/
-      return \Response::json(array(
-          'error' => false,
-          'title' => "Success!",
-          'msg' => "Se guardo con exito.",
-          'item' =>$dataFuente)
-      );
+      $this->listFuente = array();
+      foreach ($dataFuente as $item) {
+          $responsable = \DB::select("SELECT string_agg(responsable_nivel_1, ',') as responsable FROM remi_fuente_datos_responsable WHERE id_fuente = ".$item->id." AND activo = true");
+          array_push($this->listFuente, array('id' => $item->id,
+                                              'codigo' => $item->codigo,
+                                              'nombre' => $item->nombre,
+                                              'acronimo' => $item->acronimo,
+                                              'tipo' => $item->tipo,
+                                              'estado' => $item->estado,
+                                              'id_estado'=>$item->id_estado,
+                                              'responsable' => $responsable[0]->responsable));
+      }
+      return \Response::json($this->listFuente);
 
-  }
+   }
 
 
   public function apiSourceOrderbyArray2(Request $request)
@@ -126,7 +136,7 @@ class FuenteDatosController extends Controller
               }
           }
 
-          $orderby = "filtro"; //change this to whatever key you want from the array
+          $orderby = "index"; //change this to whatever key you want from the array
           array_multisort($sortArray[$orderby],SORT_ASC,$orderByAr);
           return \Response::json(array(
               'error' => false,
@@ -178,12 +188,19 @@ class FuenteDatosController extends Controller
             $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->informacion_geoespacial):null;
             $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
 
+            $fuente->cobertura_rraa = $request->cobertura_rraa;
+            $fuente->cobertura_rraa_descripcion = $request->cobertura_rraa_descripcion;
+
+            $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
+            $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
+
             $fuente->numero_total_formulario = $request->numero_total_formulario;
             $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
 
             $fuente->confidencialidad = $request->confidencialidad;
             $fuente->notas_legales = $request->notas_legales;
             $fuente->id_user = $this->user->id;
+            $fuente->estado = 1;
             $fuente->activo = true;
             $fuente->save();
 
@@ -263,9 +280,17 @@ class FuenteDatosController extends Controller
           $fuente->numero_total_formulario = $request->numero_total_formulario;
           $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
 
+
+          $fuente->cobertura_rraa = $request->cobertura_rraa;
+          $fuente->cobertura_rraa_descripcion = $request->cobertura_rraa_descripcion;
+
+          $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
+          $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
+
           $fuente->confidencialidad = $request->confidencialidad;
           $fuente->notas_legales = $request->notas_legales;
           $fuente->id_user_updated = $this->user->id;
+          $fuente->estado =  $request->estado;
 
           $fuente->save();
 
@@ -349,6 +374,7 @@ class FuenteDatosController extends Controller
 
   public function apiUploadArchivoRespaldo(Request $request)
   {
+    //ini_set('max_execution_time', 300);
     $carpeta = "respaldos/";
     $nombreDataBase = "";
     $msgFile = "";
@@ -403,20 +429,65 @@ class FuenteDatosController extends Controller
 
   public function apiDataSetFuente(Request $request)
   {
-      $fuente = FuenteDatos::where('id',$request->id)->get();
+      $fuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
+                          ->where('remi_fuente_datos.id',$request->id)
+                          ->select('remi_fuente_datos.*','et.nombre as estado','et.id as id_estado')
+                          ->get();
       $resposables = FuenteDatosResponsable::where('id_fuente',$request->id)->where('activo', true)->get();
       $archivos = FuenteArchivosRespaldos::where('id_fuente',$request->id)->where('activo', true)->get();
+      $tiposCobertura = FuenteTiposCobertura::where('activo', true)->get();
+
+
+
+      $cobertura = Array();
+      foreach ($tiposCobertura as $item) {
+        $cobertura[$item->id] = $item->nombre;
+      }
+
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
           'msg' => "Se guardo con exito.",
           'fuente' => $fuente,
           'responsables' => $resposables,
+          'cobertura' => $cobertura,
           'archivos' => $archivos)
       );
   }
 
 
+  public function apiRecuperarFuente(Request $request)
+  {
+      $this->user= \Auth::user();
+      $indicador = FuenteDatos::find($request->id_fuente);
+      $indicador->estado = 1;
+      $indicador->id_user_updated = $this->user->id;
+      $indicador->save();
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.")
+      );
+  }
+
+
+  public function apiDeleteFuente(Request $request)
+  {
+      $this->user= \Auth::user();
+      $indicador = FuenteDatos::find($request->id_fuente);
+      $indicador->activo = false;
+      $indicador->id_user_updated = $this->user->id;
+      $indicador->save();
+      return \Response::json(array(
+          'error' => false,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.")
+      );
+  }
+
+
+
+   
 
 
 }

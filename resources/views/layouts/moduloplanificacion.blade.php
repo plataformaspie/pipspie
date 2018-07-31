@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/skin/default_skin/css/theme.css">
 
     <!-- Admin Panels CSS -->
-    <!--link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"-->
+    {{-- <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"> --}}
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/sty-mode-2/assets/img/favicon.ico ">
@@ -190,10 +190,12 @@
                 </header>
                 <!-- End: Sidebar Header -->
 
+                <!-- ID_PLAN ............ -->
+            <input type="hidden" name="id_p_act" id="id_p_act" value="{{ $id_plan }}">
                 <!-- sidebar menu -->
-            <ul class="nav sidebar-menu" id="menuSP">
-                <input type="hidden" name="id_plan" id="id_plan" value="{{ $id_plan }}">
-                <li class="sidebar-label pt20">PDES</li>
+            <ul class="nav sidebar-menu" id="menu-principal-sp">
+
+                <li class="sidebar-label pt20">Planificació-Sectorial</li>
 
             <?php
             $g = 0;
@@ -209,22 +211,21 @@
                   </li>
                   @endif
                     <li>
-                        <a id="G{{ $g }}" class="accordion-toggle sp_tipo_menu" href="#">
+                        <a  class="accordion-toggle grupo" href="#">
                             <span class="glyphicons glyphicons-fire"></span>
                             <span class="sidebar-title"> {{ $m->tipo_menu }}</span>
                             <span class="caret"></span>
                         </a>
-                        <ul class="nav sub-nav">
-
+                        <ul  class="nav sub-nav " >
                             <li id="M{{ $m->id }}" class="">
                                 <?php
                                     $qstring = '';
                                     if($m->tipo_menu <> "Estructuración")
                                         $qstring = '?p=' . $id_plan;
                                 ?>
-                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="sp_menu">
-                                      <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}"> 
-                                      <span>{{ $m->titulo }}</span> 
+                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="menu-item-sp">
+                                      <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">
+                                      <span>{{ $m->titulo }}</span>
                                 </a>
                                 @if( $m->submenus )
                                   <ul class="nav sub-nav">
@@ -237,9 +238,9 @@
                                 @endif
                             </li>
                 @else
-                    <li id="M{{ $m->id }}">                        
-                        <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="sp_menu">
-                          <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">  
+                    <li id="M{{ $m->id }}">
+                        <a href="{{ url($m->url)}}?p={{$id_plan}}"  id="{{ $m->id}}" class="menu-item-sp">
+                          <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">
                           <span>{{ $m->titulo }}</span>
                         </a>
                         @if( $m->submenus )
@@ -255,7 +256,8 @@
                 @endif
             @endforeach
 
-                      </ul>
+                        </ul>
+
                     </li>
 
 
@@ -313,8 +315,39 @@
             <!-- End: Topbar-Dropdown -->
 
             <!-- Start: Topbar -->
-            <header id="topbar">
-                 @yield('title-topbar')
+            <header id="topbar" >
+               {{-- @yield('title-topbar') --}}
+               <div class="row">
+                    <div class="topbar-left ">
+                        <ol class="breadcrumb">
+                            <li class="crumb-active">
+                                <a id="breadcrumb1" href=""></a>
+                            </li>
+                            <li class="crumb-icon">
+                                <a id="breadcrumb2" href="/moduloplanificacion/index">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                </a>
+                            </li>
+                            <li class="crumb-link">
+                                <a id="breadcrumb3" href="/moduloplanificacion/index">Home</a>
+                            </li>
+                            <li id="breadcrumb4" class="crumb-trail"></li>
+                        </ol>
+                    </div>
+                    <div class="topbar-right ">
+                        <div class="ml15 ib va-m" id="toggle_sidemenu_r">
+                            <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
+                                <span class="badge badge-hero badge-danger">3</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-center">
+                        <h4 id="tituloCabecera"></h4>
+                        <h5 id="titulo2Cabecera"></h5>
+                    </div>
+                </div>
             </header>
             <!-- End: Topbar -->
 
@@ -574,103 +607,160 @@
             }
         }
 
+$(function(){
+
 
         globalSP = {
-            urlBase: '/api/moduloplanificacion/',
+            menu:{
+                EstructuraInstitucional:24,
+                AdminPlanes:30,
+                EnfoquePolitico: 25,
+                Diagnostico: 26,
+                PoliticaSectorial: 27,
+                Planificacion:28,
+                GestionDocumental:29,
+                ListaDePlanes:37,
+            },
+            urlApi: '/api/moduloplanificacion/',
+            url: '/moduloplanificacion/',
+            idPlanActivo : $('input[name=id_p_act]').val(),
             planActivo: {},
             usuario: {},
             activarMenu: function(mn){
                 if(mn=='0')  // si es 0 se abren todos los menus
-                    $("#menuSP .sp_tipo_menu").addClass('menu-open');
+                    $("#menu-principal-sp .grupo").addClass('menu-open');
                 else {
-                    $("u li").removeClass('activo');            
-                    $('#M'+mn).addClass('active  activo');
+                    $("#menu-principal-sp  li").removeClass('activo');
+                    $('#M'+mn).addClass('activo');
                     padre = $('#M'+mn).parent().parent();
-                    padre.children('a').addClass('menu-open');                  
+                    padre.find('a').addClass('menu-open');
                 }
             },
-            // generarMenu: function(idplan){
-            //     $.get(this.urlBase +  "getmenu", {'id_plan': idplan}, function(res){
-            //         grupos = _.groupBy(res.menu, function(m){
+            // generarMenu: function(idplan, idMenuActivo){
+            //     $.get(this.urlApi +  "getmenu", {'p': idplan}, function(menus){
+            //         grupos = _.groupBy(menus.data, function(m){
             //             return m.tipo_menu;
             //         });
-
-            //         console.log(grupos);
             //         var html = '<li class="sidebar-label pt20">PDES</li>';
-            //         _.mapObject(grupos, function(val, key){
-            //             html += '<li>';
-            //             html += '<a id="G' + key +' " class="accordion-toggle grupo" href="#">\
-            //                         <span class="glyphicons glyphicons-fire"></span>\
-            //                         <span class="sidebar-title">' +key + ' </span>\
-            //                         <span class="caret"></span>\
-            //                     </a>';
+            //         _.mapObject(grupos, function(menuGrupo, key){
+            //             html += `<li>
+            //                         <a  class="accordion-toggle grupo" href="#">
+            //                             <span class="glyphicons glyphicons-fire"></span>
+            //                             <span class="sidebar-title">${key}</span>
+            //                             <span class="caret"></span>
+            //                         </a>`
 
+
+            //             html += '<ul class="nav sub-nav">';
+            //             _.mapObject(menuGrupo, function(m){
+            //                 html +=`<li id="M${m.id}">
+            //                             <a href="/${m.url}?p=${idplan}"  id="${m.id}" class="menu-item-sp">
+            //                                 <img style="width: 35px; height: 35px; opacity: 0.7; border: 3px none white;" class="img-circle" src="${m.icono}">
+            //                                 <span>${m.titulo}</span>
+            //                              </a>`;
+            //                     // if( m.submenus ) {
+            //                     //     html += '<ul class="nav sub-nav"';
+            //                     //     m.submenus.forEach(function(sm){
+            //                     //         html += '<li id="sm-' + sm.id +'" class="">\
+            //                     //         <a href="' + sm.url+'">' + sm.titulo +'</a>\
+            //                     //       </li>';
+            //                     //     })
+
+            //                     //     html += '</ul>';
+            //                     // }
+            //                  html +=  '</li>';
+            //             } );
+            //             html += '</ul>';
             //             html += '</li>' ;
-
-            //                     // TODO completar menu para que se llame de manera dinamica
             //         });
-            //         $("#menuSP").append(html)
+            //         $("#menu-principal-sp").html(html);
+
+            //         if(globalSP.coreInit){
+            //                 // var defaults = {
+            //                 //             sbl: "sb-l-o", // sidebar left open onload
+            //                 //             sbr: "sb-r-c", // sidebar right closed onload
+
+            //                 //             collapse: "sb-l-m", // sidebar left collapse style
+            //                 //             siblingRope: true
+            //                 //             // Setting this true will reopen the left sidebar
+            //                 //             // when the right sidebar is closed
+            //                 //          };
+            //                 //          var options = $.extend({}, defaults, options);
+            //              var opt =  {
+            //                             sbl: "sb-l-o", // sidebar left open onload
+            //                             sbr: "",
+            //                             collapse: "", // sidebar left collapse style
+
+            //                          };
+            //             Core.init2(opt);
+            //             globalSP.coreInit = 1;
+            //         }
+            //         else{
+            //             Core.init2();
+            //             globalSP.coreInit = 1;
+            //         }
+
+            //         globalSP.activarMenu(idMenuActivo);
             //     })
             // },
             configuraMenu: function(plan){
                 etapas = plan.etapas_completadas.split('|').filter(function(val){
                     return val != '';
                 });
-                $("#menuSP i").remove();
-                var icon = '<i class="fa fa-tags pull-right icon-primary" style="font-size: 10px; "></i>';
+                $("#menu-principal-sp i").remove();
+                var icon = '<i class="fa fa-tags pull-right text-success" style="font-size: 10px; "></i>';
                 etapas.forEach(function(idmenu){
                     $("#" + idmenu).append(icon);
                 });
 
                 // coloca el titulo del menu Politica Sectorial
-                (plan.plan == 'PSDI') ? $("#27 span").html('Política Sectorial') 
-                                    :  $("#27 span").html('Política Institucional'); 
+                (plan.cod_tipo_plan == 'PSDI') ? $("#27 span").html('Política Sectorial')
+                                    :  $("#27 span").html('Política Institucional');
 
-            }, 
-            cargarGlobales: function(){
-                $.get(globalSP.urlBase + 'getuser', function(res){
+            },
+            cargarGlobales: function(fn){
+                $.get(globalSP.urlApi + 'getuser', function(res){
                     globalSP.usuario = res.data;
                     globalSP.setTitulo1();
-                });
-                $.get(globalSP.urlBase + 'getplan', { 'p' : $('input[name=id_plan]').val() }, function(res){
-                    globalSP.planActivo = res.data;
-                    if(globalSP.planActivo == ''){
-                        globalSP.setTitulo2('');
-                    }
-                    else{
-                        globalSP.setTitulo2();
-                        globalSP.configuraMenu( globalSP.planActivo)
-                    }
 
+                    $.get(globalSP.urlApi + 'getplan', { 'p' : globalSP.idPlanActivo },
+                    function(res){
+                        globalSP.planActivo = res.data;
+                        if(globalSP.planActivo == ''){
+                            globalSP.setTitulo2('')
+                        }
+                        else{
+                            globalSP.setTitulo2();
+                            globalSP.configuraMenu( globalSP.planActivo)
+                        }
 
-                    
+                        if(fn){
+                            fn();
+                        }
+                    });
                 });
-            },
-            setGlobalPlanActivo : function(plan)
-            {
-                $('input[name=id_plan]').val(plan.id) ;
-                globalSP.planActivo = {
-                    id : plan.id,
-                    sigla_entidad : plan.sigla_entidad,
-                    cod_tipo_plan : plan.cod_tipo_plan,
-                    gestion_inicio : plan.gestion_inicio,
-                    gestion_fin : plan.gestion_fin
-                }
+
             },
             setTitulo1: function(titulo)
             {
-                var titulo_ = (titulo)? titulo : globalSP.usuario.institucion.nombre;
+                var titulo_ = (typeof titulo =='string')? titulo : globalSP.usuario.institucion.nombre;
                 $("#tituloCabecera").html(titulo_);
             },
-            setTitulo2: function(op)
-            {
-                titulo = (op == '') ? '' : 'Plan cargado: ' + globalSP.planActivo.sigla_entidad + ' - ' + globalSP.planActivo.cod_tipo_plan + ' - ' + globalSP.planActivo.gestion_inicio + '-' + globalSP.planActivo.gestion_fin;
+            setTitulo2: function(titulo2){
+                titulo = (typeof titulo2 =='string') ?
+                            titulo2 : `Plan cargado: ${globalSP.planActivo.sigla_entidad} -  ${globalSP.planActivo.cod_tipo_plan} - ${globalSP.planActivo.gestion_inicio} - ${globalSP.planActivo.gestion_fin} (${globalSP.planActivo.id})`;
                 $("#titulo2Cabecera").html(titulo);
+            },
+            setBreadcrumb: function(bread1, bread4){
+                $("#breadcrumb1").html(bread1);
+                $("#breadcrumb4").html(bread4);
             }
-
 
         }
 
+
+
+})
 
     </script>
     <!-- END: PAGE SCRIPTS -->

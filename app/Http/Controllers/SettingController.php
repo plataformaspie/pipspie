@@ -94,4 +94,15 @@ class SettingController extends Controller
             'msg' => "Se guardo con exito.")
         );
     }
+
+    public function apiValidateSession(Request $request)
+    {
+        $this->user= \Auth::user();
+        $this->user->id;
+        return \Response::json(array(
+            'error' => false,
+            'title' => "Success!",
+            'msg' => "Se guardo con exito.")
+        );
+    }
 }

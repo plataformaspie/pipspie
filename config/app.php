@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/La_Paz',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,7 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         //Collective\Html\HtmlServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class, 
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 

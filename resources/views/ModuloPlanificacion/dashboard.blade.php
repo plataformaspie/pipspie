@@ -174,10 +174,10 @@
 
         if(ctxMn.menup_estado == 1) //si esta abierto el menu al presionar que se cierre
             ctxMn.abrirCerrarMenu();
-
-        $.get(elem_menu.ruta, function(view){
-            $("#contenido").html(view);
-        })
+        $("#contenido").load(elem_menu.ruta );
+        // $.get(elem_menu.ruta, function(view){
+        //     $("#contenido").html(view);
+        // })
 
     }); 
 })();

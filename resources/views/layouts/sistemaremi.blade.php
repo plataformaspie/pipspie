@@ -3,7 +3,7 @@
    This is a starter template page. Use this page to start your new project from
    scratch. This page gets rid of all links and provides the needed markup only.
    -->
-<html lang="en">
+<html lang="lang="{{ app()->getLocale() }}"">
 
 <head>
     <meta charset="utf-8">
@@ -14,6 +14,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_remi.png">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>::RIME::</title>
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ asset('sty-mode-3/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -68,44 +69,46 @@
                 <!-- Search input and Toggle icon -->
                 <ul class="nav navbar-top-links navbar-left hidden-xs">
                     <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
-                    <li>
+                    <!--li>
                         <form method="post" action="/sistemaremi/setIndicadoresSearch" role="search" class="app-search hidden-xs">
                           {{ csrf_field() }}
                             <input type="text" name="buscar" placeholder="Buscar Indicador..." class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>
-                    </li>
+                    </li-->
                 </ul>
                 <!-- This is the message dropdown -->
                 <ul class="nav navbar-top-links navbar-right pull-right">
-                    <?php /*
+
                     <li class="dropdown">
                         <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
-                            <i class="icon-envelope"></i>
+                            <i class="ti-help-alt"></i> Ayuda
                             <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
                         </a>
                         <!-- .dropdown-messages -->
                         <ul class="dropdown-menu mailbox animated bounceInDown">
                             <li>
-                                <div class="drop-title">You have 4 new messages</div>
+                                <div class="drop-title">Recursos Ayuda</div>
                             </li>
                             <li>
                                 <div class="message-center">
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                                    <a href="/recursos/Guia_llenado_SistemaRIME_FuenteDatos_V1.pdf" target="_blank">
+                                        <div class="user-img"><i class="fa fa-file-pdf-o img-circle"  style="font-size: 30px;"></i> <span class="profile-status online pull-right"></span> </div>
                                         <div class="mail-contnet">
-                                            <h5>Pavan kumar</h5>
-                                            <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
+                                            <h6><b style="font-size: 12px;">Guía llenado sistema RIME</b></h6>
+                                            <span class="mail-desc">Fecha: 20 Julio 2018</span> <span class="time"> 1.39 MB</span>
                                         </div>
                                     </a>
                                 </div>
                             </li>
-                            <li>
+                            <!--li>
                                 <a class="text-center" href="javascript:void(0);"> <strong>See all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                            </li>
+                            </li-->
                         </ul>
                         <!-- /.dropdown-messages -->
                     </li>
+
+                    <?php /*
                     <!-- .Task dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
@@ -184,17 +187,42 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
+
+
                     <li class="sidebar-search hidden-sm hidden-md hidden-lg">
                         <!-- input-group -->
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Buscar Indicadorssss...">
+                            <input type="text" class="form-control" placeholder="Buscar...">
                             <span class="input-group-btn">
                         <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
                         </span>
                         </div>
                         <!-- /input-group -->
                     </li>
-                    <li>
+
+
+                    @foreach($menus as $m)
+                      <li>
+                        @if( $m["submenus"] )
+                          <a id="mp-{{ $m["id_html"] }}"  href="{{ url( $m["url"] ) }}" class="waves-effect">
+                            <i class="linea-icon {{ $m["class"] }} fa-fw"  data-icon="{{ $m["icono"] }}" style="font-size: 25px"></i>
+                            <span class="hide-menu"> {{ $m["titulo"] }} <span class="fa arrow"></span> </span>
+                          </a>
+                          <ul class="nav nav-second-level">
+                            @foreach($m["submenus"] as $sm)
+                              <li id="{{ $sm->id }}" ><a href="{{ $sm->url }}">{{ $sm->titulo }}</a></li>
+                            @endforeach
+                          </ul>
+                        @else
+                          <a id="mp-{{ $m["id_html"] }}"  href="{{ url( $m["url"] ) }}" class="waves-effect">
+                            <i class="linea-icon {{ $m["class"] }} fa-fw" data-icon="{{ $m["icono"] }}" style="font-size: 25px"></i>
+                            <span class="hide-menu"> {{ $m["titulo"] }} <span class="fa arrow"></span> </span>
+                          </a>
+                        @endif
+                      </li>
+                    @endforeach
+
+                    <!--li>
                         <a href="{{ url('/sistemaremi/index') }}" class="waves-effect">
                             <i class="linea-icon linea-basic fa-fw" data-icon="v" style="font-size: 25px"></i>
                             <span class="hide-menu"> Inicio <span class="fa arrow"></span> </span>
@@ -211,17 +239,17 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{{ url('/sistemaremi/setIndicadores') }}" class="waves-effect">
-                          <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe000; " style="font-size: 25px"></i>
-                          <span class="hide-menu"> Fuente Datos(en desarrollo) <span class="fa arrow"></span> </span>
+                        <a href="{{ url('/sistemaremi/setFuenteDatos') }}" class="waves-effect">
+                          <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe000;" style="font-size: 25px"></i>
+                          <span class="hide-menu"> Fuente Datos <span class="fa arrow"></span> </span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li> <a href="{{ url('/sistemarime/setFuenteDatos') }}">Detalle de Fuente</a> </li>
                             <li> <a href="{{ url('/sistemarime/adminFuenteDatos') }}">Administrar Fuente</a> </li>
                         </ul>
-                    </li>
+                    </li-->
 
-                    <li>
+                    <!--li>
                         <a href="#4" class="waves-effect">
                           <i  class="linea-icon linea-basic fa-fw" data-icon="&#xe005;" style="font-size: 25px"></i>
                           <span class="hide-menu"> Otros <span class="fa arrow"></span> </span>
@@ -230,7 +258,7 @@
                             <li> <a href="javascript:win_fuente()"><i  class="fa fa-external-link"></i> Fuente de datos (F8)</a> </li>
                             <li> <a href="javascript:win_pdes()"><i  class="fa fa-list-alt"></i> Codigos PDES (F9)</a> </li>
                         </ul>
-                    </li>
+                    </li-->
 
                 </ul>
             </div>
