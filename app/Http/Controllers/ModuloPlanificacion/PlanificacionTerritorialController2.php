@@ -5,25 +5,30 @@ namespace App\Http\Controllers\ModuloPlanificacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class PlanificacionTerritorialController extends PlanificacionBaseController
+class PlanificacionTerritorialController2 extends PlanificacionBaseController
 {
 
-  public function showPlanificacionTerritorial()
+  public function showPlanificacionTerritorialactualizador()
   {
-    return view('ModuloPlanificacion.show-planificacion-territorial');
+    return view('ModuloPlanificacion.show-planificacion-territorial-actualizar');
   }
-  public function listaEtas()
+  public function listaMatricesEditar()
   {
-  	$etas = \DB::select("SELECT * from sp_pt_eta" );
-  	return response()->json([
-  		'status'=>'ok',
-  		'mensaje'=>'Se cargo etas',
-  		'etas'=>$etas
-  	]);
+    $matrices = \DB::select("select m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.descripcion_accion 
+from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_matrices m
+where d.id_departamento=p.id_departamento and d.id_departamento=mu.id_departamento and d.id_departamento=m.id_departamento 
+and p.id_departamento=mu.id_departamento and p.id_departamento=m.id_departamento and m.id_departamento=mu.id_departamento
+and p.id_provincia=mu.id_provincia and p.id_provincia=m.id_provincia and m.id_provincia=mu.id_provincia
+and mu.id_municipio=m.id_municipio " );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se Cargo la matriz',
+      'matrices'=>$matrices
+    ]);
   }
-  public function listaDepartamentos()
+  public function listaDepartamentosEditar()
   {
-  	$departamentos = \DB::select('SELECT * from sp_pt_departamentos');
+  	$departamentos = \DB::select('select * from sp_pt_departamentos');
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se cargo departamentos',
@@ -31,43 +36,69 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   	]);
   }
 
-  public function listaProvincias($iddepto)
+  public function listaProvinciasEditar($iddepto)
   {
-  	$provs = \DB::select("SELECT * from sp_pt_provincias WHERE id_departamento = {$iddepto}" );
+  	$provincias = \DB::select("select * from sp_pt_provincias where id_departamento={$iddepto}" );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se cargo provincias',
-  		'provincias'=>$provs
+  		'provincias'=>$provincias
   	]);
   }
-  public function listaMunicipios($iddepto,$idprov)
+  public function listaMunicipiosMatrices($iddepto,$idprov)
   {
-  	$mun = \DB::select("SELECT * from sp_pt_municipios WHERE id_departamento = {$iddepto} and id_provincia = {$idprov}" );
+  	$mun = \DB::select("select mu.id_municipio,mu.descripcion_municipio 
+from sp_pt_municipios mu,sp_pt_matrices m  
+where m.id_municipio=mu.id_municipio and m.id_departamento=mu.id_Departamento and mu.id_provincia=m.id_provincia and m.id_departamento = {$iddepto} and m.id_provincia = {$idprov}
+group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se cargo municipios',
   		'municipios'=>$mun
   	]);
   }
-   public function listaGastos1()
+  public function listaGastosMatrices($iddepto,$idprov,$idmun)
   {
-  	$gas = \DB::select("select id_programa,descripcion_gasto from sp_pt_gad where actividad='0'" );
+  	$gas = \DB::select("select id_programa,descripcion_programa from sp_pt_matrices where id_departamento={$iddepto} and id_provincia={$idprov} and id_municipio={$idmun} group by id_programa,descripcion_programa order by id_programa" );
+    //
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se Cargo Gastos',
   		'gastos'=>$gas
   	]);
   }
-  public function listaGastos2()
+   public function listaAccionesMatrices($iddepto,$idprov,$idmun,$idgas)
   {
-  	$gas = \DB::select("select distinct(descripcion_gasto),codigo from sp_pt_gam  order by codigo asc" );
+  	$acciones = \DB::select("select id_programa,accion_eta from sp_pt_matrices where id_departamento={$iddepto} and id_provincia={$idprov} and id_municipio={$idmun} and id_programa={$idgas} group by id_programa,accion_eta" );
   	return response()->json([
   		'status'=>'ok',
-  		'mensaje'=>'Se Cargo Gastos',
-  		'gastos'=>$gas
+  		'mensaje'=>'Se Cargaron las Acciones',
+  		'acciones'=>$acciones
   	]);
   }
-  public function listaAcciones($idgasto)
+  
+  public function listaRegistroMatrices()
+  {
+    $registros = \DB::select("select  ROW_NUMBER() OVER (ORDER BY descripcion_departamento) as no,descripcion_departamento,descripcion_provincia,descripcion_municipio,count(id_programa) as registros1
+ from vw_matriz 
+ group by descripcion_departamento,descripcion_provincia,descripcion_municipio " );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se Cargo los registros',
+      'registros'=>$registros
+    ]);
+  }
+  public function export() 
+{
+  $datedoc=date("d/m/Y H:i:s");
+    //return Excel::download(new UserExport,'hol.xlsx');
+}
+
+
+
+ 
+
+ /* public function listaAcciones($idgasto)
   {
   	$acciones = \DB::select("select id_programa,descripcion_gasto from sp_pt_gad where actividad<>'0' and id_programa={$idgasto}" );
   	return response()->json([
@@ -204,17 +235,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
 
 
 
-  }
-/*
-class StudInsertController extends Controller {
-     
-   public function insert(Request $request){
-      $name = $request->input('stud_name');
-      DB::insert('insert into student (name) values(?)',[$name]);
-      echo "Record inserted successfully.<br/>";
-      echo '<a href = "/insert">Click Here</a> to go back.';
-   }
-}*/
+  }*/
 
     
   
