@@ -223,14 +223,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
             Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
-
-            Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
-
-            Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
-                return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
-            });
-          
-            // Territorial asignacion ----------------------------------------
+              // Territorial asignacion ----------------------------------------
 
               Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
               Route::get('listarEtas', 'ModuloPlanificacion\PlanificacionTerritorialController@listaEtas');
@@ -266,6 +259,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listarDepartamentosEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaDepartamentosEditar');
               Route::get('listarProvinciasEditar/{iddepto}', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaProvinciasEditar');
               //---------------------------------------- finnnn Territorial ----------------------------------------
+              Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
+                  return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
+              });
         }
     );
     Route::group(
