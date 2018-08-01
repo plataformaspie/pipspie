@@ -257,7 +257,7 @@ $(function(){
             // $.get(globalSP.urlApi + 'getmenu', {p :rowsel.id}, function(res){
                 // globalSP.generarMenu(rowsel.id, res.data);
                 // globalSP.configuraMenu(rowsel); 
-                window.location = globalSP.url + 'showPlanesInstitucion?p=' + rowsel.id ; 
+                window.location = globalSP.url + 'showEnfoque?p=' + rowsel.id ; 
             // })
              
 

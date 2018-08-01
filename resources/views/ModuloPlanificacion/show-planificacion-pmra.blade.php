@@ -25,7 +25,7 @@
     padding: 3px 15px 2px;
     position: relative;
 }
-/*.sp_tool{
+/*.sp_tooltip{
     z-index: 999999999 !important;
 }
 .flotTip { z-index: 9999 !important; }*/
@@ -104,7 +104,7 @@
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title ">
                             <div>
-                                <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel">Programación del Resultado</span><span id="sp_est_prog" class="ml5 badge bg-dark dark"></span>                                 
+                                <i class="glyphicon glyphicon-tasks"></i> <span class="sp_titulo_panel"> Programación del Resultado</span><span id="sp_est_prog" class="ml5 badge bg-dark dark"></span>                                 
                                 <span class="pull-right">
                                     {{-- <button id="prog_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4" data-toggle="tooltip" title=""><i class="fa fa-plus-circle text-white"></i> Agregar </button> --}}
                                 </span>
@@ -576,7 +576,7 @@ $(function(){
                 });
         },
         estadistics: function(){
-            $("#sp_est_pmra").html( ctxpmra.source.localdata.length);
+            $("#sp_est_pmra").html('Total de acciones ' + ctxpmra.source.localdata.length);
             var pils = _.groupBy(ctxpmra.source.localdata, function(elem){
                 return elem.cod_p;
             });
@@ -590,7 +590,7 @@ $(function(){
                 html += `<div class="panel-body"> 
                                 <div class="col-sm-3">
                                     <img width="50" class=""  src="/img/${pilar.logo_p}"/>
-                                    <span class="badge badge-hero bg-system dark">${elem.length}</span> 
+                                    <span class="badge badge-hero bg-system dark" data-toggle="tooltip" data-container="body" data-html="true" title="N° de acciones ${elem.length}">${elem.length}</span> 
                                 </div> 
                                 <div class="col-sm-9"><span><b>${pilar.nombre_p}</b>- ${pilar.desc_p}</span>  </div>
                             </div>`;               
@@ -632,8 +632,7 @@ $(function(){
                         { name: 'cod_periodo_plan', type: 'string' },
                         { name: 'gestion_ini', type: 'string' },
                         { name: 'gestion_fin', type: 'string' },
-                        { name: 'indicadores', type: 'object' },
-                        
+                        { name: 'indicadores', type: 'object' },                        
                     ],
                     id: 'id',
                 };
@@ -652,25 +651,20 @@ $(function(){
                     filterMode: 'simple',
                     selectionMode: 'singleRow',
                     localization: getLocalization('es'),
-                    columns: [
-                        // { text: 'Pilar',  dataField: 'cod_p',align:'center',
-                        //         cellsrenderer: function(row, column, value, rowData){
-                        //             return `<div class="col-sm-4"> <img width="30" class="img-circle"  src="/img/${rowData.logo_p}"/> </div> <div class="col-sm-8"><b>  ${rowData.cod_p}</b> </div>`
-                        //     } 
-                        // },                        
-                        { text: '-', width: 60, align:'center',  cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                    columns: [                       
+                        { text: '-', width: 50, align:'center',  cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<img width="30" class="img-circle"  src="/img/${rowData.logo_p}" data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}" /> `
                             } 
                         },
-                        { text: 'Pilar ', dataField: 'cod_p', align:'center', cellsalign: 'center',  cellsrenderer: function(row, column, value, rowData){
+                        { text: '<span title="Pilares">P</span>', width: 50, align:'center', cellsalign: 'center',  cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}">${rowData.cod_p}</span>`;
                             } 
                         },
-                        { text: 'Meta ', align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                        { text: '<span title="Metas">M</span>', width: 50,  align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_m}</b> - ${rowData.desc_m}">${rowData.cod_m}</span>`
                             } 
                         },
-                        { text: 'Resultado ',  dataField: 'cod_r', cellsalign: 'center', align:'center', cellsrenderer: function(row, column, value, rowData){
+                        { text: '<span title="Resultados">R</span>', width: 50,  cellsalign: 'center', align:'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_r}</b> - ${rowData.desc_r}">${rowData.cod_r}</span>`
                             } 
                         },
@@ -678,7 +672,7 @@ $(function(){
                                 return `<a href="javascript:void(0)"  class="m-l-10 m-r-10 m-t-10 sel_add" title="Agregar indicador y programación dentro en la articulación de resultado " ><i class="fa fa-plus-circle fa-2x text-success "></i></a>`;
                             }
                         }, 
-                        { text: 'Indicadores de resultado y su Programación ' + ( (ctxprog.source.localdata.length>0) ? ` para ${ctxprog.source.localdata[0].gestion_ini} -  ${ctxprog.source.localdata[0].gestion_fin} ` : '' ),   width:'65%', align:'center', 
+                        { text: 'Indicadores de resultado y su Programación ' + ( (ctxprog.source.localdata.length>0) ? ` para ${ctxprog.source.localdata[0].gestion_ini} -  ${ctxprog.source.localdata[0].gestion_fin} ` : '' ),    align:'center', 
                             cellsrenderer: function(row, column, value, rowData){
                                 html = '';
                                 var headGestiones = '';
@@ -686,18 +680,19 @@ $(function(){
                                     headGestiones += `<th>${i}</th>`;
 
                                 if(rowData.indicadores.length>0){ 
-                                    var html = `<table class="table table-bordered table-condensed ">
+                                    var html = `<table class="table table-bordered table-condensed fs11">
                                                     <thead><tr class="success"> <th>Indicador de Res.</th> <th>Variable</th> <th>Unidad</th> <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
                                                     <tbody>`;
 
                                     rowData.indicadores.forEach(function(ind){
-                                        iprow = '';
-                                        ind.programacion.forEach(function(ip){
-                                            iprow += `<td>${ip.dato}</td>`;
+                                        var prog_row = '';
+                                        _.sortBy(ind.programacion, 'gestion').forEach(function(ip){
+                                            var valor = ip.dato || '';
+                                            prog_row += `<td>${valor}</td>`;
                                         });
 
                                         html += `<tr>
-                                                    <td>${ind.nombre_indicador}</td> <td>${ind.variable}</td> <td>${ind.unidad}</td> <td>${ind.linea_base}</td> <td>${ind.alcance}</td> ${iprow} <td><a href="javascript:void(0)"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle text-danger "></i></a></td>
+                                                    <td>${ind.nombre_indicador}</td> <td>${ind.variable}</td> <td>${ind.unidad}</td> <td>${ind.linea_base}</td> <td>${ind.alcance}</td> ${prog_row} <td><a href="javascript:void(0)" id_arti_resultado_indicador="${ind.id_arti_resultado_indicador}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
                                                 </tr>`;
                                     });
 
@@ -719,10 +714,7 @@ $(function(){
                 ctxprog.source.localdata = resp.data;
                 ctxprog.dataTable.jqxDataTable("updateBoundData");
                 ctxprog.estadistics();
-                 // $('[data-toggle="tooltip"]').tooltip();  
-                  // $(".sp_res").tooltip({container: "#planificacion_pmra"});  
-                // $(".sp_res").data
-            })   
+            }) ; 
         },
         showModal : function(){
             $(".state-error").removeClass("state-error")
@@ -797,17 +789,6 @@ $(function(){
             //     swal("Seleccione el registro para modificar.");
             // }
         },
-        eliminar: function(){
-            // var rowSelected = ctxprog.dataTable.jqxDataTable('getSelection');
-            // if(rowSelected.length > 0)
-            // {
-            //     var rowSel = rowSelected[0];
-            //     ctxprog.delete(rowSel.id);             
-            // }
-            // else{
-            //     swal("Seleccione el registro que desea eliminar.");
-            // }
-        },
         validateRules: function(){
             var reglasVal = {
                     errorClass: "state-error",
@@ -865,17 +846,20 @@ $(function(){
                 $.magnificPopup.close();  
             });             
         },
-        delete: function(id){
+        /* llama a la ruta para eliminar el id_arti_resultado_indicador*/
+        delete: function(id_ari){
+            var rowSel = ctxprog.dataTable.jqxDataTable('getSelection')[0];
+            console.log(rowSel)
             swal({
-                  title: `Está seguro de eliminar la articulación PDES del plan?`,
-                  text: "No podrá recuperar este registro!",
+                  title: `Está seguro de eliminar el indicador del resultado: ${rowSel.cod_p} . ${rowSel.cod_m} . ${rowSel.cod_r}?`,
+                  text: `No podrá recuperar este registro!`,
                   type: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#DD6B55",
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.post(globalSP.urlApi + 'delete_pmra', {'id': id, _token : $('input[name=_token]').val(), }, function(res){
+                    $.post(globalSP.urlApi + 'deleteprogramacion', {'id_ari': id_ari, _token : $('input[name=_token]').val(), }, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -911,7 +895,7 @@ $(function(){
                                 <div class="">
                                     <img width="50" class="" data-toggle="tooltip" data-container="body" data-html="true" title="<b>${pilar.nombre_p}</b> - ${pilar.desc_p}" src="/img/${pilar.logo_p}"/>
                                     <span class="badge badge-hero  bg-system dark" data-toggle="tooltip" data-container="body" data-html="true" title="N° de resultados asociados ${elem.length}">${elem.length}</span> 
-                                    <span class="badge badge-hero bg-primary dark" style="  top: -12px; margin-left: 20px;" data-toggle="tooltip" data-container="body" data-html="true" title="N° de indicadores ${elem.length}">${elem.length}</span> 
+                                    <!-- <span class="badge badge-hero bg-primary dark" style="  top: -12px; margin-left: 20px;" data-toggle="tooltip" data-container="body" data-html="true" title="N° de indicadores ${elem.length}">${elem.length}</span>  -->
                                 </div> 
                             </div>`;               
             });
@@ -1098,7 +1082,8 @@ $(function(){
             });
 
             $("#planificacion_prog").on('click', '.sel_delete', function(){
-                ctxprog.eliminar()
+                var id_ari = $(this).attr("id_arti_resultado_indicador");
+                ctxprog.delete(id_ari);
             });
 
             // $("#form_prog .sp_save").click(function(){
@@ -1117,12 +1102,9 @@ $(function(){
     globalSP.activarMenu(globalSP.menu.Planificacion);
     globalSP.cargarGlobales();
     globalSP.setBreadcrumb('Planificación', 'Planificación');
-    planif_submenu_activo(2);
+    planif_submenu_activo(1);
 
 
-
-
- 
 })
 
 
