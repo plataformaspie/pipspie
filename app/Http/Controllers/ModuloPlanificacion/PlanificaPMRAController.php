@@ -239,8 +239,8 @@ class PlanificaPMRAController extends PlanificacionBaseController
                 $pr->id = null;
                 $pr->id_arti_indicador = $id_arti_indicador;
                 $pr->codp_nivel_pmra = 'r';
-                if($pr->dato)
-                    $this->saveIndicadoresProgramacion($pr);
+                // if($pr->dato)
+                $this->saveIndicadoresProgramacion($pr);
             }
 
             return \Response::json([
@@ -258,16 +258,17 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
     /*---------------------------------------------------------------------------------------
-    | delete $req = {id_arti_indicador: id_arti_indicador}
+    | delete $req = {id_ari: id_arti_resultado_indicador}
      */
     public function deleteProgramacion(Request $req)
     {
         try{
-            $arti_res_ind = \DB::table('sp_arti_resultado_indicador')->where('id', $req->id_arti_indicador);
-            //TODO eliminar de los sp_indicadores si es que no hay mas asociaciones
-            // $elem_arti_ind = $arti_res_ind->first();
-            // $indicadores = \DB::select('UPDATE sp_indicadores set activo= false WHERE  ')
+            $arti_res_ind = \DB::table('sp_arti_resultado_indicador')->where('id', $req->id_ari);
 
+            /* inactiva el indicador asociado*/
+            \DB::table('sp_indicadores')->where('id', $arti_res_ind->first()->id_indicador)->update(['activo'=>false]);
+
+            /* inactiva el arti_resultado_indicador */
             $arti_res_ind->update(['activo'=>false]);
             return \Response::json([ 
                 'estado' => "success",

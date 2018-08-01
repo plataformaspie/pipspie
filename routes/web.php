@@ -329,7 +329,7 @@ Route::group(['middleware' => 'auth'],function(){
             /********** Planificacion 2 programacion ******************/            
             Route::get('listaprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@listaProgramacion');
             Route::post('saveprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@saveProgramacion');
-            Route::post('deleteProgramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
+            Route::post('deleteprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
 
             /********** Review ******************/
             Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');
