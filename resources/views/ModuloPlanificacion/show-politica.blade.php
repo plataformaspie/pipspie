@@ -414,8 +414,7 @@ $(function(){
     $(".sp_cancelar").click(function(){
         $.magnificPopup.close();
     });
-  
- 
+
 })
 
 

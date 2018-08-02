@@ -13,7 +13,55 @@ class PlanificaPMRAController extends PlanificacionBaseController
         return view('ModuloPlanificacion.show-planificacion-pmra');
     }
 
- 
+    /*
+    |   POST: Para editar en los campos de tablas, llega un objeto con la especificacion de la tabla a modificar , el campo, y ekl valor
+    |   estos parametros vienen codificados para que no sea visible para un usuario los nombres de tablas ni columnas
+    | $req = { codtc : cod_tabla_columna, valor: valor, id: id_A_modificar }
+     */
+    public function modifyCampo(Request $req)
+    {
+        /*  Codificacion de la stablas y campos
+            'ip-d': { sp_indicadores_prohgramacion  dato },
+            'i-n': { sp_indicadores  nombre},
+            'i-a': {sp_indicadores alcance},          
+        */
+        $cnf = [
+            'ip_d' => (object)[ 'tabla'=>'sp_indicadores_programacion', 'col'=>'dato'],
+            'i_n' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'nombre'],
+            'i_a' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'alcance'],
+        ];
+
+
+
+        $tabla = $cnf[$req->codtc]->tabla;
+        $col = $cnf[$req->codtc]->col;
+        $val = $req->valor;
+
+        $obj = new \stdClass();
+        $obj->id = $req->id;
+        $obj->$col = $val;
+        $obj->id_user_updated = $this->user->id;
+        $obj->updated_at = \Carbon\Carbon::now(-4);
+
+        if($tabla == 'sp_indicadores')
+        {
+            \DB::table('sp_indicadores')->where('id', $obj->id)->update(get_object_vars($obj));
+        }
+        if($tabla == 'sp_indicadores_programacion')
+        {
+            \DB::table('sp_indicadores_programacion')->where('id', $obj->id)->update(get_object_vars($obj));
+        }
+
+
+        return \Response::json([
+            'accion' => 'update',
+            'estado' => "success",
+            'msg'    => "Se guardo con éxito.",
+            'obj'   => $obj]);
+
+    }
+
+
 
     /*-----------------------------------------------------------------------------------------------------------
     |  Obtiene una lista de las acciones asociadas a un plan
@@ -41,7 +89,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
     /*-------------------------------------------------------------------------------------------------
-    | Inserta una articulacion PDES a un plan en la tabla sp_plan_articulacion_pdes  (p,m,r,a, id_plan)
+    | POST: Inserta una articulacion PDES a un plan en la tabla sp_plan_articulacion_pdes  (p,m,r,a, id_plan)
     | contiene $req{ id:id, id_a: id_accion, id_plan:id_plan, p: id_plan }
     | trae la propiedad $req->p: id_plan
      */
@@ -114,7 +162,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
     /*---------------------------------------------------------------------------------------
-    | delete $req = {id: id_plan_articulacion_pdes}
+    | POST: delete $req = {id: id_plan_articulacion_pdes}
      */
     public function deletePMRA(Request $req)
     {
@@ -157,7 +205,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     /*======================================================= PROGRAMACION DE RESULTADO ==============================================*/
 
     /*---------------------------------------------------------------------------------------
-    | lista las programaciones de los resultados de un plan $req = { p: id_plan }
+    | GET: lista las programaciones de los resultados de un plan $req = { p: id_plan }
      */    
     public function listaProgramacion(Request $req)
     {
@@ -221,7 +269,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
     /*---------------------------------------------------------------------------------------
-    | Insert o Update de una programacion 
+    | POST: Insert o Update de una programacion 
     | $req = { id_plan_articulacion_pdes: id_ppmr,  nombre_indicador_res: ?, idp_unidad: ? ,
     | linea_base:?, alcance:?, indicadoresProgramacion:[{dato, gestion}, {dato, gestion}], p: id_plan }
      */
@@ -258,7 +306,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
     /*---------------------------------------------------------------------------------------
-    | delete $req = {id_ari: id_arti_resultado_indicador}
+    | POST: delete $req = {id_ari: id_arti_resultado_indicador}
      */
     public function deleteProgramacion(Request $req)
     {
@@ -284,6 +332,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     }
 
 
+    /* ================================================ FUNCIONES PRIVADAS ==========================================*/
 
     private function saveIndicador($ind)
     {

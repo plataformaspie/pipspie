@@ -330,6 +330,8 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('listaprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@listaProgramacion');
             Route::post('saveprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@saveProgramacion');
             Route::post('deleteprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
+            Route::post('modifycampo', 'ModuloPlanificacion\PlanificaPMRAController@modifyCampo');
+
 
             /********** Review ******************/
             Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');

@@ -2,6 +2,7 @@
 
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.energyblue.css">
 <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 <link rel="stylesheet" href="/plugins/bower_components/sweetalert/sweetalert.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/slick/slick.css" />
@@ -29,6 +30,15 @@
     z-index: 999999999 !important;
 }
 .flotTip { z-index: 9999 !important; }*/
+.sp_cellTable, .sp_cellTable:hover{
+    background-color: #FFFFFF !important;
+};
+
+
+.jqx-grid-column-header{
+    background-color: #222 !important;
+}
+
 
 </style>
 
@@ -55,7 +65,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="topbar-right">
+            <div class="topbar-right sp_titulo_topbar_right">
                 <h3>Planificación Sectorial</h3>
             </div>
         </header>
@@ -333,6 +343,34 @@
         </div>
         <!-- end: .panel -->
     </div>
+
+
+    <!-- -------------------------------------------edicion de campos ---------------------------------------------------------- -->
+    <div id="modal_editcampo" class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                    Modificar
+            </div>
+            <div class="panel-body mnw700 of-a"> 
+                <input class="hidden" name="sp_id_editcampo" id="sp_id_editcampo" >
+                <input class="hidden" name="sp_codtc" id="sp_codtc" >
+                <div class="section">
+                    <label class="field-label" for="alcance_res">Nuevo valor</label>
+                    <label class="field prepend-icon">
+                        <input type="text" class="gui-input" id="sp_valor_editcampo" name="sp_valor_editcampo" placeholder="valor" style="width:100%;">
+                        <label for="alcance_res" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                        </label>                  
+                    </label>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button  class="button btn-primary sp_save_editcampo">Guardar</button>
+                <a href="javascript:void(0)"   class="button btn-danger ml25 sp_cancelar">Cerrar</a>
+            </div>
+
+        </div>
+    </div>
 @endsection
 
 @push('script-head')
@@ -352,6 +390,13 @@
 <script type="text/javascript" src="/sty-mode-2/vendor/plugins/slick/slick.min.js"></script>
 <script type="text/javascript">
 $(function(){
+    var ctx = {
+        theme : 'energyblue',
+    
+
+
+
+    }
 
 {
     var ctxpmra = {
@@ -392,6 +437,7 @@ $(function(){
                     //     });  
                     // },
                     source: dataAdapter,
+                    theme: ctx.theme,
                     altRows: false,
                     sortable: true,
                     width: "100%",
@@ -601,11 +647,11 @@ $(function(){
     }
 }
 
+
+    /***********************************  Programacion **********************************#####################################********************************************/
     var ctxprog = {
         dataTable : $("#dt_prog"),
         source : {},
-
-
         fillDataTable : function() {
             $.get(globalSP.urlApi + 'listaprogramacion', {p : globalSP.idPlanActivo}, function(resp)
             {
@@ -644,6 +690,7 @@ $(function(){
                     //     });  
                     // },
                     source: dataAdapter,
+                    theme: ctx.theme,
                     altRows: false,
                     sortable: true,
                     width: "100%",
@@ -656,15 +703,15 @@ $(function(){
                                 return `<img width="30" class="img-circle"  src="/img/${rowData.logo_p}" data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}" /> `
                             } 
                         },
-                        { text: '<span title="Pilares">P</span>', width: 50, align:'center', cellsalign: 'center',  cellsrenderer: function(row, column, value, rowData){
+                        { text: '<span title="Pilares">P</span>', dataField: 'cod_p', width: 50, align:'center', cellsalign: 'center',  cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}">${rowData.cod_p}</span>`;
                             } 
                         },
-                        { text: '<span title="Metas">M</span>', width: 50,  align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                        { text: '<span title="Metas">M</span>', dataField: 'cod_m', width: 50,  align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_m}</b> - ${rowData.desc_m}">${rowData.cod_m}</span>`
                             } 
                         },
-                        { text: '<span title="Resultados">R</span>', width: 50,  cellsalign: 'center', align:'center', cellsrenderer: function(row, column, value, rowData){
+                        { text: '<span title="Resultados">R</span>', dataField: 'cod_r', width: 50,  cellsalign: 'center', align:'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_r}</b> - ${rowData.desc_r}">${rowData.cod_r}</span>`
                             } 
                         },
@@ -672,7 +719,7 @@ $(function(){
                                 return `<a href="javascript:void(0)"  class="m-l-10 m-r-10 m-t-10 sel_add" title="Agregar indicador y programación dentro en la articulación de resultado " ><i class="fa fa-plus-circle fa-2x text-success "></i></a>`;
                             }
                         }, 
-                        { text: 'Indicadores de resultado y su Programación ' + ( (ctxprog.source.localdata.length>0) ? ` para ${ctxprog.source.localdata[0].gestion_ini} -  ${ctxprog.source.localdata[0].gestion_fin} ` : '' ),    align:'center', 
+                        { text: 'Indicadores de resultado y su Programación ' + ( (ctxprog.source.localdata.length>0) ? ` para ${ctxprog.source.localdata[0].gestion_ini} -  ${ctxprog.source.localdata[0].gestion_fin} ` : '' ),    align:'center', cellClassName: 'sp_cellTable', 
                             cellsrenderer: function(row, column, value, rowData){
                                 html = '';
                                 var headGestiones = '';
@@ -680,19 +727,19 @@ $(function(){
                                     headGestiones += `<th>${i}</th>`;
 
                                 if(rowData.indicadores.length>0){ 
-                                    var html = `<table class="table table-bordered table-condensed fs11">
-                                                    <thead><tr class="success"> <th>Indicador de Res.</th> <th>Variable</th> <th>Unidad</th> <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
+                                    var html = `<table class="table table-bordered table-hover fs11 sp_table">
+                                                    <thead><tr class="primary"> <th>Indicador de Res.</th> <th>Variable</th> <th>Unidad</th> <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
                                                     <tbody>`;
 
                                     rowData.indicadores.forEach(function(ind){
                                         var prog_row = '';
                                         _.sortBy(ind.programacion, 'gestion').forEach(function(ip){
                                             var valor = ip.dato || '';
-                                            prog_row += `<td>${valor}</td>`;
+                                            prog_row += `<td sp_id="${ip.id_ip}" class="sp_editable" sp_codtc="ip_d"  >${valor}</td>`;
                                         });
 
                                         html += `<tr>
-                                                    <td>${ind.nombre_indicador}</td> <td>${ind.variable}</td> <td>${ind.unidad}</td> <td>${ind.linea_base}</td> <td>${ind.alcance}</td> ${prog_row} <td><a href="javascript:void(0)" id_arti_resultado_indicador="${ind.id_arti_resultado_indicador}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
+                                                    <td class="sp_editable" sp_codtc="i_n" sp_id="${ind.id_indicador}">${ind.nombre_indicador}</td> <td>${ind.variable}</td> <td>${ind.unidad}</td> <td>${ind.linea_base}</td> <td class="sp_editable" sp_codtc="i_a" sp_id="${ind.id_indicador}">${ind.alcance}</td> ${prog_row} <td><a href="javascript:void(0)" id_arti_resultado_indicador="${ind.id_arti_resultado_indicador}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
                                                 </tr>`;
                                     });
 
@@ -776,18 +823,50 @@ $(function(){
             $("#resultado_prog").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
             ctxprog.showModal();
         },
-        editar: function(){
-            // var rowSelected = ctxprog.dataTable.jqxDataTable('getSelection');
-            // if(rowSelected.length > 0)
-            // {
-            //     var rowSel = rowSelected[0]; 
-            //     ctxprog.setDataForm(rowSel);
-            //     $("#tituloModal span").html(`Modificar ${funciones.tipoPolitica()}`);
-            //     ctxprog.showModal();
-            // }
-            // else{
-            //     swal("Seleccione el registro para modificar.");
-            // }
+        editar_valorcampo: function(obj){
+            $("#sp_codtc").val(obj.sp_codtc);
+            $("#sp_id_editcampo").val(obj.sp_id_editcampo)
+            $("#sp_valor_editcampo").val(obj.sp_valor_editcampo)
+            $(".state-error").removeClass("state-error")
+            $("#form_prog em").remove();
+
+            $.magnificPopup.open({
+                removalDelay: 500, //delay removal by X to allow out-animation,
+                focus: '',
+                items: {
+                    src: "#modal_editcampo"
+                },
+                // overflowY: 'hidden', //
+                callbacks: {
+                    beforeOpen: function(e) {
+                        var Animation = "mfp-zoomIn";
+                        this.st.mainClass = Animation;
+                    }
+                },
+            });
+        },
+        save_editcampo(){
+            var obj={
+                codtc : $("#sp_codtc").val(),
+                valor: $("#sp_valor_editcampo").val(),
+                id: $("#sp_id_editcampo").val(),
+                _token : $('input[name=_token]').val()
+            };
+            $.post(globalSP.urlApi + 'modifycampo', obj, function(res){
+                ctxprog.refreshList();
+                new PNotify({
+                            title: res.estado == 'success' ? 'Guardado' : 'Error',
+                            text: res.msg,
+                            shadow: true,
+                            opacity: 0.9,
+                            addclass: noteStack,
+                            type: (res.estado == 'success') ? "success" : "danger",
+                            stack: Stacks[noteStack],
+                            width: findWidth(),
+                            delay: 1500
+                        });
+                $.magnificPopup.close(); 
+            });
         },
         validateRules: function(){
             var reglasVal = {
@@ -849,7 +928,6 @@ $(function(){
         /* llama a la ruta para eliminar el id_arti_resultado_indicador*/
         delete: function(id_ari){
             var rowSel = ctxprog.dataTable.jqxDataTable('getSelection')[0];
-            console.log(rowSel)
             swal({
                   title: `Está seguro de eliminar el indicador del resultado: ${rowSel.cod_p} . ${rowSel.cod_m} . ${rowSel.cod_r}?`,
                   text: `No podrá recuperar este registro!`,
@@ -901,7 +979,6 @@ $(function(){
             });
              $("#sp_est_pilar_res").html(html);
         }
-
     }
 
     var init = (function(){
@@ -971,6 +1048,35 @@ $(function(){
             $("body").on('mouseout', '[data-toggle="tooltip"]', function(){
                 $(this).tooltip('hide')
             });
+
+            /*Coloca el titulo en topdbar*/
+            $(".sp_titulo_topbar_right h4").html( (globalSP.planActivo.cod_tipo_plan == 'PSDI')? 'Planificación Sectorial':'Planificación Institucional');
+
+            /* para los campos editables con dblclick*/
+            $("#planificacionContainer").on('mouseover', '.sp_editable', function(event) {
+                $(this).append('<span class="fa fa-edit fa-lg pull-right sp_iconedit text-muted" style="position: relative; top: -10px; margin-right: -8px; z-index: 99999";  ></span>');
+            });
+            $("#planificacionContainer").on('mouseout', '.sp_editable', function(event) {
+                $(this).find('.sp_iconedit').remove();
+            });
+
+            /* al hacer dblclick en un campo .sp_editable*/
+            $("#planificacionContainer").on('dblclick', '.sp_editable', function(event) {
+                var obj={
+                    sp_codtc : $(this).attr('sp_codtc'),
+                    sp_id_editcampo : $(this).attr('sp_id'),
+                    sp_valor_editcampo : $(this).text(),
+                }
+                ctxprog.editar_valorcampo(obj);
+            });
+
+            $(".sp_save_editcampo").click(function(){
+                ctxprog.save_editcampo();
+            });
+
+            $(".sp_cancelar").click(function(){
+                $.magnificPopup.close();
+            });   
         }
 
         var listeners_pmra =  function()
@@ -1026,14 +1132,11 @@ $(function(){
                 ctxpmra.eliminar();
             });
 
-            $(".sp_cancelar").click(function(){
-                $.magnificPopup.close();
-            });          
+       
         }
 
         var listeners_prog = function()
-        {
-                      
+        {                      
             variablesDiagnostico = [];
             metricas = [];
 
@@ -1102,8 +1205,16 @@ $(function(){
     globalSP.activarMenu(globalSP.menu.Planificacion);
     globalSP.cargarGlobales();
     globalSP.setBreadcrumb('Planificación', 'Planificación');
-    planif_submenu_activo(1);
+    planif_submenu_activo(2);
 
+
+
+
+    // $("#planificacionContainer  .sp_editable").append('<span class="fa fa-edit" >xxx<span>')
+
+    //     $.post(globalSP.urlApi + 'modifycampo', {cod_t_c : 'i_a', valor: 1254, _token : $('input[name=_token]').val(),}, function(){
+        
+    // })
 
 })
 
