@@ -77,7 +77,7 @@
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title ">
                             <div>
-                                <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel"> Identificación de la Articulación PDES</span><span id="sp_est_pmra" class="ml5 badge bg-dark dark"></span>                                 
+                                <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel"> Identificación de la Articulación PDES </span> <span id="sp_est_pmra" class="ml5 badge bg-dark dark"></span>                                 
                                 <span class="pull-right">
                                     <button id="pmra_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4" data-toggle="tooltip" title=""><i class="fa fa-plus-circle text-white"></i> Agregar </button>
                                     {{-- <button id="pmra_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button> --}}
@@ -114,7 +114,7 @@
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title ">
                             <div>
-                                <i class="glyphicon glyphicon-tasks"></i> <span class="sp_titulo_panel"> Programación del Resultado</span><span id="sp_est_prog" class="ml5 badge bg-dark dark"></span>                                 
+                                <i class="glyphicon glyphicon-tasks"></i> <span class="sp_titulo_panel"> Programación del Resultado </span> <span id="sp_est_prog" class="ml5 badge bg-dark dark"></span>                                 
                                 <span class="pull-right">
                                     {{-- <button id="prog_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4" data-toggle="tooltip" title=""><i class="fa fa-plus-circle text-white"></i> Agregar </button> --}}
                                 </span>
@@ -143,40 +143,8 @@
             </div>
 
             <!--  ===========================================   Planificacion Acciones e indicadores ================================== -->
-           <!-- <div class="col-md-12 slick-slide" id="planificacion_ind">
-                <div class="panel panel-visible" >
-                    <div class="panel-heading  bg-dark ">
-                        <div class="panel-title ">
-                            <div>
-                                <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel">Programación del Resultado</span><span id="sp_est_pmra" class="ml5 badge bg-dark dark"></span>                                 
-                                <span class="pull-right">
-                                    <button id="pmra_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4" data-toggle="tooltip" title=""><i class="fa fa-plus-circle text-white"></i> Agregar </button>
-                                    {{-- <button id="pmra_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button> --}}
-                                    {{-- <button id="pmra_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button> --}}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body pn">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="panel ">
-                    {{--                                     <div class="panel-heading">
-                                        <span class="panel-icon"><i class="fa fa-pencil"></i>
-                                        </span>
-                                        <span class="panel-title">Pilares</span>
-                                    </div> --}}
-                                    <div id="sp_est_pilar_acciones">                                       
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="" class="col-sm-9" >                                
-                                <div id="dt_programacion"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+           <div class="col-md-12 slick-slide" id="planificacion_plaa">
+            </div>
 
         </div>
     </div>
@@ -390,21 +358,83 @@
 <script type="text/javascript" src="/sty-mode-2/vendor/plugins/slick/slick.min.js"></script>
 <script type="text/javascript">
 $(function(){
-    var ctx = {
+    ctxgral = {
         theme : 'energyblue',
-    
+
+        showModal : function(modal){
+            $(".state-error").removeClass("state-error")
+            $(modal + " em").remove();
+            $.magnificPopup.open({
+                removalDelay: 500, //delay removal by X to allow out-animation,
+                // focus: '#pmra_id_pilar',
+                items: {
+                    src: modal
+                },
+                // overflowY: 'hidden', //
+                callbacks: {
+                    beforeOpen: function(e) {
+                        var Animation = "mfp-zoomIn";
+                        this.st.mainClass = Animation;
+                    }
+                },
+                midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+            });
+        }, 
+        refreshList: function(ctxObj, fn){
+            $.get(ctxObj.urlList, {p:globalSP.idPlanActivo}, function(resp) {
+                ctxObj.source.localdata = resp.data;
+                ctxObj.dataTable.jqxDataTable("updateBoundData");
+                ctxObj.estadistics();
+                if(fn)
+                    fn();
+            })   
+        },
+        creaValidateRules: function(ctxObj){
+            messagesObj = ctxObj.validateRules();
+            var messages = $.extend(true, {}, messagesObj);// _.clone(messagesObj)
+            var rules = _.mapObject(messagesObj, function(val, key){
+                val.required = true;
+                return val;
+            });
+            var reglasVal = {
+                    errorClass: "state-error",
+                    validClass: "state-success",
+                    errorElement: "em",
+                    rules: rules,
+                    messages: ctxObj.validateRules(),
+
+                    highlight: function(element, errorClass, validClass) {
+                            $(element).closest('.field').addClass(errorClass).removeClass(validClass);
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                            $(element).closest('.field').removeClass(errorClass).addClass(validClass);
+                    },
+                    errorPlacement: function(error, element) {
+                        if (element.is(":radio") || element.is(":checkbox")) {
+                                element.closest('.option-group').after(error);
+                        } else {
+                                error.insertAfter(element.parent());
+                        }
+                    },
+                    submitHandler: function(form) {
+                        ctxObj.saveData();
+                    }
+            }
+            return reglasVal; 
+        }, 
 
 
 
     }
 
-{
+    /***********************************  P M R A  ***************************************************************************/
     var ctxpmra = {
         dataTable : $("#dt_pmra"),
         source : {},
+        urlList: globalSP.urlApi + 'lista_pmraPlan',
 
         fillDataTable : function() {
-            $.get(globalSP.urlApi + 'lista_pmraPlan', {p : globalSP.idPlanActivo}, function(resp)
+            $.get(ctxpmra.urlList, {p : globalSP.idPlanActivo}, function(resp)
             {
                 ctxpmra.source =
                 {
@@ -437,13 +467,14 @@ $(function(){
                     //     });  
                     // },
                     source: dataAdapter,
-                    theme: ctx.theme,
+                    theme: ctxgral.theme,
                     altRows: false,
                     sortable: true,
                     width: "100%",
                     filterable: false,
                     filterMode: 'simple',
                     selectionMode: 'singleRow',
+                    columnsResize: true,
                     localization: getLocalization('es'),
                     columns: [
                         // { text: 'Pilar',  dataField: 'cod_p',align:'center',
@@ -482,35 +513,6 @@ $(function(){
 
             });
         },
-        refreshList: function(){
-            $.get(globalSP.urlApi + 'lista_pmraPlan', {p:globalSP.idPlanActivo}, function(resp) {
-                ctxpmra.source.localdata = resp.data;
-                ctxpmra.dataTable.jqxDataTable("updateBoundData");
-                ctxpmra.estadistics();
-                 // $('[data-toggle="tooltip"]').tooltip();  
-                  // $(".sp_res").tooltip({container: "#planificacion_pmra"});  
-                // $(".sp_res").data
-            })   
-        },
-        showModal : function(){
-            $(".state-error").removeClass("state-error")
-            $("#form-pmra em").remove();
-                $.magnificPopup.open({
-                removalDelay: 500, //delay removal by X to allow out-animation,
-                focus: '#pmra_id_pilar',
-                items: {
-                    src: "#modal_pmra"
-                },
-                // overflowY: 'hidden', //
-                callbacks: {
-                    beforeOpen: function(e) {
-                        var Animation = "mfp-zoomIn";
-                        this.st.mainClass = Animation;
-                    }
-                },
-                midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-            });
-        }, 
         getDataForm: function(){
             var obj = {
                 id : $("#id_pmra").val(),
@@ -525,7 +527,7 @@ $(function(){
             $(".tituloModal span").html(`Agregar articulación pdes`);
             $('#form-pmra input:text').val('');
             $("select").val('').change();
-            ctxpmra.showModal();
+            ctxgral.showModal("#modal_pmra");
         },
         eliminar: function(){
             var rowSelected = ctxpmra.dataTable.jqxDataTable('getSelection');
@@ -539,48 +541,17 @@ $(function(){
             }
         },
         validateRules: function(){
-            var reglasVal = {
-                    errorClass: "state-error",
-                    validClass: "state-success",
-                    errorElement: "em",
-
-                    rules: {
-                        pmra_id_p: { required: true },
-                        pmra_id_m: { required: true },
-                        pmra_id_r: { required: true },
-                        pmra_id_a: { required: true },
-                    },
-
-                    messages:{
+            return {
                         pmra_id_p:  { required: 'Falta pilar' },
                         pmra_id_m:  { required: 'Falta meta' },
                         pmra_id_r:  { required: 'Falta resultado' },
-                        pmra_id_a:  { required: 'Debe seleccionar una acción' },
-                    },
-
-                    highlight: function(element, errorClass, validClass) {
-                            $(element).closest('.field').addClass(errorClass).removeClass(validClass);
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                            $(element).closest('.field').removeClass(errorClass).addClass(validClass);
-                    },
-                    errorPlacement: function(error, element) {
-                        if (element.is(":radio") || element.is(":checkbox")) {
-                                element.closest('.option-group').after(error);
-                        } else {
-                                error.insertAfter(element.parent());
-                        }
-                    },
-                    submitHandler: function(form) {
-                        ctxpmra.saveData();
-                    }
-            }
-            return reglasVal; 
+                        pmra_id_a:  { required: 'Debe seleccionar una acción' }
+                    };
         }, 
         saveData: function(){
             var obj = ctxpmra.getDataForm();
             $.post(globalSP.urlApi + 'save_pmra', obj, function(resp){
-                ctxpmra.refreshList();
+                ctxgral.refreshList(ctxpmra);
                 new PNotify({
                             title: resp.estado == 'success' ? 'Guardado' : 'Error',
                             text: resp.msg,
@@ -610,14 +581,14 @@ $(function(){
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
                                   shadow: true,
-                                  opacity: 1,
+                                  opacity: 0.9,
                                   addclass: noteStack,
                                   type: !res.error ? "success" : 'danger',
                                   stack: Stacks[noteStack],
                                   width: findWidth(),
                                   delay: 2000
                               });
-                        ctxpmra.refreshList();
+                        ctxgral.refreshList(ctxpmra);
                     });
                 });
         },
@@ -645,15 +616,16 @@ $(function(){
         }
 
     }
-}
 
 
-    /***********************************  Programacion **********************************#####################################********************************************/
+
+    /***********************************  Programacion ***************************************************************************/
     var ctxprog = {
         dataTable : $("#dt_prog"),
-        source : {},
+        source : {},   
+        urlList: globalSP.urlApi + 'listaprogramacion',     
         fillDataTable : function() {
-            $.get(globalSP.urlApi + 'listaprogramacion', {p : globalSP.idPlanActivo}, function(resp)
+            $.get(ctxprog.urlList, {p : globalSP.idPlanActivo}, function(resp)
             {
                 ctxprog.source =
                 {
@@ -690,13 +662,14 @@ $(function(){
                     //     });  
                     // },
                     source: dataAdapter,
-                    theme: ctx.theme,
+                    theme: ctxgral.theme,
                     altRows: false,
                     sortable: true,
                     width: "100%",
                     filterable: false,
                     filterMode: 'simple',
                     selectionMode: 'singleRow',
+                    columnsResize: true,
                     localization: getLocalization('es'),
                     columns: [                       
                         { text: '-', width: 50, align:'center',  cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
@@ -756,32 +729,6 @@ $(function(){
 
             });
         },
-        refreshList: function(){
-            $.get(globalSP.urlApi + 'listaprogramacion', {p:globalSP.idPlanActivo}, function(resp) {
-                ctxprog.source.localdata = resp.data;
-                ctxprog.dataTable.jqxDataTable("updateBoundData");
-                ctxprog.estadistics();
-            }) ; 
-        },
-        showModal : function(){
-            $(".state-error").removeClass("state-error")
-            $("#form_prog em").remove();
-                $.magnificPopup.open({
-                removalDelay: 500, //delay removal by X to allow out-animation,
-                focus: '',
-                items: {
-                    src: "#modal_prog"
-                },
-                // overflowY: 'hidden', //
-                callbacks: {
-                    beforeOpen: function(e) {
-                        var Animation = "mfp-zoomIn";
-                        this.st.mainClass = Animation;
-                    }
-                },
-                midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-            });
-        }, 
         getDataForm: function(){
             var obj = {
                 id_plan_articulacion_pdes: $("#id_plan_articulacion_pdes").val(),
@@ -821,7 +768,7 @@ $(function(){
             $("#pilar_prog").html(`<b>${rowSelected.nombre_p}</b> - ${rowSelected.desc_p}`);
             $("#meta_prog").html(`<b>${rowSelected.nombre_m}</b> - ${rowSelected.desc_m}`);
             $("#resultado_prog").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
-            ctxprog.showModal();
+            ctxgral.showModal("#modal_prog");
         },
         editar_valorcampo: function(obj){
             $("#sp_codtc").val(obj.sp_codtc);
@@ -853,7 +800,7 @@ $(function(){
                 _token : $('input[name=_token]').val()
             };
             $.post(globalSP.urlApi + 'modifycampo', obj, function(res){
-                ctxprog.refreshList();
+                ctxgral.refreshList(ctxprog);
                 new PNotify({
                             title: res.estado == 'success' ? 'Guardado' : 'Error',
                             text: res.msg,
@@ -869,48 +816,17 @@ $(function(){
             });
         },
         validateRules: function(){
-            var reglasVal = {
-                    errorClass: "state-error",
-                    validClass: "state-success",
-                    errorElement: "em",
-
-                    rules: {
-                        nombre_indicador_res: { required: true },
-                        idp_unidad_res: { required: true },
-                        linea_base_res: { required: true },
-                        alcance_res: { required: true },
-                    },
-
-                    messages:{
-                        nombre_indicador_res:  { required: 'Campo requerido' },
-                        idp_unidad_res:  { required: 'Campo requerido' },
-                        linea_base_res:  { required: 'Campo requerido' },
-                        alcance_res:  { required: 'Campo requerido' },
-                    },
-
-                    highlight: function(element, errorClass, validClass) {
-                            $(element).closest('.field').addClass(errorClass).removeClass(validClass);
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                            $(element).closest('.field').removeClass(errorClass).addClass(validClass);
-                    },
-                    errorPlacement: function(error, element) {
-                        if (element.is(":radio") || element.is(":checkbox")) {
-                                element.closest('.option-group').after(error);
-                        } else {
-                                error.insertAfter(element.parent());
-                        }
-                    },
-                    submitHandler: function(form) {
-                        ctxprog.saveData();
-                    }
-            }
-            return reglasVal; 
+           return {
+                nombre_indicador_res:  { required: 'Campo requerido' },
+                idp_unidad_res:  { required: 'Campo requerido' },
+                linea_base_res:  { required: 'Campo requerido' },
+                alcance_res:  { required: 'Campo requerido' },
+            }                 
         }, 
         saveData: function(){
             var obj = ctxprog.getDataForm();
             $.post(globalSP.urlApi + 'saveprogramacion', obj, function(resp){
-                ctxprog.refreshList();
+                ctxgral.refreshList(ctxprog);
                 new PNotify({
                             title: resp.estado == 'success' ? 'Guardado' : 'Error',
                             text: resp.msg,
@@ -942,14 +858,14 @@ $(function(){
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
                                   shadow: true,
-                                  opacity: 1,
+                                  opacity: 0.9,
                                   addclass: noteStack,
                                   type: !res.error ? "success" : 'danger',
                                   stack: Stacks[noteStack],
                                   width: findWidth(),
                                   delay: 1400
                               });
-                        ctxprog.refreshList();
+                        ctxgral.refreshList(ctxprog);
                     });
                 });
         },
@@ -957,12 +873,11 @@ $(function(){
             var total_indicadores = ctxprog.source.localdata.reduce(function(carry, elem, indice, vector){
                                       return carry + elem.indicadores.length;
                                     }, 0);
-            $("#sp_est_prog").html( 'N° de indicadores' + total_indicadores);
+            $("#sp_est_prog").html( 'Total de indicadores de Resultado ' + total_indicadores);
 
             var pils = _.groupBy(ctxprog.source.localdata, function(elem){
                 return elem.cod_p;
             });
-            console.log(pils)
             var html = `<div class="panel-heading">
                                         <span class="panel-icon"><i class="glyphicons glyphicons-bank"></i>
                                         </span>
@@ -982,15 +897,11 @@ $(function(){
     }
 
     var init = (function(){
-        var gerera_opciones = function(arr){
-            var html = '';
-            arr.forEach(function(op){
-                html += `<option value="${op.id}">${op.nombre} - ${op.descripcion} </option>`;
-            });            
-            return html;
-            return html;
+        gerera_opciones = function(arr){
+            return arr.reduce(function(carry, op){
+                return carry + `<option value="${op.id}">${op.nombre} - ${op.descripcion} </option>`;
+            },'');          
         }
-
         genera_inputgestiones = function(){
             var html='';
             $.get(globalSP.urlApi + "getparametros/periodo_plan", function(res){    
@@ -1122,7 +1033,7 @@ $(function(){
 
             /* ------------- del contexto de pmra ----------------------------------------------------------------*/
             ctxpmra.fillDataTable();
-            $("#form-pmra").validate(ctxpmra.validateRules());
+            $("#form-pmra").validate(ctxgral.creaValidateRules(ctxpmra));
 
             $("#pmra_nuevo").click(function(){
                 ctxpmra.nuevo();
@@ -1168,7 +1079,7 @@ $(function(){
             });
 
             $("#variable_res").change(function() {
-                varsel = _.find(variablesDiagnostico, function(elem){ return elem.id_diagnostico == $("#variable_res").val(); });
+                var varsel = _.find(variablesDiagnostico, function(elem){ return elem.id_diagnostico == $("#variable_res").val(); });
                 if(varsel){ 
                     $("#idp_unidad_res").val(varsel.idp_unidad).change();
                     $("#linea_base_res").val(varsel.dato);
@@ -1178,7 +1089,7 @@ $(function(){
 
             /* ---------- Contexto programacion ---------------------------------------------------------*/
             ctxprog.fillDataTable();
-            $("#form_prog").validate(ctxprog.validateRules());
+            $("#form_prog").validate(ctxgral.creaValidateRules(ctxprog));
 
             $("#planificacion_prog").on('click', '.sel_add', function(){
                 ctxprog.nuevo()
@@ -1189,10 +1100,6 @@ $(function(){
                 ctxprog.delete(id_ari);
             });
 
-            // $("#form_prog .sp_save").click(function(){
-            //     console.log('c')
-            //     ctxprog.saveData()
-            // })
             genera_inputgestiones();
         }
 
@@ -1205,16 +1112,8 @@ $(function(){
     globalSP.activarMenu(globalSP.menu.Planificacion);
     globalSP.cargarGlobales();
     globalSP.setBreadcrumb('Planificación', 'Planificación');
-    planif_submenu_activo(2);
-
-
-
-
-    // $("#planificacionContainer  .sp_editable").append('<span class="fa fa-edit" >xxx<span>')
-
-    //     $.post(globalSP.urlApi + 'modifycampo', {cod_t_c : 'i_a', valor: 1254, _token : $('input[name=_token]').val(),}, function(){
-        
-    // })
+    $("#planificacion_plaa").load('/v/ModuloPlanificacion.view-planificacion-pmra-inds')
+    planif_submenu_activo(1);
 
 })
 

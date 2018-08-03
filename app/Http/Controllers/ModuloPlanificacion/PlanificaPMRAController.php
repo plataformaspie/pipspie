@@ -31,8 +31,6 @@ class PlanificaPMRAController extends PlanificacionBaseController
             'i_a' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'alcance'],
         ];
 
-
-
         $tabla = $cnf[$req->codtc]->tabla;
         $col = $cnf[$req->codtc]->col;
         $val = $req->valor;
@@ -43,12 +41,10 @@ class PlanificaPMRAController extends PlanificacionBaseController
         $obj->id_user_updated = $this->user->id;
         $obj->updated_at = \Carbon\Carbon::now(-4);
 
-        if($tabla == 'sp_indicadores')
-        {
+        if($tabla == 'sp_indicadores'){
             \DB::table('sp_indicadores')->where('id', $obj->id)->update(get_object_vars($obj));
         }
-        if($tabla == 'sp_indicadores_programacion')
-        {
+        else if($tabla == 'sp_indicadores_programacion'){
             \DB::table('sp_indicadores_programacion')->where('id', $obj->id)->update(get_object_vars($obj));
         }
 
@@ -220,8 +216,8 @@ class PlanificaPMRAController extends PlanificacionBaseController
                             pdes_resultados r,  sp_planes pl, sp_parametros pa
                 WHERE pmra.id_r = r.id AND  r.id_meta = m.id AND m.id_pilar = p.id 
                 AND pmra.id_plan = pl.id AND pl.cod_periodo_plan = pa.codigo AND pa.categoria='periodo_plan' 
-                AND pmra.activo AND pl.activo 
-                AND pmra.id_plan = ? AND codp_nivel_articulacion = 'r'
+                AND pmra.activo AND pl.activo AND codp_nivel_articulacion = 'r'
+                AND pmra.id_plan = ? 
                 ORDER BY p.cod_p, m.cod_m, r.cod_r", [$req->p]));
 
 
@@ -330,6 +326,107 @@ class PlanificaPMRAController extends PlanificacionBaseController
             ]);
         }
     }
+
+    /* ========================================= PLANIFICACION DE LA ACCION ==========================================*/
+    
+
+    /*----------------------------------------------------------------------------------------------------------
+    | Recupera la lista de acciones asignadas a un plan con sus proyectos 
+    | $req = {p:id_plan} 
+     */
+    public function listaAccionesProyectos(Request $req)
+    {
+        $pmraProyectos = \DB::select("  
+            SELECT a.*, ap.id as id_arti_pdes_proyecto, pr.id id_proyecto, pr.nombre_proyecto, 
+                pr.codigo as codigo_demanda 
+            FROM 
+            (
+                    SELECT pmra.id as id_pmra, pmra.id_p, p.cod_p, p.nombre as nombre_p, 
+                            p.descripcion as desc_p, p.logo as logo_p,
+                            pmra.id_m, m.cod_m, m.nombre as nombre_m, m.descripcion as desc_m,
+                            pmra.id_r, r.cod_r, r.nombre as nombre_r, r.descripcion as desc_r, r.sector,
+                            pmra.id_a, a.cod_a, a.nombre as nombre_a, a.descripcion as desc_a, 
+                            pmra.id_plan , pl.cod_periodo_plan, pa.valor as gestion_ini, pa.valor2 as gestion_fin  
+                    FROM sp_plan_articulacion_pdes pmra, pdes_pilares p, pdes_metas m, 
+                         pdes_resultados r, pdes_acciones a, sp_planes pl, sp_parametros pa
+                    WHERE pmra.id_a = a.id AND a.id_resultado = r.id AND r.id_meta = m.id AND m.id_pilar = p.id 
+                    AND pmra.id_plan = pl.id  AND pl.cod_periodo_plan = pa.codigo AND pa.categoria='periodo_plan'
+                    AND pmra.activo AND pl.activo AND codp_nivel_articulacion = 'a' 
+                    AND pmra.id_plan = ?
+            ) a
+            LEFT JOIN sp_arti_pdes_proyecto ap ON a.id_pmra = ap.id_plan_articulacion_pdes AND ap.activo
+            LEFT JOIN sp_proyectos pr ON ap.id_proyecto = pr.id
+            ORDER BY a.cod_p, a.cod_m, a.cod_r, a.cod_a, pr.codigo ", [$req->p]);
+
+
+
+        return response()->json([
+            'data' => $pmraProyectos,
+        ]);
+
+    }
+
+    public function saveproyecto(Request $req)
+    {
+        $obj = new \stdClass();
+        $obj->nombre_proyecto = $req->nombre_proyecto;
+        $obj->codigo = $req->codigo;
+        $obj->idp_tipo_proyecto = $req->idp_tipo_proyecto;
+
+        try{
+            if ($req->id) // uPDATE
+            {
+                $obj->id_user_updated = $this->user->id;
+                $obj->updated_at = \Carbon\Carbon::now(-4);
+                \DB::table('sp_proyectos')->where('id', $obj->id)->update(get_object_vars($obj));
+            }
+            else // INSERT
+            {
+                // $obj->activo = true;
+                $obj->id_user =  $this->user->id;
+                $obj->created_at = \Carbon\Carbon::now(-4);
+                $id_proy =  \DB::table('sp_proyectos')->insertGetId(get_object_vars($obj));
+
+                
+            }
+            return \Response::json([
+                'accion' => 'insert',
+                'estado' => "success",
+                'msg'    => "Se guardo con éxito."]);
+        }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'estado' => "error",
+                'msg'    => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function deleteproyecto(Request $req)
+    {
+
+    }
+
+
+
+
+
+
+
+
+    /* -------------------------------------------------------
+    | Obtiene una lista de todos los proyectos
+     */
+    public function listProyectos()
+    {
+        $proys = \DB::select('SELECT id, nombre_proyecto, codigo FROM sp_proyectos ORDER BY codigo');
+        return response()->json([
+            'data' => $proys,
+        ]);
+    }
+
+
 
 
     /* ================================================ FUNCIONES PRIVADAS ==========================================*/
