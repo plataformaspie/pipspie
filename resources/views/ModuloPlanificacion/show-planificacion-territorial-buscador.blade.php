@@ -62,7 +62,8 @@
     <form method="post" action="/" id="form-edit" name="form-edit">
       {{ csrf_field() }}
       <input type="hidden" name="mod_id" id="mod_id" value=""/>
-        <div id="titulo"></div> 
+        <!--div id="titulo"></div> 
+        <div id="titulo1"></div--> 
         <div class="panel-body mnw700 of-a">
           <div class="row">
             <div class="col-md-12 ">
@@ -193,7 +194,7 @@
                                   </tr>
                                   <tr style="background: #0074e8;">
                                     <td><font color="white">Resto</font></td>
-                                    <td><input type="text" disabled placeholder="total" id="total"></td>
+                                    <td><input type="text" value="0" disabled placeholder="total" id="total"></td>
                                     
                                   </tr>
                                 </table>
@@ -228,7 +229,7 @@
                                   </tr>
                                   <tr style="background: #0074e8;">
                                     <td><font color="white">Resto</font></td>
-                                    <td><input type="text" disabled placeholder="Total Presupuesto" id="totalp" name="totalp"></td>
+                                    <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" name="totalp"></td>
                                   </tr>
                                 </table>
                               </td>
@@ -236,8 +237,10 @@
                             <tr>
                               <td>
                                 <div class="form-group">
-                <!--label for="dep">departamento</label-->
-                  <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: ;" >
+                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: ;" >
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: ;" >
               </div>
               <div class="form-group">
                 <!--label for="prov">provincia</label-->
@@ -256,7 +259,7 @@
               <div class="form-group">
                 <!--label for="nom_prog">detalle programatica</label-->
                 <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display: ;" >
-              </div>
+              </div>              
               <div class="form-group">
                 <!--label for="acc">accion</label-->
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display: ;">
@@ -264,6 +267,12 @@
               <div class="form-group">
                 <!--label for="descrip_acc">descripcion accion</label-->
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display: ;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display: ;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display: ;">
               </div>
               <div class="form-group">
                 <!--label for="idpilar"> pilar</label-->
@@ -288,7 +297,7 @@
 
               <a class="btn btn-primary " href="#" role="button" id="verificar" name="verificar" style="display: inline;" onclick="verificar()">Verificar</a>
 
-              <button  class="btn btn-primary" id="guardar" name="guardar" style="display: ;">Guardar</button>
+              <button  class="btn btn-primary" id="actualizar" name="actualizar" style="display: ;">Modificar</button>
               <button type="button" class="btn btn-success">Atrás</button>
                               </td>
                             </tr>
@@ -340,7 +349,406 @@
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.export.js"></script> 
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.export.js"></script> 
 <!----------------------------------------------------------------->
-<script>
+
+<script type="text/javascript">
+    $(function()
+    {
+        $.get("listarMatricesEditar",function(respuesta)
+        {
+            var source =
+            {
+                localdata: respuesta.matrices,
+                datafields:
+                [
+                  { name: 'id_correlativo', type: 'int' },
+                  { name: 'id_tarea_eta', type: 'int' },
+                  { name: 'id_departamento',type:'datafield'},
+                  { name: 'descripcion_departamento',type:'datafield'},
+                  { name: 'id_provincia',type:'datafield'},
+                  { name: 'descripcion_provincia', type: 'datafield' },
+                  { name: 'id_municipio',type:'datafield'},
+                  { name: 'descripcion_municipio', type: 'datafield'},
+                  { name: 'id_programa', type: 'int' },
+                  { name: 'descripcion_programa', type: 'datafield'},
+                  { name: 'id_accion_eta', type: 'datafield'},
+                  { name: 'accion_eta', type: 'datafield'},
+                  { name: 'linea_base', type: 'datafield'},
+                  { name: 'proceso_indicador', type: 'datafield'},
+                  { name: 'unidad_indicador', type: 'datafield'},
+                  { name: 'cantidad_indicador', type: 'numeric'},
+                  { name: 'indicador2016', type: 'numeric'},
+                  { name: 'indicador2017', type: 'numeric'},
+                  { name: 'indicador2018', type: 'numeric'},
+                  { name: 'indicador2019', type: 'numeric'},
+                  { name: 'indicador2020', type: 'numeric'},
+                  { name: 'cantidad_presupuesto', type: 'numeric'},
+                  { name: 'presupuesto2016', type: 'numeric'},
+                  { name: 'presupuesto2017', type: 'numeric'},
+                  { name: 'presupuesto2018', type: 'numeric'},
+                  { name: 'presupuesto2019', type: 'numeric'},
+                  { name: 'presupuesto2020', type: 'numeric'},
+                  { name: 'pilar', type: 'int'},
+                  { name: 'meta', type: 'int'},
+                  { name: 'resultado', type: 'int'},
+                  { name: 'accion', type: 'int'},
+                  { name: 'descripcion_directriz', type: 'datafield'},
+                  { name: 'id_clasificador', type: 'int'},
+                  { name: 'id_servicio', type: 'int'}                  
+                ],
+                datatype: "json",
+                updaterow: function (rowid, rowdata, commit) {
+                    commit(true);
+                }
+            };   
+            var dataAdapter = new $.jqx.dataAdapter(source);           
+            $("#grid2").jqxGrid(
+             {
+              width:1000,// getWidth('Grid'),
+              source: dataAdapter,
+              pageable: true,
+              autoheight: true,
+              theme: 'energyblue',
+              columns:
+               [                
+                //  { text: 'tarea', filtertype: 'checkedlist', datafield: 'id_tarea_eta', width: 50},
+                 { text: 'DEPARTAMENTO', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 150},
+                 { text: 'PROVINCIA', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 150 },
+                 { text: 'MUNICIPIO', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 150 },
+                 { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 150 },               
+                 { text: 'Edit', datafield: 'id_correlativo', cellsRenderer: function (row, column, value, rowData)  
+                    {
+                      return "<button id='"+value+"'><i class='fa fa-pencil'></i> editar </button> ";
+                    },                 
+                 }
+               ]
+             });
+        $("#grid2").on("click", "button", function()
+         {          
+          $.magnificPopup.open(
+            {
+             removalDelay: 500,                     
+             focus: '#nombreinput',
+             items: 
+              {
+                src: "#modal-editar"
+              },                
+             callbacks: 
+              {
+               beforeOpen: function(e) 
+                {
+                 var Animation = "mfp-zoomOut";
+                 this.st.mainClass = Animation;
+                }
+              },
+             midClick: true 
+            });
+            var id = $(this).attr('id');
+            $(".state-error").removeClass("state-error");
+            var getselectedrowindexes = $('#grid2').jqxGrid('getselectedrowindexes');
+            if (getselectedrowindexes.length > 0)
+            {
+             filaseleccionada = $('#grid2').jqxGrid('getrowdata', getselectedrowindexes[0]);
+             $("#dep").val(filaseleccionada.id_departamento);
+             $("#eta").val(filaseleccionada.id_tarea_eta); 
+             $("#eta").trigger( "change");             
+             setTimeout(function(){
+                $("#dep").trigger( "change");
+             }, 300);
+             setTimeout(function(){
+                var x=filaseleccionada.id_provincia;
+                $("#prov").val(x);    
+                $("#prov").trigger( "change");
+             }, 850);
+             setTimeout(function(){
+                var y=filaseleccionada.id_municipio;
+                 $("#mun").val(y);    
+                 $("#mun").trigger( "change");
+             }, 1250);
+
+             setTimeout(function(){
+                var y=filaseleccionada.id_programa;
+                 $("#gas").val(y);    
+                 $("#gas").trigger( "change");
+             }, 1850);
+             if (filaseleccionada.id_tarea_eta==1||filaseleccionada.id_tarea_eta==2) {
+
+             }else{
+              if (filaseleccionada.id_programa==11) {
+              setTimeout(function(){
+              var c=filaseleccionada.id_clasificador;                 
+              $("#tip").val(c);    
+              $("#tip").trigger( "change");
+              }, 2250);
+
+             setTimeout(function(){
+             var s=filaseleccionada.id_servicio;               
+             $("#ser").val(s);    
+             $("#ser").trigger( "change");
+             }, 2750);
+             setTimeout(function(){
+              var z=filaseleccionada.id_accion_eta;
+              $("#acci").val(z);    
+              $("#acci").trigger( "change");
+              }, 3250);
+              setTimeout(function(){
+               var y=filaseleccionada.idser;
+              $("#pilar").val(y);    
+              $("#pilar").trigger( "change");
+              }, 3750);
+             }
+             else
+             {
+              setTimeout(function(){
+              var z=filaseleccionada.id_accion_eta;
+              $("#acci").val(z);    
+              $("#acci").trigger( "change");
+              }, 2750);
+              setTimeout(function(){
+               var y=filaseleccionada.idser;
+              $("#pilar").val(y);    
+              $("#pilar").trigger( "change");
+              }, 3250);
+             }
+            }
+            setTimeout(function(){
+               var a=filaseleccionada.linea_base;
+              $("#linea_base").val(a);
+              var b=filaseleccionada.proceso_indicador;
+              $("#ind_proceso").val(b);
+              var z=filaseleccionada.unidad_indicador;
+              $("#tipocantidad").val(z);
+              var c=filaseleccionada.cantidad_indicador;
+              $("#cantidad").val(c);
+              var d=filaseleccionada.indicador2016;
+              $("#2016").val(d);
+              var e=filaseleccionada.indicador2017;
+              $("#2017").val(e);
+              var f=filaseleccionada.indicador2018;
+              $("#2018").val(f);
+              var g=filaseleccionada.indicador2019;
+              $("#2019").val(g);
+              var h=filaseleccionada.indicador2020;
+              $("#2020").val(h);
+              var i=filaseleccionada.cantidad_presupuesto;
+              $("#txtpresu").val(i);
+              var j=filaseleccionada.presupuesto2016;
+              $("#p2016").val(j);
+              var k=filaseleccionada.presupuesto2017;
+              $("#p2017").val(k);
+              var l=filaseleccionada.presupuesto2018;
+              $("#p2018").val(l);
+              var m=filaseleccionada.presupuesto2019;
+              $("#p2019").val(m);
+              var n=filaseleccionada.presupuesto2020;
+              $("#p2020").val(n);
+              }, 3450);            
+          }
+          console.log(filaseleccionada);
+          $("#form-plan em").remove();
+         });        
+        $.get("listarEtasEditar", function(respuesta)
+          {
+              var etas = respuesta.etas;
+              for(var i=0; i<etas.length; i++)
+              {
+                var eta = etas[i];
+                var opcion = "<option value=" + eta.id_eta + ">" + eta.descripcion_eta + "</option>";
+                $("#eta").append(opcion);
+              }
+              console.log(etas);
+          });
+
+        $.get("listarDepartamentosEditar", function(respuesta)
+          {
+              var departamentos = respuesta.departamentos;
+              for(var i=0; i<departamentos.length; i++)
+              {
+                var departamento = departamentos[i];
+                var opcion = "<option value=" + departamento.id_departamento + ">" + departamento.descripcion_departamento + "</option>";
+                $("#dep").append(opcion);
+              }
+              console.log(departamentos);
+          });
+
+
+        });
+    })
+
+</script>
+
+<script type="text/javascript">     
+   $(function()
+          {
+            $.get("listarRegistroMatrices",function(respuesta)
+              {
+                var source =
+                 {
+                  localdata: respuesta.registros,
+                  datafields:
+                  [
+                    { name: 'descripcion_departamento',type:'datafield'},
+                    { name: 'descripcion_provincia', type: 'datafield' },
+                    { name: 'descripcion_municipio', type: 'datafield'},
+                    { name: 'registros1', type: 'int' }
+                  ],
+                  datatype: "json"
+                 };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                $("#grid").jqxGrid(
+                  {
+                    width:600,// getWidth('Grid'),
+                    source: dataAdapter,
+                    groupable: true,
+                    pageable: true,
+                    autoheight: true,                    
+                    columns: 
+                    [
+                      { text: 'DEPARTAMENTO', datafield: 'descripcion_departamento', width: 250 },
+                      { text: 'PROVINCIA', datafield: 'descripcion_provincia', width: 120 },
+                      { text: 'MUNICIPIO', datafield: 'descripcion_municipio', width: 120 },
+                      { text: 'CANTIDAD', datafield: 'registros1', width: 80 }
+
+                    ],
+                    groups: ['descripcion_departamento']
+                  });                     
+                $("#expand").on('click', function () 
+                {
+                  var groupnum = parseInt($("#groupnum").val());
+                  if (!isNaN(groupnum)) 
+                  {
+                      $("#grid").jqxGrid('expandgroup', groupnum);
+                  }
+                });
+                $("#collapse").on('click', function () 
+                {
+                  var groupnum = parseInt($("#groupnum").val());
+                  if (!isNaN(groupnum)) 
+                   {
+                      $("#grid").jqxGrid('collapsegroup', groupnum);
+                   }
+                });                
+                $("#expandall").on('click', function () 
+                {
+                  $("#grid").jqxGrid('expandallgroups');
+                });
+                      // collapse all groups.
+                $("#collapseall").on('click', function () 
+                {
+                  $("#grid").jqxGrid('collapseallgroups');
+                });
+                      // trigger expand and collapse events.
+                $("#grid").on('groupexpand', function (event) 
+                {
+                  var args = event.args;
+                  $("#expandedgroup").text("Group: " + args.group + ", Level: " + args.level);
+                });
+                $("#grid").on('groupcollapse', function (event) 
+                {
+                  var args = event.args;
+                  $("#collapsedgroup").text("Group: " + args.group + ", Level: " + args.level);
+                });
+              });
+          });
+</script>
+    
+<script type="text/javascript">
+    $(function()
+    {      
+      $("#export").click(function()
+      {   
+        $("#matrices").jqxGrid('exportdata', 'xls', 'matrices', true, null, true);
+      });
+      $.get("listarMatrices",function(respuesta)
+      {
+        var source =
+        {
+          localdata: respuesta.matrices,
+          datafields:
+          [
+            { name: 'id_correlativo', type: 'int' },
+            { name: 'descripcion_departamento',type:'datafield'},
+            { name: 'descripcion_provincia', type: 'datafield' },
+            { name: 'descripcion_municipio', type: 'datafield'},
+            { name: 'id_programa', type: 'int' },
+            { name: 'descripcion_programa', type: 'datafield'},
+            { name: 'accion_eta', type: 'datafield'},
+            { name: 'linea_base', type: 'datafield'},
+            { name: 'proceso_indicador', type: 'datafield'},
+            { name: 'cantidad_indicador', type: 'numeric'},
+            { name: 'indicador2016', type: 'numeric'},
+            { name: 'indicador2017', type: 'numeric'},
+            { name: 'indicador2018', type: 'numeric'},
+            { name: 'indicador2019', type: 'numeric'},
+            { name: 'indicador2020', type: 'numeric'},
+            { name: 'cantidad_presupuesto', type: 'numeric'},
+            { name: 'presupuesto2016', type: 'numeric'},
+            { name: 'presupuesto2017', type: 'numeric'},
+            { name: 'presupuesto2018', type: 'numeric'},
+            { name: 'presupuesto2019', type: 'numeric'},
+            { name: 'presupuesto2020', type: 'numeric'},
+            { name: 'pilar', type: 'int'},
+            { name: 'meta', type: 'int'},
+            { name: 'resultado', type: 'int'},
+            { name: 'accion', type: 'int'},
+            { name: 'descripcion_directriz', type: 'datafield'}
+          ],
+          datatype: "json"
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        $("#matrices").jqxGrid(
+          {
+            width: '1050',
+            source: dataAdapter,
+            theme: 'energyblue',
+            altrows: true,
+            pageable: true,
+            autoheight: true,
+            selectionmode: 'multiplecellsextended',
+            showgroupaggregates: true,
+            showstatusbar: true,
+            showaggregates: true,
+            statusbarheight: 40,
+            source: dataAdapter,
+            showfilterrow: true,
+            filterable: true,
+            columns: 
+            [
+              { text: 'DEPARTAMENTO', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 150},
+             { text: 'PROVINCIA', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 150 },
+             { text: 'MUNICIPIO', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 150 },
+             { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 50 },
+             { text: 'PROGRAMATÍCA', filtertype: 'checkedlist',datafield: 'descripcion_programa',   width: 215 },
+             { text: 'ACCIÓN ETA', filtertype: 'checkedlist',datafield: 'accion_eta',   width: 250 },
+             { text: 'LINEA BASE', filtertype: 'checkedlist',datafield: 'linea_base',   width: 215 },
+             { text: 'PROCESO INDICADOR', filtertype: 'checkedlist',datafield: 'proceso_indicador',   width: 215 },
+             { text: 'INDICADOR', filtertype: 'checkedlist',datafield: 'cantidad_indicador',   width: 50 },
+             { text: '2016', filtertype: 'checkedlist',datafield: 'indicador2016',   width: 50 },
+             { text: '2017', filtertype: 'checkedlist',datafield: 'indicador2017',   width: 50 },
+             { text: '2018', filtertype: 'checkedlist',datafield: 'indicador2018',   width: 50 },
+             { text: '2019', filtertype: 'checkedlist',datafield: 'indicador2019',   width: 50 },
+             { text: '2020', filtertype: 'checkedlist',datafield: 'indicador2020',   width: 50 },
+             { text: 'PRESUPUESTO', datafield: 'cantidad_presupuesto', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2016', datafield: 'presupuesto2016', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2017', datafield: 'presupuesto2017', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2018', datafield: 'presupuesto2018', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2019', datafield: 'presupuesto2019', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2020', datafield: 'presupuesto2020', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: '' },
+             { text: 'P',filtertype: 'checkedlist', datafield: 'pilar',  cellsalign: 'right', width: 50 },
+             { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
+             { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
+             { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
+             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_directriz', width: 250},
+            ]
+          });
+        $('#clearfilteringbutton').jqxButton({ height: 25});
+        $('#clearfilteringbutton').click(function () 
+          {
+              $("#matrices").jqxGrid('clearfilters');
+          });            
+      });
+    })
+ </script>
+ <script>
 function sumar(){
   tot = parseInt(document.getElementById('cantidad').value);
     a = parseInt(document.getElementById('2016').value);
@@ -366,14 +774,18 @@ function sumarPresupu(){
     $(function()
     {
 //--------------botonguardar
-      $("#guardar").click(function()
+      $("#actualizar").click(function()
       {          
         objeto = {};
+        objeto.id_tarea_eta = $("#txteta").val();
         objeto.id_departamento = $("#txtdep").val();
         objeto.id_provincia = $("#txtprov").val();
         objeto.id_municipio = $("#txtmun").val();
         objeto.id_programa = $("#txtgas").val();
+        objeto.id_clasificador = $("#txttipo").val();
+        objeto.id_servicio = $("#txtservicio").val();
         objeto.descripcion_programa = $("#txtnomgas").val();
+        objeto.id_accion_eta = $("#txtacci").val();
         objeto.accion_eta = $("#txtnomacci").val();
         objeto.linea_base = $("#linea_base").val();
         objeto.proceso_indicador = $("#ind_proceso").val();
@@ -384,7 +796,7 @@ function sumarPresupu(){
         objeto.indicador2018 = $("#2018").val();
         objeto.indicador2019 = $("#2019").val();
         objeto.indicador2020 = $("#2020").val();
-        objeto.cantidad_presupuesto = $("#presupuesto").val();
+        objeto.cantidad_presupuesto = $("#txtpresu").val();
         objeto.presupuesto2016 = $("#p2016").val();
         objeto.presupuesto2017 = $("#p2017").val();
         objeto.presupuesto2018 = $("#p2018").val();
@@ -394,7 +806,7 @@ function sumarPresupu(){
         objeto.meta = $("#txtmetas").val();
         objeto.resultado = $("#txtresul").val();
         objeto.accion = $("#txtaccion").val();        
-        objeto.descripcion_accion = $("#descripaccion").val();        
+        objeto.descripcion_accion = $("#descripaccion").val();          
         objeto._token = $('input[name=_token]').val()
         console.log(objeto);
         //---------------------aqui esta el try de la insercion
@@ -405,15 +817,15 @@ function sumarPresupu(){
         try {        
             if (objeto) 
             {
-             $.post("insertarmatriz", objeto, function(respuesta)
+             $.post("actualizarmatriz", objeto, function(respuesta)
              {
-              alert('informacion guardada');
+              alert('informacion actualizada');
               location.reload();
              }); 
             }
             else
              {
-              alert('informacion no guardada');
+              alert('informacion no actualizada');
              }
             }
         catch(err) 
@@ -422,7 +834,7 @@ function sumarPresupu(){
         }
       });
 //--------------cargar eta
-      $.get("listarEtas", function(respuesta)
+     /* $.get("listarEtas", function(respuesta)
       {
         var etas = respuesta.etas;
         for(var i=0; i<etas.length; i++)
@@ -432,7 +844,7 @@ function sumarPresupu(){
           $("#eta").append(opcion);
         }
         console.log(etas);
-      });
+      });*/
 ///--------------cuando cambia el departamento
       $("#dep").change(function()
       {
@@ -494,12 +906,15 @@ function sumarPresupu(){
       //--------------cuando cambia la eta
       $("#eta").change(function()
       {
-        ideta = $("#eta").val();        
+        ideta = $("#eta").val();   
+        $("#txteta").val(ideta);   
         if (ideta==0) 
         {
           $("#gas").html('<option >Seleccione la Programática de Gasto</option>');
           $("#tip").html('');
+          $("#txttipo").val('0');
           $("#ser").html('');
+          $("#txtservicio").val('0');
           $("#acci").html('');
           $("#pilar").html('');
           $("#meta").html('');
@@ -518,8 +933,8 @@ function sumarPresupu(){
                 $("#gas").append(opcion0);
                 for(var i=0; i<gastos.length; i++)
                 {
-                  var gasto = gastos[i];              
-                  var opcion = "<option value=" + gasto.id_programa + ">" + gasto.descripcion_gasto + "</option>";           
+                 var gasto = gastos[i];              
+                 var opcion = "<option value=" + gasto.id_programa + ">" + gasto.descripcion_gasto + "</option>";        
                   $("#gas").append(opcion);
                 }
               });
@@ -554,7 +969,9 @@ function sumarPresupu(){
         if (idgasto==-1) 
         {
           $("#tip").html('');
+          $("#txttipo").val('0');
           $("#ser").html('');
+          $("#txtservicio").val('0');
           $("#acci").html('');         
           $("#pilar").html('');
           $("#meta").html('');
@@ -566,7 +983,9 @@ function sumarPresupu(){
           if (ideta==1||ideta==2) 
           {
             $("#tip").html('');
+            $("#txttipo").val('0');
             $("#ser").html('');
+            $("#txtservicio").val('0');
             $.get("listarAcciones/" + idgasto, function(respuesta)
             {
               var acciones = respuesta.acciones;
@@ -580,12 +999,13 @@ function sumarPresupu(){
                 $("#acci").append(opcion);
               }
             });
+            
           }
           else
           {
               if (idgasto==11) 
               {
-                    $.get("listarTipos/" + idgasto, function(respuesta){
+                    $.get("listarTiposEditar", function(respuesta){
                   var tipos = respuesta.tipos;
                   $("#tip").html('');
                   $("#pilar").html('<option>P</option>');
@@ -598,8 +1018,9 @@ function sumarPresupu(){
                   for(var i=0; i<tipos.length; i++)
                   {
                     var tipo = tipos[i];              
-                    var opcion = "<option value=" + tipo.clasificador + ">" + tipo.clasificador + "</option>";
+                    var opcion = "<option value=" + tipo.id_clasificador + ">" + tipo.descripcion_clasificador + "</option>";
                     $("#tip").append(opcion);
+
                   }
                 });
               }
@@ -610,7 +1031,9 @@ function sumarPresupu(){
                     var acciones = respuesta.acciones;
                     $("#acci").html('');
                     $("#tip").html('');
+                    $("#txttipo").val('0');
                     $("#ser").html('');
+                    $("#txtservicio").val('0');
                     $("#pilar").html('<option>P</option>');
                     $("#meta").html('<option>M</option>');
                     $("#resultado").html('<option>R</option>');
@@ -634,9 +1057,11 @@ function sumarPresupu(){
       {
         idgasto = $("#gas").val();
         idtip = $("#tip").val();
+        $("#txttipo").val(idtip);
         if (idtip==0) 
         {
           $("#ser").html('');
+          $("#txtservicio").val('0');
           $("#acci").html('');
           $("#pilar").html('');
           $("#meta").html('');
@@ -645,7 +1070,8 @@ function sumarPresupu(){
         }
         else
         {
-          $.get("listarServicios/" + idgasto+"/"+idtip, function(respuesta){
+          $.get("listarServiciosEditar" , function(respuesta)
+          {
                   var servicios = respuesta.servicios;
                   $("#acci").html('');                  
                   $("#ser").html('');
@@ -654,10 +1080,10 @@ function sumarPresupu(){
                   for(var i=0; i<servicios.length; i++)
                   {
                     var servicio = servicios[i];              
-                    var opcion = "<option value=" + servicio.servicio + ">" + servicio.servicio + "</option>";
+                    var opcion = "<option value=" + servicio.id_servicio + ">" + servicio.descripcion_servicio + "</option>";
                     $("#ser").append(opcion);
                   }
-                }); 
+          }); 
         }
       });
       //--------------cuando cambia la servico
@@ -665,6 +1091,7 @@ function sumarPresupu(){
         idgasto = $("#gas").val();
         idtipo = $("#tip").val();
         idser = $("#ser").val();
+        $("#txtservicio").val(idser);
         if (idtip==0) 
         {          
           $("#acci").html('');
@@ -889,322 +1316,5 @@ function verificar()
     }    
   }
 </script>
-<script type="text/javascript">
-    $(function()
-    {
-        $.get("listarMatricesEditar",function(respuesta)
-        {
-            var source =
-            {
-                localdata: respuesta.matrices,
-                datafields:
-                [
-                  { name: 'id_correlativo', type: 'int' },
-                  { name: 'id_departamento',type:'datafield'},
-                  { name: 'descripcion_departamento',type:'datafield'},
-                  { name: 'id_provincia',type:'datafield'},
-                  { name: 'descripcion_provincia', type: 'datafield' },
-                  { name: 'id_municipio',type:'datafield'},
-                  { name: 'descripcion_municipio', type: 'datafield'},
-                  { name: 'id_programa', type: 'int' },
-                  { name: 'descripcion_programa', type: 'datafield'},
-                  { name: 'accion_eta', type: 'datafield'},
-                  { name: 'linea_base', type: 'datafield'},
-                  { name: 'proceso_indicador', type: 'datafield'},
-                  { name: 'cantidad_indicador', type: 'numeric'},
-                  { name: 'indicador2016', type: 'numeric'},
-                  { name: 'indicador2017', type: 'numeric'},
-                  { name: 'indicador2018', type: 'numeric'},
-                  { name: 'indicador2019', type: 'numeric'},
-                  { name: 'indicador2020', type: 'numeric'},
-                  { name: 'cantidad_presupuesto', type: 'numeric'},
-                  { name: 'presupuesto2016', type: 'numeric'},
-                  { name: 'presupuesto2017', type: 'numeric'},
-                  { name: 'presupuesto2018', type: 'numeric'},
-                  { name: 'presupuesto2019', type: 'numeric'},
-                  { name: 'presupuesto2020', type: 'numeric'},
-                  { name: 'pilar', type: 'int'},
-                  { name: 'meta', type: 'int'},
-                  { name: 'resultado', type: 'int'},
-                  { name: 'accion', type: 'int'},
-                  { name: 'descripcion_directriz', type: 'datafield'}
-                ],
-                datatype: "json",
-                updaterow: function (rowid, rowdata, commit) {
-                    commit(true);
-                }
-            };   
-        var dataAdapter = new $.jqx.dataAdapter(source);            
-        $("#grid2").jqxGrid(
-         {
-          width:1000,// getWidth('Grid'),
-          source: dataAdapter,
-          pageable: true,
-          autoheight: true,
-          theme: 'energyblue',
-          columns:
-           [                
-                 { text: 'DEPARTAMENTO', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 150},
-                 { text: 'PROVINCIA', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 150 },
-                 { text: 'MUNICIPIO', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 150 },
-                 { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 150 },               
-                 { text: 'Edit', datafield: 'id_correlativo', cellsRenderer: function (row, column, value, rowData)  
-                    {
-                      return "<button id='"+value+"'><i class='fa fa-pencil'></i> editar </button> ";
-                    },                 
-                 }
-           ]
-         });
-        $("#grid2").on("click", "button", function()
-         {
-          var id = $(this).attr('id');
-          $(".state-error").removeClass("state-error");
-          var getselectedrowindexes = $('#grid2').jqxGrid('getselectedrowindexes');
-          if (getselectedrowindexes.length > 0)
-            {
-             filaseleccionada = $('#grid2').jqxGrid('getrowdata', getselectedrowindexes[0]);
-             $("#dep").val(filaseleccionada.id_departamento);
-listaprov();
-            // $("#dep").trigger( "change");                    
-             $("#titulo").html(filaseleccionada.id_provincia);
-             $("#prov").val(filaseleccionada.id_provincia);
-            }
-          console.log(filaseleccionada);
-          $("#form-plan em").remove();
-          //$("#prov option[value='3']").attr("selected",true);
-          $.magnificPopup.open(
-            {
-             removalDelay: 500,                     
-             focus: '#nombreinput',
-             items: 
-              {
-                src: "#modal-editar"
-              },                
-             callbacks: 
-              {
-               beforeOpen: function(e) 
-                {
-                 var Animation = "mfp-zoomOut";
-                 this.st.mainClass = Animation;
-                }
-              },
-             midClick: true 
-            });
-         });
-        $.get("listarDepartamentosEditar", function(respuesta)
-          {
-              var departamentos = respuesta.departamentos;
-              for(var i=0; i<departamentos.length; i++)
-              {
-                var departamento = departamentos[i];
-                var opcion = "<option value=" + departamento.id_departamento + ">" + departamento.descripcion_departamento + "</option>";
-                $("#dep").append(opcion);
-              }
-              console.log(departamentos);
-          });
-/*$.get("listarProvinciasEditar/" + iddepar, function(respuesta)
-          {
-              var provincias = respuesta.provincias;
-              for(var i=0; i<provincias.length; i++)
-              {
-                var provincia = provincias[i];
-                var opcion = "<option value=" + provincia.id_provincia + ">" + provincia.descripcion_provincia + "</option>";
-                $("#prov").append(opcion);
-              }
-              console.log(provincias);
-          });*/
-
-        });
-    })
-function listaprov(){
-  var iddepar = $("#dep").find(':selected').val();
-  //alert(iddepar+'aaaaaa');
- $.get("listarProvinciasEditar/" + iddepar, function(respuesta)
-          {
-              var provincias = respuesta.provincias;
-              for(var i=0; i<provincias.length; i++)
-              {
-                var provincia = provincias[i];
-                var opcion = "<option value=" + provincia.id_provincia + ">" + provincia.descripcion_provincia + "</option>";
-                $("#prov").append(opcion);
-              }
-              console.log(provincias);
-          });
- 
-}
-</script>
-
-<script type="text/javascript">     
-   $(function()
-          {
-            $.get("listarRegistroMatrices",function(respuesta)
-              {
-                var source =
-                 {
-                  localdata: respuesta.registros,
-                  datafields:
-                  [
-                    { name: 'descripcion_departamento',type:'datafield'},
-                    { name: 'descripcion_provincia', type: 'datafield' },
-                    { name: 'descripcion_municipio', type: 'datafield'},
-                    { name: 'registros1', type: 'int' }
-                  ],
-                  datatype: "json"
-                 };
-                var dataAdapter = new $.jqx.dataAdapter(source);
-                $("#grid").jqxGrid(
-                  {
-                    width:600,// getWidth('Grid'),
-                    source: dataAdapter,
-                    groupable: true,
-                    pageable: true,
-                    autoheight: true,                    
-                    columns: 
-                    [
-                      { text: 'DEPARTAMENTO', datafield: 'descripcion_departamento', width: 250 },
-                      { text: 'PROVINCIA', datafield: 'descripcion_provincia', width: 120 },
-                      { text: 'MUNICIPIO', datafield: 'descripcion_municipio', width: 120 },
-                      { text: 'CANTIDAD', datafield: 'registros1', width: 80 }
-
-                    ],
-                    groups: ['descripcion_departamento']
-                  });                     
-                $("#expand").on('click', function () 
-                {
-                  var groupnum = parseInt($("#groupnum").val());
-                  if (!isNaN(groupnum)) 
-                  {
-                      $("#grid").jqxGrid('expandgroup', groupnum);
-                  }
-                });
-                $("#collapse").on('click', function () 
-                {
-                  var groupnum = parseInt($("#groupnum").val());
-                  if (!isNaN(groupnum)) 
-                   {
-                      $("#grid").jqxGrid('collapsegroup', groupnum);
-                   }
-                });                
-                $("#expandall").on('click', function () 
-                {
-                  $("#grid").jqxGrid('expandallgroups');
-                });
-                      // collapse all groups.
-                $("#collapseall").on('click', function () 
-                {
-                  $("#grid").jqxGrid('collapseallgroups');
-                });
-                      // trigger expand and collapse events.
-                $("#grid").on('groupexpand', function (event) 
-                {
-                  var args = event.args;
-                  $("#expandedgroup").text("Group: " + args.group + ", Level: " + args.level);
-                });
-                $("#grid").on('groupcollapse', function (event) 
-                {
-                  var args = event.args;
-                  $("#collapsedgroup").text("Group: " + args.group + ", Level: " + args.level);
-                });
-              });
-          });
-</script>
-    
-<script type="text/javascript">
-    $(function()
-    {      
-      $("#export").click(function()
-      {   
-        $("#matrices").jqxGrid('exportdata', 'xls', 'matrices', true, null, true);
-      });
-      $.get("listarMatrices",function(respuesta)
-      {
-        var source =
-        {
-          localdata: respuesta.matrices,
-          datafields:
-          [
-            { name: 'id_correlativo', type: 'int' },
-            { name: 'descripcion_departamento',type:'datafield'},
-            { name: 'descripcion_provincia', type: 'datafield' },
-            { name: 'descripcion_municipio', type: 'datafield'},
-            { name: 'id_programa', type: 'int' },
-            { name: 'descripcion_programa', type: 'datafield'},
-            { name: 'accion_eta', type: 'datafield'},
-            { name: 'linea_base', type: 'datafield'},
-            { name: 'proceso_indicador', type: 'datafield'},
-            { name: 'cantidad_indicador', type: 'numeric'},
-            { name: 'indicador2016', type: 'numeric'},
-            { name: 'indicador2017', type: 'numeric'},
-            { name: 'indicador2018', type: 'numeric'},
-            { name: 'indicador2019', type: 'numeric'},
-            { name: 'indicador2020', type: 'numeric'},
-            { name: 'cantidad_presupuesto', type: 'numeric'},
-            { name: 'presupuesto2016', type: 'numeric'},
-            { name: 'presupuesto2017', type: 'numeric'},
-            { name: 'presupuesto2018', type: 'numeric'},
-            { name: 'presupuesto2019', type: 'numeric'},
-            { name: 'presupuesto2020', type: 'numeric'},
-            { name: 'pilar', type: 'int'},
-            { name: 'meta', type: 'int'},
-            { name: 'resultado', type: 'int'},
-            { name: 'accion', type: 'int'},
-            { name: 'descripcion_directriz', type: 'datafield'}
-          ],
-          datatype: "json"
-        };
-        var dataAdapter = new $.jqx.dataAdapter(source);
-        $("#matrices").jqxGrid(
-          {
-            width: '1050',
-            source: dataAdapter,
-            theme: 'energyblue',
-            altrows: true,
-            pageable: true,
-            autoheight: true,
-            selectionmode: 'multiplecellsextended',
-            showgroupaggregates: true,
-            showstatusbar: true,
-            showaggregates: true,
-            statusbarheight: 40,
-            source: dataAdapter,
-            showfilterrow: true,
-            filterable: true,
-            columns: 
-            [
-              { text: 'DEPARTAMENTO', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 150},
-             { text: 'PROVINCIA', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 150 },
-             { text: 'MUNICIPIO', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 150 },
-             { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 50 },
-             { text: 'PROGRAMATÍCA', filtertype: 'checkedlist',datafield: 'descripcion_programa',   width: 215 },
-             { text: 'ACCIÓN ETA', filtertype: 'checkedlist',datafield: 'accion_eta',   width: 250 },
-             { text: 'LINEA BASE', filtertype: 'checkedlist',datafield: 'linea_base',   width: 215 },
-             { text: 'PROCESO INDICADOR', filtertype: 'checkedlist',datafield: 'proceso_indicador',   width: 215 },
-             { text: 'INDICADOR', filtertype: 'checkedlist',datafield: 'cantidad_indicador',   width: 50 },
-             { text: '2016', filtertype: 'checkedlist',datafield: 'indicador2016',   width: 50 },
-             { text: '2017', filtertype: 'checkedlist',datafield: 'indicador2017',   width: 50 },
-             { text: '2018', filtertype: 'checkedlist',datafield: 'indicador2018',   width: 50 },
-             { text: '2019', filtertype: 'checkedlist',datafield: 'indicador2019',   width: 50 },
-             { text: '2020', filtertype: 'checkedlist',datafield: 'indicador2020',   width: 50 },
-             { text: 'PRESUPUESTO', datafield: 'cantidad_presupuesto', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
-             { text: '2016', datafield: 'presupuesto2016', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
-             { text: '2017', datafield: 'presupuesto2017', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
-             { text: '2018', datafield: 'presupuesto2018', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
-             { text: '2019', datafield: 'presupuesto2019', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
-             { text: '2020', datafield: 'presupuesto2020', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: '' },
-             { text: 'P',filtertype: 'checkedlist', datafield: 'pilar',  cellsalign: 'right', width: 50 },
-             { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
-             { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
-             { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
-             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_directriz', width: 250},
-            ]
-          });
-        $('#clearfilteringbutton').jqxButton({ height: 25});
-        $('#clearfilteringbutton').click(function () 
-          {
-              $("#matrices").jqxGrid('clearfilters');
-          });            
-      });
-    })
- </script>
  
 @endpush

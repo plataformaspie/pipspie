@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Http\Controllers\Controller;
 use App\Models\ModuloPlanificacion\Entidades;
 use App\Models\ModuloPlanificacion\EntidadPlan;
-use App\Models\ModuloPlanificacion\Planes;
 use App\Models\ModuloPlanificacion\TiposEntidades;
 use Illuminate\Http\Request;
 
@@ -33,12 +32,9 @@ class AdministracionController extends PlanificacionBaseController
 
     public function showEstructura(Request $request)
     {
-
-        if ($request->p)
+        if ($request->id_entidad)
         {
-            //$idEntidad = $request->id_entidad;
-            $planActivo = Planes::where('id', $request->p)->first();
-            $idEntidad =$planActivo->id_entidad;
+            $idEntidad = $request->id_entidad;
         }
         else
         {
@@ -51,7 +47,6 @@ class AdministracionController extends PlanificacionBaseController
         WHERE e.id_padre = 15
         GROUP BY te.id,e.clasificacion,te.orden
         ORDER BY te.orden ASC");*/
-
         $estructura = Entidades::where('institucion', $idEntidad)
             ->join('sp_tipos_entidades as te', 'sp_entidades.id_tipo', '=', 'te.id')
             ->whereIn('te.id', [1, 7, 8, 9, 10, 11])
@@ -77,11 +72,9 @@ class AdministracionController extends PlanificacionBaseController
 
     public function setEstructuraEntidad(Request $request)
     {
-        if ($request->p)
+        if ($request->id_entidad)
         {
-            //$idEntidad = $request->id_entidad;
-            $planActivo = Planes::where('id', $request->p)->first();
-            $idEntidad =$planActivo->id_entidad;
+            $idEntidad = $request->id_entidad;
         }
         else
         {
@@ -102,13 +95,11 @@ class AdministracionController extends PlanificacionBaseController
     public function saveEntidadNew(Request $request)
     {
         $this->user = \Auth::user();
-
-        if ($request->p)
-        {
-            //$idEntidad = $request->id_entidad;
-            $planActivo = Planes::where('id', $request->p)->first();
-            $idEntidad =$planActivo->id_entidad;
-        }
+       
+       if ($request->id_entidad)
+	        {
+	            $idEntidad = $request->id_entidad;
+	        }
         else
         {
             $idEntidad = $this->user->id_institucion;
@@ -142,7 +133,7 @@ class AdministracionController extends PlanificacionBaseController
             $mensajeFile ="";
 
             //$file=$request->organigrama;
-
+            
             if($request->mod_logo){
 
             	$file=$request->mod_logo;
@@ -173,7 +164,7 @@ class AdministracionController extends PlanificacionBaseController
             $entidadID             = Entidades::find($entidad->id);
             $entidadID->id_entidad = $entidad->id;
             $entidadID->save();
-
+            
             return \Response::json(array(
                 'error' => false,
                 'title' => "Success!",
@@ -196,11 +187,9 @@ class AdministracionController extends PlanificacionBaseController
     	//dd($request->mod_logo_Editar);
 
         $this->user = \Auth::user();
-        if ($request->p)
+        if ($request->id_entidad)
         {
-            //$idEntidad = $request->id_entidad;
-            $planActivo = Planes::where('id', $request->p)->first();
-            $idEntidad =$planActivo->id_entidad;
+            $idEntidad = $request->id_entidad;
         }
         else
         {
@@ -230,11 +219,11 @@ class AdministracionController extends PlanificacionBaseController
 
             //salvando organigrama
             $carpeta = "sp-files/organigramas/";
-
+           
             $mensajeFile ="";
             $nombreDataBase = "";
-
-
+           
+            
             if($request->mod_logo_Editar){
 
             	$file = $request->mod_logo_Editar;
