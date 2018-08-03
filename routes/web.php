@@ -306,7 +306,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@saveAtribucion');
             Route::post('deleteAtribucion', 'ModuloPlanificacion\EnfoquePoliticoController@deleteAtribucion');
 
-            Route::get('getPilaresVinculadosAlPlan', 'ModuloPlanificacion\EnfoquePoliticoController@getPilaresVinculadosAlPlan');  
+            Route::get('getPilaresVinculadosAlPlan', 'ModuloPlanificacion\EnfoquePoliticoController@getPilaresVinculadosAlPlan');
 
             /********** Diagnostico ******************/
             Route::get('setDiagnostico', 'ModuloPlanificacion\DiagnosticoController@setDiagnostico');
@@ -316,17 +316,30 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveDataNew', 'ModuloPlanificacion\DiagnosticoController@saveDataNew');
             Route::get('listvariables_lb', 'ModuloPlanificacion\DiagnosticoController@listVariablesConLineaBase');
 
+            /********** Sistemas de Vida ******************/
+            Route::get('setSistemasVida', 'ModuloPlanificacion\SistemasVidaController@setSistemasVida');
+            Route::post('saveSistemasVida', 'ModuloPlanificacion\SistemasVidaController@saveSistemasVida');
+            Route::get('dataSetSistemaVida', 'ModuloPlanificacion\SistemasVidaController@dataSetSistemaVida');
+            Route::get('deleteSistemasVida', 'ModuloPlanificacion\SistemasVidaController@deleteSistemasVida');
 
-            /********** Politica Sectorial/institucional ******************/   
+            /********** Analisis de Riegos ******************/
+            Route::get('setRiesgos', 'ModuloPlanificacion\RiesgosController@setRiesgos');
+            Route::post('saveRiesgo', 'ModuloPlanificacion\RiesgosController@saveRiesgo');
+            Route::get('dataSetRiesgo', 'ModuloPlanificacion\RiesgosController@dataSetRiesgo');
+            Route::get('deleteRiesgo', 'ModuloPlanificacion\RiesgosController@deleteRiesgo');
+            Route::get('updateComboJurisdiccionTerritorial', 'ModuloPlanificacion\RiesgosController@updateComboJurisdiccionTerritorial');
+
+
+            /********** Politica Sectorial/institucional ******************/
             Route::get('listPoliticasPilares', 'ModuloPlanificacion\PoliticaController@listPoliticasPilares');
             Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
             Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
 
-            /********** Planificacion 1 PMRA ******************/            
+            /********** Planificacion 1 PMRA ******************/
             Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificaPMRAController@listaPmraPlan');
             Route::post('save_pmra', 'ModuloPlanificacion\PlanificaPMRAController@savePMRA');
             Route::post('delete_pmra', 'ModuloPlanificacion\PlanificaPMRAController@deletePMRA');
-            /********** Planificacion 2 programacion ******************/            
+            /********** Planificacion 2 programacion ******************/
             Route::get('listaprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@listaProgramacion');
             Route::post('saveprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@saveProgramacion');
             Route::post('deleteprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
