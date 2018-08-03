@@ -216,13 +216,13 @@ Route::group(['middleware' => 'auth'],function(){
         array('prefix' => 'moduloplanificacion'),
         function() {
             Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
-            Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
-            Route::get('showPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showPlanesInstitucion');
-            Route::get('showEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@showEnfoque');
-            Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
-            Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
-            Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
-            Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
+              Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
+              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
+              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
+              Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+
+
+
               // Territorial asignacion ----------------------------------------
 
               Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController@showPlanificacionTerritorial');
@@ -243,21 +243,25 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('listarAccionesEtas/{idaccion}', 'ModuloPlanificacion\PlanificacionTerritorialController@listaAccionesEtas');
               Route::get('listarPMRAs/{idpilar}/{idmeta}/{idresultado}/{idaccion}', 'ModuloPlanificacion\PlanificacionTerritorialController@listaPMRAs');
               Route::post('insertarmatriz', 'ModuloPlanificacion\PlanificacionTerritorialController@insertar');
-              // Territorial reporte ----------------------------------------
+// Territorial reporte ----------------------------------------
               Route::get('showBuscadorTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController1@showPlanificacionTerritorialBuscador');
-              /* Route::get('listarDepartamentosMatrices', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaDepartamentosMatrices');
+             /*  Route::get('listarDepartamentosMatrices', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaDepartamentosMatrices');
               Route::get('listarProvinciasMatrices/{iddepto}', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaProvinciasMatrices');
                Route::get('listarMunicipiosMatrices/{iddepto}/{idprov}', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaMunicipiosMatrices');
               Route::get('listarGastosMatrices/{iddepto}/{idprov}/{idmun}', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaGastosMatrices');
               Route::get('listarAccionesMatrices/{iddepto}/{idprov}/{idmun}/{idgas}', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaAccionesMatrices');*/
               Route::get('listarMatrices', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaMatrices');
-              Route::get('listarRegistroMatrices', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaRegistroMatrices');
+                Route::get('listarRegistroMatrices', 'ModuloPlanificacion\PlanificacionTerritorialController1@listaRegistroMatrices');
               Route::get('exports', 'ModuloPlanificacion\PlanificacionTerritorialController1@export');
 
-              //   Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController2@showPlanificacionTerritorialactualizador');
-              Route::get('listarMatricesEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaMatricesEditar');
+           //   Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialController2@showPlanificacionTerritorialactualizador');
+               Route::get('listarMatricesEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaMatricesEditar');
+               Route::get('listarEtasEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaEtasEditar');
               Route::get('listarDepartamentosEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaDepartamentosEditar');
               Route::get('listarProvinciasEditar/{iddepto}', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaProvinciasEditar');
+              Route::get('listarTiposEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaTiposEditar');
+             Route::get('listarServiciosEditar', 'ModuloPlanificacion\PlanificacionTerritorialController2@listaServiciosEditar');
+             Route::post('actualizarmatriz/{id}', 'ModuloPlanificacion\PlanificacionTerritorialController2@update');
               //---------------------------------------- finnnn Territorial ----------------------------------------
               Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
                   return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);

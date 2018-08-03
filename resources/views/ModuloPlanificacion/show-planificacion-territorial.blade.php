@@ -108,6 +108,9 @@
                 </tr>
               </table>
               <div class="form-group">
+                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display:none ;" >
+              </div>
+              <div class="form-group">
                 <!--label for="dep">departamento</label-->
                   <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: none;" >
               </div>
@@ -129,13 +132,20 @@
                 <!--label for="nom_prog">detalle programatica</label-->
                 <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display: none;" >
               </div>
+              
               <div class="form-group">
                 <!--label for="acc">accion</label-->
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display: none;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display:none ;">
               </div>
               <div class="form-group">
                 <!--label for="descrip_acc">descripcion accion</label-->
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display: none;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display: none;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display:none ;">
               </div>
               <div class="form-group">
                 <!--label for="idpilar"> pilar</label-->
@@ -205,11 +215,15 @@ function sumarPresupu(){
       $("#guardar").click(function(){  
         
         objeto = {};
+        objeto.id_tarea_eta = $("#txteta").val();
         objeto.id_departamento = $("#txtdep").val();
         objeto.id_provincia = $("#txtprov").val();
         objeto.id_municipio = $("#txtmun").val();
         objeto.id_programa = $("#txtgas").val();
+        objeto.id_clasificador = $("#txttipo").val();
+        objeto.id_servicio = $("#txtservicio").val();
         objeto.descripcion_programa = $("#txtnomgas").val();
+        objeto.id_accion_eta = $("#txtacci").val();
         objeto.accion_eta = $("#txtnomacci").val();
         objeto.linea_base = $("#linea_base").val();
         objeto.proceso_indicador = $("#ind_proceso").val();
@@ -220,7 +234,7 @@ function sumarPresupu(){
         objeto.indicador2018 = $("#2018").val();
         objeto.indicador2019 = $("#2019").val();
         objeto.indicador2020 = $("#2020").val();
-        objeto.cantidad_presupuesto = $("#presupuesto").val();
+        objeto.cantidad_presupuesto = $("#txtpresu").val();
         objeto.presupuesto2016 = $("#p2016").val();
         objeto.presupuesto2017 = $("#p2017").val();
         objeto.presupuesto2018 = $("#p2018").val();
@@ -344,7 +358,8 @@ function sumarPresupu(){
       });
       //--------------cuando cambia la eta
       $("#eta").change(function(){
-        ideta = $("#eta").val();        
+        ideta = $("#eta").val();    
+        $("#txteta").val(ideta);      
         if (ideta==0) 
         {
           $("#gas").html('<option >Seleccione la Programática de Gasto</option>');
@@ -415,11 +430,9 @@ function sumarPresupu(){
           if (ideta==1||ideta==2) 
           {
             $("#tip").html('');
+           $("#txttipo").val('0');
             $("#ser").html('');
-
-
-
-
+            $("#txtservicio").val('0');
             $.get("listarAcciones/" + idgasto, function(respuesta){
               var acciones = respuesta.acciones;
               $("#acci").html('');
@@ -450,7 +463,7 @@ function sumarPresupu(){
                   for(var i=0; i<tipos.length; i++)
                   {
                     var tipo = tipos[i];              
-                    var opcion = "<option value=" + tipo.clasificador + ">" + tipo.clasificador + "</option>";
+                    var opcion = "<option value=" + tipo.id_clasificador + ">" + tipo.descripcion_clasificador + "</option>";
                     $("#tip").append(opcion);
                   }
                 });
@@ -461,7 +474,9 @@ function sumarPresupu(){
                   var acciones = respuesta.acciones;
                   $("#acci").html('');
                   $("#tip").html('');
+                  $("#txttipo").val('0');
                   $("#ser").html('');
+                  $("#txtservicio").val('0');
                   $("#pilar").html('<option>P</option>');
                   $("#meta").html('<option>M</option>');
                   $("#resultado").html('<option>R</option>');
@@ -487,8 +502,10 @@ function sumarPresupu(){
       $("#tip").change(function(){
         idgasto = $("#gas").val();
         idtip = $("#tip").val();
+        $("#txttipo").val(idtip);
         if (idtip==0) {
           $("#ser").html('');
+          $("#txtservicio").val('0');
           $("#acci").html('');
           $("#pilar").html('');
           $("#meta").html('');
@@ -505,7 +522,7 @@ function sumarPresupu(){
                   for(var i=0; i<servicios.length; i++)
                   {
                     var servicio = servicios[i];              
-                    var opcion = "<option value=" + servicio.servicio + ">" + servicio.servicio + "</option>";
+                    var opcion = "<option value=" + servicio.id_servicio + ">" + servicio.descripcion_servicio + "</option>";
                     $("#ser").append(opcion);
                   }
                 }); 
@@ -517,6 +534,7 @@ function sumarPresupu(){
         idgasto = $("#gas").val();
         idtipo = $("#tip").val();
         idser = $("#ser").val();
+        $("#txtservicio").val(idser);
         if (idtip==0) {
           
           $("#acci").html('');
@@ -547,6 +565,7 @@ function sumarPresupu(){
         idaccion = $("#acci").val();
         idnomaccion = $('#acci').find('option:selected').text();
         $("#txtacci").val(idaccion);
+        
         $("#txtnomacci").val(idnomaccion);
         
         if (idaccion==0) {
@@ -722,6 +741,8 @@ function verificar()
                                     var y = document.getElementById('verificar');
                                     y.style.display = 'none';
                                       x.style.display = 'inline';
+                                      var x=$("#txtpresu").val();
+                                      alert(x);
 
                                }
                               

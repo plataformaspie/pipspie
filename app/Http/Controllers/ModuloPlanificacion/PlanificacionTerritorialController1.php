@@ -12,7 +12,7 @@ class PlanificacionTerritorialController1 extends PlanificacionBaseController
   {
     return view('ModuloPlanificacion.show-planificacion-territorial-buscador');
   }
-
+  
   public function listaDepartamentosMatrices()
   {
   	$departamentos = \DB::select('select d.id_departamento,d.descripcion_departamento from sp_pt_departamentos d,sp_pt_matrices m where d.id_departamento=m.id_departamento group by d.id_departamento,d.descripcion_departamento order by id_departamento');
@@ -25,8 +25,8 @@ class PlanificacionTerritorialController1 extends PlanificacionBaseController
 
   public function listaProvinciasMatrices($iddepto)
   {
-  	$provs = \DB::select("select p.id_provincia,p.descripcion_provincia
-from sp_pt_provincias p,sp_pt_matrices m
+  	$provs = \DB::select("select p.id_provincia,p.descripcion_provincia 
+from sp_pt_provincias p,sp_pt_matrices m 
 where p.id_provincia=m.id_provincia and m.id_departamento=p.id_Departamento and m.id_departamento = {$iddepto}
 group by p.id_provincia,p.descripcion_provincia  order by id_provincia " );
   	return response()->json([
@@ -37,8 +37,8 @@ group by p.id_provincia,p.descripcion_provincia  order by id_provincia " );
   }
   public function listaMunicipiosMatrices($iddepto,$idprov)
   {
-  	$mun = \DB::select("select mu.id_municipio,mu.descripcion_municipio
-from sp_pt_municipios mu,sp_pt_matrices m
+  	$mun = \DB::select("select mu.id_municipio,mu.descripcion_municipio 
+from sp_pt_municipios mu,sp_pt_matrices m  
 where m.id_municipio=mu.id_municipio and m.id_departamento=mu.id_Departamento and mu.id_provincia=m.id_provincia and m.id_departamento = {$iddepto} and m.id_provincia = {$idprov}
 group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   	return response()->json([
@@ -78,7 +78,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   public function listaRegistroMatrices()
   {
     $registros = \DB::select("select  ROW_NUMBER() OVER (ORDER BY descripcion_departamento) as no,descripcion_departamento,descripcion_provincia,descripcion_municipio,count(id_programa) as registros1
- from vw_matriz
+ from vw_matriz 
  group by descripcion_departamento,descripcion_provincia,descripcion_municipio " );
     return response()->json([
       'status'=>'ok',
@@ -86,7 +86,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
       'registros'=>$registros
     ]);
   }
-  public function export()
+  public function export() 
 {
   $datedoc=date("d/m/Y H:i:s");
     //return Excel::download(new UserExport,'hol.xlsx');
@@ -94,7 +94,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
 
 
 
-
+ 
 
  /* public function listaAcciones($idgasto)
   {
@@ -215,17 +215,17 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $matriz['meta'] = $req->meta;
     $matriz['resultado'] = $req->resultado;
     $matriz['accion'] = $req->accion;
-    $matriz['descripcion_accion'] = $req->descripcion_accion;
+    $matriz['descripcion_accion'] = $req->descripcion_accion;    
     $matriz['usuario_creador']=$this->user->id;
     $matriz['fecha_creacion']=date("d/m/Y H:i:s");
     $matriz['estado'] = 'CREADO';
     $matriz['indicador_de_genero'] = 0;
-
+    
     try {
       \DB::table('sp_pt_matrices')->insert($matriz);
     return response()->json([
       'msg' => 'Matriz insertada']);
-
+      
     } catch (Exception $e) {
       return response()->json([
       'msg' => 'Matriz No insertada'.$e ]);
@@ -235,6 +235,6 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
 
   }*/
 
-
-
+    
+  
 }
