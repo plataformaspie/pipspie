@@ -9,15 +9,37 @@ use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
 use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
 use App\Models\ModuloPlanificacion\Entidades;
+use App\Models\ModuloPlanificacion\SistemasVida;
+use App\Models\ModuloPlanificacion\Planes;
+use App\Models\ModuloPlanificacion\TipoSectores;
 use App\Models\ModuloPdes\Pilares;
 
 class DiagnosticoController extends PlanificacionBaseController
 {
 
-    public function showDiagnostico()
+    public function showDiagnostico(Request $request)
     {
+
+        if ($request->p)
+        {
+            $planActivo = Planes::where('id', $request->p)->first();
+            $idEntidad =$planActivo->id_entidad;
+        }
+        else
+        {
+            $this->user = \Auth::user();
+            $idEntidad  = $this->user->id_institucion;
+        }
+
         $metricas = \DB::select("SELECT * FROM sp_parametros where categoria = 'metricas' AND activo ORDER BY codigo ");
-        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
+        $sistemasVida = SistemasVida::where('id_plan',$request->p )
+                        ->where('activo',true )
+                        ->groupBy('jurisdiccion_territorial')
+                        ->orderBy('jurisdiccion_territorial','ASC')
+                        ->select('jurisdiccion_territorial')
+                        ->get();
+        $sectores = TipoSectores::get();
+        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas,'sistemasVida'=>$sistemasVida, 'sectores' => $sectores]);
     }
 
 
@@ -62,7 +84,7 @@ class DiagnosticoController extends PlanificacionBaseController
                                       FROM sp_diagnostico d
 
                                       INNER JOIN sp_parametros p ON d.idp_unidad = p.id and p.categoria = 'metricas'
-                                      WHERE d.id_plan = {$id_plan} 
+                                      WHERE d.id_plan = {$id_plan}
 
                                       AND d.activo = true
                                       ) tab");
@@ -212,10 +234,10 @@ class DiagnosticoController extends PlanificacionBaseController
     | Obtiene las variables, con su indicador , unidad y la ultima gestion registrada dato (linea base)
     | $req: {p: id_plan}
      */
-    
+
     public function listVariablesConLineaBase(Request $req){
-        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.entidad as id_entidad, d.indicador, d.variable, 
-                        d.idp_unidad, p.codigo as cod_unidad, dc.id as id_diagnostico_comparativo, dc.gestion, dc.dato 
+        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.entidad as id_entidad, d.indicador, d.variable,
+                        d.idp_unidad, p.codigo as cod_unidad, dc.id as id_diagnostico_comparativo, dc.gestion, dc.dato
                         from sp_diagnostico d, sp_diagnostico_comparativo dc, sp_parametros p
                          where dc.diagnostico_id = d.id and d.activo AND p.id = d.idp_unidad AND p.categoria = 'metricas'
                          AND id_plan = ?", [ $req->p] ));
@@ -225,7 +247,7 @@ class DiagnosticoController extends PlanificacionBaseController
         foreach ($varsGrouped as $key => $datos) {
             $d = $datos[0];
             $lb = $datos->where('gestion', $datos->max('gestion'))->first();
-            $elem = [            
+            $elem = [
                 'id_diagnostico'=> $key,
                 'indicador' => $d->indicador,
                 'variable' => $d->variable,
