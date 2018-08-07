@@ -366,6 +366,9 @@ class PlanificaPMRAController extends PlanificacionBaseController
 
     }
 
+    /*
+    |   Guarda y modifica los proyectos, tambien hace la eliminacion si tiene el atributo elimina, 
+     */
     public function saveproyecto(Request $req)
     {
         $obj = new \stdClass();
@@ -374,6 +377,9 @@ class PlanificaPMRAController extends PlanificacionBaseController
         $obj->idp_tipo_proyecto = $req->idp_tipo_proyecto;
 
         try{
+            if($req->elimina){
+
+            }
             if ($req->id) // uPDATE
             {
                 $obj->id_user_updated = $this->user->id;
@@ -386,7 +392,14 @@ class PlanificaPMRAController extends PlanificacionBaseController
                 $obj->id_user =  $this->user->id;
                 $obj->created_at = \Carbon\Carbon::now(-4);
                 $id_proy =  \DB::table('sp_proyectos')->insertGetId(get_object_vars($obj));
-
+                $artiProy = [  
+                    'id_plan_articulacion_pdes' => $id_plan_articulacion_pdes,
+                    'id_proyecto'=> $id_proy,
+                    'activo'=> true,
+                    'id_user'=> $this->user->id,
+                    'created_at' => \Carbon\Carbon::now(-4),
+                ];
+                 \DB::table('sp_arti_pdes_proyecto')->insertGetId(get_object_vars($artiProy));
                 
             }
             return \Response::json([

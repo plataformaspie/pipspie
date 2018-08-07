@@ -331,7 +331,7 @@ $(function(){
                 var rowsel = planes.dataTable.jqxDataTable('getSelection')[0];
                 planactivo = rowsel;
                 $('input[name=id_plan]').val(planactivo.id_plan) ;
-                window.location = globalSP.url + 'showEnfoque?p=' + rowsel.id_plan +'&e=' + rowsel.id ;
+                window.location = globalSP.url + 'showEstructura?p=' + rowsel.id_plan +'&e=' + rowsel.id ;
 
                 $('#menuSP .sp_menu').each(function(index, elem){
                     var urlhref = $(elem).attr('href');

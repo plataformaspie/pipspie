@@ -49,7 +49,7 @@
                 {{ csrf_field() }}
                 <div class="panel-body mnw700 of-a">                    
                     <input class="hidden" name="" id="id_plan_articulacion_pdes" >
-                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Describa su indicador y la programación para el resultado articulado: <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Defina el proyecto para la acción: <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
                     <div class=" bg-success lighter  row p10">
                         <div id="pmr_plaa"></div>
                         <div id="pilar_plaa"></div>
@@ -269,16 +269,16 @@ $(function(){
                 return obj;
             },
             nuevo: function(){
-                $(".tituloModal span").html(`Agregar proyecto a la accion`);
+                $(".tituloModal span").html(`Agregar proyecto a la acción`);
                 $('#modal_plaa_proyecto input:text, #modal_plaa_proyecto textarea').val('');
                 $("select").val('').change();
                 var rowSelected = ctxplaa.dataTable.jqxDataTable('getSelection')[0];
-                $("#id_plan_articulacion_pdes").val(rowSelected.id_pmra);
-                $("#pmr_plaa").html(`<b>${rowSelected.cod_p} . ${rowSelected.cod_m} . ${rowSelected.cod_r} . ${rowSelected.cod_a}</b>`);
-                $("#pilar_plaa").html(`<b>${rowSelected.nombre_p}</b> - ${rowSelected.desc_p}`);
-                $("#meta_plaa").html(`<b>${rowSelected.nombre_m}</b> - ${rowSelected.desc_m}`);
-                $("#resultado_plaa").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
-                $("#accion_plaa").html(`<b>${rowSelected.nombre_a}</b> - ${rowSelected.desc_a}`);
+                $("#modal_plaa_proyecto #id_plan_articulacion_pdes").val(rowSelected.id_pmra);
+                $("#modal_plaa_proyecto #pmr_plaa").html(`<b>${rowSelected.cod_p} . ${rowSelected.cod_m} . ${rowSelected.cod_r} . ${rowSelected.cod_a}</b>`);
+                $("#modal_plaa_proyecto #pilar_plaa").html(`<b>${rowSelected.nombre_p}</b> - ${rowSelected.desc_p}`);
+                $("#modal_plaa_proyecto #meta_plaa").html(`<b>${rowSelected.nombre_m}</b> - ${rowSelected.desc_m}`);
+                $("#modal_plaa_proyecto #resultado_plaa").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
+                $("#modal_plaa_proyecto #accion_plaa").html(`<b>${rowSelected.nombre_a}</b> - ${rowSelected.desc_a}`);
                 ctxgral.showModal('#modal_plaa_proyecto');
             },
             eliminar: function(){
