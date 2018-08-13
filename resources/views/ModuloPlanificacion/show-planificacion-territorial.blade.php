@@ -171,7 +171,7 @@
               <a class="btn btn-primary " href="#" role="button" id="verificar" name="verificar" style="display: inline;" onclick="verificar()">Verificar</a>
 
               <button  class="btn btn-primary" id="guardar" name="guardar" style="display: none;">Guardar</button>
-              <a href="index.php?controller=matrices"><button type="button" class="btn btn-success">Atrás</button></a>
+              <button id="cerrar" name="cerrar" type="button" class="btn btn-success">Atrás</button>
               </td>
             </tr> 
           </table>
@@ -179,7 +179,16 @@
 @endsection
 
 @push('script-head')
+<script type="text/javascript">
+$(function()
+{  
+  $("#cerrar").click(function()
+    { 
+     location.href ="/moduloplanificacion/showPlanificacionTerritorial";
 
+    });
+});
+</script>
  <script>
   
   
@@ -253,15 +262,11 @@ function sumarPresupu(){
     message.innerHTML = "";
     
     try { 
-       /* if(x == "")  throw "empty";
-        if(isNaN(x)) throw "not a number";
-        x = Number(x);
-        if(x < 5)    throw "too low";
-        if(x > 10)   throw "too high";*/
         if (objeto) {
          $.post("insertarmatriz", objeto, function(respuesta){
           alert('informacion guardada');
           location.reload();
+          location.href ="/moduloplanificacion/showPlanificacionTerritorial";
         }); 
 
         }
@@ -742,28 +747,10 @@ function verificar()
                                     y.style.display = 'none';
                                       x.style.display = 'inline';
                                       var x=$("#txtpresu").val();
-                                      alert(x);
-
                                }
                               
                             }
-                          /*  if (totu!=0||totu!='') {
-                             alert("Verifique su Resto de Unidades");     
-                          }
-                          else
-                          {
-                            if (totp!=0||totp!='') 
-                                  {
-                                    alert("Verifique su resto Presupuesto");  
-                                  }
-                              else
-                              {                                  
-                                  var x = document.getElementById('guardar');
-                                    var y = document.getElementById('verificar');
-                                    y.style.display = 'none';
-                                      x.style.display = 'inline';
-                              }
-                          }*/
+                          
                           }
 
                           
