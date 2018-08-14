@@ -348,8 +348,8 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('deleteprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
             /********** Planificacion 3 planificacion accion ******************/            
             Route::get('listaaccionesproy', 'ModuloPlanificacion\PlanificaPMRAController@listaAccionesProyectos');
-            Route::post('saveproyecto', 'ModuloPlanificacion\PlanificaPMRAController@saveProyecto');
-            Route::post('deleteproyecto', 'ModuloPlanificacion\PlanificaPMRAController@deleteProyecto');
+            Route::post('saveartiproyecto', 'ModuloPlanificacion\PlanificaPMRAController@saveArtiProyecto');
+            Route::post('deleteartiproyecto', 'ModuloPlanificacion\PlanificaPMRAController@deleteArtiProyecto');
             Route::get('listproyectos', 'ModuloPlanificacion\PlanificaPMRAController@listProyectos');
             
 

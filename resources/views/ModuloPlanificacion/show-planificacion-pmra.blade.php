@@ -11,7 +11,7 @@
   position: relative;
   background: #FFF;
   width: auto;
-  max-width: 900px;
+  max-width: 700px;
   margin: 40px auto;
 }
 ##.admin-form .panel-heading{
@@ -53,22 +53,24 @@
     <div class="tray tray-center ph40 va-t posr ptn">
         <header id="topbar" class="ph10 pbn mb10">
             <div id="submenus-planificacion" class="topbar-left">
+                <button id="limpiaTooltips" class="pull-left fa fa-square-o bg-dark darker fa-2x" title="Quitar mensajes de ayuda y tooltips"></button>
                 <ul class="nav nav-list nav-list-topbar pull-left pbn mn">
                     <li id="planif_submenu_1">
                         <a href="javascript:void(0)" id="1">Articulación con la acción </a>
                     </li>
                     <li id="planif_submenu_2">
-                        <a href="javascript:void(0)"  id="2">Programación del Resultado</a>
+                        <a href="javascript:void(0)" id="2">Programación del Resultado</a>
                     </li>
                     <li id="planif_submenu_3">
-                        <a href="javascript:void(0)"  id="3">Planificación de acciones</a>
+                        <a href="javascript:void(0)" id="3">Planificación de acciones</a>
                     </li>
                 </ul>
             </div>
             <div class="topbar-right sp_titulo_topbar_right">
-                <h3>Planificación Sectorial</h3>
+                <h3>Planificación __</h3>
             </div>
         </header>
+
         <div id="planificacionContainer" class="row">
 
             <!--  ===========================================  Planificacion de la Accion PMRA ================================ -->
@@ -162,7 +164,7 @@
             <!-- end .panel-heading section -->
             <form method="post" action="/" id="form-pmra" name="form-pmra">
 
-                <div class="panel-body mnw700 of-a">
+                <div class="panel-body  of-a">
                     <div class="row">
                             <input class="hidden" name="id_pmra" id="id_pmra" >
                             <div class="row">
@@ -211,7 +213,7 @@
                 </div>
                 <div class="panel-footer">
                     <button type="submit" class="button btn-primary">Guardar</button>
-                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cerrar</a>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -226,12 +228,13 @@
             </div>
             <!-- end .panel-heading section -->
             <form method="post" action="/" id="form_prog" name="form_prog">
-
-                <div class="panel-body mnw700 of-a">                    
-                    <input class="hidden" name="id_plan_articulacion_pdes" id="id_plan_articulacion_pdes" >
-                    <input class="hidden" name="id_arti_indicador" id="id_arti_indicador" >
+                <div class="panel-body  of-a">                    
+                    {{-- <input type="hidden"  name="id_plan_articulacion_pdes_prog" id="id_plan_articulacion_pdes_prog" > --}}
+                    <input type="hidden"  name="id_arti_resultado_indicador_prog" id="id_arti_resultado_indicador_prog" >
+                    <input type="hidden"  name="id_indicador_prog" id="id_indicador_prog" >
+                    <input type="hidden"  name="id_indicador_ejecucion_prog" id="id_indicador_ejecucion_prog" >
                     <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Describa su indicador y la programación para el resultado articulado: <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
-                    <div class=" bg-success lighter  row p10">
+                    <div class=" bg-system  row p10">
                         <div id="pmr_prog"></div>
                         <div id="pilar_prog"></div>
                         <div id="meta_prog"></div>
@@ -242,18 +245,18 @@
 
                             <h5 class="mt5 ph10 pb5 br-b fw700">Indicador <small class="pull-right fw700 text-primary">- </small> </h5>
                             <div class="section">
-                                <label class="field-label" for="nombre_indicador_res">Indicador de resultado</label>
-                                <label for="nombre_indicador_res" class="field prepend-icon">
-                                    <textarea class="gui-textarea" id="nombre_indicador_res" name="nombre_indicador_res"  placeholder="Indicador de resultado"></textarea>
-                                    <label for="nombre_indicador_res" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
+                                <label class="field-label" for="nombre_indicador_prog">Indicador de resultado</label>
+                                <label for="nombre_indicador_prog" class="field prepend-icon">
+                                    <textarea class="gui-textarea" id="nombre_indicador_prog" name="nombre_indicador_prog"  placeholder="Indicador de resultado"></textarea>
+                                    <label for="nombre_indicador_prog" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
                                     </label>                                        
                                 </label>
                             </div>
 
                             <div class="section">
-                                <label class="field-label" for="variable_res">Variable</label>
+                                <label class="field-label" for="id_diagnostico">Variables del diagnóstico</label>
                                 <label class="field select">
-                                    <select id="variable_res" name="variable_res" class="required" style="width:100%;">
+                                    <select id="id_diagnostico" name="id_diagnostico" class="" style="width:100%;">
                                         <option value=""></option>
                                     </select>
                                     <i class="arrow"></i>
@@ -261,27 +264,36 @@
                             </div>
 
                             <div class="section">
-                                <label class="field-label" for="idp_unidad_res">Unidad de Medida </label>
+                                <label class="field-label" for="variable_prog">Variable</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" id="variable_prog" name="variable_prog" class="gui-input" placeholder="Variable" style="width:100%;">
+                                    <label for="variable_prog" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="idp_unidad_prog">Unidad de Medida </label>
                                 <label class="field select">
-                                    <select id="idp_unidad_res" name="idp_unidad_res" class="required" style="width:100%;">
+                                    <select id="idp_unidad_prog" name="idp_unidad_prog" class="required" style="width:100%;">
                                     </select>
                                     <i class="arrow"></i>                  
                                 </label>
                             </div>
 
                             <div class="section">
-                                <label class="field-label" for="linea_base_res">Linea Base</label>
+                                <label class="field-label" for="linea_base_prog">Linea Base</label>
                                 <label class="field prepend-icon">
-                                    <input type="text" class="gui-input" id="linea_base_res" name="linea_base_res" placeholder="Linea Base" style="width:100%;">
-                                    <label for="linea_base_res" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    <input type="text" class="gui-input" id="linea_base_prog" name="linea_base_prog" placeholder="Linea Base" style="width:100%;">
+                                    <label for="linea_base_prog" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
                                     </label>                 
                                 </label>
                             </div>
                             <div class="section">
-                                <label class="field-label" for="alcance_res">Alcance</label>
+                                <label class="field-label" for="alcance_prog">Alcance</label>
                                 <label class="field prepend-icon">
-                                    <input type="text" class="gui-input" id="alcance_res" name="alcance_res" placeholder="Alcance" style="width:100%;">
-                                    <label for="alcance_res" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    <input type="text" class="gui-input" id="alcance_prog" name="alcance_prog" placeholder="Alcance" style="width:100%;">
+                                    <label for="alcance_prog" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
                                     </label>                  
                                 </label>
 
@@ -305,7 +317,7 @@
                 </div>
                 <div class="panel-footer">
                     <button type="submit" class="button btn-primary sp_save">Guardar</button>
-                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cerrar</a>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -323,10 +335,10 @@
                 <input class="hidden" name="sp_id_editcampo" id="sp_id_editcampo" >
                 <input class="hidden" name="sp_codtc" id="sp_codtc" >
                 <div class="section">
-                    <label class="field-label" for="alcance_res">Nuevo valor</label>
+                    <label class="field-label" for="alcance_prog">Nuevo valor</label>
                     <label class="field prepend-icon">
                         <input type="text" class="gui-input" id="sp_valor_editcampo" name="sp_valor_editcampo" placeholder="valor" style="width:100%;">
-                        <label for="alcance_res" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                        <label for="alcance_prog" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
                         </label>                  
                     </label>
 
@@ -334,7 +346,7 @@
             </div>
             <div class="panel-footer">
                 <button  class="button btn-primary sp_save_editcampo">Guardar</button>
-                <a href="javascript:void(0)"   class="button btn-danger ml25 sp_cancelar">Cerrar</a>
+                <a href="javascript:void(0)"   class="button btn-danger ml25 sp_cancelar">Cancelar</a>
             </div>
 
         </div>
@@ -343,24 +355,25 @@
 
 @push('script-head')
 
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdatatable.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdraw.js') }}"></script>
-<script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxchart.core.js') }} "></script>
-
-<script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
-<script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
-<script src="/js/jqwidgets-localization.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxbuttons.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxscrollbar.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdatatable.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdraw.js"></script>
+<script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxchart.core.js"></script>
+<script type="text/javascript" src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
+<script type="text/javascript" src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript" src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="/sty-mode-2/vendor/plugins/slick/slick.min.js"></script>
+<script type="text/javascript" src="/sty-mode-2/vendor/plugins/moment/moment.min.js"></script>
+<script type="text/javascript" src="/sty-mode-2/vendor/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
 $(function(){
     ctxgral = {
         theme : 'energyblue',
-
+        token: $('input[name=_token]').val(),
         showModal : function(modal){
             $(".state-error").removeClass("state-error")
             $(modal + " em").remove();
@@ -385,10 +398,10 @@ $(function(){
                 ctxObj.source.localdata = resp.data;
                 ctxObj.dataTable.jqxDataTable("updateBoundData");
                 ctxObj.estadistics();
-                if(fn)
-                    fn();
+                if(fn) fn();
             })   
         },
+        /* ctxobj debe tener validateRules y saveData*/
         creaValidateRules: function(ctxObj){
             messagesObj = ctxObj.validateRules();
             var messages = $.extend(true, {}, messagesObj);// _.clone(messagesObj)
@@ -422,8 +435,6 @@ $(function(){
             }
             return reglasVal; 
         }, 
-
-
 
     }
 
@@ -477,28 +488,27 @@ $(function(){
                     columnsResize: true,
                     localization: getLocalization('es'),
                     columns: [
-                        // { text: 'Pilar',  dataField: 'cod_p',align:'center',
-                        //         cellsrenderer: function(row, column, value, rowData){
-                        //             return `<div class="col-sm-4"> <img width="30" class="img-circle"  src="/img/${rowData.logo_p}"/> </div> <div class="col-sm-8"><b>  ${rowData.cod_p}</b> </div>`
-                        //     } 
-                        // },                        
-                        { text: '-', width: 60, align:'center',  cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                        { text: '-', width: 50, align:'center',  cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<img width="30" class="img-circle"  src="/img/${rowData.logo_p}" data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}" /> `
                             } 
                         },
-                        { text: 'Pilar ', dataField: 'cod_p', align:'center', cellsrenderer: function(row, column, value, rowData){
-                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}">${rowData.nombre_p}</span>`;
+                        { text: 'P', dataField: 'cod_p', width: 50, align:'center',  cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_p}</b> - ${rowData.desc_p}">${rowData.cod_p}</span>`;
                             } 
                         },
-                        { text: 'Meta ', align:'center', cellsrenderer: function(row, column, value, rowData){
-                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_m}</b> - ${rowData.desc_m}">${rowData.nombre_m}</span>`
+                        { text: 'M', width: 50, align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_m}</b> - ${rowData.desc_m}">${rowData.cod_m}</span>`
                             } 
                         },
-                        { text: 'Resultado ',  dataField: 'cod_r', align:'center', cellsrenderer: function(row, column, value, rowData){
-                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_r}</b> - ${rowData.desc_r}">${rowData.nombre_r}</span>`
+                        { text: 'R',  dataField: 'cod_r', width: 50, align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_r}</b> - ${rowData.desc_r}">${rowData.cod_r}</span>`
                             } 
                         },
-                        { text: 'Descripción Accion ',  dataField: 'cod_a', width:'50%', align:'center', cellsrenderer: function(row, column, value, rowData){
+                        { text: 'A',  dataField: 'cod_a', width: 50, align:'center', cellsalign: 'center', cellsrenderer: function(row, column, value, rowData){
+                                return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_a}</b> - ${rowData.desc_a}">${rowData.cod_a}</span>`
+                            } 
+                        },
+                        { text: 'Descripción Accion ',  dataField: 'desc_a', width:'50%', align:'center', cellsrenderer: function(row, column, value, rowData){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_a}</b> - ${rowData.desc_a}">${rowData.nombre_a} - ${rowData.desc_a}</span>`
                             } 
                         },
@@ -517,7 +527,7 @@ $(function(){
             var obj = {
                 id : $("#id_pmra").val(),
                 id_a: $("#pmra_id_a").val(),
-                _token : $('input[name=_token]').val(),
+                _token : ctxgral.token,
                 id_plan : globalSP.idPlanActivo,
                 p: globalSP.idPlanActivo
             }
@@ -576,7 +586,7 @@ $(function(){
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.post(globalSP.urlApi + 'delete_pmra', {'id': id, _token : $('input[name=_token]').val(), }, function(res){
+                    $.post(globalSP.urlApi + 'delete_pmra', {'id': id, _token : ctxgral.token, }, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -604,13 +614,16 @@ $(function(){
                                     </div>`;
             _.mapObject(pils, function(elem, key){
                 var pilar = elem[0];
-                html += `<div class="panel-body"> 
-                                <div class="col-sm-3">
+                html += `<div class="panel-body row" > 
+                            <div class="col-sm-3">
+                                <div class="w50">
                                     <img width="50" class=""  src="/img/${pilar.logo_p}"/>
-                                    <span class="badge badge-hero bg-system dark" data-toggle="tooltip" data-container="body" data-html="true" title="N° de acciones ${elem.length}">${elem.length}</span> 
+                                    <span class="badge badge-hero bg-system dark pull-right posr" style="top:-6px;" data-toggle="tooltip" data-container="body" data-html="true" title="N° de acciones ${elem.length}, para el <b>${pilar.nombre_p}</b>- ${pilar.desc_p}">${elem.length}</span> 
                                 </div> 
-                                <div class="col-sm-9"><span><b>${pilar.nombre_p}</b>- ${pilar.desc_p}</span>  </div>
-                            </div>`;               
+                            </div>
+                            <div class="col-sm-9"><span><b>${pilar.nombre_p}</b>- ${pilar.desc_p}</span>  </div>
+                                
+                        </div>`;               
             });
              $("#sp_est_pilar_acciones").html(html);
         }
@@ -692,30 +705,35 @@ $(function(){
                                 return `<a href="javascript:void(0)"  class="m-l-10 m-r-10 m-t-10 sel_add" title="Agregar indicador y programación dentro en la articulación de resultado " ><i class="fa fa-plus-circle fa-2x text-success "></i></a>`;
                             }
                         }, 
-                        { text: 'Indicadores de resultado y su Programación ' + ( (ctxprog.source.localdata.length>0) ? ` para ${ctxprog.source.localdata[0].gestion_ini} -  ${ctxprog.source.localdata[0].gestion_fin} ` : '' ),    align:'center', cellClassName: 'sp_cellTable', 
+                        { text: 'Indicadores de resultado y su Programación ' + ( (ctxprog.source.localdata.length>0) ? ` para ${ctxprog.source.localdata[0].gestion_ini} -  ${ctxprog.source.localdata[0].gestion_fin} ` : '' ),    align:'center', width: 1200,cellClassName: 'sp_cellTable', 
                             cellsrenderer: function(row, column, value, rowData){
-                                html = '';
-                                var headGestiones = '';
-                                for(i=rowData.gestion_ini; i<= rowData.gestion_fin; i++)
-                                    headGestiones += `<th>${i}</th>`;
-
+                                var html = ''; 
                                 if(rowData.indicadores.length>0){ 
-                                    var html = `<table class="table table-bordered table-hover fs11 sp_table">
-                                                    <thead><tr class="primary"> <th>Indicador de Res.</th> <th>Variable</th> <th>Unidad</th> <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
+                                    var headGestiones = '';
+                                    for(i=rowData.gestion_ini; i<= rowData.gestion_fin; i++)
+                                        headGestiones += `<th>${i}</th>`;
+
+                                     html = `<table class="table table-bordered table-hover fs11 sp_table">
+                                                    <thead><tr class="primary"> <th>Indicador de Res.</th> <th>Variable</th>  <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
                                                     <tbody>`;
 
-                                    rowData.indicadores.forEach(function(ind){
+                                    rowData.indicadores.forEach(function(ind, index){
                                         var prog_row = '';
                                         _.sortBy(ind.programacion, 'gestion').forEach(function(ip){
                                             var valor = ip.dato || '';
-                                            prog_row += `<td sp_id="${ip.id_ip}" class="sp_editable" sp_codtc="ip_d"  >${valor}</td>`;
+                                            prog_row += `<td sp_id="${ip.id_ip}" class="sp_editable" sp_codtc="ip_d"  >${valor} ${ind.unidad}</td>`;
                                         });
 
                                         html += `<tr>
-                                                    <td class="sp_editable" sp_codtc="i_n" sp_id="${ind.id_indicador}">${ind.nombre_indicador}</td> <td>${ind.variable}</td> <td>${ind.unidad}</td> <td>${ind.linea_base}</td> <td class="sp_editable" sp_codtc="i_a" sp_id="${ind.id_indicador}">${ind.alcance}</td> ${prog_row} <td><a href="javascript:void(0)" id_arti_resultado_indicador="${ind.id_arti_resultado_indicador}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
+                                                    <td class="sp_editable" sp_codtc="i_n" sp_id="${ind.id_indicador}">${ind.nombre_indicador}</td> 
+                                                    <td>${ind.variable}</td>
+                                                    <td>${ind.linea_base} ${ind.unidad}</td> 
+                                                    <td class="sp_editable" sp_codtc="i_a" sp_id="${ind.id_indicador}">${ind.alcance}</td> 
+                                                    ${prog_row} 
+                                                    <td><a href="javascript:void(0)"  index_ari="${index}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Indicador y programación" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+                                                        <a href="javascript:void(0)" id_arti_resultado_indicador="${ind.id_arti_resultado_indicador}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
                                                 </tr>`;
                                     });
-
                                     html +=    `</tbody>
                                              </table>`;
                                 }
@@ -730,39 +748,69 @@ $(function(){
             });
         },
         getDataForm: function(){
+            gestion_ini = ctxprog.dataTable.jqxDataTable('getSelection')[0].gestion_ini;
+            gestion_fin = ctxprog.dataTable.jqxDataTable('getSelection')[0].gestion_fin;
             var obj = {
-                id_plan_articulacion_pdes: $("#id_plan_articulacion_pdes").val(),
-                id_arti_indicador : $("#id_arti_indicador").val(),
-                nombre_indicador :$("#nombre_indicador_res").val(),
-                idp_unidad: $("#idp_unidad_res").val(),
-                id_diagnostico: $("#variable_res").val(),
-                variable: $("#variable_res  option:selected").text(),
-                linea_base : $("#linea_base_res").val(),
-                alcance: $("#alcance_res").val(),
-                _token : $('input[name=_token]').val(),
+                _token : ctxgral.token,
                 id_plan : globalSP.idPlanActivo,
-                p: globalSP.idPlanActivo
-            }
+                p: globalSP.idPlanActivo,
+                indicador: {
+                    id : $("#id_indicador_prog").val(),
+                    nombre :$("#nombre_indicador_prog").val(),
+                    idp_unidad: $("#idp_unidad_prog").val(),
+                    // id_diagnostico: $("#variable_prog").val(),
+                    variable: $("#variable_prog").val(),
+                    alcance: $("#alcance_prog").val(),
+                },
+                arti_resultado_indicador: {
+                    id: $("#id_arti_resultado_indicador_prog").val(),
+                    id_plan_articulacion_pdes : ctxprog.dataTable.jqxDataTable('getSelection')[0].id,
+                },
+                indicador_ejecucion: {
+                    id: $("#id_indicador_ejecucion_prog").val(),
+                    gestion: gestion_ini - 1,
+                    dato: $("#linea_base_prog").val(),
+                }
+
+
+            };
             var indProgramacion = [];
-            for(var i = globalSP.planActivo.gestion_inicio; i <= globalSP.planActivo.gestion_fin; i++){
+            for(var i = gestion_ini; i <= gestion_fin; i++){
                 var prog = {};
+                prog.id = $("#form_prog .id" + i).val();;
                 prog.gestion = i;
                 prog.dato =  $("#form_prog .d" + i).val();
                 indProgramacion.push(prog);
             }     
-            obj.indicadoresProgramacion = indProgramacion;
+            obj.indicadores_programacion = indProgramacion;
             return obj;
         },
-        // setDataForm: function(obj){
-        //     $("#id_pol").val(obj.id);
-        //     $("#politica").val(obj.politica);
-        //     $("#ids_pilares").val(obj.ids_pilares).change();
-        // },
+        editar: function(index){
+            $(".tituloModal span").html(`Modificar Programación de Resultado`);
+            var rowSelected = ctxprog.dataTable.jqxDataTable('getSelection')[0];
+            var indicadorsel = rowSelected.indicadores[index];
+            $("#id_diagnostico").val('').change();
+            $("#id_arti_resultado_indicador_prog").val(indicadorsel.id_arti_resultado_indicador);
+            $("#id_indicador_prog").val(indicadorsel.id_indicador);
+            $("#id_indicador_ejecucion_prog").val(indicadorsel.id_indicador_ejecucion);
+            $("#nombre_indicador_prog").val(indicadorsel.nombre_indicador);
+
+            $("#variable_prog").val(indicadorsel.variable);
+            $("#idp_unidad_prog").val(indicadorsel.idp_unidad).change();
+            $("#linea_base_prog").val(indicadorsel.linea_base);
+            $("#alcance_prog").val(indicadorsel.alcance);
+            
+            var html = genera_inputgestiones(rowSelected.gestion_ini, rowSelected.gestion_fin, indicadorsel.programacion);
+            $("#gestiones_prog tbody").html(html);
+            ctxgral.showModal("#modal_prog");
+        },
         nuevo: function(){
-            $(".tituloModal span").html(`Agregar Programacion de Resultado`);
-            $('#form_prog input:text, #form_prog textarea ').val('');
+            $(".tituloModal span").html(`Agregar Programación de Resultado`);
+            $('#form_prog input:text, #form_prog textarea').val('');
             $("select").val('').change();
             var rowSelected = ctxprog.dataTable.jqxDataTable('getSelection')[0];
+            var html = genera_inputgestiones(rowSelected.gestion_ini, rowSelected.gestion_fin);
+            $("#gestiones_prog tbody").html(html);
             $("#id_plan_articulacion_pdes").val(rowSelected.id);
             $("#pmr_prog").html(`<b>${rowSelected.cod_p} . ${rowSelected.cod_m} . ${rowSelected.cod_r}</b>`);
             $("#pilar_prog").html(`<b>${rowSelected.nombre_p}</b> - ${rowSelected.desc_p}`);
@@ -770,57 +818,58 @@ $(function(){
             $("#resultado_prog").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
             ctxgral.showModal("#modal_prog");
         },
-        editar_valorcampo: function(obj){
-            $("#sp_codtc").val(obj.sp_codtc);
-            $("#sp_id_editcampo").val(obj.sp_id_editcampo)
-            $("#sp_valor_editcampo").val(obj.sp_valor_editcampo)
-            $(".state-error").removeClass("state-error")
-            $("#form_prog em").remove();
+        // editar_valorcampo: function(obj){
+        //     $("#sp_codtc").val(obj.sp_codtc);
+        //     $("#sp_id_editcampo").val(obj.sp_id_editcampo)
+        //     $("#sp_valor_editcampo").val(obj.sp_valor_editcampo)
+        //     $(".state-error").removeClass("state-error")
+        //     $("#form_prog em").remove();
 
-            $.magnificPopup.open({
-                removalDelay: 500, //delay removal by X to allow out-animation,
-                focus: '',
-                items: {
-                    src: "#modal_editcampo"
-                },
-                // overflowY: 'hidden', //
-                callbacks: {
-                    beforeOpen: function(e) {
-                        var Animation = "mfp-zoomIn";
-                        this.st.mainClass = Animation;
-                    }
-                },
-            });
-        },
-        save_editcampo(){
-            var obj={
-                codtc : $("#sp_codtc").val(),
-                valor: $("#sp_valor_editcampo").val(),
-                id: $("#sp_id_editcampo").val(),
-                _token : $('input[name=_token]').val()
-            };
-            $.post(globalSP.urlApi + 'modifycampo', obj, function(res){
-                ctxgral.refreshList(ctxprog);
-                new PNotify({
-                            title: res.estado == 'success' ? 'Guardado' : 'Error',
-                            text: res.msg,
-                            shadow: true,
-                            opacity: 0.9,
-                            addclass: noteStack,
-                            type: (res.estado == 'success') ? "success" : "danger",
-                            stack: Stacks[noteStack],
-                            width: findWidth(),
-                            delay: 1500
-                        });
-                $.magnificPopup.close(); 
-            });
-        },
+        //     $.magnificPopup.open({
+        //         removalDelay: 500, //delay removal by X to allow out-animation,
+        //         focus: '',
+        //         items: {
+        //             src: "#modal_editcampo"
+        //         },
+        //         // overflowY: 'hidden', //
+        //         callbacks: {
+        //             beforeOpen: function(e) {
+        //                 var Animation = "mfp-zoomIn";
+        //                 this.st.mainClass = Animation;
+        //             }
+        //         },
+        //     });
+        // },
+        // save_editcampo(){
+        //     var obj={
+        //         codtc : $("#sp_codtc").val(),
+        //         valor: $("#sp_valor_editcampo").val(),
+        //         id: $("#sp_id_editcampo").val(),
+        //         _token : ctxgral.token
+        //     };
+        //     $.post(globalSP.urlApi + 'modifycampo', obj, function(res){
+        //         ctxgral.refreshList(ctxprog);
+        //         new PNotify({
+        //                     title: res.estado == 'success' ? 'Guardado' : 'Error',
+        //                     text: res.msg,
+        //                     shadow: true,
+        //                     opacity: 0.9,
+        //                     addclass: noteStack,
+        //                     type: (res.estado == 'success') ? "success" : "danger",
+        //                     stack: Stacks[noteStack],
+        //                     width: findWidth(),
+        //                     delay: 1500
+        //                 });
+        //         $.magnificPopup.close(); 
+        //     });
+        // },
         validateRules: function(){
            return {
-                nombre_indicador_res:  { required: 'Campo requerido' },
-                idp_unidad_res:  { required: 'Campo requerido' },
-                linea_base_res:  { required: 'Campo requerido' },
-                alcance_res:  { required: 'Campo requerido' },
+                nombre_indicador_prog:  { required: 'Campo requerido' },
+                idp_unidad_prog:  { required: 'Campo requerido' },
+                variable_prog:  { required: 'Campo requerido' },
+                linea_base_prog:  { required: 'Campo requerido' },
+                alcance_prog:  { required: 'Campo requerido' },
             }                 
         }, 
         saveData: function(){
@@ -853,7 +902,7 @@ $(function(){
                   confirmButtonText: "Si, eliminar!",
                   closeOnConfirm: true
                 }, function(){
-                    $.post(globalSP.urlApi + 'deleteprogramacion', {'id_ari': id_ari, _token : $('input[name=_token]').val(), }, function(res){
+                    $.post(globalSP.urlApi + 'deleteprogramacion', {'id_ari': id_ari, _token : ctxgral.token, }, function(res){
                         new PNotify({
                                   title: !res.error ? 'Eliminado' : 'Error!!' ,
                                   text: res.msg,
@@ -883,51 +932,60 @@ $(function(){
                                         </span>
                                     </div>`;
             _.mapObject(pils, function(elem, key){
+                var inds = elem.reduce(function(sum, item){
+                    return sum + item.indicadores.length;
+                }, 0);
                 var pilar = elem[0];
                 html += `<div class="panel-body"> 
-                                <div class="">
+                                <div class="w50">
+
                                     <img width="50" class="" data-toggle="tooltip" data-container="body" data-html="true" title="<b>${pilar.nombre_p}</b> - ${pilar.desc_p}" src="/img/${pilar.logo_p}"/>
-                                    <span class="badge badge-hero  bg-system dark" data-toggle="tooltip" data-container="body" data-html="true" title="N° de resultados asociados ${elem.length}">${elem.length}</span> 
-                                    <!-- <span class="badge badge-hero bg-primary dark" style="  top: -12px; margin-left: 20px;" data-toggle="tooltip" data-container="body" data-html="true" title="N° de indicadores ${elem.length}">${elem.length}</span>  -->
+                                    <span class="badge badge-hero  bg-warning dark pull-left posr" style="top:-9px;" data-toggle="tooltip" data-container="body" data-html="true" title="N° de resultados asociados ${elem.length}">${elem.length}</span> 
+                                    <span class="badge badge-hero bg-primary dark pull-right posr" style=" top: -9px; " data-toggle="tooltip" data-container="body" data-html="true" title="N° de indicadores ${inds}">${inds}</span>  
                                 </div> 
                             </div>`;               
             });
              $("#sp_est_pilar_res").html(html);
         }
+
     }
 
+
+
+
+    /* ************************************* Init ****************************/
     var init = (function(){
         gerera_opciones = function(arr){
             return arr.reduce(function(carry, op){
                 return carry + `<option value="${op.id}">${op.nombre} - ${op.descripcion} </option>`;
             },'');          
         }
-        genera_inputgestiones = function(){
-            var html='';
-            $.get(globalSP.urlApi + "getparametros/periodo_plan", function(res){    
-                periodo = res.data[0];
-                gestion_ini = periodo.valor;
-                gestion_fin = periodo.valor2;
-                for(var gt = gestion_ini; gt <= gestion_fin; gt++)
-                { 
-                    html += `<tr>
-                        <td class="fs17 text-center w30">
-                            <span class="fa fa-newspaper-o text-info"></span>
-                        </td>
-                        <td class="va-m fw600 text-muted">${gt}</td>
-                        <td class="fs14 fw700 text-muted text-right">
-                            <label for="mod_dato" class="field prepend-icon">
-                                <input type="text" name="g${gt}"  class="hidden g${gt}" value="${gt}" >
-                                <input type="text" name="d${gt}"  class="gui-input d${gt}" placeholder="Valor">
-                                <label for="d${gt}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
-                                </label>
+
+        genera_inputgestiones = function(gestion_ini, gestion_fin, data){
+            var html='';                  
+            for(var g = gestion_ini; g <= gestion_fin; g++)
+            { 
+                var ip = { id_ip:'', dato: ''};
+                if(data)
+                    ip =  _.find(data, function(prog){ return prog.gestion == g});
+                
+                html += `<tr>
+                    <td class="fs17 text-center w30">
+                        <span class="fa fa-newspaper-o text-info"></span>
+                    </td>
+                    <td class="va-m fw600 text-muted">${g}</td>
+                    <td class="fs14 fw700 text-muted text-right">
+                        <label for="mod_dato" class="field prepend-icon">
+                            <input type="text"  class="hidden id${g}" value="${ip.id_ip}" >
+                            <input type="text"  class="hidden g${g} " value="${g}" >
+                            <input type="text"  class="gui-input d${g}" placeholder="Valor" value="${ip.dato || ''}">
+                            <label for="d${g}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
                             </label>
-                        </td>
-                    </tr>`;
-                }
-                $("#gestiones_prog tbody").html(html);
-                return html;
-            })
+                        </label>
+                    </td>
+                </tr>`;
+            }
+            return html;            
         }
 
         planif_submenu_activo =  function(index){
@@ -944,6 +1002,8 @@ $(function(){
                 infinite: false,
                 speed: 500,
                 arrows:false,
+                touchMove:false,
+                swipe:false,
             });
 
             /* De los submenus de arriba */            
@@ -957,33 +1017,33 @@ $(function(){
                 $(this).tooltip('show')
             });
             $("body").on('mouseout', '[data-toggle="tooltip"]', function(){
-                $(this).tooltip('hide')
-            });
+                $(this).tooltip('hide');
+            }); 
+            $("#limpiaTooltips").click(function(){
+                $('.tooltip-inner, .tooltip-arrow').hide();
+            })           
 
-            /*Coloca el titulo en topdbar*/
-            $(".sp_titulo_topbar_right h4").html( (globalSP.planActivo.cod_tipo_plan == 'PSDI')? 'Planificación Sectorial':'Planificación Institucional');
+            // /* para los campos editables con dblclick*/
+            // $("#planificacionContainer").on('mouseover', '.sp_editable', function(event) {
+            //     $(this).append('<span class="fa fa-edit fa-lg pull-right sp_iconedit text-muted" style="position: relative; top: -10px; margin-right: -8px; z-index: 99999";  ></span>');
+            // });
+            // $("#planificacionContainer").on('mouseout', '.sp_editable', function(event) {
+            //     $(this).find('.sp_iconedit').remove();
+            // });
 
-            /* para los campos editables con dblclick*/
-            $("#planificacionContainer").on('mouseover', '.sp_editable', function(event) {
-                $(this).append('<span class="fa fa-edit fa-lg pull-right sp_iconedit text-muted" style="position: relative; top: -10px; margin-right: -8px; z-index: 99999";  ></span>');
-            });
-            $("#planificacionContainer").on('mouseout', '.sp_editable', function(event) {
-                $(this).find('.sp_iconedit').remove();
-            });
+            //  al hacer dblclick en un campo .sp_editable
+            // $("#planificacionContainer").on('dblclick', '.sp_editable', function(event) {
+            //     var obj={
+            //         sp_codtc : $(this).attr('sp_codtc'),
+            //         sp_id_editcampo : $(this).attr('sp_id'),
+            //         sp_valor_editcampo : $(this).text(),
+            //     }
+            //     ctxprog.editar_valorcampo(obj);
+            // });
 
-            /* al hacer dblclick en un campo .sp_editable*/
-            $("#planificacionContainer").on('dblclick', '.sp_editable', function(event) {
-                var obj={
-                    sp_codtc : $(this).attr('sp_codtc'),
-                    sp_id_editcampo : $(this).attr('sp_id'),
-                    sp_valor_editcampo : $(this).text(),
-                }
-                ctxprog.editar_valorcampo(obj);
-            });
-
-            $(".sp_save_editcampo").click(function(){
-                ctxprog.save_editcampo();
-            });
+            // $(".sp_save_editcampo").click(function(){
+            //     ctxprog.save_editcampo();
+            // });
 
             $(".sp_cancelar").click(function(){
                 $.magnificPopup.close();
@@ -1051,20 +1111,18 @@ $(function(){
             variablesDiagnostico = [];
             metricas = [];
 
-            /* select 2 */  
+            /* de los select 2 */  
             $.get(globalSP.urlApi + "getparametros/metricas", function(res){
                 metricas = res.data;
                 var html = '';
                 res.data.forEach(function(op){
                     html += `<option value="${op.id}">${op.codigo} - ${op.nombre} </option>`;
                 });         
-                $("#idp_unidad_res").html(html);
-                $("#idp_unidad_res").select2({
+                $("#idp_unidad_prog").html(html);
+                $("#idp_unidad_prog").select2({
                     placeholder: 'Unidad de medida ...',
                 });
             });
-
-
 
             $.get(globalSP.urlApi + 'listvariables_lb', {p : globalSP.idPlanActivo}, function(res){
                 var html = '';
@@ -1072,17 +1130,18 @@ $(function(){
                 res.data.forEach(function(op){
                     html += `<option value="${op.id_diagnostico}">${op.variable}</option>`;
                 });
-                $("#variable_res").html(html);
-                $("#variable_res").select2({
-                    placeholder: 'Variable ...',
+                $("#id_diagnostico").html(html);
+                $("#id_diagnostico").select2({
+                    placeholder: 'Puede seleccionar una Variable del diagnóstico ',
                 }); 
             });
 
-            $("#variable_res").change(function() {
-                var varsel = _.find(variablesDiagnostico, function(elem){ return elem.id_diagnostico == $("#variable_res").val(); });
+            $("#id_diagnostico").change(function() {
+                var varsel = _.find(variablesDiagnostico, function(elem){ return elem.id_diagnostico == $("#id_diagnostico").val(); });
                 if(varsel){ 
-                    $("#idp_unidad_res").val(varsel.idp_unidad).change();
-                    $("#linea_base_res").val(varsel.dato);
+                    $("#variable_prog").val(varsel.variable);
+                    $("#idp_unidad_prog").val(varsel.idp_unidad).change();
+                    $("#linea_base_prog").val(varsel.dato);
                 }
             });
             
@@ -1095,12 +1154,15 @@ $(function(){
                 ctxprog.nuevo()
             });
 
+            $("#planificacion_prog").on('click', '.sel_edit', function(){
+                var index_ari = $(this).attr("index_ari");
+                ctxprog.editar(index_ari);
+            });
+
             $("#planificacion_prog").on('click', '.sel_delete', function(){
                 var id_ari = $(this).attr("id_arti_resultado_indicador");
                 ctxprog.delete(id_ari);
             });
-
-            genera_inputgestiones();
         }
 
         listeners();
@@ -1110,10 +1172,13 @@ $(function(){
     })();
 
     globalSP.activarMenu(globalSP.menu.Planificacion);
-    globalSP.cargarGlobales();
+    globalSP.cargarGlobales(function(){
+        /*Coloca el titulo en topdbar*/
+            $(".sp_titulo_topbar_right h3").html( (globalSP.planActivo.cod_tipo_plan == 'PSDI') ? 'Planificación Sectorial':'Planificación Institucional');
+    });
     globalSP.setBreadcrumb('Planificación', 'Planificación');
     $("#planificacion_plaa").load('/v/ModuloPlanificacion.view-planificacion-pmra-inds')
-    planif_submenu_activo(1);
+    planif_submenu_activo(3);
 
 })
 

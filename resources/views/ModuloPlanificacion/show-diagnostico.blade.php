@@ -83,7 +83,7 @@
               <div class="panel panel-visible" id="spy1">
                   <div class="panel-heading bg-dark">
                       <div class="panel-title hidden-xs">
-                         <span class="glyphicon glyphicon-tasks"></span>Diagnóstico
+                         <span class="fa  fa-lightbulb-o"></span>Diagnóstico
                          <div class="pull-right">
                            <button id="nuevo"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar variable</button>
                            <button id="editar"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>
@@ -101,7 +101,7 @@
               <div class="panel panel-visible" id="spy2">
                 <div class="panel-heading bg-dark">
                     <div class="panel-title hidden-xs">
-                       <span class="glyphicon glyphicon-tasks"></span>Sistemas de Vida
+                       <span class="fa  fa-lightbulb-o"></span>Sistemas de Vida
                        <div class="pull-right">
                          <button id="nuevoSv"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar</button>
                          <button id="editarSv"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>
@@ -119,7 +119,7 @@
               <div class="panel panel-visible" id="spy3">
                   <<div class="panel-heading bg-dark">
                       <div class="panel-title hidden-xs">
-                         <span class="glyphicon glyphicon-tasks"></span>Riesgos
+                         <span class="fa  fa-lightbulb-o"></span>Riesgos
                          <div class="pull-right">
                            <button id="nuevoRi"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar</button>
                            <button id="editarRi"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>

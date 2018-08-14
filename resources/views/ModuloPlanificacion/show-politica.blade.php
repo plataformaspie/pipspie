@@ -39,7 +39,7 @@
                 <div class="panel panel-visible" id="spy2">
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title ">
-                            <i class="glyphicon glyphicon-tasks" ></i><span class="sp_politica"></span> <span class="sp_est_politica"></span>
+                            <i class="fa fa-puzzle-piece fa-2x" ></i><span class="sp_politica"></span> <span class="sp_est_politica"></span>
                         </div>
                     </div>
                     <div class="panel-body pn">
