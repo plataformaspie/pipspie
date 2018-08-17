@@ -191,6 +191,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
     $matriz['resultado'] = $req->resultado;
     $matriz['accion'] = $req->accion;
     $matriz['descripcion_accion'] = $req->descripcion_accion;    
+    $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;    
     $matriz['usuario_creador']=$this->user->id;
     $matriz['fecha_creacion']=date("d/m/Y H:i:s");
     $matriz['estado'] = 'CREADO';

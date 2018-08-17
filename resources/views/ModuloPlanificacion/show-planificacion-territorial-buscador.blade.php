@@ -468,14 +468,14 @@
             { name: 'meta', type: 'int'},
             { name: 'resultado', type: 'int'},
             { name: 'accion', type: 'int'},
-            { name: 'descripcion_directriz', type: 'datafield'}
+            { name: 'descripcion_accion', type: 'datafield'}
           ],
           datatype: "json"
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
         $("#matrices").jqxGrid(
           {
-            width: '1050',
+            width: '1200',
             source: dataAdapter,
             theme: 'energyblue',
             altrows: true,
@@ -516,7 +516,7 @@
              { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
              { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
              { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
-             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_directriz', width: 250},
+             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 250},
             ]
           });
         $('#clearfilteringbutton').jqxButton({ height: 25});

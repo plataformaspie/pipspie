@@ -31,6 +31,9 @@
 <p><select id="tip"class="form-control"><option value="0">Seleccione el Tipo</option></select></p>
 <p><select id="ser"class="form-control"><option value="0">Seleccione el Servicio</option></select></p>
 <p><select id="acci"class="form-control"><option value="0">Seleccione la Accion ETA</option></select></p>
+<div class="form-group">
+  <p> <textarea name="descripcion_accion_eta" id="descripcion_accion_eta" rows="2" cols="5" placeholder="descripción accion eta" style="width: 50%"></textarea></p>    
+</div>                  
 <p><select id="pilar" disabled><option value="0">P</option></select>
 <select id="meta" disabled><option value="0">M</option></select>
 <select id="resultado" disabled><option value="0">R</option></select>
@@ -254,6 +257,7 @@ function sumarPresupu(){
         objeto.resultado = $("#txtresul").val();
         objeto.accion = $("#txtaccion").val();        
         objeto.descripcion_accion = $("#descripaccion").val();        
+        objeto.descripcion_accion_eta = $("#descripcion_accion_eta").val();  
         objeto._token = $('input[name=_token]').val()
         console.log(objeto);
         //---------------------aqui esta el try de la insercion
