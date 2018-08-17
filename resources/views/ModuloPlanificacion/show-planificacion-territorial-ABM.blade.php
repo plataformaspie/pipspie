@@ -491,56 +491,56 @@
                             <tr>
                               <td>                                              
                                 <div class="form-group">
-                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: ;" >
+                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: none;" >
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: ;" >
+                <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display:none ;" >
               </div>
               <div class="form-group">
-              <input type="text" class="form-control" name="txtprov" id="txtprov" placeholder="provincia" required value="" style="display: ;">
-              </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display: ;">
+              <input type="text" class="form-control" name="txtprov" id="txtprov" placeholder="provincia" required value="" style="display: none;">
               </div>
 
               <div class="form-group">
-                <input type="text"class="form-control" name="txtgas" id="txtgas" placeholder="programatica" value=""style="display: ;">
+                <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display:none ;">
+              </div>
+
+              <div class="form-group">
+                <input type="text"class="form-control" name="txtgas" id="txtgas" placeholder="programatica" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display: ;" >
+                <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display:none ;" >
               </div>              
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtpilar" id="txtpilar" placeholder="pilar" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtpilar" id="txtpilar" placeholder="pilar" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                  <input type="text" class="form-control" maxlength="15" size="15" name="txtmetas" id="txtmetas" placeholder="meta" value=""style="display: ;">
+                  <input type="text" class="form-control" maxlength="15" size="15" name="txtmetas" id="txtmetas" placeholder="meta" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                  <input type="text" class="form-control" maxlength="15" size="15" name="txtresul" id="txtresul" placeholder="resultados" value=""style="display: ;">
+                  <input type="text" class="form-control" maxlength="15" size="15" name="txtresul" id="txtresul" placeholder="resultados" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtaccion" id="txtaccion" placeholder="acciones" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtaccion" id="txtaccion" placeholder="acciones" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="descripaccion" id="descripaccion" placeholder="pdes" value="" style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="descripaccion" id="descripaccion" placeholder="pdes" value="" style="display:none ;">
               </div>
 
               <a class="btn btn-primary " href="#" role="button" id="verificaragregar" name="verificaragregar" style="display: inline;" onclick="verificaragregar()">Verificar</a>
 
-              <button  class="btn btn-primary" id="guardar" name="guardar" >Agregar</button>
+              <button  class="btn btn-primary" id="guardar" name="guardar" style="display:none ;" >Agregar</button>
               <button type="button" class="btn btn-success" id="cerraragregar" name="cerraragregar">Atrás</button>
                               </td>
                             </tr>
