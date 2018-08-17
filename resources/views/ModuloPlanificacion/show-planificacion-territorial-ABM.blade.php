@@ -489,13 +489,15 @@
                               </td>
                             </tr>
                             <tr>
-                              <td>                                              
+                              <td>                              
+                              <!--aqui se encuentra todo lo que se-->                
                                 <div class="form-group">
                   <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: none;" >
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display:none ;" >
               </div>
+
               <div class="form-group">
               <input type="text" class="form-control" name="txtprov" id="txtprov" placeholder="provincia" required value="" style="display: none;">
               </div>
