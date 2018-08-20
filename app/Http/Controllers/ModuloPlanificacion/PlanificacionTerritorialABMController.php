@@ -153,6 +153,8 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $matriz['accion'] = $req->accion;
     $matriz['descripcion_accion'] = $req->descripcion_accion;    
     $matriz['usuario_modificador']=$this->user->id;
+    $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;
+    
     $matriz['fecha_modificacion']=date("d/m/Y H:i:s");
     $matriz['estado'] = 'MODIFICADO';
     
