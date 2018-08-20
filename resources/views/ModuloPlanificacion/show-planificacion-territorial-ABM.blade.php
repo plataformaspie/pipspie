@@ -489,58 +489,60 @@
                               </td>
                             </tr>
                             <tr>
-                              <td>                                              
+                              <td>                              
+                              <!--aqui se encuentra todo lo que se-->                
                                 <div class="form-group">
-                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: ;" >
+                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: none;" >
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: ;" >
-              </div>
-              <div class="form-group">
-              <input type="text" class="form-control" name="txtprov" id="txtprov" placeholder="provincia" required value="" style="display: ;">
+                <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display:none ;" >
               </div>
 
               <div class="form-group">
-                <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display: ;">
+              <input type="text" class="form-control" name="txtprov" id="txtprov" placeholder="provincia" required value="" style="display: none;">
               </div>
 
               <div class="form-group">
-                <input type="text"class="form-control" name="txtgas" id="txtgas" placeholder="programatica" value=""style="display: ;">
+                <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display:none ;">
+              </div>
+
+              <div class="form-group">
+                <input type="text"class="form-control" name="txtgas" id="txtgas" placeholder="programatica" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display: ;" >
+                <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display:none ;" >
               </div>              
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtpilar" id="txtpilar" placeholder="pilar" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtpilar" id="txtpilar" placeholder="pilar" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                  <input type="text" class="form-control" maxlength="15" size="15" name="txtmetas" id="txtmetas" placeholder="meta" value=""style="display: ;">
+                  <input type="text" class="form-control" maxlength="15" size="15" name="txtmetas" id="txtmetas" placeholder="meta" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                  <input type="text" class="form-control" maxlength="15" size="15" name="txtresul" id="txtresul" placeholder="resultados" value=""style="display: ;">
+                  <input type="text" class="form-control" maxlength="15" size="15" name="txtresul" id="txtresul" placeholder="resultados" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtaccion" id="txtaccion" placeholder="acciones" value=""style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtaccion" id="txtaccion" placeholder="acciones" value=""style="display:none ;">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" maxlength="15" size="15" name="descripaccion" id="descripaccion" placeholder="pdes" value="" style="display: ;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="descripaccion" id="descripaccion" placeholder="pdes" value="" style="display:none ;">
               </div>
 
               <a class="btn btn-primary " href="#" role="button" id="verificaragregar" name="verificaragregar" style="display: inline;" onclick="verificaragregar()">Verificar</a>
 
-              <button  class="btn btn-primary" id="guardar" name="guardar" >Agregar</button>
+              <button  class="btn btn-primary" id="guardar" name="guardar" style="display:none ;" >Agregar</button>
               <button type="button" class="btn btn-success" id="cerraragregar" name="cerraragregar">Atrás</button>
                               </td>
                             </tr>
@@ -1183,7 +1185,56 @@ function verificaragregar()
                                     var y = document.getElementById('verificaragregar');
                                     y.style.display = 'none';
                                       x.style.display = 'inline';
-                                      var x=$("#txtpresu").val();
+                                      var a=document.getElementById('eta');
+                                a.disabled=true; 
+                                var b=document.getElementById('dep');
+                                b.disabled=true;
+                                var c=document.getElementById('prov');
+                                c.disabled=true;
+                                var d=document.getElementById('mun');
+                                d.disabled=true;
+                                var e=document.getElementById('gas');
+                                e.disabled=true;
+                                var f=document.getElementById('tip');
+                                f.disabled=true;
+                                var g=document.getElementById('ser');
+                                g.disabled=true;     
+                                var h=document.getElementById('acci');
+                                h.disabled=true;
+                                var i=document.getElementById('descripcion_accion_eta');
+                                i.disabled=true;
+                                var j=document.getElementById('linea_base');
+                                j.disabled=true;
+                                var k=document.getElementById('ind_proceso');
+                                k.disabled=true;
+                                var l=document.getElementById('tipocantidad');
+                                l.disabled=true;
+                                var m=document.getElementById('cantidad');
+                                m.disabled=true;
+                                var n=document.getElementById('2016');
+                                n.disabled=true;
+                                var o=document.getElementById('2017');
+                                o.disabled=true;     
+                                var p=document.getElementById('2018');
+                                p.disabled=true;
+                                var q=document.getElementById('2019');
+                                q.disabled=true;
+                                var r=document.getElementById('2020');
+                                r.disabled=true;
+                                var s=document.getElementById('txtpresu');
+                                s.disabled=true;
+                                var t=document.getElementById('p2016');
+                                t.disabled=true;
+                                var u=document.getElementById('p2017');
+                                u.disabled=true;
+                                var v=document.getElementById('p2018');
+                                v.disabled=true;
+                                var w=document.getElementById('p2019');
+                                w.disabled=true;
+                                var p20=document.getElementById('p2020');
+                                p20.disabled=true;
+
+
                                }
                               
                             }
@@ -1318,6 +1369,8 @@ function verificaragregar()
                   { name: 'estado', type: 'datafield'},
                   { name: 'id_clasificador', type: 'int'},
                   { name: 'descripcion_accion_eta', type: 'datafield'},
+                  { name: 'descripcion_accion_eta_edit', type: 'datafield'},
+                  
                   { name: 'id_servicio', type: 'int'}                  
                 ],
                 datatype: "json",
@@ -2045,6 +2098,55 @@ function verificaredit()
                                     var y = document.getElementById('verificaredit');
                                     y.style.display = 'none';
                                       x.style.display = 'inline';
+                                var a=document.getElementById('etaedit');
+                                a.disabled=true;     
+                                var b=document.getElementById('depedit');
+                                b.disabled=true;
+                                var c=document.getElementById('provedit');
+                                c.disabled=true;
+                                var d=document.getElementById('munedit');
+                                d.disabled=true;
+                                var e=document.getElementById('gasedit');
+                                e.disabled=true;
+                                var f=document.getElementById('seredit');
+                                f.disabled=true;
+                                var g=document.getElementById('tipedit');
+                                g.disabled=true;     
+                                var h=document.getElementById('acciedit');
+                                h.disabled=true;
+                                var i=document.getElementById('descripcion_accion_eta_edit');
+                                i.disabled=true;
+                                var j=document.getElementById('linea_baseedit');
+                                j.disabled=true;
+                                var k=document.getElementById('ind_procesoedit');
+                                k.disabled=true;
+                                var l=document.getElementById('tipocantidadedit');
+                                l.disabled=true;
+                                var m=document.getElementById('cantidadedit');
+                                m.disabled=true;
+                                var n=document.getElementById('2016edit');
+                                n.disabled=true;
+                                var o=document.getElementById('2017edit');
+                                o.disabled=true;     
+                                var p=document.getElementById('2018edit');
+                                p.disabled=true;
+                                var q=document.getElementById('2019edit');
+                                q.disabled=true;
+                                var r=document.getElementById('2020edit');
+                                r.disabled=true;
+                                var s=document.getElementById('txtpresuedit');
+                                s.disabled=true;
+                                var t=document.getElementById('p2016edit');
+                                t.disabled=true;
+                                var u=document.getElementById('p2017edit');
+                                u.disabled=true;
+                                var v=document.getElementById('p2018edit');
+                                v.disabled=true;
+                                var w=document.getElementById('p2019edit');
+                                w.disabled=true;
+                                var p20=document.getElementById('p2020edit');
+                                p20.disabled=true;
+
 
                                }
                               
