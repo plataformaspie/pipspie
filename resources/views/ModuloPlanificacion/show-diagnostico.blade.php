@@ -178,7 +178,7 @@
                               <label for="unidad" class="field select ">
                                   <select id="unidad" name="unidad" class="required"  style="width:100%;">
                                       @foreach($metricas as $m)
-                                          <option value="{{$m->id}}"> {{$m->simbolo}} </option>                                
+                                          <option value="{{$m->id}}"> {{$m->codigo}} </option>                                
                                       @endforeach
                                   </select>
                                   <i class="arrow"> </i> 
@@ -334,7 +334,7 @@
                                  <label for="mod_unidad" class="field ">
                                     <select id="mod_unidad" name="mod_unidad" class="field prepend-icon" style="width:100%;">
                                         @foreach($metricas as $m)
-                                          <option value="{{$m->id}}"> {{$m->simbolo}} </option>
+                                          <option value="{{$m->id}}"> {{$m->codigo}} </option>
                                         @endforeach
                                     </select>
                                   </label>
