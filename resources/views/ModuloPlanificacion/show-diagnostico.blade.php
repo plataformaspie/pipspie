@@ -662,7 +662,7 @@ $(document).ready(function(){
                 data:{'id':rowData.id},
                 success: function(data){
                     $("#form-edit em").remove();
-                    $("#mod_unidad").val(data.diagnostico.unidad).trigger('change');
+                    $("#mod_unidad").val(data.diagnostico.idp_unidad).trigger('change');
                     $("#mod_id").val(data.diagnostico.id);
                     $("#id_plan").val(globalSP.idPlanActivo);
                     $("#mod_producto_final").val(data.diagnostico.producto_final);
