@@ -225,11 +225,6 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
 
-            
-
-           
-
-
             /*++++++++++admininistracion Clasificador++++++++++++++++++++++++++++++*/
             Route::get('showClasificador','ModuloPlanificacion\AdminClasificadorController@showClasificador');
            
@@ -239,17 +234,8 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveInstitucionEdit','ModuloPlanificacion\AdminClasificadorController@saveInstitucionEdit');
 
             Route::get('dataSetInstitucion','ModuloPlanificacion\AdminClasificadorController@dataSetInstitucion');
-            Route::get('deleteInstitucion','ModuloPlanificacion\AdminClasificadorController@deleteInstitucion');
-            
-
-            Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
-                return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
-            });
-
-
-           
+            Route::get('deleteInstitucion','ModuloPlanificacion\AdminClasificadorController@deleteInstitucion');      
  
-
 
             Route::get('showSeguimiento', 'ModuloPlanificacion\SeguimientoController@showSeguimiento');
             Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
