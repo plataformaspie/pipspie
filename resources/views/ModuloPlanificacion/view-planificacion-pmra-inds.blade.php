@@ -31,17 +31,45 @@
                 </div>
             </div>
             <div id="" class="col-sm-11" > 
-                <div style="max-height: 500px; overflow-y: scroll;" >
+                <div id="container_dt_plaa" style="max-height: 500px; overflow-y: scroll;" >
                    <div id="dt_plaa"></div> 
                 </div> 
-                <div id="selcontenido">
-                    
-                </div>                              
+
+
+                <div id="p_contenido" hidden="">
+                    <h4 id="p_titulo_sel">Atributos sel</h4>
+                    <div id="p_opciones_sel">
+                        <span proy-index="" proy-atrib="ind" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Indicadores"><i class="fa fa-dot-circle-o"></i> <span> I </span></span>
+                        <span proy-index="" proy-atrib="res" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Responsables"><i class="fa fa-sitemap" ></i> <span> R </span></span>
+                        <span proy-index="" proy-atrib="rol" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Roles y Actores"><i class="glyphicons glyphicons-group"></i> <span> RA </span></span>
+                        <span proy-index="" proy-atrib="art" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Articulación Competencial"><i class="fa fa-share-square-o"></i> <span> AC </span></span> 
+                        <span proy-index="" proy-atrib="ter" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Territorialización"><i class="fa fa-map-marker"></i> <span> T </span></span>
+                    </div>
+                    <div class="panel panel-visible"  >
+                        <div class="panel-heading  bg-dark light">
+                            <div class="panel-title ">
+                                <div class="p_titulo_panel">
+                                    <i id="p_i" ></i> <span class="p_titulo_panel"></span>                                
+                                    <span class="pull-right">
+                                        <button id="atrib_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4" title=""><i class="fa fa-plus-circle text-white"></i> Agregar </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body pn">
+                            <div id="p_atribContenido" class="">
+                            </div>
+                        </div>
+                    </div> 
+                </div>                                            
                 
             </div>
         </div>
     </div>
 </div>
+
+
+
 
     <!-- -----------------------------------------          Modal Proyecto  --------------------------------------------------- -->
     <div id="modal_plaa_proyecto"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide ">
@@ -49,23 +77,13 @@
             <div class="panel-heading bg-dark">
                 <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
             </div>
-            <!-- end .panel-heading section -->
             <form method="post" action="/" id="form_plaa" name="form_plaa">
                 <div class="panel-body of-a">                    
                     <input class="hidden" name="" id="id_arti_pdes_proyecto" >
                     <input class="hidden" name="" id="id_proyecto" >
                     <h4 class="ml5 mt5 ph10 pb5 br-b fw700">Defina el proyecto para la acción: <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
                     <div class=" bg-system  row p10 mb10">
-                        <div id="pmr_plaa"></div>
-                        <div id="pilar_plaa"></div>
-                        <div id="meta_plaa"></div>
-                        <div id="resultado_plaa"></div>
-                        <div id="accion_plaa"></div>
-                        <span class="bg-dark "><i class="fa fa-dot-circle-o"></i> I</span>
-                                                <span class="bg-dark "><i class="fa fa-sitemap" ></i> R</span>
-                                                <span class="bg-dark "><i class="glyphicons glyphicons-group"></i> RA</span>
-                                                <span class="bg-dark "><i class="fa fa-share-square-o"></i> AC</span> 
-                                                <span class="bg-dark "><i class="fa fa-map-marker"></i> T</span>
+                        <div id="pmra_plaa"></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 br-r">
@@ -109,22 +127,22 @@
 
                                 <div class="section">
                                     <div class="form-group col-md-4">
-                                        <label class="field-label" for="fecha_ini_picker">Fecha inicio</label>
+                                        <label class="field-label" for="gestion_ini_picker">Gestión inicio</label>
                                         <div class="">
-                                            <div class="input-group date" id="fecha_ini_picker">
+                                            <div class="input-group date" id="gestion_ini_picker">
                                                 <span class="input-group-addon cursor"><i class="fa fa-calendar"></i>
                                                 </span>
-                                                <input type="text" class="form-control" id="fecha_ini" placeholder="dd/mm/yyyy">
+                                                <input type="text" class="form-control" id="gestion_ini" placeholder="yyyy">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label class="field-label" for="fecha_fin_picker">Fecha fin</label>
+                                        <label class="field-label" for="gestion_fin_picker">Gestión fin</label>
                                         <div class="">
-                                            <div class="input-group date" id="fecha_fin_picker">
+                                            <div class="input-group date" id="gestion_fin_picker">
                                                 <span class="input-group-addon cursor"><i class="fa fa-calendar"></i>
                                                 </span>
-                                                <input type="text" class="form-control" id="fecha_fin" placeholder="dd/mm/yyyy">
+                                                <input type="text" class="form-control" id="gestion_fin" placeholder="yyyy">
                                             </div>
                                         </div>
                                     </div>
@@ -139,11 +157,319 @@
                     <a href="javascript:void(0)"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
                 </div>
             </form>
-        </div>
-        
+        </div>        
     </div>
 
-    <div id="modal_plaa_generico"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+    <!-- -----------------------------------------          Modal indicador  --------------------------------------------------- -->
+    <div id="modal_plaa_ind"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
+            </div>
+            <form method="post" action="/" id="form_ind" name="form_ind">
+                <div class="panel-body  of-a">                    
+                    <input class="hidden"  name="id_arti_pdes_proyecto_indicador" id="id_arti_pdes_proyecto_indicador" >
+                    <input class="hidden"  name="id_indicador" id="id_indicador" >
+                    <input class="hidden"  name="id_indicador_ejecucion" id="id_indicador_ejecucion" >
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Articulación del proyecto<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <div class=" bg-system  row p10 mb10">
+                        <div id="pmra_plaa"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 br-r">
+
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Indicador <small class="pull-right fw700 text-primary">- </small> </h5>
+                            <div class="section">
+                                <label class="field-label" for="nombre">Indicador de la acción o del proyecto</label>
+                                <label for="nombre" class="field prepend-icon">
+                                    <textarea class="gui-textarea" id="nombre" name="nombre"  placeholder="Indicador"></textarea>
+                                    <label for="nombre" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
+                                    </label>                                        
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="id_diagnostico">Variables del diagnóstico</label>
+                                <label class="field select">
+                                    <select id="id_diagnostico" name="id_diagnostico" class="" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="variable">Variable</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" id="variable" name="variable" class="gui-input" placeholder="Variable" style="width:100%;">
+                                    <label for="variable" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="idp_unidad">Unidad de Medida </label>
+                                <label class="field select">
+                                    <select id="idp_unidad" name="idp_unidad" class="required sp_metrica" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="linea_base">Linea Base</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" class="gui-input" id="linea_base" name="linea_base" placeholder="Linea Base" style="width:100%;">
+                                    <label for="linea_base" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>                 
+                                </label>
+                            </div>
+                            <div class="section">
+                                <label class="field-label" for="alcance">Alcance</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" class="gui-input" id="alcance" name="alcance" placeholder="Alcance" style="width:100%;">
+                                    <label for="alcance" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>                  
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" id="gestiones_ind">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Programación <small class="pull-right fw700 text-primary">- </small> </h5>
+                            <table class="table mbn">
+                                <thead>
+                                    <tr class="hidden">
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+
+
+    <!-- -----------------------------------------          Modal Responsables  --------------------------------------------------- -->
+    <div id="modal_plaa_res"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
+            </div>
+            <form method="post" action="/" id="form_res" name="form_res">
+                <div class="panel-body  of-a">                    
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Articulación del Proyecto<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <div id="encabezado" class=" bg-system  row p10 mb10">
+                        <div id="pmra_plaa"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Responsables: <small class="pull-right fw700 text-primary">- </small> </h5>
+
+                            <div class="section">
+                                <label class="field-label" for="id_entidades">Instituciones o Entidades </label>
+                                <label class="field">
+                                    <select id="id_entidades" name="id_entidades" class="required " multiple="multiple" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                </label>
+                            </div>                            
+                        </div>
+                    </div>                   
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- -----------------------------------------          Modal Roles y Actores  --------------------------------------------------- -->
+    <div id="modal_plaa_rol"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
+            </div>
+            <form method="post" action="/" id="form_rol" name="form_rol">
+                <input class="hidden"  name="id_rol_actor" id="id_rol_actor" >
+                <div class="panel-body  of-a">                    
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Articulación del Proyecto<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <div id="encabezado" class=" bg-system  row p10 mb10">
+                        <div id="pmra_plaa"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Roles y Actores <small class="pull-right fw700 text-primary">- </small> </h5>
+
+                            <div class="section">
+                                <label class="field-label" for="idp_actor">Actor </label>
+                                <label class="field">
+                                    <select id="idp_actor" name="idp_actor" class="required" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                </label>
+                            </div>   
+
+                            <div class="section">
+                                <label class="field-label" for="descripcion">Descripción</label>
+                                <label for="descripcion" class="field prepend-icon">
+                                    <textarea class="gui-textarea" id="descripcion" name="descripcion"  placeholder="Nombre proyecto"></textarea>
+                                    <label for="descripcion" class="field-icon"><i class="fa fa-dot-circle-o"></i>
+                                    </label>                                        
+                                </label>
+                            </div>
+
+
+                        </div>
+                    </div>                   
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+     <!-- -----------------------------------------          Modal Articulacipon Competencial  --------------------------------------------------- -->
+    <div id="modal_plaa_art"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
+            </div>
+            <form method="post" action="/" id="form_art" name="form_art">
+                <input class="hidden"  name="id_articulacion_competencial" id="id_articulacion_competencial" >
+                <div class="panel-body  of-a">                    
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Articulación del Proyecto<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <div id="encabezado" class=" bg-system  row p10 mb10">
+                        <div id="pmra_plaa"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Articulación Competencial <small class="pull-right fw700 text-primary">- </small> </h5>
+
+                            <div class="section">
+                                <label class="field-label" for="idp_entidad_territorial">Entidad Territorial </label>
+                                <label class="field">
+                                    <select id="idp_entidad_territorial" name="idp_entidad_territorial" class="required" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                </label>
+                            </div> 
+
+                            <div class="section">
+                                <label class="field-label" for="idp_competencia">Competencia </label>
+                                <label class="field">
+                                    <select id="idp_competencia" name="idp_competencia" class="required" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                </label>
+                            </div>   
+
+                            <div class="section">
+                                <label class="field-label" for="norma">Norma</label>
+                                <label for="norma" class="field prepend-icon">
+                                    <textarea class="gui-textarea" id="norma" name="norma"  placeholder="Nombre proyecto"></textarea>
+                                    <label for="norma" class="field-icon"><i class="fa fa-dot-circle-o"></i>
+                                    </label>                                        
+                                </label>
+                            </div>
+
+
+                        </div>
+                    </div>                   
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+         <!-- -----------------------------------------          Modal Territorializacion  --------------------------------------------------- -->
+    <div id="modal_plaa_ter"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
+            </div>
+            <form method="post" action="/" id="form_ter" name="form_ter">
+                {{-- <input class="hidden"  name="id_articulacion_competencial" id="id_articulacion_competencial" > --}}
+                <div class="panel-body  of-a">                    
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Articulación del Proyecto<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <div id="encabezado" class=" bg-system  row p10 mb10">
+                        <div id="pmra_plaa"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Territorialización <small class="pull-right fw700 text-primary">- </small> </h5>
+
+                            <div class="section">
+                                <label class="field-label" for="id_departamento">Departamento</label>
+                                <label class="field">
+                                    <select id="id_departamento" name="id_departamento"  multiple="multiple" style="width:80%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                    <a href="javascript:void(0)" class="fa fa-angle-double-right btn bg-primary lighter " sp_carga_region="id_departamento"></a>
+                                </label>
+                            </div> 
+
+                            <div class="section">
+                                <label class="field-label" for="id_provincia">Provincia</label>
+                                <label class="field">
+                                    <select id="id_provincia" name="id_provincia"  multiple="multiple" style="width:80%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                    <a href="javascript:void(0)" class="fa fa-angle-double-right btn bg-primary lighter " sp_carga_region="id_provincia"></a>
+                                </label>
+                            </div> 
+
+                            <div class="section">
+                                <label class="field-label" for="id_municipio">Municipio</label>
+                                <label class="field">
+                                    <select id="id_municipio" name="id_municipio"  multiple="multiple" style="width:80%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                    <a href="javascript:void(0)" class="fa fa-angle-double-right btn bg-primary lighter " sp_carga_region="id_municipio"></a>
+                                </label>
+                            </div> 
+
+                            <div class="section">
+                                <label class="field-label" for="id_comunidad">Comunidad</label>
+                                <label class="field">
+                                    <select id="id_comunidad" name="id_comunidad"  multiple="multiple" style="width:80%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                    <a href="javascript:void(0)" class="fa fa-angle-double-right btn bg-primary lighter " sp_carga_region="id_comunidad"></a>
+                                </label>
+                            </div> 
+
+                        </div>
+                        <div class="col-sm-6">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Territorios seleccionados <small class="pull-right fw700 text-primary">- </small> </h5>
+                            <div id="id_regiones">                                
+                            </div>                            
+                        </div>
+                    </div>                   
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+    
+   {{--  <div id="modal_plaa_generico"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
             <div class="panel-heading bg-dark">
                 <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
@@ -154,12 +480,13 @@
                 <div class="panel-body mnw700 of-a">                    
                     <input class="hidden" name="" id="" >
                     <input class="hidden" name="" id="" >
-                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Describa su indicador y la programación para el resultado articulado: <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Describa su indicador y su programación en el periodo : <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
                     <div class=" bg-success lighter  row p10">
                         <div id="pmr_plaa"></div>
                         <div id="pilar_plaa"></div>
                         <div id="meta_plaa"></div>
                         <div id="resultado_plaa"></div>
+                        <div id="proyecto_plaa"></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 br-r sp_elementos">
@@ -173,7 +500,9 @@
             </form>
         </div>
         <!-- end: .panel -->
-    </div>
+    </div> --}}
+
+
 
 
     <!-- -------------------------------------------edicion de campos ---------------------------------------------------------- -->
@@ -211,7 +540,7 @@ $(function(){
             source : {},
             urlList: globalSP.urlApi + 'listaaccionesproy',
             proyectos:[], 
-            cssDisabled : 'bg-dark darker',           
+            cssDisabled : 'bg-dark darker',            
 
             fillDataTable : function() {
                 $.get(ctxplaa.urlList, {p : globalSP.idPlanActivo}, function(resp)
@@ -238,8 +567,8 @@ $(function(){
                             { name: 'logo_p', type: 'string' },
                             { name: 'sector', type: 'string' },
                             { name: 'cod_periodo_plan', type: 'string' },
-                            { name: 'gestion_ini', type: 'string' },
-                            { name: 'gestion_fin', type: 'string' },
+                            { name: 'periodo_gestion_ini', type: 'string' },
+                            { name: 'periodo_gestion_fin', type: 'string' },
                             { name: 'proyectos', type: 'object' },   
                         ],
                         id: 'id',
@@ -293,29 +622,26 @@ $(function(){
                                     if(rowData.proyectos.length>0){ 
 
                                         html = `<table class="table table-bordered table-hover fs11 sp_table">
-                                        <thead><tr class="primary"> <th>Tipo proyecto</th> <th>Nombre</th> <th>Opciones</th>  <th>Codigo</th> <th>Fecha inicio</th> <th>Fecha fin</th> <th></th> </tr> </thead>
+                                        <thead><tr class="primary"><th>.</th> <th>Tipo p.</th> <th>Proyecto </th>  <th>Codigo</th> <th>Fecha inicio</th> <th>Fecha fin</th> <th></th> </tr> </thead>
                                         <tbody>`;
 
                                         rowData.proyectos.forEach(function(proy, index){
                                                       html += `<tr>
+                                            <td>  
+                                                <a href="javascript:void(0);" proy-index="${index}" proy-atrib="ind" class="text-alert dark fa fa-dot-circle-o fa-lg" data-toggle="tooltip" data-container="body" data-html="true" title="Ver Indicadores y otros atributos"></a>  
+                                            </td>
                                             <td class="">${proy.tipo_proyecto}</td> 
                                             <td>${proy.nombre_proyecto}</td>
-                                            <td>
-                                                <span class="bg-dark "><i class="fa fa-dot-circle-o"></i> I</span>
-                                                <span class="bg-dark "><i class="fa fa-sitemap" ></i> R</span>
-                                                <span class="bg-dark "><i class="glyphicons glyphicons-group"></i> RA</span>
-                                                <span class="bg-dark "><i class="fa fa-share-square-o"></i> AC</span> 
-                                                <span class="bg-dark "><i class="fa fa-map-marker"></i> T</span>
-                                            </td>
-                                            <td>${ proy.codigo ? proy.codigo : ''} </td> 
-                                            <td class="">${proy.fecha_ini}</td> <td class="">${proy.fecha_fin}</td> 
                                             
-                                            <td><a href="javascript:void(0)"  index_proy="${index}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar proyecto" ><i class="fa fa-edit text-warning fa-lg"></i></a>
-                                            <a href="javascript:void(0)" id_arti_pdes_proyecto="${proy.id_arti_pdes_proyecto}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
+                                            <td>${ proy.codigo ? proy.codigo : ''} </td> 
+                                            <td class="">${proy.gestion_ini || '_'}</td> <td class="">${proy.gestion_fin || '_'}</td> 
+                                            
+                                            <td><a href="javascript:void(0);"  index_proy="${index}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar proyecto" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+                                            <a href="javascript:void(0);" id_arti_pdes_proyecto="${proy.id_arti_pdes_proyecto}" class="sel_delete" title="Eliminar proyecto" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
                                             </tr>`;
                                         });
-                                        html +=    `</tbody>
-                                        </table>`;
+                                        html +=  `</tbody>
+                                                    </table>`;
                                     }
                                     return html
                                 } 
@@ -336,15 +662,19 @@ $(function(){
                 return obj;
             },
             nuevo: function(){
-                $(".tituloModal span").html(`Agregar proyecto a la acción`);
+                if(ctxplaa.proyectos.length == 0)
+                    $.get(globalSP.urlApi + "listproyectos", function(res){
+                        ctxplaa.proyectos = res.data;
+                    });
+                $(".tituloModal span").html(`Agregar Proyecto`);
                 // $('#modal_plaa_proyecto input:text, #modal_plaa_proyecto textarea').val('');
                 $("#modal_plaa_proyecto select").val('').change();
-                var rowSelected = ctxplaa.selrow();
-                $("#modal_plaa_proyecto #pmr_plaa").html(`<b>${rowSelected.cod_p} . ${rowSelected.cod_m} . ${rowSelected.cod_r} . ${rowSelected.cod_a}</b>`);
-                $("#modal_plaa_proyecto #pilar_plaa").html(`<b>${rowSelected.nombre_p}</b> - ${rowSelected.desc_p}`);
-                $("#modal_plaa_proyecto #meta_plaa").html(`<b>${rowSelected.nombre_m}</b> - ${rowSelected.desc_m}`);
-                $("#modal_plaa_proyecto #resultado_plaa").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
-                $("#modal_plaa_proyecto #accion_plaa").html(`<b>${rowSelected.nombre_a} - ${rowSelected.desc_a}</b>`);
+                var selrow = ctxplaa.selrow();
+                $("#modal_plaa_proyecto #pmra_plaa").html(`<div><b>${selrow.cod_p} . ${selrow.cod_m} . ${selrow.cod_r} . ${selrow.cod_a}</b> </div>
+                                                            <div><b>${selrow.nombre_p}</b> - ${selrow.desc_p} </div>
+                                                            <div><b>${selrow.nombre_m}</b> - ${selrow.desc_m} </div>
+                                                            <div><b>${selrow.nombre_r}</b> - ${selrow.desc_r} </div>
+                                                            <div><b>${selrow.nombre_a} - ${selrow.desc_a}</b> </div>`);
 
                 $("#codp_tipo_proyecto").removeClass(ctxplaa.cssDisabled).removeAttr('disabled');
                 $("#nombre_proyecto").removeClass(ctxplaa.cssDisabled).removeAttr('disabled');
@@ -355,23 +685,21 @@ $(function(){
                 $(".tituloModal span").html(`Modificar datos de proyecto`);
                 var selrow = ctxplaa.selrow();
                 var proy = selrow.proyectos[index];
-                // console.log(proy)
-                var rowSelected = ctxplaa.selrow();
                 /* coloca los pilares m r y acciones*/
-                $("#modal_plaa_proyecto #pmr_plaa").html(`<b>${rowSelected.cod_p} . ${rowSelected.cod_m} . ${rowSelected.cod_r} . ${rowSelected.cod_a}</b>`);
-                $("#modal_plaa_proyecto #pilar_plaa").html(`<b>${rowSelected.nombre_p}</b> - ${rowSelected.desc_p}`);
-                $("#modal_plaa_proyecto #meta_plaa").html(`<b>${rowSelected.nombre_m}</b> - ${rowSelected.desc_m}`);
-                $("#modal_plaa_proyecto #resultado_plaa").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
-                $("#modal_plaa_proyecto #accion_plaa").html(`<b>${rowSelected.nombre_a} - ${rowSelected.desc_a}</b>`);
+                $("#modal_plaa_proyecto #pmra_plaa").html(`<div><b>${selrow.cod_p} . ${selrow.cod_m} . ${selrow.cod_r} . ${selrow.cod_a}</b> </div>
+                                                            <div><b>${selrow.nombre_p}</b> - ${selrow.desc_p} </div>
+                                                            <div><b>${selrow.nombre_m}</b> - ${selrow.desc_m} </div>
+                                                            <div><b>${selrow.nombre_r}</b> - ${selrow.desc_r} </div>
+                                                            <div><b>${selrow.nombre_a} - ${selrow.desc_a}</b> </div>`);
 
-                /* coloca sus valores de la fila seleccionada*/
+                /* coloca los valores de la fila seleccionada*/
                 $("#id_arti_pdes_proyecto").val(proy.id_arti_pdes_proyecto);
                 $("#id_proyecto").val(proy.id_proyecto);
                 $("#codp_tipo_proyecto").val(proy.codp_tipo_proyecto);
                 $("#nombre_proyecto").val(proy.nombre_proyecto);
                 $("#codigo").val(proy.codigo);
-                $("#fecha_ini").val(proy.fecha_ini);
-                $("#fecha_fin").val(proy.fecha_fin);
+                $("#gestion_ini").val(proy.gestion_ini);
+                $("#gestion_fin").val(proy.gestion_fin);
 
                 /* oculta el selector de proyectos (ya no se edita) y deshabilita todas las opciones no editables */
                 $(".section_select_id_proyecto").hide();
@@ -465,8 +793,8 @@ $(function(){
                     var pilar = elems[0];
                     var nproy = elems.reduce(function(acum, el){ return acum + el.proyectos.length; }, 0);
                     html += `<div class="panel-body"> 
-                                <div>                                        
-                                    <span class="badge badge-hero pull-right bg-system dark" data-toggle="tooltip" data-container="body" data-html="true" title="N° de proyectos ${nproy}">${nproy}</span> 
+                                <div class="w50">                                        
+                                    <span class="badge badge-hero pull-right bg-alert dark posr" style="top:6px;" data-toggle="tooltip" data-container="body" data-html="true" title="N° de proyectos ${nproy}">${nproy}</span> 
                                     <img width="50" class=""  src="/img/${pilar.logo_p}"/>
                                    
                                 </div> 
@@ -476,108 +804,722 @@ $(function(){
             },
             selrow : function(){
                 return ctxplaa.dataTable.jqxDataTable('getSelection')[0];
+            },
+        }
+
+
+        /* ***************************************************************************** */
+    ctxattr = {
+        atributoSel: '',
+        selpmra:{},
+        selproy: {},
+        data: [],
+        atributos : {
+            'ind' : { texto:'Indicadores', class: 'fa fa-dot-circle-o ' },
+            'res' : { texto:'Responsables', class: 'fa fa-sitemap ' },
+            'rol' : { texto:'Roles y Actores', class: 'glyphicons glyphicons-group' },
+            'art' : { texto:'Articulación Competencial', class: 'fa fa-share-square-o' },
+            'ter' : { texto:'Territorialización', class: 'fa fa-map-marker' },
+        },
+
+
+        cargarAtrib: function(atributo, proy_index){
+            if(proy_index){
+                ctxattr.selpmra = ctxplaa.selrow();
+                ctxattr.selproy = ctxattr.selpmra.proyectos[proy_index];                
+            }
+            proy = ctxattr.selproy ;
+            ctxattr.atributoSel = atributo;
+            
+            $("#p_contenido").show();
+            // $("#p_opciones_sel span[proy-index]").attr('proy-index', proy_index);
+            $("#p_titulo_sel").html(`PROYECTO: ${proy.nombre_proyecto} `);
+            $(".p_titulo_panel .p_titulo_panel").html(ctxattr.atributos[atributo].texto);
+            $(".p_titulo_panel #p_i").attr('class', '').addClass(ctxattr.atributos[atributo].class);
+
+            var sendObj = {id_app: proy.id_arti_pdes_proyecto, atributo: atributo, p: globalSP.idPlanActivo};
+            $.get(globalSP.urlApi + 'list_atributo', sendObj, function(res){
+                ctxattr.data = data = res.data;
+
+                if(atributo == 'ind') $("#p_atribContenido").html(ctxind.fillData(data)) ;
+                if(atributo == 'res') $("#p_atribContenido").html(ctxres.fillData(data)) ;
+                if(atributo == 'rol') $("#p_atribContenido").html(ctxrol.fillData(data)) ;
+                if(atributo == 'art') $("#p_atribContenido").html(ctxart.fillData(data)) ;
+                if(atributo == 'ter') $("#p_atribContenido").html(ctxter.fillData(data)) ;
+            });
+        }, 
+        refreshAtrib: function(){
+            ctxattr.cargarAtrib(ctxattr.atributoSel);
+        },
+        abmAtrib: function(accion, index){
+            atrib = ctxattr.atributoSel;
+            if(atrib == 'ind') ctxind[accion](index);
+            if(atrib == 'res') ctxres[accion](index);
+            if(atrib == 'rol') ctxrol[accion](index);
+            if(atrib == 'art') ctxart[accion](index);
+            if(atrib == 'ter') ctxter[accion](index);
+        },
+        saveAtribData: function(ruta, obj){
+            $.post(globalSP.urlApi + ruta, obj, function(resp){
+                ctxattr.refreshAtrib();
+                new PNotify({
+                            title: resp.estado == 'success' ? 'Guardado' : 'Error',
+                            text: resp.msg,
+                            shadow: true,
+                            opacity: 0.9,
+                            addclass: noteStack,
+                            type: (resp.estado == 'success') ? "success" : "danger",
+                            stack: Stacks[noteStack],
+                            width: findWidth(),
+                            delay: 1500
+                        });
+                $.magnificPopup.close();  
+            });
+        },
+        deleteAtrib: function(ruta, id){
+            swal({
+                  title: `Está seguro de eliminar ?`,
+                  text: `No podrá recuperar este registro!`,
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "Si, eliminar!",
+                  closeOnConfirm: true
+                }, function(){
+                    $.post(globalSP.urlApi + ruta, {'id': id, atributo: ctxattr.atributoSel, _token : ctxgral.token, }, function(res){
+                        new PNotify({
+                                  title: !res.error ? 'Eliminado' : 'Error!!' ,
+                                  text: res.msg,
+                                  shadow: true,
+                                  opacity: 0.9,
+                                  addclass: noteStack,
+                                  type: !res.error ? "success" : 'danger',
+                                  stack: Stacks[noteStack],
+                                  width: findWidth(),
+                                  delay: 1400
+                              });
+                        ctxattr.refreshAtrib();
+                    });
+                });
+        }
+    } 
+
+    ctxind = {
+        fillData: function(data){
+            if (data.length == 0) 
+                return "<span class='p5 ml10'>No existen indicadores.</span>";
+
+            var pmraData = ctxplaa.selrow();
+            var headGestiones = '';
+            for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++)
+                headGestiones += `<th>${i}</th>`;
+            
+            var html = `<table class="table table-bordered table-hover fs11 sp_table">
+                            <thead><tr class="primary"> <th>Indicador</th> <th>Variable</th>  <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
+                            <tbody>`;
+            data.forEach(function(elem, index){
+                var prog_row = '';
+                _.sortBy(elem.programacion, 'gestion').forEach(function(ip){
+                    var valor = (ip.dato) ? `${ip.dato} ${elem.unidad}` : '';
+                    prog_row += `<td sp_id="${ip.id_ip}" class="sp_editable" sp_codtc="ip_d"  >${valor}</td>`;
+                });
+
+                var row = `<tr><td>${elem.nombre_indicador}</td> <td>${elem.variable}</td> <td>${elem.linea_base} ${elem.unidad}</td> <td>${elem.alcance}</td> ${prog_row}
+                            <td><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar Indicador y programación" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+                                <a href="javascript:void(0)" index_atrib="${index}" class="sel_atrib_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
+                            </tr>`;
+                html += row;               
+            });
+
+            html += `</tbody>
+                    </table>`;
+            return html;
+        },
+        cargarElemsForm: function(){
+            if($("#form_ind #idp_unidad").html().trim()==''){
+                $("#form_ind #idp_unidad").html( metricas.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.nombre} (${op.codigo}) </option>`},'') );
+                $("#form_ind #idp_unidad").select2({
+                    placeholder: 'Unidad de medida ...',
+                });
             }
 
-        }
-    
+            if( $("#form_ind #id_diagnostico").html().trim() == ''){
+                $("#form_ind #id_diagnostico").html( variablesDiagnostico.reduce(function(carry, op){ return carry + `<option value="${op.id_diagnostico}">${op.variable}</option>`},'')   );
+                $("#form_ind #id_diagnostico").select2({
+                    placeholder: 'Puede seleccionar una Variable del diagnóstico ',
+                }); 
+            }
+
+            $("#form_ind #id_diagnostico").change(function() {
+                var varsel = _.find(variablesDiagnostico, function(elem){ return elem.id_diagnostico == $("#form_ind #id_diagnostico").val(); });
+                if(varsel){ 
+                    $("#form_ind #variable").val(varsel.variable);
+                    $("#form_ind #idp_unidad").val(varsel.idp_unidad).change();
+                    $("#form_ind #linea_base").val(varsel.dato);
+                }
+            });
+
+            var selpmra = ctxattr.selpmra;
+            $("#form_ind #pmra_plaa").html(`<div><b>${selpmra.cod_p} . ${selpmra.cod_m} . ${selpmra.cod_r} . ${selpmra.cod_a}</b> </div>
+                                            <div><b>${selpmra.nombre_p}</b> - ${selpmra.desc_p} </div>
+                                            <div><b>${selpmra.nombre_m}</b> - ${selpmra.desc_m} </div>
+                                            <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
+                                            <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
+                                            <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
+        },
+        nuevo: function(){         
+            ctxind.cargarElemsForm();
+            $("#modal_plaa_ind .tituloModal span").html(`Agregar indicador de Accion/Proyecto`);
+            $('#form_ind input:text, #form_ind textarea').val('');
+            $("#form_ind  select").val('').change();
+            var selpmra = ctxattr.selpmra;
+            var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin);
+            $("#form_ind #gestiones_ind tbody").html(html);            
+            ctxgral.showModal("#modal_plaa_ind");
+        },
+        editar: function(index){
+            ctxind.cargarElemsForm();
+            $("#modal_plaa_ind .tituloModal span").html(`Modificar indicador de Accion/Proyecto`);            
+
+            var indicadorsel = ctxattr.data[index];            
+            $("#form_ind #id_arti_pdes_proyecto_indicador").val(indicadorsel.id_arti_pdes_proyecto_indicador);
+            $("#form_ind #id_indicador").val(indicadorsel.id_indicador);
+            $("#form_ind #id_indicador_ejecucion").val(indicadorsel.id_indicador_ejecucion);
+
+            $("#form_ind #id_diagnostico").val('').change();
+            $("#form_ind #nombre").val(indicadorsel.nombre_indicador);
+            $("#form_ind #variable").val(indicadorsel.variable);
+            $("#form_ind #idp_unidad").val(indicadorsel.idp_unidad).change();
+            $("#form_ind #linea_base").val(indicadorsel.linea_base);
+            $("#form_ind #alcance").val(indicadorsel.alcance);
+            var selpmra = ctxattr.selpmra;
+            var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin, indicadorsel.programacion);
+            $("#form_ind #gestiones_ind tbody").html(html);
+            ctxgral.showModal("#modal_plaa_ind");
+        },        
+        validateRules: function(){
+           return {
+                nombre:  { required: 'Campo requerido' },
+                idp_unidad:  { required: 'Campo requerido' },
+                variable:  { required: 'Campo requerido' },
+                linea_base:  { required: 'Campo requerido' },
+                alcance:  { required: 'Campo requerido' },
+            }                 
+        }, 
+        getDataForm: function(){
+            var selpmra = ctxattr.selpmra;
+            gestion_ini = selpmra.periodo_gestion_ini;
+            gestion_fin = selpmra.periodo_gestion_fin;
+            var obj = {
+                _token : ctxgral.token,
+                id_plan : globalSP.idPlanActivo,
+                p: globalSP.idPlanActivo,
+                indicador: {
+                    id : $("#form_ind #id_indicador").val(),
+                    nombre :$("#form_ind #nombre").val(),
+                    idp_unidad: $("#form_ind #idp_unidad").val(),
+                    // id_diagnostico: $("#form_ind #id_diagnostico").val(),
+                    variable: $("#form_ind #variable").val(),
+                    alcance: $("#form_ind #alcance").val(),
+                },
+                arti_pdes_proyecto_indicador: {
+                    id: $("#form_ind #id_arti_pdes_proyecto_indicador").val(),
+                    id_arti_pdes_proyecto : ctxattr.selproy.id_arti_pdes_proyecto,
+                },
+                indicador_ejecucion: {
+                    id: $("#form_ind #id_indicador_ejecucion").val(),
+                    gestion: gestion_ini - 1,
+                    dato: $("#form_ind #linea_base").val(),
+                }
+            };
+            var indProgramacion = [];
+            for(var i = gestion_ini; i <= gestion_fin; i++){
+                var prog = {};
+                prog.id = $("#form_ind .id" + i).val();;
+                prog.gestion = i;
+                prog.dato =  $("#form_ind .d" + i).val();
+                indProgramacion.push(prog);
+            }     
+            obj.indicadores_programacion = indProgramacion;
+            return obj;
+        },
+        saveData: function(){
+            var obj = ctxind.getDataForm();
+            ctxattr.saveAtribData('saveIndicadorAccionProg', obj);                         
+        },
+        eliminar: function(index){
+            var indicadorsel = ctxattr.data[index]; 
+            ctxattr.deleteAtrib('delete_atributo', indicadorsel.id_arti_pdes_proyecto_indicador);
+        },
+    }
+
+    ctxres = {
+        fillData: function(data){
+            if (data.length == 0) 
+                return "<span class='p5 ml10'>No existen instituciones responsables registradas.</span>";
+           
+            var html = `<table class="table table-bordered table-hover fs11 sp_table" style="width:600px">
+            <thead><tr class="primary"> <th>Nombre</th> <th>Sigla</th> <th>_</th> </thead>
+            <tbody>`;
+            data.forEach(function(elem, index){                
+                html += `<tr><td>${elem.nombre_entidad}</td> <td>${elem.sigla}</td> 
+                <td>
+                <a href="javascript:void(0)" index_atrib="${index}" class="sel_atrib_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
+                </tr>`;              
+            });
+
+            html += `</tbody>
+            </table>`;
+            return html;
+        },
+        cargarElemsForm: function(fn){
+            if($("#form_res #id_entidades").html().trim()==''){
+                $.get(globalSP.urlApi + 'getEntidadesHijos/' + globalSP.usuario.id_institucion, function(res){
+                    $("#form_res #id_entidades").html( res.data.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.nombre} (${op.sigla}) </option>`},'') )
+                    if(fn){
+                        fn();
+                    }
+                });
+
+            }
+            else { if(fn) fn();  }
+
+            $("#form_res #id_entidades").select2({
+                    placeholder: 'Seleccione las instituciones responsables',
+                    templateSelection: function (val) {
+                        return $("<div class='list-group-item' style='width:100%;' title ='" + val.text + "'>" +val.text + "</div>");
+                    },
+                });
+            var selpmra = ctxattr.selpmra;
+            $("#form_res #pmra_plaa").html(`<div><b>${selpmra.cod_p} . ${selpmra.cod_m} . ${selpmra.cod_r} . ${selpmra.cod_a}</b> </div>
+                                            <div><b>${selpmra.nombre_p}</b> - ${selpmra.desc_p} </div>
+                                            <div><b>${selpmra.nombre_m}</b> - ${selpmra.desc_m} </div>
+                                            <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
+                                            <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
+                                            <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
+
+        },
+        nuevo: function(){     
+            ids= [];   
+            ctxattr.data.forEach(function(el){
+                ids.push(el.id_entidad);
+            })
+
+            ctxres.cargarElemsForm(function(){
+                $("#form_res  #id_entidades").val(ids).change();
+            });
+            $("#modal_plaa_res .tituloModal span").html(`Agregar/Quitar Responsables`);
+            // $("#form_res  select").val('').change();          
+            ctxgral.showModal("#modal_plaa_res");
+        },
+        validateRules: function(){
+             return {
+                id_entidades:  { required: 'Campo requerido' },
+            }                 
+        }, 
+        saveData: function(){
+            var obj = ctxplaa.getDataContent('#form_res') ;
+            obj.id_arti_pdes_proyecto = ctxattr.selproy.id_arti_pdes_proyecto;
+            ctxattr.saveAtribData('saveresponsables', obj);                         
+        },
+        eliminar: function(index){
+            var elemsel = ctxattr.data[index]; 
+            ctxattr.deleteAtrib('delete_atributo', elemsel.id_responsable);
+        },
+    }
+
+    ctxrol = {
+        fillData: function(data){
+            if (data.length == 0) 
+                return "<span class='p5 ml10'>No existen roles actores registrados.</span>";
+           
+            var html = `<table class="table table-bordered table-hover fs11 sp_table" >
+            <thead><tr class="primary"> <th>Actor</th> <th>Descripción</th> <th>_</th> </thead>
+            <tbody>`;
+            data.forEach(function(elem, index){                
+                html += `<tr><td>${elem.actor}</td> <td>${elem.descripcion}</td> 
+                <td>                
+                    <a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+                    <a href="javascript:void(0)" index_atrib="${index}" class="sel_atrib_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>
+                </td>
+                </tr>`;              
+            });
+
+            html += `</tbody>
+            </table>`;
+            return html;
+        },
+        cargarElemsForm: function(fn){
+            if($("#form_rol #idp_actor").html().trim()==''){
+                $.get(globalSP.urlApi + 'getparametros/actor', function(res){
+                    var actores = _.sortBy(res.data, 'nombre');
+                    $("#form_rol #idp_actor").html( actores.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.nombre} </option>`},'<option value=""></option>') )
+                    if(fn){
+                        fn();
+                    }
+                });
+
+            }
+            else { if(fn) fn(); }
+
+            $("#form_rol #idp_actor").select2({
+                    placeholder: 'Seleccione el actor',
+                });
+            var selpmra = ctxattr.selpmra;
+            $("#form_rol #pmra_plaa").html(`<div><b>${selpmra.cod_p} . ${selpmra.cod_m} . ${selpmra.cod_r} . ${selpmra.cod_a}</b> </div>
+                                            <div><b>${selpmra.nombre_p}</b> - ${selpmra.desc_p} </div>
+                                            <div><b>${selpmra.nombre_m}</b> - ${selpmra.desc_m} </div>
+                                            <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
+                                            <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
+                                            <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
+
+        },
+        nuevo: function(){     
+            ctxrol.cargarElemsForm();
+            $("#modal_plaa_rol .tituloModal span").html(`Agregar rol actor`);
+            $("#form_rol  textarea, #form_rol  input").val('');          
+            $("#form_rol  select").val('').change();          
+            ctxgral.showModal("#modal_plaa_rol");
+        },
+        editar: function(index){
+            var rolsel = ctxattr.data[index];    
+            ctxrol.cargarElemsForm(function(){
+                $("#form_rol #idp_actor").val(rolsel.idp_actor);
+            });
+            $("#form_rol #id_rol_actor").val(rolsel.id_rol_actor);
+            $("#form_rol #descripcion").val(rolsel.descripcion);
+
+            $("#modal_plaa_rol .tituloModal span").html(`Modificar Actor Rol`);                        
+            ctxgral.showModal("#modal_plaa_rol");
+        }, 
+        validateRules: function(){
+             return {
+                idp_actor:  { required: 'Campo requerido' },
+                descripcion:  { required: 'Campo requerido' },
+            }                 
+        }, 
+        saveData: function(){
+            var obj = ctxplaa.getDataContent('#form_rol') ;
+            obj.id_arti_pdes_proyecto = ctxattr.selproy.id_arti_pdes_proyecto;
+            ctxattr.saveAtribData('saverolesactores', obj);                         
+        },
+        eliminar: function(index){
+            var elemsel = ctxattr.data[index]; 
+            ctxattr.deleteAtrib('delete_atributo', elemsel.id_rol_actor);
+        },
+    }
+
+    ctxart = {
+        fillData: function(data){
+            if (data.length == 0) 
+                return "<span class='p5 ml10'>No existe ninguna Articulación Competencial registrada.</span>";
+           
+            var html = `<table class="table table-bordered table-hover fs11 sp_table" >
+            <thead><tr class="primary"> <th>Entidad Territorial</th> <th>Competencia</th> <th>Norma</th> <th>_</th> </thead>
+            <tbody>`;
+            data.forEach(function(elem, index){                
+                html += `<tr><td>${elem.nombre_entidad_territorial}</td> <td>${elem.nombre_competencia}</td> <td>${elem.norma}</td> 
+                <td>                
+                    <a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+                    <a href="javascript:void(0)" index_atrib="${index}" class="sel_atrib_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>
+                </td>
+                </tr>`;              
+            });
+
+            html += `</tbody>
+            </table>`;
+            return html;
+        },
+        cargarElemsForm: function(fn_et, fn_c){
+            if($("#form_art #idp_entidad_territorial").html().trim()==''){
+                $.get(globalSP.urlApi + 'getparametros/entidad_territorial', function(res){
+                    var entidadesTerritoriales = _.sortBy(res.data, 'id');
+                    $("#form_art #idp_entidad_territorial").html( entidadesTerritoriales.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.nombre} (${op.codigo})</option>`},'<option value=""></option>') )
+                    if(fn_et) fn_et();
+                });
+            }
+            else { if(fn_et) fn_et(); }
+
+            if($("#form_art #idp_competencia").html().trim()==''){
+                $.get(globalSP.urlApi + 'getparametros/competencia', function(res){
+                    var competencias = _.sortBy(res.data, 'orden');
+                    $("#form_art #idp_competencia").html( competencias.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.nombre}</option>`},'<option value=""></option>') )
+                    if(fn_c) fn_c();
+                });
+            }
+            else { if(fn_c) fn_c(); }
+
+
+            $("#form_art #idp_entidad_territorial").select2({
+                    placeholder: 'Seleccione la entidad territorial',
+            });
+            $("#form_art #idp_competencia").select2({
+                    placeholder: 'Seleccione la competencia',
+            });
+
+            var selpmra = ctxattr.selpmra;
+            $("#form_art #pmra_plaa").html(`<div><b>${selpmra.cod_p} . ${selpmra.cod_m} . ${selpmra.cod_r} . ${selpmra.cod_a}</b> </div>
+                                            <div><b>${selpmra.nombre_p}</b> - ${selpmra.desc_p} </div>
+                                            <div><b>${selpmra.nombre_m}</b> - ${selpmra.desc_m} </div>
+                                            <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
+                                            <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
+                                            <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
+
+        },
+        nuevo: function(){     
+            ctxart.cargarElemsForm();
+            $("#modal_plaa_art .tituloModal span").html(`Agregar Articulación Competencial`);
+            $("#form_art  textarea, #form_art  input").val('');          
+            $("#form_art  select").val('').change();          
+            ctxgral.showModal("#modal_plaa_art");
+        },
+        editar: function(index){
+            var artsel = ctxattr.data[index];    
+            ctxart.cargarElemsForm(function(){
+                $("#form_art #idp_entidad_territorial").val(artsel.idp_entidad_territorial);
+            }, function(){
+                $("#form_art #idp_competencia").val(artsel.idp_competencia);
+            });
+
+            $("#form_art #id_articulacion_competencial").val(artsel.id_articulacion_competencial);
+            $("#form_art #norma").val(artsel.norma);
+
+            $("#modal_plaa_art .tituloModal span").html(`Modificar Articulación Competencial`);                        
+            ctxgral.showModal("#modal_plaa_art");
+        }, 
+        validateRules: function(){
+             return {
+                idp_entidad_territorial:  { required: 'Campo requerido' },
+                idp_competencia:  { required: 'Campo requerido' },
+                norma:  { required: 'Campo requerido' },
+            }                 
+        }, 
+        saveData: function(){
+            var obj = ctxplaa.getDataContent('#form_art') ;
+            obj.id_arti_pdes_proyecto = ctxattr.selproy.id_arti_pdes_proyecto;
+            ctxattr.saveAtribData('savearticulacioncompetencial', obj);                         
+        },
+        eliminar: function(index){
+            var elemsel = ctxattr.data[index]; 
+            ctxattr.deleteAtrib('delete_atributo', elemsel.id_articulacion_competencial);
+        },
+    }
+
+    ctxter = {
+        fillData: function(data){
+            if (data.length == 0) 
+                return "<span class='p5 ml10'>No existen territorios registradas.</span>";
+           
+            var html = `<table class="table table-bordered table-hover fs11 sp_table" style="width:600px">
+            <thead><tr class="primary"> <th>Nombre</th> <th>Codigo</th> <th>Nivel</th> <th>_</th> </thead>
+            <tbody>`;
+            data.forEach(function(elem, index){                
+                html += `<tr><td>${elem.nombre_region}</td> <td>${elem.codigo_region}</td> <td>${elem.categoria_region}</td> 
+                <td>
+                <a href="javascript:void(0)" index_atrib="${index}" class="sel_atrib_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
+                </tr>`;              
+            });
+
+            html += `</tbody>
+            </table>`;
+            return html;
+        },
+        cargarElemsForm: function(fn){
+            if($("#form_ter #id_departamento").html().trim()==''){
+                $.get(globalSP.urlApi + 'list_regiones', {id_padre : 1}, function(res){
+                    $("#form_ter #id_departamento").html( res.data.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.codigo_numerico} - ${op.nombre_comun} </option>`},'') );
+
+                });
+            }
+
+            $("#form_ter #id_departamento").change(function(){
+                if($("#form_ter #id_departamento").val())
+                    $.get(globalSP.urlApi + 'list_regiones/', {id_padre : $("#form_ter #id_departamento").val()[0]}, function(res){
+                        $("#form_ter #id_provincia").html( res.data.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.codigo_numerico} - ${op.nombre_comun} </option>`},'') );
+                        $("#form_ter #id_municipio, #form_ter #id_comunidad").html('');
+                    });
+                else {
+                    $("#form_ter #id_provincia, #form_ter #id_municipio, #form_ter #id_comunidad").html('');
+                }    
+            }).select2({
+                placeholder: 'Seleccione el departamento',
+            });
+
+            $("#form_ter #id_provincia").change(function(){
+                if($("#form_ter #id_provincia").val())
+                    $.get(globalSP.urlApi + 'list_regiones/', {id_padre : $("#form_ter #id_provincia").val()[0]}, function(res){
+                        $("#form_ter #id_municipio").html( res.data.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.codigo_numerico} - ${op.nombre_comun} </option>`},'') );
+                        $("#form_ter #id_comunidad").html('')
+                    }); 
+                else{
+                    $("#form_ter #id_municipio, #form_ter #id_comunidad").html('');
+                }   
+            }).select2({
+                placeholder: 'Seleccione la provincia',
+            });
+
+            $("#form_ter #id_municipio").change(function(){
+                if($("#form_ter #id_municipio").val())
+                    $.get(globalSP.urlApi + 'list_regiones/', {id_padre : $("#form_ter #id_municipio").val()[0]}, function(res){
+                        $("#form_ter #id_comunidad").html( res.data.reduce(function(carry, op){ return carry + `<option value="${op.id}">${op.codigo_numerico} - ${op.nombre_comun} </option>`},'') )
+                    });
+                    else{
+                        $("#form_ter #id_comunidad").html('');
+                    }    
+            }).select2({
+                placeholder: 'Seleccione el municipio',
+            });
+
+            $("#form_ter #id_comunidad").select2({
+                    placeholder: 'Seleccione la comunidad',
+                });
+
+
+            $("#form_ter [sp_carga_region]").click(function(){
+                var selectSel = $(this).attr('sp_carga_region');
+                var html = $("#" + selectSel + ' option:selected').toArray().reduce(function(carry, el){
+                    return carry + `<div sp_id_region="${el.value}" class="br-b p5" style="width:100%">${el.text} <a href="javascript:void(0)" class="fa fa-times pull-right sp_quita_region" style="cursor:pointer"></a></div> `
+                },'');  
+                $("#id_regiones").append(html);
+            });
+
+            $("#form_ter").on('click', ".sp_quita_region", function(){
+                $(this).parent().remove();
+            });
+            
+            var selpmra = ctxattr.selpmra;
+            $("#form_ter #pmra_plaa").html(`<div><b>${selpmra.cod_p} . ${selpmra.cod_m} . ${selpmra.cod_r} . ${selpmra.cod_a}</b> </div>
+                                            <div><b>${selpmra.nombre_p}</b> - ${selpmra.desc_p} </div>
+                                            <div><b>${selpmra.nombre_m}</b> - ${selpmra.desc_m} </div>
+                                            <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
+                                            <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
+                                            <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
+        },
+        nuevo: function(){  
+            $("#modal_plaa_ter select, #modal_plaa_ter #id_regiones").html('');   
+            ctxter.cargarElemsForm();
+            $("#modal_plaa_ter .tituloModal span").html(`Agregar Territorios`);       
+            ctxgral.showModal("#modal_plaa_ter");
+        },
+        validateRules: function(){
+             return {
+                id_regiones:  { required: 'Campo requerido' },
+            }                 
+        }, 
+        saveData: function(){
+            var id_regiones = [];
+            $("#form_ter").find("div[sp_id_region]").each(function(index, el){
+                var id_region = $(el).attr('sp_id_region');
+                id_regiones.push(id_region); 
+            });
+            var obj = {};
+            obj.id_arti_pdes_proyecto = ctxattr.selproy.id_arti_pdes_proyecto;
+            obj.id_regiones = id_regiones;
+            obj._token = ctxgral.token;
+            ctxattr.saveAtribData('saveterritorializacion', obj);                         
+        },
+        eliminar: function(index){
+            var elemsel = ctxattr.data[index]; 
+            ctxattr.deleteAtrib('delete_atributo', elemsel.id_territorializacion);
+        },
+    }
+
+
+
+
 
 
 
     var init_plaa = (function(){
-        
+        {
+            /* ----------------- FUNCIONES de inicio y genrales------------------------------------------------------ */
+            /* [ {tipo:input, campo:id, placeholder: placeholder, nombre: 'Codigo de Demanda', options: <option></option>, } , {...}]*/
+            // generaModal = function(objs){
 
-        /* [ {tipo:input, campo:id, placeholder: placeholder, nombre: 'Codigo de Demanda', options: <option></option>, } , {...}]*/
-        generaModal = function(objs){
+            //     html= objs.reduce(function(carry, elem){
+            //         var tag = {
+            //                     textarea : `<div class="section">
+            //                                         <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
+            //                                         <label for="${elem.campo}" class="field prepend-icon">
+            //                                             <textarea class="gui-textarea" id="${elem.campo}" name="${elem.campo}"  placeholder="${elem.placeholder}"></textarea>
+            //                                             <label for="${elem.campo}" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
+            //                                             </label>                                        
+            //                                         </label>
+            //                                     </div>`,                            
+            //                     select : `<div class="section">
+            //                                         <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
+            //                                         <label class="field select">
+            //                                             <select id="${elem.campo}" name="${elem.campo}" class="required" style="width:100%;">
+            //                                                 <option value=""></option>${elem.options}
+            //                                             </select>
+            //                                             <i class="arrow"></i>
+            //                                         </label>
+            //                                     </div>` ,
+            //                     input:  `<div class="section">
+            //                                         <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
+            //                                         <label class="field prepend-icon">
+            //                                             <input type="text" class="gui-input" id="${elem.campo}" name="${elem.campo}" placeholder="${elem.placeholder}" style="width:100%;">
+            //                                             <label for="${elem.campo}" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+            //                                             </label>                 
+            //                                         </label>
+            //                                     </div>` , 
+            //         }
 
-            html= objs.reduce(function(carry, elem){
-                var tag = {
-                            textarea : `<div class="section">
-                                                <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
-                                                <label for="${elem.campo}" class="field prepend-icon">
-                                                    <textarea class="gui-textarea" id="${elem.campo}" name="${elem.campo}"  placeholder="${elem.placeholder}"></textarea>
-                                                    <label for="${elem.campo}" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                                    </label>                                        
-                                                </label>
-                                            </div>`,                            
-                            select : `<div class="section">
-                                                <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
-                                                <label class="field select">
-                                                    <select id="${elem.campo}" name="${elem.campo}" class="required" style="width:100%;">
-                                                        <option value=""></option>${elem.options}
-                                                    </select>
-                                                    <i class="arrow"></i>
-                                                </label>
-                                            </div>` ,
-                            input:  `<div class="section">
-                                                <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
-                                                <label class="field prepend-icon">
-                                                    <input type="text" class="gui-input" id="${elem.campo}" name="${elem.campo}" placeholder="${elem.placeholder}" style="width:100%;">
-                                                    <label for="${elem.campo}" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-                                                    </label>                 
-                                                </label>
-                                            </div>` , 
-                }
+            //         return carry + tag[elem.tipo];
 
-                return carry + tag[elem.tipo];
+            //     }, '');  
+            //     return html;
+            // }
 
-            }, '');  
-            return html;
+            
+                // elementosModal = {
+                //     modalProyectos: [
+                //         { tipo: 'input', campo: 'nombre', placeholder: 'Nombre del Proyecto', nombre: 'Nombre del Proyecto' },
+                //         { tipo: 'input', campo: 'codigo', placeholder: 'Codigo de Demanda', nombre: 'Codigo de Demanda' },
+
+                //         ],
+                // }
+                
+                // $("#modal_plaa_proyecto .sp_elementos").html(generaModal(modalProyectos));
+                // $(".state-error").removeClass("state-error")
+                // $('#modal_plaa_proyecto' + " em").remove();
+                // $.magnificPopup.open({
+                //     removalDelay: 500, //delay removal by X to allow out-animation,
+                //     // focus: '#pmra_id_pilar',
+                //     items: {
+                //         src: '#modal_plaa_proyecto'
+                //     },
+                //     // overflowY: 'hidden', //
+                //     callbacks: {
+                //         beforeOpen: function(e) {
+                //             var Animation = "mfp-zoomIn";
+                //             this.st.mainClass = Animation;
+                //         }
+                //     },
+                //     midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                // });
         }
-        elementosModal = {
-            modalProyectos: [
-                { tipo: 'input', campo: 'nombre', placeholder: 'Nombre del Proyecto', nombre: 'Nombre del Proyecto' },
-                { tipo: 'input', campo: 'codigo', placeholder: 'Codigo de Demanda', nombre: 'Codigo de Demanda' },
-
-                ],
-        }
-        
-        // $("#modal_plaa_proyecto .sp_elementos").html(generaModal(modalProyectos));
-        // $(".state-error").removeClass("state-error")
-        // $('#modal_plaa_proyecto' + " em").remove();
-        // $.magnificPopup.open({
-        //     removalDelay: 500, //delay removal by X to allow out-animation,
-        //     // focus: '#pmra_id_pilar',
-        //     items: {
-        //         src: '#modal_plaa_proyecto'
-        //     },
-        //     // overflowY: 'hidden', //
-        //     callbacks: {
-        //         beforeOpen: function(e) {
-        //             var Animation = "mfp-zoomIn";
-        //             this.st.mainClass = Animation;
-        //         }
-        //     },
-        //     midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-        // });
-
 
 
 
         var listeners_plaa = function()
         {                      
-            /* select 2 */  
+            /* Carga tipo proyecto */  
             $.get(globalSP.urlApi + "getparametros/tipo_proyecto", function(res){
                 var html = res.data.reduce(function(retorno, op){
                     return retorno + `<option value="${op.codigo}">${op.nombre} </option>`;
                 }, '<option value="">Seleccione el tipo de Proyecto ...</option>');
          
-                $("#codp_tipo_proyecto").append(html);
-                
+                $("#codp_tipo_proyecto").append(html);                
             });
 
-            $.get(globalSP.urlApi + "listproyectos", function(res){
-                ctxplaa.proyectos = res.data;
-            });
-            
+                       
             /* De los selects*/
             $("#select_id_proyecto").select2({
             }); 
 
-            /* Inicializa fechas*/
-            // $('#fecha_ini_picker, #fecha_fin_picker').datetimepicker();
 
-
-            /*comportamientos del select codp_tipo_proyecto*/
+            /*comportamientos del select codp_tipo_proyecto si es pdes, accion sector, continuidad o producto*/
             $("#codp_tipo_proyecto").change(function() {                
                 var tipo = $(this).val();
                 var t=400; 
@@ -644,21 +1586,21 @@ $(function(){
 
 
 
-            /* ---------- Contexto plaa ---------------------------------------------------------*/
+            /* ---------- Contexto plaa proy ---------------------------------------------------------*/
             ctxplaa.fillDataTable();
 
             $("#form_plaa").validate(ctxgral.creaValidateRules(ctxplaa));
 
-            $("#planificacion_plaa").on('click', '.sel_add', function(){
+            $("#container_dt_plaa").on('click', '.sel_add', function(){
                 ctxplaa.nuevo()
             });
 
-            $("#planificacion_plaa").on('click', '.sel_edit', function(){
+            $("#container_dt_plaa").on('click', '.sel_edit', function(){
                 var index = $(this).attr("index_proy");
                 ctxplaa.editar(index);
             });
 
-            $("#planificacion_plaa").on('click', '.sel_delete', function(){
+            $("#container_dt_plaa").on('click', '.sel_delete', function(){
                 var id = $(this).attr("id_arti_pdes_proyecto");
                 ctxplaa.delete(id);
             });
@@ -667,9 +1609,43 @@ $(function(){
                 $.magnificPopup.close();
             });
 
-            
+            /* botones de la tabla que habilita la visualizacion de indicadores, responsables  y otros atributos */
+            $("#container_dt_plaa").on('click', '[proy-index]', function(){   
+                $("#container_dt_plaa tr").removeClass('bg-warning lighter');
+                $(this).parent().parent().addClass('bg-warning lighter');
+                var atributo = $(this).attr('proy-atrib');
+                var index = $(this).attr('proy-index');
+                ctxattr.cargarAtrib( atributo, index);
+            });
+            /* botones del p_contenido para indicadores, responsables, etc*/
+            $("#p_contenido").on('click', '[proy-atrib]', function(){   
+                var atributo = $(this).attr('proy-atrib');
+                ctxattr.cargarAtrib( atributo);
+            });
 
-            // genera_inputgestiones();
+            /* ---------- Contexto atrib ---------------------------------------------------------*/
+
+            $("#atrib_nuevo").click(function(){
+                ctxattr.abmAtrib('nuevo');
+            });
+
+            $("#p_atribContenido").on('click', '.sel_atrib_edit', function(){
+                var index = $(this).attr('index_atrib');
+                ctxattr.abmAtrib('editar', index);
+            });
+
+            $("#p_atribContenido").on('click', '.sel_atrib_delete', function(){
+                var index = $(this).attr('index_atrib');
+                ctxattr.abmAtrib('eliminar', index);
+            });
+
+            /*  validaciones ind */
+            $("#form_ind").validate(ctxgral.creaValidateRules(ctxind));
+            $("#form_res").validate(ctxgral.creaValidateRules(ctxres));
+            $("#form_rol").validate(ctxgral.creaValidateRules(ctxrol));
+            $("#form_art").validate(ctxgral.creaValidateRules(ctxart));
+            $("#form_ter").validate(ctxgral.creaValidateRules(ctxter));
+
         }
 
         listeners_plaa();

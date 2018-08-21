@@ -34,7 +34,9 @@
     background-color: #FFFFFF !important;
 };
 
-
+.sp_fila_seleccionada , .sp_fila_seleccionada:hover{
+    background-color: #345  !important;
+};
 .jqx-grid-column-header{
     background-color: #222 !important;
 }
@@ -275,7 +277,7 @@
                             <div class="section">
                                 <label class="field-label" for="idp_unidad_prog">Unidad de Medida </label>
                                 <label class="field select">
-                                    <select id="idp_unidad_prog" name="idp_unidad_prog" class="required" style="width:100%;">
+                                    <select id="idp_unidad_prog" name="idp_unidad_prog" class="required sp_metrica" style="width:100%;">
                                     </select>
                                     <i class="arrow"></i>                  
                                 </label>
@@ -367,8 +369,8 @@
 <script type="text/javascript" src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript" src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="/sty-mode-2/vendor/plugins/slick/slick.min.js"></script>
-<script type="text/javascript" src="/sty-mode-2/vendor/plugins/moment/moment.min.js"></script>
-<script type="text/javascript" src="/sty-mode-2/vendor/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+{{-- <script type="text/javascript" src="/sty-mode-2/vendor/plugins/moment/moment.min.js"></script> --}}
+{{-- <script type="text/javascript" src="/sty-mode-2/vendor/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script> --}}
 <script type="text/javascript">
 $(function(){
     ctxgral = {
@@ -758,7 +760,7 @@ $(function(){
                     id : $("#id_indicador_prog").val(),
                     nombre :$("#nombre_indicador_prog").val(),
                     idp_unidad: $("#idp_unidad_prog").val(),
-                    // id_diagnostico: $("#variable_prog").val(),
+                    // id_diagnostico: $("#id_diagnostico").val(),
                     variable: $("#variable_prog").val(),
                     alcance: $("#alcance_prog").val(),
                 },
@@ -874,7 +876,7 @@ $(function(){
         }, 
         saveData: function(){
             var obj = ctxprog.getDataForm();
-            $.post(globalSP.urlApi + 'saveprogramacion', obj, function(resp){
+            $.post(globalSP.urlApi + 'saveIndicadorResProg', obj, function(resp){
                 ctxgral.refreshList(ctxprog);
                 new PNotify({
                             title: resp.estado == 'success' ? 'Guardado' : 'Error',
@@ -1013,12 +1015,18 @@ $(function(){
             });
 
             /* De los Tool tips con data-toggle */
-            $("body").on('mouseover', '[data-toggle="tooltip"]', function(){
+            $("body").on('mouseenter ', '[data-toggle="tooltip"]', function(){
                 $(this).tooltip('show')
             });
-            $("body").on('mouseout', '[data-toggle="tooltip"]', function(){
+            $("body").on('mouseleave', '[data-toggle="tooltip"]', function(){
                 $(this).tooltip('hide');
             }); 
+            // $("body").on('mouseover', '[data-toggle="tooltip"]', function(){
+            //     $(this).tooltip('show')
+            // });
+            // $("body").on('mouseout', '[data-toggle="tooltip"]', function(){
+            //     $(this).tooltip('hide');
+            // }); 
             $("#limpiaTooltips").click(function(){
                 $('.tooltip-inner, .tooltip-arrow').hide();
             })           
@@ -1113,13 +1121,13 @@ $(function(){
 
             /* de los select 2 */  
             $.get(globalSP.urlApi + "getparametros/metricas", function(res){
-                metricas = res.data;
+                metricas = _.sortBy(res.data, 'nombre');
                 var html = '';
-                res.data.forEach(function(op){
-                    html += `<option value="${op.id}">${op.codigo} - ${op.nombre} </option>`;
+                metricas.forEach(function(op){
+                    html += `<option value="${op.id}">${op.nombre} (${op.codigo}) </option>`;
                 });         
-                $("#idp_unidad_prog").html(html);
-                $("#idp_unidad_prog").select2({
+                $(".sp_metrica").html(html);
+                $(".sp_metrica").select2({
                     placeholder: 'Unidad de medida ...',
                 });
             });
