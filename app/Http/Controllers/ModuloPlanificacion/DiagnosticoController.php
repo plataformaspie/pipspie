@@ -113,7 +113,7 @@ class DiagnosticoController extends PlanificacionBaseController
               $diagnostico->producto_final = $request->mod_producto_final;
               $diagnostico->variable = $request->mod_variable;
               $diagnostico->indicador = $request->mod_indicador;
-              $diagnostico->unidad = $request->mod_unidad;
+              $diagnostico->idp_unidad = $request->mod_unidad;
               $diagnostico->save();
 
               foreach ($periodo as $key => $value) {
@@ -153,7 +153,7 @@ class DiagnosticoController extends PlanificacionBaseController
             $diagnostico->producto_final = $request->producto_final;
             $diagnostico->variable = $request->variable;
             $diagnostico->indicador = $request->indicador;
-            $diagnostico->unidad = $request->unidad;
+            $diagnostico->idp_unidad = $request->unidad;
             $diagnostico->user_id = $this->user->id;
             $diagnostico->activo = true;
             $diagnostico->save();
@@ -208,7 +208,42 @@ class DiagnosticoController extends PlanificacionBaseController
     }
 
 
- 
+  /*---------------------------------------------------------
+    | Obtiene las variables, con su indicador , unidad y la ultima gestion registrada dato (linea base)
+    | $req: {p: id_plan}
+     */
+
+    public function listVariablesConLineaBase(Request $req){
+        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.entidad as id_entidad, d.indicador, d.variable,
+                        d.idp_unidad, p.codigo as cod_unidad, dc.id as id_diagnostico_comparativo, dc.gestion, dc.dato
+                        from sp_diagnostico d, sp_diagnostico_comparativo dc, sp_parametros p
+                         where dc.diagnostico_id = d.id and d.activo AND p.id = d.idp_unidad AND p.categoria = 'metricas'
+                         AND id_plan = ?", [ $req->p] ));
+
+        $varsGrouped = $variables->groupBy('id_diagnostico');
+        $varsArr = [];
+        foreach ($varsGrouped as $key => $datos) {
+            $d = $datos[0];
+            $lb = $datos->where('gestion', $datos->max('gestion'))->first();
+            $elem = [
+                'id_diagnostico'=> $key,
+                'indicador' => $d->indicador,
+                'variable' => $d->variable,
+                'idp_unidad'   => $d->idp_unidad,
+                'cod_unidad' => $d->cod_unidad,
+                'gestion' => $lb->gestion,
+                'dato' => $lb->dato
+            ];
+            $varsArr[] = $elem;
+        }
+
+        return response()->json([
+          'data' => $varsArr
+        ]);
+
+
+
+    }
 
 
 

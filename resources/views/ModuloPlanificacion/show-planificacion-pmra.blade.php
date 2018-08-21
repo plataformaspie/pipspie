@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.energyblue.css">
 <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 <link rel="stylesheet" href="/plugins/bower_components/sweetalert/sweetalert.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/slick/slick.css" />
 <style media="screen">
 .popup-basic {
   position: relative;
@@ -25,7 +26,6 @@
     padding: 3px 15px 2px;
     position: relative;
 }
-
 /*.sp_tooltip{
     z-index: 999999999 !important;
 }
@@ -50,7 +50,7 @@
 @section('content')
 
 
-    <!--  ===========================================    begin: .tray-center    =============================================================== -->
+    <!--  ===========================================    SUB MENU de planificacion    =============================================================== -->
 
     <div class="tray tray-center ph40 va-t posr ptn">
         <header id="topbar" class="ph10 pbn mb10">
@@ -88,18 +88,28 @@
                                     {{-- <button id="pmra_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button> --}}
                                 </span>
                             </div>
-
                         </div>
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
-
-                            <div id="planif_pmra" class="col-md-12" >
-                                <button id="pol_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar </button>
-                                <button id="pol_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button>
-                                <button id="pol_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>                                
+                            <div class="col-sm-3">
+                                <div class="panel ">
+                        {{--     <div class="panel-heading">
+                                        <span class="panel-icon"><i class="fa fa-pencil"></i>
+                                        </span>
+                                        <span class="panel-title">Pilares</span>
+                                    </div> --}}
+                                    <div id="sp_est_pilar_acciones">                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="" class="col-sm-9" >                                
                                 <div id="dt_pmra"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <!--  ===========================================   Programacion del Resultado=================================== -->
@@ -139,6 +149,7 @@
             <!--  ===========================================   Planificacion Acciones e indicadores ================================== -->
            <div class="col-md-12 slick-slide" id="planificacion_plaa">
             </div>
+
         </div>
     </div>
       <!-- end: .tray-center -->
@@ -150,53 +161,50 @@
     <div id="modal_pmra"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
             <div class="panel-heading bg-dark">
-                <span class="panel-title text-white" id="tituloModal"><i class="fa fa-pencil"></i> <span>__</span></span>
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
             </div>
             <!-- end .panel-heading section -->
             <form method="post" action="/" id="form-pmra" name="form-pmra">
 
                 <div class="panel-body  of-a">
                     <div class="row">
-
-                            <input class="hidden" name="id_pol" id="id_pol" >
+                            <input class="hidden" name="id_pmra" id="id_pmra" >
                             <div class="row">
                                 <div class=" pl5 br-r mvn15">
                                     <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Defina su pilar meta resultado y acciones<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+
                                      <div class="section">
-                                        <label class="field-label" for="pmra_id_pilar">Pilare </label>
+                                        <label class="field-label" for="pmra_id_p">Pilares según sus atribuciones</label>
                                         <label class="field select">
-                                            <select id="pmra_id_pilar" name="pmra_id_pilar" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_p" name="pmra_id_p" class="required" style="width:100%;">
+                                                <option value=""></option>
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="pmra_id_meta">Meta </label>
+                                        <label class="field-label" for="pmra_id_m">Metas </label>
                                         <label class="field select">
-                                            <select id="pmra_id_meta" name="pmra_id_meta" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_m" name="pmra_id_m" class="required" style="width:100%;">
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="pmra_resultado">Pilares según sus atribuciones </label>
+                                        <label class="field-label" for="pmra_id_r">Resultados</label>
                                         <label class="field select">
-                                            <select id="pmra_resultado" name="pmra_resultado" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_r" name="pmra_id_r" class="required" style="width:100%;">
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
                                     </div>
 
                                     <div class="section">
-                                        <label class="field-label" for="pmra_accion">Pilares según sus atribuciones </label>
+                                        <label class="field-label" for="pmra_id_a">Acciones</label>
                                         <label class="field select">
-                                            <select id="pmra_accion" name="pmra_accion" class="required" style="width:100%;">
-                                                {{-- <option value="">...</option> --}}
+                                            <select id="pmra_id_a" name="pmra_id_a" class="required" style="width:100%;">
                                             </select>
                                             <i class="arrow"></i>                  
                                         </label>
@@ -213,7 +221,6 @@
         </div>
         <!-- end: .panel -->
     </div>
-
 
     <!-- -----------------------------------------          Modal Programacion  --------------------------------------------------- -->
     <div id="modal_prog"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
@@ -364,7 +371,6 @@
 <script type="text/javascript" src="/sty-mode-2/vendor/plugins/slick/slick.min.js"></script>
 {{-- <script type="text/javascript" src="/sty-mode-2/vendor/plugins/moment/moment.min.js"></script> --}}
 {{-- <script type="text/javascript" src="/sty-mode-2/vendor/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script> --}}
-
 <script type="text/javascript">
 $(function(){
     ctxgral = {
@@ -439,28 +445,40 @@ $(function(){
         dataTable : $("#dt_pmra"),
         source : {},
         urlList: globalSP.urlApi + 'lista_pmraPlan',
+
         fillDataTable : function() {
             $.get(ctxpmra.urlList, {p : globalSP.idPlanActivo}, function(resp)
             {
-                pol.source =
+                ctxpmra.source =
                 {
                     dataType: "json",
                     localdata: resp.data,
                     dataFields: [
                         { name: 'id', type: 'number' },
-                        { name: 'politica', type: 'string' },
-                        { name: 'ids_pilares', type: 'string' },
-                        { name: 'pilares', type: 'object' },
+                        { name: 'cod_p', type: 'string' },
+                        { name: 'cod_m', type: 'string' },
+                        { name: 'cod_r', type: 'string' },
+                        { name: 'cod_a', type: 'string' },                        
+                        { name: 'nombre_p', type: 'string' },
+                        { name: 'nombre_m', type: 'string' },
+                        { name: 'nombre_r', type: 'string' },
+                        { name: 'nombre_a', type: 'string' },
+                        { name: 'desc_p', type: 'string' },
+                        { name: 'desc_m', type: 'string' },
+                        { name: 'desc_r', type: 'string' },
+                        { name: 'desc_a', type: 'string' },
+                        { name: 'logo_p', type: 'string' },
+                        { name: 'sector', type: 'object' },
                     ],
                     id: 'id',
                 };
-                var dataAdapter = new $.jqx.dataAdapter(pol.source);
-                var editDelRenderer = function (row, columnfield, value, defaulthtml, rowData) {
-                    html = `<a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar " ><i class="fa fa-edit fa-lg text-warning "></i></a>
-                            <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>`
-                    return html;
-                };
-                pol.dataTable.jqxDataTable({
+                ctxpmra.estadistics();
+                var dataAdapter = new $.jqx.dataAdapter(ctxpmra.source);
+                ctxpmra.dataTable.jqxDataTable({
+                    // ready: function () {   
+                    //     $(".contentdt_pmra").css({"z-index": "100", 'font-size':'9px'
+                    //     });  
+                    // },
                     source: dataAdapter,
                     theme: ctxgral.theme,
                     altRows: false,
@@ -496,10 +514,15 @@ $(function(){
                                 return `<span data-toggle="tooltip" data-container="body" data-html="true" title="<b>${rowData.nombre_a}</b> - ${rowData.desc_a}">${rowData.nombre_a} - ${rowData.desc_a}</span>`
                             } 
                         },
-                        { text: ' ', width: 50, cellsrenderer: editDelRenderer},
+                        { text: ' ', width: 50, cellsalign: 'center', cellsrenderer: function (row, column, value, rowData) {
+                                return `<!-- <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar " ><i class="fa fa-edit fa-lg text-warning "></i></a> -->
+                                        <a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a>`;
+                            }
+                        },
                     ]
                 });
-                funciones.estadistics();
+
+
             });
         },
         getDataForm: function(){
@@ -512,23 +535,18 @@ $(function(){
             }
             return obj;
         },
-        setDataForm: function(obj){
-            $("#id_pol").val(obj.id);
-            $("#politica").val(obj.politica);
-            $("#ids_pilares").val(obj.ids_pilares).change();
-        },
         nuevo: function(){
-            $("#tituloModal span").html(`Agregar ${funciones.tipoPolitica()}`);
+            $(".tituloModal span").html(`Agregar articulación pdes`);
             $('#form-pmra input:text').val('');
             $("select").val('').change();
             ctxgral.showModal("#modal_pmra");
         },
         eliminar: function(){
-            var rowSelected = pol.dataTable.jqxDataTable('getSelection');
+            var rowSelected = ctxpmra.dataTable.jqxDataTable('getSelection');
             if(rowSelected.length > 0)
             {
                 var rowSel = rowSelected[0];
-                pol.delete(rowSel.id);             
+                ctxpmra.delete(rowSel.id);             
             }
             else{
                 swal("Seleccione el registro que desea eliminar.");
@@ -550,7 +568,7 @@ $(function(){
                             title: resp.estado == 'success' ? 'Guardado' : 'Error',
                             text: resp.msg,
                             shadow: true,
-                            opacity: 1,
+                            opacity: 0.9,
                             addclass: noteStack,
                             type: (resp.estado == 'success') ? "success" : "danger",
                             stack: Stacks[noteStack],
@@ -558,12 +576,11 @@ $(function(){
                             delay: 1500
                         });
                 $.magnificPopup.close();  
-            });
-             
+            });             
         },
         delete: function(id){
             swal({
-                  title: `Está seguro de eliminar  la ${funciones.tipoPolitica()}?`,
+                  title: `Está seguro de eliminar la articulación PDES del plan?`,
                   text: "No podrá recuperar este registro!",
                   type: "warning",
                   showCancelButton: true,
@@ -581,7 +598,7 @@ $(function(){
                                   type: !res.error ? "success" : 'danger',
                                   stack: Stacks[noteStack],
                                   width: findWidth(),
-                                  delay: 1400
+                                  delay: 2000
                               });
                         ctxgral.refreshList(ctxpmra);
                     });
@@ -932,7 +949,10 @@ $(function(){
             });
              $("#sp_est_pilar_res").html(html);
         }
+
     }
+
+
 
 
     /* ************************************* Init ****************************/
@@ -1138,7 +1158,9 @@ $(function(){
             ctxprog.fillDataTable();
             $("#form_prog").validate(ctxgral.creaValidateRules(ctxprog));
 
-    // $("#form-pmra").validate(pol.validateRules());
+            $("#planificacion_prog").on('click', '.sel_add', function(){
+                ctxprog.nuevo()
+            });
 
             $("#planificacion_prog").on('click', '.sel_edit', function(){
                 var index_ari = $(this).attr("index_ari");
@@ -1151,13 +1173,11 @@ $(function(){
             });
         }
 
-    // $("#div_politicas").on('click','.sel_edit, #pol_editar', function(){
-    //     pol.editar();
-    // });
+        listeners();
+        listeners_pmra();
+        listeners_prog();
 
-    // $("#div_politicas").on('click','.sel_delete, #pol_eliminar', function(){
-    //     pol.eliminar();
-    // });
+    })();
 
     globalSP.activarMenu(globalSP.menu.Planificacion);
     globalSP.cargarGlobales(function(){
@@ -1166,13 +1186,8 @@ $(function(){
     });
     globalSP.setBreadcrumb('Planificación', 'Planificación');
     $("#planificacion_plaa").load('/v/ModuloPlanificacion.view-planificacion-pmra-inds')
-    planif_submenu_activo(3);
+    planif_submenu_activo(1);
 
-    // $(".sp_cancelar").click(function(){
-    //     $.magnificPopup.close();
-    // });
-  
- 
 })
 
 
