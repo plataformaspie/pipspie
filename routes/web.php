@@ -218,11 +218,39 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
 
             Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
+
             Route::get('showPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showPlanesInstitucion');
             Route::get('showEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@showEnfoque');
             Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
+
+            
+
+           
+
+
+            /*++++++++++admininistracion Clasificador++++++++++++++++++++++++++++++*/
+            Route::get('showClasificador','ModuloPlanificacion\AdminClasificadorController@showClasificador');
+           
+            Route::get('setClasificador','ModuloPlanificacion\AdminClasificadorController@setClasificador');
+            Route::post('saveInstitucion','ModuloPlanificacion\AdminClasificadorController@saveInstitucion');
+            
+            Route::post('saveInstitucionEdit','ModuloPlanificacion\AdminClasificadorController@saveInstitucionEdit');
+
+            Route::get('dataSetInstitucion','ModuloPlanificacion\AdminClasificadorController@dataSetInstitucion');
+            Route::get('deleteInstitucion','ModuloPlanificacion\AdminClasificadorController@deleteInstitucion');
+            
+
+            Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
+                return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
+            });
+
+
+           
+ 
+
+
             Route::get('showSeguimiento', 'ModuloPlanificacion\SeguimientoController@showSeguimiento');
             Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
 
@@ -266,6 +294,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
                   return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
               });
+
         }
     );
     Route::group(
@@ -340,6 +369,18 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('savePolitica', 'ModuloPlanificacion\PoliticaController@savePolitica');
             Route::post('deletePolitica', 'ModuloPlanificacion\PoliticaController@deletePolitica');
 
+         
+            /************Administracion Entidades**************************************/
+            Route::get('setMinisterios', 'ModuloPlanificacion\AdminEntidadesController@setMinisterios');
+            
+            Route::post('saveEntidadNewAdministracion', 'ModuloPlanificacion\AdminEntidadesController@saveEntidadNewAdministracion');
+
+            Route::post('saveMinisterio', 'ModuloPlanificacion\AdminEntidadesController@saveMinisterio');
+
+
+
+            
+
             /********** Planificacion 1 PMRA ******************/
             Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificaPMRAController@listaPmraPlan');
             Route::post('save_pmra', 'ModuloPlanificacion\PlanificaPMRAController@savePMRA');
@@ -370,12 +411,11 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('datosindicador', 'ModuloPlanificacion\SeguimientoController@datosIndicador');
 
             
-
-
             /********** Review ******************/
             Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');
             Route::get('apiSetListSinCabeza', 'ModuloPlanificacion\ReviewController@apiSetListSinCabeza');
             Route::get('apiSetListMultis', 'ModuloPlanificacion\ReviewController@apiSetListMultis');
+
         }
     );
 
