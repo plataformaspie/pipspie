@@ -103,40 +103,69 @@ class PlanificacionBaseController extends Controller
      */
     public function getPilares()
     {
-        $pilares = \DB::select('SELECT id, cod_p, nombre, descripcion, logo, cod_pex from pdes_pilares order by cod_p');
+        $pilares = \DB::select('SELECT id, cod_p, nombre, descripcion, logo, cod_pex FROM pdes_pilares ORDER BY cod_p');
         return response()->json(['data' => $pilares]);
     }
 
-    /*
+    /*-----------------------------------------------------------------------------
+    | Obtiene los metas activos
+     */
+    public function getMetas()
+    {
+        $pilares = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex FROM pdes_metas  ORDER BY cod_p');
+        return response()->json(['data' => $pilares]);
+    }
+
+    /*-----------------------------------------------------------------------------
+    | Obtiene los Resultados activos
+     */
+    public function getResultados()
+    {
+        $pilares = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex 
+                                    FROM pdes_resultados ORDER BY cod_p');
+        return response()->json(['data' => $pilares]);
+    }
+
+    /*-----------------------------------------------------------------------------
+    | Obtiene los Acciones activos
+     */
+    public function getAcciones()
+    {
+        $pilares = \DB::select('SELECT id, cod_a, nombre, descripcion, id_resultado
+                                    FROM pdes_accionesORDER BY cod_p');
+        return response()->json(['data' => $pilares]);
+    }
+
+    /* ------------------------------------------------------------------------------
     |  Obtiene las metas pertenecientes a un plan
     | $req = {id_pilar: id_pilar}
      */
-    public function getMetasPilar($req)
+    public function getMetasPilar(Request $req)
     {
-        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex from pdes_metas
-                                WHERE id_pilar = ? ORDER BY cod_m', [$req->id_pilar]);
+        $metas = \DB::select('SELECT id, cod_m, nombre, descripcion, id_pilar, cod_mex FROM pdes_metas 
+                             WHERE id_pilar = ? ORDER BY cod_m', [$req->id_pilar]);
         return response()->json(['data' => $metas]);
     }
 
-    /*
+    /* ------------------------------------------------------------------------------
     |  Obtiene los resultados pertenecientes a una meta
     | $req = {id_meta: id_meta}
      */
-    public function getResultadosMeta($req)
+    public function getResultadosMeta(Request $req)
     {
         $resultados = \DB::select('SELECT id, cod_r, nombre, descripcion, id_meta, sector, clasificacion, macro_sector, cod_rex
                                     FROM pdes_resultados WHERE id_meta = ? ORDER by cod_r', [$req->id_meta]);
         return response()->json(['data' => $resultados]);
     }
 
-    /*
+    /* ------------------------------------------------------------------------------
     |  Obtiene las acciones vinculadas a un Resultado
     | $req = {id_resultado: id_resultado}
      */
-    public function getAccionesResultado($req)
+    public function getAccionesResultado(Request $req)
     {
         $acciones = \DB::select('SELECT id, cod_a, nombre, descripcion, id_resultado
-                                    FROM pdes_acciones WHERE id_resultado = ? ORDER by cod_r', [$req->id_resultado]);
+                                    FROM pdes_acciones WHERE id_resultado = ? ORDER by cod_a', [$req->id_resultado]);
         return response()->json(['data' => $acciones]);
     }
 
@@ -192,11 +221,10 @@ class PlanificacionBaseController extends Controller
                 $plan = \DB::select("SELECT pl.*, p.nombre AS tipo_plan, p.codigo AS cod_tipo_plan
                                     FROM sp_planes pl, sp_parametros p
                                     WHERE pl.id_tipo_plan = p.id AND p.categoria = 'tipo_plan'
-                                    AND pl.id = ? AND pl.id_entidad = ? ", [$idplan, $user->id_institucion]);
+                                    AND pl.id = ? ", [$idplan]);
                 if(count($plan) >0)
                       $condicion = $plan[0]->cod_tipo_plan == 'PSDI' ? " 1=1 " : "  m.tipo_menu != 'Documentación' " ;
             }
-
             $menus = \DB::select("SELECT m.* FROM menus m, roles_menu rm
                              WHERE  m.id = rm.id_menu AND rm.id_rol = {$user->id_rol}
                              AND id_modulo = 7 AND activo = true AND {$condicion}

@@ -8,30 +8,67 @@ use App\Models\ModuloPlanificacion\Planes;
 use App\Models\ModuloPlanificacion\TiposEntidades;
 use Illuminate\Http\Request;
 
-class PlanesController extends PlanificacionBaseController
+class SeguimientoController extends PlanificacionBaseController
 {
 
-    public function showPlanesInstitucion(Request $request)
+    public function showSeguimiento(Request $request)
     {
-        return view('ModuloPlanificacion.show-planes');
+        return view('ModuloPlanificacion.show-seguimiento');
     }
 
-    public function listPlanes(Request $request)
+    public function listIndicadores(Request $req)
     {
-        $idEntidadFoco = $this->getIdEntidadFoco($request);
-        $planes = \DB::select("SELECT p.id, p.id_tipo_plan, p.descripcion as descripcion_plan, per.valor as gestion_inicio, per.valor2 as gestion_fin, per.descripcion as periodo_descripcion, p.etapas_completadas, e.nombre as nombre_entidad, e.sigla as sigla_entidad, tp.codigo as cod_tipo_plan
-                                        FROM sp_planes p, sp_entidades e, sp_parametros tp, sp_parametros per
-                                        WHERE p.activo = true AND p.id_entidad = e.id
-                                        AND  p.id_tipo_plan = tp.id AND tp.categoria = 'tipo_plan'
-                                        AND per.categoria = 'periodo_plan' AND per.activo AND per.codigo = p.cod_periodo_plan
-                                        AND e.institucion = {$idEntidadFoco}
-                                        ORDER BY p.id_tipo_plan");
-        $periodoVigente = \DB::select("SELECT * from sp_parametros WHERE categoria = 'periodo_plan' AND activo ")[0];
+        $indR = collect(\DB::select("SELECT distinct pa.id as id_pmra, pa.cod_p, pa.cod_m, pa.cod_r, pa.cod_a, ari.id as id_arti_indicador, 
+                            i.id as id_indicador, i.nombre as nombre_indicador, i.codp_nivel_pmra as nivel_indicador, um.nombre as unidad_medida, um.codigo as cod_unidad_medida,
+                            i.alcance, i.variable , pl.cod_periodo_plan, pper.valor as gestion_ini, pper.valor2 as gestion_fin  
+                            FROM sp_plan_articulacion_pdes pa, sp_arti_resultado_indicador ari, sp_indicadores i,
+                            sp_parametros um, sp_planes pl, sp_parametros pper
+                            WHERE pa.id = ari.id_plan_articulacion_pdes  
+                            AND ari.id_indicador = i.id AND um.id = i.idp_unidad AND pl.cod_periodo_plan = pper.codigo AND pper.categoria='periodo_plan'
+                            AND pa.activo AND ari.activo AND i.activo 
+                            AND pa.codp_nivel_articulacion = 'r' AND i.codp_nivel_pmra = 'r'
+                            AND pa.id_plan = ? ORDER BY i.nombre", [$req->p]) );
+
+        $indA = collect(\DB::select(" SELECT distinct pa.id as id_pmra, pa.cod_p, pa.cod_m, pa.cod_r, pa.cod_a, appi.id as id_arti_indicador, 
+                                i.id as id_indicador, i.nombre as nombre_indicador, i.codp_nivel_pmra as nivel_indicador, um.nombre as unidad_medida, um.codigo as cod_unidad_medida,
+                                i.alcance, i.variable , pl.cod_periodo_plan, pper.valor as gestion_ini, pper.valor2 as gestion_fin  
+                                FROM sp_plan_articulacion_pdes pa, sp_arti_pdes_proyecto app, sp_arti_pdes_proyecto_indicador appi, sp_indicadores i,
+                                sp_parametros um, sp_planes pl, sp_parametros pper
+                                WHERE pa.id = app.id_plan_articulacion_pdes AND app.id = appi.id_arti_pdes_proyecto 
+                                AND appi.id_indicador = i.id AND um.id = i.idp_unidad AND pl.cod_periodo_plan = pper.codigo AND pper.categoria='periodo_plan'
+                                AND pa.activo AND app.activo AND appi.activo AND i.activo 
+                                AND pa.codp_nivel_articulacion = 'a' AND i.codp_nivel_pmra = 'a'
+                                AND pa.id_plan = ? ORDER BY i.nombre", [$req->p]) );
+        $inds = $indR;
+
+        foreach ($indA as $key => $value) {
+            $inds[] = $value;
+        };
+        foreach ($inds as $key => $elem) {
+            $lineabase = collect(\DB::select("SELECT ie.id as id_indicador_ejecucion, ie.gestion, ie.dato 
+                    FROM sp_indicadores_ejecucion ie WHERE ie.id_arti_indicador = {$elem->id_arti_indicador} AND ie.codp_nivel_pmra = '{$elem->nivel_indicador}' AND ie.gestion < {$elem->gestion_ini} AND ie.dato is not null 
+                    ORDER BY gestion desc "))->first() ; 
+            if($lineabase) { 
+                    $elem->id_indicador_ejecucion = $lineabase->id_indicador_ejecucion;
+                    $elem->linea_base = $lineabase->dato;
+                    $elem->linea_base_gestion = $lineabase->gestion;
+                }
+        }
+        
         return \Response::json([
-            'data' => $planes,
-            'periodo_vigente' => $periodoVigente
+            'data' => $inds,
         ]);
     }
+
+    public function datosIndicador(Request $req){
+        $prog = \DB::select("SELECT id , gestion, dato, id_arti_indicador, codp_nivel_pmra from sp_indicadores_programacion WHERE id_arti_indicador = ? AND activo order by gestion" , [$req->id_arti_indicador]);
+        $ej = \DB::select("SELECT id , gestion, dato, id_arti_indicador, codp_nivel_pmra from sp_indicadores_ejecucion WHERE id_arti_indicador = ? AND activo order by gestion" , [$req->id_arti_indicador]);
+        return response()->json([
+            'programacion' => $prog, 
+            'ejecucion' => $ej
+        ]);
+    }
+
 
     public function savePlan(Request $request)
     {
