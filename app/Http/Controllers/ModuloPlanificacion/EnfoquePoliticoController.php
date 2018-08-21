@@ -20,14 +20,10 @@ class EnfoquePoliticoController extends PlanificacionBaseController
     public function getEnfoquePolitico(Request $req)
     {
         $idEntidadFoco   = $this->getIdEntidadFoco($req);
-        /*$enfoquePolitico = collect(\DB::select("SELECT ep.id, ep.id_plan, ep.enfoque_politico
-                                        FROM sp_enfoque_politico ep, sp_planes pl
-                                        WHERE pl.activo AND ep.activo
-                                        AND pl.id = ep.id_plan AND pl.id = ? AND ep.id_entidad = ?  ", [$req->p, $idEntidadFoco]))->first();*/
         $enfoquePolitico = collect(\DB::select("SELECT ep.id, ep.id_plan, ep.enfoque_politico
                                         FROM sp_enfoque_politico ep, sp_planes pl
                                         WHERE pl.activo AND ep.activo
-                                        AND pl.id = ep.id_plan AND pl.id = ? AND ep.id_entidad = pl.id_entidad  ", [$req->p]))->first();
+                                        AND pl.id = ep.id_plan AND pl.id = ? AND ep.id_entidad = ?  ", [$req->p, $idEntidadFoco]))->first();
 
         return response()->json([
             'data' => $enfoquePolitico,
@@ -84,8 +80,8 @@ class EnfoquePoliticoController extends PlanificacionBaseController
      */
     public function listAtribucionesPilares(Request $req)
     {
-        $atribs = \DB::select("SELECT id, atribucion, id_plan, ids_pilares
-                                FROM sp_atribuciones_pilares
+        $atribs = \DB::select("SELECT id, atribucion, id_plan, ids_pilares 
+                                FROM sp_atribuciones_pilares 
                                 where activo AND id_plan =  ? ",[$req->p]);
         if (count($atribs) > 0)  {
             $pilares = collect(\DB::table('pdes_pilares')->orderBy('cod_p')->get())->groupBy('id');
@@ -168,7 +164,7 @@ class EnfoquePoliticoController extends PlanificacionBaseController
         try{
 
             \DB::table('sp_atribuciones_pilares')->where('id', $req->id)->update(['activo'=>false]);
-            return \Response::json([
+            return \Response::json([ 
                 'error' => false,
                 'estado' => "Success",
                 'msg' => "Se eliminó correctamente."
@@ -181,33 +177,6 @@ class EnfoquePoliticoController extends PlanificacionBaseController
                 'msg' => $e->getMessage()
             ]);
         }
-    }
-
-
-        /*-----------------------------------------------------------------------------------------------------------
-    |  obtiene los pilares vinculados con los atributos del plan,
-    |  $req = { p : id_plan }
-     */
-    public function getPilaresVinculadosAlPlan(Request $req)
-    {
-        $atribuciones = collect(\DB::select("SELECT * from sp_atribuciones_pilares where activo AND id_plan = ? " , [$req->p]));
-        $idsPilares = $atribuciones->map(function($elem){
-                                return explode('|', $elem->ids_pilares);
-                            })->collapse()->unique()
-                            ->filter(function($val, $key){
-                                return $val != '';
-                            })->sort()->values();
-
-
-        $pilares = \DB::table('pdes_pilares')->get()->groupBy('id');
-        $pilaresPlan = [];
-        foreach ($idsPilares as $idp) {
-             $pilaresPlan[] = $pilares[$idp]->first();
-         } 
-
-        return response()->json([
-            'data' => $pilaresPlan,
-        ]);
     }
 
 

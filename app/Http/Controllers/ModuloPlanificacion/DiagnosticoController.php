@@ -7,46 +7,24 @@ use App\Http\Controllers\Controller;
 
 use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
+use App\Models\ModuloPlanificacion\Metricas;
 use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
 use App\Models\ModuloPlanificacion\Entidades;
-use App\Models\ModuloPlanificacion\SistemasVida;
-use App\Models\ModuloPlanificacion\Planes;
-use App\Models\ModuloPlanificacion\TipoSectores;
 use App\Models\ModuloPdes\Pilares;
 
 class DiagnosticoController extends PlanificacionBaseController
 {
-
-    public function showDiagnostico(Request $request)
+  
+    public function showDiagnostico()
     {
-
-        if ($request->p)
-        {
-            $planActivo = Planes::where('id', $request->p)->first();
-            $idEntidad =$planActivo->id_entidad;
-        }
-        else
-        {
-            $this->user = \Auth::user();
-            $idEntidad  = $this->user->id_institucion;
-        }
-
-        $metricas = \DB::select("SELECT * FROM sp_parametros where categoria = 'metricas' AND activo ORDER BY codigo ");
-        $sistemasVida = SistemasVida::where('id_plan',$request->p )
-                        ->where('activo',true )
-                        ->groupBy('jurisdiccion_territorial')
-                        ->orderBy('jurisdiccion_territorial','ASC')
-                        ->select('jurisdiccion_territorial')
-                        ->get();
-        $sectores = TipoSectores::get();
-        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas,'sistemasVida'=>$sistemasVida, 'sectores' => $sectores]);
+        $metricas = Metricas::orderBy('simbolo','asc')->get();
+        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
     }
 
 
     public function setDiagnostico(Request $request)
     {
-        // $idEntidad = $this->getIdEntidadFoco($request);
-        $id_plan = $request->p;
+        $idEntidad = $this->getIdEntidadFoco($request);
         $diagnostico = \DB::select("SELECT *,
                                       (
                                       SELECT dato
@@ -80,17 +58,15 @@ class DiagnosticoController extends PlanificacionBaseController
                                       ) as _2015
                                       FROM (
 
-                                      SELECT d.*, p.codigo as simbolo
+                                      SELECT d.*, m.simbolo
                                       FROM sp_diagnostico d
-
-                                      INNER JOIN sp_parametros p ON d.idp_unidad = p.id and p.categoria = 'metricas'
-                                      WHERE d.id_plan = {$id_plan}
-
+                                      INNER JOIN sp_metricas m ON d.unidad = m.id
+                                      WHERE d.entidad = ".$idEntidad."
                                       AND d.activo = true
                                       ) tab");
         $i=1;
         $datos = array();
-        foreach ($diagnostico as $d)
+        foreach ($diagnostico as $d) 
         {
             $datos[$i] = array(
                       'id' => $d->id,
@@ -136,7 +112,7 @@ class DiagnosticoController extends PlanificacionBaseController
               $diagnostico->producto_final = $request->mod_producto_final;
               $diagnostico->variable = $request->mod_variable;
               $diagnostico->indicador = $request->mod_indicador;
-              $diagnostico->idp_unidad = $request->mod_unidad;
+              $diagnostico->unidad = $request->mod_unidad;
               $diagnostico->save();
 
               foreach ($periodo as $key => $value) {
@@ -166,7 +142,7 @@ class DiagnosticoController extends PlanificacionBaseController
         $idEntidad = $this->getIdEntidadFoco($request);
 
 
-        $periodo = array(2011,2012,2013,2014,2015);
+        $periodo = array(2011,2012,2013,2014,2015);   
         //$this->user= \Auth::user();
 
         try{
@@ -176,7 +152,7 @@ class DiagnosticoController extends PlanificacionBaseController
             $diagnostico->producto_final = $request->producto_final;
             $diagnostico->variable = $request->variable;
             $diagnostico->indicador = $request->indicador;
-            $diagnostico->idp_unidad = $request->unidad;
+            $diagnostico->unidad = $request->unidad;
             $diagnostico->user_id = $this->user->id;
             $diagnostico->activo = true;
             $diagnostico->save();
@@ -230,45 +206,8 @@ class DiagnosticoController extends PlanificacionBaseController
         }
     }
 
-    /*---------------------------------------------------------
-    | Obtiene las variables, con su indicador , unidad y la ultima gestion registrada dato (linea base)
-    | $req: {p: id_plan}
-     */
 
-    public function listVariablesConLineaBase(Request $req){
-        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.entidad as id_entidad, d.indicador, d.variable,
-                        d.idp_unidad, p.codigo as cod_unidad, dc.id as id_diagnostico_comparativo, dc.gestion, dc.dato
-                        from sp_diagnostico d, sp_diagnostico_comparativo dc, sp_parametros p
-                         where dc.diagnostico_id = d.id and d.activo AND p.id = d.idp_unidad AND p.categoria = 'metricas'
-                         AND id_plan = ?", [ $req->p] ));
-
-        $varsGrouped = $variables->groupBy('id_diagnostico');
-        $varsArr = [];
-        foreach ($varsGrouped as $key => $datos) {
-            $d = $datos[0];
-            $lb = $datos->where('gestion', $datos->max('gestion'))->first();
-            $elem = [
-                'id_diagnostico'=> $key,
-                'indicador' => $d->indicador,
-                'variable' => $d->variable,
-                'idp_unidad'   => $d->idp_unidad,
-                'cod_unidad' => $d->cod_unidad,
-                'gestion' => $lb->gestion,
-                'dato' => $lb->dato
-            ];
-            $varsArr[] = $elem;
-        }
-
-        return response()->json([
-          'data' => $varsArr
-        ]);
-
-
-
-    }
-
-
-
+ 
 
 
 
