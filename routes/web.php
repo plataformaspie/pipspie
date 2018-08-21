@@ -216,10 +216,15 @@ Route::group(['middleware' => 'auth'],function(){
         array('prefix' => 'moduloplanificacion'),
         function() {
             Route::get('index', 'ModuloPlanificacion\PlanificacionBaseController@index');
-              Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
-              Route::get('showPlanesInstitucion', 'ModuloPlanificacion\EntidadPlanController@showPlanesInstitucion');
-              Route::get('showEnfoque', 'ModuloPlanificacion\PlanificacionController@showEnfoque');
-              Route::get('showDiagnostico', 'ModuloPlanificacion\PlanificacionController@showDiagnostico');
+
+            Route::get('showEstructura', 'ModuloPlanificacion\AdministracionController@showEstructura');
+            Route::get('showPlanesInstitucion', 'ModuloPlanificacion\PlanesController@showPlanesInstitucion');
+            Route::get('showEnfoque', 'ModuloPlanificacion\EnfoquePoliticoController@showEnfoque');
+            Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
+            Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
+            Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
+            Route::get('showSeguimiento', 'ModuloPlanificacion\SeguimientoController@showSeguimiento');
+            Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
 
               // Territorial asignacion ----------------------------------------
               Route::get('showPlanificacionTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialABMController@showPlanificacionTerritorial');
@@ -283,6 +288,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('saveEntidadEdit', 'ModuloPlanificacion\AdministracionController@saveEntidadEdit');
             Route::get('deleteEntidad', 'ModuloPlanificacion\AdministracionController@deleteEntidad');
             Route::get('setEntidadOrganigrama', 'ModuloPlanificacion\AdministracionController@setEntidadOrganigrama');
+            Route::get('getEntidadesHijos/{id}', 'ModuloPlanificacion\AdministracionController@obtenerEntidadesHijos');
 
             /********** oficinas **********************/
             Route::post('saveOficinaNew', 'ModuloPlanificacion\AdministracionController@saveOficinaNew');
@@ -338,10 +344,33 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('lista_pmraPlan', 'ModuloPlanificacion\PlanificaPMRAController@listaPmraPlan');
             Route::post('save_pmra', 'ModuloPlanificacion\PlanificaPMRAController@savePMRA');
             Route::post('delete_pmra', 'ModuloPlanificacion\PlanificaPMRAController@deletePMRA');
-            /********** Planificacion 2 programacion ******************/
+
+            Route::post('modifycampo', 'ModuloPlanificacion\PlanificaPMRAController@modifyCampo');
+            /********** Planificacion 2 programacion ******************/            
+
             Route::get('listaprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@listaProgramacion');
-            Route::post('saveprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@saveProgramacion');
+            Route::post('saveIndicadorResProg', 'ModuloPlanificacion\PlanificaPMRAController@saveIndicadorResProg');
             Route::post('deleteprogramacion', 'ModuloPlanificacion\PlanificaPMRAController@deleteProgramacion');
+            /********** Planificacion 3 planificacion accion ******************/            
+            Route::get('listaaccionesproy', 'ModuloPlanificacion\PlanificaPMRAController@listaAccionesProyectos');
+            Route::post('saveartiproyecto', 'ModuloPlanificacion\PlanificaPMRAController@saveArtiProyecto');
+            Route::post('deleteartiproyecto', 'ModuloPlanificacion\PlanificaPMRAController@deleteArtiProyecto');
+            Route::get('listproyectos', 'ModuloPlanificacion\PlanificaPMRAController@listProyectos');            
+            Route::post('saveIndicadorAccionProg', 'ModuloPlanificacion\PlanificaPMRAController@saveIndicadorAccionProg');
+            Route::post('saveresponsables', 'ModuloPlanificacion\PlanificaPMRAController@saveResponsables');
+            Route::post('saverolesactores', 'ModuloPlanificacion\PlanificaPMRAController@saveRolesActores');
+            Route::post('savearticulacioncompetencial', 'ModuloPlanificacion\PlanificaPMRAController@saveArticulacionCompetencial');
+            Route::post('saveterritorializacion', 'ModuloPlanificacion\PlanificaPMRAController@saveTerritorializacion');
+
+            Route::post('delete_atributo', 'ModuloPlanificacion\PlanificaPMRAController@deleteAtributo');
+            Route::get('list_atributo', 'ModuloPlanificacion\PlanificaPMRAController@listAtributo');
+            Route::get('list_regiones', 'ModuloPlanificacion\PlanificaPMRAController@listRegiones');
+            /********** Seguimiento Evaluacion ******************/            
+            Route::get('listindicadores', 'ModuloPlanificacion\SeguimientoController@listIndicadores');
+            Route::get('datosindicador', 'ModuloPlanificacion\SeguimientoController@datosIndicador');
+
+            
+
 
             /********** Review ******************/
             Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');

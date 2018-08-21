@@ -21,12 +21,15 @@
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/magnific/magnific-popup.css">
+{{--     <link rel="stylesheet" type="text/css" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css">
+    <link rel="stylesheet" type="text/css" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.arctic.css"> --}}
     <!-- Admin Forms CSS -->
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-forms/css/admin-forms.css">
     <!-- Admin Modals CSS -->
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-modal/adminmodal.css">
     <!-- Theme CSS -->
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/skin/default_skin/css/theme.css">
+
 
     <!-- Admin Panels CSS -->
     {{-- <link rel="stylesheet" type="text/css" href="/sty-mode-2/assets/admin-tools/admin-plugins/admin-panels/adminpanels.css"> --}}

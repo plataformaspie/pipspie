@@ -17,7 +17,8 @@ class DiagnosticoController extends PlanificacionBaseController
   
     public function showDiagnostico()
     {
-        $metricas = Metricas::orderBy('simbolo','asc')->get();
+        // $metricas = Metricas::orderBy('simbolo','asc')->get();
+        $metricas = \DB::table('sp_parametros')->where('categoria', 'metricas')->orderBy('codigo','asc')->get();
         return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
     }
 
@@ -58,9 +59,9 @@ class DiagnosticoController extends PlanificacionBaseController
                                       ) as _2015
                                       FROM (
 
-                                      SELECT d.*, m.simbolo
+                                      SELECT d.*, m.codigo as simbolo
                                       FROM sp_diagnostico d
-                                      INNER JOIN sp_metricas m ON d.unidad = m.id
+                                      INNER JOIN sp_parametros m ON d.idp_unidad = m.id
                                       WHERE d.entidad = ".$idEntidad."
                                       AND d.activo = true
                                       ) tab");

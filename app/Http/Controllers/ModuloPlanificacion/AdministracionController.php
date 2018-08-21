@@ -498,4 +498,10 @@ class AdministracionController extends PlanificacionBaseController
     //     return \Response::json($entidadPlan);
     // }
 
+    public function obtenerEntidadesHijos($id)
+    {
+        $instituciones = \DB::select("SELECT id, nombre, sigla FROM sp_entidades 
+                                        WHERE activo and id<>institucion and id=id_entidad and institucion = ?", [$id]);
+        return response()->json(['data' => $instituciones]);
+    }
 }

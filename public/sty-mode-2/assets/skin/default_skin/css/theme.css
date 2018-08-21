@@ -21602,9 +21602,7 @@ body.sb-r-o #toggle_sidemenu_r span.glyphicons {
 /*toggle right sidebar badge
 */
 .badge.badge-hero {
-  position: relative;
-  top: -12px;
-  margin-left: -10px;
+
   padding: 2px 5px;
   font-size: 11px;
 }

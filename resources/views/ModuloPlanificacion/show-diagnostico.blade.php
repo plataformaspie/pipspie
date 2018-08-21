@@ -75,10 +75,12 @@
               <div class="panel panel-visible" id="spy1">
                   <div class="panel-heading bg-dark">
                       <div class="panel-title hidden-xs">
-                         <span class="glyphicon glyphicon-tasks"></span>Diagnóstico
-                         <button id="nuevo"  class="btn btn-sm btn-success dark m5  br6 pull-right"><i class="fa fa-plus-circle text-white"></i> Agregar variable</button>
-                         <button id="editar"  class="btn btn-sm btn-warning dark m5 br6  pull-right "><i class="fa fa-edit text-white"></i> Editar</button>
-                         <button id="eliminar"  class="btn btn-sm btn-danger dark m5 br6  pull-right"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                         <span class="fa  fa-lightbulb-o"></span>Diagnóstico
+                         <div class="pull-right">
+                           <button id="nuevo"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar variable</button>
+                           <button id="editar"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>
+                           <button id="eliminar"  class="btn btn-sm btn-danger dark m5 br6 "><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                         </div>
                       </div>
                   </div>
                   <div class="panel-body pn">
@@ -89,16 +91,17 @@
 
           <div class="col-md-12">
               <div class="panel panel-visible" id="spy2">
-                  <div class="panel-heading bg-dark">
-                      <div class="panel-title hidden-xs">
-                          <span class="glyphicon glyphicon-tasks"></span>Sistemas de Vida</div>
-                  </div>
+                <div class="panel-heading bg-dark">
+                    <div class="panel-title hidden-xs">
+                       <span class="fa  fa-lightbulb-o"></span>Sistemas de Vida
+                       <div class="pull-right">
+                         <button id="nuevoSv"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar</button>
+                         <button id="editarSv"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>
+                         <button id="eliminarSv"  class="btn btn-sm btn-danger dark m5 br6 "><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                       </div>
+                    </div>
+                </div>
                   <div class="panel-body pn">
-
-
-
-
-
                   </div>
               </div>
           </div>
@@ -107,14 +110,15 @@
               <div class="panel panel-visible" id="spy3">
                   <div class="panel-heading bg-dark">
                       <div class="panel-title hidden-xs">
-                          <span class="glyphicon glyphicon-tasks"></span>Gestion de Riesgo</div>
+                         <span class="fa  fa-lightbulb-o"></span>Riesgos
+                         <div class="pull-right">
+                           <button id="nuevoRi"  class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar</button>
+                           <button id="editarRi"  class="btn btn-sm btn-warning dark m5 br6  "><i class="fa fa-edit text-white"></i> Editar</button>
+                           <button id="eliminarRi"  class="btn btn-sm btn-danger dark m5 br6 "><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                         </div>
+                      </div>
                   </div>
                   <div class="panel-body pn">
-
-
-
-
-
                   </div>
               </div>
           </div>
@@ -174,7 +178,7 @@
                               <label for="unidad" class="field select ">
                                   <select id="unidad" name="unidad" class="required"  style="width:100%;">
                                       @foreach($metricas as $m)
-                                          <option value="{{$m->id}}"> {{$m->simbolo}} </option>                                
+                                          <option value="{{$m->id}}"> {{$m->codigo}} </option>                                
                                       @endforeach
                                   </select>
                                   <i class="arrow"> </i> 
@@ -330,7 +334,7 @@
                                  <label for="mod_unidad" class="field ">
                                     <select id="mod_unidad" name="mod_unidad" class="field prepend-icon" style="width:100%;">
                                         @foreach($metricas as $m)
-                                          <option value="{{$m->id}}"> {{$m->simbolo}} </option>
+                                          <option value="{{$m->id}}"> {{$m->codigo}} </option>
                                         @endforeach
                                     </select>
                                   </label>
