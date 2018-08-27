@@ -962,7 +962,7 @@ $(document).ready(function(){
                     var container = `<div style="width: 100%; height: 100%;">
                                         <div style="float: left; width: 100%;">
                                         <div class="ml10"><b>Valor:</b> ${rowData.funciones_ambientales}</div>
-                                        <div class="ml10"><b>Descripcion:</b> ${rowData.funciones_desc}</div>
+                                        <div class="ml10"><b>Descripcion:</b> ${rowData.funciones_desc || ''}</div>
                                     </div>`
                     return container;
                 }
@@ -972,7 +972,7 @@ $(document).ready(function(){
                     var container = `<div style="width: 100%; height: 100%;">
                                         <div style="float: left; width: 100%;">
                                         <div class="ml10"><b>Valor:</b> ${rowData.sis_produc_sustentables}</div>
-                                        <div class="ml10"><b>Descripcion:</b> ${rowData.sistemas_desc}</div>
+                                        <div class="ml10"><b>Descripcion:</b> ${rowData.sistemas_desc || ''}</div>
                                     </div>`
                     return container;
                 }
@@ -982,7 +982,7 @@ $(document).ready(function(){
                     var container = `<div style="width: 100%; height: 100%;">
                                         <div style="float: left; width: 100%;">
                                         <div class="ml10"><b>Valor:</b> ${rowData.pobreza}</div>
-                                        <div class="ml10"><b>Descripcion:</b> ${rowData.pobreza_desc}</div>
+                                        <div class="ml10"><b>Descripcion:</b> ${rowData.pobreza_desc || ''}</div>
                                     </div>`
                     return container;
                 }

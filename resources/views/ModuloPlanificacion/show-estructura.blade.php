@@ -72,15 +72,20 @@
 
           <div class="col-md-12">
               <div class="panel panel-visible" >
-                <div class="panel-heading bg-dark text-center">
-                     <span class="panel-title"> Listado de Entidades pertenecientes</span>
+                <div class="panel-heading bg-dark ">
+                 
+                 <div>
+                  <i class="glyphicon glyphicon-tasks" ></i><span class="panel-title"> Listado de Entidades pertenecientes</span>                                  
+                  <span class="pull-right">
+                    <button id="nuevo" type="button" class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar entidad</button>
+                    {{-- <button id="pmra_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button> --}}
+                    {{-- <button id="pmra_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button> --}}
+                  </span>
                 </div>
+              </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div id="estructura" class="col-md-12" >
-                            <button id="nuevo" type="button" class="btn btn-sm btn-success dark m5  br6"><i class="fa fa-plus-circle text-white"></i> Agregar entidad</button>
-                            <button id="editar" type="button" class="btn btn-sm btn-warning dark m5 br6 "><i class="fa fa-edit text-white"></i> Editar</button>
-                            <button id="eliminar" type="button" class="btn btn-sm btn-danger dark m5 br6 "><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
+                        <div id="estructura" class="col-md-12" >                            
                             <div id="dataTable"></div>
                         </div>
 

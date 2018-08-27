@@ -93,15 +93,12 @@
                     <div class="panel-heading  bg-dark ">
                         <div class="panel-title hidden-xs">
                             <span class="glyphicon glyphicon-tasks"></span> Atribuciones principales del sector <span class="sp_est_atribuciones"></span>
+                            <span class="pull-right"><button id="atr_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar atribución</button></span>
                         </div>
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
                             <div id="div_atribuciones" class="col-md-12" >
-                                <button id="atr_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar atribución</button>
-                                <button id="atr_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button>
-                                <button id="atr_elimar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>
-                                
                                 <div id="dtAtribuciones"></div>
                             </div>
                         </div>
@@ -394,7 +391,10 @@ $(function(){
                                     var pilares = rowData.pilares;
                                     html = "";
                                     pilares.forEach(function(pilar){
-                                        html += "<div class='br-b m10 pv5'><b>" + pilar.nombre + "</b> - "+ pilar.descripcion + "</div>" 
+                                        html += `<div class='br-b m10 pv5 row'>
+                                                    <div class="col-md-2"><img width="40" class=""  src="/img/${pilar.logo}"/></div>
+                                                    <div class="col-md-10"><b>${pilar.nombre}</b> - ${pilar.descripcion}</div>
+                                                </div>` 
                                     });
                                    return html;
                             } 

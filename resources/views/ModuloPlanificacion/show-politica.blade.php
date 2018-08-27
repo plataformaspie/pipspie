@@ -33,7 +33,7 @@
 
 
     <!--  ===========================================    begin: .tray-center    =============================================================== -->
-    <div class="tray tray-center p40 va-t posr">
+    <div class="tray tray-center p40 va-t posr" id="div_politicas">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-visible" id="spy2">
@@ -44,7 +44,7 @@
                     </div>
                     <div class="panel-body pn">
                         <div class="row">
-                            <div id="div_politicas" class="col-md-12" >
+                            <div  class="col-md-12" >
                                 <button id="pol_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4"><i class="fa fa-plus-circle text-white"></i> Agregar </button>
                                 <button id="pol_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button>
                                 <button id="pol_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button>                                
@@ -170,7 +170,10 @@ $(function(){
                                     var pilares = rowData.pilares;
                                     html = "";
                                     pilares.forEach(function(pilar){
-                                        html += "<div class='br-b m10 pv5'><b>" + pilar.nombre + "</b> - "+ pilar.descripcion + "</div>" 
+                                        html += `<div class='br-b m10 pv5 row'>
+                                                    <div class="col-md-2"><img width="40" class=""  src="/img/${pilar.logo}"/></div>
+                                                    <div class="col-md-10"><b>${pilar.nombre}</b> - ${pilar.descripcion}</div>
+                                                </div>`
                                     });
                                    return html;
                             } 

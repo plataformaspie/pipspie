@@ -52,38 +52,38 @@ class DiagnosticoController extends PlanificacionBaseController
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2011
+                                      AND gestion = 2011 and activo
                                       ) as _2011,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2012
+                                      AND gestion = 2012 and activo
                                       ) as _2012,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2013
+                                      AND gestion = 2013 and activo
                                       ) as _2013,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2014
+                                      AND gestion = 2014 and activo
                                       ) as _2014,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2015
+                                      AND gestion = 2015 and activo
                                       ) as _2015
                                       FROM (
 
                                       SELECT d.*, p.codigo as simbolo
                                       FROM sp_diagnostico d
 
-                                      INNER JOIN sp_parametros p ON d.idp_unidad = p.id and p.categoria = 'metricas'
+                                      INNER JOIN sp_parametros p ON d.idp_unidad = p.id 
                                       WHERE d.id_plan = {$id_plan}
 
                                       AND d.activo = true
@@ -95,7 +95,7 @@ class DiagnosticoController extends PlanificacionBaseController
             $datos[$i] = array(
                       'id' => $d->id,
                       'contador' => $i,
-                      'entidad' => $d->entidad,
+                      // 'entidad' => $d->entidad,
                       'indicador' => $d->indicador,
                       'fuente_verificacion' => $d->fuente_verificacion,
                       'variable' => $d->variable,
@@ -171,7 +171,7 @@ class DiagnosticoController extends PlanificacionBaseController
 
         try{
             $diagnostico = new Diagnosticos();
-            $diagnostico->entidad = $idEntidad;
+            // $diagnostico->entidad = $idEntidad;
             $diagnostico->id_plan = $request->id_plan;
             $diagnostico->producto_final = $request->producto_final;
             $diagnostico->variable = $request->variable;
@@ -236,7 +236,7 @@ class DiagnosticoController extends PlanificacionBaseController
      */
 
     public function listVariablesConLineaBase(Request $req){
-        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.entidad as id_entidad, d.indicador, d.variable,
+        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.indicador, d.variable,
                         d.idp_unidad, p.codigo as cod_unidad, dc.id as id_diagnostico_comparativo, dc.gestion, dc.dato
                         from sp_diagnostico d, sp_diagnostico_comparativo dc, sp_parametros p
                          where dc.diagnostico_id = d.id and d.activo AND p.id = d.idp_unidad AND p.categoria = 'metricas'
