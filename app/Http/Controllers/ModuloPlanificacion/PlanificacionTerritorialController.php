@@ -78,7 +78,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   }
    public function listaTipos($idgasto)
   {
-  	$tipos = \DB::select("select distinct(clasificador) from sp_pt_accion where   id_estructura_prog={$idgasto} and clasificador<>''" );
+  	$tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores" );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se Cargo Gastos',
@@ -96,7 +96,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   }
    public function listaServicios($idgasto,$idtipo)
   {
-  	$servicios = \DB::select("select distinct(servicio) from sp_pt_accion where id_estructura_prog={$idgasto} and clasificador='{$idtipo}' and servicio<>''" );
+  	$servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios" );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se Cargo Gastos',
@@ -161,11 +161,15 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   public function insertar(Request $req)
   {
     $matriz = [];
+    $matriz['id_tarea_eta'] = $req->id_tarea_eta;
     $matriz['id_departamento'] = $req->id_departamento;
     $matriz['id_provincia'] = $req->id_provincia;
     $matriz['id_municipio'] = $req->id_municipio;
     $matriz['id_programa'] = $req->id_programa;
+    $matriz['id_clasificador'] = $req->id_clasificador;
+    $matriz['id_servicio'] = $req->id_servicio;
     $matriz['descripcion_programa'] = $req->descripcion_programa;
+    $matriz['id_accion_eta'] = $req->id_accion_eta;
     $matriz['accion_eta'] = $req->accion_eta;
     $matriz['linea_base'] = $req->linea_base;
     $matriz['proceso_indicador'] = $req->proceso_indicador;
@@ -187,6 +191,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
     $matriz['resultado'] = $req->resultado;
     $matriz['accion'] = $req->accion;
     $matriz['descripcion_accion'] = $req->descripcion_accion;    
+    $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;    
     $matriz['usuario_creador']=$this->user->id;
     $matriz['fecha_creacion']=date("d/m/Y H:i:s");
     $matriz['estado'] = 'CREADO';

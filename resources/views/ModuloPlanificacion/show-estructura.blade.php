@@ -553,42 +553,42 @@ $(function(){
                                         console.log(extension_Editar);
                                         switch(extension_Editar){
                                                 case 'pdf':{
-
+                                                    
                                                     var carpeta_Pdf = "/sp-files/organigramas/iconoPdf.jpeg";
                                                     $('#mod_img_logo_Editar').attr("src",carpeta_Pdf);
                                                     break;
 
                                                 } ;
                                                 case 'xlsx':{
-
+                                                    
                                                     var carpeta_Excel = "/sp-files/organigramas/iconoExcel.png";
                                                     $('#mod_img_logo_Editar').attr("src",carpeta_Excel);
                                                     break;
                                                 };
                                                 case 'xls':{
-
+                                                    
                                                     var carpeta_Excel = "/sp-files/organigramas/iconoExcel.png";
                                                     $('#mod_img_logo_Editar').attr("src",carpeta_Excel);
                                                     break;
                                                 };
                                                 case 'docx':{
-
+                                                    
                                                     var carpeta_Excel = "/sp-files/organigramas/iconoWord.png";
                                                     $('#mod_img_logo_Editar').attr("src",carpeta_Excel);
                                                     break;
                                                 };
                                                 case 'doc':{
-
+                                                    
                                                     var carpeta_Excel = "/sp-files/organigramas/iconoWord.png";
                                                     $('#mod_img_logo_Editar').attr("src",carpeta_Excel);
                                                     break;
                                                 };
                                                 case 'jpeg':{
-
+                                                    
                                                     $("#mod_img_logo_Editar").attr("src",ruta+data.ruta_org);
                                                     break;
                                                 };
-
+                                                    
                                                 case 'jpg':{
 
                                                     $("#mod_img_logo_Editar").attr("src",ruta+data.ruta_org);
@@ -609,9 +609,9 @@ $(function(){
                                                 }
                                             }
 
-
+                                        
                                       }
-
+                                  
                               },
                               error:function(data){
                                 console("Error recuperar los datos.");
@@ -867,7 +867,7 @@ $(function(){
             { name: 'ruta_org', type:'string'}
         ],
         id: 'id',
-        url: globalSP.urlApi + 'setEstructuraEntidad' + '?p='+globalSP.idPlanActivo,
+        url: globalSP.urlApi + 'setEstructuraEntidad',
         sortcolumn: 'orden',
         sortdirection: 'asc'
     };
@@ -901,15 +901,15 @@ $(function(){
             { text: 'Organigrama', dataField:'ruta_org', width: 100, cellsalign: 'center',
                  cellsRenderer: function (row, column, value, rowData){
                         if(rowData.ruta_org)
-                            return "<a  href='"+ ctxEnt.ruta_org + rowData.ruta_org +"' target='_blank'><i class='fa fa-bookmark fa-lg text-success '></i></a>";
+                            return "<a  href='"+ ctxEnt.ruta_org + rowData.ruta_org +"' target='_blank'><i class='fa fa-bookmark fa-lg text-success '></i></a>";                        
                         else
                             return "<i class='fa fa-bookmark fa-lg text-white-darker '></i>";
                     }
             },
             { text: '', dataField:'id', width: 60, cellsalign: 'center',
                  cellsRenderer: function (row, column, value, rowData){
-                    html = `<a href="#" id="edit-${value}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar" ><i class="fa fa-edit text-warning fa-lg"></i></a>
-                        <a href="#" id="del-${value}" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle text-danger fa-lg"></i></a> `
+                    html = `<a href="#" id="edit-${value}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar" ><i class="fa fa-edit text-warning fa-lg"></i></a> 
+                        <a href="#" id="del-${value}" class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle text-danger fa-lg"></i></a> ` 
                     return html;
                     }
             },
@@ -973,7 +973,7 @@ $(function(){
     });
 
 
-     /*----------- NUEVA OFICINA ------ */
+     /*----------- NUEVA OFICINA ------ */   
     $('#nuevo-ofi').on('click', function(event) {
         ctxEnt.nuevaOficina();
     });
@@ -998,7 +998,7 @@ $(function(){
     });
 
 
-    globalSP.activarMenu(globalSP.menu.EstructuraInstitucionalReview);
+    globalSP.activarMenu(globalSP.menu.EstructuraInstitucional);
     globalSP.cargarGlobales();
     globalSP.setBreadcrumb('Estructura Institucional', 'Estructura Institucional');
 
@@ -1087,7 +1087,7 @@ $(function(){
             { text: 'Nombre', dataField: 'nombre' },
             { text: 'Sigla',  dataField: 'sigla', width: 100 },
             { text: 'Tipo', dataField: 'tipo', width: 150 },
-
+            
           ]
       });
     };
@@ -1273,69 +1273,69 @@ $(function(){
 
     function addImage(e){
     	//var file = e.target.files[0];
-
+    	
     	var archivoInput = document.getElementById('mod_logo');
-
+    	
     	var archivoRuta = archivoInput.value;
-
+    	
     	var extension=archivoRuta.split('.').pop();
-
+    	
     	var extePermitida = /(.pdf|.xlsx|.xlt|.jpeg|.png|.jpg|.JPG|.PDF|.doc|.docx|.vsd|.vsdx)$/i;
 
     	if(!extePermitida.exec(archivoRuta)){
-
+    		
     		archivoInput.value="";
     		return false;
     	}else{
-
+    		
 
     		if(archivoInput.files && archivoInput.files[0]){
 
 
     			switch(extension){
     				case 'pdf':{
-
+    					
         				var carpeta_Pdf = "/img/iconoPdf.jpeg";
         				$('#mod_img_logo').attr("src",carpeta_Pdf);
         				break;
 
     				} ;
     				case 'xlsx':{
-
+    					
     					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'xls':{
-
+    					
     					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'docx':{
-
+    					
     					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'doc':{
-
+    					
     					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'jpeg':{
-
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload;
           				reader.readAsDataURL(file);
           				break;
     				};
-
+    					
     				case 'jpg':{
 
-
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload;
@@ -1345,7 +1345,7 @@ $(function(){
     				};
     				case 'png':{
 
-
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload;
@@ -1361,9 +1361,9 @@ $(function(){
     				}
     			}
 
-
-
-
+    			
+    				
+    			
     		}
     	}
 
@@ -1374,7 +1374,7 @@ $(function(){
       	var result=e.target.result;
       $('#mod_img_logo').attr("src",result);
     }
-
+    
     $('#cleanFile').on('click', function(event) {
         $('#mod_img_logo').attr("src","");
         $('#logo_load').val("");
@@ -1384,7 +1384,7 @@ $(function(){
 
         //CAMBIANDO LA IMAGEN
   	$('#mod_logo_Editar').change(function(e){
-
+  		
    		addImage_Editar(e);
     });
 
@@ -1404,55 +1404,55 @@ $(function(){
     		archivoInput.value="";
     		return false;
     	}else{
-
+    		
 
     		if(archivoInput.files && archivoInput.files[0]){
 
 
     			switch(extension){
     				case 'pdf':{
-
+    					
         				var carpeta_Pdf = "/img/iconoPdf.jpeg";
         				$('#mod_img_logo_Editar').attr("src",carpeta_Pdf);
         				break;
 
     				} ;
     				case 'xlsx':{
-
+    					
     					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'xls':{
-
+    					
     					var carpeta_Excel = "/img/iconoExcel.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'docx':{
-
+    					
     					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'doc':{
-
+    					
     					var carpeta_Excel = "/img/iconoWord.png";
     					$('#mod_img_logo_Editar').attr("src",carpeta_Excel);
     					break;
     				};
     				case 'jpeg':{
-
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload_Editar;
           				reader.readAsDataURL(file);
           				break;
     				};
-
+    					
     				case 'jpg':{
 
-
+    					
     					var file = e.target.files[0];
         				var reader = new FileReader();
           				reader.onload = fileOnload_Editar;
@@ -1464,7 +1464,7 @@ $(function(){
 
     					//console.log("pase por la verificacion extensio imagen");
     					var file = e.target.files[0];
-
+    					
         				var reader = new FileReader();
           				reader.onload = fileOnload_Editar;
           				reader.readAsDataURL(file);
@@ -1479,9 +1479,9 @@ $(function(){
     				}
     			}
 
-
-
-
+    			
+    				
+    			
     		}
     	}
 
@@ -1503,7 +1503,7 @@ $(function(){
 
 
 
-
-
+        
+    
   </script>
 @endpush

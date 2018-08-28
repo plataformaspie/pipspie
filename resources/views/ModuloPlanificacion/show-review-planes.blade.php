@@ -82,7 +82,6 @@
 <script src="/js/jqwidgets-localization.js"></script>
 <script type="text/javascript">
 $(function(){
-  //$('input[name=id_p_act]').val('');
     var planes = {
         dataTable : $("#dataTable"),
         dataTable2 : $("#dataTable2"),
@@ -263,7 +262,7 @@ $(function(){
                         { name: 'cod_tipo_plan', type: 'string' },
                         { name: 'id_plan', type: 'number' }
                     ],
-                    id: 'id_plan',
+                    id: 'id',
                     // url: globalSP.urlApi + 'listEntidadPlan'
                 };
                 //Configuracion de la tabla
@@ -331,7 +330,7 @@ $(function(){
                 var rowsel = planes.dataTable.jqxDataTable('getSelection')[0];
                 planactivo = rowsel;
                 $('input[name=id_plan]').val(planactivo.id_plan) ;
-                window.location = globalSP.url + 'showEstructura?p=' + rowsel.id_plan +'&e=' + rowsel.id ;
+                window.location = globalSP.url + 'showReviewPlanesInstitucion?p=' + rowsel.id_plan ;
 
                 $('#menuSP .sp_menu').each(function(index, elem){
                     var urlhref = $(elem).attr('href');

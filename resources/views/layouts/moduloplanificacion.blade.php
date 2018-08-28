@@ -18,7 +18,7 @@
     <!--link rel="stylesheet" type="text/css" href="sty-mode-2/assets/js/utility/highlight/styles/googlecode.css') }}"-->
 
     @yield('headerIni')
-{{-- <link href="{{ asset('sty-home/css/style.css') }}" rel="stylesheet"> --}}
+
     <!-- Vendor CSS -->
     <link rel="stylesheet" type="text/css" href="/sty-mode-2/vendor/plugins/magnific/magnific-popup.css">
 {{--     <link rel="stylesheet" type="text/css" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css">
@@ -223,10 +223,10 @@
                             <li id="M{{ $m->id }}" class="">
                                 <?php
                                     $qstring = '';
-                                    if($m->tipo_menu <> "Estructuración" AND $m->tipo_menu <> "Planes")
-                                        $qstring = $id_plan;
+                                    if($m->tipo_menu <> "Estructuración")
+                                        $qstring = '?p=' . $id_plan;
                                 ?>
-                                <a href="{{ url($m->url)}}?p={{$qstring}}" id="{{ $m->id}}" class="menu-item-sp">
+                                <a href="{{ url($m->url)}}?p={{$id_plan}}" id="{{ $m->id}}" class="menu-item-sp">
                                       <img style="width: 35px; height: 35px; opacity: 1; border: 3px none white;" class="img-circle" src="{{ $m->icono }}">
                                       <span>{{ $m->titulo }}</span>
                                 </a>
@@ -623,7 +623,6 @@ $(function(){
                 Planificacion:28,
                 GestionDocumental:29,
                 ListaDePlanes:37,
-                EstructuraInstitucionalReview:39,
             },
             urlApi: '/api/moduloplanificacion/',
             url: '/moduloplanificacion/',

@@ -11,7 +11,7 @@
 
 @section('content')
 <table>
-  <tr>    
+  <!--tr>    
       <th><h2>Actualizador</h2></th>
   </tr>        
   <tr>
@@ -24,7 +24,7 @@
         </div>       
       </div>
     </td>
-  </tr>    
+  </tr-->    
   
   <tr>
     <th><h2>Departamentos Registrados</h2></th>
@@ -52,17 +52,17 @@
      <td colspan="2"><p><div id='matrices'></div></p></td>
   </tr>
 </table>
-<div id="modal-editar"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide popup-lg " >
+<!--div id="modal-editar"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide popup-lg " >
   <div class="panel">
     <div class="panel-heading">
       <span class="panel-title"><i class="fa fa-pencil"></i>
       <font style="font-family: sans-serif;color: black">Formulario de Actualización</font>
       </span>
-    </div>            <!-- end .panel-heading section -->
+    </div>
     <form method="post" action="/" id="form-edit" name="form-edit">
       {{ csrf_field() }}
       <input type="hidden" name="mod_id" id="mod_id" value=""/>
-        <div id="titulo"></div> 
+        
         <div class="panel-body mnw700 of-a">
           <div class="row">
             <div class="col-md-12 ">
@@ -193,7 +193,7 @@
                                   </tr>
                                   <tr style="background: #0074e8;">
                                     <td><font color="white">Resto</font></td>
-                                    <td><input type="text" disabled placeholder="total" id="total"></td>
+                                    <td><input type="text" value="0" disabled placeholder="total" id="total"></td>
                                     
                                   </tr>
                                 </table>
@@ -228,67 +228,78 @@
                                   </tr>
                                   <tr style="background: #0074e8;">
                                     <td><font color="white">Resto</font></td>
-                                    <td><input type="text" disabled placeholder="Total Presupuesto" id="totalp" name="totalp"></td>
+                                    <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" name="totalp"></td>
                                   </tr>
                                 </table>
                               </td>
                             </tr>
                             <tr>
                               <td>
+                                              <div class="form-group">
+                  <input type="text" class="form-control" name ="idcorre" id="idcorre" placeholder="id" required value="" style="display: ;" >
+              </div>
                                 <div class="form-group">
-                <!--label for="dep">departamento</label-->
-                  <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: ;" >
+                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: ;" >
               </div>
               <div class="form-group">
-                <!--label for="prov">provincia</label-->
+                <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: ;" >
+              </div>
+              <div class="form-group">
+               
               <input type="text" class="form-control" name="txtprov" id="txtprov" placeholder="provincia" required value="" style="display: ;">
               </div>
 
               <div class="form-group">
-                <!--label for="mun">municipio</label-->
+               
                 <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display: ;">
               </div>
 
               <div class="form-group">
-                <!--label for="prog">programatica</label-->
+               
                 <input type="text"class="form-control" name="txtgas" id="txtgas" placeholder="programatica" value=""style="display: ;">
               </div>
               <div class="form-group">
-                <!--label for="nom_prog">detalle programatica</label-->
+               
                 <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display: ;" >
-              </div>
+              </div>              
               <div class="form-group">
-                <!--label for="acc">accion</label-->
+               
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display: ;">
               </div>
               <div class="form-group">
-                <!--label for="descrip_acc">descripcion accion</label-->
+               
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display: ;">
               </div>
               <div class="form-group">
-                <!--label for="idpilar"> pilar</label-->
+                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display: ;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display: ;">
+              </div>
+              <div class="form-group">
+               
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtpilar" id="txtpilar" placeholder="pilar" value=""style="display: ;">
               </div>
               <div class="form-group">
-                  <!--label for="metas">pdes</label-->
+                
                   <input type="text" class="form-control" maxlength="15" size="15" name="txtmetas" id="txtmetas" placeholder="meta" value=""style="display: ;">
               </div>
               <div class="form-group">
-                  <!--label for="resultados">pdes</label-->
+                
                   <input type="text" class="form-control" maxlength="15" size="15" name="txtresul" id="txtresul" placeholder="resultados" value=""style="display: ;">
               </div>
               <div class="form-group">
-                <!--label for="acciones">pdes</label-->
+                
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtaccion" id="txtaccion" placeholder="acciones" value=""style="display: ;">
               </div>
               <div class="form-group">
-                <!--label for="acciones">pdes</label-->
+                
                 <input type="text" class="form-control" maxlength="15" size="15" name="descripaccion" id="descripaccion" placeholder="pdes" value="" style="display: ;">
               </div>
 
               <a class="btn btn-primary " href="#" role="button" id="verificar" name="verificar" style="display: inline;" onclick="verificar()">Verificar</a>
 
-              <button  class="btn btn-primary" id="guardar" name="guardar" style="display: ;">Guardar</button>
+              <button  class="btn btn-primary" id="actualizar" name="actualizar" >Modificar</button>
               <button type="button" class="btn btn-success">Atrás</button>
                               </td>
                             </tr>
@@ -307,7 +318,7 @@
         </div>
     </form>
   </div>  
-</div>
+</div-->
 @endsection
 
 @push('script-head')
@@ -340,699 +351,8 @@
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.export.js"></script> 
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.export.js"></script> 
 <!----------------------------------------------------------------->
-<script>
-function sumar(){
-  tot = parseInt(document.getElementById('cantidad').value);
-    a = parseInt(document.getElementById('2016').value);
-    b = parseInt(document.getElementById('2017').value);
-    c = parseInt(document.getElementById('2018').value);
-    d = parseInt(document.getElementById('2019').value);
-    e = parseInt(document.getElementById('2020').value);
-    tsum=a+b+c+d+e;
-    document.getElementById('total').value = tot-tsum;
-}
-function sumarPresupu(){
-  totpre = parseFloat(document.getElementById('txtpresu').value);
-    pa = parseFloat(document.getElementById('p2016').value);
-    pb = parseFloat(document.getElementById('p2017').value);
-    pc = parseFloat(document.getElementById('p2018').value);
-    pd = parseFloat(document.getElementById('p2019').value);
-    pe = parseFloat(document.getElementById('p2020').value);
-    tsumpre=pa+pb+pc+pd+pe;
-    document.getElementById('totalp').value = totpre-tsumpre;
-}
-</script>
-<script type="text/javascript">
-    $(function()
-    {
-//--------------botonguardar
-      $("#guardar").click(function()
-      {          
-        objeto = {};
-        objeto.id_departamento = $("#txtdep").val();
-        objeto.id_provincia = $("#txtprov").val();
-        objeto.id_municipio = $("#txtmun").val();
-        objeto.id_programa = $("#txtgas").val();
-        objeto.descripcion_programa = $("#txtnomgas").val();
-        objeto.accion_eta = $("#txtnomacci").val();
-        objeto.linea_base = $("#linea_base").val();
-        objeto.proceso_indicador = $("#ind_proceso").val();
-        objeto.unidad_indicador = $("#tipocantidad").val();
-        objeto.cantidad_indicador = $("#cantidad").val();
-        objeto.indicador2016 = $("#2016").val();
-        objeto.indicador2017 = $("#2017").val();
-        objeto.indicador2018 = $("#2018").val();
-        objeto.indicador2019 = $("#2019").val();
-        objeto.indicador2020 = $("#2020").val();
-        objeto.cantidad_presupuesto = $("#presupuesto").val();
-        objeto.presupuesto2016 = $("#p2016").val();
-        objeto.presupuesto2017 = $("#p2017").val();
-        objeto.presupuesto2018 = $("#p2018").val();
-        objeto.presupuesto2019 = $("#p2019").val();
-        objeto.presupuesto2020 = $("#p2020").val();
-        objeto.pilar = $("#txtpilar").val();
-        objeto.meta = $("#txtmetas").val();
-        objeto.resultado = $("#txtresul").val();
-        objeto.accion = $("#txtaccion").val();        
-        objeto.descripcion_accion = $("#descripaccion").val();        
-        objeto._token = $('input[name=_token]').val()
-        console.log(objeto);
-        //---------------------aqui esta el try de la insercion
-        var message;
-        message = document.getElementById("p01");
-        message.innerHTML = "";
-        
-        try {        
-            if (objeto) 
-            {
-             $.post("insertarmatriz", objeto, function(respuesta)
-             {
-              alert('informacion guardada');
-              location.reload();
-             }); 
-            }
-            else
-             {
-              alert('informacion no guardada');
-             }
-            }
-        catch(err) 
-        {
-            message.innerHTML = "Input is " + err;
-        }
-      });
-//--------------cargar eta
-      $.get("listarEtas", function(respuesta)
-      {
-        var etas = respuesta.etas;
-        for(var i=0; i<etas.length; i++)
-        {
-          var eta = etas[i];
-          var opcion = "<option value=" + eta.id_eta + ">" + eta.descripcion_eta + "</option>";
-          $("#eta").append(opcion);
-        }
-        console.log(etas);
-      });
-///--------------cuando cambia el departamento
-      $("#dep").change(function()
-      {
-        iddepar = $("#dep").val();
-        $("#txtdep").val(iddepar);
-        if (iddepar==0) {
-          $("#prov").html('<option>Seleccione la Provincia</option>');
-          $("#mun").html('<option>Seleccione la Município</option>');          
-        }
-        else
-        {
-          //alert(iddepar);
-           $.get("listarProvinciasEditar/" + iddepar, function(respuesta){
-              var provincias = respuesta.provincias;
-              $("#prov").html('');
 
-                var opcion0 = "<option value=0>Seleccione la Provincia</option>";
-                $("#prov").append(opcion0);
-              for(var i=0; i<provincias.length; i++)
-              {
-                var provincia = provincias[i];
-                var opcion = "<option value=" + provincia.id_provincia + ">" + provincia.descripcion_provincia + "</option>";
-                $("#prov").append(opcion);
-              }
-          }); 
-        }
-      });
-  //--------------cuando cambia la provincias
-      $("#prov").change(function(){
-        iddepar = $("#dep").val();
-        idprov = $("#prov").val();
-        $("#txtprov").val(idprov);
-        if (idprov==0) {
-          $("#mun").html('<option>Seleccione la Município</option>');
-        }
-        else
-        {
-          $.get("listarMunicipios/" + iddepar+"/"+idprov, function(respuesta)
-          {
-            var municipios = respuesta.municipios;
-            $("#mun").html('');
-            var opcion0 = "<option value=0>Seleccione el Municipio</option>";
-            $("#mun").append(opcion0);
-            for(var i=0; i<municipios.length; i++)
-              {
-                  var municipio = municipios[i];              
-                  var opcion = "<option value=" + municipio.id_municipio + ">" + municipio.descripcion_municipio + "</option>";           
-                  $("#mun").append(opcion);
-              }
-          });
-        }        
-      });
-      //--------------cuando cambia la provincias
-      $("#mun").change(function(){
-        
-        idmun = $("#mun").val();
-        $("#txtmun").val(idmun);
-      });
-      //--------------cuando cambia la eta
-      $("#eta").change(function()
-      {
-        ideta = $("#eta").val();        
-        if (ideta==0) 
-        {
-          $("#gas").html('<option >Seleccione la Programática de Gasto</option>');
-          $("#tip").html('');
-          $("#ser").html('');
-          $("#acci").html('');
-          $("#pilar").html('');
-          $("#meta").html('');
-          $("#resultado").html('');
-          $("#accion").html('');
-        }
-        else        
-        {
-          if(ideta==1||ideta==2)
-          {
-              $.get("listarGastos1" , function(respuesta)
-              {
-                var gastos = respuesta.gastos;
-                $("#gas").html('');
-                var opcion0 = "<option value='-1'>Seleccione la Programática de Gasto</option>";
-                $("#gas").append(opcion0);
-                for(var i=0; i<gastos.length; i++)
-                {
-                  var gasto = gastos[i];              
-                  var opcion = "<option value=" + gasto.id_programa + ">" + gasto.descripcion_gasto + "</option>";           
-                  $("#gas").append(opcion);
-                }
-              });
-          }
-          else 
-          {
-              $.get("listarGastos2" , function(respuesta)
-              {
-                var gastos = respuesta.gastos;
-                $("#gas").html('');
-                var opcion0 = "<option value='-1'>Seleccione la Programática de Gasto</option>";
-                $("#gas").append(opcion0);
-                for(var i=0; i<gastos.length; i++)
-                {
-                  var gasto = gastos[i];              
-                  var opcion = "<option value=" + gasto.codigo + ">" + gasto.descripcion_gasto + "</option>";           
-                  $("#gas").append(opcion);
-                }
-              });
-          }            
-        }
-      });
-      //--------------cuando cambia la gasto
-      $("#gas").change(function()
-      {
-        idgasto = $("#gas").val();
-        idnomgasto = $('#gas').find('option:selected').text();
-        //alert(idnomgasto);
-        ideta = $("#eta").val();
-        $("#txtgas").val(idgasto);
-        $("#txtnomgas").val(idnomgasto);
-        if (idgasto==-1) 
-        {
-          $("#tip").html('');
-          $("#ser").html('');
-          $("#acci").html('');         
-          $("#pilar").html('');
-          $("#meta").html('');
-          $("#resultado").html('');
-          $("#accion").html('');          
-        }
-        else
-        {
-          if (ideta==1||ideta==2) 
-          {
-            $("#tip").html('');
-            $("#ser").html('');
-            $.get("listarAcciones/" + idgasto, function(respuesta)
-            {
-              var acciones = respuesta.acciones;
-              $("#acci").html('');
-              var opcion0 = "<option value=0>Seleccione la Acción ETA</option>";
-              $("#acci").append(opcion0);
-              for(var i=0; i<acciones.length; i++)
-              {
-                var accion = acciones[i];              
-                var opcion = "<option value=" + accion.id_programa + ">" + accion.descripcion_gasto + "</option>";
-                $("#acci").append(opcion);
-              }
-            });
-          }
-          else
-          {
-              if (idgasto==11) 
-              {
-                    $.get("listarTipos/" + idgasto, function(respuesta){
-                  var tipos = respuesta.tipos;
-                  $("#tip").html('');
-                  $("#pilar").html('<option>P</option>');
-                  $("#meta").html('<option>M</option>');
-                  $("#resultado").html('<option>R</option>');
-                  $("#accion").html('<option>A</option>');          
-                  $("#descaccion").html('');
-                  var opcion0 = "<option value=0>Seleccione el Tipo </option>";
-                  $("#tip").append(opcion0);
-                  for(var i=0; i<tipos.length; i++)
-                  {
-                    var tipo = tipos[i];              
-                    var opcion = "<option value=" + tipo.clasificador + ">" + tipo.clasificador + "</option>";
-                    $("#tip").append(opcion);
-                  }
-                });
-              }
-              else
-              {
-                  $.get("listarAcciones2/" + idgasto, function(respuesta)
-                  {
-                    var acciones = respuesta.acciones;
-                    $("#acci").html('');
-                    $("#tip").html('');
-                    $("#ser").html('');
-                    $("#pilar").html('<option>P</option>');
-                    $("#meta").html('<option>M</option>');
-                    $("#resultado").html('<option>R</option>');
-                    $("#accion").html('<option>A</option>');          
-                    $("#descaccion").html('');
-                    var opcion0 = "<option value=0>Seleccione la Acción ETA</option>";
-                    $("#acci").append(opcion0);
-                    for(var i=0; i<acciones.length; i++)
-                    {
-                      var accion = acciones[i];              
-                      var opcion = "<option value=" + accion.id_correlativo + ">" + accion.accion_eta + "</option>";
-                      $("#acci").append(opcion);
-                    }
-                  });            
-              }            
-          }  
-        }       
-      });
-      //--------------cuando cambia el tipo
-      $("#tip").change(function()
-      {
-        idgasto = $("#gas").val();
-        idtip = $("#tip").val();
-        if (idtip==0) 
-        {
-          $("#ser").html('');
-          $("#acci").html('');
-          $("#pilar").html('');
-          $("#meta").html('');
-          $("#resultado").html('');
-          $("#accion").html('');
-        }
-        else
-        {
-          $.get("listarServicios/" + idgasto+"/"+idtip, function(respuesta){
-                  var servicios = respuesta.servicios;
-                  $("#acci").html('');                  
-                  $("#ser").html('');
-                  var opcion0 = "<option value=0>Seleccione el Servicio</option>";
-                  $("#ser").append(opcion0);
-                  for(var i=0; i<servicios.length; i++)
-                  {
-                    var servicio = servicios[i];              
-                    var opcion = "<option value=" + servicio.servicio + ">" + servicio.servicio + "</option>";
-                    $("#ser").append(opcion);
-                  }
-                }); 
-        }
-      });
-      //--------------cuando cambia la servico
-      $("#ser").change(function(){
-        idgasto = $("#gas").val();
-        idtipo = $("#tip").val();
-        idser = $("#ser").val();
-        if (idtip==0) 
-        {          
-          $("#acci").html('');
-          $("#pilar").html('');
-          $("#meta").html('');
-          $("#resultado").html('');
-          $("#accion").html('');
-        }
-        else
-        {
-          $.get("listarAcciones3/" + idgasto+"/"+idtipo+"/"+idser, function(respuesta){
-              var acciones = respuesta.acciones;
-              $("#acci").html('');                  
-              var opcion0 = "<option value=0>Seleccione la Acción</option>";
-              $("#acci").append(opcion0);
-              for(var i=0; i<acciones.length; i++)
-                {
-                  var accion = acciones[i];              
-                  var opcion = "<option value=" + accion.id_correlativo + ">" + accion.accion_eta + "</option>";
-                  $("#acci").append(opcion);
-                }
-            }); 
-        }
-      });
-      //--------------cuando cambia la acciones eta
-      $("#acci").change(function()
-      {
-        idaccion = $("#acci").val();
-        idnomaccion = $('#acci').find('option:selected').text();
-        $("#txtacci").val(idaccion);
-        $("#txtnomacci").val(idnomaccion);        
-        if (idaccion==0) 
-        {
-          $("#pilar").html('');
-          $("#meta").html('');
-          $("#resultado").html('');
-          $("#accion").html('');
-          $("#descripaccion").html('');
-        }
-        else
-        {
-            $.get("listarPilares/" + idaccion, function(respuesta)
-            {
-              var acciones = respuesta.acciones;
-              $("#pilar").html('');
-              for(var i=0; i<acciones.length; i++)
-              {
-                var accion = acciones[i];              
-                var opcion = "<option value=" + accion.id_correlativo + ">" + accion.id_pilar + "</option>";           
-                $("#pilar").append(opcion);
-                numpil =  $('#pilar').find('option:selected').text();
-                $("#txtpilar").val(numpil);
-              }
-            });
-            $.get("listarMetas/" + idaccion, function(respuesta)
-            {
-              var acciones = respuesta.acciones;
-              $("#meta").html('');
-              for(var i=0; i<acciones.length; i++)
-              {
-                var accion = acciones[i];              
-                var opcion = "<option value=" + accion.id_correlativo + ">" + accion.id_meta + "</option>";           
-                $("#meta").append(opcion);
-                nummeta =  $('#meta').find('option:selected').text();
-                $("#txtmetas").val(nummeta);
-              }
-            });
-            $.get("listarResultados/" + idaccion, function(respuesta)
-            {
-            var acciones = respuesta.acciones;
-            $("#resultado").html('');
-            for(var i=0; i<acciones.length; i++)
-              {
-                var accion = acciones[i];              
-                var opcion = "<option value=" + accion.id_correlativo + ">" + accion.id_resultado + "</option>";           
-                $("#resultado").append(opcion);
-                 numresul =  $('#resultado').find('option:selected').text();
-                $("#txtresul").val(numresul);
-              }
-            });
-            $.get("listarAccionesEtas/" + idaccion, function(respuesta)
-            {
-              var acciones = respuesta.acciones;
-              $("#accion").html('');
-              for(var i=0; i<acciones.length; i++)
-              {
-                var accion = acciones[i];              
-                var opcion = "<option value=" + accion.id_correlativo + ">" + accion.id_accion + "</option>";           
-                $("#accion").append(opcion);
-                numaccion =  $('#accion').find('option:selected').text();
-                $("#txtaccion").val(numaccion);
-                
-              }
-              $("#accion").trigger( "change" );  
-            });  
-        }       
-      });
-//--------------cuando cambia la provincias
-      $("#accion").change(function()
-      {
-        idpilar=$("#txtpilar").val();        
-        idmeta=$("#txtmetas").val();
-        idresultado=$("#txtresul").val();
-        idaccion=$("#txtaccion").val();
-        //alert(idpilar+" "+ idmeta+" "+idresultado+" "+idaccion);
-        $.get("listarPMRAs/"+ idpilar+"/"+idmeta+"/"+idresultado+"/"+idaccion, function(respuesta)
-        {
-          var acciones = respuesta.acciones;
-          $("#descaccion").html('');
-          for(var i=0; i<acciones.length; i++)
-          {
-            var accion = acciones[i];              
-            var opcion = "<option value=" + accion.id_correlativo + ">" + accion.descripcion_directriz + "</option>";           
-            $("#descaccion").append(opcion);
-            nomaccio =  $('#descaccion').find('option:selected').text();
-            $("#descripaccion").val(nomaccio);
-          }
-        });        
-      });
-    });
- </script> 
- <script>
-function verificar()
-  {
-    departam1 = $("#txtdep").val();
-    provincia1 = $("#txtprov").val();
-    municipio1 = $("#txtmun").val();
-    progra1 = $("#txtgas").val();
-    nomprogra1 = $("#txtnomgas").val();
-    accion1 = $("#txtacci").val();
-    nomaccion1 = $("#txtnomacci").val();
-    pilar1 = $("#txtpilar").val();
-    meta1 = $("#txtmetas").val();
-    resultado1 = $("#txtresul").val();
-    acci1 = $("#txtaccion").val();
-    totu=$("#total").val();
-    totp=$("#totalp").val();    
-    lineabase=$("#linea_base").val();
-    indipro=$("#ind_proceso").val();
-    indican=$("#tipocantidad").val();
 
-    if (departam1==undefined||departam1=='0'||departam1=='') {
-    alert('Seleccione un Departamento.');  
-    }
-    else{
-      if (provincia1==undefined||provincia1=='0'||provincia1=='') {
-        alert('Seleccione una Provincia.');
-      }
-      else{
-        if (municipio1==undefined||municipio1=='0'||municipio1=='') {
-          alert('Seleccione una Municipio.');
-        }else{
-          if (progra1==undefined||progra1=='-1'||progra1=='') {
-            alert('Seleccione una Programática de Gasto.');
-          }else{
-            if (nomprogra1==undefined||nomprogra1=='0'||nomprogra1=='') {
-              alert('Seleccione una Programática de Gasto.');
-            }else{
-              if (accion1==undefined||accion1=='0'||accion1=='') {
-                alert('Seleccione una Acción ETA.');
-              }else{
-                if (nomaccion1==undefined||nomaccion1=='0'||nomaccion1=='') {
-                  alert('Seleccione una Acción ETA.');
-                }
-                else
-                {
-                  if (pilar1==undefined||pilar1=='0'||pilar1=='') {
-                    alert('Seleccione una Accion ETA con datos Pilar, Meta, Resultado, Acción.');
-                  }
-                  else
-                  {
-                    if (lineabase=='') 
-                    {
-                      alert("La Linea Base esta vacia");  
-                    }
-                    else
-                    {
-                      if (indipro=='') 
-                        {
-                          alert("El Indicador de Proceso esta vacio");  
-                        }
-                      else
-                        {
-                          if (indican=='') {
-                            alert("La Unidad esta vacia");
-
-                          }
-                          else
-                          {
-                            
-                            if (totu==''||totu!=0) {
-                             alert("Verifique su Resto de Unidades");  
-                            }
-                            else{
-                               if (totp==''||totp!=0) {
-                                alert("Verifique su resto Presupuesto");
-
-                               }
-                               else
-                               {
-                                var x = document.getElementById('guardar');
-                                    var y = document.getElementById('verificar');
-                                    y.style.display = 'none';
-                                      x.style.display = 'inline';
-
-                               }
-                              
-                            }
-                          
-                          }
-
-                          
-                        }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }    
-  }
-</script>
-<script type="text/javascript">
-    $(function()
-    {
-        $.get("listarMatricesEditar",function(respuesta)
-        {
-            var source =
-            {
-                localdata: respuesta.matrices,
-                datafields:
-                [
-                  { name: 'id_correlativo', type: 'int' },
-                  { name: 'id_departamento',type:'datafield'},
-                  { name: 'descripcion_departamento',type:'datafield'},
-                  { name: 'id_provincia',type:'datafield'},
-                  { name: 'descripcion_provincia', type: 'datafield' },
-                  { name: 'id_municipio',type:'datafield'},
-                  { name: 'descripcion_municipio', type: 'datafield'},
-                  { name: 'id_programa', type: 'int' },
-                  { name: 'descripcion_programa', type: 'datafield'},
-                  { name: 'accion_eta', type: 'datafield'},
-                  { name: 'linea_base', type: 'datafield'},
-                  { name: 'proceso_indicador', type: 'datafield'},
-                  { name: 'cantidad_indicador', type: 'numeric'},
-                  { name: 'indicador2016', type: 'numeric'},
-                  { name: 'indicador2017', type: 'numeric'},
-                  { name: 'indicador2018', type: 'numeric'},
-                  { name: 'indicador2019', type: 'numeric'},
-                  { name: 'indicador2020', type: 'numeric'},
-                  { name: 'cantidad_presupuesto', type: 'numeric'},
-                  { name: 'presupuesto2016', type: 'numeric'},
-                  { name: 'presupuesto2017', type: 'numeric'},
-                  { name: 'presupuesto2018', type: 'numeric'},
-                  { name: 'presupuesto2019', type: 'numeric'},
-                  { name: 'presupuesto2020', type: 'numeric'},
-                  { name: 'pilar', type: 'int'},
-                  { name: 'meta', type: 'int'},
-                  { name: 'resultado', type: 'int'},
-                  { name: 'accion', type: 'int'},
-                  { name: 'descripcion_directriz', type: 'datafield'}
-                ],
-                datatype: "json",
-                updaterow: function (rowid, rowdata, commit) {
-                    commit(true);
-                }
-            };   
-        var dataAdapter = new $.jqx.dataAdapter(source);            
-        $("#grid2").jqxGrid(
-         {
-          width:1000,// getWidth('Grid'),
-          source: dataAdapter,
-          pageable: true,
-          autoheight: true,
-          theme: 'energyblue',
-          columns:
-           [                
-                 { text: 'DEPARTAMENTO', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 150},
-                 { text: 'PROVINCIA', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 150 },
-                 { text: 'MUNICIPIO', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 150 },
-                 { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 150 },               
-                 { text: 'Edit', datafield: 'id_correlativo', cellsRenderer: function (row, column, value, rowData)  
-                    {
-                      return "<button id='"+value+"'><i class='fa fa-pencil'></i> editar </button> ";
-                    },                 
-                 }
-           ]
-         });
-        $("#grid2").on("click", "button", function()
-         {
-          var id = $(this).attr('id');
-          $(".state-error").removeClass("state-error");
-          var getselectedrowindexes = $('#grid2').jqxGrid('getselectedrowindexes');
-          if (getselectedrowindexes.length > 0)
-            {
-             filaseleccionada = $('#grid2').jqxGrid('getrowdata', getselectedrowindexes[0]);
-             $("#dep").val(filaseleccionada.id_departamento);
-listaprov();
-            // $("#dep").trigger( "change");                    
-             $("#titulo").html(filaseleccionada.id_provincia);
-             $("#prov").val(filaseleccionada.id_provincia);
-            }
-          console.log(filaseleccionada);
-          $("#form-plan em").remove();
-          //$("#prov option[value='3']").attr("selected",true);
-          $.magnificPopup.open(
-            {
-             removalDelay: 500,                     
-             focus: '#nombreinput',
-             items: 
-              {
-                src: "#modal-editar"
-              },                
-             callbacks: 
-              {
-               beforeOpen: function(e) 
-                {
-                 var Animation = "mfp-zoomOut";
-                 this.st.mainClass = Animation;
-                }
-              },
-             midClick: true 
-            });
-         });
-        $.get("listarDepartamentosEditar", function(respuesta)
-          {
-              var departamentos = respuesta.departamentos;
-              for(var i=0; i<departamentos.length; i++)
-              {
-                var departamento = departamentos[i];
-                var opcion = "<option value=" + departamento.id_departamento + ">" + departamento.descripcion_departamento + "</option>";
-                $("#dep").append(opcion);
-              }
-              console.log(departamentos);
-          });
-/*$.get("listarProvinciasEditar/" + iddepar, function(respuesta)
-          {
-              var provincias = respuesta.provincias;
-              for(var i=0; i<provincias.length; i++)
-              {
-                var provincia = provincias[i];
-                var opcion = "<option value=" + provincia.id_provincia + ">" + provincia.descripcion_provincia + "</option>";
-                $("#prov").append(opcion);
-              }
-              console.log(provincias);
-          });*/
-
-        });
-    })
-function listaprov(){
-  var iddepar = $("#dep").find(':selected').val();
-  //alert(iddepar+'aaaaaa');
- $.get("listarProvinciasEditar/" + iddepar, function(respuesta)
-          {
-              var provincias = respuesta.provincias;
-              for(var i=0; i<provincias.length; i++)
-              {
-                var provincia = provincias[i];
-                var opcion = "<option value=" + provincia.id_provincia + ">" + provincia.descripcion_provincia + "</option>";
-                $("#prov").append(opcion);
-              }
-              console.log(provincias);
-          });
- 
-}
-</script>
 
 <script type="text/javascript">     
    $(function()
@@ -1148,14 +468,14 @@ function listaprov(){
             { name: 'meta', type: 'int'},
             { name: 'resultado', type: 'int'},
             { name: 'accion', type: 'int'},
-            { name: 'descripcion_directriz', type: 'datafield'}
+            { name: 'descripcion_accion', type: 'datafield'}
           ],
           datatype: "json"
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
         $("#matrices").jqxGrid(
           {
-            width: '1050',
+            width: '1200',
             source: dataAdapter,
             theme: 'energyblue',
             altrows: true,
@@ -1169,6 +489,7 @@ function listaprov(){
             source: dataAdapter,
             showfilterrow: true,
             filterable: true,
+            autorowheight: true,
             columns: 
             [
               { text: 'DEPARTAMENTO', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 150},
@@ -1195,7 +516,7 @@ function listaprov(){
              { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
              { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
              { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
-             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_directriz', width: 250},
+             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 250},
             ]
           });
         $('#clearfilteringbutton').jqxButton({ height: 25});
@@ -1206,5 +527,6 @@ function listaprov(){
       });
     })
  </script>
+
  
 @endpush

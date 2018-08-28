@@ -31,6 +31,9 @@
 <p><select id="tip"class="form-control"><option value="0">Seleccione el Tipo</option></select></p>
 <p><select id="ser"class="form-control"><option value="0">Seleccione el Servicio</option></select></p>
 <p><select id="acci"class="form-control"><option value="0">Seleccione la Accion ETA</option></select></p>
+<div class="form-group">
+  <p> <textarea name="descripcion_accion_eta" id="descripcion_accion_eta" rows="2" cols="5" placeholder="descripción accion eta" style="width: 50%"></textarea></p>    
+</div>                  
 <p><select id="pilar" disabled><option value="0">P</option></select>
 <select id="meta" disabled><option value="0">M</option></select>
 <select id="resultado" disabled><option value="0">R</option></select>
@@ -108,6 +111,9 @@
                 </tr>
               </table>
               <div class="form-group">
+                  <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display:none ;" >
+              </div>
+              <div class="form-group">
                 <!--label for="dep">departamento</label-->
                   <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display: none;" >
               </div>
@@ -129,13 +135,20 @@
                 <!--label for="nom_prog">detalle programatica</label-->
                 <input type="text"class="form-control" name="txtnomgas" id="txtnomgas" placeholder="nombre programatica"style="display: none;" >
               </div>
+              
               <div class="form-group">
                 <!--label for="acc">accion</label-->
-                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display: none;">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtacci" id="txtacci" placeholder="accion" value=""style="display:none ;">
               </div>
               <div class="form-group">
                 <!--label for="descrip_acc">descripcion accion</label-->
                 <input type="text" class="form-control" maxlength="15" size="15" name="txtnomacci" id="txtnomacci" placeholder="descripcion accion" value=""style="display: none;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txttipo" id="txttipo" placeholder="descripcion tipo" value="0"style="display: none;">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" maxlength="15" size="15" name="txtservicio" id="txtservicio" placeholder="descripcion servicio" value="0"style="display:none ;">
               </div>
               <div class="form-group">
                 <!--label for="idpilar"> pilar</label-->
@@ -161,7 +174,7 @@
               <a class="btn btn-primary " href="#" role="button" id="verificar" name="verificar" style="display: inline;" onclick="verificar()">Verificar</a>
 
               <button  class="btn btn-primary" id="guardar" name="guardar" style="display: none;">Guardar</button>
-              <a href="index.php?controller=matrices"><button type="button" class="btn btn-success">Atrás</button></a>
+              <button id="cerrar" name="cerrar" type="button" class="btn btn-success">Atrás</button>
               </td>
             </tr> 
           </table>
@@ -169,7 +182,16 @@
 @endsection
 
 @push('script-head')
+<script type="text/javascript">
+$(function()
+{  
+  $("#cerrar").click(function()
+    { 
+     location.href ="/moduloplanificacion/showPlanificacionTerritorial";
 
+    });
+});
+</script>
  <script>
   
   
@@ -205,11 +227,15 @@ function sumarPresupu(){
       $("#guardar").click(function(){  
         
         objeto = {};
+        objeto.id_tarea_eta = $("#txteta").val();
         objeto.id_departamento = $("#txtdep").val();
         objeto.id_provincia = $("#txtprov").val();
         objeto.id_municipio = $("#txtmun").val();
         objeto.id_programa = $("#txtgas").val();
+        objeto.id_clasificador = $("#txttipo").val();
+        objeto.id_servicio = $("#txtservicio").val();
         objeto.descripcion_programa = $("#txtnomgas").val();
+        objeto.id_accion_eta = $("#txtacci").val();
         objeto.accion_eta = $("#txtnomacci").val();
         objeto.linea_base = $("#linea_base").val();
         objeto.proceso_indicador = $("#ind_proceso").val();
@@ -220,7 +246,7 @@ function sumarPresupu(){
         objeto.indicador2018 = $("#2018").val();
         objeto.indicador2019 = $("#2019").val();
         objeto.indicador2020 = $("#2020").val();
-        objeto.cantidad_presupuesto = $("#presupuesto").val();
+        objeto.cantidad_presupuesto = $("#txtpresu").val();
         objeto.presupuesto2016 = $("#p2016").val();
         objeto.presupuesto2017 = $("#p2017").val();
         objeto.presupuesto2018 = $("#p2018").val();
@@ -231,6 +257,7 @@ function sumarPresupu(){
         objeto.resultado = $("#txtresul").val();
         objeto.accion = $("#txtaccion").val();        
         objeto.descripcion_accion = $("#descripaccion").val();        
+        objeto.descripcion_accion_eta = $("#descripcion_accion_eta").val();  
         objeto._token = $('input[name=_token]').val()
         console.log(objeto);
         //---------------------aqui esta el try de la insercion
@@ -239,15 +266,11 @@ function sumarPresupu(){
     message.innerHTML = "";
     
     try { 
-       /* if(x == "")  throw "empty";
-        if(isNaN(x)) throw "not a number";
-        x = Number(x);
-        if(x < 5)    throw "too low";
-        if(x > 10)   throw "too high";*/
         if (objeto) {
          $.post("insertarmatriz", objeto, function(respuesta){
           alert('informacion guardada');
           location.reload();
+          location.href ="/moduloplanificacion/showPlanificacionTerritorial";
         }); 
 
         }
@@ -344,7 +367,8 @@ function sumarPresupu(){
       });
       //--------------cuando cambia la eta
       $("#eta").change(function(){
-        ideta = $("#eta").val();        
+        ideta = $("#eta").val();    
+        $("#txteta").val(ideta);      
         if (ideta==0) 
         {
           $("#gas").html('<option >Seleccione la Programática de Gasto</option>');
@@ -415,11 +439,9 @@ function sumarPresupu(){
           if (ideta==1||ideta==2) 
           {
             $("#tip").html('');
+           $("#txttipo").val('0');
             $("#ser").html('');
-
-
-
-
+            $("#txtservicio").val('0');
             $.get("listarAcciones/" + idgasto, function(respuesta){
               var acciones = respuesta.acciones;
               $("#acci").html('');
@@ -450,7 +472,7 @@ function sumarPresupu(){
                   for(var i=0; i<tipos.length; i++)
                   {
                     var tipo = tipos[i];              
-                    var opcion = "<option value=" + tipo.clasificador + ">" + tipo.clasificador + "</option>";
+                    var opcion = "<option value=" + tipo.id_clasificador + ">" + tipo.descripcion_clasificador + "</option>";
                     $("#tip").append(opcion);
                   }
                 });
@@ -461,7 +483,9 @@ function sumarPresupu(){
                   var acciones = respuesta.acciones;
                   $("#acci").html('');
                   $("#tip").html('');
+                  $("#txttipo").val('0');
                   $("#ser").html('');
+                  $("#txtservicio").val('0');
                   $("#pilar").html('<option>P</option>');
                   $("#meta").html('<option>M</option>');
                   $("#resultado").html('<option>R</option>');
@@ -487,8 +511,10 @@ function sumarPresupu(){
       $("#tip").change(function(){
         idgasto = $("#gas").val();
         idtip = $("#tip").val();
+        $("#txttipo").val(idtip);
         if (idtip==0) {
           $("#ser").html('');
+          $("#txtservicio").val('0');
           $("#acci").html('');
           $("#pilar").html('');
           $("#meta").html('');
@@ -505,7 +531,7 @@ function sumarPresupu(){
                   for(var i=0; i<servicios.length; i++)
                   {
                     var servicio = servicios[i];              
-                    var opcion = "<option value=" + servicio.servicio + ">" + servicio.servicio + "</option>";
+                    var opcion = "<option value=" + servicio.id_servicio + ">" + servicio.descripcion_servicio + "</option>";
                     $("#ser").append(opcion);
                   }
                 }); 
@@ -517,6 +543,7 @@ function sumarPresupu(){
         idgasto = $("#gas").val();
         idtipo = $("#tip").val();
         idser = $("#ser").val();
+        $("#txtservicio").val(idser);
         if (idtip==0) {
           
           $("#acci").html('');
@@ -547,6 +574,7 @@ function sumarPresupu(){
         idaccion = $("#acci").val();
         idnomaccion = $('#acci').find('option:selected').text();
         $("#txtacci").val(idaccion);
+        
         $("#txtnomacci").val(idnomaccion);
         
         if (idaccion==0) {
@@ -722,27 +750,11 @@ function verificar()
                                     var y = document.getElementById('verificar');
                                     y.style.display = 'none';
                                       x.style.display = 'inline';
-
+                                      var x=$("#txtpresu").val();
                                }
                               
                             }
-                          /*  if (totu!=0||totu!='') {
-                             alert("Verifique su Resto de Unidades");     
-                          }
-                          else
-                          {
-                            if (totp!=0||totp!='') 
-                                  {
-                                    alert("Verifique su resto Presupuesto");  
-                                  }
-                              else
-                              {                                  
-                                  var x = document.getElementById('guardar');
-                                    var y = document.getElementById('verificar');
-                                    y.style.display = 'none';
-                                      x.style.display = 'inline';
-                              }
-                          }*/
+                          
                           }
 
                           

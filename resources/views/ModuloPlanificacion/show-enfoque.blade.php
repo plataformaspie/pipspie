@@ -178,12 +178,11 @@
 
                                     <div class="section">
                                         <label class="field-label" for="atribucion">Pilares</label>
-                                        <label class="field">
-                                            <select id="ids_pilares" name="ids_pilares" class="required " multiple="multiple"  style="width:100%;">
+                                        <label class="field select">
+                                            <select id="ids_pilares" name="ids_pilares" class="required" multiple="multiple"  style="width:100%;">
                                                 {{-- <option value="">...</option> --}}
                                             </select>
                                             <i class="arrow"></i>                  
-                                            </label>
                                         </label>
                                     </div>
                                 </div>
