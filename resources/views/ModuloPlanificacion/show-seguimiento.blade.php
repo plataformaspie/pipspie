@@ -216,14 +216,14 @@ $(function(){
                                             var progGestion = _.find(rowData.programacion, function(el){
                                                 return el.gestion == i;
                                             }) ;
-                                            var valorprog = (progGestion && progGestion.dato) ? `${progGestion.dato } ${rowData.unidad}` : '';
+                                            var valorprog = (progGestion && progGestion.dato) ? `${progGestion.dato } ${rowData.unidad || ''}` : '';
                                             prog_row += `<td> ${valorprog}</td>`;
 
                                             /* ejecuciones */
                                             var ejGestion = _.find(rowData.ejecucion, function(el){
                                                 return el.gestion == i;
                                             }) ;
-                                            var valorej = (ejGestion && ejGestion.dato) ? `${ejGestion.dato } ${rowData.unidad}` : '';
+                                            var valorej = (ejGestion && ejGestion.dato) ? `${ejGestion.dato } ${rowData.unidad || ''}` : '';
                                             ej_row += `<td> ${valorej}</td>`;
 
                                             var calc = ((ejGestion && ejGestion.dato) ? ejGestion.dato : 0 )   / ((progGestion && progGestion.dato) ? progGestion.dato : 0.1) * 100;
@@ -285,7 +285,6 @@ $(function(){
                 prog.dato =  $("#form-ej .d" + i).val();
                 indEj.push(prog);
             }
-            console.log(indEj) ;
             var obj = {};
             obj.ejecuciones = indEj;
             obj.id_arti_indicador = $("#indicadores").val();// ctxseg.indsel.id_arti_indicador;
@@ -407,7 +406,6 @@ $(function(){
             indsel[0] = _.find(ctxseg.indicadores, function(elem){
                 return elem.id_arti_indicador == id_arti_indicador;
             });
-            console.log(indsel)
             ctxseg.fillTabla(indsel)
         }).select2({ placeholder: 'Indicadores',});
 

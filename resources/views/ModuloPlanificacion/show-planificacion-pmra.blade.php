@@ -717,8 +717,7 @@ $(function(){
                                 return html
                             } 
                            
-                        },
-          
+                        },          
                     ]
                 });
 

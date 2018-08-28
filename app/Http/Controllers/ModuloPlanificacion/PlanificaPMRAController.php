@@ -685,6 +685,26 @@ class PlanificaPMRAController extends PlanificacionBaseController
                 };
 
                 break;
+            case 'pre': // Presupuesto y Contraparte
+                 $list = collect(\DB::select("SELECT app.id as id_arti_pdes_proyecto, i.id as id_indicador, i.nombre as nombre_indicador, 
+                                i.codp_tipo_indicador, i.idp_unidad, p.codigo as unidad, i.alcance, i.variable, appi.id as id_arti_pdes_proyecto_indicador
+                                FROM sp_arti_pdes_proyecto app, sp_indicadores i, sp_arti_pdes_proyecto_indicador appi, sp_parametros p
+                                WHERE app.id = appi.id_arti_pdes_proyecto AND i.id = appi.id_indicador  AND i.idp_unidad = p.id
+                                AND i.activo AND appi.activo AND app.activo and i.codp_nivel_pmra = 'a' AND app.id = ? 
+                                ORDER by i.nombre ", [$id_arti_pdes_proyecto]));
+                foreach ($list as $key => $elem) {
+                    // $list = $list->map(function($elem){
+                    $elem->presupuesto = \DB::select("SELECT p.id as id_presupuesto, p.gestion, 
+                                                            p.inversion_publica, p.gasto_corriente FROM sp_presupuesto p 
+                                                        where p.activo AND p.id_arti_pdes_proyecto_indicador = {$elem->id_arti_pdes_proyecto_indicador} ");
+
+                    $elem->contraparte = \DB::select("SELECT c.id as id_contraparte, c.gestion, c.inversion_publica,
+                                                        c.gasto_corriente, p.nombre as entidad_territorial, p.codigo as cod_entidad_territorial FROM sp_contraparte c, sp_parametros p 
+                                                        WHERE c.activo and p.activo and c.idp_entidad_territorial = p.id 
+                                                        AND c.id_arti_pdes_proyecto_indicador = {$elem->id_arti_pdes_proyecto_indicador} ");
+                };
+
+                break;
             case 'res': // responsables
                 $list = \DB::select("SELECT app.id as id_arti_pdes_proyecto, r.id as id_responsable, e.id as id_entidad, e.nombre as nombre_entidad, e.sigla
                                 FROM sp_arti_pdes_proyecto app, sp_responsables r, sp_entidades e
