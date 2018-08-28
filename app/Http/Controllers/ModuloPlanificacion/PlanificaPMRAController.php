@@ -18,44 +18,44 @@ class PlanificaPMRAController extends PlanificacionBaseController
     |   estos parametros vienen codificados para que no sea visible para un usuario los nombres de tablas ni columnas
     | $req = { codtc : cod_tabla_columna, valor: valor, id: id_A_modificar }
      */
-    public function modifyCampo(Request $req)
-    {
-        /*  Codificacion de la stablas y campos
-            'ip-d': { sp_indicadores_prohgramacion  dato },
-            'i-n': { sp_indicadores  nombre},
-            'i-a': {sp_indicadores alcance},          
-        */
-        $cnf = [
-            'ip_d' => (object)[ 'tabla'=>'sp_indicadores_programacion', 'col'=>'dato'],
-            'i_n' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'nombre'],
-            'i_a' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'alcance'],
-        ];
+    // public function modifyCampo(Request $req)
+    // {
+    //     /*  Codificacion de la stablas y campos
+    //         'ip-d': { sp_indicadores_prohgramacion  dato },
+    //         'i-n': { sp_indicadores  nombre},
+    //         'i-a': {sp_indicadores alcance},          
+    //     */
+    //     $cnf = [
+    //         'ip_d' => (object)[ 'tabla'=>'sp_indicadores_programacion', 'col'=>'dato'],
+    //         'i_n' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'nombre'],
+    //         'i_a' => (object)[ 'tabla'=>'sp_indicadores', 'col'=>'alcance'],
+    //     ];
 
-        $tabla = $cnf[$req->codtc]->tabla;
-        $col = $cnf[$req->codtc]->col;
-        $val = $req->valor;
+    //     $tabla = $cnf[$req->codtc]->tabla;
+    //     $col = $cnf[$req->codtc]->col;
+    //     $val = $req->valor;
 
-        $obj = new \stdClass();
-        $obj->id = $req->id;
-        $obj->$col = $val;
-        $obj->id_user_updated = $this->user->id;
-        $obj->updated_at = \Carbon\Carbon::now(-4);
+    //     $obj = new \stdClass();
+    //     $obj->id = $req->id;
+    //     $obj->$col = $val;
+    //     $obj->id_user_updated = $this->user->id;
+    //     $obj->updated_at = \Carbon\Carbon::now(-4);
 
-        if($tabla == 'sp_indicadores'){
-            \DB::table('sp_indicadores')->where('id', $obj->id)->update(get_object_vars($obj));
-        }
-        else if($tabla == 'sp_indicadores_programacion'){
-            \DB::table('sp_indicadores_programacion')->where('id', $obj->id)->update(get_object_vars($obj));
-        }
+    //     if($tabla == 'sp_indicadores'){
+    //         \DB::table('sp_indicadores')->where('id', $obj->id)->update(get_object_vars($obj));
+    //     }
+    //     else if($tabla == 'sp_indicadores_programacion'){
+    //         \DB::table('sp_indicadores_programacion')->where('id', $obj->id)->update(get_object_vars($obj));
+    //     }
 
 
-        return \Response::json([
-            'accion' => 'update',
-            'estado' => "success",
-            'msg'    => "Se guardo con éxito.",
-            'obj'   => $obj]);
+    //     return \Response::json([
+    //         'accion' => 'update',
+    //         'estado' => "success",
+    //         'msg'    => "Se guardo con éxito.",
+    //         'obj'   => $obj]);
 
-    }
+    // }
 
 
 
@@ -198,6 +198,8 @@ class PlanificaPMRAController extends PlanificacionBaseController
             ]);
         }
     }
+
+
     /*======================================================= PROGRAMACION DE RESULTADO ==============================================*/
 
     /*---------------------------------------------------------------------------------------
@@ -206,7 +208,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
     public function listaProgramacion(Request $req)
     {
         $listpmr = collect(\DB::select("
-                SELECT pmra.id, pmra.id_p, p.cod_p, p.nombre as nombre_p, 
+                SELECT pmra.id as id_pmra, pmra.id_p, p.cod_p, p.nombre as nombre_p, 
                     p.descripcion as desc_p, p.logo as logo_p,
                     pmra.id_m, m.cod_m, m.nombre as nombre_m, m.descripcion as desc_m,
                     pmra.id_r, r.cod_r, r.nombre as nombre_r, r.descripcion as desc_r, r.sector,
@@ -223,15 +225,18 @@ class PlanificaPMRAController extends PlanificacionBaseController
 
         $listpmr = $listpmr->map(function($elemPmr ){
 
-            $ariGroup = collect(\DB::select("SELECT ari.id as id_ari, i.id as id_i, i.nombre as nombre_indicador,  
+            $ariGroup = collect(\DB::select("                            
+                           SELECT ari.id as id_ari, i.id as id_i, i.nombre as nombre_indicador,  
                             i.variable, i.idp_unidad , p.codigo as unidad, i.alcance,ip.id as id_ip, ip.gestion, ip.dato
-                             FROM sp_arti_resultado_indicador ari, sp_indicadores i, 
-                             sp_parametros p, sp_indicadores_programacion ip
-                            WHERE ari.id_indicador = i.id AND ari.activo AND i.activo 
-                            AND ip.id_arti_indicador = ari.id AND ip.codp_nivel_pmra = 'r'
-                            AND i.idp_unidad = p.id AND ari.id_plan_articulacion_pdes = {$elemPmr->id} 
-                            ORDER BY ari.id, ip.gestion "))->groupBy('id_ari') ;
+                             FROM sp_arti_resultado_indicador ari 
+                             LEFT JOIN sp_indicadores i ON  ari.id_indicador = i.id AND i.activo
+                            LEFT JOIN sp_parametros p ON i.idp_unidad = p.id 
+                            LEFT JOIN sp_indicadores_programacion ip ON ip.id_arti_indicador = ari.id AND ip.codp_nivel_pmra = 'r'
+                                  WHERE ari.activo AND i.activo 
+                             AND ari.id_plan_articulacion_pdes = {$elemPmr->id_pmra}
+                            ORDER BY ari.id, ip.gestion  "))->groupBy('id_ari') ;
             $ariList = [];
+            // return response()->json(['k'=> $ariGroup]);
             foreach ($ariGroup as $key => $arr) {
                 $ind = $arr[0];
                 $ari = new \stdClass();
@@ -252,12 +257,14 @@ class PlanificaPMRAController extends PlanificacionBaseController
                     $ari->linea_base_gestion = $lineabase->gestion;
                 }
                 $ari->programacion = $arr->map(function($prog){
-                    return [
-                        'id_ip' => $prog->id_ip,
-                        'gestion' => $prog->gestion,
-                        'dato' => $prog->dato
-                    ];
-                });
+                    if($prog->id_ip <> null)
+                        return [
+                            'id_ip' => $prog->id_ip,
+                            'gestion' => $prog->gestion,
+                            'dato' => $prog->dato
+                        ];
+                })->filter(function($val){ return $val <> null; });
+
                 $ariList[] = $ari;
 
 
@@ -393,7 +400,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
         }
         return response()->json([
             'data' => $list,
-            // 'data' => $pmraProyectos,
+            'datas' => $pmraProyectos,
         ]);
 
     }
@@ -675,6 +682,26 @@ class PlanificaPMRAController extends PlanificacionBaseController
                         $elem->linea_base = $lineabase->dato;
                         $elem->linea_base_gestion = $lineabase->gestion;
                     }
+                };
+
+                break;
+            case 'pre': // Presupuesto y Contraparte
+                 $list = collect(\DB::select("SELECT app.id as id_arti_pdes_proyecto, i.id as id_indicador, i.nombre as nombre_indicador, 
+                                i.codp_tipo_indicador, i.idp_unidad, p.codigo as unidad, i.alcance, i.variable, appi.id as id_arti_pdes_proyecto_indicador
+                                FROM sp_arti_pdes_proyecto app, sp_indicadores i, sp_arti_pdes_proyecto_indicador appi, sp_parametros p
+                                WHERE app.id = appi.id_arti_pdes_proyecto AND i.id = appi.id_indicador  AND i.idp_unidad = p.id
+                                AND i.activo AND appi.activo AND app.activo and i.codp_nivel_pmra = 'a' AND app.id = ? 
+                                ORDER by i.nombre ", [$id_arti_pdes_proyecto]));
+                foreach ($list as $key => $elem) {
+                    // $list = $list->map(function($elem){
+                    $elem->presupuesto = \DB::select("SELECT p.id as id_presupuesto, p.gestion, 
+                                                            p.inversion_publica, p.gasto_corriente FROM sp_presupuesto p 
+                                                        where p.activo AND p.id_arti_pdes_proyecto_indicador = {$elem->id_arti_pdes_proyecto_indicador} ");
+
+                    $elem->contraparte = \DB::select("SELECT c.id as id_contraparte, c.gestion, c.inversion_publica,
+                                                        c.gasto_corriente, p.nombre as entidad_territorial, p.codigo as cod_entidad_territorial FROM sp_contraparte c, sp_parametros p 
+                                                        WHERE c.activo and p.activo and c.idp_entidad_territorial = p.id 
+                                                        AND c.id_arti_pdes_proyecto_indicador = {$elem->id_arti_pdes_proyecto_indicador} ");
                 };
 
                 break;

@@ -89,7 +89,7 @@
 
                                 <div class="section">
                                     <strong class="field-label ">Periodo de Planificación</strong>
-                                    <strong>Gestion inicio: </strong><span id="gestion_inicio"></span>
+                                    <strong>Gestión inicio: </strong><span id="gestion_inicio"></span>
                                     <strong class='ml10'>Gestion fin: </strong><span id="gestion_fin"></span>                                    
                                 </div>
                             </div>
@@ -184,7 +184,7 @@ $(function(){
                               }
                         },
                         /* descripcion armada */
-                        { text: 'Descripcion', dataField: 'nombre', align: 'center',
+                        { text: 'Descripción', dataField: 'nombre', align: 'center',
                             cellsRenderer: function (row, column, value, rowData) {
                                 var container = `<div style="width: 100%; height: 100%;">
                                                     <div style="float: left; width: 100%;">

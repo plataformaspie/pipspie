@@ -84,8 +84,6 @@
                                 <i class="glyphicon glyphicon-tasks" ></i><span class="sp_titulo_panel"> Identificación de la Articulación PDES </span> <span id="sp_est_pmra" class="ml5 badge bg-dark dark"></span>                                 
                                 <span class="pull-right">
                                     <button id="pmra_nuevo" type="button" class="btn btn-sm btn-success dark m5 br4" data-toggle="tooltip" title=""><i class="fa fa-plus-circle text-white"></i> Agregar </button>
-                                    {{-- <button id="pmra_editar" type="button" class="btn btn-sm btn-warning dark m5 br4"><i class="fa fa-edit text-white"></i> Editar</button> --}}
-                                    {{-- <button id="pmra_eliminar" type="button" class="btn btn-sm btn-danger dark m5 br4"><i class="fa fa-minus-circle text-white"></i> Eliminar</button> --}}
                                 </span>
                             </div>
                         </div>
@@ -232,9 +230,9 @@
             <form method="post" action="/" id="form_prog" name="form_prog">
                 <div class="panel-body  of-a">                    
                     {{-- <input type="hidden"  name="id_plan_articulacion_pdes_prog" id="id_plan_articulacion_pdes_prog" > --}}
-                    <input type="hidden"  name="id_arti_resultado_indicador_prog" id="id_arti_resultado_indicador_prog" >
-                    <input type="hidden"  name="id_indicador_prog" id="id_indicador_prog" >
-                    <input type="hidden"  name="id_indicador_ejecucion_prog" id="id_indicador_ejecucion_prog" >
+                    <input  class="hidden" name="id_arti_resultado_indicador_prog" id="id_arti_resultado_indicador_prog" >
+                    <input  class="hidden" name="id_indicador_prog" id="id_indicador_prog" >
+                    <input  class="hidden" name="id_indicador_ejecucion_prog" id="id_indicador_ejecucion_prog" >
                     <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Describa su indicador y la programación para el resultado articulado: <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
                     <div class=" bg-system  row p10">
                         <div id="pmr_prog"></div>
@@ -327,32 +325,7 @@
     </div>
 
 
-    <!-- -------------------------------------------edicion de campos ---------------------------------------------------------- -->
-    <div id="modal_editcampo" class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
-        <div class="panel">
-            <div class="panel-heading bg-dark">
-                    Modificar
-            </div>
-            <div class="panel-body mnw700 of-a"> 
-                <input class="hidden" name="sp_id_editcampo" id="sp_id_editcampo" >
-                <input class="hidden" name="sp_codtc" id="sp_codtc" >
-                <div class="section">
-                    <label class="field-label" for="alcance_prog">Nuevo valor</label>
-                    <label class="field prepend-icon">
-                        <input type="text" class="gui-input" id="sp_valor_editcampo" name="sp_valor_editcampo" placeholder="valor" style="width:100%;">
-                        <label for="alcance_prog" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-                        </label>                  
-                    </label>
 
-                </div>
-            </div>
-            <div class="panel-footer">
-                <button  class="button btn-primary sp_save_editcampo">Guardar</button>
-                <a href="javascript:void(0)"   class="button btn-danger ml25 sp_cancelar">Cancelar</a>
-            </div>
-
-        </div>
-    </div>
 @endsection
 
 @push('script-head')
@@ -647,7 +620,7 @@ $(function(){
                     dataType: "json",
                     localdata: resp.data,
                     dataFields: [
-                        { name: 'id', type: 'number' },
+                        { name: 'id_pmra', type: 'number' },
                         { name: 'cod_p', type: 'string' },
                         { name: 'cod_m', type: 'string' },
                         { name: 'cod_r', type: 'string' },
@@ -672,10 +645,6 @@ $(function(){
                 ctxprog.estadistics();
                 var dataAdapter = new $.jqx.dataAdapter(ctxprog.source);
                 ctxprog.dataTable.jqxDataTable({
-                    // ready: function () {   
-                    //     $(".contentdt_pmra").css({"z-index": "100", 'font-size':'9px'
-                    //     });  
-                    // },
                     source: dataAdapter,
                     theme: ctxgral.theme,
                     altRows: false,
@@ -712,25 +681,31 @@ $(function(){
                                 var html = ''; 
                                 if(rowData.indicadores.length>0){ 
                                     var headGestiones = '';
-                                    for(i=rowData.gestion_ini; i<= rowData.gestion_fin; i++)
+                                    for(i=rowData.gestion_ini; i<= rowData.gestion_fin; i++){
                                         headGestiones += `<th>${i}</th>`;
+                                    }
+                                        
 
                                      html = `<table class="table table-bordered table-hover fs11 sp_table">
                                                     <thead><tr class="primary"> <th>Indicador de Res.</th> <th>Variable</th>  <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
                                                     <tbody>`;
 
                                     rowData.indicadores.forEach(function(ind, index){
+
                                         var prog_row = '';
-                                        _.sortBy(ind.programacion, 'gestion').forEach(function(ip){
-                                            var valor = ip.dato || '';
-                                            prog_row += `<td sp_id="${ip.id_ip}" class="sp_editable" sp_codtc="ip_d"  >${valor} ${ind.unidad}</td>`;
-                                        });
+                                        for(i=rowData.gestion_ini; i<= rowData.gestion_fin; i++){
+                                            progGestion = _.find(ind.programacion, function(el){
+                                                                return el.gestion == i;
+                                                            }) ;
+                                            var valor = (progGestion && progGestion.dato) ? `${progGestion.dato } ${ind.unidad}` : '';
+                                            prog_row += `<td> ${valor}</td>`;
+                                        }
 
                                         html += `<tr>
-                                                    <td class="sp_editable" sp_codtc="i_n" sp_id="${ind.id_indicador}">${ind.nombre_indicador}</td> 
-                                                    <td>${ind.variable}</td>
-                                                    <td>${ind.linea_base} ${ind.unidad}</td> 
-                                                    <td class="sp_editable" sp_codtc="i_a" sp_id="${ind.id_indicador}">${ind.alcance}</td> 
+                                                    <td class="">${ind.nombre_indicador}</td> 
+                                                    <td>${ind.variable || ''}</td>
+                                                    <td>${ind.linea_base ||  ''} ${ind.unidad || ''}</td> 
+                                                    <td class="">${ind.alcance || ''} ${ind.unidad || ''}</td> 
                                                     ${prog_row} 
                                                     <td><a href="javascript:void(0)"  index_ari="${index}" class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Indicador y programación" ><i class="fa fa-edit text-warning fa-lg"></i></a>
                                                         <a href="javascript:void(0)" id_arti_resultado_indicador="${ind.id_arti_resultado_indicador}" class="sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
@@ -741,8 +716,8 @@ $(function(){
                                 }
                                 return html
                             } 
-                        },
-          
+                           
+                        },          
                     ]
                 });
 
@@ -766,7 +741,7 @@ $(function(){
                 },
                 arti_resultado_indicador: {
                     id: $("#id_arti_resultado_indicador_prog").val(),
-                    id_plan_articulacion_pdes : ctxprog.dataTable.jqxDataTable('getSelection')[0].id,
+                    id_plan_articulacion_pdes : ctxprog.dataTable.jqxDataTable('getSelection')[0].id_pmra,
                 },
                 indicador_ejecucion: {
                     id: $("#id_indicador_ejecucion_prog").val(),
@@ -820,51 +795,7 @@ $(function(){
             $("#resultado_prog").html(`<b>${rowSelected.nombre_r}</b> - ${rowSelected.desc_r}`);
             ctxgral.showModal("#modal_prog");
         },
-        // editar_valorcampo: function(obj){
-        //     $("#sp_codtc").val(obj.sp_codtc);
-        //     $("#sp_id_editcampo").val(obj.sp_id_editcampo)
-        //     $("#sp_valor_editcampo").val(obj.sp_valor_editcampo)
-        //     $(".state-error").removeClass("state-error")
-        //     $("#form_prog em").remove();
 
-        //     $.magnificPopup.open({
-        //         removalDelay: 500, //delay removal by X to allow out-animation,
-        //         focus: '',
-        //         items: {
-        //             src: "#modal_editcampo"
-        //         },
-        //         // overflowY: 'hidden', //
-        //         callbacks: {
-        //             beforeOpen: function(e) {
-        //                 var Animation = "mfp-zoomIn";
-        //                 this.st.mainClass = Animation;
-        //             }
-        //         },
-        //     });
-        // },
-        // save_editcampo(){
-        //     var obj={
-        //         codtc : $("#sp_codtc").val(),
-        //         valor: $("#sp_valor_editcampo").val(),
-        //         id: $("#sp_id_editcampo").val(),
-        //         _token : ctxgral.token
-        //     };
-        //     $.post(globalSP.urlApi + 'modifycampo', obj, function(res){
-        //         ctxgral.refreshList(ctxprog);
-        //         new PNotify({
-        //                     title: res.estado == 'success' ? 'Guardado' : 'Error',
-        //                     text: res.msg,
-        //                     shadow: true,
-        //                     opacity: 0.9,
-        //                     addclass: noteStack,
-        //                     type: (res.estado == 'success') ? "success" : "danger",
-        //                     stack: Stacks[noteStack],
-        //                     width: findWidth(),
-        //                     delay: 1500
-        //                 });
-        //         $.magnificPopup.close(); 
-        //     });
-        // },
         validateRules: function(){
            return {
                 nombre_indicador_prog:  { required: 'Campo requerido' },
@@ -968,7 +899,7 @@ $(function(){
             for(var g = gestion_ini; g <= gestion_fin; g++)
             { 
                 var ip = { id_ip:'', dato: ''};
-                if(data)
+                if(data && data.length>0)
                     ip =  _.find(data, function(prog){ return prog.gestion == g});
                 
                 html += `<tr>
@@ -978,7 +909,7 @@ $(function(){
                     <td class="va-m fw600 text-muted">${g}</td>
                     <td class="fs14 fw700 text-muted text-right">
                         <label for="mod_dato" class="field prepend-icon">
-                            <input type="text"  class="hidden id${g}" value="${ip.id_ip}" >
+                            <input type="text"  class="hidden id${g}" value="${ip.id_ip || ''}" >
                             <input type="text"  class="hidden g${g} " value="${g}" >
                             <input type="text"  class="gui-input d${g}" placeholder="Valor" value="${ip.dato || ''}">
                             <label for="d${g}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
@@ -1021,37 +952,10 @@ $(function(){
             $("body").on('mouseleave', '[data-toggle="tooltip"]', function(){
                 $(this).tooltip('hide');
             }); 
-            // $("body").on('mouseover', '[data-toggle="tooltip"]', function(){
-            //     $(this).tooltip('show')
-            // });
-            // $("body").on('mouseout', '[data-toggle="tooltip"]', function(){
-            //     $(this).tooltip('hide');
-            // }); 
+
             $("#limpiaTooltips").click(function(){
                 $('.tooltip-inner, .tooltip-arrow').hide();
             })           
-
-            // /* para los campos editables con dblclick*/
-            // $("#planificacionContainer").on('mouseover', '.sp_editable', function(event) {
-            //     $(this).append('<span class="fa fa-edit fa-lg pull-right sp_iconedit text-muted" style="position: relative; top: -10px; margin-right: -8px; z-index: 99999";  ></span>');
-            // });
-            // $("#planificacionContainer").on('mouseout', '.sp_editable', function(event) {
-            //     $(this).find('.sp_iconedit').remove();
-            // });
-
-            //  al hacer dblclick en un campo .sp_editable
-            // $("#planificacionContainer").on('dblclick', '.sp_editable', function(event) {
-            //     var obj={
-            //         sp_codtc : $(this).attr('sp_codtc'),
-            //         sp_id_editcampo : $(this).attr('sp_id'),
-            //         sp_valor_editcampo : $(this).text(),
-            //     }
-            //     ctxprog.editar_valorcampo(obj);
-            // });
-
-            // $(".sp_save_editcampo").click(function(){
-            //     ctxprog.save_editcampo();
-            // });
 
             $(".sp_cancelar").click(function(){
                 $.magnificPopup.close();
@@ -1110,8 +1014,7 @@ $(function(){
             $("#planificacion_pmra").on('click','.sel_delete, #pmra_eliminar', function(){
                 ctxpmra.eliminar();
             });
-
-       
+      
         }
 
         var listeners_prog = function()

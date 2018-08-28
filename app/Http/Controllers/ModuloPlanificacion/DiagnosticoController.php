@@ -7,72 +7,95 @@ use App\Http\Controllers\Controller;
 
 use App\Models\ModuloPlanificacion\Diagnosticos;
 use App\Models\ModuloPlanificacion\DiagnosticosComparativos;
-use App\Models\ModuloPlanificacion\Metricas;
 use App\Models\ModuloPlanificacion\EnfoquesPoliticos;
 use App\Models\ModuloPlanificacion\Entidades;
+use App\Models\ModuloPlanificacion\SistemasVida;
+use App\Models\ModuloPlanificacion\Planes;
+use App\Models\ModuloPlanificacion\TipoSectores;
 use App\Models\ModuloPdes\Pilares;
 
 class DiagnosticoController extends PlanificacionBaseController
 {
-  
-    public function showDiagnostico()
+
+    public function showDiagnostico(Request $request)
     {
-        // $metricas = Metricas::orderBy('simbolo','asc')->get();
-        $metricas = \DB::table('sp_parametros')->where('categoria', 'metricas')->orderBy('codigo','asc')->get();
-        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas]);
+
+        if ($request->p)
+        {
+            $planActivo = Planes::where('id', $request->p)->first();
+            $idEntidad =$planActivo->id_entidad;
+        }
+        else
+        {
+            $this->user = \Auth::user();
+            $idEntidad  = $this->user->id_institucion;
+        }
+
+        $metricas = \DB::select("SELECT * FROM sp_parametros where categoria = 'metricas' AND activo ORDER BY codigo ");
+        $sistemasVida = SistemasVida::where('id_plan',$request->p )
+                        ->where('activo',true )
+                        ->groupBy('jurisdiccion_territorial')
+                        ->orderBy('jurisdiccion_territorial','ASC')
+                        ->select('jurisdiccion_territorial')
+                        ->get();
+        $sectores = TipoSectores::get();
+        return view('ModuloPlanificacion.show-diagnostico',['metricas' => $metricas,'sistemasVida'=>$sistemasVida, 'sectores' => $sectores]);
     }
 
 
     public function setDiagnostico(Request $request)
     {
-        $idEntidad = $this->getIdEntidadFoco($request);
+        // $idEntidad = $this->getIdEntidadFoco($request);
+        $id_plan = $request->p;
         $diagnostico = \DB::select("SELECT *,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2011
+                                      AND gestion = 2011 and activo
                                       ) as _2011,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2012
+                                      AND gestion = 2012 and activo
                                       ) as _2012,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2013
+                                      AND gestion = 2013 and activo
                                       ) as _2013,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2014
+                                      AND gestion = 2014 and activo
                                       ) as _2014,
                                       (
                                       SELECT dato
                                       FROM sp_diagnostico_comparativo
                                       WHERE diagnostico_id = tab.id
-                                      AND gestion = 2015
+                                      AND gestion = 2015 and activo
                                       ) as _2015
                                       FROM (
 
-                                      SELECT d.*, m.codigo as simbolo
+                                      SELECT d.*, p.codigo as simbolo
                                       FROM sp_diagnostico d
-                                      INNER JOIN sp_parametros m ON d.idp_unidad = m.id
-                                      WHERE d.entidad = ".$idEntidad."
+
+                                      INNER JOIN sp_parametros p ON d.idp_unidad = p.id 
+                                      WHERE d.id_plan = {$id_plan}
+
                                       AND d.activo = true
                                       ) tab");
         $i=1;
         $datos = array();
-        foreach ($diagnostico as $d) 
+        foreach ($diagnostico as $d)
         {
             $datos[$i] = array(
                       'id' => $d->id,
                       'contador' => $i,
-                      'entidad' => $d->entidad,
+                      // 'entidad' => $d->entidad,
                       'indicador' => $d->indicador,
                       'fuente_verificacion' => $d->fuente_verificacion,
                       'variable' => $d->variable,
@@ -143,12 +166,12 @@ class DiagnosticoController extends PlanificacionBaseController
         $idEntidad = $this->getIdEntidadFoco($request);
 
 
-        $periodo = array(2011,2012,2013,2014,2015);   
+        $periodo = array(2011,2012,2013,2014,2015);
         //$this->user= \Auth::user();
 
         try{
             $diagnostico = new Diagnosticos();
-            $diagnostico->entidad = $idEntidad;
+            // $diagnostico->entidad = $idEntidad;
             $diagnostico->id_plan = $request->id_plan;
             $diagnostico->producto_final = $request->producto_final;
             $diagnostico->variable = $request->variable;
@@ -207,14 +230,13 @@ class DiagnosticoController extends PlanificacionBaseController
         }
     }
 
-
-  /*---------------------------------------------------------
+    /*---------------------------------------------------------
     | Obtiene las variables, con su indicador , unidad y la ultima gestion registrada dato (linea base)
     | $req: {p: id_plan}
      */
 
     public function listVariablesConLineaBase(Request $req){
-        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.entidad as id_entidad, d.indicador, d.variable,
+        $variables = collect(\DB::select("SELECT d.id as id_diagnostico, d.indicador, d.variable,
                         d.idp_unidad, p.codigo as cod_unidad, dc.id as id_diagnostico_comparativo, dc.gestion, dc.dato
                         from sp_diagnostico d, sp_diagnostico_comparativo dc, sp_parametros p
                          where dc.diagnostico_id = d.id and d.activo AND p.id = d.idp_unidad AND p.categoria = 'metricas'
@@ -244,6 +266,9 @@ class DiagnosticoController extends PlanificacionBaseController
 
 
     }
+
+
+
 
 
 

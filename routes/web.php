@@ -225,6 +225,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
 
+
             /*++++++++++admininistracion Clasificador++++++++++++++++++++++++++++++*/
             Route::get('showClasificador','ModuloPlanificacion\AdminClasificadorController@showClasificador');
            
@@ -236,6 +237,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('dataSetInstitucion','ModuloPlanificacion\AdminClasificadorController@dataSetInstitucion');
             Route::get('deleteInstitucion','ModuloPlanificacion\AdminClasificadorController@deleteInstitucion');      
  
+
 
             Route::get('showSeguimiento', 'ModuloPlanificacion\SeguimientoController@showSeguimiento');
             Route::get('showReviewPlanesInstitucion', 'ModuloPlanificacion\ReviewController@showReviewPlanesInstitucion');
@@ -395,6 +397,9 @@ Route::group(['middleware' => 'auth'],function(){
             /********** Seguimiento Evaluacion ******************/            
             Route::get('listindicadores', 'ModuloPlanificacion\SeguimientoController@listIndicadores');
             Route::get('datosindicador', 'ModuloPlanificacion\SeguimientoController@datosIndicador');
+
+            Route::post('saveejecuciones', 'ModuloPlanificacion\SeguimientoController@saveEjecuciones');
+
 
             
             /********** Review ******************/

@@ -40,6 +40,7 @@
                     <h4 id="p_titulo_sel">Atributos sel</h4>
                     <div id="p_opciones_sel">
                         <span proy-index="" proy-atrib="ind" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Indicadores"><i class="fa fa-dot-circle-o"></i> <span> I </span></span>
+                        <span proy-index="" proy-atrib="pre" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Presupuesto y Contraparte"><i class="fa fa-money"></i> <span> P </span></span>
                         <span proy-index="" proy-atrib="res" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Responsables"><i class="fa fa-sitemap" ></i> <span> R </span></span>
                         <span proy-index="" proy-atrib="rol" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Roles y Actores"><i class="glyphicons glyphicons-group"></i> <span> RA </span></span>
                         <span proy-index="" proy-atrib="art" class=" bg-dark btn btn-xs ml2 br4 fs11 w40 text-warning light" data-toggle="tooltip" data-container="body" data-html="true" title="Articulación Competencial"><i class="fa fa-share-square-o"></i> <span> AC </span></span> 
@@ -256,6 +257,104 @@
         </div>
 
 
+    <!-- -----------------------------------------          Modal Presupuesto y Contraparte --------------------------------------------------- -->
+    <div id="modal_plaa_pre"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+        <div class="panel">
+            <div class="panel-heading bg-dark">
+                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
+            </div>
+            <form method="post" action="/" id="form_pre" name="form_pre">
+                <div class="panel-body  of-a">                    
+                 {{--    <input class="hidden"  name="id_arti_pdes_proyecto_indicador" id="id_arti_pdes_proyecto_indicador" >
+                    <input class="hidden"  name="id_indicador" id="id_indicador" >
+                    <input class="hidden"  name="id_indicador_ejecucion" id="id_indicador_ejecucion" > --}}
+                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Articulación del proyecto<small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
+                    <div class=" bg-system  row p10 mb10">
+                        <div id="pmra_plaa"></div>
+                    </div>
+                    <div id='pre_datos_indicador'>
+                        <h5 class="mt5 ph10 pb5 br-b fw700"></h5>
+                    </div>
+                    <div class="row">
+                        {{-- <div class="col-sm-6 br-r">
+
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Indicador <small class="pull-right fw700 text-primary">- </small> </h5>
+                            <div class="section">
+                                <label class="field-label" for="nombre">Indicador de la acción o del proyecto</label>
+                                <label for="nombre" class="field prepend-icon">
+                                    <textarea class="gui-textarea" id="nombre" name="nombre"  placeholder="Indicador"></textarea>
+                                    <label for="nombre" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
+                                    </label>                                        
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="id_diagnostico">Variables del diagnóstico</label>
+                                <label class="field select">
+                                    <select id="id_diagnostico" name="id_diagnostico" class="" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="variable">Variable</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" id="variable" name="variable" class="gui-input" placeholder="Variable" style="width:100%;">
+                                    <label for="variable" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="idp_unidad">Unidad de Medida </label>
+                                <label class="field select">
+                                    <select id="idp_unidad" name="idp_unidad" class="required sp_metrica" style="width:100%;">
+                                    </select>
+                                    <i class="arrow"></i>                  
+                                </label>
+                            </div>
+
+                            <div class="section">
+                                <label class="field-label" for="linea_base">Linea Base</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" class="gui-input" id="linea_base" name="linea_base" placeholder="Linea Base" style="width:100%;">
+                                    <label for="linea_base" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>                 
+                                </label>
+                            </div>
+                            <div class="section">
+                                <label class="field-label" for="alcance">Alcance</label>
+                                <label class="field prepend-icon">
+                                    <input type="text" class="gui-input" id="alcance" name="alcance" placeholder="Alcance" style="width:100%;">
+                                    <label for="alcance" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
+                                    </label>                  
+                                </label>
+
+                            </div>
+                        </div> --}}
+
+                        <div class="col-sm-6" id="gestiones_ind">
+                            <h5 class="mt5 ph10 pb5 br-b fw700">Programación <small class="pull-right fw700 text-primary">- </small> </h5>
+                            <table class="table mbn">
+                                <thead>
+                                    <tr class="hidden">
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
+                    <a href="#"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+
     <!-- -----------------------------------------          Modal Responsables  --------------------------------------------------- -->
     <div id="modal_plaa_res"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
@@ -394,7 +493,6 @@
         </div>
     </div>
 
-
          <!-- -----------------------------------------          Modal Territorializacion  --------------------------------------------------- -->
     <div id="modal_plaa_ter"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
         <div class="panel">
@@ -469,68 +567,7 @@
     </div>
         
     
-   {{--  <div id="modal_plaa_generico"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
-        <div class="panel">
-            <div class="panel-heading bg-dark">
-                <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
-            </div>
-            <!-- end .panel-heading section -->
-            <form method="post" action="/" id="form_plaa" name="form_plaa">
-
-                <div class="panel-body mnw700 of-a">                    
-                    <input class="hidden" name="" id="" >
-                    <input class="hidden" name="" id="" >
-                    <h4 class="ml5 mt20 ph10 pb5 br-b fw700">Describa su indicador y su programación en el periodo : <small class="pull-right fw600"> <span class="text-primary">-</span> </small> </h4>
-                    <div class=" bg-success lighter  row p10">
-                        <div id="pmr_plaa"></div>
-                        <div id="pilar_plaa"></div>
-                        <div id="meta_plaa"></div>
-                        <div id="resultado_plaa"></div>
-                        <div id="proyecto_plaa"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 br-r sp_elementos">
-                    </div>
-                    
-                </div>
-                <div class="panel-footer">
-                    <button type="submit" class="button btn-primary sp_save">Guardar</button>
-                    <a href="javascript:void(0)"  id="atr_cancelar"  class="button btn-danger ml25 sp_cancelar">Cancelar</a>
-                </div>
-            </form>
-        </div>
-        <!-- end: .panel -->
-    </div> --}}
-
-
-
-
-    <!-- -------------------------------------------edicion de campos ---------------------------------------------------------- -->
-{{--     <div id="modal_editcampo" class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
-        <div class="panel">
-            <div class="panel-heading bg-dark">
-                    Modificar
-            </div>
-            <div class="panel-body mnw700 of-a"> 
-                <input class="hidden" name="sp_id_editcampo" id="sp_id_editcampo" >
-                <input class="hidden" name="sp_codtc" id="sp_codtc" >
-                <div class="section">
-                    <label class="field-label" for="alcance_res">Nuevo valor</label>
-                    <label class="field prepend-icon">
-                        <input type="text" class="gui-input" id="sp_valor_editcampo" name="sp_valor_editcampo" placeholder="valor" style="width:100%;">
-                        <label for="alcance_res" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-                        </label>                  
-                    </label>
-
-                </div>
-            </div>
-            <div class="panel-footer">
-                <button  class="button btn-primary sp_save_editcampo">Guardar</button>
-                <a href="javascript:void(0)"   class="button btn-danger ml25 sp_cancelar">Cerrar</a>
-            </div>
-
-        </div>
-    </div> --}}
+  
 
 <script type="text/javascript">
 $(function(){
@@ -576,10 +613,6 @@ $(function(){
                     ctxplaa.estadistics();
                     var dataAdapter = new $.jqx.dataAdapter(ctxplaa.source);
                     ctxplaa.dataTable.jqxDataTable({
-                        // ready: function () {   
-                        //     $(".contentdt_pmra").css({"z-index": "100", 'font-size':'9px'
-                        //     });  
-                        // },
                         source: dataAdapter,
                         theme: ctxgral.theme,
                         altRows: false,
@@ -622,15 +655,14 @@ $(function(){
                                     if(rowData.proyectos.length>0){ 
 
                                         html = `<table class="table table-bordered table-hover fs11 sp_table">
-                                        <thead><tr class="primary"><th>.</th> <th>Tipo p.</th> <th>Proyecto </th>  <th>Codigo</th> <th>Fecha inicio</th> <th>Fecha fin</th> <th></th> </tr> </thead>
-                                        <tbody>`;
-
+                                        <thead><tr class="primary"><th>.</th> <th>Tipo p.</th> <th>Proyecto </th>  <th>Codigo</th> <th>G. ini.</th> <th>G. fin</th> <th></th> </tr> </thead>
+                                        <tbody>`;                                        
                                         rowData.proyectos.forEach(function(proy, index){
                                                       html += `<tr>
                                             <td>  
                                                 <a href="javascript:void(0);" proy-index="${index}" proy-atrib="ind" class="text-alert dark fa fa-dot-circle-o fa-lg" data-toggle="tooltip" data-container="body" data-html="true" title="Ver Indicadores y otros atributos"></a>  
                                             </td>
-                                            <td class="">${proy.tipo_proyecto}</td> 
+                                            <td class=""> ${proy.tipo_proyecto}</td> 
                                             <td>${proy.nombre_proyecto}</td>
                                             
                                             <td>${ proy.codigo ? proy.codigo : ''} </td> 
@@ -816,6 +848,7 @@ $(function(){
         data: [],
         atributos : {
             'ind' : { texto:'Indicadores', class: 'fa fa-dot-circle-o ' },
+            'pre' : { texto:'Presupuesto y Contraparte', class: 'fa fa-money ' },
             'res' : { texto:'Responsables', class: 'fa fa-sitemap ' },
             'rol' : { texto:'Roles y Actores', class: 'glyphicons glyphicons-group' },
             'art' : { texto:'Articulación Competencial', class: 'fa fa-share-square-o' },
@@ -839,9 +872,11 @@ $(function(){
 
             var sendObj = {id_app: proy.id_arti_pdes_proyecto, atributo: atributo, p: globalSP.idPlanActivo};
             $.get(globalSP.urlApi + 'list_atributo', sendObj, function(res){
+                console.log(res.data)
                 ctxattr.data = data = res.data;
 
                 if(atributo == 'ind') $("#p_atribContenido").html(ctxind.fillData(data)) ;
+                if(atributo == 'pre') $("#p_atribContenido").html(ctxpre.fillData(data)) ;
                 if(atributo == 'res') $("#p_atribContenido").html(ctxres.fillData(data)) ;
                 if(atributo == 'rol') $("#p_atribContenido").html(ctxrol.fillData(data)) ;
                 if(atributo == 'art') $("#p_atribContenido").html(ctxart.fillData(data)) ;
@@ -854,6 +889,7 @@ $(function(){
         abmAtrib: function(accion, index){
             atrib = ctxattr.atributoSel;
             if(atrib == 'ind') ctxind[accion](index);
+            if(atrib == 'pre') ctxpre[accion](index);
             if(atrib == 'res') ctxres[accion](index);
             if(atrib == 'rol') ctxrol[accion](index);
             if(atrib == 'art') ctxart[accion](index);
@@ -917,14 +953,18 @@ $(function(){
             var html = `<table class="table table-bordered table-hover fs11 sp_table">
                             <thead><tr class="primary"> <th>Indicador</th> <th>Variable</th>  <th>L. Base</th> <th>Alcance</th>${headGestiones} <th></th> </tr> </thead>
                             <tbody>`;
+
             data.forEach(function(elem, index){
                 var prog_row = '';
-                _.sortBy(elem.programacion, 'gestion').forEach(function(ip){
-                    var valor = (ip.dato) ? `${ip.dato} ${elem.unidad}` : '';
-                    prog_row += `<td sp_id="${ip.id_ip}" class="sp_editable" sp_codtc="ip_d"  >${valor}</td>`;
-                });
+                for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++){
+                    progGestion = _.find(elem.programacion, function(el){
+                        return el.gestion == i;
+                    }) ;
+                    var valor = (progGestion && progGestion.dato) ? `${progGestion.dato } ${elem.unidad}` : '';
+                    prog_row += `<td> ${valor}</td>`;
+                }
 
-                var row = `<tr><td>${elem.nombre_indicador}</td> <td>${elem.variable}</td> <td>${elem.linea_base} ${elem.unidad}</td> <td>${elem.alcance}</td> ${prog_row}
+                var row = `<tr><td>${elem.nombre_indicador}</td> <td>${elem.variable || ''}</td> <td>${ elem.linea_base? elem.linea_base + ' ' + elem.unidad : '' } </td> <td>${elem.alcance || ''} ${elem.unidad || ''}</td> ${prog_row}
                             <td><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar Indicador y programación" ><i class="fa fa-edit text-warning fa-lg"></i></a>
                                 <a href="javascript:void(0)" index_atrib="${index}" class="sel_atrib_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger "></i></a></td>
                             </tr>`;
@@ -1045,6 +1085,179 @@ $(function(){
         },
         saveData: function(){
             var obj = ctxind.getDataForm();
+            ctxattr.saveAtribData('saveIndicadorAccionProg', obj);                         
+        },
+        eliminar: function(index){
+            var indicadorsel = ctxattr.data[index]; 
+            ctxattr.deleteAtrib('delete_atributo', indicadorsel.id_arti_pdes_proyecto_indicador);
+        },
+    }
+
+    ctxpre = {
+        fillData: function(data){
+            if (data.length == 0) 
+                return "<span class='p5 ml10'>No existen datos sobre presupuesto o contraparte.</span>";
+
+            var pmraData = ctxplaa.selrow();
+            var headGestiones = '';
+            for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++)
+                headGestiones += `<th>${i}</th>`;
+            
+            var html = `<table class="table table-bordered table-hover fs11 sp_table">
+                            <thead><tr class="primary"> <th>Indicador</th> <th>Pres. / Contr.</th> ${headGestiones} <th></th> </tr> </thead>
+                            <tbody>`;
+
+            data.forEach(function(elem, index){
+                var pres_gc_row = pres_ip_row = '';
+                for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++){
+                    presGestion = _.find(elem.presupuesto, function(el){
+                        return el.gestion == i;
+                    }) ;
+                    var valor_ip = (presGestion && presGestion.inversion_publica) ? `${presGestion.inversion_publica }` : '';
+                    pres_ip_row += `<td> ${valor_ip}</td>`;
+                    var valor_gc = (presGestion && presGestion.gasto_corriente) ? `${presGestion.gasto_corriente }` : '';
+                    pres_gc_row += `<td> ${valor_gc}</td>`;
+                }
+
+                var rowspan = elem.presupuesto + elem.contraparte;
+
+                var row = `<tr><td rowspan="2" >${elem.nombre_indicador}</td> <td>Pres: Inv. P.</td> ${pres_ip_row}
+                            <td  rowspan="2" ><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar Indicador y programación" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+                                </td>
+                            </tr>
+                            <tr><td>Pres.: Gasto</td> ${pres_gc_row}</tr>`;
+                html += row;               
+            });
+
+            html += `</tbody>
+                    </table>`;
+            return html;
+        },
+        cargarElemsForm: function(indicadorsel){
+
+            var selpmra = ctxattr.selpmra;
+            $("#form_pre #pmra_plaa").html(`<div><b>${selpmra.cod_p} . ${selpmra.cod_m} . ${selpmra.cod_r} . ${selpmra.cod_a}</b> </div>
+                                            <div><b>${selpmra.nombre_p}</b> - ${selpmra.desc_p} </div>
+                                            <div><b>${selpmra.nombre_m}</b> - ${selpmra.desc_m} </div>
+                                            <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
+                                            <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
+                                            <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
+            var info_indicador = `Indicador: ${indicadorsel.nombre_indicador} <br> Variable: ${indicadorsel.variable} 
+                                <br> Unidad medida:  ${indicadorsel.unidad} <hr>`;
+                ("#pre_datos_indicador h5").html(info_indicador);
+        },
+        // nuevo: function(){         
+        //     ctxind.cargarElemsForm();
+        //     $("#modal_plaa_pre .tituloModal span").html(`Agregar indicador de Accion/Proyecto`);
+        //     $('#form_pre input:text, #form_pre textarea').val('');
+        //     $("#form_pre  select").val('').change();
+        //     var selpmra = ctxattr.selpmra;
+        //     var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin);
+        //     $("#form_pre #gestiones_ind tbody").html(html);            
+        //     ctxgral.showModal("#modal_plaa_pre");
+        // },
+        genera_inputgestiones : function(gestion_ini, gestion_fin, dataP, dataC){
+            var html='';                  
+            for(var g = gestion_ini; g <= gestion_fin; g++)
+            { 
+                var pres = { id_presupuesto:'', invp: '', gasc: ''};
+                var ctr =[];
+                if(dataP && dataP.length>0)
+                    pres =  _.find(data, function(pre){ return pre.gestion == g});
+
+                if(dataC && dataC.length>0)
+                    ctr =  _.filter(dataC, function(ctr){ return ctr.gestion == g});
+                
+                html += `<tr><td></td> <td></td> <td colspan="2">Presupuesto</td> <td colspan="2">Contraparte</td> </tr>
+                <tr><td></td> <td></td> <td>Inv. Pub</td> <td>Gasto Corr.</td> <td>Inv. Pub</td> <td>Gasto Corr.</td> </tr>
+                <tr>
+                    <td class="fs17 text-center w30">
+                        <span class="fa fa-newspaper-o text-info"></span>
+                    </td>
+                    <td class="va-m fw600 text-muted">${g}</td>
+                    <td class="fs14 fw700 text-muted text-right sp_pre_ip">
+                        <input type="text"  class="hidden id${g}" value="${pres.id_presupuesto || ''}" >
+                        <input type="text"  class="hidden g${g} " value="${g}" >
+                        <label for="mod_dato" class="field prepend-icon">                            
+                            <input type="text"  class="gui-input dip${g}" placeholder="Inv. Pub." value="${pres.inversion_publica || ''}">
+                            <label for="d${g}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
+                            </label>
+                        </label>
+                    </td>
+                    <td class="fs14 fw700 text-muted text-right sp_pre_gc">
+                        <label for="mod_dato" class="field prepend-icon">                            
+                            <input type="text"  class="gui-input dgc${g}" placeholder="Inv. Pub." value="${pres.gasto_corriente || ''}">
+                            <label for="d${g}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
+                            </label>
+                        </label>
+                    </td>
+                    <td class=" sp_ctr_ip">
+                    </td>
+                    <td class=" sp_ctr_gc">
+                    </td>
+                </tr>`;
+            }
+            return html;            
+        },
+        editar: function(index){
+            var indicadorsel = ctxattr.data[index];    
+            ctxpre.cargarElemsForm(indicadorsel);
+            $("#modal_plaa_pre .tituloModal span").html(`Presupuesto de Inversion y gasto Corriente`);            
+
+            
+            var selpmra = ctxattr.selpmra;
+            var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin, indicadorsel.programacion);
+            $("#form_pre #gestiones_ind tbody").html(html);
+            ctxgral.showModal("#modal_plaa_pre");
+        },        
+        validateRules: function(){
+           return {
+                nombre:  { required: 'Campo requerido' },
+                idp_unidad:  { required: 'Campo requerido' },
+                variable:  { required: 'Campo requerido' },
+                linea_base:  { required: 'Campo requerido' },
+                alcance:  { required: 'Campo requerido' },
+            }                 
+        }, 
+        getDataForm: function(){
+            var selpmra = ctxattr.selpmra;
+            gestion_ini = selpmra.periodo_gestion_ini;
+            gestion_fin = selpmra.periodo_gestion_fin;
+            var obj = {
+                _token : ctxgral.token,
+                id_plan : globalSP.idPlanActivo,
+                p: globalSP.idPlanActivo,
+                indicador: {
+                    id : $("#form_pre #id_indicador").val(),
+                    nombre :$("#form_pre #nombre").val(),
+                    idp_unidad: $("#form_pre #idp_unidad").val(),
+                    // id_diagnostico: $("#form_pre #id_diagnostico").val(),
+                    variable: $("#form_pre #variable").val(),
+                    alcance: $("#form_pre #alcance").val(),
+                },
+                arti_pdes_proyecto_indicador: {
+                    id: $("#form_pre #id_arti_pdes_proyecto_indicador").val(),
+                    id_arti_pdes_proyecto : ctxattr.selproy.id_arti_pdes_proyecto,
+                },
+                indicador_ejecucion: {
+                    id: $("#form_pre #id_indicador_ejecucion").val(),
+                    gestion: gestion_ini - 1,
+                    dato: $("#form_pre #linea_base").val(),
+                }
+            };
+            var indProgramacion = [];
+            for(var i = gestion_ini; i <= gestion_fin; i++){
+                var prog = {};
+                prog.id = $("#form_pre .id" + i).val();;
+                prog.gestion = i;
+                prog.dato =  $("#form_pre .d" + i).val();
+                indProgramacion.push(prog);
+            }     
+            obj.indicadores_programacion = indProgramacion;
+            return obj;
+        },
+        saveData: function(){
+            var obj = ctxpre.getDataForm();
             ctxattr.saveAtribData('saveIndicadorAccionProg', obj);                         
         },
         eliminar: function(index){
@@ -1431,76 +1644,7 @@ $(function(){
 
 
     var init_plaa = (function(){
-        {
             /* ----------------- FUNCIONES de inicio y genrales------------------------------------------------------ */
-            /* [ {tipo:input, campo:id, placeholder: placeholder, nombre: 'Codigo de Demanda', options: <option></option>, } , {...}]*/
-            // generaModal = function(objs){
-
-            //     html= objs.reduce(function(carry, elem){
-            //         var tag = {
-            //                     textarea : `<div class="section">
-            //                                         <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
-            //                                         <label for="${elem.campo}" class="field prepend-icon">
-            //                                             <textarea class="gui-textarea" id="${elem.campo}" name="${elem.campo}"  placeholder="${elem.placeholder}"></textarea>
-            //                                             <label for="${elem.campo}" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-            //                                             </label>                                        
-            //                                         </label>
-            //                                     </div>`,                            
-            //                     select : `<div class="section">
-            //                                         <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
-            //                                         <label class="field select">
-            //                                             <select id="${elem.campo}" name="${elem.campo}" class="required" style="width:100%;">
-            //                                                 <option value=""></option>${elem.options}
-            //                                             </select>
-            //                                             <i class="arrow"></i>
-            //                                         </label>
-            //                                     </div>` ,
-            //                     input:  `<div class="section">
-            //                                         <label class="field-label" for="${elem.campo}">${elem.nombre}</label>
-            //                                         <label class="field prepend-icon">
-            //                                             <input type="text" class="gui-input" id="${elem.campo}" name="${elem.campo}" placeholder="${elem.placeholder}" style="width:100%;">
-            //                                             <label for="${elem.campo}" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-            //                                             </label>                 
-            //                                         </label>
-            //                                     </div>` , 
-            //         }
-
-            //         return carry + tag[elem.tipo];
-
-            //     }, '');  
-            //     return html;
-            // }
-
-            
-                // elementosModal = {
-                //     modalProyectos: [
-                //         { tipo: 'input', campo: 'nombre', placeholder: 'Nombre del Proyecto', nombre: 'Nombre del Proyecto' },
-                //         { tipo: 'input', campo: 'codigo', placeholder: 'Codigo de Demanda', nombre: 'Codigo de Demanda' },
-
-                //         ],
-                // }
-                
-                // $("#modal_plaa_proyecto .sp_elementos").html(generaModal(modalProyectos));
-                // $(".state-error").removeClass("state-error")
-                // $('#modal_plaa_proyecto' + " em").remove();
-                // $.magnificPopup.open({
-                //     removalDelay: 500, //delay removal by X to allow out-animation,
-                //     // focus: '#pmra_id_pilar',
-                //     items: {
-                //         src: '#modal_plaa_proyecto'
-                //     },
-                //     // overflowY: 'hidden', //
-                //     callbacks: {
-                //         beforeOpen: function(e) {
-                //             var Animation = "mfp-zoomIn";
-                //             this.st.mainClass = Animation;
-                //         }
-                //     },
-                //     midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-                // });
-        }
-
-
 
         var listeners_plaa = function()
         {                      
@@ -1540,7 +1684,7 @@ $(function(){
                         var ops = _.chain(ctxplaa.proyectos).filter(function(elem){
                             return elem.codp_tipo_proyecto=='pdes';
                         }).reduce(function(carry, elem){
-                            return carry + `<option value="${elem.id}"><b>${elem.codigo} </b>- ${elem.nombre_proyecto}</option>`
+                            return carry + `<option value="${elem.id}"><b>${elem.codigo || '-' } </b>- ${elem.nombre_proyecto}</option>`
                         },'<option value="">seleccione proyecto PDES ...</option>').value();
                         $("#select_id_proyecto").html(ops);    
 
@@ -1556,7 +1700,7 @@ $(function(){
                     else if(tipo == "cont"){
                         $(".section_select_id_proyecto").show(t);
                         var ops = ctxplaa.proyectos.reduce(function(carry, elem){
-                            return carry +  `<option value="${elem.id}">${elem.codigo} ${elem.nombre_proyecto}</option>`;
+                            return carry +  `<option value="${elem.id}">${elem.codigo || '-'} ${elem.nombre_proyecto}</option>`;
                         }, '<option value="">seleccione proyecto...</option>');
                         $("#select_id_proyecto").html(ops);
                     }
@@ -1641,6 +1785,7 @@ $(function(){
 
             /*  validaciones ind */
             $("#form_ind").validate(ctxgral.creaValidateRules(ctxind));
+            $("#form_pre").validate(ctxgral.creaValidateRules(ctxpre));
             $("#form_res").validate(ctxgral.creaValidateRules(ctxres));
             $("#form_rol").validate(ctxgral.creaValidateRules(ctxrol));
             $("#form_art").validate(ctxgral.creaValidateRules(ctxart));
