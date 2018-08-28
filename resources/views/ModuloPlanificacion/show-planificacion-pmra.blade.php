@@ -1089,7 +1089,7 @@ $(function(){
     });
     globalSP.setBreadcrumb('Planificación', 'Planificación');
     $("#planificacion_plaa").load('/v/ModuloPlanificacion.view-planificacion-pmra-inds')
-    planif_submenu_activo(3);
+    planif_submenu_activo(1);
 
 })
 
