@@ -5,22 +5,31 @@ namespace App\Http\Controllers\ModuloPlanificacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class PlanificacionTerritorialABMController extends PlanificacionBaseController
+class SeguimientoTerritorialABMController extends PlanificacionBaseController
 {
 
-  public function showPlanificacionTerritorial()
+  public function seguimiento(Request $req)
   {
-    return view('ModuloPlanificacion.show-planificacion-territorial-ABM');
+    
+    return view('ModuloPlanificacion.show-seguimiento-territorial');
   }
-  public function listaMatricesEditar()
-  {
-    $matrices = \DB::select("select m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,pilar,meta,resultado,accion,id_accion_eta,m.descripcion_accion ,m.id_tarea_eta,m.id_servicio, m.id_clasificador,m.descripcion_accion_eta,m.tipo_eta
 
-from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_matrices m
+  
+  public function listaMatricesSeguimiento()
+  {
+    
+   
+$matrices = \DB::select("select m.id_correlativo,m.id_eta,m.id_tipo_eta,d.id_departamento,d.descripcion_departamento,p.id_provincia,
+p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,
+m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.pilar,m.meta,m.resultado,m.accion,id_accion_eta,m.descripcion_accion_eta ,m.id_servicio, m.id_clasificador,m.descripcion_accion_eta_prog,m.descripcion_pdes,m.indicador_procesos
+,m.competencia,m.nce,m.gad,m.gam,M.estado
+
+from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_seguimientos m
 where d.id_departamento=p.id_departamento and d.id_departamento=mu.id_departamento and d.id_departamento=m.id_departamento 
 and p.id_departamento=mu.id_departamento and p.id_departamento=m.id_departamento and m.id_departamento=mu.id_departamento
 and p.id_provincia=mu.id_provincia and p.id_provincia=m.id_provincia and m.id_provincia=mu.id_provincia
-and mu.id_municipio=m.id_municipio and m.estado<>'ELIMINADO' order by m.id_correlativo desc" );
+and mu.id_municipio=m.id_municipio  and m.estado<>'ELIMINADO' order by m.id_correlativo desc " );
+
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo la matriz',
@@ -36,7 +45,7 @@ and mu.id_municipio=m.id_municipio and m.estado<>'ELIMINADO' order by m.id_corre
       'etas'=>$etas
     ]);
   }
-  public function TiposEtas($ideta)
+   public function TiposEtas($ideta)
   {
     $etas = \DB::select("SELECT * from sp_pt_eta where id_eta=$ideta order by id_correlativo" );
     return response()->json([
@@ -134,6 +143,51 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
       'servicios'=>$servicios
     ]);
   }
+ public function insertar(Request $req)
+  {
+    $matriz = [];
+    $matriz['id_eta'] = $req->id_eta;
+    $matriz['id_tipo_eta'] = $req->id_tipo_eta;
+    $matriz['id_departamento'] = $req->id_departamento;
+    $matriz['id_provincia'] = $req->id_provincia;
+    $matriz['id_municipio'] = $req->id_municipio;
+    $matriz['pilar'] = $req->pilar;
+    $matriz['meta'] = $req->meta;
+    $matriz['resultado'] = $req->resultado;
+    $matriz['accion'] = $req->accion;
+    $matriz['descripcion_pdes'] = $req->descripcion_pdes;
+    $matriz['id_programa'] = $req->id_programa;
+    $matriz['descripcion_programa'] = $req->descripcion_programa;
+    $matriz['id_accion_eta'] = $req->id_accion_eta;
+    $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;    
+    $matriz['indicador_procesos'] = $req->indicador_procesos;
+    $matriz['descripcion_accion_eta_prog'] = $req->descripcion_accion_eta_prog;    
+    $matriz['cantidad_presupuesto'] = $req->cantidad_presupuesto;
+    $matriz['presupuesto2016'] = $req->presupuesto2016;
+    $matriz['presupuesto2017'] = $req->presupuesto2017;
+    $matriz['presupuesto2018'] = $req->presupuesto2018;
+    $matriz['presupuesto2019'] = $req->presupuesto2019;
+    $matriz['presupuesto2020'] = $req->presupuesto2020;    
+    $matriz['id_clasificador'] = $req->id_clasificador;
+    $matriz['id_servicio'] = $req->id_servicio;
+    $matriz['usuario_creacion']=$this->user->id;
+    $matriz['fecha_creacion']=date("d/m/Y H:i:s");
+    $matriz['estado'] = 'CREADO';    
+    
+    try {
+      \DB::table('sp_pt_seguimientos')->insert($matriz);
+    return response()->json([
+      'msg' => 'Matriz insertada']);
+      
+    } catch (Exception $e) {
+      return response()->json([
+      'msg' => 'Matriz No insertada'.$e ]);
+    }
+
+
+
+  }
+
   public function update(Request $req)
   {
     
@@ -206,11 +260,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
       'msg' => 'Matriz No eliminada'.$e ]);
     }
   }
-   public function seguimiento(Request $req)
-  {
-    
-    return view('ModuloPlanificacion.show-seguimiento-territorial');
-  }
+   
   public function export() 
 {
   $datedoc=date("d/m/Y H:i:s");
