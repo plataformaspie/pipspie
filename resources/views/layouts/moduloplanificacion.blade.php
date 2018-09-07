@@ -264,7 +264,7 @@
                     </li>
 
 
-                <!-- sidebar progress bars -->
+                <!-- sidebar progress bars
                 <li class="sidebar-label pt25 pb10">User Stats</li>
                 <li class="sidebar-stat mb10">
                     <a href="#projectOne" class="fs11">
@@ -289,7 +289,9 @@
                             </div>
                         </div>
                     </a>
-                </li>
+                </li>-->
+
+
             </ul>
                 <div class="sidebar-toggle-mini">
                     <a href="#">
@@ -332,18 +334,18 @@
                                 </a>
                             </li>
                             <li class="crumb-link">
-                                <a id="breadcrumb3" href="/moduloplanificacion/index">Home</a>
+                                <a id="breadcrumb3" href="/moduloplanificacion/index">Inicio</a>
                             </li>
                             <li id="breadcrumb4" class="crumb-trail"></li>
                         </ol>
                     </div>
-                    <div class="topbar-right ">
+                    <!--div class="topbar-right ">
                         <div class="ml15 ib va-m" id="toggle_sidemenu_r">
                             <a href="#" class="pl5"> <i class="fa fa-sign-in fs22 text-primary"></i>
                                 <span class="badge badge-hero badge-danger">3</span>
                             </a>
                         </div>
-                    </div>
+                    </div-->
                 </div>
                 <div class="row">
                     <div class="text-center">
