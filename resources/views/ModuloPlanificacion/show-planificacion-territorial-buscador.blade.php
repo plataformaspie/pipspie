@@ -2,7 +2,7 @@
 
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
-<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.dark.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.shinyblack.css" type="text/css" />
 
 @endsection
 
@@ -119,7 +119,7 @@
                 $("#grid").jqxGrid(
                   {
                     width:600,// getWidth('Grid'),
-                    source: dataAdapter, theme: 'dark',
+                    source: dataAdapter, theme: 'shinyblack',
                     groupable: true,
                     pageable: true,
                     autoheight: true,                    
@@ -178,7 +178,12 @@
     {      
       $("#export").click(function()
       {   
-        $("#matrices").jqxGrid('exportdata', 'xls', 'matrices', true, null, true);
+        var hoy = new Date();
+        fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
+        var hora=hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds();
+       // alert(fecha+ " "+hora);
+        $("#matrices").jqxGrid('exportdata', 'xls', 'matrices'+fecha+hora, true, null, true);
+
       });
       $.get("listarMatrices",function(respuesta)
       {
@@ -208,10 +213,15 @@
             { name: 'presupuesto2018', type: 'numeric'},
             { name: 'presupuesto2019', type: 'numeric'},
             { name: 'presupuesto2020', type: 'numeric'},
+            { name: 'id_servicio', type: 'numeric'},
+            { name: 'descripcion_servicio', type: 'datafield'},
+            { name: 'id_clasificador', type: 'numeric'},
+            { name: 'descripcion_clasificador', type: 'datafield'},
             { name: 'pilar', type: 'int'},
             { name: 'meta', type: 'int'},
             { name: 'resultado', type: 'int'},
             { name: 'accion', type: 'int'},
+            { name: 'descripcion_accion_eta', type: 'datafield'},
             { name: 'descripcion_accion', type: 'datafield'}
           ],
           datatype: "json"
@@ -221,7 +231,7 @@
           {
              width: '100%',
             source: dataAdapter,
-             theme: 'dark',
+             theme: 'shinyblack',
             altrows: true,
             pageable: true,
             autoheight: true,
@@ -240,17 +250,20 @@
              { text: 'PROVINCIA', filtercondition: 'starts_with',datafield: 'descripcion_provincia',   width: 150 },
              { text: 'MUNICIPIO', filtercondition: 'starts_with',datafield: 'descripcion_municipio',   width: 150 },
              { text: 'PROG', filtercondition: 'starts_with',datafield: 'id_programa',   width: 50 },
-             { text: 'PROGRAMATÍCA', filtercondition: 'starts_with',datafield: 'descripcion_programa',   width: 215 },
-             { text: 'ACCIÓN ETA', filtercondition: 'starts_with',datafield: 'accion_eta',   width: 250 },
+             { text: 'ESTRUCTURA PROGRAMATÍCA', filtercondition: 'starts_with',datafield: 'descripcion_programa',   width: 215 },
+             { text: 'ACCIÓN ESTANDAR ETA', filtercondition: 'starts_with',datafield: 'accion_eta',   width: 250 },
+             { text: 'DESCRIPCION ACCION ESTANDAR ', filtertype: 'checkedlist', datafield: 'descripcion_accion_eta', width: 250},
+             { text: 'SERVICIO', filtertype: 'checkedlist', datafield: 'descripcion_servicio', width: 50},
+             { text: 'CLASIFICADOR', filtertype: 'checkedlist', datafield: 'descripcion_clasificador', width: 50},
              { text: 'LINEA BASE', filtercondition: 'starts_with',datafield: 'linea_base',   width: 215 },
-             { text: 'PROCESO INDICADOR', filtercondition: 'starts_with',datafield: 'proceso_indicador',   width: 215 },
-             { text: 'INDICADOR',filtercondition: 'starts_with',datafield: 'cantidad_indicador',   width: 50 },
+             { text: 'INDICADOR DE PROCESOS', filtercondition: 'starts_with',datafield: 'proceso_indicador',   width: 215 },
+             { text: 'INDICADOR',filtercondition: 'starts_with',datafield: 'cantidad_indicador',   width: 80 },
              { text: '2016', filtercondition: 'starts_with',datafield: 'indicador2016',   width: 50 },
              { text: '2017', filtercondition: 'starts_with',datafield: 'indicador2017',   width: 50 },
              { text: '2018', filtercondition: 'starts_with',datafield: 'indicador2018',   width: 50 },
              { text: '2019', filtercondition: 'starts_with',datafield: 'indicador2019',   width: 50 },
              { text: '2020', filtercondition: 'starts_with',datafield: 'indicador2020',   width: 50 },
-             { text: 'PRESUPUESTO', datafield: 'cantidad_presupuesto', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: 'PRESUPUESTO TOTAL', datafield: 'cantidad_presupuesto', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
              { text: '2016', datafield: 'presupuesto2016', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
              { text: '2017', datafield: 'presupuesto2017', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
              { text: '2018', datafield: 'presupuesto2018', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
@@ -260,7 +273,7 @@
              { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
              { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
              { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
-             { text: 'DESCRIPCIÓN', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 250},
+             { text: 'CONCORDANCIA PDES', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 270},
             ]
           });
         $('#clearfilteringbutton').jqxButton({ height: 25});

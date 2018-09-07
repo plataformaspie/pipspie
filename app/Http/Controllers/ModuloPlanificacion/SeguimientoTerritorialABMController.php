@@ -14,21 +14,50 @@ class SeguimientoTerritorialABMController extends PlanificacionBaseController
     return view('ModuloPlanificacion.show-seguimiento-territorial');
   }
 
-  
-  public function listaMatricesSeguimiento()
+  /*public function listaMatricesSeguimiento()
   {
     
    
 $matrices = \DB::select("select m.id_correlativo,m.id_eta,m.id_tipo_eta,d.id_departamento,d.descripcion_departamento,p.id_provincia,
 p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,
-m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.pilar,m.meta,m.resultado,m.accion,id_accion_eta,m.descripcion_accion_eta ,m.id_servicio, m.id_clasificador,m.descripcion_accion_eta_prog,m.descripcion_pdes,m.indicador_procesos
+m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020
+,m.pilar,m.meta,m.resultado,m.accion,id_accion_eta,m.descripcion_accion_eta ,m.id_servicio,s.descripcion_servicio
+, m.id_clasificador,descripcion_clasificador,m.descripcion_accion_eta_prog,m.descripcion_pdes,m.indicador_procesos
 ,m.competencia,m.nce,m.gad,m.gam,M.estado
 
-from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_seguimientos m
+from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_seguimientos m,sp_pt_clasificadores c,sp_pt_servicios s
 where d.id_departamento=p.id_departamento and d.id_departamento=mu.id_departamento and d.id_departamento=m.id_departamento 
 and p.id_departamento=mu.id_departamento and p.id_departamento=m.id_departamento and m.id_departamento=mu.id_departamento
 and p.id_provincia=mu.id_provincia and p.id_provincia=m.id_provincia and m.id_provincia=mu.id_provincia
-and mu.id_municipio=m.id_municipio  and m.estado<>'ELIMINADO' order by m.id_correlativo desc " );
+and mu.id_municipio=m.id_municipio  and m.estado<>'ELIMINADO'and c.id_clasificador=m.id_clasificador and m.id_servicio=s.id_servicio
+order by m.id_correlativo desc " );
+
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se Cargo la matriz',
+      'matrices'=>$matrices
+    ]);
+  }*/
+  public function listaMatricesSeguimiento()
+  {
+    
+   
+$matrices = \DB::select("select m.id_correlativo,m.id_eta,e.descripcion_eta,m.id_tipo_eta,d.id_departamento,d.descripcion_departamento,p.id_provincia,
+p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,
+m.gestion,m.presupuestoejecutadogestion, m.total_presupuestogestion
+,m.pilar,m.meta,m.resultado,m.accion,id_accion_eta,m.descripcion_accion_eta ,m.id_servicio,s.descripcion_servicio
+, m.id_clasificador,descripcion_clasificador,m.descripcion_accion_eta_prog,m.descripcion_pdes,m.indicador_procesos
+,m.competencia,m.nce,m.gad,m.gam,M.estado
+
+from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_seguimientos m,sp_pt_clasificadores c,sp_pt_servicios s,
+sp_pt_eta e
+
+where d.id_departamento=p.id_departamento and d.id_departamento=mu.id_departamento and d.id_departamento=m.id_departamento 
+and p.id_departamento=mu.id_departamento and p.id_departamento=m.id_departamento and m.id_departamento=mu.id_departamento
+and p.id_provincia=mu.id_provincia and p.id_provincia=m.id_provincia and m.id_provincia=mu.id_provincia
+and mu.id_municipio=m.id_municipio  and m.estado<>'ELIMINADO'and c.id_clasificador=m.id_clasificador and m.id_servicio=s.id_servicio
+and m.id_tipo_eta=e.id_eta 
+order by m.id_correlativo desc " );
 
     return response()->json([
       'status'=>'ok',
@@ -52,6 +81,24 @@ and mu.id_municipio=m.id_municipio  and m.estado<>'ELIMINADO' order by m.id_corr
       'status'=>'ok',
       'mensaje'=>'Se cargo etas',
       'etas'=>$etas
+    ]);
+  }
+  public function listaPilares($idaccion)
+  {
+    $acciones = \DB::select("select id_pilar,id_correlativo,accion_eta from sp_pt_accion where id_correlativo={$idaccion}" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se Cargo Gastos',
+      'acciones'=>$acciones
+    ]);
+  }
+  public function listaPMRAs($idpilar,$idmeta,$idresultado,$idaccion)
+  {
+    $acciones = \DB::select("select id_correlativo,descripcion_directriz from sp_pt_directrices where id_pilar={$idpilar} and id_meta={$idmeta} and id_resultado={$idresultado} and id_accion={$idaccion}" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se Cargo Gastos',
+      'acciones'=>$acciones
     ]);
   }
   public function listaTiposEtasEditar($eta)
@@ -162,13 +209,10 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;    
     $matriz['indicador_procesos'] = $req->indicador_procesos;
     $matriz['descripcion_accion_eta_prog'] = $req->descripcion_accion_eta_prog;    
-    $matriz['cantidad_presupuesto'] = $req->cantidad_presupuesto;
-    $matriz['presupuesto2016'] = $req->presupuesto2016;
-    $matriz['presupuesto2017'] = $req->presupuesto2017;
-    $matriz['presupuesto2018'] = $req->presupuesto2018;
-    $matriz['presupuesto2019'] = $req->presupuesto2019;
-    $matriz['presupuesto2020'] = $req->presupuesto2020;    
-    $matriz['id_clasificador'] = $req->id_clasificador;
+    $matriz['gestion'] = $req->gestion;
+    $matriz['presupuestoejecutadogestion'] = $req->presupuestoejecutadogestion;
+    $matriz['total_presupuestogestion'] = $req->total_presupuestogestion;
+    
     $matriz['id_servicio'] = $req->id_servicio;
     $matriz['usuario_creacion']=$this->user->id;
     $matriz['fecha_creacion']=date("d/m/Y H:i:s");
@@ -194,51 +238,39 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $id = $req->id_correlativo;
     $matriz = [];
     $matriz['id_correlativo'] = $req->id_correlativo;
-    $matriz['id_tarea_eta'] = $req->id_tarea_eta;
+    $matriz['id_eta'] = $req->id_eta;
+    $matriz['id_tipo_eta'] = $req->id_tipo_eta;
     $matriz['id_departamento'] = $req->id_departamento;
     $matriz['id_provincia'] = $req->id_provincia;
     $matriz['id_municipio'] = $req->id_municipio;
-    $matriz['id_programa'] = $req->id_programa;
-    $matriz['id_clasificador'] = $req->id_clasificador;
-    $matriz['id_servicio'] = $req->id_servicio;
-    $matriz['descripcion_programa'] = $req->descripcion_programa;
-    $matriz['id_accion_eta'] = $req->id_accion_eta;
-    $matriz['accion_eta'] = $req->accion_eta;
-    $matriz['linea_base'] = $req->linea_base;
-    $matriz['proceso_indicador'] = $req->proceso_indicador;
-    $matriz['unidad_indicador'] = $req->unidad_indicador;
-    $matriz['cantidad_indicador'] = $req->cantidad_indicador;
-    $matriz['indicador2016'] = $req->indicador2016;
-    $matriz['indicador2017'] = $req->indicador2017;
-    $matriz['indicador2018'] = $req->indicador2018;
-    $matriz['indicador2019'] = $req->indicador2019;
-    $matriz['indicador2020'] = $req->indicador2020;
-    $matriz['cantidad_presupuesto'] = $req->cantidad_presupuesto;
-    $matriz['presupuesto2016'] = $req->presupuesto2016;
-    $matriz['presupuesto2017'] = $req->presupuesto2017;
-    $matriz['presupuesto2018'] = $req->presupuesto2018;
-    $matriz['presupuesto2019'] = $req->presupuesto2019;
-    $matriz['presupuesto2020'] = $req->presupuesto2020;
     $matriz['pilar'] = $req->pilar;
     $matriz['meta'] = $req->meta;
     $matriz['resultado'] = $req->resultado;
     $matriz['accion'] = $req->accion;
-    $matriz['descripcion_accion'] = $req->descripcion_accion;
-    $matriz['tipo_eta'] = $req->tipo_eta;  
-    $matriz['usuario_modificador']=$this->user->id;
-    $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;
-    
+    $matriz['descripcion_pdes'] = $req->descripcion_pdes;
+    $matriz['id_programa'] = $req->id_programa;
+    $matriz['descripcion_programa'] = $req->descripcion_programa;
+    $matriz['id_accion_eta'] = $req->id_accion_eta;
+    $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;    
+    $matriz['indicador_procesos'] = $req->indicador_procesos;
+    $matriz['descripcion_accion_eta_prog'] = $req->descripcion_accion_eta_prog;    
+    $matriz['gestion'] = $req->gestion;
+    $matriz['presupuestoejecutadogestion'] = $req->presupuestoejecutadogestion;
+    $matriz['total_presupuestogestion'] = $req->total_presupuestogestion;
+    $matriz['id_clasificador'] = $req->id_clasificador;
+    $matriz['id_servicio'] = $req->id_servicio;  
+    $matriz['usuario_modificacion']=$this->user->id;
     $matriz['fecha_modificacion']=date("d/m/Y H:i:s");
     $matriz['estado'] = 'MODIFICADO';
     
     try {
-      \DB::table('sp_pt_matrices')->where('id_correlativo', $id)->update($matriz);
+      \DB::table('sp_pt_seguimientos')->where('id_correlativo', $id)->update($matriz);
     return response()->json([
-      'msg' => 'Matriz actualizada']);
+      'msg' => 'Seguimiento actualizada']);
       
     } catch (Exception $e) {
       return response()->json([
-      'msg' => 'Matriz No actualizada'.$e ]);
+      'msg' => 'Seguimiento No actualizada'.$e ]);
     }
   }
   public function delete(Request $req)
@@ -246,18 +278,18 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     
     $id = $req->id_correlativo;
     $matriz = [];     
-    $matriz['usuario_modificador']=$this->user->id;
+    $matriz['usuario_modificacion']=$this->user->id;
     $matriz['fecha_modificacion']=date("d/m/Y H:i:s");
     $matriz['estado'] = 'ELIMINADO';
     
     try {
-      \DB::table('sp_pt_matrices')->where('id_correlativo', $id)->update($matriz);
+      \DB::table('sp_pt_seguimientos')->where('id_correlativo', $id)->update($matriz);
     return response()->json([
-      'msg' => 'Matriz eliminada']);
+      'msg' => 'Seguimiento eliminada']);
       
     } catch (Exception $e) {
       return response()->json([
-      'msg' => 'Matriz No eliminada'.$e ]);
+      'msg' => 'Seguimiento No eliminada'.$e ]);
     }
   }
    

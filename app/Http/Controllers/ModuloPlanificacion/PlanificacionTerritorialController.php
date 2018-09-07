@@ -217,7 +217,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
     $matriz['indicador_de_genero'] = 0;
     
     try {
-      \DB::table('sp_pt_seguimientos')->insert($matriz);
+      \DB::table('sp_pt_matrices')->insert($matriz);
     return response()->json([
       'msg' => 'Matriz insertada']);
       

@@ -89,14 +89,14 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
   public function listaMatrices()
   {
-    $matrices = \DB::select("select m.id_tarea_eta,m.tipo_eta,e.descripcion_eta,m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.pilar,m.meta,m.resultado,m.accion,m.id_accion_eta,m.descripcion_accion ,m.id_servicio, m.id_clasificador
+    $matrices = \DB::select("select m.id_tarea_eta,m.tipo_eta,e.descripcion_eta,m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.pilar,m.meta,m.resultado,m.accion,m.id_accion_eta,m.descripcion_accion ,m.id_servicio,s.descripcion_servicio, m.id_clasificador,c.descripcion_clasificador,m.descripcion_accion_eta
 
-from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_matrices m,sp_pt_eta e
+from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_matrices m,sp_pt_eta e,sp_pt_servicios s, sp_pt_clasificadores c
 where d.id_departamento=p.id_departamento and d.id_departamento=mu.id_departamento and d.id_departamento=m.id_departamento 
 and p.id_departamento=mu.id_departamento and p.id_departamento=m.id_departamento and m.id_departamento=mu.id_departamento
 and p.id_provincia=mu.id_provincia and p.id_provincia=m.id_provincia and m.id_provincia=mu.id_provincia
 and mu.id_municipio=m.id_municipio and m.estado<>'ELIMINADO' and d.id_departamento=e.id_departamento and p.id_provincia=e.id_provincia
-and mu.id_municipio=e.id_municipio 
+and mu.id_municipio=e.id_municipio and m.id_servicio=s.id_servicio and m.id_clasificador=c.id_clasificador
 order by m.id_correlativo desc" );
     return response()->json([
       'status'=>'ok',

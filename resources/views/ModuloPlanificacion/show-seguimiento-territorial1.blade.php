@@ -99,16 +99,6 @@
                               <td colspan="2">
 
                                 <p>
-                                  
-                                      <select id="gestion" name="gestion" class="form-control">
-                                      <option value="0">Gestion</option> 
-                                      <option value="2016">2016</option>
-                                      <option value="2017">2017</option>
-                                      <option value="2018">2018</option>
-                                      <option value="2019">2019</option>
-                                      <option value="2020">2020</option>
-                                    </select>
-                                    
                                   <select id="etaseguimiento" class="form-control"><option value="0">Seleccione el ETA</option>
                                   </select>
                                 </p>
@@ -188,24 +178,10 @@
                             <tr>
 
                               <td>
-                                <center>
                                 <table border="3">                                  
                                   <tr >
-                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Seguimiento de Presupuesto</center></font></td></tr>
+                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Presupuesto</center></font></td></tr>
                                   <tr >
-                                    <td  style="background: #2a2a2c;"><font color="white"><center>Presupuesto Gestion</center></font></td>
-                                    
-                                    
-                                    <td><input type="number" name="txtTotalpresupuesto" id="txtTotalpresupuesto" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="presupuesto" onchange="sumarPresupu()"value="0.0" ></td>  
-                                    
-                                    
-                                  </tr>
-                                  <tr>
-                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto Ejecutado</font></td>
-                                    <td><input type="number" name="txtpresupuestoejecutado" id="txtpresupuestoejecutado" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="presupuesto" onchange="sumarPresupu()"value="0.0" ></td>
-                                    
-                                  </tr>
-                                  <!--tr>
                                     <td style="background: #2a2a2c;"><font color="white">Presupuesto 2016-2020</font></td>
                                     <td><input type="number" name="txtpresu" id="txtpresu" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="presupuesto" onchange="sumarPresupu()"value="0.0" ></td>
                                   </tr>
@@ -228,13 +204,12 @@
                                   <tr style="background: #2a2a2c;">
                                     <td><font color="white">2020</font></td>
                                     <td><input type="number" name="p2020" id="p2020" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2020" onchange="sumarPresupu()" value="0.0"></td>
-                                  </tr-->
+                                  </tr>
                                   <tr style="background: #2a2a2c;">
-                                    <td ><font color="white"><center>Resto</center> </font></td>
-                                    <td ><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" name="totalp" width="100%"></td>
+                                    <td><font color="white">Resto</font></td>
+                                    <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" name="totalp"></td>
                                   </tr>
                                 </table>
-                                </center>
                               </td>
                             </tr>
                             <tr>
@@ -291,9 +266,6 @@
               <div class="form-group">
                 <input type="text" class="form-control" maxlength="15" size="15" name="descripdes" id="descripdes" placeholder="pdes" value="" style="display:none ;">
               </div>
-              <div class="form-group">                                  
-                  <input type="text" class="form-control" name ="txtgestion" id="txtgestion" placeholder="gestion" required value="" style="display: none;" >
-              </div>
 
               <a class="btn btn-primary " href="#" role="button" id="verificaragregar" name="verificaragregar" style="display: inline;" onclick="verificaragregarseguimiento()">Verificar</a>
 
@@ -342,14 +314,6 @@
                               <td colspan="2">
 
                                 <p>
-                                  <select id="gestionedit" name="gestion" class="form-control">
-                                      <option value="0">Gestion</option> 
-                                      <option value="2016">2016</option>
-                                      <option value="2017">2017</option>
-                                      <option value="2018">2018</option>
-                                      <option value="2019">2019</option>
-                                      <option value="2020">2020</option>
-                                    </select>
                                   <select id="etaseguimientoedit" class="form-control"><option value="0">Seleccione el ETA</option>
                                   </select>
                                 </p>
@@ -429,31 +393,7 @@
                             <tr>
 
                               <td>
-                                <center>
                                 <table border="3">                                  
-                                  <tr >
-                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Seguimiento de Presupuesto</center></font></td></tr>
-                                  <tr >
-                                    <td  style="background: #2a2a2c;"><font color="white"><center>Presupuesto Gestion</center></font></td>
-                                    
-                                    
-                                    <td><input type="number" name="txtTotalpresupuestoedit" id="txtTotalpresupuestoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="presupuesto" onchange="sumarPresupuesegdit()"value="0.0" ></td>  
-                                    
-                                    
-                                  </tr>
-                                  <tr>
-                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto Ejecutado</font></td>
-                                    <td><input type="number" name="txtpresupuestoejecutadoedit" id="txtpresupuestoejecutadoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="presupuesto" onchange="sumarPresupuesegdit()"value="0.0" ></td>
-                                    
-                                  </tr>
-                                  
-                                  <tr style="background: #2a2a2c;">
-                                    <td ><font color="white"><center>Resto</center> </font></td>
-                                    <td ><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalpseguimientoedit" name="totalpseguimientoedit" width="100%"></td>
-                                  </tr>
-                                </table>
-                                </center>
-                                <!--table border="3">                                  
                                   <tr >
                                     <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Presupuesto</center></font></td></tr>
                                   <tr >
@@ -484,13 +424,13 @@
                                     <td><font color="white">Resto</font></td>
                                     <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalpseguimientoedit" name="totalpseguimientoedit"></td>
                                   </tr>
-                                </table-->
+                                </table>
                               </td>
                             </tr>
                             <tr>
                               <td>                              
                                     <div class="form-group">
-                  <input type="text" class="form-control" name ="idcorreedit" id="idcorreedit" placeholder="id" required value="" style="display: none;" >
+                  <input type="text" class="form-control" name ="idcorreedit" id="idcorreedit" placeholder="id" required value="" style="display: ;" >
               </div>           
                                 <div class="form-group">                                  
                   <input type="text" class="form-control" name ="txtetaseguimientoedit" id="txtetaseguimientoedit" placeholder="eta" required value="" style="display: none;" >
@@ -542,9 +482,6 @@
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" maxlength="15" size="15" name="descripdesseguimientoedit" id="descripdesseguimientoedit" placeholder="pdes" value="" style="display: none;">
-              </div>
-              <div class="form-group">                                  
-                  <input type="text" class="form-control" name ="txtgestionedit" id="txtgestionedit" placeholder="gestion" required value="" style="display:none ;" >
               </div>
 
              <a class="btn btn-primary " href="#" role="button" id="verificaragregarseguimientoEdit" name="verificaragregarseguimientoEdit" style="display: inline;" onclick="verificaragregarseguimientoEdit()">Verificar</a>
@@ -647,15 +584,27 @@ $(function()
 </script>
  <script>
   
- 
+  
+function sumar(){
+  tot = parseInt(document.getElementById('cantidad').value);
+    a = parseInt(document.getElementById('2016').value);
+    b = parseInt(document.getElementById('2017').value);
+    c = parseInt(document.getElementById('2018').value);
+    d = parseInt(document.getElementById('2019').value);
+    e = parseInt(document.getElementById('2020').value);
+    tsum=a+b+c+d+e;
+    document.getElementById('total').value = tot-tsum;
+
+    
+}
 function sumarPresupu(){
-  totpre = parseFloat(document.getElementById('txtTotalpresupuesto').value);
-    pa = parseFloat(document.getElementById('txtpresupuestoejecutado').value);
-    /*pb = parseFloat(document.getElementById('p2017').value);
+  totpre = parseFloat(document.getElementById('txtpresu').value);
+    pa = parseFloat(document.getElementById('p2016').value);
+    pb = parseFloat(document.getElementById('p2017').value);
     pc = parseFloat(document.getElementById('p2018').value);
     pd = parseFloat(document.getElementById('p2019').value);
-    pe = parseFloat(document.getElementById('p2020').value);*/
-    tsumpre=pa;
+    pe = parseFloat(document.getElementById('p2020').value);
+    tsumpre=pa+pb+pc+pd+pe;
     document.getElementById('totalp').value = totpre-tsumpre;
 
     
@@ -684,10 +633,12 @@ function sumarPresupu(){
         objeto.descripcion_accion_eta = $("#txtnomacci").val();
         objeto.indicador_procesos = $("#ind_proceso").val();
         objeto.descripcion_accion_eta_prog = $("#descripcion_accion_etaseguimiento").val();
-         //objeto.cantidad_presupuesto = $("#txtpresu").val();
-        objeto.gestion = $("#txtgestion").val();
-        objeto.presupuestoejecutadogestion = $("#txtpresupuestoejecutado").val();
-        objeto.total_presupuestogestion = $("#txtTotalpresupuesto").val();        
+         objeto.cantidad_presupuesto = $("#txtpresu").val();
+        objeto.presupuesto2016 = $("#p2016").val();
+        objeto.presupuesto2017 = $("#p2017").val();
+        objeto.presupuesto2018 = $("#p2018").val();
+        objeto.presupuesto2019 = $("#p2019").val();
+        objeto.presupuesto2020 = $("#p2020").val();
         objeto.id_clasificador = $("#txttiposeguimiento").val();
         objeto.id_servicio = $("#txtservicioseguimiento").val();        
         objeto._token = $('input[name=_token]').val()
@@ -786,16 +737,6 @@ function sumarPresupu(){
         
       });
       //--------------
-       $("#gestion").change(function(){
-        nomges = $("#gestion").val();
-        $("#txtgestion").val(nomges);
-        if (nomges==0) {
-          alert('Seleccione una Gestión')
-          
-        }
-        
-      });
-
 //--------------cuando cambia el departamento
       $("#depseguimiento").change(function(){
         iddepar = $("#depseguimiento").val();
@@ -1196,19 +1137,15 @@ function verificaragregarseguimiento()
     meta1 = $("#txtmetasseguimiento").val();
     resultado1 = $("#txtresul").val();
     acci1 = $("#txtaccion").val();
-    
+    totu=$("#total").val();
     totp=$("#totalp").val();
-    gesti=$("#txtgestion").val();
     
     lineabase=$("#linea_base").val();
     indipro=$("#ind_proceso").val();
     indican=$("#tipocantidad").val();
    // alert(departam1+"" +provincia1+"" +municipio1+"" +progra1+"" +nomprogra1+"" +accion1+"" +nomaccion1+"" +pilar1+"" +meta1+"" +resultado1+"" +acci1);
-if (gesti==undefined||gesti=='0'||gesti=='') {
-alert('Seleccione una Gestión.');  
-}
-else{
-   if (departam1==undefined||departam1=='0'||departam1=='') {
+
+    if (departam1==undefined||departam1=='0'||departam1=='') {
     alert('Seleccione un Departamento.');  
     }
     else{
@@ -1277,13 +1214,18 @@ else{
                                 var k=document.getElementById('ind_proceso');
                                 k.disabled=true;
                                ;
-                                var s=document.getElementById('gestion');
+                                var s=document.getElementById('txtpresu');
                                 s.disabled=true;
-                                var t=document.getElementById('txtTotalpresupuesto');
+                                var t=document.getElementById('p2016');
                                 t.disabled=true;
-                                var u=document.getElementById('txtpresupuestoejecutado');
+                                var u=document.getElementById('p2017');
                                 u.disabled=true;
-                                
+                                var v=document.getElementById('p2018');
+                                v.disabled=true;
+                                var w=document.getElementById('p2019');
+                                w.disabled=true;
+                                var p20=document.getElementById('p2020');
+                                p20.disabled=true;
                                  var tet=document.getElementById('tipoetaseguimiento');
                                 tet.disabled=true;
 
@@ -1304,11 +1246,7 @@ else{
           }
         }
       }
-    }   
-
-}
-
-    
+    }    
   }
 </script>
 
@@ -1336,13 +1274,16 @@ else{
         objeto.descripcion_accion_eta = $("#txtnomacciseguimientoedit").val();
         objeto.indicador_procesos = $("#ind_proceso_seguimientoedit").val();
         objeto.descripcion_accion_eta_prog = $("#descripcion_accion_etaseguimiento_edit").val();
-         objeto.gestion = $("#txtgestionedit").val();
-        objeto.presupuestoejecutadogestion = $("#txtpresupuestoejecutadoedit").val();
-        objeto.total_presupuestogestion = $("#txtTotalpresupuestoedit").val();
+         objeto.cantidad_presupuesto = $("#txtpresuseguimientoedit").val();
+        objeto.presupuesto2016 = $("#p2016seguimientoedit").val();
+        objeto.presupuesto2017 = $("#p2017seguimientoedit").val();
+        objeto.presupuesto2018 = $("#p2018seguimientoedit").val();
+        objeto.presupuesto2019 = $("#p2019seguimientoedit").val();
+        objeto.presupuesto2020 = $("#p2020seguimientoedit").val();
         objeto.id_clasificador = $("#txttiposeguimientoedit").val();
         objeto.id_servicio = $("#txtservicioseguimientoedit").val();        
         objeto._token = $('input[name=_token]').val();
-      // alert(objeto.id_eta);
+       alert(objeto.id_eta);
          
         try {        
             if (objeto) 
@@ -1381,7 +1322,6 @@ else{
                   { name: 'id_correlativo', type: 'int' },
                   { name: 'id_eta', type: 'int' },
                   { name: 'id_tipo_eta', type: 'int'},
-                  { name: 'descripcion_eta',type:'datafield'},
                   { name: 'id_departamento',type:'datafield'},
                   { name: 'descripcion_departamento',type:'datafield'},
                   { name: 'id_provincia',type:'datafield'},
@@ -1399,10 +1339,12 @@ else{
                   { name: 'descripcion_accion_eta', type: 'datafield'},
                   { name: 'indicador_procesos', type: 'datafield'},
                   { name: 'descripcion_accion_eta_prog', type: 'datafield'},
-                  { name: 'gestion', type: 'int'},
-                  { name: 'presupuestoejecutadogestion', type: 'numeric'},
-                  { name: 'total_presupuestogestion', type: 'numeric'},
-                  
+                  { name: 'cantidad_presupuesto', type: 'numeric'},
+                  { name: 'presupuesto2016', type: 'numeric'},
+                  { name: 'presupuesto2017', type: 'numeric'},
+                  { name: 'presupuesto2018', type: 'numeric'},
+                  { name: 'presupuesto2019', type: 'numeric'},
+                  { name: 'presupuesto2020', type: 'numeric'},
                   { name: 'competencia', type: 'numeric'},
                   { name: 'NCE', type: 'numeric'},
                   { name: 'GAD', type: 'numeric'},
@@ -1438,7 +1380,7 @@ else{
               autorowheight: true,
               columns:
                [ 
-               { text: 'ETA', filtercondition: 'starts_with', datafield: 'descripcion_eta', width: 100},
+               { text: 'ETA', filtertype: 'checkedlist', datafield: 'id_eta', width: 40},
                  { text: 'DEP',filtercondition: 'starts_with', datafield: 'descripcion_departamento', width: 80},
                  { text: 'PROV', filtercondition: 'starts_with',datafield: 'descripcion_provincia',   width: 80 },
                  { text: 'MUN', filtercondition: 'starts_with',datafield: 'descripcion_municipio',   width: 80 },
@@ -1455,9 +1397,14 @@ else{
                  { text: 'INDICADOR PROCESO',filtercondition: 'starts_with',datafield: 'indicador_procesos',   width: 200 },
                  { text: 'SERVICIO',filtercondition: 'starts_with',datafield: 'descripcion_servicio',   width: 80 },
                  { text: 'CLASIFICADOR',filtercondition: 'starts_with',datafield: 'descripcion_clasificador',   width: 80 },
-                 { text: 'GESTION',filtertype: 'checkedlist',datafield: 'gestion',   width: 100 },
-                 { text: 'PRESUPUESTO', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'total_presupuestogestion',   width: 100 },                 
-                 { text: 'EJECUTADO', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuestoejecutadogestion',   width: 100 },
+                 
+                 { text: 'PRESUPUESTO', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'cantidad_presupuesto',   width: 100 },
+                 { text: '2016',filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuesto2016',   width: 100 },
+                 { text: '2017', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuesto2017',   width: 100 },
+                 { text: '2018', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuesto2018',   width: 100 },
+                 { text: '2019', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuesto2019',   width: 100 },
+                 { text: '2020', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuesto2020',   width: 100 },
+                
                  { text: 'ACCIONES', datafield: 'id_correlativo',   width: 200, cellsRenderer: function (row, column, value, rowData)  
                     {
                       return "<button class='btn btn-sm btn-warning dark m5 br6' id='e"+value+"'><i class='glyphicon glyphicon-pencil'></i> Editar </button><button class='btn btn-sm btn-danger dark m5 br6' id='d"+value+"'><i class='glyphicon glyphicon-minus'></i> Eliminar </button> ";
@@ -1502,8 +1449,6 @@ else{
               if (getselectedrowindexes.length>0) 
               {
                  filaseleccionada=$('#gridseguimiento').jqxGrid('getrowdata',getselectedrowindexes[0]);
-                 $("#gestionedit").val(filaseleccionada.gestion);
-                 $("#gestionedit").trigger( "change");
                  $("#etaseguimientoedit").val(filaseleccionada.id_eta); 
                  $("#etaseguimientoedit").trigger( "change");
                  $("#depseguimientoedit").val(filaseleccionada.id_departamento);
@@ -1584,18 +1529,18 @@ else{
                       
                       var b=filaseleccionada.indicador_procesos;
                       $("#ind_proceso_seguimientoedit").val(b);
-                      var i=filaseleccionada.total_presupuestogestion;
-                      $("#txtTotalpresupuestoedit").val(i);
-                      var j=filaseleccionada.presupuestoejecutadogestion;
-                      $("#txtpresupuestoejecutadoedit").val(j);
-                      /*var k=filaseleccionada.presupuesto2017;
+                      var i=filaseleccionada.cantidad_presupuesto;
+                      $("#txtpresuseguimientoedit").val(i);
+                      var j=filaseleccionada.presupuesto2016;
+                      $("#p2016seguimientoedit").val(j);
+                      var k=filaseleccionada.presupuesto2017;
                       $("#p2017seguimientoedit").val(k);
                       var l=filaseleccionada.presupuesto2018;
                       $("#p2018seguimientoedit").val(l);
                       var m=filaseleccionada.presupuesto2019;
                       $("#p2019seguimientoedit").val(m);
                       var n=filaseleccionada.presupuesto2020;
-                      $("#p2020seguimientoedit").val(n);*/
+                      $("#p2020seguimientoedit").val(n);
                   }, 3470);
 
               }
@@ -1672,13 +1617,13 @@ else{
  <script>
 
 function sumarPresupuesegdit(){
-  totpre = parseFloat(document.getElementById('txtTotalpresupuestoedit').value);
-    pa = parseFloat(document.getElementById('txtpresupuestoejecutadoedit').value);
-    /*pb = parseFloat(document.getElementById('p2017seguimientoedit').value);
+  totpre = parseFloat(document.getElementById('txtpresuseguimientoedit').value);
+    pa = parseFloat(document.getElementById('p2016seguimientoedit').value);
+    pb = parseFloat(document.getElementById('p2017seguimientoedit').value);
     pc = parseFloat(document.getElementById('p2018seguimientoedit').value);
     pd = parseFloat(document.getElementById('p2019seguimientoedit').value);
-    pe = parseFloat(document.getElementById('p2020seguimientoedit').value);*/
-    tsumpre=pa;//+pb+pc+pd+pe;
+    pe = parseFloat(document.getElementById('p2020seguimientoedit').value);
+    tsumpre=pa+pb+pc+pd+pe;
     document.getElementById('totalpseguimientoedit').value = totpre-tsumpre;
 }
 </script>
@@ -1686,16 +1631,6 @@ function sumarPresupuesegdit(){
     $(function()
     {
 //--------------botonguardar
- $("#gestionedit").change(function(){
-        nomges = $("#gestionedit").val();
-        $("#txtgestionedit").val(nomges);
-        if (nomges==0) {
-          alert('Seleccione una Gestión')
-          
-        }
-        
-      });
-
       //--------------cuando cambia tipo eta
       $("#tipoetaseguimientoedit").change(function(){
         idtipeta=$("#tipoetaseguimientoedit").val();
@@ -2139,13 +2074,9 @@ function verificaragregarseguimientoEdit()
     acci1 = $("#txtaccionseguimientoedit").val();    
     totp=$("#totalpseguimientoedit").val();        
     indipro=$("#ind_proceso_seguimientoedit").val();
-    gest=$("#txtgestionedit").val();
     
-if (gest==undefined||gest=='0'||gest=='') {
-    alert('Seleccione una Gestión.');  
-    }
-    else{
-      if (departam1==undefined||departam1=='0'||departam1=='') {
+
+    if (departam1==undefined||departam1=='0'||departam1=='') {
     alert('Seleccione un Departamento.');  
     }
     else{
@@ -2214,12 +2145,18 @@ if (gest==undefined||gest=='0'||gest=='') {
                                 k.disabled=true;
                                 
                                 
-                               var s=document.getElementById('gestionedit');
+                                var s=document.getElementById('txtpresuseguimientoedit');
                                 s.disabled=true;
-                                var t=document.getElementById('txtTotalpresupuestoedit');
+                                var t=document.getElementById('p2016seguimientoedit');
                                 t.disabled=true;
-                                var u=document.getElementById('txtpresupuestoejecutadoedit');
+                                var u=document.getElementById('p2017seguimientoedit');
                                 u.disabled=true;
+                                var v=document.getElementById('p2018seguimientoedit');
+                                v.disabled=true;
+                                var w=document.getElementById('p2019seguimientoedit');
+                                w.disabled=true;
+                                var p20=document.getElementById('p2020seguimientoedit');
+                                p20.disabled=true;
                                 var tet=document.getElementById('tipoetaseguimientoedit');
                                 tet.disabled=true;
                                }                              
@@ -2232,10 +2169,7 @@ if (gest==undefined||gest=='0'||gest=='') {
           }
         }
       }
-    }  
-
-    }
-      
+    }    
   }
 </script>
 @endpush

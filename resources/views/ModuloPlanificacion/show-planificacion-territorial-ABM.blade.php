@@ -2,7 +2,7 @@
 
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
-<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.dark.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.shinyblack.css" type="text/css" />
 <link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 @endsection
 
@@ -167,7 +167,7 @@
                                       <font style="font-family: sans-serif;color: white">Programación Anualizada del Indicador de Proceso
                                      </font>
                                      <p>Tipo de Unidad:
-                                      <input type="text" name="tipocantidadedit" id="tipocantidadedit" maxlength="5" >
+                                      <input type="text" name="tipocantidadedit" id="tipocantidadedit" maxlength="30" >
                                      </p>
                                     </td>
                                   </tr>
@@ -447,7 +447,7 @@
                                       <font style="font-family: sans-serif;color: white">Programación Anualizada del Indicador de Proceso
                                      </font>
                                      <p>Tipo de Unidad:
-                                      <input type="text" name="tipocantidad" id="tipocantidad" maxlength="5" >
+                                      <input type="text" name="tipocantidad" id="tipocantidad" maxlength="30" >
                                      </p>
                                     </td>
                                   </tr>
@@ -1496,7 +1496,7 @@ function verificaragregar()
             {
                width: '100%',
               source: dataAdapter,
-              theme: 'dark',
+              theme: 'shinyblack',
               altrows: true,
               pageable: true,
               autoheight: true,
@@ -1608,7 +1608,8 @@ function verificaragregar()
                               $("#acciedit").trigger( "change");
                           }, 3320);
                           setTimeout(function(){
-                              var y=filaseleccionada.idser;
+                              var y=filaseleccionada.pilar;
+                              
                               $("#pilaredit").val(y);    
                               $("#pilaredit").trigger( "change");
                           }, 3820);
@@ -1622,7 +1623,8 @@ function verificaragregar()
                               $("#acciedit").trigger( "change");
                           }, 2820);
                           setTimeout(function(){
-                              var y=filaseleccionada.idser;
+                              var y=filaseleccionada.pilar;
+                              
                               $("#pilaredit").val(y);    
                               $("#pilaredit").trigger( "change");
                           }, 3320);
