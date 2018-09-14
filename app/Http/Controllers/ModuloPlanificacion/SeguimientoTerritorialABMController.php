@@ -44,10 +44,10 @@ order by m.id_correlativo desc " );
    
 $matrices = \DB::select("select m.id_correlativo,m.id_eta,e.descripcion_eta,m.id_tipo_eta,d.id_departamento,d.descripcion_departamento,p.id_provincia,
 p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,
-m.gestion,m.presupuestoejecutadogestion, m.total_presupuestogestion
+m.gestion,m.presupuestoejecutadogestion, m.descripcion_presupuesto_ejecutado
 ,m.pilar,m.meta,m.resultado,m.accion,id_accion_eta,m.descripcion_accion_eta ,m.id_servicio,s.descripcion_servicio
 , m.id_clasificador,descripcion_clasificador,m.descripcion_accion_eta_prog,m.descripcion_pdes,m.indicador_procesos
-,m.competencia,m.nce,m.gad,m.gam,M.estado
+,m.competencia,m.nce,m.gad,m.gam,M.estado,m.saldo_pagar,m.pagado,m.total_presupuestogestion
 
 from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_seguimientos m,sp_pt_clasificadores c,sp_pt_servicios s,
 sp_pt_eta e
@@ -174,7 +174,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
   public function listaTiposEditar()
   {
-    $tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores" );
+    $tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores where id_clasificador<>0" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo Gastos',
@@ -183,7 +183,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
    public function listaServiciosEditar()
   {
-    $servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios" );
+    $servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios where id_servicio<>0" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo Gastos',
@@ -211,7 +211,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $matriz['descripcion_accion_eta_prog'] = $req->descripcion_accion_eta_prog;    
     $matriz['gestion'] = $req->gestion;
     $matriz['presupuestoejecutadogestion'] = $req->presupuestoejecutadogestion;
-    $matriz['total_presupuestogestion'] = $req->total_presupuestogestion;
+    $matriz['descripcion_presupuesto_ejecutado'] = $req->descripcion_presupuesto_ejecutado;
     
     $matriz['id_servicio'] = $req->id_servicio;
     $matriz['usuario_creacion']=$this->user->id;
@@ -256,7 +256,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $matriz['descripcion_accion_eta_prog'] = $req->descripcion_accion_eta_prog;    
     $matriz['gestion'] = $req->gestion;
     $matriz['presupuestoejecutadogestion'] = $req->presupuestoejecutadogestion;
-    $matriz['total_presupuestogestion'] = $req->total_presupuestogestion;
+    $matriz['descripcion_presupuesto_ejecutado'] = $req->descripcion_presupuesto_ejecutado;
     $matriz['id_clasificador'] = $req->id_clasificador;
     $matriz['id_servicio'] = $req->id_servicio;  
     $matriz['usuario_modificacion']=$this->user->id;

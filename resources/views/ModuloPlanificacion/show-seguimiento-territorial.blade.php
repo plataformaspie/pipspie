@@ -22,7 +22,7 @@
           <div class="col-md-12">
               <div class="panel panel-visible" >
                 <div class="panel-heading bg-dark text-center">
-                     <span class="panel-title"> Planificacion</span>
+                     <span class="panel-title"> Seguimiento</span>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -77,7 +77,7 @@
   <div class="panel">
     <div style="background: #2a2a2c" class="panel-heading">
       <span  class="panel-title"><i style="color: white" class="glyphicon glyphicon-plus"></i>
-      <font style="font-family: sans-serif;color: white">Formulario de Seguimiento</font>
+      <font style="font-family: sans-serif;color: white">Formulario de Seguimiento Agregar</font>
       </span>
     </div>           
     
@@ -186,57 +186,26 @@
                             <tr>                              
                             </tr>
                             <tr>
-
-                              <td>
-                                <center>
-                                <table border="3">                                  
-                                  <tr >
-                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Seguimiento de Presupuesto</center></font></td></tr>
-                                  <tr >
-                                    <td  style="background: #2a2a2c;"><font color="white"><center>Presupuesto Gestion</center></font></td>
-                                    
-                                    
-                                    <td><input type="number" name="txtTotalpresupuesto" id="txtTotalpresupuesto" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="presupuesto" onchange="sumarPresupu()"value="0.0" ></td>  
-                                    
-                                    
-                                  </tr>
-                                  <tr>
-                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto Ejecutado</font></td>
-                                    <td><input type="number" name="txtpresupuestoejecutado" id="txtpresupuestoejecutado" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="presupuesto" onchange="sumarPresupu()"value="0.0" ></td>
-                                    
-                                  </tr>
-                                  <!--tr>
-                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto 2016-2020</font></td>
-                                    <td><input type="number" name="txtpresu" id="txtpresu" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="presupuesto" onchange="sumarPresupu()"value="0.0" ></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2016</font></td>
-                                    <td><input type="number" name="p2016" id="p2016" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2016" onchange="sumarPresupu()" value="0.0" ></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2017</font></td>
-                                    <td><input type="number" name="p2017" id="p2017" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2017" onchange="sumarPresupu()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2018</font></td>
-                                    <td><input type="number" name="p2018" id="p2018" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2018" onchange="sumarPresupu()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2019</font></td>
-                                    <td><input type="number" name="p2019" id="p2019" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2019" onchange="sumarPresupu()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2020</font></td>
-                                    <td><input type="number" name="p2020" id="p2020" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2020" onchange="sumarPresupu()" value="0.0"></td>
-                                  </tr-->
-                                  <tr style="background: #2a2a2c;">
-                                    <td ><font color="white"><center>Resto</center> </font></td>
-                                    <td ><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" name="totalp" width="100%"></td>
-                                  </tr>
-                                </table>
-                                </center>
-                              </td>
+                              <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Seguimiento de Presupuesto</center></font></td></tr>
                             </tr>
+                            <tr>
+                              <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Descripción</center></font></td>
+                            </tr>
+                            <tr>
+                             <td  colspan="2"><textarea name="txtTotalpresupuesto" id="txtTotalpresupuesto"value="" style="width: 100%" rows="2" cols="5" ></textarea></td>
+                            </tr>
+                            <tr>
+                              <td style="background: #2a2a2c;"><font color="white">Presupuesto Ejecutado</font></td>
+                              <td><input type="number" name="txtpresupuestoejecutado" id="txtpresupuestoejecutado" value="0.0" ></td>
+                            </tr>
+                            <tr>
+                              
+                                    
+                            </tr>
+                            <tr>
+                              <td ><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" style="visibility: hidden;" name="totalp" width="100%"></td>
+                            </tr>
+                            
                             <tr>
                               <td>                              
                                               
@@ -320,7 +289,7 @@
   <div class="panel">
     <div style="background: #2a2a2c" class="panel-heading">
       <span  class="panel-title"><i style="color: white" class="glyphicon glyphicon-pencil"></i>
-      <font style="font-family: sans-serif;color: white">Formulario de Actualizacion</font>
+      <font style="font-family: sans-serif;color: white">Formulario de Actualización Seguimiento</font>
       </span>
     </div>           
     
@@ -427,66 +396,20 @@
                             <tr>                              
                             </tr>
                             <tr>
-
-                              <td>
-                                <center>
-                                <table border="3">                                  
-                                  <tr >
-                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Seguimiento de Presupuesto</center></font></td></tr>
-                                  <tr >
-                                    <td  style="background: #2a2a2c;"><font color="white"><center>Presupuesto Gestion</center></font></td>
-                                    
-                                    
-                                    <td><input type="number" name="txtTotalpresupuestoedit" id="txtTotalpresupuestoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="presupuesto" onchange="sumarPresupuesegdit()"value="0.0" ></td>  
-                                    
-                                    
-                                  </tr>
-                                  <tr>
-                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto Ejecutado</font></td>
-                                    <td><input type="number" name="txtpresupuestoejecutadoedit" id="txtpresupuestoejecutadoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="presupuesto" onchange="sumarPresupuesegdit()"value="0.0" ></td>
-                                    
-                                  </tr>
-                                  
-                                  <tr style="background: #2a2a2c;">
-                                    <td ><font color="white"><center>Resto</center> </font></td>
-                                    <td ><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalpseguimientoedit" name="totalpseguimientoedit" width="100%"></td>
-                                  </tr>
-                                </table>
-                                </center>
-                                <!--table border="3">                                  
-                                  <tr >
-                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Presupuesto</center></font></td></tr>
-                                  <tr >
-                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto 2016-2020</font></td>
-                                    <td><input type="number" name="txtpresuseguimientoedit" id="txtpresuseguimientoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="presupuesto" onchange="sumarPresupuesegdit()"value="0.0" ></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2016</font></td>
-                                    <td><input type="number" name="p2016seguimientoedit" id="p2016seguimientoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="2016" onchange="sumarPresupuesegdit()" value="0.0" ></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2017</font></td>
-                                    <td><input type="number" name="p2017seguimientoedit" id="p2017seguimientoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="2017" onchange="sumarPresupuesegdit()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2018</font></td>
-                                    <td><input type="number" name="p2018seguimientoedit" id="p2018seguimientoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="2018" onchange="sumarPresupuesegdit()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2019</font></td>
-                                    <td><input type="number" name="p2019seguimientoedit" id="p2019seguimientoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="2019" onchange="sumarPresupuesegdit()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">2020</font></td>
-                                    <td><input type="number" name="p2020seguimientoedit" id="p2020seguimientoedit" onKeyDown="sumarPresupuesegdit();" onKeyUp="sumarPresupuesegdit();" onkeypress="sumarPresupuesegdit();" placeholder="2020" onchange="sumarPresupuesegdit()" value="0.0"></td>
-                                  </tr>
-                                  <tr style="background: #2a2a2c;">
-                                    <td><font color="white">Resto</font></td>
-                                    <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalpseguimientoedit" name="totalpseguimientoedit"></td>
-                                  </tr>
-                                </table-->
-                              </td>
+                              <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Seguimiento Presupuesto</center></font></td></tr>
                             </tr>
+                            <tr>
+                              <td  style="background: #2a2a2c;"><font color="white"><center>Descripcion</center></font></td>
+                                    <td><textarea name="txtTotalpresupuestoedit" id="txtTotalpresupuestoedit"value="" style="width: 100%" rows="2" cols="5" ></textarea></td> 
+                            </tr>
+                            <tr>
+                             <td style="background: #2a2a2c;"><font color="white">Presupuesto Ejecutado</font></td>
+                                    <td><input type="number" name="txtpresupuestoejecutadoedit" id="txtpresupuestoejecutadoedit"value="0.0" ></td> 
+                            </tr>
+                            <tr>
+                              <td colspan="2"><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalpseguimientoedit" name="totalpseguimientoedit" width="100%" style="visibility: hidden;" ></td>
+                            </tr>
+                            
                             <tr>
                               <td>                              
                                     <div class="form-group">
@@ -550,7 +473,7 @@
              <a class="btn btn-primary " href="#" role="button" id="verificaragregarseguimientoEdit" name="verificaragregarseguimientoEdit" style="display: inline;" onclick="verificaragregarseguimientoEdit()">Verificar</a>
 
               <button  class="btn btn-primary" id="actualizarseguimientoedit" name="actualizarseguimientoedit" style="display: none;"  >Actualizar</button>
-              <button type="button" class="btn btn-success" id="cerraragregar" name="cerraragregar">Atrás</button>
+              <button type="button" class="btn btn-success" id="cerraredit" name="cerraredit">Atrás</button>
                               </td>
                             </tr>
                           </table> 
@@ -687,7 +610,7 @@ function sumarPresupu(){
          //objeto.cantidad_presupuesto = $("#txtpresu").val();
         objeto.gestion = $("#txtgestion").val();
         objeto.presupuestoejecutadogestion = $("#txtpresupuestoejecutado").val();
-        objeto.total_presupuestogestion = $("#txtTotalpresupuesto").val();        
+        objeto.descripcion_presupuesto_ejecutado = $("#txtTotalpresupuesto").val();        
         objeto.id_clasificador = $("#txttiposeguimiento").val();
         objeto.id_servicio = $("#txtservicioseguimiento").val();        
         objeto._token = $('input[name=_token]').val()
@@ -1338,7 +1261,7 @@ else{
         objeto.descripcion_accion_eta_prog = $("#descripcion_accion_etaseguimiento_edit").val();
          objeto.gestion = $("#txtgestionedit").val();
         objeto.presupuestoejecutadogestion = $("#txtpresupuestoejecutadoedit").val();
-        objeto.total_presupuestogestion = $("#txtTotalpresupuestoedit").val();
+        objeto.descripcion_presupuesto_ejecutado = $("#txtTotalpresupuestoedit").val();
         objeto.id_clasificador = $("#txttiposeguimientoedit").val();
         objeto.id_servicio = $("#txtservicioseguimientoedit").val();        
         objeto._token = $('input[name=_token]').val();
@@ -1401,7 +1324,7 @@ else{
                   { name: 'descripcion_accion_eta_prog', type: 'datafield'},
                   { name: 'gestion', type: 'int'},
                   { name: 'presupuestoejecutadogestion', type: 'numeric'},
-                  { name: 'total_presupuestogestion', type: 'numeric'},
+                  { name: 'descripcion_presupuesto_ejecutado', type: 'numeric'},
                   
                   { name: 'competencia', type: 'numeric'},
                   { name: 'NCE', type: 'numeric'},
@@ -1409,8 +1332,10 @@ else{
                   { name: 'GAM', type: 'numeric'},                  
                   { name: 'id_clasificador', type: 'datafield'},       
                   { name: 'descripcion_clasificador', type: 'datafield'},
-                  { name: 'id_servicio', type: 'datafield'},       
-                  { name: 'descripcion_servicio', type: 'datafield'},       
+                  { name: 'id_servicio', type: 'datafield'}, 
+                  { name: 'total_presupuestogestion', type: 'datafield'},       
+                  { name: 'pagado', type: 'datafield'},  
+                  { name: 'saldo_pagar', type: 'datafield'},  
                   { name: 'estado', type: 'datafield'}                  
                 ],
                 datatype: "json",
@@ -1456,8 +1381,13 @@ else{
                  { text: 'SERVICIO',filtercondition: 'starts_with',datafield: 'descripcion_servicio',   width: 80 },
                  { text: 'CLASIFICADOR',filtercondition: 'starts_with',datafield: 'descripcion_clasificador',   width: 80 },
                  { text: 'GESTION',filtertype: 'checkedlist',datafield: 'gestion',   width: 100 },
-                 { text: 'PRESUPUESTO', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'total_presupuestogestion',   width: 100 },                 
-                 { text: 'EJECUTADO', filtercondition: 'starts_with',aggregates: ["sum"],datafield: 'presupuestoejecutadogestion',   width: 100 },
+                 { text: 'DESC PRES', filtercondition: 'starts_with',datafield: 'descripcion_presupuesto_ejecutado',   width: 100 }, 
+                 { text: 'VIGENTE', filtercondition: 'starts_with',datafield: 'total_presupuestogestion',aggregates: ["sum"],   width: 100 },
+                 { text: 'PAGADO', filtercondition: 'starts_with',datafield: 'pagado',aggregates: ["sum"],   width: 100 },
+                 { text: 'SALDO', filtercondition: 'starts_with',datafield: 'saldo_pagar',aggregates: ["sum"],   width: 100 },
+
+                 { text: 'EJECUTADO', filtercondition: 'starts_with',datafield: 'presupuestoejecutadogestion',aggregates: ["sum"],   width: 100 },
+                  
                  { text: 'ACCIONES', datafield: 'id_correlativo',   width: 200, cellsRenderer: function (row, column, value, rowData)  
                     {
                       return "<button class='btn btn-sm btn-warning dark m5 br6' id='e"+value+"'><i class='glyphicon glyphicon-pencil'></i> Editar </button><button class='btn btn-sm btn-danger dark m5 br6' id='d"+value+"'><i class='glyphicon glyphicon-minus'></i> Eliminar </button> ";
@@ -1584,7 +1514,7 @@ else{
                       
                       var b=filaseleccionada.indicador_procesos;
                       $("#ind_proceso_seguimientoedit").val(b);
-                      var i=filaseleccionada.total_presupuestogestion;
+                      var i=filaseleccionada.descripcion_presupuesto_ejecutado;
                       $("#txtTotalpresupuestoedit").val(i);
                       var j=filaseleccionada.presupuestoejecutadogestion;
                       $("#txtpresupuestoejecutadoedit").val(j);

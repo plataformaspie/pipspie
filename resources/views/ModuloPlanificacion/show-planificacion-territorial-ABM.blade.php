@@ -1511,15 +1511,34 @@ function verificaragregar()
               autorowheight: true,
               columns:
                [                
-                 { text: 'DEP', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 80},
-                 { text: 'PROV', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 80 },
-                 { text: 'MUN', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 80 },
-                 { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 70 },
-                 { text: 'DESCRIPCIÓN', filtertype: 'checkedlist',datafield: 'descripcion_programa',   width: 270 },
-                 { text: 'ACCION ETA', filtertype: 'checkedlist',datafield: 'accion_eta',   width: 270 },
-                 { text: 'LINEA BASE', filtertype: 'checkedlist',datafield: 'linea_base',   width: 200 },
-                 { text: 'PROCESO INDICADOR', filtertype: 'checkedlist',datafield: 'proceso_indicador',   width: 200 },
-                 { text: 'UNIDAD', filtertype: 'checkedlist',datafield: 'unidad_indicador',   width: 70 },               
+                 { text: 'DEPARTAMENTO', filtercondition: 'starts_with', datafield: 'descripcion_departamento', width: 150},
+             { text: 'PROVINCIA', filtercondition: 'starts_with',datafield: 'descripcion_provincia',   width: 150 },
+             { text: 'MUNICIPIO', filtercondition: 'starts_with',datafield: 'descripcion_municipio',   width: 150 },
+             { text: 'PROG', filtercondition: 'starts_with',datafield: 'id_programa',   width: 50 },
+             { text: 'ESTRUCTURA PROGRAMATÍCA', filtercondition: 'starts_with',datafield: 'descripcion_programa',   width: 215 },
+             { text: 'ACCIÓN ESTANDAR ETA', filtercondition: 'starts_with',datafield: 'accion_eta',   width: 250 },
+             { text: 'DESCRIPCION ACCION ESTANDAR ', filtertype: 'checkedlist', datafield: 'descripcion_accion_eta', width: 250},
+             { text: 'SERVICIO', filtertype: 'checkedlist', datafield: 'descripcion_servicio', width: 50},
+             { text: 'CLASIFICADOR', filtertype: 'checkedlist', datafield: 'descripcion_clasificador', width: 50},
+             { text: 'LINEA BASE', filtercondition: 'starts_with',datafield: 'linea_base',   width: 215 },
+             { text: 'INDICADOR DE PROCESOS', filtercondition: 'starts_with',datafield: 'proceso_indicador',   width: 215 },
+             { text: 'INDICADOR',filtercondition: 'starts_with',datafield: 'cantidad_indicador',   width: 80 },
+             { text: '2016', filtercondition: 'starts_with',datafield: 'indicador2016',   width: 50 },
+             { text: '2017', filtercondition: 'starts_with',datafield: 'indicador2017',   width: 50 },
+             { text: '2018', filtercondition: 'starts_with',datafield: 'indicador2018',   width: 50 },
+             { text: '2019', filtercondition: 'starts_with',datafield: 'indicador2019',   width: 50 },
+             { text: '2020', filtercondition: 'starts_with',datafield: 'indicador2020',   width: 50 },
+             { text: 'PRESUPUESTO TOTAL', datafield: 'cantidad_presupuesto', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2016', datafield: 'presupuesto2016', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2017', datafield: 'presupuesto2017', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2018', datafield: 'presupuesto2018', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2019', datafield: 'presupuesto2019', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2020', datafield: 'presupuesto2020', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: '' },
+             { text: 'P',filtertype: 'checkedlist', datafield: 'pilar',  cellsalign: 'right', width: 50 },
+             { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
+             { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
+             { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
+             { text: 'CONCORDANCIA PDES', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 270},               
                 
                  { text: 'ACCIONES', datafield: 'id_correlativo',   width: 200, cellsRenderer: function (row, column, value, rowData)  
                     {
@@ -1633,7 +1652,17 @@ function verificaragregar()
                     }
                  else
                  { 
-                 alert('no existen registros')                     ;
+                 setTimeout(function(){
+                              var z=filaseleccionada.id_accion_eta;
+                              $("#acciedit").val(z);    
+                              $("#acciedit").trigger( "change");
+                          }, 3320);
+                 setTimeout(function(){
+                              var y=filaseleccionada.pilar;
+                              
+                              $("#pilaredit").val(y);    
+                              $("#pilaredit").trigger( "change");
+                          }, 3820);
                  }
                  setTimeout(function(){
                       var o=filaseleccionada.descripcion_accion_eta;

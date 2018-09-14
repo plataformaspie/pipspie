@@ -118,7 +118,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
   public function listaTiposEditar()
   {
-    $tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores" );
+    $tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores where id_clasificador<>0" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo Gastos',
@@ -127,7 +127,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
    public function listaServiciosEditar()
   {
-    $servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios" );
+    $servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios where id_servicio<>0" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo Gastos',
