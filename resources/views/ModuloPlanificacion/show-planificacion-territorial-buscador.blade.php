@@ -3,6 +3,7 @@
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.shinyblack.css" type="text/css" />
+<link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 
 @endsection
 
@@ -11,6 +12,8 @@
 @endsection
 
 @section('content')
+
+
 <section id="content_wrapper">
   <section id="content" class="table-layout animated fadeIn" style="min-height: 3500px;">
                   <div class="tray tray-center p40 va-t posr">
@@ -43,8 +46,14 @@
                           <div class="panel panel-visible">
                               <p><input class="btn btn-sm btn-success dark m5 br4" style="margin-top: 10px;" value="Limpiar Filtro" id="clearfilteringbutton" type="button" /><input class="btn btn-sm btn-success dark m5 br4" style="margin-top: 10px;" value="Exportar" id="export" type="button" /></p>
                      <p>
+                      <!--select id="sel_depto" class="form-control"></select>
+                      <select id="sel_prov"class="form-control"></select>
+                      <select id="sel_mun" class="form-control"></select-->
+                   
+  <div id='matrices' class="div1"></div></p>
+
+
                       
-                      <div id='matrices' ></div></p>
                             </div>
                                                      
                       </div>
@@ -66,9 +75,23 @@
 @endsection
 
 @push('script-head')
+<script type="text/javascript">
+  $(function () {
+    $('.wrapper1').on('scroll', function (e) {
+        $('.wrapper2').scrollLeft($('.wrapper1').scrollLeft());
+    }); 
+    $('.wrapper2').on('scroll', function (e) {
+        $('.wrapper1').scrollLeft($('.wrapper2').scrollLeft());
+    });
+});
+$(window).on('load', function (e) {
+    $('.div1').width($('table').width());
+    $('.div2').width($('table').width());
+});
+</script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />   
-
+    <script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxbuttons.js"></script>
@@ -175,7 +198,8 @@
     
 <script type="text/javascript">
     $(function()
-    {      
+    {    
+      matrizdata = [];  
       $("#export").click(function()
       {   
         var hoy = new Date();
@@ -185,11 +209,11 @@
         $("#matrices").jqxGrid('exportdata', 'xls', 'matrices'+fecha+hora, true, null, true);
 
       });
-      $.get("listarMatrices",function(respuesta)
-      {
+
+      function cargarMatriz(data){
         var source =
         {
-          localdata: respuesta.matrices,
+          localdata: data,
           datafields:
           [
             { name: 'id_correlativo', type: 'int' },
@@ -280,8 +304,102 @@
         $('#clearfilteringbutton').click(function () 
           {
               $("#matrices").jqxGrid('clearfilters');
-          });            
+          }); 
+      }
+
+      $.get("listarMatrices",function(respuesta)
+      {
+        matrizdata = respuesta.matrices;
+         cargarMatriz(matrizdata);        
       });
+
+      $.get("listarDepartamentos", function(respuesta){
+        var departamentos = respuesta.departamentos;
+        for(var i=0; i<departamentos.length; i++)
+        {
+          var departamento = departamentos[i];
+          var opcion = "<option value=" + departamento.id_departamento + ">" + departamento.descripcion_departamento + "</option>";
+          $("#sel_depto").append(opcion);
+        }
+        console.log(departamentos);
+      });
+
+       $("#sel_depto").change(function(){
+        iddepar = $("#sel_depto").val();
+        //$("#txtdep").val(iddepar);
+        if (iddepar==0) {
+          $("#sel_prov").html('<option>Seleccione la Provincia</option>');
+          $("#sel_mun").html('<option>Seleccione la Município</option>');
+          
+        }else
+        {
+           $.get("listarProvincias/" + iddepar, function(respuesta){
+              var provincias = respuesta.provincias;
+              $("#sel_prov").html('');
+
+                var opcion0 = "<option value=0>Seleccione la Provincia</option>";
+                $("#sel_prov").append(opcion0);
+              for(var i=0; i<provincias.length; i++)
+              {
+                var provincia = provincias[i];
+                var opcion = "<option value=" + provincia.id_provincia + ">" + provincia.descripcion_provincia + "</option>";
+                $("#sel_prov").append(opcion);
+              }
+
+              var descripcion_depto = $("#sel_depto option:selected" ).text();
+              console.log(descripcion_depto)
+              matrizResultado = matrizdata.filter(function(elem){
+                return elem.id_departamento  == $("#sel_depto").val();
+              });
+              console.log(matrizResultado);
+              cargarMatriz(matrizResultado);
+          }); 
+        }
+      });
+
+       //--------------cuando cambia la provincias
+      $("#sel_prov").change(function(){
+        iddepar = $("#sel_depto option:selected" ).val();
+        alert(iddepar);
+        idprov = $("#sel_prov").val();
+        alert(iddepar+" "+idprov);
+        $("#txtprov").val(idprov);
+        if (idprov==0) {
+          $("#sel_mun").html('<option>Seleccione la Município</option>');
+        }else
+        {
+            $.get("listarMunicipios/" + iddepar+"/"+idprov, function(respuesta){
+              var municipios = respuesta.municipios;
+              $("#sel_mun").html('');
+              var opcion0 = "<option value=0>Seleccione el Municipio</option>";
+              $("#sel_mun").append(opcion0);
+              for(var i=0; i<municipios.length; i++)
+              {
+                var municipio = municipios[i];              
+                var opcion = "<option value=" + municipio.id_municipio + ">" + municipio.descripcion_municipio + "</option>";           
+                $("#sel_mun").append(opcion);
+                
+              }
+               var descripcion_municipio = $("#sel_prov option:selected" ).text();
+              console.log(descripcion_municipio)
+              matrizResultado = matrizdata.filter(function(elem){
+                return elem.id_municipio  == $("#sel_prov").val();
+              });
+             // console.log(matrizResultado);
+              cargarMatriz(matrizResultado);
+            });
+        }        
+      });
+
+
+       $("#sel_depto").select2();
+       $("#sel_prov").select2();
+       $("#sel_mun").select2();
+
+
+
+
+
     })
  </script>
 

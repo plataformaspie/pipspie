@@ -76,11 +76,11 @@
                             <tr>
                               <td colspan="2">
                                 <p>
-                                  <select id="etaedit" class="form-control"><option value="0">Seleccione el ETA</option>
+                                  <select id="etaedit" class="form-control" style="width: 100%"><option value="0">Seleccione el ETA</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="tipoetaedit" class="form-control"><option value="0">Seleccione el Tipo de ETA</option>
+                                  <select id="tipoetaedit" class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo de ETA</option>
                                   </select>
                                 </p>
                                 <p>
@@ -108,18 +108,18 @@
                                   </select>
                                 </p-->
                                 <p>
-                                  <select id="gasedit"class="form-control input-lg"><option value="0">Seleccione la Programática de Gasto</option></select>
+                                  <select id="gasedit"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Programática de Gasto</option></select>
                                 </p>
                                 <p>
-                                  <select id="tipedit"class="form-control"><option value="0">Seleccione el Tipo</option>
+                                  <select id="tipedit"class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="seredit"class="form-control"><option value="0">Seleccione el Servicio</option>
+                                  <select id="seredit"class="form-control"style="width: 100%"><option value="0">Seleccione el Servicio</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="acciedit"class="form-control input-lg"><option value="0">Seleccione la Accion ETA</option>
+                                  <select id="acciedit"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Accion ETA</option>
                                   </select>
                                 </p>
                                 <div class="form-group">
@@ -368,17 +368,17 @@
                               <td colspan="2">
 
                                 <p>
-                                  <select id="eta" class="form-control"><option value="0">Seleccione el ETA</option>
+                                  <select id="eta" class="form-control" style="width: 100%"><option value="0">Seleccione el ETA</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="tipoeta" class="form-control"><option value="0">Seleccione el Tipo de ETA</option>
+                                  <select id="tipoeta" class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo de ETA</option>
                                   </select>
                                 </p>
                                 <p>
                                   <table>
                                   <tr>
-                                    <td><select id="dep" disabled="true" class="form-control"><option value="0">Seleccione el Departamento</option>
+                                    <td><select id="dep" disabled="true" class="form-control" ><option value="0">Seleccione el Departamento</option>
                                   </select></td>
                                     <td><select id="prov" disabled="true" name="prov" class="form-control"><option value="0">Seleccione la Provincia</option>
                                   </select></td>
@@ -388,18 +388,18 @@
                                 </table>
                                 </p>  
                                 <p>
-                                  <select id="gas"class="form-control input-lg"><option value="0">Seleccione la Programática de Gasto</option></select>
+                                  <select id="gas"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Programática de Gasto</option></select>
                                 </p>
                                 <p>
-                                  <select id="tip"class="form-control"><option value="0">Seleccione el Tipo</option>
+                                  <select id="tip"class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="ser"class="form-control"><option value="0">Seleccione el Servicio</option>
+                                  <select id="ser"class="form-control"style="width: 100%"><option value="0">Seleccione el Servicio</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="acci"class="form-control input-lg"><option value="0">Seleccione la Accion ETA</option>
+                                  <select id="acci"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Accion ETA</option>
                                   </select>
                                 </p>
                                 <div class="form-group">
@@ -611,6 +611,8 @@
 @push('script-head')
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+<script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
+
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxbuttons.js"></script>
@@ -1500,7 +1502,7 @@ function verificaragregar()
               altrows: true,
               pageable: true,
               autoheight: true,
-              //selectionmode: 'multiplecellsextended',
+             // selectionmode: 'simplecellsextended',
               showgroupaggregates: true,
               showstatusbar: true,
               showaggregates: true,
@@ -1800,9 +1802,7 @@ function sumarPresupuedit(){
       $("#tipoetaedit").change(function(){
         idtipeta=$("#tipoetaedit").val();
         $("#txttipoetaedit").val(idtipeta);        
-        if (idtipeta==0) {
-          
-          
+        if (idtipeta==0) {          
           $("#gasedit").val('0');
           $("#tipedit").html('');
           $("#seredit").html('');
@@ -2216,6 +2216,18 @@ function sumarPresupuedit(){
           }
         });        
       });
+    $("#eta").select2();
+    $("#tipoeta").select2();
+    $("#gas").select2();
+    $("#etaedit").select2();
+    $("#tipoetaedit").select2();    
+    $("#gasedit").select2();
+    $("#acci").select2();
+    $("#acciedit").select2();
+    $("#ser").select2();
+    $("#seredit").select2();
+    $("#tip").select2();
+    $("#tipedit").select2();
     });
  </script> 
  <script>
@@ -2370,6 +2382,7 @@ function verificaredit()
         }
       }
     }    
+   
   }
 </script>
 @endpush
