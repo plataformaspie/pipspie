@@ -268,8 +268,9 @@ Route::group(['middleware' => 'auth'],function(){
 // Territorial reporte ----------------------------------------
 
             Route::get('listarSelecTipoEtas', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaSelecTipoEta');
-            Route::get('listarNuevaMatrices/{dep}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevaMatriz');
-            Route::get('listarNuevaSeguimientos/{dep}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevSeguimiento');
+            Route::get('listarNuevaMatrices/{dep}/{prog}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevaMatriz');
+            Route::get('listarNuevaSeguimientos/{dep}/{prog}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevSeguimiento');
+            Route::get('listarSelProg/{id_tipeta}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaprograma');
             Route::get('showBuscadorTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@showPlanificacionTerritorialBuscador');
             Route::get('listarMatrices', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaMatrices');
             Route::get('listarRegistroMatrices', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaRegistroMatrices');
