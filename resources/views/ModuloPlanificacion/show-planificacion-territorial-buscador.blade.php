@@ -29,11 +29,11 @@
                         <div id="estructura" class="col-md-12" >
                           <div class="panel panel-visible">
                               <div id='jqxWidget'>
-                                <div id="grid1"></div>        
+                                <div id="grid1"></div>
                                 <div id="grid"></div>
                               </div>
                             </div>
-                                                     
+
                       </div>
                     </div>
                 </div>
@@ -43,13 +43,13 @@
                 <div class="panel-body">
                     <div class="row">
                         <div id="estructura" class="col-md-12" >
-                          <div class="panel panel-visible">                             
-                     
+                          <div class="panel panel-visible">
+
                       <p><select id="sel_tipo_eta" class="form-control"></select></p>
                       <p><select id="sel_prog"class="form-control"></select></p>
                       <p><input class="btn btn-sm btn-success dark m5 br4" type="button" onclick="btnlistarmatriz()" disabled="true" name="buscar" id="buscar" value="Buscar"></p>
                       <p><input class="btn btn-sm btn-success dark m5 br4" style="margin-top: 10px;" disabled="true"  value="Planificación" id="exportp" name="exportp" type="button" /></p>
-                      <p><div id="nmat"></div></p>                      
+                      <p><div id="nmat"></div></p>
 <p><input class="btn btn-sm btn-success dark m5 br4" style="margin-top: 10px;" disabled="true"  value="Seguimiento" id="exportseg" name="exportseg" type="button" /></p>
                       <p><div id="nmatseg"></div></p>
                       <p><input class="btn btn-sm btn-success dark m5 br4" style="margin-top: 10px;" value="Limpiar Filtro" id="clearfilteringbutton" type="button" /><input class="btn btn-sm btn-success dark m5 br4" style="margin-top: 10px;" value="Exportar" id="export" type="button" /></p>
@@ -57,13 +57,13 @@
                      </p>
 
 
-                      
+
                             </div>
-                                                     
+
                       </div>
                     </div>
                 </div>
-                
+
               </div>
           </div>
       </div>
@@ -78,7 +78,7 @@
 @push('script-head')
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />   
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
     <script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
@@ -96,40 +96,40 @@
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcheckbox.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.edit.js"></script>
-    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.aggregates.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxDataTable.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxwindow.js"></script>
-    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.pager.js"></script> 
-    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.grouping.js"></script> 
-    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.export.js"></script> 
-    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.export.js"></script> 
+    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.grouping.js"></script>
+    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.export.js"></script>
+    <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxgrid.export.js"></script>
 <!----------------------------------------------------------------->
 <script type="text/javascript">
   function btnlistarmatriz()
   {
      var a=document.getElementById('exportp');
-     a.disabled=false; 
+     a.disabled=false;
      var b=document.getElementById('exportseg');
-     b.disabled=false; 
+     b.disabled=false;
     $("#exportp").click(function()
-      {   
+      {
         var hoy = new Date();
         fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
         var hora=hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds();
        // alert(fecha+ " "+hora);
         $("#nmat").jqxGrid('exportdata', 'xls', 'planificacion'+fecha+hora, true, null, true);
-        
+
 
       });
     $("#exportseg").click(function()
-      {   
+      {
         var hoy = new Date();
         fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
         var hora=hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds();
        // alert(fecha+ " "+hora);
-        
+
         $("#nmatseg").jqxGrid('exportdata', 'xls', 'seguimiento'+fecha+hora, true, null, true);
 
       });
@@ -198,7 +198,7 @@
             showfilterrow: true,
             filterable: true,
             autorowheight: true,
-            columns: 
+            columns:
             [
             { text: 'ETA', filtercondition: 'starts_with', datafield: 'descripcion_eta', width: 100},
               { text: 'DEPARTAMENTO', filtercondition: 'starts_with', datafield: 'descripcion_departamento', width: 150},
@@ -230,7 +230,7 @@
              { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
              { text: 'CONCORDANCIA PDES', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 270},
             ]
-          });                     
+          });
      });
     $.get("listarNuevaSeguimientos/"+tipoeta+"/"+idprog,function(respuesta)
      {
@@ -253,7 +253,7 @@
                   { name: 'meta', type: 'int'},
                   { name: 'resultado', type: 'int'},
                   { name: 'accion', type: 'int'},
-                  { name: 'descripcion_pdes', type: 'datafield'},                  
+                  { name: 'descripcion_pdes', type: 'datafield'},
                   { name: 'id_programa', type: 'int' },
                   { name: 'descripcion_programa', type: 'datafield'},
                   { name: 'id_accion_eta', type: 'datafield'},
@@ -263,18 +263,18 @@
                   { name: 'gestion', type: 'int'},
                   { name: 'presupuestoejecutadogestion', type: 'numeric'},
                   { name: 'descripcion_presupuesto_ejecutado', type: 'numeric'},
-                  
+
                   { name: 'competencia', type: 'numeric'},
                   { name: 'NCE', type: 'numeric'},
                   { name: 'GAD', type: 'numeric'},
-                  { name: 'GAM', type: 'numeric'},                  
-                  { name: 'id_clasificador', type: 'datafield'},       
+                  { name: 'GAM', type: 'numeric'},
+                  { name: 'id_clasificador', type: 'datafield'},
                   { name: 'descripcion_clasificador', type: 'datafield'},
-                  { name: 'id_servicio', type: 'datafield'}, 
-                  { name: 'total_presupuestogestion', type: 'datafield'},       
-                  { name: 'pagado', type: 'datafield'},  
-                  { name: 'saldo_pagar', type: 'datafield'},  
-                  { name: 'estado', type: 'datafield'} 
+                  { name: 'id_servicio', type: 'datafield'},
+                  { name: 'total_presupuestogestion', type: 'datafield'},
+                  { name: 'pagado', type: 'datafield'},
+                  { name: 'saldo_pagar', type: 'datafield'},
+                  { name: 'estado', type: 'datafield'}
                   ],
                   datatype: "json"
                  };
@@ -296,7 +296,7 @@
             showfilterrow: true,
             filterable: true,
             autorowheight: true,
-            columns: 
+            columns:
             [
               { text: 'ETA', filtercondition: 'starts_with', datafield: 'descripcion_eta', width: 100},
                  { text: 'DEP',filtercondition: 'starts_with', datafield: 'descripcion_departamento', width: 80},
@@ -310,25 +310,25 @@
                  { text: '', filtercondition: 'starts_with',datafield: 'id_programa',   width: 40 },
                  { text: 'ESTRUCUTRA PROGRAMÁTICA', filtercondition: 'starts_with',datafield: 'descripcion_programa',   width: 270 },
                  { text: '', filtercondition: 'starts_with',datafield: 'id_accion_eta',   width: 40 },
-                 { text: 'ACCION ESTANDAR ETA', filtercondition: 'starts_with',datafield: 'descripcion_accion_eta',   width: 270 },
+                 { text: 'ACCION ESTANDAR ETA', filtertype: 'checkedlist',datafield: 'descripcion_accion_eta',   width: 270 },
                  { text: 'DESCRIPCION ACCION ESTANDAR ETA', filtercondition: 'starts_with',datafield: 'descripcion_accion_eta_prog',   width: 200 },
                  { text: 'INDICADOR PROCESO',filtercondition: 'starts_with',datafield: 'indicador_procesos',   width: 200 },
                  { text: 'SERVICIO',filtercondition: 'starts_with',datafield: 'descripcion_servicio',   width: 80 },
                  { text: 'CLASIFICADOR',filtercondition: 'starts_with',datafield: 'descripcion_clasificador',   width: 80 },
                  { text: 'GESTION',filtertype: 'checkedlist',datafield: 'gestion',   width: 100 },
-                 { text: 'DESC PRES', filtercondition: 'starts_with',datafield: 'descripcion_presupuesto_ejecutado',   width: 100 }, 
+                 { text: 'DESC PRES', filtercondition: 'starts_with',datafield: 'descripcion_presupuesto_ejecutado',   width: 100 },
                  { text: 'VIGENTE', filtercondition: 'starts_with',datafield: 'total_presupuestogestion',aggregates: ["sum"],   width: 100 },
                  { text: 'PAGADO', filtercondition: 'starts_with',datafield: 'pagado',aggregates: ["sum"],   width: 100 },
                  { text: 'SALDO', filtercondition: 'starts_with',datafield: 'saldo_pagar',aggregates: ["sum"],   width: 100 },
             ]
-          });                     
-     });     
+          });
+     });
   }
-  
+
 </script>
 
 
-<script type="text/javascript">     
+<script type="text/javascript">
    $(function()
           {
             $.get("listarRegistroMatrices",function(respuesta)
@@ -352,8 +352,8 @@
                     source: dataAdapter, theme: 'shinyblack',
                     groupable: true,
                     pageable: true,
-                    autoheight: true,                    
-                    columns: 
+                    autoheight: true,
+                    columns:
                     [
                       { text: 'DEPARTAMENTO', datafield: 'descripcion_departamento', width: 250 },
                       { text: 'PROVINCIA', datafield: 'descripcion_provincia', width: 120 },
@@ -362,39 +362,39 @@
 
                     ],
                     groups: ['descripcion_departamento']
-                  });                     
-                $("#expand").on('click', function () 
+                  });
+                $("#expand").on('click', function ()
                 {
                   var groupnum = parseInt($("#groupnum").val());
-                  if (!isNaN(groupnum)) 
+                  if (!isNaN(groupnum))
                   {
                       $("#grid").jqxGrid('expandgroup', groupnum);
                   }
                 });
-                $("#collapse").on('click', function () 
+                $("#collapse").on('click', function ()
                 {
                   var groupnum = parseInt($("#groupnum").val());
-                  if (!isNaN(groupnum)) 
+                  if (!isNaN(groupnum))
                    {
                       $("#grid").jqxGrid('collapsegroup', groupnum);
                    }
-                });                
-                $("#expandall").on('click', function () 
+                });
+                $("#expandall").on('click', function ()
                 {
                   $("#grid").jqxGrid('expandallgroups');
                 });
                       // collapse all groups.
-                $("#collapseall").on('click', function () 
+                $("#collapseall").on('click', function ()
                 {
                   $("#grid").jqxGrid('collapseallgroups');
                 });
                       // trigger expand and collapse events.
-                $("#grid").on('groupexpand', function (event) 
+                $("#grid").on('groupexpand', function (event)
                 {
                   var args = event.args;
                   $("#expandedgroup").text("Group: " + args.group + ", Level: " + args.level);
                 });
-                $("#grid").on('groupcollapse', function (event) 
+                $("#grid").on('groupcollapse', function (event)
                 {
                   var args = event.args;
                   $("#collapsedgroup").text("Group: " + args.group + ", Level: " + args.level);
@@ -402,13 +402,13 @@
               });
           });
 </script>
-    
+
 <script type="text/javascript">
     $(function()
-    {    
-      matrizdata = [];  
+    {
+      matrizdata = [];
       $("#export").click(function()
-      {   
+      {
         var hoy = new Date();
         fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
         var hora=hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds();
@@ -476,7 +476,7 @@
             showfilterrow: true,
             filterable: true,
             autorowheight: true,
-            columns: 
+            columns:
             [
               { text: 'DEPARTAMENTO', filtercondition: 'starts_with', datafield: 'descripcion_departamento', width: 150},
              { text: 'PROVINCIA', filtercondition: 'starts_with',datafield: 'descripcion_provincia',   width: 150 },
@@ -509,16 +509,16 @@
             ]
           });
         $('#clearfilteringbutton').jqxButton({ height: 25});
-        $('#clearfilteringbutton').click(function () 
+        $('#clearfilteringbutton').click(function ()
           {
               $("#matrices").jqxGrid('clearfilters');
-          }); 
+          });
       }
 
       $.get("listarMatrices",function(respuesta)
       {
         matrizdata = respuesta.matrices;
-         cargarMatriz(matrizdata);        
+         cargarMatriz(matrizdata);
       });
 
       $.get("listarSelecTipoEtas", function(respuesta){
@@ -545,7 +545,7 @@
         }
         console.log(departamentos);
       });
-      
+
     /*  $.get("listarSelProg/" + idtipeta, function(respuesta){
         var progs = respuesta.progs;
         for(var i=0; i<progs.length; i++)
@@ -559,10 +559,10 @@
       /****************************************************/
  $("#sel_tipo_eta").change(function(){
   //var a=document.getElementById('#buscar');
-    // a.disabled=false; 
-        idtipeta = $("#sel_tipo_eta option:selected" ).val();    
+    // a.disabled=false;
+        idtipeta = $("#sel_tipo_eta option:selected" ).val();
         if (idtipeta==0) {
-          
+
         }else
         {
            $.get("listarSelProg/" + idtipeta, function(respuesta){
@@ -575,20 +575,20 @@
                 var programa = programas[i];
                 var opcion = "<option value=" + programa.id_programa + ">" + programa.descripcion_programa + "</option>";
                 $("#sel_prog").append(opcion);
-              }             
-          }); 
+              }
+          });
         }
       });
   $("#sel_prog").change(function(){
   var x=document.getElementById('buscar');
-     x.disabled=false; 
-       
+     x.disabled=false;
+
       });
  /*********************************************/
-       
 
-     
-     
+
+
+
 
        $("#sel_depto").select2();
        $("#sel_prov").select2();
@@ -602,5 +602,5 @@
     })
  </script>
 
- 
+
 @endpush
