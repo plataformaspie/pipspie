@@ -12,6 +12,52 @@ class PlanificacionTerritorialControllerBuscador extends PlanificacionBaseContro
   {
     return view('ModuloPlanificacion.show-planificacion-territorial-buscador');
   }
+  /*nueva lista por filtros*/
+  public function listaSelecTipoEta()
+  {
+    $seletas = \DB::select('select m.tipo_eta,e.descripcion_eta from sp_pt_matrices m,sp_pt_eta e where e.id_eta=m.tipo_eta group by (m.tipo_eta,e.descripcion_eta)');
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo tipos etas',
+      'seletas'=>$seletas
+    ]);
+  }
+  
+  public function listaNuevaMatriz($tipoeta)
+  {
+    $nmat = \DB::select("select m.tipo_eta,m.id_tarea_eta,m.tipo_eta,e.descripcion_eta,m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.pilar,m.meta,m.resultado,m.accion,m.id_accion_eta,m.descripcion_accion ,m.id_servicio,s.descripcion_servicio, m.id_clasificador,c.descripcion_clasificador,m.descripcion_accion_eta 
+from sp_pt_matrices m,sp_pt_departamentos d ,sp_pt_provincias p,sp_pt_municipios mu,sp_pt_eta e,sp_pt_servicios s, sp_pt_clasificadores c
+where m.id_departamento=d.id_departamento and p.id_provincia=m.id_provincia 
+and m.id_departamento=p.id_departamento and m.id_municipio=mu.id_municipio and m.id_departamento=mu.id_departamento
+and mu.id_provincia=p.id_provincia  and e.id_eta=m.tipo_eta and  m.id_servicio=s.id_servicio and m.id_clasificador=c.id_clasificador
+and m.estado<>'ELIMINADO' and tipo_eta=$tipoeta order by m.id_correlativo desc " );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo nueva matriz',
+      'nmat'=>$nmat
+    ]);
+  }
+  
+  public function listaNuevSeguimiento($tipoeta)
+  {
+    $nmatseg = \DB::select("select m.id_eta,m.id_tipo_eta,e.descripcion_eta,m.id_correlativo,d.id_departamento,
+d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio,
+mu.descripcion_municipio,m.id_programa,m.descripcion_programa,
+m.id_accion_eta,m.indicador_procesos,m.presupuestoejecutadogestion, 
+m.pilar,m.meta,m.resultado,m.accion,m.id_accion_eta,m.descripcion_pdes ,m.id_servicio,
+s.descripcion_servicio, m.id_clasificador,c.descripcion_clasificador,m.descripcion_accion_eta 
+from sp_pt_seguimientos m,sp_pt_departamentos d ,sp_pt_provincias p,sp_pt_municipios mu,sp_pt_eta e,sp_pt_servicios s, sp_pt_clasificadores c
+where m.id_departamento=d.id_departamento and p.id_provincia=m.id_provincia 
+and m.id_departamento=p.id_departamento and m.id_municipio=mu.id_municipio and m.id_departamento=mu.id_departamento
+and mu.id_provincia=p.id_provincia and e.id_eta=m.id_tipo_eta and  m.id_servicio=s.id_servicio and m.id_clasificador=c.id_clasificador
+and m.estado<>'ELIMINADO' and  id_tipo_eta=$tipoeta order by m.id_correlativo desc" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo nueva matriz',
+      'nmatseg'=>$nmatseg
+    ]);
+  }
+  /*fin lista por filtros*/
   public function listaEtas()
   {
     $etas = \DB::select("select m.id_tarea_eta,t.descripcion_eta 
@@ -87,7 +133,8 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   		'acciones'=>$acciones
   	]);
   }
-  public function listaMatrices()
+
+  public function listaMatrices() 
   {
     $matrices = \DB::select("select m.id_tarea_eta,m.tipo_eta,e.descripcion_eta,m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,m.pilar,m.meta,m.resultado,m.accion,m.id_accion_eta,m.descripcion_accion ,m.id_servicio,s.descripcion_servicio, m.id_clasificador,c.descripcion_clasificador,m.descripcion_accion_eta
 

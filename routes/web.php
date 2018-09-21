@@ -266,6 +266,10 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('listarPMRAs/{idpilar}/{idmeta}/{idresultado}/{idaccion}', 'ModuloPlanificacion\PlanificacionTerritorialController@listaPMRAs');
             Route::post('insertarmatriz', 'ModuloPlanificacion\PlanificacionTerritorialController@insertar');
 // Territorial reporte ----------------------------------------
+
+            Route::get('listarSelecTipoEtas', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaSelecTipoEta');
+            Route::get('listarNuevaMatrices/{dep}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevaMatriz');
+            Route::get('listarNuevaSeguimientos/{dep}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevSeguimiento');
             Route::get('showBuscadorTerritorial', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@showPlanificacionTerritorialBuscador');
             Route::get('listarMatrices', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaMatrices');
             Route::get('listarRegistroMatrices', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaRegistroMatrices');
