@@ -14,12 +14,30 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   }
   public function listaEtas()
   {
-  	$etas = \DB::select("SELECT * from sp_pt_eta" );
+  	$etas = \DB::select("SELECT * from sp_pt_eta where dependiente=0 order by id_eta" );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se cargo etas',
   		'etas'=>$etas
   	]);
+  }
+  public function listaTiposEtas($eta)
+  {
+    $etas = \DB::select("SELECT * from sp_pt_eta where dependiente=$eta order by id_correlativo" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo etas',
+      'etas'=>$etas
+    ]);
+  }
+   public function TiposEtas($ideta)
+  {
+    $etas = \DB::select("SELECT * from sp_pt_eta where id_eta=$ideta order by id_correlativo" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo etas',
+      'etas'=>$etas
+    ]);
   }
   public function listaDepartamentos()
   {
@@ -78,7 +96,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   }
    public function listaTipos($idgasto)
   {
-  	$tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores" );
+  	$tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores where id_clasificador<>0" );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se Cargo Gastos',
@@ -96,7 +114,7 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
   }
    public function listaServicios($idgasto,$idtipo)
   {
-  	$servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios" );
+  	$servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios where id_servicio<>0" );
   	return response()->json([
   		'status'=>'ok',
   		'mensaje'=>'Se Cargo Gastos',
@@ -190,7 +208,8 @@ class PlanificacionTerritorialController extends PlanificacionBaseController
     $matriz['meta'] = $req->meta;
     $matriz['resultado'] = $req->resultado;
     $matriz['accion'] = $req->accion;
-    $matriz['descripcion_accion'] = $req->descripcion_accion;    
+    $matriz['descripcion_accion'] = $req->descripcion_accion;
+    $matriz['tipo_eta'] = $req->tipo_eta;  
     $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;    
     $matriz['usuario_creador']=$this->user->id;
     $matriz['fecha_creacion']=date("d/m/Y H:i:s");

@@ -2,7 +2,8 @@
 
 @section('header')
 <link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.base.css" type="text/css" />
-<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.dark.css" type="text/css" />
+<link rel="stylesheet" href="/jqwidgets5.5.0/jqwidgets/styles/jqx.shinyblack.css" type="text/css" />
+<link rel="stylesheet" href="/plugins/bower_components/select2/dist/css/select2.min.css" type="text/css"/>
 @endsection
 
 @section('title-topbar')
@@ -10,32 +11,50 @@
 @endsection
 
 @section('content')
- 
-<table>
-  <tr>    
-      <th><h2>Sistema de Planificacion Territorial</h2></th>
-  </tr>        
-  <tr>
-    <tr>
-      <td><button id="agregarmatriz" name="agregarmatriz"><i class='glyphicon glyphicon-plus'>Agregar</i></button> </td>
+ <section id="content_wrapper">
+   <th><h2>Sistema de Planificacion Territorial</h2></th>
+  <section id="content" class="table-layout animated fadeIn" style="min-height: 3500px;">
+                  <div class="tray tray-center p40 va-t posr">
+      <div class="row">
 
-    </tr>
-    <td>
-      <div id='contenedor'>
-        <div id="grid2"></div>
-        <div style="margin-top: 30px;">
-            <div id="cellbegineditevent"></div>
-            <div style="margin-top: 10px;" id="cellendeditevent"></div>
-        </div>       
+          <div class="col-md-12">
+              <div class="panel panel-visible" >
+                <div class="panel-heading bg-dark text-center">
+                     <span class="panel-title"> Planificacion</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="estructura" class="col-md-12" >
+                          <div class="panel panel-visible">
+                              <div id='jqxWidget'>
+                                <button id="agregarmatriz" class="btn btn-sm btn-success dark m5 br4" name="agregarmatriz"><i class='glyphicon glyphicon-plus'>Agregar</i></button>
+                                <div id='contenedor'  class="section" >
+                                  <div id="grid2" ></div>
+                                </div>
+                                
+        
+                              </div>
+                            </div>
+                                                     
+                      </div>
+                    </div>
+                </div>
+                
+                     
+                     
+                     
+                
+              </div>
+          </div>
       </div>
-    </td>
-  </tr>
-</table>
-<div id="modal-editar"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide popup-lg " >
+  </div>
+</section>
+  </section>
+<div id="modal-editar"  class="darck-popup-block popup-basic admin-form mfp-with-anim mfp-hide popup-lg " >
   <div class="panel">
-    <div class="panel-heading">
-      <span class="panel-title"><i class="fa fa-pencil"></i>
-      <font style="font-family: sans-serif;color: black">Formulario de Actualización</font>
+    <div style="background: #2a2a2c" class="panel-heading">
+      <span class="panel-title"><i style="color: white" class="fa fa-pencil"></i>
+      <font style="font-family: sans-serif;color: white">Formulario de Actualización</font>
       </span>
     </div>            <!-- end .panel-heading section -->
     
@@ -57,10 +76,26 @@
                             <tr>
                               <td colspan="2">
                                 <p>
-                                  <select id="etaedit" class="form-control"><option value="0">Seleccione el ETA</option>
+                                  <select id="etaedit" class="form-control" style="width: 100%"><option value="0">Seleccione el ETA</option>
                                   </select>
                                 </p>
                                 <p>
+                                  <select id="tipoetaedit" class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo de ETA</option>
+                                  </select>
+                                </p>
+                                <p>
+                                  <table>
+                                  <tr>
+                                    <td><select id="depedit" disabled="true" class="form-control"><option value="0">Seleccione el Departamento</option>
+                                  </select></td>
+                                    <td><select id="provedit" disabled="true" name="provedit" class="form-control"><option value="0">Seleccione la Provincia</option>
+                                  </select></td>
+                                    <td><select id="munedit" disabled="true" class="form-control"><option value="0">Seleccione el Município</option>
+                                  </select></td>
+                                  </tr>
+                                </table>
+                                </p> 
+                                <!--p>
                                   <select id="depedit" class="form-control"><option value="0">Seleccione el Departamento</option>
                                   </select>
                                 </p>
@@ -71,20 +106,20 @@
                                 <p>
                                   <select id="munedit"class="form-control"><option value="0">Seleccione el Município</option>
                                   </select>
+                                </p-->
+                                <p>
+                                  <select id="gasedit"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Programática de Gasto</option></select>
                                 </p>
                                 <p>
-                                  <select id="gasedit"class="form-control input-lg"><option value="0">Seleccione la Programática de Gasto</option></select>
-                                </p>
-                                <p>
-                                  <select id="tipedit"class="form-control"><option value="0">Seleccione el Tipo</option>
+                                  <select id="tipedit"class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="seredit"class="form-control"><option value="0">Seleccione el Servicio</option>
+                                  <select id="seredit"class="form-control"style="width: 100%"><option value="0">Seleccione el Servicio</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="acciedit"class="form-control input-lg"><option value="0">Seleccione la Accion ETA</option>
+                                  <select id="acciedit"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Accion ETA</option>
                                   </select>
                                 </p>
                                 <div class="form-group">
@@ -109,13 +144,13 @@
                                 <table border="2" width="100%">
                                   
                     <tr>
-                      <td style="background: #0074e8">
+                      <td style="background: #2a2a2c">
                         <div class="form-group">
                             <font color="white"><center>Linea Base</center></font>                    
                             <p> <textarea name="linea_baseedit" id="linea_baseedit" rows="10" cols="40" placeholder="Linea Base" style="width: 100%"></textarea></p>                   
                         </div>      
                       </td>
-                      <td style="background: #0074e8">
+                      <td style="background: #2a2a2c">
                         <div class="form-group"><font color="white"><center>
                          Indicador de Proceso:</center></font>                    
                           <p> <textarea name="ind_procesoedit" id="ind_procesoedit" rows="10" cols="40" placeholder="Indicador de Proceso" style="width: 100%"></textarea></p>                   
@@ -132,7 +167,7 @@
                                       <font style="font-family: sans-serif;color: white">Programación Anualizada del Indicador de Proceso
                                      </font>
                                      <p>Tipo de Unidad:
-                                      <input type="text" name="tipocantidadedit" id="tipocantidadedit" maxlength="5" >
+                                      <input type="text" name="tipocantidadedit" id="tipocantidadedit" maxlength="30" >
                                      </p>
                                     </td>
                                   </tr>
@@ -142,39 +177,39 @@
                               <td>
                                 <table border="3">    
                                    <tr >
-                                    <td  colspan="2" style="background: #0074e8;"><font color="white"><center>Unidad</center> </font></td></tr>
+                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Unidad</center> </font></td></tr>
                                   <tr >                           
                                   <tr>
-                                    <td  style="background: #0074e8;"><font color="white">Cantidad de Unidad</font></td>
+                                    <td  style="background: #2a2a2c;"><font color="white">Cantidad de Unidad</font></td>
                                     <td><input type="text" name="cantidadedit" id="cantidadedit" onKeyDown="sumaredit();" onKeyUp="sumaredit();" onkeypress="sumaredit();" placeholder="cantidad" onchange="sumaredit()"value="0"/></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2016</font></td>
                                     <td><input type="number" name="2016edit" id="2016edit" onKeyDown="sumaredit();" onKeyUp="sumaredit();" onkeypress="sumaredit();" placeholder="2016" onchange="sumaredit()"value="0" ></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2017</font></td>
                                     <td><input type="number" name="2017edit" id="2017edit" onKeyDown="sumaredit();" onKeyUp="sumaredit();" onkeypress="sumaredit();" placeholder="2017" onchange="sumaredit()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2018</font></td>
                                     <td><input type="number" name="2018edit" id="2018edit" onKeyDown="sumaredit();" onKeyUp="sumaredit();" onkeypress="sumaredit();" placeholder="2018" onchange="sumaredit()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2019</font></td>
                                     <td><input type="number" name="2019edit" id="2019edit" onKeyDown="sumaredit();" onKeyUp="sumaredit();" onkeypress="sumaredit();" placeholder="2019" onchange="sumaredit()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2020</font></td>
                                     <td><input type="number" name="2020edit" id="2020edit" onKeyDown="sumaredit();" onKeyUp="sumaredit();" onkeypress="sumaredit();" placeholder="2020" onchange="sumaredit()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">Resto</font></td>
                                     <td><input type="text" value="0" disabled placeholder="total" id="totaledit"></td>
                                     
@@ -184,32 +219,32 @@
                               <td>
                                 <table border="3">                                  
                                   <tr >
-                                    <td  colspan="2" style="background: #0074e8;"><font color="white"><center>Presupuesto</center></font></td></tr>
+                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Presupuesto</center></font></td></tr>
                                   <tr >
-                                    <td style="background: #0074e8;"><font color="white">Presupuesto 2016-2020</font></td>
+                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto 2016-2020</font></td>
                                     <td><input type="number" name="txtpresuedit" id="txtpresuedit" onKeyDown="sumarPresupuedit();" onKeyUp="sumarPresupuedit();" onkeypress="sumarPresupuedit();" placeholder="2016" onchange="sumarPresupuedit()"value="0.0" ></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2016</font></td>
                                     <td><input type="number" name="p2016edit" id="p2016edit" onKeyDown="sumarPresupuedit();" onKeyUp="sumarPresupuedit();" onkeypress="sumarPresupuedit();" placeholder="2016" onchange="sumarPresupuedit()" value="0.0" ></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2017</font></td>
                                     <td><input type="number" name="p2017edit" id="p2017edit" onKeyDown="sumarPresupuedit();" onKeyUp="sumarPresupuedit();" onkeypress="sumarPresupuedit();" placeholder="2017" onchange="sumarPresupuedit()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2018</font></td>
                                     <td><input type="number" name="p2018edit" id="p2018edit" onKeyDown="sumarPresupuedit();" onKeyUp="sumarPresupuedit();" onkeypress="sumarPresupuedit();" placeholder="2018" onchange="sumarPresupuedit()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2019</font></td>
                                     <td><input type="number" name="p2019edit" id="p2019edit" onKeyDown="sumarPresupuedit();" onKeyUp="sumarPresupuedit();" onkeypress="sumarPresupuedit();" placeholder="2019" onchange="sumarPresupuedit()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2020</font></td>
                                     <td><input type="number" name="p2020edit" id="p2020edit" onKeyDown="sumarPresupuedit();" onKeyUp="sumarPresupuedit();" onkeypress="sumarPresupuedit();" placeholder="2020" onchange="sumarPresupuedit()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">Resto</font></td>
                                     <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalpedit" name="totalpedit"></td>
                                   </tr>
@@ -223,6 +258,9 @@
               </div>
                                 <div class="form-group">
                   <input type="text" class="form-control" name ="txtetaedit" id="txtetaedit" placeholder="eta" required value="" style="display:none ;" >
+              </div>
+              <div class="form-group">
+                  <input type="text" class="form-control" name ="txttipoetaedit" id="txttipoetaedit" placeholder="eta" required value="" style="display: none;" >
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" name ="txtdepedit" id="txtdepedit" placeholder="departamento" required value="" style="display:none ;" >
@@ -306,9 +344,9 @@
 
 <div id="modal-agregar"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide popup-lg " >
   <div class="panel">
-    <div class="panel-heading">
-      <span class="panel-title"><i class="fa fa-pencil"></i>
-      <font style="font-family: sans-serif;color: black">Formulario de Actualización</font>
+    <div style="background: #2a2a2c" class="panel-heading">
+      <span class="panel-title"><i style="color: white"class="glyphicon glyphicon-plus"></i>
+      <font style="font-family: sans-serif;color: white">Formulario de Planificación</font>
       </span>
     </div>           
     
@@ -328,35 +366,40 @@
                           <table>
                             <tr>
                               <td colspan="2">
+
                                 <p>
-                                  <select id="eta" class="form-control"><option value="0">Seleccione el ETA</option>
+                                  <select id="eta" class="form-control" style="width: 100%"><option value="0">Seleccione el ETA</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="dep" class="form-control"><option value="0">Seleccione el Departamento</option>
+                                  <select id="tipoeta" class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo de ETA</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="prov" name="prov" class="form-control"><option value="0">Seleccione la Provincia</option>
+                                  <table>
+                                  <tr>
+                                    <td><select id="dep" disabled="true" class="form-control" ><option value="0">Seleccione el Departamento</option>
+                                  </select></td>
+                                    <td><select id="prov" disabled="true" name="prov" class="form-control"><option value="0">Seleccione la Provincia</option>
+                                  </select></td>
+                                    <td><select id="mun" disabled="true" class="form-control"><option value="0">Seleccione el Município</option>
+                                  </select></td>
+                                  </tr>
+                                </table>
+                                </p>  
+                                <p>
+                                  <select id="gas"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Programática de Gasto</option></select>
+                                </p>
+                                <p>
+                                  <select id="tip"class="form-control" style="width: 100%"><option value="0">Seleccione el Tipo</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="mun"class="form-control"><option value="0">Seleccione el Município</option>
+                                  <select id="ser"class="form-control"style="width: 100%"><option value="0">Seleccione el Servicio</option>
                                   </select>
                                 </p>
                                 <p>
-                                  <select id="gas"class="form-control input-lg"><option value="0">Seleccione la Programática de Gasto</option></select>
-                                </p>
-                                <p>
-                                  <select id="tip"class="form-control"><option value="0">Seleccione el Tipo</option>
-                                  </select>
-                                </p>
-                                <p>
-                                  <select id="ser"class="form-control"><option value="0">Seleccione el Servicio</option>
-                                  </select>
-                                </p>
-                                <p>
-                                  <select id="acci"class="form-control input-lg"><option value="0">Seleccione la Accion ETA</option>
+                                  <select id="acci"class="form-control input-lg" style="width: 100%"><option value="0">Seleccione la Accion ETA</option>
                                   </select>
                                 </p>
                                 <div class="form-group">
@@ -381,13 +424,13 @@
                                 <table border="2" width="100%">
                                   
                     <tr>
-                      <td style="background: #0074e8">
+                      <td style="background: #2a2a2c">
                         <div class="form-group">
                             <font color="white"><center>Linea Base</center></font>                    
                             <p> <textarea name="linea_base" id="linea_base" rows="10" cols="40" placeholder="Linea Base" style="width: 100%"></textarea></p>                   
                         </div>      
                       </td>
-                      <td style="background: #0074e8">
+                      <td style="background: #2a2a2c">
                         <div class="form-group"><font color="white"><center>
                          Indicador de Proceso:</center></font>                    
                           <p> <textarea name="ind_proceso" id="ind_proceso" rows="10" cols="40" placeholder="Indicador de Proceso" style="width: 100%"></textarea></p>                   
@@ -404,7 +447,7 @@
                                       <font style="font-family: sans-serif;color: white">Programación Anualizada del Indicador de Proceso
                                      </font>
                                      <p>Tipo de Unidad:
-                                      <input type="text" name="tipocantidad" id="tipocantidad" maxlength="5" >
+                                      <input type="text" name="tipocantidad" id="tipocantidad" maxlength="30" >
                                      </p>
                                     </td>
                                   </tr>
@@ -414,39 +457,39 @@
                               <td>
                                 <table border="3">    
                                    <tr >
-                                    <td  colspan="2" style="background: #0074e8;"><font color="white"><center>Unidad</center> </font></td></tr>
+                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Unidad</center> </font></td></tr>
                                   <tr >                           
                                   <tr>
-                                    <td  style="background: #0074e8;"><font color="white">Cantidad de Unidad</font></td>
+                                    <td  style="background: #2a2a2c;"><font color="white">Cantidad de Unidad</font></td>
                                     <td><input type="text" name="cantidad" id="cantidad" onKeyDown="sumar();" onKeyUp="sumar();" onkeypress="sumar();" placeholder="cantidad" onchange="sumar()"value="0"/></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2016</font></td>
                                     <td><input type="number" name="2016" id="2016" onKeyDown="sumar();" onKeyUp="sumar();" onkeypress="sumar();" placeholder="2016" onchange="sumar()"value="0" ></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2017</font></td>
                                     <td><input type="number" name="2017" id="2017" onKeyDown="sumar();" onKeyUp="sumar();" onkeypress="sumar();" placeholder="2017" onchange="sumar()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2018</font></td>
                                     <td><input type="number" name="2018" id="2018" onKeyDown="sumar();" onKeyUp="sumar();" onkeypress="sumar();" placeholder="2018" onchange="sumar()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2019</font></td>
                                     <td><input type="number" name="2019" id="2019" onKeyDown="sumar();" onKeyUp="sumar();" onkeypress="sumar();" placeholder="2019" onchange="sumar()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2020</font></td>
                                     <td><input type="number" name="2020" id="2020" onKeyDown="sumar();" onKeyUp="sumar();" onkeypress="sumar();" placeholder="2020" onchange="sumar()"value="0"></td>
                                     
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">Resto</font></td>
                                     <td><input type="text" value="0" disabled placeholder="total" id="total"></td>
                                     
@@ -456,32 +499,32 @@
                               <td>
                                 <table border="3">                                  
                                   <tr >
-                                    <td  colspan="2" style="background: #0074e8;"><font color="white"><center>Presupuesto</center></font></td></tr>
+                                    <td  colspan="2" style="background: #2a2a2c;"><font color="white"><center>Presupuesto</center></font></td></tr>
                                   <tr >
-                                    <td style="background: #0074e8;"><font color="white">Presupuesto 2016-2020</font></td>
+                                    <td style="background: #2a2a2c;"><font color="white">Presupuesto 2016-2020</font></td>
                                     <td><input type="number" name="txtpresu" id="txtpresu" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2016" onchange="sumarPresupu()"value="0.0" ></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2016</font></td>
                                     <td><input type="number" name="p2016" id="p2016" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2016" onchange="sumarPresupu()" value="0.0" ></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2017</font></td>
                                     <td><input type="number" name="p2017" id="p2017" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2017" onchange="sumarPresupu()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2018</font></td>
                                     <td><input type="number" name="p2018" id="p2018" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2018" onchange="sumarPresupu()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2019</font></td>
                                     <td><input type="number" name="p2019" id="p2019" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2019" onchange="sumarPresupu()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">2020</font></td>
                                     <td><input type="number" name="p2020" id="p2020" onKeyDown="sumarPresupu();" onKeyUp="sumarPresupu();" onkeypress="sumarPresupu();" placeholder="2020" onchange="sumarPresupu()" value="0.0"></td>
                                   </tr>
-                                  <tr style="background: #0074e8;">
+                                  <tr style="background: #2a2a2c;">
                                     <td><font color="white">Resto</font></td>
                                     <td><input type="text" disabled placeholder="Total Presupuesto" value="0.0" id="totalp" name="totalp"></td>
                                   </tr>
@@ -495,6 +538,9 @@
                   <input type="text" class="form-control" name ="txteta" id="txteta" placeholder="eta" required value="" style="display: none;" >
               </div>
               <div class="form-group">
+                  <input type="text" class="form-control" name ="txttipoeta" id="txttipoeta" placeholder="eta" required value="" style="display: none;" >
+              </div>
+              <div class="form-group">
                 <input type="text" class="form-control" name ="txtdep" id="txtdep" placeholder="departamento" required value="" style="display:none ;" >
               </div>
 
@@ -503,7 +549,7 @@
               </div>
 
               <div class="form-group">
-                <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display:none ;">
+                <input type="text" class="form-control" name="txtmun" id="txtmun" placeholder="municipio" required value=""style="display: none;">
               </div>
 
               <div class="form-group">
@@ -565,6 +611,8 @@
 @push('script-head')
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+<script src="/plugins/bower_components/select2/dist/js/select2.min.js"></script>
+
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="/jqwidgets5.5.0/jqwidgets/jqxbuttons.js"></script>
@@ -691,7 +739,8 @@ function sumarPresupu(){
         objeto.meta = $("#txtmetas").val();
         objeto.resultado = $("#txtresul").val();
         objeto.accion = $("#txtaccion").val();        
-        objeto.descripcion_accion = $("#descripaccion").val();        
+        objeto.descripcion_accion = $("#descripaccion").val();
+        objeto.tipo_eta = $("#txttipoeta").val();       
         objeto.descripcion_accion_eta = $("#descripcion_accion_eta").val();  
         objeto._token = $('input[name=_token]').val()
         console.log(objeto);
@@ -744,6 +793,51 @@ function sumarPresupu(){
         }
         console.log(departamentos);
       });
+      //--------------cuando cambia tipo eta
+      $("#tipoeta").change(function(){
+        idtipeta=$("#tipoeta").val();
+        $("#txttipoeta").val(idtipeta);
+        /*idgasto = $("#gas").val();
+        idtipo = $("#tip").val();
+        idser = $("#ser").val();
+        $("#txtservicio").val(idser);*/
+        if (idtipeta==0) {
+          
+          
+          $("#gas").val('0');
+          $("#tip").html('');
+          $("#ser").html('');
+          $("#acci").html('');
+          $("#pilar").html('');
+          $("#meta").html('');
+          $("#resultado").html('');
+          $("#accion").html('');
+        }else
+        {
+          $.get("TipoEtas/" +idtipeta, function(respuesta){
+                  var etas = respuesta.etas;
+                  
+                  for(var i=0; i<etas.length; i++)
+                  {
+                    var eta = etas[i];              
+                    
+                    $("#dep").val(eta.id_departamento);
+                    $("#dep").trigger( "change");
+                    setTimeout(function(){
+                     $("#prov").val(eta.id_provincia);
+                     $("#prov").trigger( "change");
+                    }, 1000);
+                    setTimeout(function(){
+                     $("#mun").val(eta.id_municipio);
+                     $("#mun").trigger( "change");
+                    }, 1900);
+                  }
+                  
+                }); 
+        }
+        
+      });
+      //--------------
 //--------------cuando cambia el departamento
       $("#dep").change(function(){
         iddepar = $("#dep").val();
@@ -806,6 +900,7 @@ function sumarPresupu(){
         $("#txteta").val(ideta);      
         if (ideta==0) 
         {
+          $("#tipoeta").html('Seleccione el Tipo de ETA');
           $("#gas").html('<option >Seleccione la Programática de Gasto</option>');
           $("#tip").html('');
           $("#ser").html('');
@@ -817,6 +912,18 @@ function sumarPresupu(){
         }
         else        
         {
+          $.get("listarTipoEtas/"+ideta , function(respuesta){
+              var etas = respuesta.etas;
+              $("#tipoeta").html('');
+              var opcion0 = "<option value='0'>Seleccione el Tipo de ETA</option>";
+              $("#tipoeta").append(opcion0);
+              for(var i=0; i<etas.length; i++)
+              {
+                var eta = etas[i];              
+                var opcion = "<option value=" + eta.id_eta + ">" + eta.descripcion_eta + "</option>";           
+                $("#tipoeta").append(opcion);
+              }
+            });
           if(ideta==1||ideta==2)
           {
               $.get("listarGastos1" , function(respuesta){
@@ -852,6 +959,7 @@ function sumarPresupu(){
         }
         
       });
+
       //--------------cuando cambia la gasto
       $("#gas").change(function(){
         idgasto = $("#gas").val();
@@ -1233,6 +1341,8 @@ function verificaragregar()
                                 w.disabled=true;
                                 var p20=document.getElementById('p2020');
                                 p20.disabled=true;
+                                 var tet=document.getElementById('tipoeta');
+                                tet.disabled=true;
 
 
                                }
@@ -1255,7 +1365,7 @@ function verificaragregar()
   }
 </script>
 
-
+<!---------------todo lo de edicion--------------->
     <script type="text/javascript">
       $(function(){
         $("#actualizaredit").click(function()
@@ -1292,8 +1402,10 @@ function verificaragregar()
         objeto.meta = $("#txtmetasedit").val();
         objeto.resultado = $("#txtresuledit").val();
         objeto.accion = $("#txtaccionedit").val();        
-        objeto.accion = $("#txtaccionedit").val();        
-        objeto.descripcion_accion_eta = $("#descripcion_accion_eta_edit").val();       
+        objeto.accion = $("#txtaccionedit").val(); 
+        objeto.accion = $("#txttipoetaedit").val();       
+        objeto.descripcion_accion_eta = $("#descripcion_accion_eta_edit").val();   
+        objeto.tipo_eta = $("#txttipoetaedit").val();      
         objeto.descripcion_accion = $("#descripaccionedit").val();       
         objeto._token = $('input[name=_token]').val();
          
@@ -1320,6 +1432,7 @@ function verificaragregar()
       });
       });
     </script>
+
     <script type="text/javascript">
       function eliminar(){
         //alert('aqui');
@@ -1368,6 +1481,7 @@ function verificaragregar()
                   { name: 'descripcion_directriz', type: 'datafield'},
                   { name: 'estado', type: 'datafield'},
                   { name: 'id_clasificador', type: 'int'},
+                  { name: 'tipo_eta', type: 'int'},
                   { name: 'descripcion_accion_eta', type: 'datafield'},
                   { name: 'descripcion_accion_eta_edit', type: 'datafield'},
                   
@@ -1378,16 +1492,17 @@ function verificaragregar()
                     commit(true);
                 }
             };   
-          var dataAdapter = new $.jqx.dataAdapter(source);           
+          var dataAdapter = new $.jqx.dataAdapter(source);
+
           $("#grid2").jqxGrid(
             {
-              width: '1050',
+               width: '100%',
               source: dataAdapter,
-              theme: 'energyblue',
+              theme: 'shinyblack',
               altrows: true,
               pageable: true,
               autoheight: true,
-              //selectionmode: 'multiplecellsextended',
+             // selectionmode: 'simplecellsextended',
               showgroupaggregates: true,
               showstatusbar: true,
               showaggregates: true,
@@ -1398,19 +1513,38 @@ function verificaragregar()
               autorowheight: true,
               columns:
                [                
-                 { text: 'DEP', filtertype: 'checkedlist', datafield: 'descripcion_departamento', width: 80},
-                 { text: 'PROV', filtertype: 'checkedlist',datafield: 'descripcion_provincia',   width: 80 },
-                 { text: 'MUN', filtertype: 'checkedlist',datafield: 'descripcion_municipio',   width: 80 },
-                 { text: 'PROG', filtertype: 'checkedlist',datafield: 'id_programa',   width: 70 },
-                 { text: 'DESCRIPCIÓN', filtertype: 'checkedlist',datafield: 'descripcion_programa',   width: 270 },
-                 { text: 'ACCION ETA', filtertype: 'checkedlist',datafield: 'accion_eta',   width: 270 },
-                 { text: 'LINEA BASE', filtertype: 'checkedlist',datafield: 'linea_base',   width: 200 },
-                 { text: 'PROCESO INDICADOR', filtertype: 'checkedlist',datafield: 'proceso_indicador',   width: 200 },
-                 { text: 'UNIDAD', filtertype: 'checkedlist',datafield: 'unidad_indicador',   width: 70 },               
+                 { text: 'DEPARTAMENTO', filtercondition: 'starts_with', datafield: 'descripcion_departamento', width: 150},
+             { text: 'PROVINCIA', filtercondition: 'starts_with',datafield: 'descripcion_provincia',   width: 150 },
+             { text: 'MUNICIPIO', filtercondition: 'starts_with',datafield: 'descripcion_municipio',   width: 150 },
+             { text: 'PROG', filtercondition: 'starts_with',datafield: 'id_programa',   width: 50 },
+             { text: 'ESTRUCTURA PROGRAMATÍCA', filtercondition: 'starts_with',datafield: 'descripcion_programa',   width: 215 },
+             { text: 'ACCIÓN ESTANDAR ETA', filtercondition: 'starts_with',datafield: 'accion_eta',   width: 250 },
+             { text: 'DESCRIPCION ACCION ESTANDAR ', filtertype: 'checkedlist', datafield: 'descripcion_accion_eta', width: 250},
+             { text: 'SERVICIO', filtertype: 'checkedlist', datafield: 'descripcion_servicio', width: 50},
+             { text: 'CLASIFICADOR', filtertype: 'checkedlist', datafield: 'descripcion_clasificador', width: 50},
+             { text: 'LINEA BASE', filtercondition: 'starts_with',datafield: 'linea_base',   width: 215 },
+             { text: 'INDICADOR DE PROCESOS', filtercondition: 'starts_with',datafield: 'proceso_indicador',   width: 215 },
+             { text: 'INDICADOR',filtercondition: 'starts_with',datafield: 'cantidad_indicador',   width: 80 },
+             { text: '2016', filtercondition: 'starts_with',datafield: 'indicador2016',   width: 50 },
+             { text: '2017', filtercondition: 'starts_with',datafield: 'indicador2017',   width: 50 },
+             { text: '2018', filtercondition: 'starts_with',datafield: 'indicador2018',   width: 50 },
+             { text: '2019', filtercondition: 'starts_with',datafield: 'indicador2019',   width: 50 },
+             { text: '2020', filtercondition: 'starts_with',datafield: 'indicador2020',   width: 50 },
+             { text: 'PRESUPUESTO TOTAL', datafield: 'cantidad_presupuesto', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2016', datafield: 'presupuesto2016', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2017', datafield: 'presupuesto2017', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2018', datafield: 'presupuesto2018', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2019', datafield: 'presupuesto2019', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: 'c2' },
+             { text: '2020', datafield: 'presupuesto2020', aggregates: ["sum"], cellsalign: 'right', width: 180, cellsformat: '' },
+             { text: 'P',filtertype: 'checkedlist', datafield: 'pilar',  cellsalign: 'right', width: 50 },
+             { text: 'M',filtertype: 'checkedlist', datafield: 'meta',  cellsalign: 'right', width: 50 },
+             { text: 'R',filtertype: 'checkedlist', datafield: 'resultado',  cellsalign: 'right', width: 50 },
+             { text: 'A',filtertype: 'checkedlist', datafield: 'accion',filtertype: 'checkedlist',  cellsalign: 'right', width: 50 },
+             { text: 'CONCORDANCIA PDES', filtertype: 'checkedlist', datafield: 'descripcion_accion', width: 270},               
                 
-                 { text: 'ACCIONES', datafield: 'id_correlativo',   width: 180, cellsRenderer: function (row, column, value, rowData)  
+                 { text: 'ACCIONES', datafield: 'id_correlativo',   width: 200, cellsRenderer: function (row, column, value, rowData)  
                     {
-                      return "<button id='e"+value+"'><i class='glyphicon glyphicon-pencil'></i> Editar </button><button id='d"+value+"'><i class='glyphicon glyphicon-minus'></i> Eliminar </button> ";
+                      return "<button class='btn btn-sm btn-warning dark m5 br6' id='e"+value+"'><i class='glyphicon glyphicon-pencil'></i> Editar </button><button class='btn btn-sm btn-danger dark m5 br6' id='d"+value+"'><i class='glyphicon glyphicon-minus'></i> Eliminar </button> ";
                     }, 
                  }
                 
@@ -1447,12 +1581,16 @@ function verificaragregar()
               if (getselectedrowindexes.length>0) 
               {
                  filaseleccionada=$('#grid2').jqxGrid('getrowdata',getselectedrowindexes[0]);
-                 $("#depedit").val(filaseleccionada.id_departamento);
+                 $("#depedit").val(filaseleccionada.id_departamento);                 
                  $("#etaedit").val(filaseleccionada.id_tarea_eta); 
                  $("#etaedit").trigger( "change");
                  setTimeout(function(){
+                  $("#tipoetaedit").val(filaseleccionada.tipo_eta); 
+                 $("#tipoetaedit").trigger( "change");
+                 }, 370);            
+                 setTimeout(function(){
                  $("#depedit").trigger( "change");
-                 }, 370);
+                 }, 530);
                  setTimeout(function(){
                     var x=filaseleccionada.id_provincia;
                     $("#provedit").val(x);    
@@ -1468,6 +1606,7 @@ function verificaragregar()
                      $("#gasedit").val(y);    
                      $("#gasedit").trigger( "change");
                  }, 1920);
+                 
                  if (filaseleccionada.id_tarea_eta!=1||filaseleccionada.id_tarea_eta!=2) 
                     {
                       if (filaseleccionada.id_programa==11) 
@@ -1490,10 +1629,12 @@ function verificaragregar()
                               $("#acciedit").trigger( "change");
                           }, 3320);
                           setTimeout(function(){
-                              var y=filaseleccionada.idser;
+                              var y=filaseleccionada.pilar;
+                              
                               $("#pilaredit").val(y);    
                               $("#pilaredit").trigger( "change");
                           }, 3820);
+
                         }
                       else
                         {
@@ -1503,7 +1644,8 @@ function verificaragregar()
                               $("#acciedit").trigger( "change");
                           }, 2820);
                           setTimeout(function(){
-                              var y=filaseleccionada.idser;
+                              var y=filaseleccionada.pilar;
+                              
                               $("#pilaredit").val(y);    
                               $("#pilaredit").trigger( "change");
                           }, 3320);
@@ -1512,7 +1654,17 @@ function verificaragregar()
                     }
                  else
                  { 
-                 alert('no existen registros')                     ;
+                 setTimeout(function(){
+                              var z=filaseleccionada.id_accion_eta;
+                              $("#acciedit").val(z);    
+                              $("#acciedit").trigger( "change");
+                          }, 3320);
+                 setTimeout(function(){
+                              var y=filaseleccionada.pilar;
+                              
+                              $("#pilaredit").val(y);    
+                              $("#pilaredit").trigger( "change");
+                          }, 3820);
                  }
                  setTimeout(function(){
                       var o=filaseleccionada.descripcion_accion_eta;
@@ -1646,7 +1798,45 @@ function sumarPresupuedit(){
     $(function()
     {
 //--------------botonguardar
-      
+      //--------------cuando cambia tipo eta
+      $("#tipoetaedit").change(function(){
+        idtipeta=$("#tipoetaedit").val();
+        $("#txttipoetaedit").val(idtipeta);        
+        if (idtipeta==0) {          
+          $("#gasedit").val('0');
+          $("#tipedit").html('');
+          $("#seredit").html('');
+          $("#acciedit").html('');
+          $("#pilaredit").html('');
+          $("#metaedit").html('');
+          $("#resultadoedit").html('');
+          $("#accionedit").html('');
+        }else
+        {
+          $.get("TipoEtasEdit/" +idtipeta, function(respuesta){
+                  var etas = respuesta.etas;
+                  
+                  for(var i=0; i<etas.length; i++)
+                  {
+                    var eta = etas[i];              
+                    
+                    $("#depedit").val(eta.id_departamento);
+                    $("#depedit").trigger( "change");
+                    setTimeout(function(){
+                     $("#provedit").val(eta.id_provincia);
+                     $("#provedit").trigger( "change");
+                    }, 1000);
+                    setTimeout(function(){
+                     $("#munedit").val(eta.id_municipio);
+                     $("#munedit").trigger( "change");
+                    }, 1900);
+                  }
+                  
+                }); 
+        }
+        
+      });
+      //--------------
 
       $("#depedit").change(function()
       {
@@ -1712,6 +1902,7 @@ function sumarPresupuedit(){
         $("#txtetaedit").val(ideta);   
         if (ideta==0) 
         {
+          $("#tipoetaedit").html('Seleccione el Tipo de ETA');
           $("#gasedit").html('<option >Seleccione la Programática de Gasto</option>');
           $("#tipedit").html('');
           $("#txttipoedit").val('0');
@@ -1725,6 +1916,18 @@ function sumarPresupuedit(){
         }
         else        
         {
+          $.get("listarTipoEtas/"+ideta , function(respuesta){
+              var etas = respuesta.etas;
+              $("#tipoetaedit").html('');
+              var opcion0 = "<option value='0'>Seleccione el Tipo de ETA</option>";
+              $("#tipoetaedit").append(opcion0);
+              for(var i=0; i<etas.length; i++)
+              {
+                var eta = etas[i];              
+                var opcion = "<option value=" + eta.id_eta + ">" + eta.descripcion_eta + "</option>";           
+                $("#tipoetaedit").append(opcion);
+              }
+            });
           if(ideta==1||ideta==2)
           {
               $.get("listarGastos1" , function(respuesta)
@@ -2013,6 +2216,18 @@ function sumarPresupuedit(){
           }
         });        
       });
+    $("#eta").select2();
+    $("#tipoeta").select2();
+    $("#gas").select2();
+    $("#etaedit").select2();
+    $("#tipoetaedit").select2();    
+    $("#gasedit").select2();
+    $("#acci").select2();
+    $("#acciedit").select2();
+    $("#ser").select2();
+    $("#seredit").select2();
+    $("#tip").select2();
+    $("#tipedit").select2();
     });
  </script> 
  <script>
@@ -2146,6 +2361,8 @@ function verificaredit()
                                 w.disabled=true;
                                 var p20=document.getElementById('p2020edit');
                                 p20.disabled=true;
+                                var tet=document.getElementById('tipoetaedit');
+                                tet.disabled=true;
 
 
                                }
@@ -2165,6 +2382,7 @@ function verificaredit()
         }
       }
     }    
+   
   }
 </script>
 @endpush

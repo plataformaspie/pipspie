@@ -14,13 +14,13 @@ class PlanificacionTerritorialABMController extends PlanificacionBaseController
   }
   public function listaMatricesEditar()
   {
-    $matrices = \DB::select("select m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,pilar,meta,resultado,accion,id_accion_eta,m.descripcion_accion ,m.id_tarea_eta,m.id_servicio, m.id_clasificador,m.descripcion_accion_eta
+    $matrices = \DB::select("select m.id_correlativo,d.id_departamento,d.descripcion_departamento,p.id_provincia,p.descripcion_provincia,mu.id_municipio, mu.descripcion_municipio,m.id_programa,m.descripcion_programa,m.accion_eta,m.linea_base,m.proceso_indicador,m.unidad_indicador,m.cantidad_indicador,indicador2016,indicador2017,indicador2018,indicador2019,indicador2020,m.cantidad_presupuesto,m.presupuesto2016, m.presupuesto2017,m.presupuesto2018,m.presupuesto2019,m.presupuesto2020,pilar,meta,resultado,accion,id_accion_eta,m.descripcion_accion ,m.id_tarea_eta,m.id_servicio,s.descripcion_servicio, m.id_clasificador,c.descripcion_clasificador,m.descripcion_accion_eta,m.tipo_eta
 
-from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_matrices m
+from sp_pt_departamentos d,sp_pt_provincias p,sp_pt_municipios mu ,sp_pt_matrices m,sp_pt_servicios s, sp_pt_clasificadores c
 where d.id_departamento=p.id_departamento and d.id_departamento=mu.id_departamento and d.id_departamento=m.id_departamento 
 and p.id_departamento=mu.id_departamento and p.id_departamento=m.id_departamento and m.id_departamento=mu.id_departamento
 and p.id_provincia=mu.id_provincia and p.id_provincia=m.id_provincia and m.id_provincia=mu.id_provincia
-and mu.id_municipio=m.id_municipio and m.estado<>'ELIMINADO' order by m.id_correlativo desc" );
+and mu.id_municipio=m.id_municipio and m.estado<>'ELIMINADO' and m.id_servicio=s.id_servicio and m.id_clasificador=c.id_clasificador order by m.id_correlativo desc" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo la matriz',
@@ -29,7 +29,25 @@ and mu.id_municipio=m.id_municipio and m.estado<>'ELIMINADO' order by m.id_corre
   }
   public function listaEtasEditar()
   {
-    $etas = \DB::select("SELECT * from sp_pt_eta" );
+    $etas = \DB::select("SELECT * from sp_pt_eta where dependiente=0 order by id_eta" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo etas',
+      'etas'=>$etas
+    ]);
+  }
+  public function TiposEtas($ideta)
+  {
+    $etas = \DB::select("SELECT * from sp_pt_eta where id_eta=$ideta order by id_correlativo" );
+    return response()->json([
+      'status'=>'ok',
+      'mensaje'=>'Se cargo etas',
+      'etas'=>$etas
+    ]);
+  }
+  public function listaTiposEtasEditar($eta)
+  {
+    $etas = \DB::select("SELECT * from sp_pt_eta where dependiente=$eta order by id_correlativo" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se cargo etas',
@@ -100,7 +118,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
   public function listaTiposEditar()
   {
-    $tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores" );
+    $tipos = \DB::select("select id_clasificador,descripcion_clasificador from sp_pt_clasificadores where id_clasificador<>0" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo Gastos',
@@ -109,7 +127,7 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
   }
    public function listaServiciosEditar()
   {
-    $servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios" );
+    $servicios = \DB::select("select id_servicio,descripcion_servicio from sp_pt_servicios where id_servicio<>0" );
     return response()->json([
       'status'=>'ok',
       'mensaje'=>'Se Cargo Gastos',
@@ -151,7 +169,8 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
     $matriz['meta'] = $req->meta;
     $matriz['resultado'] = $req->resultado;
     $matriz['accion'] = $req->accion;
-    $matriz['descripcion_accion'] = $req->descripcion_accion;    
+    $matriz['descripcion_accion'] = $req->descripcion_accion;
+    $matriz['tipo_eta'] = $req->tipo_eta;  
     $matriz['usuario_modificador']=$this->user->id;
     $matriz['descripcion_accion_eta'] = $req->descripcion_accion_eta;
     
@@ -186,6 +205,11 @@ group by mu.id_municipio,mu.descripcion_municipio order by id_municipio " );
       return response()->json([
       'msg' => 'Matriz No eliminada'.$e ]);
     }
+  }
+   public function seguimiento(Request $req)
+  {
+    
+    return view('ModuloPlanificacion.show-seguimiento-territorial');
   }
   public function export() 
 {
