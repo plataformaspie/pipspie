@@ -1088,7 +1088,7 @@ $(function(){
             $(".sp_titulo_topbar_right h3").html( (globalSP.planActivo.cod_tipo_plan == 'PSDI') ? 'Planificación Sectorial':'Planificación Institucional');
     });
     globalSP.setBreadcrumb('Planificación', 'Planificación');
-    $("#planificacion_plaa").load('/v/ModuloPlanificacion.view-planificacion-pmra-inds')
+    $("#planificacion_plaa").load('/v/ModuloPlanificacion.view-planificacion-pmra-inds');
     planif_submenu_activo(1);
 
 })
