@@ -258,7 +258,7 @@
 
 
     <!-- -----------------------------------------          Modal Presupuesto y Contraparte --------------------------------------------------- -->
-    <div id="modal_plaa_pre"  class="white-popup-block popup-basic admin-form mfp-with-anim mfp-hide">
+    <div id="modal_plaa_pre" style="width:1000px; margin:40px auto"  class="white-popup-block admin-form mfp-with-anim mfp-hide">
         <div class="panel">
             <div class="panel-heading bg-dark">
                 <span class="panel-title text-white tituloModal" id=""><i class="fa fa-pencil"></i> <span>__</span></span>
@@ -276,75 +276,11 @@
                         <h5 class="mt5 ph10 pb5 br-b fw700"></h5>
                     </div>
                     <div class="row">
-                        {{-- <div class="col-sm-6 br-r">
-
-                            <h5 class="mt5 ph10 pb5 br-b fw700">Indicador <small class="pull-right fw700 text-primary">- </small> </h5>
-                            <div class="section">
-                                <label class="field-label" for="nombre">Indicador de la acción o del proyecto</label>
-                                <label for="nombre" class="field prepend-icon">
-                                    <textarea class="gui-textarea" id="nombre" name="nombre"  placeholder="Indicador"></textarea>
-                                    <label for="nombre" class="field-icon"><i class="glyphicons glyphicons-riflescope"></i>
-                                    </label>                                        
-                                </label>
-                            </div>
-
-                            <div class="section">
-                                <label class="field-label" for="id_diagnostico">Variables del diagnóstico</label>
-                                <label class="field select">
-                                    <select id="id_diagnostico" name="id_diagnostico" class="" style="width:100%;">
-                                    </select>
-                                    <i class="arrow"></i>
-                                </label>
-                            </div>
-
-                            <div class="section">
-                                <label class="field-label" for="variable">Variable</label>
-                                <label class="field prepend-icon">
-                                    <input type="text" id="variable" name="variable" class="gui-input" placeholder="Variable" style="width:100%;">
-                                    <label for="variable" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-                                    </label>
-                                </label>
-                            </div>
-
-                            <div class="section">
-                                <label class="field-label" for="idp_unidad">Unidad de Medida </label>
-                                <label class="field select">
-                                    <select id="idp_unidad" name="idp_unidad" class="required sp_metrica" style="width:100%;">
-                                    </select>
-                                    <i class="arrow"></i>                  
-                                </label>
-                            </div>
-
-                            <div class="section">
-                                <label class="field-label" for="linea_base">Linea Base</label>
-                                <label class="field prepend-icon">
-                                    <input type="text" class="gui-input" id="linea_base" name="linea_base" placeholder="Linea Base" style="width:100%;">
-                                    <label for="linea_base" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-                                    </label>                 
-                                </label>
-                            </div>
-                            <div class="section">
-                                <label class="field-label" for="alcance">Alcance</label>
-                                <label class="field prepend-icon">
-                                    <input type="text" class="gui-input" id="alcance" name="alcance" placeholder="Alcance" style="width:100%;">
-                                    <label for="alcance" class="field-icon"><i class=" fa fa-dot-circle-o"></i>
-                                    </label>                  
-                                </label>
-
-                            </div>
-                        </div> --}}
-
-                        <div class="col-sm-6" id="gestiones_ind">
-                            <h5 class="mt5 ph10 pb5 br-b fw700">Programación <small class="pull-right fw700 text-primary">- </small> </h5>
-                            <table class="table mbn">
-                                <thead>
-                                    <tr class="hidden">
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                        <div class="col-sm-6" id="gestiones_presup">
+                        </div>                        
+                        <div class="col-sm-6" id="gestiones_contrp">
                         </div>
+
                     </div>
                     
                 </div>
@@ -875,6 +811,8 @@ $(function(){
                 console.log(res.data)
                 ctxattr.data = data = res.data;
 
+                (atributo == 'pre') ? $("#atrib_nuevo").hide() : $("#atrib_nuevo").show();
+
                 if(atributo == 'ind') $("#p_atribContenido").html(ctxind.fillData(data)) ;
                 if(atributo == 'pre') $("#p_atribContenido").html(ctxpre.fillData(data)) ;
                 if(atributo == 'res') $("#p_atribContenido").html(ctxres.fillData(data)) ;
@@ -1094,9 +1032,11 @@ $(function(){
     }
 
     ctxpre = {
+        entidades_territoriales:[],
+        indicadorsel : {},
         fillData: function(data){
             if (data.length == 0) 
-                return "<span class='p5 ml10'>No existen datos sobre presupuesto o contraparte.</span>";
+                return "<span class='p5 ml10'>No existen datos sobre presupuesto y/o contraparte.</span>";
 
             var pmraData = ctxplaa.selrow();
             var headGestiones = '';
@@ -1104,28 +1044,53 @@ $(function(){
                 headGestiones += `<th>${i}</th>`;
             
             var html = `<table class="table table-bordered table-hover fs11 sp_table">
-                            <thead><tr class="primary"> <th>Indicador</th> <th>Pres. / Contr.</th> ${headGestiones} <th></th> </tr> </thead>
+                            <thead><tr class="primary"> <th>Indicador</th> <th>Presupuesto  Contraparte</th> ${headGestiones} <th></th> </tr> </thead>
                             <tbody>`;
 
             data.forEach(function(elem, index){
                 var pres_gc_row = pres_ip_row = '';
-                for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++){
+                var fila = ` <td> <div>Presup.: Inv. P. </div> <div>Presup.: Gasto </div>${elem.contraparte.length > 0 ? '<div>CntrParte: Inv. P.</div><div>CntrParte: Gasto</div>' : ''} <div><b>TOTAL</b></div> </td> `;
+                for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++){    
                     presGestion = _.find(elem.presupuesto, function(el){
                         return el.gestion == i;
                     }) ;
-                    var valor_ip = (presGestion && presGestion.inversion_publica) ? `${presGestion.inversion_publica }` : '';
-                    pres_ip_row += `<td> ${valor_ip}</td>`;
-                    var valor_gc = (presGestion && presGestion.gasto_corriente) ? `${presGestion.gasto_corriente }` : '';
-                    pres_gc_row += `<td> ${valor_gc}</td>`;
+                    contrGestion_ip = _.filter(elem.contraparte, function(el){
+                        return (el.gestion == i && el.inversion_publica);
+                    });
+                    contrGestion_gc = _.filter(elem.contraparte, function(el){
+                        return (el.gestion == i && el.gasto_corriente);
+                    });
+                    fila += `<td>`;
+                    var acum = 0;
+                    var presup_ip = (presGestion && presGestion.inversion_publica) ? `${presGestion.inversion_publica }` : 0;
+                    var presup_gc = (presGestion && presGestion.gasto_corriente) ? `${presGestion.gasto_corriente }` : 0;
+
+                    var ctr_ip = contrGestion_ip.reduce(function(carry, el){
+                                        return carry + `<div>${el.cod_entidad_territorial} ${el.inversion_publica || 0}</div>`;
+                                    }, '');
+                    var ctr_gc = contrGestion_gc.reduce(function(carry, el){
+                                        return carry + `<div>${el.cod_entidad_territorial} ${el.gasto_corriente || 0}</div>`;
+                                    }, '');
+
+                    fila += `<div>${presup_ip}</div><div>${presup_gc}</div>${ctr_ip + ctr_gc}`;    
+
+                    acum +=   ( Number(presup_ip) +  Number(presup_gc) );
+                    acum +=  Number(contrGestion_ip.reduce(function(carry, el){
+                                        return carry + el.inversion_publica || 0;
+                                    }, 0) );
+                    acum += Number(contrGestion_gc.reduce(function(carry, el){
+                                        return carry + el.gasto_corriente || 0;
+                                    }, 0) );
+                    fila += `<div><b>${acum}</b></div></td>`;
+
                 }
 
-                var rowspan = elem.presupuesto + elem.contraparte;
 
-                var row = `<tr><td rowspan="2" >${elem.nombre_indicador}</td> <td>Pres: Inv. P.</td> ${pres_ip_row}
-                            <td  rowspan="2" ><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar Indicador y programación" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+
+                var row = `<tr><td>${elem.nombre_indicador}</td> ${fila} 
+                            <td ><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar presupuesto" ><i class="fa fa-edit text-warning fa-lg"></i></a>
                                 </td>
-                            </tr>
-                            <tr><td>Pres.: Gasto</td> ${pres_gc_row}</tr>`;
+                            </tr>`;
                 html += row;               
             });
 
@@ -1142,72 +1107,134 @@ $(function(){
                                             <div><b>${selpmra.nombre_r}</b> - ${selpmra.desc_r} </div>
                                             <div><b>${selpmra.nombre_a} - ${selpmra.desc_a}</b> </div>
                                             <b>PROYECTO:  ${ctxattr.selproy.nombre_proyecto}</b>`);
-            var info_indicador = `Indicador: ${indicadorsel.nombre_indicador} <br> Variable: ${indicadorsel.variable} 
-                                <br> Unidad medida:  ${indicadorsel.unidad} <hr>`;
-                ("#pre_datos_indicador h5").html(info_indicador);
+
+            var info_indicador = `Indicador: ${indicadorsel.nombre_indicador} <br> Variable: ${indicadorsel.variable ||''} 
+            <br> Unidad medida:  ${indicadorsel.unidad ||''} `;
+            $("#pre_datos_indicador h5").html(info_indicador);
+
+            $.get(globalSP.urlApi + 'getparametros/entidad_territorial', function(res){
+                ctxpre.entidades_territoriales = _.sortBy(res.data, 'id');
+            });
         },
-        // nuevo: function(){         
-        //     ctxind.cargarElemsForm();
-        //     $("#modal_plaa_pre .tituloModal span").html(`Agregar indicador de Accion/Proyecto`);
-        //     $('#form_pre input:text, #form_pre textarea').val('');
-        //     $("#form_pre  select").val('').change();
-        //     var selpmra = ctxattr.selpmra;
-        //     var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin);
-        //     $("#form_pre #gestiones_ind tbody").html(html);            
-        //     ctxgral.showModal("#modal_plaa_pre");
-        // },
-        genera_inputgestiones : function(gestion_ini, gestion_fin, dataP, dataC){
-            var html='';                  
+        nuevo: function(){         
+            // ctxind.cargarElemsForm();
+            // $("#modal_plaa_pre .tituloModal span").html(`Agregar Presupuesto`);
+            // $('#form_pre input:text, #form_pre textarea').val('');
+            // $("#form_pre  select").val('').change();
+            // var selpmra = ctxattr.selpmra;
+            // var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin);
+            // $("#form_pre #gestiones_ind tbody").html(html);            
+            // ctxgral.showModal("#modal_plaa_pre");
+        },
+        genera_inputgestiones : function(gestion_ini, gestion_fin, dataP, dataC, gestion){
+            if(gestion){
+                return  `<div class="row pv5 sp_contrp">  
+                                <div class="col-xs-12 fs11">
+                                    Entidad Territorial: 
+                                    <input type="hidden" id="sp_contrp_id_${g}" class="sp_contrp_id" value=""> 
+                                    <select class=" sp_contrp_idp_et fs11"> 
+                                        ${ _.reduce(ctxpre.entidades_territoriales, function(carr, op){
+                                                return carr + `<option value="${op.id}">${op.codigo}- ${op.nombre}</option>`
+                                            }, '')
+                                        } 
+                                    </select>
+                                    <input type="hidden" class="sp_contrp_g" value="${gestion}"> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="text" id="sp_contrp_ip_${g}" class="gui-input w150 sp_contrp_ip" placeholder="Inv. Pub." value="">                                    
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="text" id="sp_contrp_gc_${g}" class="gui-input w150 sp_contrp_gc" placeholder="Gasto Corr." value="">
+                                </div>
+                                <div class="col-xs-2">
+                                    <a href="javascript:void(0)" class="fa fa-minus-circle text-danger pull-right sp_contrp_quita"></a>
+                                </div>
+                                
+                        </div>`
+            }
+
+            var htmlPresup = `<div><h4>Presupuesto</h4></div>
+                        <table>
+                        <tr><td class="mr10"></td><td><h5>Inv. Pública</h5></td><td><h5>Gasto Corriente</h5></td></tr>`;
+                        
+
+            var htmlContrp = `<div><h4>Contraparte</h4></div>
+                        <table>
+                        <tr><td class="mr10"></td><td><h5> 
+                                                    <div class="row">
+                                                            <div class="col-xs-4"><span>Inv. Pública </span></div>
+                                                            <div class="col-xs-4"> <span> Gasto Corriente</span></div>
+                                                        </div>
+                                                        </h5></td></tr>`; 
+
             for(var g = gestion_ini; g <= gestion_fin; g++)
             { 
-                var pres = { id_presupuesto:'', invp: '', gasc: ''};
-                var ctr =[];
+                var pres = { id_presupuesto:'', invp: '', gasc: ''};                
                 if(dataP && dataP.length>0)
-                    pres =  _.find(data, function(pre){ return pre.gestion == g});
+                    pres =  _.find(dataP, function(pre){ return pre.gestion == g});
+                
+                htmlPresup += `<tr class="mv5 br-b ">
+                            <td class="fs17 w50">
+                                <span class="glyphicon glyphicon-chevron-right text-info">${g}</span> 
 
+                            </td>
+                            <td class="fs14 fw700 text-muted"> 
+                                <input type="hidden" id="sp_presup_id_${g}"  value="${pres.id_presupuesto || ''}">             
+                                <input type="text" id="sp_presup_ip_${g}"  class="gui-input w150 sp_dato" placeholder="Inv. Pub." value="${pres.inversion_publica || ''}">
+                            </td>
+                            <td class="fs14 fw700 text-muted ">                           
+                                <input type="text" id="sp_presup_gc_${g}" class="gui-input w150 sp_dato" placeholder="Inv. Pub."  value="${pres.gasto_corriente || ''}">
+                            </td>
+                        </tr>`;
+
+
+                var ctr =[];
                 if(dataC && dataC.length>0)
                     ctr =  _.filter(dataC, function(ctr){ return ctr.gestion == g});
-                
-                html += `<tr><td></td> <td></td> <td colspan="2">Presupuesto</td> <td colspan="2">Contraparte</td> </tr>
-                <tr><td></td> <td></td> <td>Inv. Pub</td> <td>Gasto Corr.</td> <td>Inv. Pub</td> <td>Gasto Corr.</td> </tr>
-                <tr>
-                    <td class="fs17 text-center w30">
-                        <span class="fa fa-newspaper-o text-info"></span>
-                    </td>
-                    <td class="va-m fw600 text-muted">${g}</td>
-                    <td class="fs14 fw700 text-muted text-right sp_pre_ip">
-                        <input type="text"  class="hidden id${g}" value="${pres.id_presupuesto || ''}" >
-                        <input type="text"  class="hidden g${g} " value="${g}" >
-                        <label for="mod_dato" class="field prepend-icon">                            
-                            <input type="text"  class="gui-input dip${g}" placeholder="Inv. Pub." value="${pres.inversion_publica || ''}">
-                            <label for="d${g}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
-                            </label>
-                        </label>
-                    </td>
-                    <td class="fs14 fw700 text-muted text-right sp_pre_gc">
-                        <label for="mod_dato" class="field prepend-icon">                            
-                            <input type="text"  class="gui-input dgc${g}" placeholder="Inv. Pub." value="${pres.gasto_corriente || ''}">
-                            <label for="d${g}" class="field-icon"><i class="glyphicon glyphicon-chevron-right"></i>
-                            </label>
-                        </label>
-                    </td>
-                    <td class=" sp_ctr_ip">
-                    </td>
-                    <td class=" sp_ctr_gc">
-                    </td>
-                </tr>`;
+
+                htmlContrp += `<tr class="mv5 br-b">
+                            <td class="fs17 w75">
+                                <a href="javascript:void(0)" class="fa fa-plus-circle text-warning sp_contrp_add" sp_contrp_g="${g}" title="Agreagar Contraparte con entidad territorial en esta gestión"></a>
+                                <span class="glyphicon glyphicon-chevron-right text-info">${g}</span>
+                            </td>
+                            <td class="fs14 fw700 text-muted ">
+                                ${ 
+                                    _.reduce(ctr, function(carr, elemCtr){
+                                    return `<div  class="row pv5 sp_contrp">  
+                                                    <div class="col-xs-12  fs11">
+                                                        Entidad Territorial: <small>${elemCtr.cod_entidad_territorial}- ${elemCtr.entidad_territorial} </small>
+                                                        <input type="hidden" id="sp_contrp_id_${g}" class="sp_contrp_id" value="${elemCtr.id_contraparte}"> 
+                                                        <input type="hidden" id="sp_contrp_idp_et_${g}" class="sp_contrp_idp_et" value="${elemCtr.idp_entidad_territorial}">
+                                                        <input type="hidden" id="sp_contrp_g_${g}" class="sp_contrp_g" value="${g}"> 
+                                                        
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <input type="text" id="sp_contrp_ip_${g}" class="gui-input w150 sp_contrp_ip" placeholder="Inv. Pub." value="${elemCtr.inversion_publica || ''}">                                                        
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <input type="text" id="sp_contrp_gc_${g}" class="gui-input w150 sp_contrp_gc" placeholder="Gasto Corr." value="${elemCtr.gasto_corriente || ''}">
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <a href="javascript:void(0)" class="fa fa-minus-circle text-danger pull-right sp_contrp_quita" title="Quitar contraparte, se almacenará este cambio al guardar"></a>
+                                                    </div>                                                    
+                                            </div>`
+                                    },'')
+                                }
+                            </td>
+                        </tr>`;
             }
-            return html;            
+            htmlPresup += `</table>`;
+            htmlContrp += `</table>`;
+            return { inputs_presupuesto :htmlPresup, inputs_contraparte: htmlContrp};            
         },
         editar: function(index){
-            var indicadorsel = ctxattr.data[index];    
-            ctxpre.cargarElemsForm(indicadorsel);
-            $("#modal_plaa_pre .tituloModal span").html(`Presupuesto de Inversion y gasto Corriente`);            
-
-            
+            ctxpre.indicadorsel = ctxattr.data[index];    
+            ctxpre.cargarElemsForm(ctxpre.indicadorsel);
+            $("#modal_plaa_pre .tituloModal span").html(`Presupuesto`);                    
             var selpmra = ctxattr.selpmra;
-            var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin, indicadorsel.programacion);
-            $("#form_pre #gestiones_ind tbody").html(html);
+            var inputs = ctxpre.genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin, ctxpre.indicadorsel.presupuesto, ctxpre.indicadorsel.contraparte);
+            $("#form_pre #gestiones_presup").html(inputs.inputs_presupuesto);
+            $("#form_pre #gestiones_contrp").html(inputs.inputs_contraparte);
             ctxgral.showModal("#modal_plaa_pre");
         },        
         validateRules: function(){
@@ -1223,42 +1250,43 @@ $(function(){
             var selpmra = ctxattr.selpmra;
             gestion_ini = selpmra.periodo_gestion_ini;
             gestion_fin = selpmra.periodo_gestion_fin;
-            var obj = {
+            var presupuestos = [];
+            var contrapartes = [];
+            for(var i=gestion_ini; i<=gestion_fin; i++){
+                var objp = {
+                    id: $("#sp_presup_id_"+i).val(),
+                    inversion_publica : $("#sp_presup_ip_"+i).val(),
+                    gasto_corriente : $("#sp_presup_gc_"+i).val(),
+                    gestion : i,
+                    id_arti_pdes_proyecto_indicador : ctxpre.indicadorsel.id_arti_pdes_proyecto_indicador
+                };
+                presupuestos.push(objp);
+            }
+
+            $(".sp_contrp").each(function(elem){
+                var objc = {
+                    id: $(this).find('.sp_contrp_id').val(),
+                    idp_entidad_territorial: $(this).find('.sp_contrp_idp_et').val(),
+                    gestion: $(this).find('.sp_contrp_g').val(),
+                    inversion_publica: $(this).find('.sp_contrp_ip').val(),
+                    gasto_corriente: $(this).find('.sp_contrp_gc').val(),
+                    id_arti_pdes_proyecto_indicador : ctxpre.indicadorsel.id_arti_pdes_proyecto_indicador
+                };
+                contrapartes.push(objc);
+            });
+
+           return {
                 _token : ctxgral.token,
-                id_plan : globalSP.idPlanActivo,
-                p: globalSP.idPlanActivo,
-                indicador: {
-                    id : $("#form_pre #id_indicador").val(),
-                    nombre :$("#form_pre #nombre").val(),
-                    idp_unidad: $("#form_pre #idp_unidad").val(),
-                    // id_diagnostico: $("#form_pre #id_diagnostico").val(),
-                    variable: $("#form_pre #variable").val(),
-                    alcance: $("#form_pre #alcance").val(),
-                },
-                arti_pdes_proyecto_indicador: {
-                    id: $("#form_pre #id_arti_pdes_proyecto_indicador").val(),
-                    id_arti_pdes_proyecto : ctxattr.selproy.id_arti_pdes_proyecto,
-                },
-                indicador_ejecucion: {
-                    id: $("#form_pre #id_indicador_ejecucion").val(),
-                    gestion: gestion_ini - 1,
-                    dato: $("#form_pre #linea_base").val(),
-                }
+                presupuestos : presupuestos, 
+                contrapartes: contrapartes
             };
-            var indProgramacion = [];
-            for(var i = gestion_ini; i <= gestion_fin; i++){
-                var prog = {};
-                prog.id = $("#form_pre .id" + i).val();;
-                prog.gestion = i;
-                prog.dato =  $("#form_pre .d" + i).val();
-                indProgramacion.push(prog);
-            }     
-            obj.indicadores_programacion = indProgramacion;
-            return obj;
+
+
         },
         saveData: function(){
             var obj = ctxpre.getDataForm();
-            ctxattr.saveAtribData('saveIndicadorAccionProg', obj);                         
+            console.log(obj)
+            ctxattr.saveAtribData('savepresupuestoscontrapartes', obj);                         
         },
         eliminar: function(index){
             var indicadorsel = ctxattr.data[index]; 
@@ -1728,8 +1756,6 @@ $(function(){
 
 
 
-
-
             /* ---------- Contexto plaa proy ---------------------------------------------------------*/
             ctxplaa.fillDataTable();
 
@@ -1767,6 +1793,19 @@ $(function(){
                 ctxattr.cargarAtrib( atributo);
             });
 
+
+            /* Comportamientos de Presupuestos contrapartes*/
+            $("#modal_plaa_pre").on('click', '.sp_contrp_add', function(){
+                var gestion = $(this).attr('sp_contrp_g');
+                var tds = $(this).parent().parent().find('td');
+                $(tds[1]).append(ctxpre.genera_inputgestiones(null, null, null, null, gestion) );
+
+            });
+
+            $("#modal_plaa_pre").on('click', '.sp_contrp_quita', function(){
+                $(this).parent().parent().remove();
+            });
+
             /* ---------- Contexto atrib ---------------------------------------------------------*/
 
             $("#atrib_nuevo").click(function(){
@@ -1783,7 +1822,7 @@ $(function(){
                 ctxattr.abmAtrib('eliminar', index);
             });
 
-            /*  validaciones ind */
+            /*  validaciones atribs */
             $("#form_ind").validate(ctxgral.creaValidateRules(ctxind));
             $("#form_pre").validate(ctxgral.creaValidateRules(ctxpre));
             $("#form_res").validate(ctxgral.creaValidateRules(ctxres));

@@ -555,6 +555,54 @@ class PlanificaPMRAController extends PlanificacionBaseController
         }
     }
 
+    /*
+    | POST: Inserta prespuestros y contrapartes, 
+    | $req = { prespuestos:[], contrapartes:[]}
+     */
+    public function savePresupuestosContrapartes(Request $req)
+    {
+        $presupuestos = $req->presupuestos;
+        $contrapartes = $req->contrapartes;
+        $updated_at = \Carbon\Carbon::now(-4);
+
+        $id_arti_pdes_proyecto_indicador = ((object)$presupuestos[0])->id_arti_pdes_proyecto_indicador;
+
+        \DB::select("UPDATE sp_presupuesto set activo = false, id_user_updated = {$this->user->id}, updated_at = '{$updated_at}'  
+                        WHERE id_arti_pdes_proyecto_indicador = {$id_arti_pdes_proyecto_indicador}");
+        
+        foreach ($presupuestos as $presup) {
+            $presup = (object)$presup;
+            $objp = new \stdClass();
+            $objp->id = $presup->id;
+            $objp->id_arti_pdes_proyecto_indicador = $presup->id_arti_pdes_proyecto_indicador;
+            $objp->gestion = $presup->gestion;
+            $objp->inversion_publica = $presup->inversion_publica;
+            $objp->gasto_corriente = $presup->gasto_corriente;
+            $id = $this->saveObjectTabla($presup, 'sp_presupuesto'); 
+        }
+
+        \DB::select("UPDATE sp_contraparte set activo = false, id_user_updated = {$this->user->id}, updated_at = '{$updated_at}'  
+                    WHERE id_arti_pdes_proyecto_indicador = {$id_arti_pdes_proyecto_indicador}");
+        
+        foreach ($contrapartes as $ctr) {
+            $ctr = (object)$ctr;
+            $objc = new \stdClass();
+            $objc->id = $ctr->id;
+            $objc->id_arti_pdes_proyecto_indicador = $ctr->id_arti_pdes_proyecto_indicador;
+            $objc->idp_entidad_territorial = $ctr->idp_entidad_territorial;            
+            $objc->gestion = $ctr->gestion;
+            $objc->inversion_publica = $ctr->inversion_publica;
+            $objc->gasto_corriente = $ctr->gasto_corriente;
+            $id = $this->saveObjectTabla($ctr, 'sp_contraparte'); 
+        }
+
+
+        return \Response::json([
+                'estado' => "success",
+                'msg'    => "Se guardó con éxito."]);
+
+    }
+
     /*---------------------------------------------------------------------------------------------------------------------
     | Inserta en la tabla spo_responsables los valores nuevos, si se introduces repetidos estos no se insertan
     |   $req: { id_arti_pdes_proyecto : '123', id_entidades: [1,2,3]}
@@ -699,7 +747,8 @@ class PlanificaPMRAController extends PlanificacionBaseController
                                                         where p.activo AND p.id_arti_pdes_proyecto_indicador = {$elem->id_arti_pdes_proyecto_indicador} ");
 
                     $elem->contraparte = \DB::select("SELECT c.id as id_contraparte, c.gestion, c.inversion_publica,
-                                                        c.gasto_corriente, p.nombre as entidad_territorial, p.codigo as cod_entidad_territorial FROM sp_contraparte c, sp_parametros p 
+                                                        c.gasto_corriente, p.nombre as entidad_territorial, p.codigo as cod_entidad_territorial, p.id as idp_entidad_territorial 
+                                                        FROM sp_contraparte c, sp_parametros p 
                                                         WHERE c.activo and p.activo and c.idp_entidad_territorial = p.id 
                                                         AND c.id_arti_pdes_proyecto_indicador = {$elem->id_arti_pdes_proyecto_indicador} ");
                 };
