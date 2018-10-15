@@ -224,6 +224,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('showDiagnostico', 'ModuloPlanificacion\DiagnosticoController@showDiagnostico');
             Route::get('showPolitica', 'ModuloPlanificacion\PoliticaController@showPolitica');
             Route::get('showPlanificacion-pmra', 'ModuloPlanificacion\PlanificaPMRAController@showPlanificacionPMRA');
+            Route::get('showGestionDocumental', 'ModuloPlanificacion\GestionDocumentalController@showGestionDocumental');
 
 
             /*++++++++++admininistracion Clasificador++++++++++++++++++++++++++++++*/
@@ -409,6 +410,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('deleteartiproyecto', 'ModuloPlanificacion\PlanificaPMRAController@deleteArtiProyecto');
             Route::get('listproyectos', 'ModuloPlanificacion\PlanificaPMRAController@listProyectos');
             Route::post('saveIndicadorAccionProg', 'ModuloPlanificacion\PlanificaPMRAController@saveIndicadorAccionProg');
+            Route::post('savepresupuestoscontrapartes', 'ModuloPlanificacion\PlanificaPMRAController@savePresupuestosContrapartes');            
             Route::post('saveresponsables', 'ModuloPlanificacion\PlanificaPMRAController@saveResponsables');
             Route::post('saverolesactores', 'ModuloPlanificacion\PlanificaPMRAController@saveRolesActores');
             Route::post('savearticulacioncompetencial', 'ModuloPlanificacion\PlanificaPMRAController@saveArticulacionCompetencial');
@@ -423,7 +425,10 @@ Route::group(['middleware' => 'auth'],function(){
 
             Route::post('saveejecuciones', 'ModuloPlanificacion\SeguimientoController@saveEjecuciones');
 
-
+            /********** Gestio Documental ******************/
+            Route::get('listDocumentos', 'ModuloPlanificacion\GestionDocumentalController@listDocumentos');
+            Route::post('savedocumento', 'ModuloPlanificacion\GestionDocumentalController@saveDocumento');
+            Route::post('deletedocumento', 'ModuloPlanificacion\GestionDocumentalController@deleteDocumento');
 
             /********** Review ******************/
             Route::get('apiSetListMinisterios', 'ModuloPlanificacion\ReviewController@apiSetListMinisterios');
