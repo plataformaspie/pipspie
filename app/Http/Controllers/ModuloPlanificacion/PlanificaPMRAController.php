@@ -563,14 +563,14 @@ class PlanificaPMRAController extends PlanificacionBaseController
     {
         $presupuestos = $req->presupuestos;
         $contrapartes = $req->contrapartes;
-        $updated_at = \Carbon\Carbon::now(-4);
-
-        $id_arti_pdes_proyecto_indicador = ((object)$presupuestos[0])->id_arti_pdes_proyecto_indicador;
+        $updated_at = \Carbon\Carbon::now(-4);        
+        // $id_arti_pdes_proyecto_indicador = ((object)$presupuestos[0])->id_arti_pdes_proyecto_indicador;
+        $id_arti_pdes_proyecto_indicador = $presupuestos[0]['id_arti_pdes_proyecto_indicador'];
 
         \DB::select("UPDATE sp_presupuesto set activo = false, id_user_updated = {$this->user->id}, updated_at = '{$updated_at}'  
                         WHERE id_arti_pdes_proyecto_indicador = {$id_arti_pdes_proyecto_indicador}");
         
-        foreach ($presupuestos as $presup) {
+        foreach ($presupuestos ? $presupuestos : [] as $presup) {
             $presup = (object)$presup;
             $objp = new \stdClass();
             $objp->id = $presup->id;
@@ -584,7 +584,7 @@ class PlanificaPMRAController extends PlanificacionBaseController
         \DB::select("UPDATE sp_contraparte set activo = false, id_user_updated = {$this->user->id}, updated_at = '{$updated_at}'  
                     WHERE id_arti_pdes_proyecto_indicador = {$id_arti_pdes_proyecto_indicador}");
         
-        foreach ($contrapartes as $ctr) {
+        foreach ($contrapartes ? $contrapartes : [] as $ctr) {
             $ctr = (object)$ctr;
             $objc = new \stdClass();
             $objc->id = $ctr->id;
@@ -595,12 +595,9 @@ class PlanificaPMRAController extends PlanificacionBaseController
             $objc->gasto_corriente = $ctr->gasto_corriente;
             $id = $this->saveObjectTabla($ctr, 'sp_contraparte'); 
         }
-
-
         return \Response::json([
                 'estado' => "success",
                 'msg'    => "Se guardó con éxito."]);
-
     }
 
     /*---------------------------------------------------------------------------------------------------------------------

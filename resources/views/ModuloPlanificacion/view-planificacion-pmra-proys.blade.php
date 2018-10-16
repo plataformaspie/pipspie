@@ -1117,14 +1117,6 @@ $(function(){
             });
         },
         nuevo: function(){         
-            // ctxind.cargarElemsForm();
-            // $("#modal_plaa_pre .tituloModal span").html(`Agregar Presupuesto`);
-            // $('#form_pre input:text, #form_pre textarea').val('');
-            // $("#form_pre  select").val('').change();
-            // var selpmra = ctxattr.selpmra;
-            // var html = genera_inputgestiones(selpmra.periodo_gestion_ini, selpmra.periodo_gestion_fin);
-            // $("#form_pre #gestiones_ind tbody").html(html);            
-            // ctxgral.showModal("#modal_plaa_pre");
         },
         genera_inputgestiones : function(gestion_ini, gestion_fin, dataP, dataC, gestion){
             if(gestion){
@@ -1264,6 +1256,7 @@ $(function(){
             }
 
             $(".sp_contrp").each(function(elem){
+                console.log(55);
                 var objc = {
                     id: $(this).find('.sp_contrp_id').val(),
                     idp_entidad_territorial: $(this).find('.sp_contrp_idp_et').val(),
