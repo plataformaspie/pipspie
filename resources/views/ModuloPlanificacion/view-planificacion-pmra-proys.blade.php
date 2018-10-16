@@ -1048,8 +1048,12 @@ $(function(){
                             <tbody>`;
 
             data.forEach(function(elem, index){
-                var pres_gc_row = pres_ip_row = '';
-                var fila = ` <td> <div>Presup.: Inv. P. </div> <div>Presup.: Gasto </div>${elem.contraparte.length > 0 ? '<div>CntrParte: Inv. P.</div><div>CntrParte: Gasto</div>' : ''} <div><b>TOTAL</b></div> </td> `;
+                var filaPIP = ` <td> <div>Presup.: Inv. P. </div></td>`;
+                var filaPGC = ` <tr><td> <div>Presup.: Gasto </div> </td> `;
+                var filaCIP = elem.contraparte.length > 0 ? '<tr><td><div>CntrParte: Inv. P.</div></td> ' : '<tr>'
+                var filaCGC = elem.contraparte.length > 0 ? '<tr><td><div>CntrParte: Gasto</div> </td>' : '<tr>' 
+                var filaT = '<tr><td><div><b>TOTAL</b></div> </td>' ;
+
                 for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++){    
                     presGestion = _.find(elem.presupuesto, function(el){
                         return el.gestion == i;
@@ -1060,37 +1064,80 @@ $(function(){
                     contrGestion_gc = _.filter(elem.contraparte, function(el){
                         return (el.gestion == i && el.gasto_corriente);
                     });
-                    fila += `<td>`;
                     var acum = 0;
-                    var presup_ip = (presGestion && presGestion.inversion_publica) ? `${presGestion.inversion_publica }` : 0;
-                    var presup_gc = (presGestion && presGestion.gasto_corriente) ? `${presGestion.gasto_corriente }` : 0;
+                    var presup_ip = (presGestion && presGestion.inversion_publica) ? presGestion.inversion_publica  : 0;
+                    var presup_gc = (presGestion && presGestion.gasto_corriente) ? presGestion.gasto_corriente : 0;
 
-                    var ctr_ip = contrGestion_ip.reduce(function(carry, el){
-                                        return carry + `<div>${el.cod_entidad_territorial} ${el.inversion_publica || 0}</div>`;
-                                    }, '');
-                    var ctr_gc = contrGestion_gc.reduce(function(carry, el){
-                                        return carry + `<div>${el.cod_entidad_territorial} ${el.gasto_corriente || 0}</div>`;
-                                    }, '');
-
-                    fila += `<div>${presup_ip}</div><div>${presup_gc}</div>${ctr_ip + ctr_gc}`;    
+                    filaPIP += `<td>${presup_ip}</td>`;
+                    filaPGC += `<td>${presup_gc}</td>`;
+                    filaCIP += `<td> ${ contrGestion_ip.reduce(function(carry, el){
+                                        return carry + `<div>${el.cod_entidad_territorial} ${el.inversion_publica }</div>`;
+                                    }, '') } </td>`;
+                    filaCGC += `<td> ${ contrGestion_gc.reduce(function(carry, el){
+                                        return carry + `<div>${el.cod_entidad_territorial} ${el.gasto_corriente }</div>`;
+                                    }, '') } </td>`;
+ 
 
                     acum +=   ( Number(presup_ip) +  Number(presup_gc) );
                     acum +=  Number(contrGestion_ip.reduce(function(carry, el){
-                                        return carry + el.inversion_publica || 0;
+                                        return carry + Number(el.inversion_publica || 0);
                                     }, 0) );
                     acum += Number(contrGestion_gc.reduce(function(carry, el){
-                                        return carry + el.gasto_corriente || 0;
+                                        return carry + Number(el.gasto_corriente || 0);
                                     }, 0) );
-                    fila += `<div><b>${acum}</b></div></td>`;
+                    filaT += `<td><b>${acum}</b></td>`;
 
                 }
 
+                filaPIP += ` `;
+                filaPGC += ` </tr> `;
+                filaCIP +='</tr>'
+                filaCGC += '</tr>' 
+                filaT += '</tr>' ;
+                // var fila = ` <td> <div>Presup.: Inv. P. </div> <div>Presup.: Gasto </div>${elem.contraparte.length > 0 ? '<div>CntrParte: Inv. P.</div><div>CntrParte: Gasto</div>' : ''} <div><b>TOTAL</b></div> </td> `;
+                // for(i = pmraData.periodo_gestion_ini; i <= pmraData.periodo_gestion_fin; i++){    
+                //     presGestion = _.find(elem.presupuesto, function(el){
+                //         return el.gestion == i;
+                //     }) ;
+                //     contrGestion_ip = _.filter(elem.contraparte, function(el){
+                //         return (el.gestion == i && el.inversion_publica);
+                //     });
+                //     contrGestion_gc = _.filter(elem.contraparte, function(el){
+                //         return (el.gestion == i && el.gasto_corriente);
+                //     });
+                //     fila += `<td>`;
+                //     var acum = 0;
+                //     var presup_ip = (presGestion && presGestion.inversion_publica) ? `${presGestion.inversion_publica }` : 0;
+                //     var presup_gc = (presGestion && presGestion.gasto_corriente) ? `${presGestion.gasto_corriente }` : 0;
+
+                //     var ctr_ip = contrGestion_ip.reduce(function(carry, el){
+                //                         return carry + `<div>${el.cod_entidad_territorial} ${el.inversion_publica || 0}</div>`;
+                //                     }, '');
+                //     var ctr_gc = contrGestion_gc.reduce(function(carry, el){
+                //                         return carry + `<div>${el.cod_entidad_territorial} ${el.gasto_corriente || 0}</div>`;
+                //                     }, '');
+
+                //     fila += `<div>${presup_ip}</div><div>${presup_gc}</div>${ctr_ip + ctr_gc}`;    
+
+                //     acum +=   ( Number(presup_ip) +  Number(presup_gc) );
+                //     acum +=  Number(contrGestion_ip.reduce(function(carry, el){
+                //                         return carry + el.inversion_publica || 0;
+                //                     }, 0) );
+                //     acum += Number(contrGestion_gc.reduce(function(carry, el){
+                //                         return carry + el.gasto_corriente || 0;
+                //                     }, 0) );
+                //     fila += `<div><b>${acum}</b></div></td>`;
+
+                // }
 
 
-                var row = `<tr><td>${elem.nombre_indicador}</td> ${fila} 
-                            <td ><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar presupuesto" ><i class="fa fa-edit text-warning fa-lg"></i></a>
+
+                var row = `<tr><td rowspan="5">${elem.nombre_indicador}</td> ${filaPIP} 
+                            <td rowspan="5"><a href="javascript:void(0)" index_atrib="${index}" class="m-l-10 m-r-10 m-t-10 sel_atrib_edit" title="Editar presupuesto" ><i class="fa fa-edit text-warning fa-lg"></i></a>
                                 </td>
-                            </tr>`;
+                            </tr>
+                            ` + filaPGC + filaCIP + filaCGC + filaT;
+                            console.log(row)
                 html += row;               
             });
 
@@ -1158,12 +1205,14 @@ $(function(){
                                                             <div class="col-xs-4"> <span> Gasto Corriente</span></div>
                                                         </div>
                                                         </h5></td></tr>`; 
+                                                        console.log(dataC)
 
             for(var g = gestion_ini; g <= gestion_fin; g++)
             { 
-                var pres = { id_presupuesto:'', invp: '', gasc: ''};                
+                var pres = { id_presupuesto:'', inversion_publica: '', gasto_corriente: ''};                
                 if(dataP && dataP.length>0)
-                    pres =  _.find(dataP, function(pre){ return pre.gestion == g});
+                    pres =  _.find(dataP, function(pre){ return pre.gestion == g}) || pres;
+
                 
                 htmlPresup += `<tr class="mv5 br-b ">
                             <td class="fs17 w50">
@@ -1182,7 +1231,7 @@ $(function(){
 
                 var ctr =[];
                 if(dataC && dataC.length>0)
-                    ctr =  _.filter(dataC, function(ctr){ return ctr.gestion == g});
+                    ctr =  _.filter(dataC, function(elem){ return elem.gestion == g});
 
                 htmlContrp += `<tr class="mv5 br-b">
                             <td class="fs17 w75">
@@ -1192,7 +1241,7 @@ $(function(){
                             <td class="fs14 fw700 text-muted ">
                                 ${ 
                                     _.reduce(ctr, function(carr, elemCtr){
-                                    return `<div  class="row pv5 sp_contrp">  
+                                    return carr + `<div  class="row pv5 sp_contrp">  
                                                     <div class="col-xs-12  fs11">
                                                         Entidad Territorial: <small>${elemCtr.cod_entidad_territorial}- ${elemCtr.entidad_territorial} </small>
                                                         <input type="hidden" id="sp_contrp_id_${g}" class="sp_contrp_id" value="${elemCtr.id_contraparte}"> 
@@ -1210,7 +1259,7 @@ $(function(){
                                                         <a href="javascript:void(0)" class="fa fa-minus-circle text-danger pull-right sp_contrp_quita" title="Quitar contraparte, se almacenará este cambio al guardar"></a>
                                                     </div>                                                    
                                             </div>`
-                                    },'')
+                                    }, '')
                                 }
                             </td>
                         </tr>`;
