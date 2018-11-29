@@ -16,7 +16,14 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('index', require('./components/Index.vue'));
+Vue.component('recursos', require('./components/Recursos.vue'));
+Vue.component('deudas', require('./components/Deudas.vue'));
+Vue.component('planificacion', require('./components/Planificacion.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        view: 0
+    }
 });

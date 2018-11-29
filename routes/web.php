@@ -266,7 +266,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('listarAccionesEtas/{idaccion}', 'ModuloPlanificacion\PlanificacionTerritorialController@listaAccionesEtas');
             Route::get('listarPMRAs/{idpilar}/{idmeta}/{idresultado}/{idaccion}', 'ModuloPlanificacion\PlanificacionTerritorialController@listaPMRAs');
             Route::post('insertarmatriz', 'ModuloPlanificacion\PlanificacionTerritorialController@insertar');
-// Territorial reporte ----------------------------------------
+            // Territorial reporte ----------------------------------------
 
             Route::get('listarSelecTipoEtas', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaSelecTipoEta');
             Route::get('listarNuevaMatrices/{dep}/{prog}', 'ModuloPlanificacion\PlanificacionTerritorialControllerBuscador@listaNuevaMatriz');
@@ -302,7 +302,7 @@ Route::group(['middleware' => 'auth'],function(){
              Route::get('listarSeguimientoPMRAs/{idpilar}/{idmeta}/{idresultado}/{idaccion}', 'ModuloPlanificacion\SeguimientoTerritorialABMController@listaPMRAs');
              Route::get('actualizarmatrizSeguimiento/{id}', 'ModuloPlanificacion\SeguimientoTerritorialABMController@update');
               Route::get('eliminarmatrizSeguimiento/{id}', 'ModuloPlanificacion\SeguimientoTerritorialABMController@delete');
-            //---------------------------------------- finnnn Territorial ----------------------------------------
+              //---------------------------------------- finnnn Territorial ----------------------------------------
               Route::get('{otra?}/{ruta?}/{a?}/{b?}/{c?}', function(){
                   return view('ModuloPlanificacion.error', ['mensaje'=>'No existe la URL']);
               });
@@ -410,7 +410,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::post('deleteartiproyecto', 'ModuloPlanificacion\PlanificaPMRAController@deleteArtiProyecto');
             Route::get('listproyectos', 'ModuloPlanificacion\PlanificaPMRAController@listProyectos');
             Route::post('saveIndicadorAccionProg', 'ModuloPlanificacion\PlanificaPMRAController@saveIndicadorAccionProg');
-            Route::post('savepresupuestoscontrapartes', 'ModuloPlanificacion\PlanificaPMRAController@savePresupuestosContrapartes');            
+            Route::post('savepresupuestoscontrapartes', 'ModuloPlanificacion\PlanificaPMRAController@savePresupuestosContrapartes');
             Route::post('saveresponsables', 'ModuloPlanificacion\PlanificaPMRAController@saveResponsables');
             Route::post('saverolesactores', 'ModuloPlanificacion\PlanificaPMRAController@saveRolesActores');
             Route::post('savearticulacioncompetencial', 'ModuloPlanificacion\PlanificaPMRAController@saveArticulacionCompetencial');
@@ -470,7 +470,6 @@ Route::group(['middleware' => 'auth'],function(){
           }
       );
 });
-
 
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
@@ -537,6 +536,26 @@ Route::group(['middleware' => 'auth'],function(){
 
               Route::post('apiRecuperarFuente', 'SistemaRemi\FuenteDatosController@apiRecuperarFuente');
               Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');
+
+          }
+      );
+});
+
+
+Route::group(['middleware' => 'auth'],function(){
+      Route::group(
+          array('prefix' => 'planesTerritoriales'),
+          function() {
+              Route::get('index', 'PlanificacionTerritorial\IndexController@index');
+
+          }
+      );
+      Route::group(
+          array('prefix' => 'api/planesTerritoriales'),
+          function() {
+              Route::get('datosUsuario', 'PlanificacionTerritorial\IndexController@datosUsuario');
+              Route::get('listaTipoRecursos', 'PlanificacionTerritorial\RecursosController@listaTipoRecursos');
+              Route::post('saveRecursoTipo', 'PlanificacionTerritorial\RecursosController@saveRecursoTipo');
 
           }
       );
