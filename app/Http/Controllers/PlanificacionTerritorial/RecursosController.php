@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\PlanificacionTerritorial\Parametros;
 use App\Models\PlanificacionTerritorial\Recursos;
+use App\Models\PlanificacionTerritorial\OtrosIngresos;
 
-class RecursosController extends Controller
+class RecursosController extends BasecontrollerController
 {
   public function listaTipoRecursos(Request $request)
   {
@@ -56,12 +57,61 @@ class RecursosController extends Controller
         ORDER BY codigo ASC
       ) as fuente");
 
+      $totalPresupuesto=0;
+      foreach ($totales as  $item) {
+        $totalPresupuesto = $totalPresupuesto + $item->total;
+      }
+      
+
+      $recursosCreados = \DB::select("SELECT id_tipo_recurso
+      FROM sp_eta_recursos_eta
+      WHERE id_institucion = ".$user->id_institucion."
+      AND activo = true
+      GROUP BY id_tipo_recurso
+      ORDER BY id_tipo_recurso ASC");
+
+      $arrayRecursosCreados = Array();
+      foreach ($recursosCreados as $item) {
+        $arrayRecursosCreados[] = $item->id_tipo_recurso;
+      }
+
+
+      $recursosCreadosGestiones = \DB::select("SELECT id,id_tipo_recurso,gestion,monto
+      FROM sp_eta_recursos_eta
+      WHERE id_institucion = ".$user->id_institucion."
+      and activo = true
+      ORDER BY id_tipo_recurso,gestion ASC");
+
+      $arrayRecursosCreadosGestiones  = array();
+      foreach ($recursosCreadosGestiones as $item) {
+        $arrayRecursosCreadosGestiones['monto'][$item->id_tipo_recurso][$item->gestion] = $item->monto;
+        $arrayRecursosCreadosGestiones['id'][$item->id_tipo_recurso][$item->gestion] = $item->id;
+      }
+
+
+      $arrayOtros = OtrosIngresos::where('id_institucion',$user->id_institucion)->where('activo', true)->orderby('id', 'ASC')->get();
+      $otrosIngresosRecursosGestiones = \DB::select("SELECT id,id_otro_ingreso,gestion,monto
+      FROM sp_eta_recursos_eta
+      WHERE id_institucion = ".$user->id_institucion."
+      and activo = true
+      AND id_otro_ingreso is not null
+      ORDER BY id_otro_ingreso,gestion ASC");
+      $arrayOtrosIngresosRecursosCreadosGestiones  = array();
+      foreach ($otrosIngresosRecursosGestiones as $item) {
+        $arrayOtrosIngresosRecursosCreadosGestiones['datos'][$item->id_otro_ingreso][$item->gestion] = $item->monto;
+        $arrayOtrosIngresosRecursosCreadosGestiones['ids'][$item->id_otro_ingreso][$item->gestion] = $item->id;
+      }
 
       return \Response::json([
         'parametros' => $parametros,
         'grupos' => $grupos,
         'periodoActivo' => $periodo,
-        'totales' => $totales
+        'totales' => $totales,
+        'totalPresupuesto' => $totalPresupuesto,
+        'recursosCreados' => $arrayRecursosCreados,
+        'recursosCreadosGestiones' => $arrayRecursosCreadosGestiones,
+        'otrosIngresos' => $arrayOtros,
+        'otrosIngresosRecursosCreadosGestiones' => $arrayOtrosIngresosRecursosCreadosGestiones
       ]);
 
   }
@@ -78,25 +128,16 @@ class RecursosController extends Controller
 
     try{
         foreach ($request->datos as $k => $v) {
+            $this->decimal_simbolo($v);
             $recurso = new Recursos();
             $recurso->id_institucion = $user->id_institucion;
             $recurso->id_tipo_recurso = $request->tipo_recurso;
             $recurso->gestion = $periodo[$k];
-            $recurso->monto = $v;
+            $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
             $recurso->activo = true;
+            $recurso->id_user_created = $user->id;
             $recurso->save();
         }
-          // foreach ($request->arc_archivo as $k => $v) {
-          //       $archivos = new FuenteArchivosRespaldos();
-          //       $archivos->id_fuente = $fuente->id;
-          //       $archivos->nombre =  $request->arc_nombre[$k];
-          //       $archivos->archivo = $request->arc_archivo[$k];
-          //       $archivos->activo = true;
-          //       $archivos->id_user = $this->user->id;
-          //       $archivos->save();
-          // }
-
-
         return \Response::json(array(
             'error' => false,
             'title' => "Success!",
@@ -114,6 +155,192 @@ class RecursosController extends Controller
 
 
       return 1;
+
+  }
+
+  public function saveUpdateRecursoTipo(Request $request)
+  {
+    $periodo = Array();
+    $gestionInicial = 2016;
+    $gestionFinal = 2020;
+    for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
+      $periodo[] = $i;
+    }
+    $user = \Auth::user();
+
+    try{
+        foreach ($request->datos as $k => $v) {
+            $recurso = Recursos::find($request->id[$k]);
+            $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+            $recurso->id_user_updated = $user->id;
+            $recurso->save();
+        }
+        return \Response::json(array(
+            'error' => false,
+            'title' => "Success!",
+            'msg' => "Se guardo con exito.")
+        );
+
+      }
+      catch (Exception $e) {
+          return \Response::json(array(
+            'error' => true,
+            'title' => "Error!",
+            'msg' => $e->getMessage())
+          );
+      }
+  }
+
+
+
+  public function deleteRecurso(Request $request)
+  {
+
+    $user = \Auth::user();
+    try{
+        foreach ($request->id as $k => $v) {
+            $recurso = Recursos::find($v);
+            $recurso->activo = false;
+            $recurso->id_user_updated = $user->id;
+            $recurso->save();
+        }
+        return \Response::json(array(
+            'error' => false,
+            'title' => "Success!",
+            'msg' => "Se guardo con exito.")
+        );
+
+      }
+      catch (Exception $e) {
+          return \Response::json(array(
+            'error' => true,
+            'title' => "Error!",
+            'msg' => $e->getMessage())
+          );
+      }
+
+  }
+
+
+
+    public function saveOtro(Request $request)
+    {
+      $periodo = Array();
+      $gestionInicial = 2016;
+      $gestionFinal = 2020;
+      for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
+        $periodo[] = $i;
+      }
+
+      $user = \Auth::user();
+
+      if($request->id_otro == 0){
+          try{
+
+              $otro = new OtrosIngresos();
+              $otro->id_institucion = $user->id_institucion;
+              $otro->concepto = $request->concepto;
+              $otro->fuente_financiamiento = $request->fuente_financiamiento;
+              $otro->organismo_financiador = $request->organismo_financiador;
+              $otro->rubro = $request->rubro;
+              $otro->entidad_otorgante = $request->entidad_otorgante;
+              $otro->activo = true;
+              $otro->id_user_created = $user->id;
+              $otro->save();
+
+
+              foreach ($request->datos as $k => $v) {
+                  $recurso = new Recursos();
+                  $recurso->id_institucion = $user->id_institucion;
+                  $recurso->id_otro_ingreso = $otro->id;
+                  $recurso->gestion = $periodo[$k];
+                  $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+                  $recurso->activo = true;
+                  $recurso->id_user_created = $user->id;
+                  $recurso->save();
+              }
+              return \Response::json(array(
+                  'error' => false,
+                  'title' => "Success!",
+                  'alert' => "success",
+                  'msg' => "Se guardo con exito.")
+              );
+
+          }
+          catch (Exception $e) {
+              return \Response::json(array(
+                'error' => true,
+                'title' => "Error!",
+                'alert' => "error",
+                'msg' => $e->getMessage())
+              );
+          }
+      }else{
+
+          try{
+
+              $otro =  OtrosIngresos::find($request->id_otro);
+              $otro->concepto = $request->concepto;
+              $otro->fuente_financiamiento = $request->fuente_financiamiento;
+              $otro->organismo_financiador = $request->organismo_financiador;
+              $otro->rubro = $request->rubro;
+              $otro->entidad_otorgante = $request->entidad_otorgante;
+              $otro->id_user_updated= $user->id;
+              $otro->save();
+
+              foreach ($request->datos as $k => $v) {
+                  $recurso = Recursos::find($request->ids[$k]);
+                  $recurso->gestion = $periodo[$k];
+                  $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+                  $recurso->id_user_updated = $user->id;
+                  $recurso->save();
+              }
+              return \Response::json(array(
+                  'error' => false,
+                  'title' => "Success!",
+                  'alert' => "success",
+                  'msg' => "Se guardo con exito.")
+              );
+
+          }
+          catch (Exception $e) {
+              return \Response::json(array(
+                'error' => true,
+                'title' => "Error!",
+                'alert' => "error",
+                'msg' => $e->getMessage())
+              );
+          }
+
+      }
+
+  }
+
+
+  public function deleteOtro(Request $request)
+  {
+
+    $user = \Auth::user();
+    try{
+          $otro =  OtrosIngresos::find($request->id_otro);
+          $otro->activo = false;
+          $otro->save();
+          \DB::table('sp_eta_recursos_eta')->where('id_otro_ingreso', $request->id_otro)->update(['activo' => false]);
+          return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'alert' => "success",
+              'msg' => "Se elimino con exito.")
+          );
+
+      }
+      catch (Exception $e) {
+          return \Response::json(array(
+            'error' => true,
+            'title' => "Error!",
+            'msg' => $e->getMessage())
+          );
+      }
 
   }
 }

@@ -555,7 +555,18 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               Route::get('datosUsuario', 'PlanificacionTerritorial\IndexController@datosUsuario');
               Route::get('listaTipoRecursos', 'PlanificacionTerritorial\RecursosController@listaTipoRecursos');
+              Route::get('mapaMunicipio', 'PlanificacionTerritorial\IndexController@mapaMunicipio');
+              Route::get('mapaDepartamento', 'PlanificacionTerritorial\IndexController@mapaDepartamento');
+              Route::get('verificarEtapa', 'PlanificacionTerritorial\IndexController@verificarEtapa');
+              Route::get('estadoActualModulos', 'PlanificacionTerritorial\IndexController@estadoActualModulos');
+              Route::get('finalizarModulo', 'PlanificacionTerritorial\IndexController@finalizarModulo');
+              Route::post('activarEtapa', 'PlanificacionTerritorial\IndexController@activarEtapa');
               Route::post('saveRecursoTipo', 'PlanificacionTerritorial\RecursosController@saveRecursoTipo');
+              Route::post('saveUpdateRecursoTipo', 'PlanificacionTerritorial\RecursosController@saveUpdateRecursoTipo');
+              Route::post('deleteRecurso', 'PlanificacionTerritorial\RecursosController@deleteRecurso');
+              Route::post('saveOtro', 'PlanificacionTerritorial\RecursosController@saveOtro');
+              Route::post('deleteOtro', 'PlanificacionTerritorial\RecursosController@deleteOtro');
+
 
           }
       );

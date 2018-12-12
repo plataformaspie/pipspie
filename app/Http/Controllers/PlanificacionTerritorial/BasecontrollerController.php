@@ -66,6 +66,31 @@ class BasecontrollerController extends Controller
       return $menus;
     }
 
+    public function format_numerica_db($numeric,$decimal){
+      if($decimal == '.'){
+        $formated = str_replace(',','',$numeric);
+      }elseif($decimal == ','){
+        $formated = str_replace('.','',$numeric);
+        $formated = str_replace(',','.',$formated);
+      }else{
+        $formated = str_replace(',','',$numeric);
+      }
+      return $formated;
+    }
+
+    public function decimal_simbolo($numeric){
+
+      $decimalSimbol = ',';
+      for($i=strlen($numeric);$i>=0;$i--){
+          if(substr($numeric,$i,1)=='.' OR substr($numeric,$i,1)==','){
+              $decimalSimbol =  substr($numeric,$i,1);
+              break;
+          }
+      }
+
+      return $decimalSimbol;
+    }
+
 
 
 

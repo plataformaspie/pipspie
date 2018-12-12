@@ -20,7 +20,8 @@ let mix = require('laravel-mix');
      'resources/assets/planificacion/css/animate.css',
      'resources/assets/planificacion/css/style.css',
      'resources/assets/planificacion/css/colors/megna.css',
-     'resources/assets/planificacion/css/colors/blue.css'
+     'resources/assets/planificacion/css/colors/blue.css',
+     'resources/assets/plugins/bower_components/sweetalert/sweetalert.css'
  ], 'public/css/tpl_planificacion.css')
  .scripts([
      'resources/assets/plugins/bower_components/jquery/dist/jquery.min.js',
@@ -33,7 +34,10 @@ let mix = require('laravel-mix');
      'resources/assets/planificacion/js/custom.min.js',
      'resources/assets/planificacion/js/cbpFWTabs.js',
      'resources/assets/planificacion/js/validator.js',
+     'resources/assets/planificacion/js/jquery-resizable.js',
      'resources/assets/planificacion/js/mask.js',
-     'resources/assets/plugins/bower_components/styleswitcher/jQuery.style.switcher.js'
+     'resources/assets/plugins/bower_components/styleswitcher/jQuery.style.switcher.js',
+     'resources/assets/plugins/bower_components/sweetalert/sweetalert.min.js',
+     'resources/assets/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js'
  ], 'public/js/tpl_planificacion.js')
  .js(['resources/assets/js/app.js'], 'public/js/app-planificacion.js');
