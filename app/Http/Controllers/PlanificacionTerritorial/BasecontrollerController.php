@@ -66,19 +66,19 @@ class BasecontrollerController extends Controller
       return $menus;
     }
 
-    public function format_numerica_db($numeric,$decimal){
-      if($decimal == '.'){
-        $formated = str_replace(',','',$numeric);
-      }elseif($decimal == ','){
-        $formated = str_replace('.','',$numeric);
-        $formated = str_replace(',','.',$formated);
-      }else{
-        $formated = str_replace(',','',$numeric);
-      }
+    public function format_numerica_db($numeric=0,$decimal){
+        if($decimal == '.'){
+          $formated = str_replace(',','',$numeric);
+        }elseif($decimal == ','){
+          $formated = str_replace('.','',$numeric);
+          $formated = str_replace(',','.',$formated);
+        }else{
+          $formated = str_replace(',','',$numeric);
+        }
       return $formated;
     }
 
-    public function decimal_simbolo($numeric){
+    public function decimal_simbolo($numeric=0){
 
       $decimalSimbol = ',';
       for($i=strlen($numeric);$i>=0;$i--){
@@ -89,6 +89,109 @@ class BasecontrollerController extends Controller
       }
 
       return $decimalSimbol;
+    }
+
+    public function totalesPlanificacion(){
+
+      $user = \Auth::user();
+      $periodo = Array();
+      $periodoId = 6;
+      $gestionInicial = 2016;
+      $gestionFinal = 2020;
+      for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
+        $periodo[] = $i;
+      }
+
+      $totalesRecursos = \DB::select("
+      SELECT fuente.nombre as gestion,
+      (
+        SELECT SUM(monto)
+        FROM sp_eta_recursos_eta
+        WHERE activo = true
+        AND id_institucion = ".$user->id_institucion."
+        AND gestion = fuente.codigo::int
+      ) as total
+      FROM(
+        SELECT *
+        from sp_parametros pa
+        WHERE activo = TRUE
+        AND categoria = 'gestiones'
+        AND codigo BETWEEN '".$gestionInicial."' AND '".$gestionFinal."'
+        ORDER BY codigo ASC
+      ) as fuente");
+
+      $totalPresupuesto=0;
+      foreach ($totalesRecursos as  $item) {
+        $totalPresupuesto = $totalPresupuesto + $item->total;
+      }
+
+      $totalesDeudas = \DB::select("
+      SELECT fuente.nombre as gestion,
+      (
+        SELECT SUM(monto)
+        FROM sp_eta_deudas_eta
+        WHERE activo = true
+        AND id_institucion = ".$user->id_institucion."
+        AND gestion = fuente.codigo::int
+      ) as total
+      FROM(
+        SELECT *
+        from sp_parametros pa
+        WHERE activo = TRUE
+        AND categoria = 'gestiones'
+        AND codigo BETWEEN '".$gestionInicial."' AND '".$gestionFinal."'
+        ORDER BY codigo ASC
+      ) as fuente");
+      $totalDeuda=0;
+      foreach ($totalesDeudas as  $item) {
+        $totalDeuda = $totalDeuda + $item->total;
+      }
+
+      $totalGestionesRecursosAsignados = \DB::select("
+      SELECT pr.gestion, SUM(pr.monto) as total
+      FROM sp_eta_objetivos_eta o
+      INNER JOIN sp_eta_etapas_plan ep ON o.id_etapas_plan = ep.id
+      INNER JOIN sp_eta_articulacion_objetivo_indicador aoi ON o.id = aoi.id_objetivo_eta
+      INNER JOIN sp_eta_programacion_recursos pr ON aoi.id = pr.id_articulacion_objetivo_indicador
+      WHERE o.activo = true
+      AND ep.id_institucion = ".$user->id_institucion."
+      GROUP BY pr.gestion
+      ORDER BY pr.gestion ASC");
+
+      $totalRecursosAsignados=0;
+      foreach ($totalGestionesRecursosAsignados as  $value) {
+        $totalRecursosAsignados += $value->total;
+      }
+
+
+      $totalCategorias = \DB::select("SELECT SUM(monto) as total
+      FROM sp_eta_objetivos_eta o
+      INNER JOIN sp_eta_etapas_plan ep ON o.id_etapas_plan = ep.id
+      INNER JOIN sp_eta_categorias_acciones_eta cat ON o.id_categoria_accion = cat.id
+      INNER JOIN sp_eta_articulacion_objetivo_indicador aoi ON o.id = aoi.id_objetivo_eta
+      INNER JOIN sp_eta_programacion_recursos pr ON aoi.id = pr.id_articulacion_objetivo_indicador
+      WHERE o.activo = true
+      AND ep.id_institucion = ".$user->id_institucion);
+
+      return ['totalRecursos' => $totalPresupuesto,
+              'totalDeudas' => $totalDeuda,
+              'totalRecursosAsignados'=>$totalRecursosAsignados 
+            ];
+
+
+    }
+
+    public function periodoActual(){
+      $user = \Auth::user();
+      $periodo = Array();
+      $periodoId = 6;
+      $gestionInicial = 2016;
+      $gestionFinal = 2020;
+      for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
+        $periodo[] = $i;
+      }
+      return ['periodoId'=> $periodoId, 'gestionInicial' => $gestionInicial, 'gestionFinal' => $gestionFinal, 'gestionesPeriodo' =>$periodo];
+
     }
 
 

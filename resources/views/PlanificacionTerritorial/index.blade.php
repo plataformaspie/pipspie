@@ -16,6 +16,9 @@
       <deudas></deudas>
   </template>
   <template v-if="view==3">
+      <planificacion-categorias></planificacion-categorias>
+  </template>
+  <template v-if="view==31">
       <planificacion></planificacion>
   </template>
 @endsection

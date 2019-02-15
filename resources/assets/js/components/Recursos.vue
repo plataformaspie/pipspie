@@ -27,6 +27,7 @@
            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
              <div class="white-box  p-0 m-0 p-l-10 p-r-10">
                  <strong class="text-center">Total recursos determinados</strong>
+                 <hr class="p-0 m-0"/>
                  <div class="user-btm-box p-t-0">
                    <div  class="row m-t-10 p-t-10 list-group-item-info">
                        <template v-for="totales in arrayTotales">
@@ -35,7 +36,6 @@
                              <strong v-text="'Bs.'+formatPrice(totales.total)"></strong>
                            </div>
                        </template>
-                       <!-- <div class="col-lg-1"></div> -->
                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12 b-r">
                          <p v-text="'TOTAL PRESUPUESTO:'" class="m-b-0"></p>
                          <strong style="font-size:20px;"> Bs.{{ formatPrice(totalPresupuesto) }}</strong> <!--  @{{total}}-->
@@ -53,7 +53,6 @@
                         <ul class="nav tabs-vertical" >
                             <li v-for="gruposRecursos in arrayGruposRecursos" :key="gruposRecursos.id" class="tab nav-item" >
                                   <a data-toggle="tab" class="nav-link"  :class="{'active': gruposRecursos.orden == 1}" :href="'#panel'+gruposRecursos.id" aria-expanded="true">
-                                    <!-- <span class="visible-xs"><i class="fa fa-dot-circle-o"></i><span class="visible-xs" v-text="gruposRecursos.codigo"></span></span> -->
                                     <i class="hidden-xs fa fa-dot-circle-o"></i> <span class="hidden-xs" v-text="gruposRecursos.valor"></span>
                                   </a>
                             </li>
@@ -109,22 +108,31 @@
                                                           <td>{{ tiposRecursos.nombre }}</td>
                                                           <td v-for="periodo in arrayPeriodoActivo">
                                                             <input type="hidden" :name="'id_'+tiposRecursos.id+'_'+periodo" class="form-control " :value="arrayRecursosCreadosGestiones['id'][tiposRecursos.id][periodo]" style="height: 28px;text-align: right;" >
-                                                            <input type="text" :name="tiposRecursos.id+'_'+periodo" :class="'form-control dis'+tiposRecursos.id" :value="formatPrice(arrayRecursosCreadosGestiones['monto'][tiposRecursos.id][periodo])" style="height: 28px;text-align: right;" @blur="formatInput">
+                                                            <input type="text" :name="tiposRecursos.id+'_'+periodo" :class="'form-control dis'+tiposRecursos.id" :value="formatPrice(arrayRecursosCreadosGestiones['monto'][tiposRecursos.id][periodo])" style="height: 28px;text-align: right;" @blur="formatInput" :disabled="estadoViewComponente ? disabled : ''">
                                                           </td>
                                                           <td class="text-nowrap">
-                                                            <a href="#" @click="saveUpdate(tiposRecursos.id)"> <i class="fa fa-save text-inverse m-r-10" style="font-size:20px;"></i> </a>
-                                                            <a href="#" @click="deleteRecurso(tiposRecursos.id)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                            <template v-if="estadoViewComponente">
+                                                              <a href="#" @click="saveUpdate(tiposRecursos.id)"> <i class="fa fa-save text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                              <a href="#" @click="deleteRecurso(tiposRecursos.id)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                            </template>
                                                           </td>
                                                       </template>
                                                       <template v-else>
-                                                          <td><input type="checkbox" :name="'chk'+tiposRecursos.id" @change="checkSw(tiposRecursos.id)"></td>
+                                                          <td>
+                                                            <template v-if="estadoViewComponente">
+                                                              <input type="checkbox" :name="'chk'+tiposRecursos.id" @change="checkSw(tiposRecursos.id)">
+                                                            </template>
+                                                          </td>
                                                           <td>{{ tiposRecursos.nombre }}</td>
                                                           <td v-for="periodo in arrayPeriodoActivo">
-                                                            <input type="text" :name="tiposRecursos.id+'_'+periodo" :class="'form-control dis'+tiposRecursos.id" value="0" disabled="disabled" style="height: 28px;text-align: right;" @blur="formatInput" @keyup.ctrl.86="cargarDatosExcel">
+                                                            <!-- @keyup.ctrl.86="cargarDatosExcel" -->
+                                                            <input type="text" :name="tiposRecursos.id+'_'+periodo" :class="'form-control dis'+tiposRecursos.id" value="0" disabled="disabled" style="height: 28px;text-align: right;" @blur="formatInput" >
                                                           </td>
                                                           <td class="text-nowrap">
-                                                            <a href="#" @click="save(tiposRecursos.id)"> <i class="fa fa-save text-inverse m-r-10" style="font-size:20px;"></i> </a>
-                                                            <a href="#" @click="acitvarAux(tiposRecursos.id)"> <i class="fa fa-copy text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                              <template v-if="estadoViewComponente">
+                                                                <a href="#" @click="save(tiposRecursos.id)"> <i class="fa fa-save text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                                <a href="#" @click="acitvarAux(tiposRecursos.id)"> <i class="fa fa-copy text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                              </template>
                                                           </td>
                                                       </template>
                                                   </tr>
@@ -132,7 +140,11 @@
                                           </table>
                                       </div>
                                       <div v-else>
-                                        <h4 class="m-t-0">Otros Ingresos: <a href="#" @click="abrirModal(1)" data-original-title="Save"> <i class="fa fa-plus-square text-inverse m-r-10" style="font-size:30px;"></i> </a></h4>
+                                        <h4 class="m-t-0">Otros Ingresos:
+                                          <template v-if="estadoViewComponente">
+                                            <a href="#" @click="abrirModal(1)" data-original-title="Save"> <i class="fa fa-plus-square text-inverse m-r-10" style="font-size:30px;"></i></a>
+                                          </template>
+                                        </h4>
                                         <table class="table table-bordered list-group-item-warning">
                                             <thead>
                                                 <tr>
@@ -154,9 +166,10 @@
                                                       <input type="text" :name="'DO_'+periodo" class="form-control" :value="formatPrice(arrayOtrosIngresosRecursosCreadosGestiones['datos'][otrosIngresos.id][periodo])" disabled="disabled" style="height: 28px;text-align: right;">
                                                     </td>
                                                     <td>
-                                                    <!-- save(tiposRecursos.id)  -->
-                                                      <a href="#" @click="updateOtro(otrosIngresos.id)"> <i class="fa fa-edit text-inverse m-r-10" style="font-size:20px;"></i> </a>
-                                                      <a href="#" @click="deleteOtro(otrosIngresos.id)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                      <template v-if="estadoViewComponente">
+                                                        <a href="#" @click="updateOtro(otrosIngresos.id)"> <i class="fa fa-edit text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                        <a href="#" @click="deleteOtro(otrosIngresos.id)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                                      </template>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -172,7 +185,7 @@
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="white-box p-0 m-0 p-t-10 ">
               <div class="form-group text-center p-0 m-0">
-                    <button type="submit" class="btn btn-info" @click="finalizarModulo(1)">Salir y Finalizar</button>
+                    <button v-if="estadoViewComponente" type="submit" class="btn btn-info" @click="finalizarModulo(1)">Salir y Finalizar</button>
                     <button type="submit" class="btn btn-default" @click="salirModulo()">Salir</button>
               </div>
             </div>
@@ -275,6 +288,7 @@ export default {
           totalPresupuesto:0,
           auxiliar:false,
           id_auxiliar:0,
+          estadoViewComponente:true,
           montos_auxiliar:''
         }
     },
@@ -485,13 +499,8 @@ export default {
         if(count > 1){
           event.target.value = Number(value.replace(/,/g,''));
         }
-        // let val = 1
-        // event.target.value = val;
       },
       cargarDatosExcel(event){
-        alert("sasdasd");
-        //var clipboardData = event.clipboardData || event.originalEvent.clipboardData || window.clipboardData;
-        //var replacedData = clipboardData.getData('text');
         console.log(window.clipboardData.getData("Text"));
 
       },
@@ -557,7 +566,6 @@ export default {
                   $('[name="otro_'+item+'"]').val(me.formatPrice(me.arrayOtrosIngresosRecursosCreadosGestiones['datos'][id][item]));
               });
             }
-            //arrayOtrosRecursosGestiones.push(valor);
        });
 
      },
@@ -610,6 +618,12 @@ export default {
     mounted() {
         this.listaTipoRecursos();
         this.datosUsuario();
+        if(this.$root.$data.modulo_estado == 'Concluido')
+        {
+          this.estadoViewComponente = false;
+        }else{
+          this.estadoViewComponente = true;
+        }
 
         $(".panel-left").resizable({
           handleSelector: ".splitter",

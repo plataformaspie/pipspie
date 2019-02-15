@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets_home/assets/img/iconos/sp_icono.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/sp_icono.png">
     <title>SPIE - Subsistema de Planificación</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap Core CSS -->
@@ -135,6 +135,30 @@
             new CBPFWTabs(el);
         });
     })();
+
+    function crearAccion (data){
+        $('#categorial_sel').val(data);
+
+
+        // $( "#categorial_sel" ).focus();
+        // var e = $.Event("keypress")
+        // e.which = 32  //choose the one you want
+        // $("#categorial_sel").keypress(function(){
+        //  console.log('keypress triggered');
+        // }).trigger(e)
+
+        // var e = $.Event('keypress');
+        // e.which = 65; // Character 'A'
+        // $('#categorial_sel').val(String.fromCharCode(e.which));
+
+        // var e = $.Event('keypress');
+        // e.which = 13; // # Some key code value
+        // e.keyCode = 13;
+        // $('#categorial_sel')trigger(e);
+
+
+    }
+
     </script>
     @stack('script-head')
 

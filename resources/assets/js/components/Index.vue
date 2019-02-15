@@ -83,7 +83,7 @@
             <div class="col-md-6">
                 <div class="white-box">
                     <div class="row">
-
+                        <h3 class="box-title  p-0 m-0">Planificación Territorial PDES Periodo {{gestionInicial}}-{{gestionFinal}}</h3>
                         <div class="col-md-6">
                             <div class="card el-overlay btn-outline ">
 
@@ -118,13 +118,13 @@
                             </div>
                         </div> -->
                     </div>
-                    <h3 class="box-title  p-0 m-0">Asignacion de Recuros</h3>
+                    <h3 class="box-title  p-0 m-0">Asignacion de Recursos</h3>
                     <div class="row">
                         <div class="card col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                  <a href="#" class="">
-                                      <img alt="PTDI" title="PTDI" src="/img/ico_PTDI.png" class="push_button">
+                                  <a href="javascript:void(0);" class="" >
+                                      <img alt="PTDI" title="PTDI" src="/img/ico_PTDI.png" class="push_button" @click="cambioView(3)">
                                       <div class="stats-row col-md-12 m-t-20 m-b-0 text-center">
                                           <div class="stat-item">
                                               <h6>Detalle</h6> <b><i class="fa fa-archive"></i> Plan Territorial de Desarrollo Integral</b>
@@ -148,62 +148,10 @@
                 </div>
            </div>
         </div>
-
-
-         <!-- <div class="row" style="font-size:13px !important;">
-             <div class="col-md-12">
-                 <div class="white-box">
-                     <h3 class="box-title">Módulos:</h3>
-                     <div class="row">
-                         <div class="col-md-4">
-                             <div class="card el-overlay btn-outline ">
-
-                                <center><button class="btn btn-circle btn-outline btn-info btn-xl m-t-5" @click="cambioView(1)"><i class="fa fa-money" style="font-size:30px"></i></button></center>
-                                 <div class="card-block text-center">
-                                     <h4 class="card-title">Registro de Recursos</h4>
-                                     <p class="card-text">Asignación Techos Presupuestarios.</p>
-                                     <p class="card-text">Estado: <span class="text-danger">No Concluido</span></p>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-md-4">
-                             <div class="card">
-                                 <center><button class="btn btn-circle btn-outline btn-info btn-xl m-t-5" @click="cambioView(2)" ><i class="fa fa-cubes" style="font-size:30px"></i></button></center>
-                                 <div class="card-block text-center">
-                                     <h4 class="card-title">Registro de Deudas</h4>
-                                     <p class="card-text">Registre deudas generadas por el Municipio.</p>
-                                     <p class="card-text">Estado: <span class="text-danger">No Concluido</span></p>
-
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-md-4">
-                             <div class="card">
-                                 <center><button class="btn btn-circle btn-outline btn-info btn-xl m-t-5" @click="cambioView(3)"><i class="fa fa-list-alt" style="font-size:30px"></i></button></center>
-                                 <div class="card-block text-center">
-                                     <h4 class="card-title">Determinación de Recuros</h4>
-                                     <p class="card-text">Registre la Planificación de su Municipio.</p>
-                                     <p class="card-text">Estado: <span class="text-danger">No Concluido</span></p>
-
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div> -->
-
-
     </div>
 </template>
 
 <script>
-// import 'ol/ol.css';
-// import GeoJSON from 'ol/format/GeoJSON';
-// import Map from 'ol/Map';
-// import VectorLayer from 'ol/layer/Vector';
-// import VectorSource from 'ol/source/Vector';
-// import View from 'ol/View';
 import 'ol/ol.css';
 import Feature from 'ol/Feature.js';
 import Map from 'ol/Map.js';
@@ -217,9 +165,6 @@ import OSM  from 'ol/source/OSM';
 import {fromLonLat} from 'ol/proj';
 import {Fill, Stroke, Style, Text} from 'ol/style.js';
 import XYZ from 'ol/source/XYZ.js';
-
-
-
     export default {
         data(){
             return{
@@ -240,7 +185,9 @@ import XYZ from 'ol/source/XYZ.js';
               title_dep:'',
               title_prov:'',
               estadoRecursos:'Inactivo',
-              estadoDeudas:'Inactivo'
+              estadoDeudas:'Inactivo',
+              gestionInicial:0,
+              gestionFinal:0
             }
         },
         methods: {
@@ -256,6 +203,8 @@ import XYZ from 'ol/source/XYZ.js';
                  me.title_mun = response.data.region.muni;
                  me.title_prov = response.data.region.prov;
                  me.title_dep = response.data.region.depto;
+                 me.gestionInicial = response.data.gestionInicial;
+                 me.gestionFinal = response.data.gestionFinal;
                  me.iniciarMapa();
                })
                .catch(function (error) {
@@ -268,8 +217,8 @@ import XYZ from 'ol/source/XYZ.js';
               axios.get('/api/planesTerritoriales/verificarEtapa?modulo='+e).then(function (response) {//este axios nos sirve para verificar en que etapa esta los modulos
                 if(response.data.accion == 1){
                   swal({
-                    title: "Activar cargado de Recursos?",
-                    text: "Se activara el cargado de Recursos para este Periodo!",
+                    title: "Activar este módulo?",
+                    text: "Se activara el módulo para su registro!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-success",
@@ -280,9 +229,9 @@ import XYZ from 'ol/source/XYZ.js';
                     axios({
                        method: 'post',
                        url: '/api/planesTerritoriales/activarEtapa',
-                       data: {etapa: response.data.accion}
+                       data: {modulo: response.data.modulo}
                      }).then(function (response) {
-                       swal("Activado!", "Puede cargar los Recursos para este Periodo.", "success");
+                       swal("Activado!", "Puede cargar datos a este módulo.", "success");
                        me.$root.$data.view = e;
                      }).catch(function (error) {
                        console.log(error);
@@ -295,7 +244,23 @@ import XYZ from 'ol/source/XYZ.js';
                 }
 
                 if(response.data.accion == 3){
-                  swal("Cerrado!", "Ya no puede modificar el módulo de Recursos ya que se concluyó el mismo", "info")
+                  swal({
+                    title: 'Ingresar?',
+                    text: "El módulo esta Concluido, solo pordra ver la información registrada!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, continuar!',
+                    closeOnConfirm: true
+                  },
+                  function(){
+                    me.$root.$data.view = e;
+                    me.$root.$data.modulo_estado = 'Concluido';
+                  });
+              }
+                if(response.data.accion == 0){
+                  swal("Alerta!", response.data.msg, "info")
                 }
 
               }).catch(function (error) {
@@ -309,6 +274,7 @@ import XYZ from 'ol/source/XYZ.js';
              axios.get('/api/planesTerritoriales/estadoActualModulos').then(function (response) {
                 // handle success
                 me.estadoRecursos = response.data.moduloRecursosEstado;
+                me.estadoDeudas = response.data.moduloDeudasEstado;
 
               })
               .catch(function (error) {

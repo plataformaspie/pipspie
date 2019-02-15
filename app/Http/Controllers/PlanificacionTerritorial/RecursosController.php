@@ -32,14 +32,10 @@ class RecursosController extends BasecontrollerController
           }
       }
 
-      $periodo = Array();
-      $gestionInicial = 2016;
-      $gestionFinal = 2020;
-      for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
-        $periodo[] = $i;
-      }
+      $periodoActual = $this->periodoActual();
+      $totalesGeneral = $this->totalesPlanificacion();
 
-      $totales = \DB::select("
+      $totalesRecursosGestiones = \DB::select("
       SELECT fuente.nombre as gestion,
       (
         SELECT SUM(monto)
@@ -53,15 +49,10 @@ class RecursosController extends BasecontrollerController
         from sp_parametros pa
         WHERE activo = TRUE
         AND categoria = 'gestiones'
-        AND codigo BETWEEN '".$gestionInicial."' AND '".$gestionFinal."'
+        AND codigo BETWEEN '".$periodoActual['gestionInicial']."' AND '".$periodoActual['gestionFinal']."'
         ORDER BY codigo ASC
       ) as fuente");
 
-      $totalPresupuesto=0;
-      foreach ($totales as  $item) {
-        $totalPresupuesto = $totalPresupuesto + $item->total;
-      }
-      
 
       $recursosCreados = \DB::select("SELECT id_tipo_recurso
       FROM sp_eta_recursos_eta
@@ -105,9 +96,9 @@ class RecursosController extends BasecontrollerController
       return \Response::json([
         'parametros' => $parametros,
         'grupos' => $grupos,
-        'periodoActivo' => $periodo,
-        'totales' => $totales,
-        'totalPresupuesto' => $totalPresupuesto,
+        'periodoActivo' => $periodoActual['gestionesPeriodo'],
+        'totales' => $totalesRecursosGestiones,
+        'totalPresupuesto' => $totalesGeneral['totalRecursos'],
         'recursosCreados' => $arrayRecursosCreados,
         'recursosCreadosGestiones' => $arrayRecursosCreadosGestiones,
         'otrosIngresos' => $arrayOtros,
@@ -118,12 +109,7 @@ class RecursosController extends BasecontrollerController
 
   public function saveRecursoTipo(Request $request)
   {
-    $periodo = Array();
-    $gestionInicial = 2016;
-    $gestionFinal = 2020;
-    for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
-      $periodo[] = $i;
-    }
+    $periodoActual = $this->periodoActual();
     $user = \Auth::user();
 
     try{
@@ -132,7 +118,7 @@ class RecursosController extends BasecontrollerController
             $recurso = new Recursos();
             $recurso->id_institucion = $user->id_institucion;
             $recurso->id_tipo_recurso = $request->tipo_recurso;
-            $recurso->gestion = $periodo[$k];
+            $recurso->gestion = $periodoActual['gestionesPeriodo'][$k];
             $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
             $recurso->activo = true;
             $recurso->id_user_created = $user->id;
@@ -160,12 +146,6 @@ class RecursosController extends BasecontrollerController
 
   public function saveUpdateRecursoTipo(Request $request)
   {
-    $periodo = Array();
-    $gestionInicial = 2016;
-    $gestionFinal = 2020;
-    for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
-      $periodo[] = $i;
-    }
     $user = \Auth::user();
 
     try{
@@ -225,13 +205,7 @@ class RecursosController extends BasecontrollerController
 
     public function saveOtro(Request $request)
     {
-      $periodo = Array();
-      $gestionInicial = 2016;
-      $gestionFinal = 2020;
-      for($i=$gestionInicial; $i<=$gestionFinal; $i++) {
-        $periodo[] = $i;
-      }
-
+      $periodoActual = $this->periodoActual();
       $user = \Auth::user();
 
       if($request->id_otro == 0){
@@ -253,7 +227,7 @@ class RecursosController extends BasecontrollerController
                   $recurso = new Recursos();
                   $recurso->id_institucion = $user->id_institucion;
                   $recurso->id_otro_ingreso = $otro->id;
-                  $recurso->gestion = $periodo[$k];
+                  $recurso->gestion = $periodoActual['gestionesPeriodo'][$k];
                   $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
                   $recurso->activo = true;
                   $recurso->id_user_created = $user->id;
@@ -290,7 +264,7 @@ class RecursosController extends BasecontrollerController
 
               foreach ($request->datos as $k => $v) {
                   $recurso = Recursos::find($request->ids[$k]);
-                  $recurso->gestion = $periodo[$k];
+                  $recurso->gestion = $periodoActual['gestionesPeriodo'][$k];
                   $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
                   $recurso->id_user_updated = $user->id;
                   $recurso->save();
@@ -324,8 +298,9 @@ class RecursosController extends BasecontrollerController
     try{
           $otro =  OtrosIngresos::find($request->id_otro);
           $otro->activo = false;
+          $otro->id_user_updated = $user->id;
           $otro->save();
-          \DB::table('sp_eta_recursos_eta')->where('id_otro_ingreso', $request->id_otro)->update(['activo' => false]);
+          \DB::table('sp_eta_recursos_eta')->where('id_otro_ingreso', $request->id_otro)->update(['activo' => false,'id_user_updated' => $user->id]);
           return \Response::json(array(
               'error' => false,
               'title' => "Success!",

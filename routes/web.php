@@ -541,7 +541,7 @@ Route::group(['middleware' => 'auth'],function(){
       );
 });
 
-
+//PLANIFICACION TERRITORIAL
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'planesTerritoriales'),
@@ -555,17 +555,34 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               Route::get('datosUsuario', 'PlanificacionTerritorial\IndexController@datosUsuario');
               Route::get('listaTipoRecursos', 'PlanificacionTerritorial\RecursosController@listaTipoRecursos');
+              Route::get('listaTipoDeudas', 'PlanificacionTerritorial\DeudasController@listaTipoDeudas');
               Route::get('mapaMunicipio', 'PlanificacionTerritorial\IndexController@mapaMunicipio');
               Route::get('mapaDepartamento', 'PlanificacionTerritorial\IndexController@mapaDepartamento');
               Route::get('verificarEtapa', 'PlanificacionTerritorial\IndexController@verificarEtapa');
+              Route::get('verificarEtapaCategoria', 'PlanificacionTerritorial\PlanificacionController@verificarEtapaCategoria');
               Route::get('estadoActualModulos', 'PlanificacionTerritorial\IndexController@estadoActualModulos');
               Route::get('finalizarModulo', 'PlanificacionTerritorial\IndexController@finalizarModulo');
+              Route::get('finalizarCategoria', 'PlanificacionTerritorial\PlanificacionController@finalizarCategoria');
+              Route::get('categoriasPadreAcciones', 'PlanificacionTerritorial\PlanificacionController@categoriasPadreAcciones');
+              Route::get('categoriasHijosAccion', 'PlanificacionTerritorial\PlanificacionController@categoriasHijosAccion');
+              Route::get('listaEstructuraProgramaticaIndicadores', 'PlanificacionTerritorial\PlanificacionController@listaEstructuraProgramaticaIndicadores');
+              Route::get('listaCatalogoAccionEta', 'PlanificacionTerritorial\PlanificacionController@listaCatalogoAccionEta');
+              Route::get('datosCatalogoAccionEta', 'PlanificacionTerritorial\PlanificacionController@datosCatalogoAccionEta');
+              Route::get('datosDetalleAccionEta', 'PlanificacionTerritorial\PlanificacionController@datosDetalleAccionEta');
+              Route::get('listaObjetivosEtaGenerados', 'PlanificacionTerritorial\PlanificacionController@listaObjetivosEtaGenerados');
+              Route::get('datosObjetivoSeleccionado', 'PlanificacionTerritorial\PlanificacionController@datosObjetivoSeleccionado');
               Route::post('activarEtapa', 'PlanificacionTerritorial\IndexController@activarEtapa');
+              Route::post('activarCategoria', 'PlanificacionTerritorial\PlanificacionController@activarCategoria');
               Route::post('saveRecursoTipo', 'PlanificacionTerritorial\RecursosController@saveRecursoTipo');
               Route::post('saveUpdateRecursoTipo', 'PlanificacionTerritorial\RecursosController@saveUpdateRecursoTipo');
               Route::post('deleteRecurso', 'PlanificacionTerritorial\RecursosController@deleteRecurso');
               Route::post('saveOtro', 'PlanificacionTerritorial\RecursosController@saveOtro');
+              Route::post('saveDeudas', 'PlanificacionTerritorial\DeudasController@saveDeudas');
               Route::post('deleteOtro', 'PlanificacionTerritorial\RecursosController@deleteOtro');
+              Route::post('deleteDeuda', 'PlanificacionTerritorial\DeudasController@deleteDeuda');
+              Route::post('savePlanificacion', 'PlanificacionTerritorial\PlanificacionController@savePlanificacion');
+              Route::post('deleteObjetivo', 'PlanificacionTerritorial\PlanificacionController@deleteObjetivo');
+
 
 
           }
