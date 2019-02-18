@@ -65,8 +65,6 @@ text-decoration: underline;
       <!-- /.breadcrumb -->
   </div>
   <!-- .row -->
-
-<!--   </br> -->
   <div class="row">
       <div class="col-md-12">
           <div class="panel panel-inverse ">
@@ -104,98 +102,47 @@ text-decoration: underline;
                       </div>
                       <h4 class="font-bold m-t-0">Filtrar por Pilar</h4>
                       <hr>*/ ?>
-                      <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                         <div class="col-md-3 p-l-0 p-r-0">
-                              <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Filtrar por Entidad</label>
+                      <div class="row">
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_1.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(1)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_2.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(2)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_3.jpg" height="50" alt="-" class="box"  onclick="filtrarPdes(3)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_4.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(4)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_5.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(5)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_6.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(6)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_7.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(7)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_8.jpg" height="50" alt="-" class="box"  onclick="filtrarPdes(8)"/>
                           </div>
 
-                          <div class="form-group col-md-4 p-l-0">
-                                <select id="pcod_ent" name="pcod_ent" class="custom-select col-12 form-control enabledCampos" required>
-                                      <option value="">Selecciona una Entidad.......</option>
-                                      @foreach ($filindpil as  $entidad)
-                                          @if($entidad->id == $pent)
-                                          <option value="{{ $entidad->codigo_entidad }}" selected="">{{ $entidad->nombre_entidad }}</option>
-                                          @else
-                                          <option value="{{ $entidad->codigo_entidad }}">{{ $entidad->nombre_entidad }}</option>
-                                          @endif
-                                      @endforeach
-                                </select> 
-                                <div class="help-block with-errors"></div>
-                          </div>  
-                          <div  id="Pilares" class="col-lg-2 p-l-0 text-center">
-                                <button type="button" id="btn_ent" class="btn btn-block btn-info btn-sm m-t-5"><i class="fa fa-plus-square"></i> Mostrar Pilares</button>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_9.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(9)"/>
                           </div>
-                       
-                      </div>                      
-                      <h5>Entidad Filtrada: <b>{{$nom_ent}} – Nro. de Entidad: {{$pent}}</b></h5>
-                      <div class="row">
-                        @foreach ($filindent as  $ent_pilar)                        
-                         @if($ent_pilar->cod_p == 1)
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_1.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(1)"/>
-                            </div>
-                          @endif
-                          @if($ent_pilar->cod_p == 2)                          
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_2.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(2)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 3 ) 
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_3.jpg" height="50" alt="-" class="box"  onclick="filtrarPdes(3)"/>
-                            </div>                            
-                          @endif          
-                          @if($ent_pilar->cod_p == 4 )                           
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_4.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(4)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 5 )                             
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_5.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(5)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 6)                             
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_6.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(6)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 7)                             
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_7.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(7)"/>
-                            </div>                            
-                          @endif          
-                          @if($ent_pilar->cod_p == 8)                             
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_8.jpg" height="50" alt="-" class="box"  onclick="filtrarPdes(8)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 9) 
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_9.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(9)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 10)                             
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_10.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(10)"/>
-                            </div>                           
-                          @endif          
-                          @if($ent_pilar->cod_p == 11)                             
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_11.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(11)"/>
-                            </div>                            
-                          @endif          
-                          @if($ent_pilar->cod_p == 12)                            
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_12.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(12)" />
-                            </div>                          
-                          @endif          
-                          @if($ent_pilar->cod_p == 13)                            
-                            <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                              <img src="/img/PILAR_13.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(13)"/>
-                            </div>                          
-                          @endif                                  
-                         @endforeach
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_10.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(10)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_11.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(11)"/>
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_12.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(12)" />
+                          </div>
+                          <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
+                            <img src="/img/PILAR_13.jpg" height="50" alt="-"  class="box" onclick="filtrarPdes(13)"/>
+                          </div>
                       </div>
                   </div>
               </div>
@@ -208,18 +155,16 @@ text-decoration: underline;
       <div class="col-lg-12">
           <div class="panel">
               <div class="panel-body">
-                <h5>Reporte del Total de Resultados del {{$nom_ent}}</b></h5>
-                <div style="color:#3177AE">Total Indicadores: <b style="color:#3177AE">{{ $totalPilar->totalp  }}</b></div>
-                <div style="color:#3177AE">Total Indicadores Con Resultados: <b>{{ $countPilar->total  }}</b></div>
-                <div style="color:#3177AE">Total Indicadores Sin Resultados: <b>{{ $totalResPilar->totalgral  }}</b></div>
+
+                <h5>Total indicadores: <b>{{ $countPilar->total  }}</b></h5>
                 <div>
                       <?php
                       $pilar = "";
                       $meta = "";
                       $resultado = "";
                       ?>
-                  @if($countPilar->total != 0)   
-                     @foreach ($filtropdes as $itemP)
+                      @foreach ($filtropdes as $itemP)
+
                         @if($itemP->pilar != $pilar)
                             <?php $pilar =  $itemP->pilar; ?>
                             <div class="row show-grid " style="padding-right: 0px;padding-top: 0px;padding-left: 0px;">
@@ -241,8 +186,8 @@ text-decoration: underline;
                                                            <?php $meta =  $itemM->meta; ?>
                                                             <div class="col-lg-1">
                                                               <a class="mytooltip" style="color:#3177AE" href="javascript:void(0)">
-                                                                  {{$itemM->meta }} <!--  M -->
-                                                                <span class="tooltip-content5">
+                                                                  {{$itemM->meta}}
+                                                                  <span class="tooltip-content5">
                                                                     <span class="tooltip-text3">
                                                                       <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemM->meta}}<br /> {{$itemM->desc_m}}</span>
                                                                     </span>
@@ -253,16 +198,16 @@ text-decoration: underline;
                                                               <div class="row">
                                                                 <div class="col-lg-12 p-t-0 p-b-0">
                                                                   <div class="row">
-                                                                    {{ $resultado = ""}} <?php $pos=0 ?>
+                                                                    {{ $resultado = ""}}
                                                                      @foreach ($filtropdes as $itemR)
                                                                        @if($itemR->resultado != $resultado and $itemM->meta == $itemR->meta)
                                                                              <?php $resultado =  $itemR->resultado; ?>
                                                                                   <div class="col-lg-2 p-t-0 p-b-0" @if($itemR->nombre != "") style="background-color: #E0F1D7"@else style="background-color: #F0D8D8" @endif>
-                                                                                    <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D" @else style="color: #A94456" @endif  href="javascript:void(0)">
-                                                                                        {{$itemR->resultado}}   
-                                                                                      <span class="tooltip-content5">
+                                                                                    <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D"@else style="color: #A94456" @endif  href="javascript:void(0)">
+                                                                                        {{$itemR->resultado}}
+                                                                                        <span class="tooltip-content5">
                                                                                           <span class="tooltip-text3">
-                                                                                            <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemR->resultado}}<br /> {{$itemR->desc_r}}  120</span>
+                                                                                            <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemR->resultado}}<br /> {{$itemR->desc_r}}</span>
                                                                                           </span>
                                                                                         </span>
                                                                                     </a>
@@ -297,12 +242,18 @@ text-decoration: underline;
 
                                       </div>
 
+
+
                                   </div>
+
+
+
+
                                 </div>
                             </div>
                         @endif
                       @endforeach
-                  @endif    
+
                 </div>
 
 
@@ -403,37 +354,10 @@ text-decoration: underline;
       });
     });
 
-    $(document).ready(function(){
-       $('#btn_ent').click(function(){
-         filtra_Entidad();
-      });
-    });    
-
-    function filtra_Entidad(){
-        var cod_ent1=$('#pcod_ent').val();  
-       var concat1 = "";
-        concat1 += "cod_ent="+cod_ent1+"&";
-      $(location).attr('href', '/sistemaremi/setIndicadores/?'+concat1);
-    }
-
     function filtrarPdes(ele){
-       // var cod_ent1=$('#ent').val();  
-       // var concat1 = "";
-       // concat1 += "cod_ent="+cod_ent1+"&";
-
       var concat = "";
-      concat += "cod_ent={{$pent}}&";
-      concat += "pdes="+ele;
+      concat += "pdes="+ele+"&";
       $(location).attr('href', '/sistemaremi/setIndicadores/?'+concat);
-      // console.log("ent_pdes",concat1,concat);
     }
-
- /*   function filtrarPdesEntidad(ent){
-      console.log("ENTIDADES1",ent);
-      var unir = "";
-      unir += "pent="+ent+"&";
-      $(location).attr('href', '/sistemaremi/setIndicadores/?'+unir);
-    }  */
-
   </script>
 @endpush

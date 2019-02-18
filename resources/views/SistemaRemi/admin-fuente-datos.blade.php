@@ -108,6 +108,7 @@
           <form id="formAdd" name="formAdd" action="javascript:save();" data-toggle="validator" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" name="id_fuente" value="">
+            <input type="hidden" name="tap_next" value="">            
             <!-- .row -->
             <div class="row">
               <div class="col-sm-12">
@@ -1251,9 +1252,9 @@
 
                     <div class="col-sm-12">
                             <div class="form-group text-center">
-                              <button id="bt_guardar" type="submit" class="btn btn-info hidden tap-btn">Guardar</button>
-                              <button id="bt_enviar" type="submit" class="btn btn-danger hidden tap-btn">Guardar y Enviar a revisión</button>
-                              <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
+                              <button id="bt_guardar" type="submit" class="btn btn-info  tap-btn">Guardar</button>
+                              <button id="bt_enviar" type="hidden" class="btn btn-danger  tap-btn">Guardar y Enviar a revisión</button>
+                              <button id="bt_siguiente" type="hidden" class="btn btn-info tap-btn">Siguiente</button>
                               <button type="button" class="btn btn-default btn-back">Cancelar</button>
                             </div>
                     </div>
@@ -1551,28 +1552,30 @@
       validarSession();
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
-      if(next == 7){
-        $("#bt_siguiente").addClass('hidden');
+      //if(next == 7){
+        $("#bt_siguiente").removeClass('hidden');
         $("#bt_guardar").removeClass('hidden');
         $("#bt_enviar").removeClass('hidden');
-      }else{
-        $("#bt_siguiente").removeClass('hidden');
-        $("#bt_guardar").addClass('hidden');
-        $("#bt_enviar").addClass('hidden');
-      }
+    //  }else{
+      //   $("#bt_siguiente").removeClass('hidden');
+      //   $("#bt_guardar").addClass('hidden');
+      //   $("#bt_enviar").addClass('hidden');
+      // }
       $(".panelIniRs" ).trigger( "click" );
     });
     $(".tap-btn").click(function () {
       var activo = $(".nav-item a.active").attr('href');
 
-      var next =  activo.substr(-1,1) ;
-      next++;
-      if(next == 7){
+      var bt_next =  activo.substr(-1,1) ;
+      bt_next++;
+      $('input[name="tap_next"]').attr("value",bt_next);        
+      if(bt_next == 7){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
         $("#bt_enviar").removeClass('hidden');
       }
-      $("#tab-ini"+next ).trigger( "click" );
+      $("#tab-ini"+bt_next).removeClass('disabled');         
+      $("#tab-ini"+bt_next ).trigger( "click" );
 
     });
     function createElements() {
@@ -1920,6 +1923,13 @@
        $('#option2').removeClass('hidden');
        $('#option1').removeClass('show');
        $('#option1').addClass('hidden');
+       $('#tab-ini2').addClass('disabled'); // desactiva boton de formulario
+       $('#tab-ini3').addClass('disabled');
+       $('#tab-ini4').addClass('disabled');
+       $('#tab-ini5').addClass('disabled');       
+       $('#tab-ini6').addClass('disabled');
+       $('#tab-ini7').addClass('disabled');
+
     });
 
 
@@ -1933,6 +1943,9 @@
              data:{'id':ele},
              success: function(data){
                if(data.error == false){
+                  for(var i=1;i<data.fuente[0].form_activo+1;i++){
+                        $('#tab-ini'+i).removeClass('disabled');                        
+                    }
 
                    //$("#mod_cod_m").val(data.meta).trigger('change');
                    $('#estado_view').html(data.fuente[0].estado);
@@ -2219,8 +2232,10 @@
                   data: $("#formAdd").serialize() , // Adjuntar los campos del formulario enviado.
                   success: function(data){
                     if(data.error == false){
-                        $("#btn-back" ).trigger( "click" );
-                        $("#dataTable").jqxDataTable("updateBoundData");
+                        $('input[name="id_fuente"]').attr("value",data.idfuente);                      
+                        var tap_next=0;                      
+                        // $("#btn-back" ).trigger( "click" );
+                        // $("#dataTable").jqxDataTable("updateBoundData");
                         swal("Guardado!", "Se ha guardado correctamente.", "success");
                     }else{
                         $.toast({

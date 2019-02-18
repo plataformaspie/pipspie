@@ -119,7 +119,7 @@ text-decoration: underline;
                                           <option value="{{ $entidad->codigo_entidad }}">{{ $entidad->nombre_entidad }}</option>
                                           @endif
                                       @endforeach
-                                </select> 
+                                </select>
                                 <div class="help-block with-errors"></div>
                           </div>  
                           <div  id="Pilares" class="col-lg-2 p-l-0 text-center">
@@ -127,7 +127,7 @@ text-decoration: underline;
                           </div>
                        
                       </div>                      
-                      <h5>Entidad Filtrada: <b>{{$nom_ent}} – Nro. de Entidad: {{$pent}}</b></h5>
+                      <h5>Entidad Filtrada: <b>{{$nom_ent}} - {{$pent}}</b></h5>
                       <div class="row">
                         @foreach ($filindent as  $ent_pilar)                        
                          @if($ent_pilar->cod_p == 1)
@@ -208,10 +208,8 @@ text-decoration: underline;
       <div class="col-lg-12">
           <div class="panel">
               <div class="panel-body">
-                <h5>Reporte del Total de Resultados del {{$nom_ent}}</b></h5>
-                <div style="color:#3177AE">Total Indicadores: <b style="color:#3177AE">{{ $totalPilar->totalp  }}</b></div>
-                <div style="color:#3177AE">Total Indicadores Con Resultados: <b>{{ $countPilar->total  }}</b></div>
-                <div style="color:#3177AE">Total Indicadores Sin Resultados: <b>{{ $totalResPilar->totalgral  }}</b></div>
+
+                <h5>Total indicadores: <b>{{ $countPilar->total  }}</b></h5>
                 <div>
                       <?php
                       $pilar = "";
@@ -241,7 +239,7 @@ text-decoration: underline;
                                                            <?php $meta =  $itemM->meta; ?>
                                                             <div class="col-lg-1">
                                                               <a class="mytooltip" style="color:#3177AE" href="javascript:void(0)">
-                                                                  {{$itemM->meta }} <!--  M -->
+                                                                  {{$itemM->meta}}  <!--  M -->
                                                                 <span class="tooltip-content5">
                                                                     <span class="tooltip-text3">
                                                                       <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemM->meta}}<br /> {{$itemM->desc_m}}</span>
@@ -253,13 +251,13 @@ text-decoration: underline;
                                                               <div class="row">
                                                                 <div class="col-lg-12 p-t-0 p-b-0">
                                                                   <div class="row">
-                                                                    {{ $resultado = ""}} <?php $pos=0 ?>
+                                                                    {{ $resultado = ""}}
                                                                      @foreach ($filtropdes as $itemR)
                                                                        @if($itemR->resultado != $resultado and $itemM->meta == $itemR->meta)
                                                                              <?php $resultado =  $itemR->resultado; ?>
                                                                                   <div class="col-lg-2 p-t-0 p-b-0" @if($itemR->nombre != "") style="background-color: #E0F1D7"@else style="background-color: #F0D8D8" @endif>
-                                                                                    <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D" @else style="color: #A94456" @endif  href="javascript:void(0)">
-                                                                                        {{$itemR->resultado}}   
+                                                                                    <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D"@else style="color: #A94456" @endif  href="javascript:void(0)">
+                                                                                        {{$itemR->resultado}}  <!-- R -->
                                                                                       <span class="tooltip-content5">
                                                                                           <span class="tooltip-text3">
                                                                                             <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemR->resultado}}<br /> {{$itemR->desc_r}}  120</span>

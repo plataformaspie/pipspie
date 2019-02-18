@@ -510,6 +510,9 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
               Route::get('apiExportData', 'SistemaRemi\ExportReportController@descagarExcelAdminFuente');
 
+              Route::get('apiExportDataindicador', 'SistemaRemi\ExportReportController@descagarExcelAdminIndicador');
+              Route::get('filtraPdesEntidad', 'SistemaRemi\IndicadorController@filtraPdesEntidad');
+
 
           }
       );

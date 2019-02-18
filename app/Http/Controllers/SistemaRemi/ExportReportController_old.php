@@ -10,18 +10,13 @@ use App\Models\SistemaRemi\TiposMedicion;
 use App\Models\SistemaRemi\UnidadesMedidas;
 use App\Models\SistemaRemi\Dimensiones;
 use App\Models\SistemaRemi\FuenteDatos;
-use App\Models\SistemaRemi\Indicadores;
 use App\Models\SistemaRemi\FuenteDatosResponsable;
 use App\Models\SistemaRemi\FuenteTipos;
 use App\Models\SistemaRemi\Frecuencia;
-use App\Models\SistemaRemi\Metas;
-use App\Models\SistemaRemi\IndicadorAvance;
 use App\Models\SistemaRemi\FuenteTiposRecoleccion;
 use App\Models\SistemaRemi\FuenteTiposCategoriaTematica;
 use App\Models\SistemaRemi\FuenteArchivosRespaldos;
 use App\Models\SistemaRemi\FuenteTiposCobertura;
-use App\Models\SistemaRemi\VistaCatalogoPdespmr;
-use App\Models\SistemaRemi\VistaIndicadoresPdespmri;
 use App\Models\ModuloPdes\ProyectoPdes as Proyecto;
 use Excel;
 
@@ -960,24 +955,17 @@ class ExportReportController extends Controller
       })->export('xlsx');
 
   }
-
-  ///  ************       ******************  
   public function descagarExcelAdminFuente(Request $request){
 
     //controlar tamaño de campos de formulario 10,77
     $tamanoTitulos = [];
     $ids = explode(",", trim($request->ids,','));
-   // dd("ID :",$ids);                                                
     $mayorCantidadFormularios = FuenteDatos::whereIn('remi_fuente_datos.id',$ids)
                                                 ->max('numero_total_formulario');
 
-    //dd('Total Form :'.$mayorCantidadFormularios);                                            
     //controlar tamaño de campos Responsable mandar string  
     $registros = implode(',', $ids);
-    //dd($registros);
-
     $registros = '('.$registros.')'; 
-    //dd($registros);
                                            
     $mayorCantidadResponsable = \DB::select("SELECT MAX(count_num) FROM 
                           (SELECT id_fuente, count(*) as count_num
@@ -995,7 +983,7 @@ class ExportReportController extends Controller
     $r = intval($mayorCantidadResponsable[0]->max);
     $numeroMayorResponsables = $r;
 
-    //dd($numeroMayorResponsables);
+    
     if(isset($r)){
       $res = 'RESPONSABLE_';
       for($i=1; $i<=$r; $i++){
@@ -1025,7 +1013,6 @@ class ExportReportController extends Controller
                       'ESTADISTICAS ECONOMICAS',
                       'ESTADISTICAS MEDIOAMBIENTALES',
                       'INFORMACION GEOESPACIAL'];
-
 
     array_push($tamanoTitulos,13,4);
 
@@ -1060,14 +1047,13 @@ class ExportReportController extends Controller
                         ->orderBy('id', 'asc')
                         ->get();
     
-    //dd($sql);
-   //dd($tamanoTitulos);
+  
+    
     //creando las filas para el excel 
     $tamanoColumnas = []; 
     $j=0;  
     $arrayContenido = [];               
     foreach ($sql as $key => $fuenteDatos){
-     // dd($fuenteDatos);
       $tipo = $fuenteDatos->tipo;
       $filaFuente = [];
       //llenando fila fuente  
@@ -1080,11 +1066,11 @@ class ExportReportController extends Controller
                               $fuenteDatos->variable);
           //MODO RECOLECCION DATOS OTRO  
           
-           //dd($fuenteDatos->modo_recoleccion_datos);//hasta aqui muestra e valor modo recoleccion datos
+          // dd($fuenteDatos->modo_recoleccion_datos);//hasta aqui muestra e valor modo recoleccion datos
           if(isset($fuenteDatos->modo_recoleccion_datos)){
             $otroModo = explode(',',$fuenteDatos->modo_recoleccion_datos);
             
-           // dd("REC DAT :",$otroModo);  
+            
             for ($i=0; $i < sizeof($otroModo) ; $i++) { 
               if($otroModo[$i] == 'Otro'){
 
@@ -1244,7 +1230,7 @@ class ExportReportController extends Controller
           
 
           $cober = explode(",", $fuenteDatos->cobertura_geografica);
-
+          
           if(count($cober)>1){
             $co = FuenteTiposCobertura::whereIn('id', $cober)->get();
           
@@ -1341,19 +1327,11 @@ class ExportReportController extends Controller
         
       
       $arrayContenido[$j] = $filaFuente;
-     // dd("Contenido",$arrayContenido);    
       $j++; 
-
-         if($j==2){
-            dd("VER",$arrayContenido);
-         }
-
-    }  // fin del foreach 
+    }
     //dd($arrayContenido);
-   // dd($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);
     self::contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);                     
-}  // fin de la descarga de BD a Excel  adminfuentes
-
+}
 static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){
    // dd( $tamanoTitulos);
     \Excel::create('Admin Fuente', function ($excel) use ($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){
@@ -1439,287 +1417,5 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
       });
 
     })->export('xlsx');
-  }  // fin construir excel adminfuente
-
-  public function descagarExcelAdminIndicador(Request $request){
-
-    $tamanoTitulos = [];
-    $ids = explode(",", trim($request->ids,','));
-   // dd("TABLA ID:",$ids);
-    //$registros = implode(',', $ids);
-    //dd($registros);
-
-    //$registros = '('.$registros.')'; 
-
-    $cabeceraTitulos = ['ALINEAR AL PDES',
-                        'INFORMACION BASICA',
-                        'METODO DE CALCULO',
-                        'METAS Y AVANCES','FUENTE DE DATOS'];  
-
-    array_push($cabeceraTitulos,'');
-
-        $cabeceraDatos = [
-                      'PILAR',
-                      'META',
-                      'RESULTADO',
-                      'NOMBRE',
-                      'DEFINICION',                      
-                      'ETAPA',
-                      'TIPO',
-                      'UNIDAD DE MEDIDA',
-                      'FRECUENCIA DE REPORTE',
-                      'SERIE DISPONIBLE',
-                      'VARIABLES DE DESAGREGACION',
-                      'FECHA LINEA BASE',                  
-                      'VALOR LINEA BASE',
-
-                      'FORMULA',
-                      'NUMERADOR',
-                      'FUENTE NUMERADOR',
-                      'DENOMINADOR',
-                      'FUENTE DENOMINADOR',                 
-                      'OBSERVACIONES A LA FUENTE DE DATOS',
-
-
-                      'GESTION 2016',
-                      'Valor',
-                      'GESTION 2017',
-                      'Valor',                       
-                      'GESTION 2018',                 
-                      'Valor',
-                      'GESTION 2019',
-                      'Valor',
-                      'META 2020',
-                      'Valor',
-                      'META 2025',
-                      'Valor',
-                      'META 2030',
-                      'Valor'];
-    array_push($tamanoTitulos,5,8,6,18);
-
-    for ($i=1; $i < 3 ; $i++) { 
-      array_push($cabeceraDatos,'FECHA REPORTADO',
-                          'VALOR REPORTADO');
-    }    
-      //array_push($tamanoTitulos,4);
-
-    array_push($cabeceraDatos,'FUENTE');
-    array_push($tamanoTitulos,1);
-
-    //dd($cabeceraDatos);
-    $sql = Indicadores::whereIn('remi_indicadores.id',$ids)
-                        ->orderBy('id', 'asc')
-                        ->get();
-    //dd($cabeceraDatos);   
-    //dd($sql);                        
-    $tamanoColumnas = []; 
-    $w=0;  
-    $arrayContenido = [];               
-    foreach ($sql as $key => $IndicadorDatos){
-     // $tipo = $IndicadorDatos->tipo;
-      //dd("INDD",$IndicadorDatos);
-      $filaIndicador = [];
-      //llenando fila fuente 
-      $pdes = []; 
-     // dd("BIEN",$IndicadorDatos->id);
-      $pdes = \DB::select("SELECT c.*,ir.id
-                           FROM remi_indicador_pdes_resultado ir
-                           INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                           WHERE ir.id_indicador = ".$IndicadorDatos->id);                        
-
-          //dd($pdes[0]->cod_p);
-
-       /*   $filaIndicador = array($pdes[0]->cod_p,
-                              $pdes[0]->cod_m,
-                              $pdes[0]->cod_r); */
-          //dd("PEDES1",$pdes[0]->cod_p);               
-
-          foreach ($pdes as $key => $value)
-          {
-              $pilar_p = $value->cod_p; //dd($pmrp);
-              $meta_m = $value->cod_m;// dd($pmrm);
-              $resultado_r = $value->cod_r;   //dd($pmrr);
-              array_push($filaIndicador, $pilar_p);
-              array_push($filaIndicador, $meta_m);
-              array_push($filaIndicador, $resultado_r);
-
-              //dd($pmr);
-          }
-
-          array_push($filaIndicador, $IndicadorDatos->nombre);
-          array_push($filaIndicador, $IndicadorDatos->definicion);
-
-          array_push($filaIndicador, $IndicadorDatos->etapa);
-          array_push($filaIndicador, $IndicadorDatos->tipo);
-          array_push($filaIndicador, $IndicadorDatos->unidad_medida);
-          array_push($filaIndicador, $IndicadorDatos->frecuencia);
-          array_push($filaIndicador, $IndicadorDatos->serie_disponible);
-          array_push($filaIndicador, $IndicadorDatos->variables_desagregacion);
-          array_push($filaIndicador, $IndicadorDatos->linea_base_fecha);
-          array_push($filaIndicador, $IndicadorDatos->linea_base_valor);                                                  
-          array_push($filaIndicador, $IndicadorDatos->formula);
-          array_push($filaIndicador, $IndicadorDatos->numerador_detalle);
-          array_push($filaIndicador, $IndicadorDatos->numerador_fuente);
-          array_push($filaIndicador, $IndicadorDatos->denominador_detalle);
-          array_push($filaIndicador, $IndicadorDatos->denominador_fuente);
-          array_push($filaIndicador, $IndicadorDatos->observacion);
-          //$fd= $IndicadorDatos->fuente_datos;
-
-          $tam = Metas::where('id_indicador',$IndicadorDatos->id)->count();
-
-          $TamGestion = \DB::select("SELECT * FROM remi_metas where id_indicador=".$IndicadorDatos->id."  order by gestion");
-         // dd($TamGestion);
-          for ($i=0; $i < $tam; $i++){
-              array_push($filaIndicador, $TamGestion[$i]->gestion);
-              array_push($filaIndicador, $TamGestion[$i]->valor);
-          }
-          //dd($filaIndicador);
-
-          $tams = IndicadorAvance::where('id_indicador',$IndicadorDatos->id)->count();
-
-          $TamAvances = \DB::select("SELECT * FROM remi_indicador_avance where id_indicador=".$IndicadorDatos->id."  order by fecha_generado_anio");
-
-          for ($j=0; $j < $tams; $j++){
-              array_push($filaIndicador, $TamAvances[$j]->fecha_generado_mes."/".$TamAvances[$j]->fecha_generado_anio);
-              array_push($filaIndicador, $TamAvances[$j]->valor);
-          }
-
-          $fd =  explode(',',$IndicadorDatos->fuente_datos);
-             // if($w==91){
-             //      dd("fuente",$fd[0]);
-             //   }
-
-          $Tamfuente = count($fd);
-
-          for($k=0; $k < $Tamfuente; $k++){
-
-            //  $fd =  explode(',',$IndicadorDatos->fuente_datos);
-              $fd_val = (int)$fd[0]; 
-/*             if($w==91){
-                  dd("Conversion",$fd_val); 
-               }*/
-
-           /*   if($w==91){
-                dd("VER",$fd_val);
-              }   */ 
-
-              //$fd_val = intval($fd[$k]);
-              //dd($fd_val);
-              //$nombrefuente= \DB::select("SELECT nombre FROM remi_fuente_datos where id=".$fd_val); 
-              //$nombrefuente=FuenteDatos::find($fd_val)->orderBy('id', 'asc')->first();
-
-              //$nombrefuente=FuenteDatos::find($fd_val)->first();
-             // if()
-              $nombrefuente=FuenteDatos::where('id','=',$fd_val)->first();
-              //array_push($filaIndicador,$nombrefuente->nombre);
-             // $nombrefuente=FuenteDatos::where('id',$fd_val)->first();
-              //$nom=$nombrefuente->nombre;
-              // if($w==91){
-              //    $nombrefuente=FuenteDatos::where('id','=',91)->first();
-              //    dd("LA Fuente",$nombrefuente->nombre);
-              // }
-             // $nombrefuente[0]=\DB::table('remi_fuente_datos')->select('nombre')->where('id','=',$fd_val)->get();
-
-
-            //dd($nombrefuente->nombre);
-              if(isset($nombrefuente->nombre)){
-                array_push($filaIndicador,$nombrefuente->nombre);
-              }else{
-                array_push($filaIndicador,"");
-              }
-          }
-
-          //dd($nombrefuente);
-          //dd($filaIndicador);          
-         $arrayContenido[$w] = $filaIndicador;
-         //dd("Contenido",$arrayContenido);
-         $w++; 
-         
-
-    }  //fin del foreach
-         // dd($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);
-         self::contruirExcelAdminIndicador($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido); 
-  } // fin descarga indicador
-
-  static function contruirExcelAdminIndicador($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){  
-
- \Excel::create('Admin Indicadores', function ($excel) use ($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){
-
-      $paletaColor = ['#F1948A', '#C39BD3' , '#7FB3D5', '#AED6F1', '#76D7C4', '#F9E79F', '#F8C471', '#F5CBA7', '#E59866', '#D4E6F1'];
-      $excel->sheet('Indicadores', function($hoja) use ($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido,$paletaColor){
-
-        
-         $cabeceraExcel = [
-           'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-           'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ',
-           'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ',
-           'CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ',
-           'DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ',
-           'EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ',
-           'FA','FB','FC','FD','FE','FF','FG','FH','FI','FJ','FK','FL','FM','FN','FO','FP','FQ','FR','FS','FT','FU','FV','FW','FX','FY','FZ',
-           'GA','GB','GC','GD','GE','GF','GG','GH','GI','GJ','GK','GL','GM','GN','GO','GP','GQ','GR','GS','GT','GU','GV','GW','GX','GY','GZ',
-           'HA','HB','HC','HD','HE','HF','HG','HH','HI','HJ','HK','HL','HM','HN','HO','HP','HQ','HR','HS','HT','HU','HV','HW','HX','HY','HZ',
-           'IA','IB','IC','ID','IE','IF','IG','IH','II','IJ','IK','IL','IM','IN','IO','IP','IQ','IR','IS','IT','IU','IV','IW','IX','IY','IZ'
-           ];
-
-           //Construir la primera fila combinada
-            $fila = 1;
-            $ri = 'A1';
-            $rf = 0;
-            $aunTamano = 0;
-            $color = 0;
-            //titulos
-            for ($i=0; $i <= sizeof($tamanoTitulos) ; $i++) {
-
-               $color++;
-                if(isset($tamanoTitulos[$i])){
-                  $rf = $rf + $tamanoTitulos[$i];//ULTIMO TAMAÑO
-
-                  $uTamano = $cabeceraExcel[$rf-1];
-
-                  $rUnido = $ri.':'.$uTamano.$fila;
-
-
-
-                  $hoja->cells($rUnido, function($cells)use ($color, $paletaColor) {
-                   $cells->setBorder('thin', 'thin', 'thin', 'thin');//bordes
-                   $cells->setBackground($paletaColor[$color % count($paletaColor)]);
-
-                  });
-                  $hoja->mergeCells($rUnido);//combinanado
-
-                  $hoja->setCellValue($ri, $cabeceraTitulos[$i]);//colocando el valor inicial
-
-
-                  $ri=$cabeceraExcel[$rf].$fila;
-                }
-            }
-            //nombre de la fila
-            $hoja->row(++$fila, $cabeceraDatos);
-            foreach ($arrayContenido as $mifuente) {
-
-              $hoja->row(++$fila, $mifuente);
-              
-            }
-
-            $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');  
-            
-            $hoja->getStyle('A1:'.$uTamano.$fila , $hoja->getHighestRow())->getAlignment()->setWrapText(true);
-            $tamanoColumnas = [];
-
-           
-            for ($i=0; $i < $rf ; $i++) { 
-              $clave = $cabeceraExcel[$i];
-              $tamanoColumnas[$clave] = 20;
-              
-                          
-            }
-            $hoja->setWidth($tamanoColumnas);
-                                  
-      });
-
-    })->export('xlsx');
-      
-  }  // fin de construir excel
-
+  }
 }

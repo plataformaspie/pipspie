@@ -107,20 +107,15 @@ class IndicadorController extends Controller
 
   public function setIndicadores(Request $request)
   {
-    //dd("VALORES",$request);
     //$indicadores = Indicadores::paginate();
-    $swe=1;
     $sw=0;
     $sb=0;
-    $cond=0;
-    $pent = 1;
     $tipo = "";
     $unidad = "";
     $buscar = "";
     $pdes = 1;
     $where = array();
     $orwhere = array();
-    //$filindent = "1";
 
     if($request->has('buscar')){
         $sb=1;
@@ -140,21 +135,8 @@ class IndicadorController extends Controller
     }
     if($request->has('pdes')){
         $pdes = $request->pdes;
-        $pdes_new=$pdes;$swe=2;
-        //dd("fsdfsdf",$pent);
-    }
-    if($request->has('cod_ent')){
-        $cod_ent = $request->cod_ent;
-        $pent=(int)$cod_ent;
-       // $swe=2;
-      // dd("codigo entidad:",$pent);
     }
 
-      $filnoment = \DB::select("SELECT nombre_entidad
-                                FROM remi_entidad
-                                where  codigo_entidad=".$pent." AND activo = true");
-      $nom_ent=$filnoment[0]->nombre_entidad;
-     // dd("nombre:",$uno);
     if($sw > 0){
 
           $indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->paginate(5)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar);
@@ -163,96 +145,28 @@ class IndicadorController extends Controller
           $indicadores = Indicadores::where('activo',true)->paginate(5);
     }
 
-   /* $filindpil = \DB::select("SELECT distinct responsable_nivel_1, activo
-                              FROM public.remi_fuente_datos_responsable
-                               where activo = true");*/
-/*
-    $filindent = \DB::select("SELECT distinct c.cod_p
-                                FROM remi_indicador_pdes_resultado ir
-                                INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                                WHERE ir.id_indicador IN (SELECT id_fuente
-                                  FROM public.remi_fuente_datos_responsable
-                                where cod_entidad IN ( select id from remi_indicadores r
-                                where r.fuente_datos IN (SELECT cast(id_fuente as varchar)
-                                  FROM public.remi_fuente_datos_responsable
-                                where cod_entidad=".$pent.")))");  */
-
-          $filindent = \DB::select("SELECT distinct c.cod_p
-                                FROM remi_indicador_pdes_resultado ir
-                                INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                                WHERE ir.id_indicador IN (SELECT id_fuente
-                                  FROM public.remi_fuente_datos_responsable
-                                where cod_entidad=".$pent.") order by c.cod_p");//$swe=2;
-
-    if($swe==1){
-          $pdes_new=$filindent[0]->cod_p;
-    }
-          // if(empty($pdes_new)){
-          //   dd("PILARES1",$pent,$pdes_new);
-          // }
-
-    $filindpil = \DB::select("SELECT  id,codigo_entidad,sigla_entidad,nombre_entidad, activo
-                              FROM remi_entidad
-                               where activo = true order by id");
-
 
     $filtropdes = \DB::select("SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
                               FROM pdes_vista_catalogo_pmr c
                               LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
                               LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
-                              ORDER BY cod_p,cod_m,cod_r ASC");    // ".$pdes."
+                              WHERE cod_p = ".$pdes."
+                              ORDER BY cod_p,cod_m,cod_r ASC");
 
     $countPilar = \DB::select("SELECT count(i.id) as total
                           FROM pdes_vista_catalogo_pmr c
                           LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
                           LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                          WHERE cod_p = ".$pdes_new);   //  $pdes
+                          WHERE cod_p = ".$pdes);
     $countPilar =$countPilar[0];
 
 
-    $totalPilar = \DB::select("select count(*) as totalp
-                              From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
-                              FROM pdes_vista_catalogo_pmr c
-                              LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
-                              LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
-                              ORDER BY cod_p,cod_m,cod_r ASC) a");
-    $totalPilar = $totalPilar[0];
-
-  $totalResPilar = \DB::select("SELECT (b.totalp-c.total) as totalgral
-          FROM
-                              (
-                              select count(*) as totalp
-                              From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
-                              FROM pdes_vista_catalogo_pmr c
-                              LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
-                              LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
-                              ORDER BY cod_p,cod_m,cod_r ASC) a
-                              ) b,
-                              (
-                              SELECT count(i.id) as total
-                              FROM pdes_vista_catalogo_pmr c
-                              LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
-                              LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
-                              ) c ");
-    $totalResPilar = $totalResPilar[0];
-
     $tiposMedicion = TiposMedicion::get();
     $unidadesMedidas = UnidadesMedidas::get();
-   // dd("Los Pilares",$request->cod_ent1);
-    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','nom_ent','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar','totalPilar','totalResPilar','filindpil','filindent','swe','pent'));
+
+    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar'));
   }
 
-
-  public function filtraPdesEntidad(Request $request){
-     dd("valors ent",77);
-     if($request->ajax()){
-          dd("valors",$request->pcod_ent);
-      }
-  }
 
   public function dataIndicador($id)
   {
@@ -344,71 +258,55 @@ class IndicadorController extends Controller
 
     $codigo = "";
     if(!$request->id_indicador){
-       // dd($request->resultado_articulado[0]);
+
         if(isset($request->resultado_articulado)){
             $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();
             $codigo = $vistaPmr->codigo_ext.($vistaPmr->correlativo_indicador+1);
             $resultado = Resultados::find($vistaPmr->id_resultado);
-            $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);//dd("DDDDD",$vistaPmr);
+            $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);
             $resultado->save();
-
         }
 
         try{
-           // dd("Holasd");
             $indicador = new Indicadores();
             $indicador->codigo = $codigo;
-            $indicador->nombre = $request->nombre; // 1
-            $indicador->etapa = $request->etapa; //2
-            $indicador->tipo = $request->tipo;  //3
+            $indicador->nombre = $request->nombre;
+            $indicador->etapa = $request->etapa;
+            $indicador->tipo = $request->tipo;
             //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
-            $indicador->variables_desagregacion = $request->variables_desagregacion;  //8
-            $indicador->unidad_medida = $request->unidad_medida; //4
-            $indicador->frecuencia = $request->frecuencia;  //5
-            $indicador->definicion = $request->definicion;  //6
-
-          /*  $indicador->formula = $request->formula;
+            $indicador->variables_desagregacion = $request->variables_desagregacion;
+            $indicador->unidad_medida = $request->unidad_medida;
+            $indicador->frecuencia = $request->frecuencia;
+            $indicador->definicion = $request->definicion;
+            $indicador->formula = $request->formula;
             $indicador->numerador_detalle = $request->numerador_detalle;
             $indicador->numerador_fuente = $request->numerador_fuente;
             $indicador->denominador_detalle = $request->denominador_detalle;
-            $indicador->denominador_fuente = $request->denominador_fuente;  */
-
-            $indicador->serie_disponible = $request->serie_disponible;   //7
+            $indicador->denominador_fuente = $request->denominador_fuente;
+            $indicador->serie_disponible = $request->serie_disponible;
             $indicador->observacion = $request->observacion;
-            $indicador->form_activo = $request->tap_next;
             $indicador->estado = 1;
             $indicador->logo = "default.png";
             $indicador->id_user = $this->user->id;
-            $dia = null;  //
-            $mes = null;  //
+            $dia = null;
+            $mes = null;
             $anio = null;
             $fechaLB =null;
-            if($request->linea_base_fecha){  //
-              list ( $mes, $anio ) = explode ( "/", $request->linea_base_fecha );  ///
-              $dia = date('t', mktime(0,0,0, $mes, 1, $anio));   ///
-      		    $fechaLB = $anio . "-" . $mes . "-" . $dia;    ///
+            if($request->linea_base_fecha){
+              list ( $mes, $anio ) = explode ( "/", $request->linea_base_fecha );
+              $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+      		    $fechaLB = $anio . "-" . $mes . "-" . $dia;
             }
-            $indicador->linea_base_fecha = $fechaLB;  // 9
-            $indicador->linea_base_anio = $anio;  // 10
-            $indicador->linea_base_mes = $mes;  //11
-            $indicador->linea_base_dia = $dia;  //12
-            $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;  //13
+            $indicador->linea_base_fecha = $fechaLB;
+            $indicador->linea_base_anio = $anio;
+            $indicador->linea_base_mes = $mes;
+            $indicador->linea_base_dia = $dia;
+            $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
 
             $indicador->activo = true;
             $indicador->save();
 
-            $id_reg = $indicador->id;
-
-            // $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
-            // for($i=1; $i <= count($metasList); $i++){
-            //     $metas = new Metas();
-            //     $metas->id_indicador = $indicador->id;
-            //     $metas->gestion = $metasList[$i];
-            //     $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
-            //     $metas->id_user = $this->user->id;
-            //     $metas->save();
-            // }
 
             if(isset($request->resultado_articulado)){
               foreach ($request->resultado_articulado as $k => $v) {
@@ -424,12 +322,12 @@ class IndicadorController extends Controller
             for($i=1; $i <= count($metasList); $i++){
                 $metas = new Metas();
                 $metas->id_indicador = $indicador->id;
-                $metas->gestion = $metasList[$i]; //dd($metas->id_indicador);
+                $metas->gestion = $metasList[$i];
                 $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
                 $metas->id_user = $this->user->id;
                 $metas->save();
             }
-            //dd("sdfssdf");
+
             if(isset($request->avance_fecha)){
               foreach ($request->avance_fecha as $k => $v) {
                     $avance = new IndicadorAvance();
@@ -447,11 +345,11 @@ class IndicadorController extends Controller
                     $avance->fecha_reportado = date('Y-m-d');
                     $avance->valor =  ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
                     $avance->id_user = $this->user->id;
-                    //$avance->save();
+                    $avance->save();
               }
             }
 
-          if(isset($request->arc_archivo)){
+            if(isset($request->arc_archivo)){
               foreach ($request->arc_archivo as $k => $v) {
                     $archivos = new IndicadoresArchivosRespaldos();
                     $archivos->id_indicador = $indicador->id;
@@ -459,18 +357,17 @@ class IndicadorController extends Controller
                     $archivos->archivo = $request->arc_archivo[$k];
                     $archivos->activo = true;
                     $archivos->id_user = $this->user->id;
-                   // $archivos->save();
+                    $archivos->save();
               }
             }
 
             return \Response::json(array(
                 'error' => false,
-                'idindicador'=>$id_reg,
                 'title' => "Success!",
                 'msg' => "Se guardo con exito.")
             );
 
-          }  // fin del try
+          }
           catch (Exception $e) {
               return \Response::json(array(
                 'error' => true,
@@ -482,14 +379,14 @@ class IndicadorController extends Controller
 
 
         try{
-            $indicador = Indicadores::find($request->id_indicador);//dd("SSDSDAD",$indicador);
+            $indicador = Indicadores::find($request->id_indicador);
             if($indicador->codigo == ""){
               if(isset($request->resultado_articulado)){
                   $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();
                   $codigo = $vistaPmr->codigo_ext.($vistaPmr->correlativo_indicador+1);
                   $resultado = Resultados::find($vistaPmr->id_resultado);
                   $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);
-                  //$resultado->save();
+                  $resultado->save();
               }
               $indicador->codigo = $codigo;
             }
@@ -502,24 +399,13 @@ class IndicadorController extends Controller
             $indicador->unidad_medida = $request->unidad_medida;
             $indicador->frecuencia = $request->frecuencia;
             $indicador->definicion = $request->definicion;
-
             $indicador->formula = $request->formula;
             $indicador->numerador_detalle = $request->numerador_detalle;
             $indicador->numerador_fuente = $request->numerador_fuente;
             $indicador->denominador_detalle = $request->denominador_detalle;
             $indicador->denominador_fuente = $request->denominador_fuente;
-
             $indicador->serie_disponible = $request->serie_disponible;
             $indicador->observacion = $request->observacion;
-
-            if($request->tap_next<$indicador->form_activo){
-              //$fuente->form_activo = $request->form_activo;
-                $j=1;
-            }
-            else {
-                $indicador->form_activo = $request->tap_next;
-            }
-
             $indicador->logo = "default.png";
             $indicador->id_user_updated = $this->user->id;
             $dia = null;
@@ -542,7 +428,6 @@ class IndicadorController extends Controller
 
             if(isset($request->resultado_articulado)){
               foreach ($request->resultado_articulado as $k => $v) {
-
                     if(!$request->id_resultado_articulado[$k]){
                         $indicadorPdes = new IndicadorResultado();
                         $indicadorPdes->id_indicador = $indicador->id;
@@ -551,8 +436,10 @@ class IndicadorController extends Controller
                         $indicadorPdes->save();
                     }else{
                         if($request->estado_resultado_articulado[$k]==0){
-                          $indicadorPdesDel = IndicadorResultado::find($request->id_resultado_articulado[$k]);
-                          $indicadorPdesDel->delete();
+                          $indicadorPdes = IndicadorResultado::find($request->id_resultado_articulado[$k]);
+                          $indicadorPdes->id_user_updated = $this->user->id;
+                          $indicadorPdes->save();
+                          $indicadorPdes->delete();
                         }
                     }
               }
@@ -582,46 +469,18 @@ class IndicadorController extends Controller
                           $avance = IndicadorAvance::find($request->id_avance[$k]);
                           $avance->id_user_updated = $this->user->id;
                           $avance->save();
-                         // $avance->delete();
+                          $avance->delete();
                         }
                    }
               }
             }
 
-
-
-            // $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
-            // for($i=1; $i <= count($metasList); $i++){
-            //     $metas = new Metas();
-            //     $metas->id_indicador = $indicador->id;
-            //     $metas->gestion = $metasList[$i];
-            //     $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
-            //     $metas->id_user = $this->user->id;
-            //     $metas->save();
-            // }
-
             $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
-
-            //dd("QQ",$request->input('id_meta_'.$metasList[1]));
-            if($request->input('id_meta_2016')!=null){
-               //dd("QQ",$request->input('id_meta_'.$metasList[1]));
-              for($i=1; $i <= count($metasList); $i++){
-                  $metas = Metas::find($request->input('id_meta_'.$metasList[$i]));//dd("QQ",$indicador->$request->input('id_meta_'.$metasList[$i]));
-                  $metas->valor = ($request->input('meta_'.$metasList[$i]))? $this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0; //dd($metas->valor);
-                  $metas->id_user_updated = $this->user->id;
-                  $metas->save();
-              }
-            }else{
-
             for($i=1; $i <= count($metasList); $i++){
-                $metas = new Metas();
-                $metas->id_indicador = $indicador->id;
-                $metas->gestion = $metasList[$i];
-                $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
-                $metas->id_user = $this->user->id;
+                $metas = Metas::find($request->input('id_meta_'.$metasList[$i]));
+                $metas->valor = ($request->input('meta_'.$metasList[$i]))? $this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
+                $metas->id_user_updated = $this->user->id;
                 $metas->save();
-              }
-
             }
 
 
@@ -672,7 +531,6 @@ class IndicadorController extends Controller
                            FROM remi_indicador_pdes_resultado ir
 	                         INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
                            WHERE ir.id_indicador = ".$request->id);
-
       $metas = Metas::where('id_indicador',$request->id)->get();
       $avances = IndicadorAvance::where('id_indicador',$request->id)->get();
       $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$request->id)->where('activo', true)->get();

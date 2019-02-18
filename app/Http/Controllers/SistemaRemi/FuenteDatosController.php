@@ -178,6 +178,15 @@ class FuenteDatosController extends Controller
             $fuente->disenio_tamanio_muestra = $request->disenio_tamanio_muestra;
             $fuente->tasa_respuesta = $request->tasa_respuesta;
             $fuente->observacion = $request->observacion;
+            $fuente->form_activo = $request->tap_next;    // copia
+            $fuente->id_user = $this->user->id;
+            $fuente->estado = 1;
+            $fuente->activo = true;
+            $fuente->save();  
+
+            $id_reg = $fuente->id;
+
+
 
             $fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->demografia_estadistica_social):null;
             $fuente->demografia_estadistica_social_otro = $request->demografia_estadistica_social_otro;
@@ -193,16 +202,22 @@ class FuenteDatosController extends Controller
 
             $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
             $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
+            $fuente->id_user = $this->user->id;
+            $fuente->estado = 1;
+            $fuente->activo = true;
+            $fuente->save();
+
+
 
             $fuente->numero_total_formulario = $request->numero_total_formulario;
             $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
 
             $fuente->confidencialidad = $request->confidencialidad;
             $fuente->notas_legales = $request->notas_legales;
-            $fuente->id_user = $this->user->id;
-            $fuente->estado = 1;
-            $fuente->activo = true;
-            $fuente->save();
+            // $fuente->id_user = $this->user->id;
+            // $fuente->estado = 1;
+            // $fuente->activo = true;
+            // $fuente->save();
 
 
 
@@ -215,9 +230,9 @@ class FuenteDatosController extends Controller
                     $responsable->responsable_nivel_3 = $request->responsable_nivel_3[$k];
                     $responsable->responsable_nivel_4 = $request->responsable_nivel_4[$k];
                     $responsable->numero_referencia = $request->numero_referencia[$k];
-                    $responsable->id_user = $this->user->id;
-                    $responsable->activo = true;
-                    $responsable->save();
+                    // $responsable->id_user = $this->user->id;
+                    // $responsable->activo = true;
+                    // $responsable->save();
               }
             }
 
@@ -235,6 +250,7 @@ class FuenteDatosController extends Controller
 
             return \Response::json(array(
                 'error' => false,
+                'idfuente'=>$id_reg,                
                 'title' => "Success!",
                 'msg' => "Se guardo con exito.")
             );
@@ -268,6 +284,19 @@ class FuenteDatosController extends Controller
           $fuente->tasa_respuesta = $request->tasa_respuesta;
           $fuente->observacion = $request->observacion;
 
+          if($request->tap_next<$fuente->form_activo){  
+              //$fuente->form_activo = $request->form_activo; 
+              $j=1;         
+          }
+          else {
+              $fuente->form_activo = $request->tap_next;  
+          }          
+          $fuente->id_user_updated = $this->user->id;
+          $fuente->estado =  $request->estado;
+          $fuente->save();          
+
+
+          $fuente = FuenteDatos::find($request->id_fuente);
           $fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->demografia_estadistica_social):null;
           $fuente->demografia_estadistica_social_otro = $request->demografia_estadistica_social_otro;
           $fuente->estadistica_economica = ($request->estadistica_economica)?implode(",", $request->estadistica_economica):null;
@@ -276,24 +305,34 @@ class FuenteDatosController extends Controller
           $fuente->estadistica_medioambiental_otro = $request->estadistica_medioambiental_otro;
           $fuente->informacion_geoespacial = ($request->informacion_geoespacial)?implode(",", $request->informacion_geoespacial):null;
           $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
+          $fuente->id_user_updated = $this->user->id;
+          $fuente->estado =  $request->estado;
+          $fuente->save();  
 
+          $fuente = FuenteDatos::find($request->id_fuente);
           $fuente->numero_total_formulario = $request->numero_total_formulario;
           $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
+          $fuente->id_user_updated = $this->user->id;
+          $fuente->estado =  $request->estado;
+          $fuente->save();
 
-
+          $fuente = FuenteDatos::find($request->id_fuente);
           $fuente->cobertura_rraa = $request->cobertura_rraa;
           $fuente->cobertura_rraa_descripcion = $request->cobertura_rraa_descripcion;
 
           $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
           $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
+          $fuente->id_user_updated = $this->user->id;
+          $fuente->estado =  $request->estado;
+          $fuente->save(); 
 
+
+          $fuente = FuenteDatos::find($request->id_fuente);
           $fuente->confidencialidad = $request->confidencialidad;
           $fuente->notas_legales = $request->notas_legales;
           $fuente->id_user_updated = $this->user->id;
           $fuente->estado =  $request->estado;
-
           $fuente->save();
-
 
 
           if(isset($request->responsable_nivel_1)){

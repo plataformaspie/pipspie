@@ -9,6 +9,7 @@
 
 
   <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
+  <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.ui-lightness.css') }} " type="text/css" />
 
   <style media="screen">
     .select2-container-multi{
@@ -59,8 +60,46 @@
       <div class="col-lg-12 ">
           <div class="white-box">
             <h3 class="box-title m-b-0">Lista de indicadores</h3>
-            <p class="text-muted m-b-30">Indicadores registrados por su usuario<button id ="btn-new" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i></button></p>
-            <div id="dataTable"></div>
+            <p class="text-muted m-b-30">Indicadores registrados por su usuario<button id ="btn-new" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i>Agregar Nuevo</button></p>
+
+            <div class="row">
+              <div id="FilterAdvanced" class="col-lg-3 hidden">
+                  <div style="margin-top: 30px;">
+                      <div>Filtrado por:</div>
+                      <div id="columnchooser"></div>
+                      <div style="float: left;  margin-top: 10px;" id="filterbox"></div>
+                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
+                          <input type="button" id="applyFilter" value="Aplicar filtro" />
+                          <input type="button" id="clearfilter" style="margin-top:20px;" value="Limpiar"/>
+                      </div>
+                  </div>
+              </div>
+              <div id="exportarData" class="col-lg-3 hidden">
+                  <div style="margin-top: 30px;">
+                      <div>Exportar a:</div>
+                      <select class="form-control">
+                          <option value="excel">Excel</option>
+                      </select>
+                      <label>
+                        <input name="option_data" value="1" type="radio"> Contenido de tabla
+                      </label>
+                      <label>
+                        <input name="option_data" value="2" type="radio"> Registro seleccionado
+                      </label>
+                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
+                        <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
+                      </div>
+                  </div>
+              </div>
+              <div id="jqxDataTable" class="col-lg-12">
+                <p class="m-b-5">
+                  <button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
+                  <button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
+                </p>
+                <div id="dataTable"></div>
+              </div>
+            </div>
+
           </div>
       </div>
   </div>
@@ -69,12 +108,13 @@
           <form id="formAdd" name="formAdd" action="javascript:save();" data-toggle="validator" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" name="id_indicador" value="">
+            <input type="hidden" name="tap_next" value="">
             <!-- .row -->
             <div class="row">
               <div class="col-sm-12">
                   <div class="white-box">
                       <h3 class="box-title m-b-0">Información del Indicador</h3>
-                      <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left"></i></button></p>
+                      <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left">Atras</i></button></p>
 
                       <div class="form-group row m-b-10">
                         <div class="col-md-1 p-l-0 p-r-0">
@@ -606,8 +646,8 @@
 
                     <div class="col-sm-12">
                             <div class="form-group text-center">
-                              <button id="bt_guardar" type="submit" class="btn btn-info hidden tap-btn">Guardar</button>
-                              <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
+                              <button id="bt_guardar" type="submit" class="btn btn-info tap-btn">Guardar</button>
+                              {{-- <button id="bt_siguiente" type="hidden" class="btn btn-info tap-btn">Siguiente</button> --}}
                               <button type="button" class="btn btn-default btn-back">Cancelar</button>
                             </div>
                     </div>
@@ -861,6 +901,9 @@
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxscrollbar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdata.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdatatable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcheckbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxlistbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxdropdownlist.js') }}"></script>
     <script src="/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
     <script src="/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
     <script type="text/javascript" src="{{ asset('js/jqwidgets-localization.js') }}"></script>
@@ -880,6 +923,7 @@
   var idAV = [];
     $(document).ready(function(){
       //$(".select2").select2();
+      var theme = 'ui-lightness';
 
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $("#formAddFuente .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
@@ -922,7 +966,7 @@
                                           '<input type="hidden" id="EST'+codigo+'" name="estado_resultado_articulado[]" value="1" />'+
                                           '<div class="col-12"><b>'+data.set[0].pilar+':</b> '+data.set[0].desc_p+
                                           '</div>'+
-                                          '<div class="col-12"><b>'+data.set[0].meta+':</b> '+data.set[0].desc_m+
+                                             '<div class="col-12"><b>'+data.set[0].meta+':</b> '+data.set[0].desc_m+
                                           '</div>'+
                                           '<div class="col-12"><b>'+data.set[0].resultado+':</b> '+data.set[0].desc_r+
                                           '</div>'+
@@ -930,6 +974,7 @@
                                   '</div>'+
                                 '</div>';
                     $("#datosART").append(html);
+
                   }else{
                       $.toast({
                        heading: data.title,
@@ -1050,6 +1095,59 @@
 
 
 
+      $("#generarExport").click(function() {
+          //cantidad de datos
+          var selection = $("#dataTable").jqxDataTable('getSelection');
+          var optionSel = $('input:radio[name=option_data]:checked').val();
+          var orden = false;//agregar configuracion de la tabla
+          var direccion = 'ASC';//agregar configuracion de la tabla
+          var ids = "";
+          switch(optionSel) {
+              case "1":
+                  $('#tabledataTable > tbody > tr').each(function() {
+                     ids += $(this).attr("data-key")+",";
+
+                  });
+                   console.log(ids);
+                  location.href = "{{ url('/api/sistemaremi/apiExportDataindicador') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                  break;
+              case "2":
+                  if(selection.length > 0){
+                    if (selection && selection.length > 0) {
+                        var rows = $("#dataTable").jqxDataTable('getRows');
+                        for (var i = 0; i < selection.length; i++) {
+                            var rowData = selection[i];
+                            ids += rowData.id;
+                            if (i < selection.length - 1) {
+                              ids += ", ";
+                            }
+                        }
+                      location.href = "{{ url('/api/sistemaremi/apiExportDataindicador') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
+                    }
+                  }else{
+                    $.toast({
+                      heading: 'Error:',
+                      text: 'Seleccione algún registro de la tabla.',
+                      position: 'top-right',
+                      loaderBg:'#ff6849',
+                      icon: 'error',
+                      hideAfter: 3500
+                    });
+                  }
+              break;
+              default:
+                $.toast({
+                  heading: 'Error:',
+                  text: 'Configure su reporte.',
+                  position: 'top-right',
+                  loaderBg:'#ff6849',
+                  icon: 'error',
+                  hideAfter: 3500
+                });
+              break;
+          }
+
+      });
 
 
 
@@ -1138,14 +1236,17 @@
     $("#dataTable").jqxDataTable(
     {
         source: dataAdapter,
-        width:"100%",
+          width:"100%",
+          height:"400px",
+        //width:"100%",
+        theme:theme,
         columnsResize: true,
         filterable: true,
         filterMode: 'simple',
-        pageable: true,
-        pagerButtonsCount: 10,
+        //pageable: true,
+        //pagerButtonsCount: 10,
         localization: getLocalization('es'),
-        pageSize: 5,
+        //pageSize: 5,
         columns: [
           { text: 'Logo', dataField: 'logo', width: 100,
                 cellsRenderer: function (row, column, value, rowData) {
@@ -1180,17 +1281,135 @@
     });
 
 
+      // create buttons, listbox and the columns chooser dropdownlist.
+            $("#applyFilter").jqxButton();
+            $("#clearfilter").jqxButton();
+            $("#filterbox").jqxListBox({
+              checkboxes: true,
+              filterable: false,
+              //searchMode: 'containsignorecase',
+              width: "100%",
+              height: 150
+            });
+            $("#columnchooser").jqxDropDownList({
+                autoDropDownHeight: true, selectedIndex: 0, width: 160, height: 25,
+                source: [
+                  { label: 'Nombre', value: 'nombre' },
+                  { label: 'Codigo', value: 'codigo' }
+
+                ]
+            });
+
+         // updates the listbox with unique records depending on the selected column.
+            var updateFilterBox = function (dataField) {
+
+                $("#dataTable").jqxDataTable('clearFilters');
+                var filterBoxAdapter = new $.jqx.dataAdapter(source,
+                {
+                    uniqueDataFields: [dataField],
+                    autoBind: true,
+                    async:false
+                });
+                var uniqueRecords = filterBoxAdapter.records;
+                uniqueRecords.splice(0, 0, '(Todo)');
+                $("#filterbox").jqxListBox({ source: uniqueRecords, displayMember: dataField });
+                $("#filterbox").jqxListBox('checkAll');
+            }
+            updateFilterBox('nombre');
+            // handle select all item.
+            var handleCheckChange = true;
+            $("#filterbox").on('checkChange', function (event) {
+                if (!handleCheckChange)
+                    return;
+
+                if (event.args.label != '(Todo)') {
+                    // update the state of the "Select All" listbox item.
+                    handleCheckChange = false;
+                    $("#filterbox").jqxListBox('checkIndex', 0);
+                    var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
+                    var items = $("#filterbox").jqxListBox('getItems');
+                    if (checkedItems.length == 1) {
+                        $("#filterbox").jqxListBox('uncheckIndex', 0);
+                    }
+                    else if (items.length != checkedItems.length) {
+                        $("#filterbox").jqxListBox('indeterminateIndex', 0);
+                    }
+                    handleCheckChange = true;
+                }
+                else {
+                    // check/uncheck all items if "Select All" is clicked.
+                    handleCheckChange = false;
+                    if (event.args.checked) {
+                        $("#filterbox").jqxListBox('checkAll');
+                    }
+                    else {
+                        $("#filterbox").jqxListBox('uncheckAll');
+                    }
+                    handleCheckChange = true;
+                }
+            });
+            // handle columns selection.
+            $("#columnchooser").on('select', function (event) {
+                updateFilterBox(event.args.item.value);
+            });
+            // builds and applies the filter.
+            var applyFilter = function (dataField) {
+                $("#dataTable").jqxDataTable('clearFilters');
+                var filtertype = 'stringfilter';
+                if (dataField == 'date') filtertype = 'datefilter';
+                if (dataField == 'price' || dataField == 'quantity') filtertype = 'numericfilter';
+                // create a new group of filters.
+                var filtergroup = new $.jqx.filter();
+                // get listbox's checked items.
+                var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
+                if (checkedItems.length == 0) {
+                    var filter_or_operator = 1;
+                    var filtervalue = "Empty";
+                    var filtercondition = 'equal';
+                    var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
+                    filtergroup.addfilter(filter_or_operator, filter);
+                }
+                else {
+                    for (var i = 0; i < checkedItems.length; i++) {
+                        var filter_or_operator = 1;
+                        // set filter's value.
+                        var filtervalue = checkedItems[i].label;
+                        // set filter's condition.
+                        var filtercondition = 'equal';
+                        // create new filter.
+                        var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
+                        // add the filter to the filter group.
+                        filtergroup.addfilter(filter_or_operator, filter);
+                    }
+                }
+                // add the filters.
+                $("#dataTable").jqxDataTable('addFilter', dataField, filtergroup);
+                // apply the filters.
+                $("#dataTable").jqxDataTable('applyFilters');
+            }
+            // clears the filter.
+            $("#clearfilter").click(function () {
+                $("#dataTable").jqxDataTable('clearFilters');
+            });
+            // applies the filter.
+            $("#applyFilter").click(function () {
+                var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
+                applyFilter(dataField);
+            });
+
+
 
     $(".ctrl-btn").click(function () {
       var activo = $(this).attr('href');
       var next =  activo.substr(-1,1) ;
-      if(next == 6){
-        $("#bt_siguiente").addClass('hidden');
+    //  if(next == 6){
+        //$("#bt_siguiente").addClass('hidden');
+        $("#bt_siguiente").removeClass('hidden');
         $("#bt_guardar").removeClass('hidden');
-      }else{
+   /*   }else{
         $("#bt_siguiente").removeClass('hidden');
         $("#bt_guardar").addClass('hidden');
-      }
+      }  */
     });
 
 
@@ -1199,10 +1418,12 @@
 
       var next =  activo.substr(-1,1) ;
       next++;
+      $('input[name="tap_next"]').attr("value",next);
       if(next == 6){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
       }
+      $("#tab-ini"+next).removeClass('disabled');
       $("#tab-ini"+next ).trigger( "click" );
 
     });
@@ -1264,15 +1485,6 @@
                }
          });
      });
-
-
-
-
-
-
-
-
-
 
 
     });
@@ -1386,7 +1598,7 @@
 
 
     }
-    function quitarART(ele,tipo){
+    function quitarART(ele,tipo){      
         if(tipo == 1){
           $('#ART'+ele).remove();
         }else{
@@ -1497,6 +1709,12 @@
        $('#option2').removeClass('hidden');
        $('#option1').removeClass('show');
        $('#option1').addClass('hidden');
+       $('#tab-ini2').addClass('disabled'); // desactiva boton de formulario
+       $('#tab-ini3').addClass('disabled');
+       $('#tab-ini4').addClass('disabled');
+       $('#tab-ini5').addClass('disabled');
+       $('#tab-ini6').addClass('disabled');
+
     });
     function btn_update(ele) {
       $("#btn-new" ).trigger( "click" );
@@ -1507,6 +1725,9 @@
              data:{'id':ele},
              success: function(data){
                if(data.error == false){
+                    for(var i=1;i<data.indicador[0].form_activo+1;i++){
+                        $('#tab-ini'+i).removeClass('disabled');
+                    }
 
                    //$("#mod_cod_m").val(data.meta).trigger('change');
                    $('input[name="id_indicador"]').val(data.indicador[0].id);
@@ -1674,8 +1895,10 @@
                   data: $("#formAdd").serialize() , // Adjuntar los campos del formulario enviado.
                   success: function(data){
                     if(data.error == false){
-                        $("#btn-back" ).trigger( "click" );
-                        $("#dataTable").jqxDataTable("updateBoundData");
+                        $('input[name="id_indicador"]').attr("value",data.idindicador);
+                        var tap_next=0;
+                        // $("#btn-back" ).trigger( "click" );
+                        // $("#dataTable").jqxDataTable("updateBoundData");
                         swal("Guardado!", "Se ha guardado correctamente.", "success");
                     }else{
                         $.toast({
@@ -1823,7 +2046,157 @@
         });
     }
 
+     // create buttons, listbox and the columns chooser dropdownlist.
+            $("#applyFilter").jqxButton();
+            $("#clearfilter").jqxButton();
+            $("#filterbox").jqxListBox({
+              checkboxes: true,
+              filterable: false,
+              //searchMode: 'containsignorecase',
+              width: "100%",
+              height: 150
+            });
+            $("#columnchooser").jqxDropDownList({
+                autoDropDownHeight: true, selectedIndex: 0, width: 160, height: 25,
+                source: [
+                  { label: 'Responsable', value: 'responsable' },
+                  { label: 'Estado', value: 'estado' },
+                  { label: 'Nombre', value: 'nombre' },
+                  { label: 'Tipo', value: 'tipo' }
 
+                ]
+            });
+            // updates the listbox with unique records depending on the selected column.
+            var updateFilterBox = function (dataField) {
+
+                $("#dataTable").jqxDataTable('clearFilters');
+                var filterBoxAdapter = new $.jqx.dataAdapter(source,
+                {
+                    uniqueDataFields: [dataField],
+                    autoBind: true,
+                    async:false
+                });
+                var uniqueRecords = filterBoxAdapter.records;
+                uniqueRecords.splice(0, 0, '(Todo)');
+                $("#filterbox").jqxListBox({ source: uniqueRecords, displayMember: dataField });
+                $("#filterbox").jqxListBox('checkAll');
+            }
+            updateFilterBox('responsable');
+            // handle select all item.
+            var handleCheckChange = true;
+            $("#filterbox").on('checkChange', function (event) {
+                if (!handleCheckChange)
+                    return;
+
+                if (event.args.label != '(Todo)') {
+                    // update the state of the "Select All" listbox item.
+                    handleCheckChange = false;
+                    $("#filterbox").jqxListBox('checkIndex', 0);
+                    var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
+                    var items = $("#filterbox").jqxListBox('getItems');
+                    if (checkedItems.length == 1) {
+                        $("#filterbox").jqxListBox('uncheckIndex', 0);
+                    }
+                    else if (items.length != checkedItems.length) {
+                        $("#filterbox").jqxListBox('indeterminateIndex', 0);
+                    }
+                    handleCheckChange = true;
+                }
+                else {
+                    // check/uncheck all items if "Select All" is clicked.
+                    handleCheckChange = false;
+                    if (event.args.checked) {
+                        $("#filterbox").jqxListBox('checkAll');
+                    }
+                    else {
+                        $("#filterbox").jqxListBox('uncheckAll');
+                    }
+                    handleCheckChange = true;
+                }
+            });
+            // handle columns selection.
+            $("#columnchooser").on('select', function (event) {
+                updateFilterBox(event.args.item.value);
+            });
+            // builds and applies the filter.
+            var applyFilter = function (dataField) {
+                $("#dataTable").jqxDataTable('clearFilters');
+                var filtertype = 'stringfilter';
+                if (dataField == 'date') filtertype = 'datefilter';
+                if (dataField == 'price' || dataField == 'quantity') filtertype = 'numericfilter';
+                // create a new group of filters.
+                var filtergroup = new $.jqx.filter();
+                // get listbox's checked items.
+                var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
+                if (checkedItems.length == 0) {
+                    var filter_or_operator = 1;
+                    var filtervalue = "Empty";
+                    var filtercondition = 'equal';
+                    var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
+                    filtergroup.addfilter(filter_or_operator, filter);
+                }
+                else {
+                    for (var i = 0; i < checkedItems.length; i++) {
+                        var filter_or_operator = 1;
+                        // set filter's value.
+                        var filtervalue = checkedItems[i].label;
+                        // set filter's condition.
+                        var filtercondition = 'equal';
+                        // create new filter.
+                        var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
+                        // add the filter to the filter group.
+                        filtergroup.addfilter(filter_or_operator, filter);
+                    }
+                }
+                // add the filters.
+                $("#dataTable").jqxDataTable('addFilter', dataField, filtergroup);
+                // apply the filters.
+                $("#dataTable").jqxDataTable('applyFilters');
+            }
+            // clears the filter.
+            $("#clearfilter").click(function () {
+                $("#dataTable").jqxDataTable('clearFilters');
+            });
+            // applies the filter.
+            $("#applyFilter").click(function () {
+                var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
+                applyFilter(dataField);
+            });
+
+    function showFilterAdvanced() {
+
+      if ($('#FilterAdvanced').hasClass('hidden')){
+            $('#exportarData').removeClass('hidden')
+            $('#exportarData').addClass('hidden')
+            $("#dataTable").jqxDataTable({filterable: false});
+            $('#FilterAdvanced').removeClass('hidden')
+            $('#jqxDataTable').removeClass('col-lg-12');
+            $('#jqxDataTable').fadeIn(500).addClass('col-lg-9');
+      }else{
+        $("#dataTable").jqxDataTable({filterable: true});
+          $('#FilterAdvanced').addClass('hidden')
+          $('#jqxDataTable').removeClass('col-lg-9');
+          $('#jqxDataTable').fadeIn(500).addClass('col-lg-12');
+        }
+    }
+    function showExportarData() {
+
+      if ($('#exportarData').hasClass('hidden')){
+            $("#dataTable").jqxDataTable({filterable: true});
+            $('#FilterAdvanced').removeClass('hidden')
+            $('#FilterAdvanced').addClass('hidden')
+
+            $('#exportarData').removeClass('hidden')
+            $('#jqxDataTable').removeClass('col-lg-12');
+            $('#jqxDataTable').fadeIn(1000).addClass('col-lg-9');
+
+      }else{
+
+          $('#exportarData').addClass('hidden')
+          $('#jqxDataTable').removeClass('col-lg-9');
+          $('#jqxDataTable').fadeIn(1000).addClass('col-lg-12');
+        }
+    }
 
 
 
