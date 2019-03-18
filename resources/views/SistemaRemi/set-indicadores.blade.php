@@ -73,7 +73,7 @@ text-decoration: underline;
               <div class="panel-heading"> Filtro de indicadores por pilares
                   <div class="pull-right">
                       <a href="#" data-perform="panel-collapse">
-                        <i class="ti-minus"></i>
+                        <i class="ti-minus">Presionar</i>
                       </a>
                   </div>
               </div>
@@ -129,6 +129,7 @@ text-decoration: underline;
                       </div>                      
                       <h5>Entidad Filtrada: <b>{{$nom_ent}} – Nro. de Entidad: {{$pent}}</b></h5>
                       <div class="row">
+                      @if($swp == 2)  
                         @foreach ($filindent as  $ent_pilar)                        
                          @if($ent_pilar->cod_p == 1)
                             <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
@@ -196,6 +197,9 @@ text-decoration: underline;
                             </div>                          
                           @endif                                  
                          @endforeach
+                       @else
+                            <label id="mej" type="label"><font color="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No existe indicadores y pilares para la Entidad !!!</font></label>
+                       @endif    
                       </div>
                   </div>
               </div>
@@ -203,20 +207,28 @@ text-decoration: underline;
 
       </div>
   </div>
-
+@if($swp == 2) 
   <div class="row">
       <div class="col-lg-12">
           <div class="panel">
               <div class="panel-body">
                 <h5>Reporte del Total de Resultados del {{$nom_ent}}</b></h5>
                 <div style="color:#3177AE">Total Indicadores: <b style="color:#3177AE">{{ $totalPilar->totalp  }}</b></div>
-                <div style="color:#3177AE">Total Indicadores Con Resultados: <b>{{ $countPilar->total  }}</b></div>
-                <div style="color:#3177AE">Total Indicadores Sin Resultados: <b>{{ $totalResPilar->totalgral  }}</b></div>
+                <div style="color:#3177AE">Total Resultados Con Indicadores: <b>{{ $countPilar->total  }}</b></div>
+                <div style="color:#3177AE">Total Resultados Sin Indicadores: <b>{{ $totalResPilar->totalgral  }}</b></div>
                 <div>
                       <?php
                       $pilar = "";
                       $meta = "";
                       $resultado = "";
+                      $p = "";
+                      $p1 = "";
+                      $p2 = "";
+                      $k = "";
+                      $t = "";
+                      $h = "";
+                      $c = "";
+                      $h = "";
                       ?>
                   @if($countPilar->total != 0)   
                      @foreach ($filtropdes as $itemP)
@@ -240,29 +252,29 @@ text-decoration: underline;
                                                      @if($itemM->meta != $meta and $itemP->pilar == $itemM->pilar)
                                                            <?php $meta =  $itemM->meta; ?>
                                                             <div class="col-lg-1">
-                                                              <a class="mytooltip" style="color:#3177AE" href="javascript:void(0)">
-                                                                  {{$itemM->meta }} <!--  M -->
+                                                              <a class="mytooltip" style="color:#3177AE" href="javascript:void(0)"> <?php $p++; ?> 
+                                                                  {{$itemM->meta}} <?php $p1=""; $p2=""; ?>
                                                                 <span class="tooltip-content5">
                                                                     <span class="tooltip-text3">
                                                                       <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemM->meta}}<br /> {{$itemM->desc_m}}</span>
                                                                     </span>
                                                                   </span>
                                                               </a>
-                                                            </div>
+                                                            </div>                                               
                                                             <div class="col-lg-11 p-t-0 p-b-0">
                                                               <div class="row">
                                                                 <div class="col-lg-12 p-t-0 p-b-0">
                                                                   <div class="row">
-                                                                    {{ $resultado = ""}} <?php $pos=0 ?>
+                                                                    {{ $resultado = ""}} <?php $pos=0 ?> 
                                                                      @foreach ($filtropdes as $itemR)
                                                                        @if($itemR->resultado != $resultado and $itemM->meta == $itemR->meta)
                                                                              <?php $resultado =  $itemR->resultado; ?>
-                                                                                  <div class="col-lg-2 p-t-0 p-b-0" @if($itemR->nombre != "") style="background-color: #E0F1D7"@else style="background-color: #F0D8D8" @endif>
-                                                                                    <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D" @else style="color: #A94456" @endif  href="javascript:void(0)">
-                                                                                        {{$itemR->resultado}}   
+                                                                                  <div class="col-lg-2 p-t-0 p-b-0" @if($itemR->nombre != "") style="background-color: #E0F1D7" <?php ?> @else style="background-color: #F0D8D8" <?php ?> @endif>
+                                                                                    <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D" <?php $p1++; ?> @else style="color: #A94456" <?php $p2++; ?> @endif  href="javascript:void(0)">
+                                                                                        {{$itemR->resultado}} 
                                                                                       <span class="tooltip-content5">
                                                                                           <span class="tooltip-text3">
-                                                                                            <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemR->resultado}}<br /> {{$itemR->desc_r}}  120</span>
+                                                                                            <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemR->resultado}}<br /> {{$itemR->desc_r}}</span>
                                                                                           </span>
                                                                                         </span>
                                                                                     </a>
@@ -273,13 +285,13 @@ text-decoration: underline;
                                                                                       {{ $indicador = ""}}
                                                                                        @foreach ($filtropdes as $itemI)
                                                                                          @if($itemI->nombre != $indicador and $itemR->resultado == $itemI->resultado)
-                                                                                               <?php $indicador =  $itemI->nombre; ?>
+                                                                                               <?php $indicador =  $itemI->nombre; $k++; ?>
                                                                                               <div class="col-lg-12 text-muted">
-                                                                                                  <a href="/sistemaremi/dataIndicador/{{ $itemI->id_indicador }}" style="color:#000000;font-weight: bold;">{{ $itemI->nombre }}</a>
+                                                                                                  <a href="/sistemaremi/dataIndicador/{{ $itemI->id_indicador }}" style="color:#000000;font-weight: bold;">{{ $itemI->nombre }} {{$k}} </a>
                                                                                               </div>
-                                                                                          @endif
+                                                                                          @endif                   
                                                                                         @endforeach
-
+                                                                                        <?php $h=$k;$k=""; ?>
                                                                                     </div>
                                                                                   </div>
                                                                         @endif
@@ -310,6 +322,7 @@ text-decoration: underline;
          </div>
       </div>
   </div>
+@endif    
   <?php /*
   <div class="row">
       <div class="col-lg-12">

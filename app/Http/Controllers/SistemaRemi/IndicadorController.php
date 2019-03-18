@@ -21,6 +21,7 @@ use App\Models\SistemaRemi\FuenteDatos;
 use App\Models\SistemaRemi\FuenteDatosResponsable;
 use App\Models\SistemaRemi\FuenteTipos;
 use App\Models\SistemaRemi\IndicadoresArchivosRespaldos;
+use App\Models\SistemaRemi\Usuario;
 
 class IndicadorController extends Controller
 {
@@ -105,10 +106,109 @@ class IndicadorController extends Controller
     return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','tiposMedicion','unidadesMedidas','buscar'));
   }*/
 
+  public function CrudUsers(Request $request)
+  {
+        $users=Usuario::orderBy('id','ASC')->paginate(10);
+        //dd("fgdfgfd",$users);
+        return view('SistemaRemi.registrar.clab-users')->with('users', $users);  
+  }
+
+  public function asignarRoles(Request $request)
+  {
+        // crear el querys a la BD y enviar a la vista y datos con with
+      $id_institucion  = \DB::select("select i.id,i.name,i.username,i.cargo
+                                        from users i 
+                                  order by i.id");
+
+      return view('SistemaRemi.Seguridad.roles-permisos')->with('codinstitucion',$id_institucion);
+  }
+
+  public function actualizarUserRol(Request $request)
+  {
+        //dd("SDFGSDFGSD",$request->all());
+        $user=Usuario::find($request->cod_inst);
+        //$user->fill($request->all());
+        $user->id_rol=$request['roles'];
+        $user->save();
+        //flash('Genero editado exitosamente')->success();
+        return 'Se actualiza correctamente';  //  redirect()->route('mostrarReg');   //redirect()->route('admin.genero.index');
+        //return //view('SistemaRemi.registrar.crear-users'); 
+  }
+
+
+  public function mostrarReg(Request $request)
+  {
+        $users=Usuario::where('activo','=',true)->orderBy('id','ASC')->paginate(10);
+        //dd("fgdfgfd",$users);
+        return view('SistemaRemi.registrar.detalles-users')->with('users', $users);  
+  }
+
+  public function registrarUser(Request $request)
+  {
+        return view('SistemaRemi.registrar.crear-users'); 
+  }
+
+  public function guardarUser(Request $request)
+  {
+        //dd("dsfsf",$request);
+        $user=new Usuario($request->all());
+        // dd($request['name']);
+        $user->activo=true;
+        $user->password=bcrypt($request['password']);
+        $user->save();
+        return  redirect()->route('mostrarReg');
+        //return response()->json($user);
+        // return 'Usuario registrado exitosamente';
+        //return 'registrado' //flash('Usuario registrado exitosamente')->success();
+        //return redirect()->route('admin.user.index');
+  }
+
+  public function editarUser($id)
+    {
+        // Mostrar formulario para editar usuario
+        //dd("SDFGSDFGSD",$id);
+        $user=Usuario::find($id);
+        return view('SistemaRemi.registrar.editar-users')->with('user',$user);
+    }
+
+  public function addPost(Request $request)
+  {
+        //dd("dfdsf sdfds",$request);
+        $user=new Usuario($request->all());
+        // dd($request['name']);
+        $user->password=bcrypt($request['password']);
+        $user->save();
+        return response()->json($user);
+  }
+
+  public function actualizarUser(Request $request,$id)
+  {
+        //dd("SDFGSDFGSD",$request->all());
+        $user=Usuario::find($id);
+        $user->fill($request->all());
+        $user->save();
+        //flash('Genero editado exitosamente')->success();
+        return   redirect()->route('mostrarReg');   //redirect()->route('admin.genero.index');
+        //return //view('SistemaRemi.registrar.crear-users'); 
+  }
+
+  public function eliminarUser($id)
+    {
+        //dd("sdfsdf",$id);
+        $user=Usuario::find($id);
+        $user->activo=false;
+        $user->save();
+      //  flash('Genero registrado exitosamente')->success();
+        return  redirect()->route('mostrarReg');
+       // flash('Genero eliminado exitosamente')->success();
+    }
+
+
   public function setIndicadores(Request $request)
   {
     //dd("VALORES",$request);
     //$indicadores = Indicadores::paginate();
+    $swp=0;    
     $swe=1;
     $sw=0;
     $sb=0;
@@ -152,7 +252,7 @@ class IndicadorController extends Controller
 
       $filnoment = \DB::select("SELECT nombre_entidad
                                 FROM remi_entidad
-                                where  codigo_entidad=".$pent." AND activo = true");
+                                where  codigo_entidad=".$pent." AND activo = true"); 
       $nom_ent=$filnoment[0]->nombre_entidad;
      // dd("nombre:",$uno);
     if($sw > 0){
@@ -165,7 +265,7 @@ class IndicadorController extends Controller
 
    /* $filindpil = \DB::select("SELECT distinct responsable_nivel_1, activo
                               FROM public.remi_fuente_datos_responsable
-                               where activo = true");*/
+                               where activo = true");*/ 
 /*
     $filindent = \DB::select("SELECT distinct c.cod_p
                                 FROM remi_indicador_pdes_resultado ir
@@ -175,7 +275,7 @@ class IndicadorController extends Controller
                                 where cod_entidad IN ( select id from remi_indicadores r
                                 where r.fuente_datos IN (SELECT cast(id_fuente as varchar)
                                   FROM public.remi_fuente_datos_responsable
-                                where cod_entidad=".$pent.")))");  */
+                                where cod_entidad=".$pent.")))");  */                                   
 
           $filindent = \DB::select("SELECT distinct c.cod_p
                                 FROM remi_indicador_pdes_resultado ir
@@ -184,23 +284,29 @@ class IndicadorController extends Controller
                                   FROM public.remi_fuente_datos_responsable
                                 where cod_entidad=".$pent.") order by c.cod_p");//$swe=2;
 
-    if($swe==1){
-          $pdes_new=$filindent[0]->cod_p;
-    }
+    // if($swe==1){
+    //       $pdes_new=$filindent[0]->cod_p;
+    // }
           // if(empty($pdes_new)){
-          //   dd("PILARES1",$pent,$pdes_new);
-          // }
+          //   dd("PILARES1",$pent,$pdes_new);        
+          // }   
+
+    if(empty($filindent)){    //   if($swe==1){ 
+          $pdes_new=5;$swp=1;         
+    }else {
+          $pdes_new=$filindent[0]->cod_p;$swp=2;     // esta con datos
+    }    
 
     $filindpil = \DB::select("SELECT  id,codigo_entidad,sigla_entidad,nombre_entidad, activo
                               FROM remi_entidad
-                               where activo = true order by id");
+                               where activo = true order by id");    
 
 
     $filtropdes = \DB::select("SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
                               FROM pdes_vista_catalogo_pmr c
                               LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
                               LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
+                              WHERE cod_p = ".$pdes_new."     
                               ORDER BY cod_p,cod_m,cod_r ASC");    // ".$pdes."
 
     $countPilar = \DB::select("SELECT count(i.id) as total
@@ -212,38 +318,38 @@ class IndicadorController extends Controller
 
 
     $totalPilar = \DB::select("select count(*) as totalp
-                              From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
+                              From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre 
                               FROM pdes_vista_catalogo_pmr c
                               LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
                               LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
-                              ORDER BY cod_p,cod_m,cod_r ASC) a");
+                              WHERE cod_p = ".$pdes_new."    
+                              ORDER BY cod_p,cod_m,cod_r ASC) a");   
     $totalPilar = $totalPilar[0];
 
   $totalResPilar = \DB::select("SELECT (b.totalp-c.total) as totalgral
           FROM
                               (
                               select count(*) as totalp
-                              From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
+                              From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre 
                               FROM pdes_vista_catalogo_pmr c
                               LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
                               LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
+                              WHERE cod_p = ".$pdes_new."     
                               ORDER BY cod_p,cod_m,cod_r ASC) a
-                              ) b,
+                              ) b,                                      
                               (
                               SELECT count(i.id) as total
                               FROM pdes_vista_catalogo_pmr c
                               LEFT JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
                               LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
-                              WHERE cod_p = ".$pdes_new."
+                              WHERE cod_p = ".$pdes_new." 
                               ) c ");
     $totalResPilar = $totalResPilar[0];
 
     $tiposMedicion = TiposMedicion::get();
     $unidadesMedidas = UnidadesMedidas::get();
    // dd("Los Pilares",$request->cod_ent1);
-    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','nom_ent','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar','totalPilar','totalResPilar','filindpil','filindent','swe','pent'));
+    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','nom_ent','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar','totalPilar','totalResPilar','filindpil','filindent','swe','pent','swp'));
   }
 
 
@@ -346,12 +452,12 @@ class IndicadorController extends Controller
     if(!$request->id_indicador){
        // dd($request->resultado_articulado[0]);
         if(isset($request->resultado_articulado)){
-            $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();
+            $vistaPmr = VistaCatalogoPdespmr::where('id_resultado',$request->resultado_articulado[0])->first();          
             $codigo = $vistaPmr->codigo_ext.($vistaPmr->correlativo_indicador+1);
             $resultado = Resultados::find($vistaPmr->id_resultado);
             $resultado->correlativo_indicador = ($vistaPmr->correlativo_indicador+1);//dd("DDDDD",$vistaPmr);
             $resultado->save();
-
+ 
         }
 
         try{
@@ -372,10 +478,10 @@ class IndicadorController extends Controller
             $indicador->numerador_fuente = $request->numerador_fuente;
             $indicador->denominador_detalle = $request->denominador_detalle;
             $indicador->denominador_fuente = $request->denominador_fuente;  */
-
+            
             $indicador->serie_disponible = $request->serie_disponible;   //7
             $indicador->observacion = $request->observacion;
-            $indicador->form_activo = $request->tap_next;
+            $indicador->form_activo = $request->tap_next;            
             $indicador->estado = 1;
             $indicador->logo = "default.png";
             $indicador->id_user = $this->user->id;
@@ -398,7 +504,7 @@ class IndicadorController extends Controller
             $indicador->activo = true;
             $indicador->save();
 
-            $id_reg = $indicador->id;
+            $id_reg = $indicador->id;            
 
             // $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             // for($i=1; $i <= count($metasList); $i++){
@@ -408,7 +514,7 @@ class IndicadorController extends Controller
             //     $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
             //     $metas->id_user = $this->user->id;
             //     $metas->save();
-            // }
+            // } 
 
             if(isset($request->resultado_articulado)){
               foreach ($request->resultado_articulado as $k => $v) {
@@ -418,7 +524,7 @@ class IndicadorController extends Controller
                     $indicadorPdes->id_user = $this->user->id;
                     $indicadorPdes->save();
               }
-            }
+            }  
 
             $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             for($i=1; $i <= count($metasList); $i++){
@@ -428,7 +534,7 @@ class IndicadorController extends Controller
                 $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
                 $metas->id_user = $this->user->id;
                 $metas->save();
-            }
+            }  
             //dd("sdfssdf");
             if(isset($request->avance_fecha)){
               foreach ($request->avance_fecha as $k => $v) {
@@ -449,7 +555,7 @@ class IndicadorController extends Controller
                     $avance->id_user = $this->user->id;
                     //$avance->save();
               }
-            }
+            }  
 
           if(isset($request->arc_archivo)){
               foreach ($request->arc_archivo as $k => $v) {
@@ -461,11 +567,11 @@ class IndicadorController extends Controller
                     $archivos->id_user = $this->user->id;
                    // $archivos->save();
               }
-            }
+            }  
 
             return \Response::json(array(
                 'error' => false,
-                'idindicador'=>$id_reg,
+                'idindicador'=>$id_reg,                
                 'title' => "Success!",
                 'msg' => "Se guardo con exito.")
             );
@@ -508,16 +614,16 @@ class IndicadorController extends Controller
             $indicador->numerador_fuente = $request->numerador_fuente;
             $indicador->denominador_detalle = $request->denominador_detalle;
             $indicador->denominador_fuente = $request->denominador_fuente;
-
+            
             $indicador->serie_disponible = $request->serie_disponible;
             $indicador->observacion = $request->observacion;
 
-            if($request->tap_next<$indicador->form_activo){
-              //$fuente->form_activo = $request->form_activo;
-                $j=1;
+            if($request->tap_next<$indicador->form_activo){  
+              //$fuente->form_activo = $request->form_activo; 
+                $j=1;         
             }
             else {
-                $indicador->form_activo = $request->tap_next;
+                $indicador->form_activo = $request->tap_next;  
             }
 
             $indicador->logo = "default.png";
@@ -542,7 +648,6 @@ class IndicadorController extends Controller
 
             if(isset($request->resultado_articulado)){
               foreach ($request->resultado_articulado as $k => $v) {
-
                     if(!$request->id_resultado_articulado[$k]){
                         $indicadorPdes = new IndicadorResultado();
                         $indicadorPdes->id_indicador = $indicador->id;
@@ -551,8 +656,10 @@ class IndicadorController extends Controller
                         $indicadorPdes->save();
                     }else{
                         if($request->estado_resultado_articulado[$k]==0){
-                          $indicadorPdesDel = IndicadorResultado::find($request->id_resultado_articulado[$k]);
-                          $indicadorPdesDel->delete();
+                          $indicadorPdes = IndicadorResultado::find($request->id_resultado_articulado[$k]);
+                          $indicadorPdes->id_user_updated = $this->user->id;
+                          $indicadorPdes->save();
+                         // $indicadorPdes->delete();
                         }
                     }
               }
@@ -585,7 +692,7 @@ class IndicadorController extends Controller
                          // $avance->delete();
                         }
                    }
-              }
+              } 
             }
 
 
@@ -598,10 +705,10 @@ class IndicadorController extends Controller
             //     $metas->valor = ($request->input('meta_'.$metasList[$i]))?$this->format_numerica_db($request->input('meta_'.$metasList[$i]),',') : 0;
             //     $metas->id_user = $this->user->id;
             //     $metas->save();
-            // }
+            // } 
 
             $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
-
+            
             //dd("QQ",$request->input('id_meta_'.$metasList[1]));
             if($request->input('id_meta_2016')!=null){
                //dd("QQ",$request->input('id_meta_'.$metasList[1]));
