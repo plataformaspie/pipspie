@@ -2018,11 +2018,11 @@ $('#customSwitch2').click(function(){
 
       $(".agregarART1").click(function () {
          var codigo = $('input[name=cod_obj]').val()+$('input[name=cod_metaods]').val()+$('input[name=cod_resultadods]').val();
-         var relacion = $('input[id=relacion]').val();
+         var relacion = $('input[name=relac]').val();
          if(!$('#datosART1').find("#ART1"+codigo).length){
         $.ajax({
                 url: "{{ url('/api/sistemaremi/setDataODS') }}",
-                data: { 'o': $('input[name=cod_obj]').val(),'m':$('input[name=cod_metaods]').val(),'i':$('input[name=cod_resultadods]').val() },
+                data: { 'o': $('input[name=cod_obj]').val(),'m':$('input[name=cod_metaods]').val(),'i':$('input[name=cod_resultadods]').val(),'rel':relacion },
                 type: "get",
                 dataType: 'json',
                 success: function(data){
@@ -2038,9 +2038,11 @@ $('#customSwitch2').click(function(){
                                       '<div class="row col-lg-10">'+
                                           '<input type="hidden" name="id_resultado_articuladods[]" value="" />'+
                                           '<input type="hidden" name="resultado_articuladods[]" value="'+data.set[0].id_indicador+'" />'+
+                                          '<input type="hidden" name="relacion_ods[]" value="'+data.set[0].id_indicador+'" />'+
                                           '<input type="hidden" id="EST1'+codigo+'" name="estado_resultado_articuladods[]" value="1" />'+
                                           // '<div class="col-12"><b>Relacion:</b>'+relacion+
                                           // '</div>'+
+                                          '<div class="col-12"><b>Comparabilidad: </b> '+relacion+
                                           '<div class="col-12"><b>'+data.set[0].objetivo+':</b> '+data.set[0].desc_o+
                                           '</div>'+
                                              '<div class="col-12"><b>'+data.set[0].meta+':</b> '+data.set[0].desc_m+
@@ -3690,6 +3692,8 @@ $('#customSwitch2').click(function(){
                                          '<input type="hidden" name="id_resultado_articuladods[]" value="'+data.id+'" />'+
                                          '<input type="hidden" name="resultado_articuladods[]" value="'+data.id_indicador+'" />'+
                                          '<input type="hidden" id="EST1'+data.cod_o+data.cod_m+data.cod_i+'" name="estado_resultado_articuladods[]" value="1" />'+
+                                         '<div class="col-12"><b>Comparabilidad: </b> '+data.comparabilidad_ods_pdes+
+                                         '</div>'+
                                          '<div class="col-12"><b>'+data.objetivo+':</b> '+data.desc_o+
                                          '</div>'+
                                          '<div class="col-12"><b>'+data.meta+':</b> '+data.desc_m+

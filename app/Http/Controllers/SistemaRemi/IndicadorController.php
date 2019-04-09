@@ -1163,7 +1163,7 @@ class IndicadorController extends Controller
 	                         INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
                            WHERE ir.id_indicador = ".$request->id);
 
-      $ods = \DB::select("SELECT c.*,ir.id
+      $ods = \DB::select("SELECT c.*,ir.id,ir.comparabilidad_ods_pdes
                            FROM remi_indicador_ods_indicador ir
                            INNER JOIN ods_vista_catalogo_omi c ON ir.id_resultado_ods = c.id_indicador
                            WHERE ir.id_indicador_ods = ".$request->id);
