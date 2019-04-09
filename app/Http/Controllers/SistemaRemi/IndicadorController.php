@@ -677,7 +677,7 @@ class IndicadorController extends Controller
             $indicador->serie_disponible = $request->serie_disponible;   //7
             $indicador->observacion = $request->observacion;
             $indicador->form_activo = $request->tap_next;
-            $indicador->estado = $request->estado_indicador;
+            $indicador->estado = 1;
             $indicador->logo = "default.png";
             $indicador->id_user = $this->user->id;
             $dia = null;  //

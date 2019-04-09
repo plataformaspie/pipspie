@@ -346,7 +346,7 @@ input[type=checkbox]:checked:disabled + label:before {
 
                                                     <div class="form-group col-md-4 p-l-0 m-b-0">
                                                           <select id="relac" name="relac" class="custom-select col-12 form-control enabledCampos">
-                                                                <option value="">No Disponible.</option>
+                                                                <option value="No Disponible">No Disponible</option>
                                                                 @foreach ($relacop as  $ind_op)
                                                                     <option value="{{ $ind_op->relacion_pdes_ods }}">{{ $ind_op->relacion_pdes_ods }} - {{$ind_op->descripcion}}</option>
                                                                 @endforeach
