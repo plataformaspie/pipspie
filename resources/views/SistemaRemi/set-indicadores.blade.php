@@ -129,7 +129,6 @@ text-decoration: underline;
                       </div>                      
                       <h5>Entidad Filtrada: <b>{{$nom_ent}} – Nro. de Entidad: {{$pent}}</b></h5>
                       <div class="row">
-                      @if($swp == 2)  
                         @foreach ($filindent as  $ent_pilar)                        
                          @if($ent_pilar->cod_p == 1)
                             <div class="col-lg-1 col-md-3 col-sm-4 col-xs-12 m-b-10">
@@ -197,9 +196,6 @@ text-decoration: underline;
                             </div>                          
                           @endif                                  
                          @endforeach
-                       @else
-                            <label id="mej" type="label"><font color="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No existe indicadores y pilares para la Entidad !!!</font></label>
-                       @endif    
                       </div>
                   </div>
               </div>
@@ -207,7 +203,7 @@ text-decoration: underline;
 
       </div>
   </div>
-@if($swp == 2) 
+
   <div class="row">
       <div class="col-lg-12">
           <div class="panel">
@@ -253,7 +249,7 @@ text-decoration: underline;
                                                            <?php $meta =  $itemM->meta; ?>
                                                             <div class="col-lg-1">
                                                               <a class="mytooltip" style="color:#3177AE" href="javascript:void(0)"> <?php $p++; ?> 
-                                                                  {{$itemM->meta}} <?php $p1=""; $p2=""; ?>
+                                                                  {{$itemM->meta}} Con Ind: {{$p1}} Sin Ind: {{$p2}} <?php $p1=""; $p2=""; ?>
                                                                 <span class="tooltip-content5">
                                                                     <span class="tooltip-text3">
                                                                       <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemM->meta}}<br /> {{$itemM->desc_m}}</span>
@@ -269,9 +265,9 @@ text-decoration: underline;
                                                                      @foreach ($filtropdes as $itemR)
                                                                        @if($itemR->resultado != $resultado and $itemM->meta == $itemR->meta)
                                                                              <?php $resultado =  $itemR->resultado; ?>
-                                                                                  <div class="col-lg-2 p-t-0 p-b-0" @if($itemR->nombre != "") style="background-color: #E0F1D7" <?php ?> @else style="background-color: #F0D8D8" <?php ?> @endif>
+                                                                                  <div class="col-lg-2 p-t-0 p-b-0" @if($itemR->nombre != "") style="background-color: #E0F1D7" <?php $t=""; $c="CI";  ?> @else style="background-color: #F0D8D8" <?php $t="Sin Ind"; $c="ACI"; ?> @endif>
                                                                                     <a class="mytooltip" @if($itemR->nombre != "") style="color: #55773D" <?php $p1++; ?> @else style="color: #A94456" <?php $p2++; ?> @endif  href="javascript:void(0)">
-                                                                                        {{$itemR->resultado}} 
+                                                                                        {{$itemR->resultado}} {{$t}} {{$c}} :{{$h}}
                                                                                       <span class="tooltip-content5">
                                                                                           <span class="tooltip-text3">
                                                                                             <span class="tooltip-inner2 p-10" style="font-size:10px;">{{$itemR->resultado}}<br /> {{$itemR->desc_r}}</span>
@@ -322,7 +318,6 @@ text-decoration: underline;
          </div>
       </div>
   </div>
-@endif    
   <?php /*
   <div class="row">
       <div class="col-lg-12">

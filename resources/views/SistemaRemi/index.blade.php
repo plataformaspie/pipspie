@@ -109,6 +109,9 @@
           <div class="white-box">
             <h4 class="font-bold m-t-0">¿Qué es RIME? </h4>
             <hr>
+<!--             <div class="links">
+                <a href="{{ route('registrar.index') }}">TABLA DE USUARIOS</a>
+            </div> -->
             <div class="media m-b-30 p-t-20">
                   <div class="col-1">
                       <img class="metro-icon" src="{{ asset('img/logo_remi.png') }}" width="80" alt="" />
@@ -220,56 +223,56 @@
             <hr>
             <div class="row">
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_1.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_1.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_2.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_2.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_3.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_3.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_4.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_4.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_5.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_5.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_6.png" height="150" alt="-" class="box" />
+                  <img src="/img/ODS_6.jpg" height="150" alt="-" class="box" />
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_7.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_7.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_8.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_8.jpg" height="150" alt="-"  class="box"/>
                 </div>
 
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_9.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_9.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_10.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_10.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_11.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_11.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_12.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_12.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_13.png" height="150" alt="-" class="box"/>
+                  <img src="/img/ODS_13.jpg" height="150" alt="-" class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_14.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_14.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_15.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_15.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_16.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_16.jpg" height="150" alt="-"  class="box"/>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10">
-                  <img src="/img/ODS_17.png" height="150" alt="-"  class="box"/>
+                  <img src="/img/ODS_17.jpg" height="150" alt="-"  class="box"/>
                 </div>
             </div>
           </div>

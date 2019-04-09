@@ -471,6 +471,7 @@ Route::group(['middleware' => 'auth'],function(){
       );
 });
 
+/*-----------------INICIO MODULO RIME----------------------*/
 Route::group(['middleware' => 'auth'],function(){
       Route::group(
           array('prefix' => 'sistemaremi'),
@@ -483,19 +484,35 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
+              Route::get('adminIndicadorEntidad', 'SistemaRemi\IndicadorController@adminIndicadorEntidad');
               Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
 
-          }
-      );
+              Route::resource('registrar', 'SistemaRemi\RegistrameUserController');
+              Route::get('registrar/{id}/destroy','SistemaRemi\RegistrameUserController@destroy')->name('SistemaRemi.registrar.destroy');
+
+              Route::get('CrudUsers', 'SistemaRemi\IndicadorController@CrudUsers')->name('CrudUsers');
+              Route::get('mostrarReg', 'SistemaRemi\IndicadorController@mostrarReg')->name('mostrarReg');
+              Route::get('registrarUser', 'SistemaRemi\IndicadorController@registrarUser')->name('registrarUser');
+              Route::post('guardarUser', 'SistemaRemi\IndicadorController@guardarUser')->name('guardarUser');
+              Route::get('editarUser/{id}', 'SistemaRemi\IndicadorController@editarUser')->name('SistemaRemi.registrar.editarUser');
+              Route::post('actualizarUser/{id}', 'SistemaRemi\IndicadorController@actualizarUser')->name('SistemaRemi.registrar.actualizarUser');
+            Route::get('eliminarUser/{id}', 'SistemaRemi\IndicadorController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser');
+
+
+            Route::get('asignarRoles', 'SistemaRemi\IndicadorController@asignarRoles')->name('asignarRoles');
+            Route::post('actualizarUserRol', 'SistemaRemi\IndicadorController@actualizarUserRol')->name('actualizarUserRol');
+
+          });
+
       Route::group(
           array('prefix' => 'api/sistemaremi'),
-
           function() {
               Route::get('demo', 'SistemaRemi\IndicadorController@demo');
               Route::post('apiSavePerfil', 'SistemaRemi\SettingController@apiSavePerfil');
               Route::post('apiSavePassword', 'SistemaRemi\SettingController@apiSavePassword');
               Route::get('setDataPdes', 'SistemaRemi\IndicadorController@setDataPdes');
+              Route::get('setDataODS', 'SistemaRemi\IndicadorController@setDataODS');
               Route::get('apiSetIndicadores', 'SistemaRemi\IndicadorController@apiSetIndicadores');
               Route::post('apiSaveIndicador', 'SistemaRemi\IndicadorController@apiSaveIndicador');
               Route::get('apiDataSetIndicador', 'SistemaRemi\IndicadorController@apiDataSetIndicador');
@@ -507,12 +524,31 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('apiUpdateComboFuente', 'SistemaRemi\IndicadorController@apiUpdateComboFuente');
               Route::get('setPdes', 'SistemaRemi\IndicadorController@setPdes');
               Route::post('apiUploadArchivoRespaldo', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldo');
+              Route::post('apiUploadArchivoRespaldoEdad', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldoEdad');
+              Route::post('apiUploadArchivoRespaldoNac', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldoNac');
+              Route::post('apiUploadArchivoRespaldoDptal', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldoDptal');
+              Route::post('apiUploadArchivoRespaldoMunic', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldoMunic');
+
+              Route::post('apiUploadArchivoRespaldoMod', 'SistemaRemi\IndicadorController@apiUploadArchivoRespaldoMod');
+
+              Route::post('apiUploadArchivosRespaldos', 'SistemaRemi\IndicadorController@apiUploadArchivosRespaldos');
               Route::get('apiDeleteArchivo', 'SistemaRemi\IndicadorController@apiDeleteArchivo');
+
+              Route::get('apiDeleteArchivo_s', 'SistemaRemi\IndicadorController@apiDeleteArchivo_s');
+              Route::get('apiDeleteArchivo_e', 'SistemaRemi\IndicadorController@apiDeleteArchivo_e');
+              Route::get('apiDeleteArchivo_n', 'SistemaRemi\IndicadorController@apiDeleteArchivo_n');
+              Route::get('apiDeleteArchivo_d', 'SistemaRemi\IndicadorController@apiDeleteArchivo_d');
+              Route::get('apiDeleteArchivo_m', 'SistemaRemi\IndicadorController@apiDeleteArchivo_m');
               Route::get('apiExportData', 'SistemaRemi\ExportReportController@descagarExcelAdminFuente');
+
 
               Route::get('apiExportDataindicador', 'SistemaRemi\ExportReportController@descagarExcelAdminIndicador');
               Route::get('filtraPdesEntidad', 'SistemaRemi\IndicadorController@filtraPdesEntidad');
 
+
+              Route::POST('addPost','SistemaRemi\IndicadorController@addPost');
+              Route::POST('editPost','SistemaRemi\IndicadorController@editPost');
+              Route::POST('deletePost','SistemaRemi\IndicadorController@deletePost');
 
           }
       );
@@ -521,12 +557,14 @@ Route::group(['middleware' => 'auth'],function(){
           function() {
               Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
+              Route::get('setIndicadoresEntidad', 'SistemaRemi\IndicadorController@setIndicadoresEntidad');
           }
       );
       Route::group(
           array('prefix' => 'api/sistemarime'),
           function() {
               //fuente de datos
+              Route::get('apiSetListIndicadores', 'SistemaRemi\IndicadorController@apiSetListIndicadores');
               Route::get('apiSetListFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSetListFuenteDatos');
               Route::get('apiSourceOrderbyArray2', 'SistemaRemi\FuenteDatosController@apiSourceOrderbyArray2');
               Route::post('apiSaveFuenteDatos', 'SistemaRemi\FuenteDatosController@apiSaveFuenteDatos');
@@ -534,6 +572,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('apiDeleteArchivo', 'SistemaRemi\FuenteDatosController@apiDeleteArchivo');
 
               Route::get('apiDataSetFuente', 'SistemaRemi\FuenteDatosController@apiDataSetFuente');
+
+              Route::get('apiDataSetIndicador', 'SistemaRemi\IndicadorController@apiDataSetIndicador');
               Route::get('descagarExcelMetadatosOnly/{id}', 'SistemaRemi\ExportReportController@descagarExcelMetadatosOnly');
 
 
@@ -542,7 +582,10 @@ Route::group(['middleware' => 'auth'],function(){
 
           }
       );
+
+
 });
+/*-----------------FIN MODULO RIME----------------------*/
 
 //PLANIFICACION TERRITORIAL
 Route::group(['middleware' => 'auth'],function(){

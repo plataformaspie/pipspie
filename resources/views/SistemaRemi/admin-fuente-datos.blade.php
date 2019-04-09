@@ -35,6 +35,17 @@
     table.scroll {
         width:100%;
     }
+    .ul .li .li{
+       list-style:none;
+       }
+
+    .li{
+       list-style:none;
+       }   
+
+    #c2 .ul .li{
+       list-style:none;
+       }
   </style>
 @endsection
 
@@ -703,13 +714,13 @@
                                                  </div>
                                                  <div class="col-md-12 p-l-0">
                                                      <div class="select2-wrapper">
-                                                       <ul class="checkbox">
+                                                       <ul class="icheck-list">   <!-- custom-control custom-switch  icheck-list -->
                                                          <li><input type="checkbox" id="c1" name="cobertura[]" value="1" /><label> Internacional</label></li>
                                                          <li>
                                                            <input type="checkbox" id="c2" name="cobertura[]" value="2" class="padreck" /><label> Nacional (Todo el país)</label>
                                                            <ul class="">
-                                                             <li><input type="checkbox" id="c3" name="cobertura[]" value="3" class="hijo2" /><label> Nacional Urbano (Ciudades Capitales)</label></li>
-                                                             <li><input type="checkbox" id="c4" name="cobertura[]" value="4" class="hijo2" /><label> Nacional Urbano (Conurbaciones, Regiones Metropolitanas)</label></li>
+                                                             <li style="list-style:none;"><input type="checkbox" id="c3" name="cobertura[]" value="3" class="hijo2" /><label> Nacional Urbano (Ciudades Capitales)</label></li>
+                                                             <li><input type="checkbox" id="c4" name="cobertura[]" value="4" class="hijo2" /><label> Nacional Urbano (Conurbanizaciones, Regiones Metropolitanas)</label></li>
                                                              <li><input type="checkbox" id="c5" name="cobertura[]" value="5" class="hijo2" /><label> Nacional  Resto Urbano</label></li>
                                                              <li><input type="checkbox" id="c6" name="cobertura[]" value="6" class="hijo2"/><label> Nacional Rural</label></li>
                                                            </ul>
@@ -778,7 +789,7 @@
                                                  </div>
                                                  <div class="col-md-12 p-l-0">
                                                      <div class="select2-wrapper">
-                                                       <ul class="checkbox">
+                                                       <ul class="icheck-list">
                                                          <li><input type="checkbox" id="d1" name="desagregacion[]" value="1" /><label> Internacional</label></li>
                                                          <li>
                                                            <input type="checkbox" id="d2" name="desagregacion[]" value="2" class="padreck" /><label> Nacional (Todo el país)</label>
@@ -1253,8 +1264,8 @@
                     <div class="col-sm-12">
                             <div class="form-group text-center">
                               <button id="bt_guardar" type="submit" class="btn btn-info  tap-btn">Guardar</button>
-                              <button id="bt_enviar" type="hidden" class="btn btn-danger  tap-btn">Guardar y Enviar a revisión</button>
-                              <button id="bt_siguiente" type="hidden" class="btn btn-info tap-btn">Siguiente</button>
+                              <button id="bt_enviar" type="submit" class="btn btn-danger  tap-btn">Guardar y Enviar a revisión</button>
+                              <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
                               <button type="button" class="btn btn-default btn-back">Cancelar</button>
                             </div>
                     </div>
@@ -1397,8 +1408,8 @@
                   cellsRenderer: function (row, column, value, rowData) {
                           if(rowData.id_estado == 1 || rowData.id_estado == 3){
                               var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                              var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Gestionar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                              var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-info  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                              var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Editar</span> <i class="fa fa-pencil m-l-5"></i></button>';
+                              var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
                               abm += inputEdit;
                               abm += inputDelete;
                               abm += "</div>";
