@@ -10,6 +10,7 @@
 
   <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
   <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.ui-lightness.css') }} " type="text/css" />
+  <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.darkblue.css') }} " type="text/css" />
 
   <style media="screen">
     .select2-container-multi{
@@ -99,10 +100,10 @@ input[type=checkbox]:checked:disabled + label:before {
   <div class="row bg-title">
       <!-- .page title -->
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        @if(Auth::user()->id_rol == 13)
-          <h4 class="page-title">Administrador de indicadores CIMPDS</h4>
+        @if($filtData == 0 )
+          <h4 class="page-title">Administrar Indicadores CIMPDS</h4>
         @else
-          <h4 class="page-title">Administrador de indicadores Entidad</h4>
+          <h4 class="page-title">Administrar Mis Indicadores</h4>
         @endif
       </div>
       <!-- /.page title -->
@@ -492,44 +493,44 @@ input[type=checkbox]:checked:disabled + label:before {
 
 
 
-                                                      <div id="myModal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" style="display: none;">
-                                                        <div class="modal-dialog1">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel2">Archivo de Respaldo Sexo</h5></div>
-                                                                  <div class="modal-body">
-                                                                         <form>
-                                                                              <div class="form-group" >
-                                                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                   </div>
-                                                                                   <div class="col-md-9 p-l-0">
-                                                                                       <div class="select2-wrapper">
-                                                                                         <input id="arc_nombre_sexo" name="arc_nombre_sexo" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                       </div>
-                                                                                       <div class="help-block with-errors"></div>
-                                                                                   </div>
-                                                                                 </div>
-                                                                                 <div class="form-group" >
-                                                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                   </div>
-                                                                                   <div class="col-md-9 p-l-0">
-                                                                                       <div class="select2-wrapper">
-                                                                                         <input type="file" id ="arc_archivo_sexo" name="arc_archivo_sexo" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                       </div>
-                                                                                       <div class="help-block with-errors"></div>
-                                                                                   </div>
-                                                                                   <div class="col-md-12 p-l-0 text-center">
-                                                                                       <button type="button" class="btn btn-info btn-sm agregarARCS m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                   </div>
-                                                                                 </div>
-                                                                        </form>
-                                                                  </div>
-                                                                      <div class="modal-footer">
-                                                                          <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                            </div>
-                                                                          </div>
+                                                                <div id="myModal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" style="display: none;">
+                                                                  <div class="modal-dialog1">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel2">Archivo de Respaldo Sexo</h5></div>
+                                                                              <div class="modal-body">
+                                                                                     <form>
+                                                                                          <div class="form-group" >
+                                                                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                               </div>
+                                                                                               <div class="col-md-9 p-l-0">
+                                                                                                   <div class="select2-wrapper">
+                                                                                                     <input id="arc_nombre_sexo" name="arc_nombre_sexo" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                                   </div>
+                                                                                                   <div class="help-block with-errors"></div>
+                                                                                               </div>
+                                                                                             </div>
+                                                                                             <div class="form-group" >
+                                                                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                               </div>
+                                                                                               <div class="col-md-9 p-l-0">
+                                                                                                   <div class="select2-wrapper">
+                                                                                                     <input type="file" id ="arc_archivo_sexo" name="arc_archivo_sexo" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                                   </div>
+                                                                                                   <div class="help-block with-errors"></div>
+                                                                                               </div>
+                                                                                               <div class="col-md-12 p-l-0 text-center">
+                                                                                                   <button type="button" class="btn btn-info btn-sm agregarARCS m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                               </div>
+                                                                                             </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                                </div>
+                                                                        </div>
                                                                       </div>
                                                                   </div>
 
@@ -557,46 +558,46 @@ input[type=checkbox]:checked:disabled + label:before {
 
 
                                                               <div id="myModal3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="display: none;">
-                                                                                      <div class="modal-dialog1">
-                                                                                          <div class="modal-content">
-                                                                                              <div class="modal-header">
-                                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel3">Archivo de Respaldo Edad</h5></div>
+                                                                <div class="modal-dialog1">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel3">Archivo de Respaldo Edad</h5></div>
                                                                               <div class="modal-body">
                                                                                      <form id="formMod" name="formMod">
-                                                                                                  {{ csrf_field() }}
-                                                                                              <div class="form-group" >
-                                                                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                                   </div>
-                                                                                                   <div class="col-md-9 p-l-0">
-                                                                                                       <div class="select2-wrapper">
-                                                                                                         <input id="arc_nombre_ing2" name="arc_nombre_ing2" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                                       </div>
-                                                                                                       <div class="help-block with-errors"></div>
-                                                                                                   </div>
-                                                                                                 </div>
-                                                                                                 <div class="form-group" >
-                                                                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                                   </div>
-                                                                                                   <div class="col-md-9 p-l-0">
-                                                                                                       <div class="select2-wrapper">
-                                                                                                         <input type="file" id ="arc_archivo_ing2" name="arc_archivo_ing2" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                                       </div>
-                                                                                                       <div class="help-block with-errors"></div>
-                                                                                                   </div>
-                                                                                                   <div class="col-md-12 p-l-0 text-center">
-                                                                                                       <button type="button" class="btn btn-info btn-sm agregarARCED m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                                   </div>
-                                                                                                 </div>
+                                                                                          {{ csrf_field() }}
+                                                                                      <div class="form-group" >
+                                                                                           <div class="col-md-3 p-l-0 p-r-0">
+                                                                                             <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                           </div>
+                                                                                           <div class="col-md-9 p-l-0">
+                                                                                               <div class="select2-wrapper">
+                                                                                                 <input id="arc_nombre_ing2" name="arc_nombre_ing2" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                               </div>
+                                                                                               <div class="help-block with-errors"></div>
+                                                                                           </div>
+                                                                                         </div>
+                                                                                         <div class="form-group" >
+                                                                                           <div class="col-md-3 p-l-0 p-r-0">
+                                                                                             <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                           </div>
+                                                                                           <div class="col-md-9 p-l-0">
+                                                                                               <div class="select2-wrapper">
+                                                                                                 <input type="file" id ="arc_archivo_ing2" name="arc_archivo_ing2" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                               </div>
+                                                                                               <div class="help-block with-errors"></div>
+                                                                                           </div>
+                                                                                           <div class="col-md-12 p-l-0 text-center">
+                                                                                               <button type="button" class="btn btn-info btn-sm agregarARCED m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                           </div>
+                                                                                         </div>
                                                                                         </form>
                                                                                   </div>
-                                                                                      <div class="modal-footer">
-                                                                                          <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                                            </div>
-                                                                                          </div>
-                                                                                      </div>
-                                                                                  </div>
+                                                                              <div class="modal-footer">
+                                                                                  <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                              </div>
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
 
                                                                     <div class="row form-group row m-b-5 m-l-5 m-t-5" >
                                                                          <div class="col-md-3 p-l-0">
@@ -1468,7 +1469,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                                </div>
                                              </div>
 
-                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if($filtData>0)pointer-events:none; @endif" >
                                                <div class="col-md-3 p-l-0 p-r-0">
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Sectores Relacionados </label>
                                                </div>
@@ -1784,7 +1785,11 @@ input[type=checkbox]:checked:disabled + label:before {
          }
      });
 
+      var filterData = {{$filtData}};
+      if(filterData == 0)
       var theme = 'ui-lightness';
+      else
+      var theme = 'darkblue';
 
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $("#formAddFuente .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
@@ -1802,23 +1807,23 @@ input[type=checkbox]:checked:disabled + label:before {
                   });
       });
 
-      $('#chkCodeudor3').click(function()
-            {
-                if ($('#chkCodeudor3').is(":checked")) {
-                    $('#responsive-modal').modal('show');
-                }else {
-                    $('#responsive-modal').modal('hide');
-                }
-            });
+      // $('#chkCodeudor3').click(function()
+      //       {
+      //           if ($('#chkCodeudor3').is(":checked")) {
+      //               $('#responsive-modal').modal('show');
+      //           }else {
+      //               $('#responsive-modal').modal('hide');
+      //           }
+      //       });
 
-      $('#chkCodeudor').click(function()
-            {
-                if ($('#chkCodeudor').is(":checked")) {
-                    $('#myModal').modal('show');
-                }else {
-                    $('#myModal').modal('hide');
-                }
-            });
+      // $('#chkCodeudor').click(function()
+      //       {
+      //           if ($('#chkCodeudor').is(":checked")) {
+      //               $('#myModal').modal('show');
+      //           }else {
+      //               $('#myModal').modal('hide');
+      //           }
+      //       });
 
       $('#chkCodeudor2').click(function()
             {
@@ -2764,6 +2769,7 @@ $('#customSwitch2').click(function(){
             { name: 'codigo', type: 'string' }
         ],
         id: 'id',
+        data:{'filter':'{{$filtData}}'},
         url: url
     };
     var dataAdapter = new $.jqx.dataAdapter(source);
@@ -2771,8 +2777,8 @@ $('#customSwitch2').click(function(){
     $("#dataTable").jqxDataTable(
     {
         source: dataAdapter,
-          width:"100%",
-          height:"400px",
+        width:"100%",
+        height:"400px",
         //width:"100%",
         theme:theme,
         columnsResize: true,
@@ -2807,9 +2813,11 @@ $('#customSwitch2').click(function(){
                      // if({%%})
                         var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
                         var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Editar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                        var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                        var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger  m-t-5"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                        var inputShow = '<button onclick="btn_mostrar('+rowData.id+')" class="btn btn-sm btn-info m-t-5"><span>Ficha</span> <i class="fa fa-eye m-l-5"></i></button>';
                         abm += inputEdit;
                         abm += inputDelete;
+                        abm += inputShow;
                         abm += "</div>";
                         return abm;
 
@@ -2817,6 +2825,8 @@ $('#customSwitch2').click(function(){
           },
       ]
     });
+
+
 
 
     // $("#dataTable").jqxDataTable(
@@ -3596,7 +3606,7 @@ $('#customSwitch2').click(function(){
 
                   //------------------aqui
                     if(data.indicador[0].etapa){
-                      var html= data.indicador[0].etapa+' - '+data.descripcion_etapa[0].descripcion;
+                      var html= data.indicador[0].etapa+' - '+data.descripcion_etapa;
                       $("#etapaDesc").html(html);
                     }
 
@@ -4269,6 +4279,12 @@ $('#customSwitch2').click(function(){
    }
    function actualizarcomboUnidad(ele){
      $('.'+ele.name+'Desc').html($('select[name="'+ele.name+'"] option:selected').text());
+   }
+
+
+   function btn_mostrar(ele){
+      var idSeleccionar = ele;
+      location.href = '/sistemaremi/dataIndicador/'+ idSeleccionar;
    }
 //------------------aqui fin
 

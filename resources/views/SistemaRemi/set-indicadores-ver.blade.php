@@ -470,14 +470,14 @@
     $(document).ready(function(){
 
 
-      var url = '{{ url('api/sistemarime/apiSetListIndicadores') }}';
+      var url = '{{ url('api/sistemaremi/apiSetIndicadores') }}';
       // prepare the data
       var source =
       {
           dataType: "json",
           dataFields: [
               { name: 'id', type: 'int' },
-              { name: 'estado', type: 'string' },
+              { name: 'estado_desc', type: 'string' },
               { name: 'etapa', type: 'string' },
               { name: 'nombre', type: 'string' },
               { name: 'codigo', type: 'string' }
@@ -495,24 +495,21 @@
           columnsResize: true,
           filterable: true,
           filterMode: 'simple',
-          //pageable: true,
-          //pagerButtonsCount: 10,
           localization: getLocalization('es'),
-          //pageSize: 10,
           columns: [
-            { text: 'Estado', dataField: 'estado', width: 100, cellsAlign: 'center' },
+            { text: 'Estado', dataField: 'estado_desc', width: 100, cellsAlign: 'center' },
             { text: 'Nombre Indicador', minWidth: 250,dataField: 'nombre' },
             { text: 'Etapa', width: 150,dataField: 'etapa' },
             { text: 'Codigo', width: 150, dataField: 'codigo' },
             { text: 'Opciones', width: 150,
                   cellsRenderer: function (row, column, value, rowData) {
                           var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                          var inputShow = '<button onclick="btn_mostrar('+rowData.id+')" class="btn btn-sm btn-info "><span>Ver Indicador</span> <i class="fa fa-eye m-l-5"></i></button>'; 
+                          var inputShow = '<button onclick="btn_mostrar('+rowData.id+')" class="btn btn-sm btn-info "><span>Ficha</span> <i class="fa fa-eye m-l-5"></i></button>';
                           abm += inputShow;
                           abm += "</div>";
                           return abm;
 
-                         
+
                   }
             },
         ]
@@ -540,7 +537,7 @@
     var btn_mostrar = function(ele){
        var idSeleccionar = ele;
        location.href = '/sistemaremi/dataIndicador/'+ idSeleccionar;
-    } 
+    }
 
 
 

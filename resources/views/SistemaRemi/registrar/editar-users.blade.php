@@ -62,7 +62,28 @@
                       <div class="col-10">
                           <input type="text" id="username" name="username" class="form-control" value="{{$user->username}}" placeholder="Nombre de Usuario" required>
                       </div>
-                  </div>                  
+                  </div>             
+                  <div class="form-group row">
+                      <label for="example-email-input" class="col-2 col-form-label">Tipos de Rol :</label>
+                      <div class="col-10">
+               <!--        <div class="form-group col-md-4 p-l-0 m-b-0">  --> <!-- class="col-md-9 p-l-0"> -->
+                                <select id="roles" name="roles" class="custom-select col-12 form-control enabledCampos" required>
+                                      <option value="">Selecciona Rol......</option>                                  
+                                      @foreach ($mis_roles as  $rol)
+                                          @if($rol->id_roles == $user->id_rol)
+                                          <option value="{{ $rol->id_roles }}" selected="">{{ $rol->nombre_rol }}</option>
+                                          @else
+                                          <option value="{{ $rol->id_roles }}">{{ $rol->nombre_rol }}</option>
+                                          @endif
+                                      @endforeach
+
+                                </select> 
+
+                              <div class="help-block with-errors"></div>
+                       <!--    </div> -->
+                      </div>
+                  </div>    
+
 <!--                   <div class="form-group row">
                       <label for="example-password-input" class="col-2 col-form-label">Password :</label>
                       <div class="col-10">                                               

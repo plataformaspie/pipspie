@@ -484,6 +484,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('setIndicadoresSearch', 'SistemaRemi\IndicadorController@setIndicadores');
               Route::get('dataIndicador/{id}', 'SistemaRemi\IndicadorController@dataIndicador');
               Route::get('adminIndicador', 'SistemaRemi\IndicadorController@adminIndicador');
+              Route::get('adminMisIndicadores', 'SistemaRemi\IndicadorController@adminIndicador');
               Route::get('adminIndicadorEntidad', 'SistemaRemi\IndicadorController@adminIndicadorEntidad');
               Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
@@ -491,17 +492,27 @@ Route::group(['middleware' => 'auth'],function(){
               Route::resource('registrar', 'SistemaRemi\RegistrameUserController');
               Route::get('registrar/{id}/destroy','SistemaRemi\RegistrameUserController@destroy')->name('SistemaRemi.registrar.destroy');
 
-              Route::get('CrudUsers', 'SistemaRemi\IndicadorController@CrudUsers')->name('CrudUsers');
-              Route::get('mostrarReg', 'SistemaRemi\IndicadorController@mostrarReg')->name('mostrarReg');
-              Route::get('registrarUser', 'SistemaRemi\IndicadorController@registrarUser')->name('registrarUser');
-              Route::post('guardarUser', 'SistemaRemi\IndicadorController@guardarUser')->name('guardarUser');
-              Route::get('editarUser/{id}', 'SistemaRemi\IndicadorController@editarUser')->name('SistemaRemi.registrar.editarUser');
-              Route::post('actualizarUser/{id}', 'SistemaRemi\IndicadorController@actualizarUser')->name('SistemaRemi.registrar.actualizarUser');
-            Route::get('eliminarUser/{id}', 'SistemaRemi\IndicadorController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser');
+              //Route::get('CrudUsers', 'SistemaRemi\IndicadorController@CrudUsers')->name('CrudUsers');
+              //Route::get('mostrarReg', 'SistemaRemi\IndicadorController@mostrarReg')->name('mostrarReg');
+              //Route::get('registrarUser', 'SistemaRemi\IndicadorController@registrarUser')->name('registrarUser');
+              //Route::post('guardarUser', 'SistemaRemi\IndicadorController@guardarUser')->name('guardarUser');
+              //Route::get('editarUser/{id}', 'SistemaRemi\IndicadorController@editarUser')->name('SistemaRemi.registrar.editarUser');
+              //Route::post('actualizarUser/{id}', 'SistemaRemi\IndicadorController@actualizarUser')->name('SistemaRemi.registrar.actualizarUser');
+              //Route::get('eliminarUser/{id}', 'SistemaRemi\IndicadorController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser');
 
 
             Route::get('asignarRoles', 'SistemaRemi\IndicadorController@asignarRoles')->name('asignarRoles');
             Route::post('actualizarUserRol', 'SistemaRemi\IndicadorController@actualizarUserRol')->name('actualizarUserRol');
+            
+            Route::get('CrudUsers', 'SistemaRemi\AdmiUserController@CrudUsers')->name('CrudUsers');                 
+              Route::get('mostrarReg', 'SistemaRemi\AdmiUserController@mostrarReg')->name('mostrarReg');
+              Route::get('registrarUser', 'SistemaRemi\AdmiUserController@registrarUser')->name('registrarUser');     
+              Route::post('guardarUser', 'SistemaRemi\AdmiUserController@guardarUser')->name('guardarUser'); 
+              Route::get('editarUser/{id}', 'SistemaRemi\AdmiUserController@editarUser')->name('SistemaRemi.registrar.editarUser');    
+              Route::post('actualizarUser/{id}', 'SistemaRemi\AdmiUserController@actualizarUser')->name('SistemaRemi.registrar.actualizarUser');  
+            Route::get('eliminarUser/{id}', 'SistemaRemi\AdmiUserController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser'); 
+            Route::get('asignarRoles', 'SistemaRemi\AdmiUserController@asignarRoles')->name('asignarRoles'); 
+            Route::post('actualizarUserRol', 'SistemaRemi\AdmiUserController@actualizarUserRol')->name('actualizarUserRol');
 
           });
 

@@ -115,20 +115,17 @@ class IndicadorController extends Controller
   public function setIndicadoresEntidad()
   {
 
-    return view('SistemaRemi.set-indicadores-ent');
+    return view('SistemaRemi.set-indicadores-ver');
   }
 
   public function apiSetListIndicadores(Request $request)
   {
-      // $dataFuente = FuenteDatos::join('remi_estados as et','CONVERT(remi_indicadores.estado,integer)', '=', 'et.id')->where('remi_indicadores.activo', true)
-      //             ->orderBy('id','ASC')
-      //             ->select('remi_indicadores.*','et.nombre as estado','et.id as id_estado')
-      //             ->get();
 
-      $dataFuente  = \DB::select("select fd.*,et.nombre as estado1, et.id as Id_Estado from remi_indicadores fd
-      inner join remi_estados et on to_number(fd.estado,'9')=et.id
-      where fd.activo=true
-      order by id asc");
+
+      $dataFuente  = \DB::select("SELECT fd.*,et.nombre as estado1, et.id as Id_Estado from remi_indicadores fd
+                                  inner join remi_estados et on to_number(fd.estado,'9')=et.id
+                                  where fd.activo=true
+                                  order by id asc");
       /*foreach ($dataFuente as $value) {
         $data[$value->id] = $value->nombre;
       }*/
@@ -362,12 +359,14 @@ class IndicadorController extends Controller
                                   FROM public.remi_fuente_datos_responsable
                                 where cod_entidad=".$pent.")))");  */
 
-          $filindent = \DB::select("SELECT distinct c.cod_p
-                                FROM remi_indicador_pdes_resultado ir
-                                INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                                WHERE ir.id_indicador IN (SELECT id_fuente
-                                  FROM public.remi_fuente_datos_responsable
-                                where cod_entidad=".$pent.") order by c.cod_p");//$swe=2;
+    $filindent = \DB::select("SELECT distinct c.cod_p
+                              FROM remi_indicador_pdes_resultado ir
+                              INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
+                              WHERE ir.id_indicador IN (
+                                SELECT id_fuente
+                                FROM public.remi_fuente_datos_responsable
+                                where cod_entidad=".$pent.")
+                              order by c.cod_p");//$swe=2;
 
     if($swe==1){
           $pdes_new=$filindent[0]->cod_p;
@@ -475,6 +474,8 @@ class IndicadorController extends Controller
 
   public function adminIndicador()
   {
+
+
     $relacop = RelacionOdsPdes::where('activo', true)->orderBy('id')->get();
     $tipos = TiposMedicion::get();
     $estado =  Array('1' => "Preliminar",'2' =>"Enviado a Revision",'3' =>"Modificar",'4' =>"Aprobado",'5' =>"Eliminado");
@@ -507,7 +508,10 @@ class IndicadorController extends Controller
     $instituciones = \DB::select("SELECT *
                                   FROM pip_instituciones
                                   ORDER BY codigo ASC");
-    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','frecuencia','fuente_datos','fuente_tipos','dimensiones','relacop','etapas','estado','brechaDatos','brechaMetodologia','brechaCapacitacion','brechaFinanciamiento','instituciones'));
+     $route = \Request::path();
+     $route=explode("/",$route);
+     if($route[1] == "adminIndicador"){ $filtData = 0; }else{ $filtData = 1;}
+    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','frecuencia','fuente_datos','fuente_tipos','dimensiones','relacop','etapas','estado','brechaDatos','brechaMetodologia','brechaCapacitacion','brechaFinanciamiento','instituciones','filtData'));
   }
 
   public function adminIndicadorEntidad()
@@ -601,28 +605,16 @@ class IndicadorController extends Controller
       $user = \Auth::user();
       $id=$user->id;
       $id_rol=$user->id_rol;
-      // $this->user->id_rol;
-      // $id = Auth::user();
-      // $rol = Auth::user()->id_rol;
-     // dd("dfd dfdg",$id);
-      //$rol = \Auth::user()->id_rol;
-      //dd($this->user->id_rol);
-     //dd("dfsf",$usero->id_rol);
-               // $indicadores = \DB::select("SELECT i.*
-               //                      FROM users u, remi_indicadores i
-               //                      WHERE u.id=i.id_user
-               //                      ORDER BY id");
-        //dd("sdfsf",$this->user->id);
-     // $rol = Usuario::find($id)->id_rol;
-      if($id_rol == 14){
-         $indicadores = \DB::select("SELECT i.*
-                                    FROM users u, remi_indicadores i
-                                    WHERE u.id=i.id_user
-                                    AND u.id_rol= ".$id_rol."
-                                    and i.id_user= ".$id."
-                                    ORDER BY id");
+      if($request->filter > 0){
+         $indicadores = \DB::select("SELECT i.*,ins.denominacion,es.nombre as estado_desc
+                                    FROM remi_indicadores i
+                                    INNER JOIN remi_indicadores_sectores ise ON (i.id = ise.id_indicador AND ise.activo = true)
+                                    INNER JOIN pip_instituciones ins ON ise.id_institucion = ins.id
+                                    INNER JOIN remi_estados es ON i.estado = es.id
+                                    WHERE i.activo = true
+                                    AND ise.id_institucion = ?
+                                    ORDER BY nombre ASC",[$user->id_institucion]);
       } else  {
-         //$indicadores = Indicadores::where('activo',true)->orderBy('id','asc')->get();
          $indicadores = \DB::select("SELECT i.*, es.nombre as estado_desc
                                       FROM remi_indicadores i
                                       INNER JOIN remi_estados es ON i.estado = es.id
@@ -780,6 +772,15 @@ class IndicadorController extends Controller
                    // $archivos->save();
               }
             }
+
+            $sector = new IndicadorSector();
+            $sector->id_indicador = $indicador->id;
+            $sector->id_institucion = $this->user->id_institucion;
+            $sector->activo = true;
+            $sector->id_user_updated = $this->user->id;
+            $sector->save();
+
+
 
             return \Response::json(array(
                 'error' => false,
@@ -1171,6 +1172,11 @@ class IndicadorController extends Controller
       $indicetapa = \DB::select("SELECT *
                                   from remi_etapas e
                                   where e.nombre ='".$indicador[0]->etapa."'");
+      if($indicetapa){
+        $descEtapa = $indicetapa[0]->descripcion;
+      }else{
+        $descEtapa = "";
+      }
 
 
       $metas = Metas::where('id_indicador',$request->id)->get();
@@ -1187,7 +1193,7 @@ class IndicadorController extends Controller
           'title' => "Success!",
           'msg' => "Se guardo con exito.",
           'indicador' => $indicador,
-          'descripcion_etapa' =>  $indicetapa,
+          'descripcion_etapa' =>  $descEtapa,
           'pdes' => $pdes,
           'ods' => $ods,
           'metas' => $metas,
