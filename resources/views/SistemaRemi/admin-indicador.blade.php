@@ -130,12 +130,12 @@ input[type=checkbox]:checked:disabled + label:before {
                   <button onclick="showExportarData();" type="button" class="btn btn-outline btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
                 </p>
               </div>
-              <form id="filtroForm" name="filtroForm" action="javascript:filtrar();" data-toggle="validator">
+              <form id="filtroForm" name="filtroForm" action="javascript:filtrar();" data-toggle="validator" class="hidden">
                 {{-- {{ csrf_field() }} --}}
                 <div id="FilterAdvanced" class="col-lg-12 hidden">
                   <div class="white-box p-10" style="background-color: #fcf8e3;color: #8a6d3b;">
                       <div class="row">
-                          <div class="col-lg-12 col-sm-3">
+                          <div class="col-lg-2 col-sm-3">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Estado:</label>
                             <select id="fil_estados" name="fil_estados" class="form-control">
                               <option value="0">Todos</option>
@@ -144,7 +144,7 @@ input[type=checkbox]:checked:disabled + label:before {
                               @endforeach
                             </select>
                           </div>
-                          <div class="col-lg-3 col-sm-6 hidden">
+                          <div class="col-lg-3 col-sm-6">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Compartidos:</label>
                             <select id="fil_compartidos" name="fil_compartidos" class="form-control">
                                  <option value="0">Todos</option>
@@ -152,7 +152,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                  <option value="No">No</option>
                             </select>
                           </div>
-                          <div class="col-lg-3 col-sm-3 hidden">
+                          <div class="col-lg-3 col-sm-3">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Tipo:</label>
                             <select id="fil_tipos" name="fil_tipos" class="form-control">
                               <option value="0">Todos</option>
@@ -161,7 +161,7 @@ input[type=checkbox]:checked:disabled + label:before {
                               @endforeach
                             </select>
                           </div>
-                          <div class="col-lg-12 col-sm-12 hidden">
+                          <div class="col-lg-12 col-sm-12">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Sector relacionado:</label>
                             <select id="fil_sectores" name="fil_sectores[]" placeholder="Todos..."  multiple="multiple" class="select2 multiple">
                                 @foreach ($instituciones as  $item)
@@ -171,7 +171,7 @@ input[type=checkbox]:checked:disabled + label:before {
                           </div>
 
 
-                          <div class="col-lg-4 col-sm-4 m-t-10 hidden">
+                          <div class="col-lg-4 col-sm-4 m-t-10">
                             <label><i class="fa fa-filter gly-rotate-90"></i>PDES:</label><br/>
                             Pilar:<select id="fil_pdes_pilar" name="fil_pdes_pilar[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
                                 @foreach ($setPP as  $item)
@@ -190,7 +190,7 @@ input[type=checkbox]:checked:disabled + label:before {
                             </select>
                           </div>
 
-                          <div class="col-lg-4 col-sm-4 m-t-10 hidden">
+                          <div class="col-lg-4 col-sm-4 m-t-10">
                             <label><i class="fa fa-filter gly-rotate-90"></i>ODS:</label><br/>
                             Objetivo:<select id="fil_ods_objetivo" name="fil_ods_objetivo[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
                                 @foreach ($setOO as  $item)
@@ -572,7 +572,8 @@ input[type=checkbox]:checked:disabled + label:before {
                                                 <div class="col-md-3 p-l-0 p-r-0">
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Selecione variable y cargue su respaldo</label>
                                                 </div>
-                                                <div class="col-md-9 p-l-0">
+                                                MSG 30003:Desactivado temporalmente...
+                                                <div class="col-md-9 p-l-0 hidden">
 
 
 

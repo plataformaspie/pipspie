@@ -29,6 +29,7 @@ class ExportReportController extends Controller
 {
   public function descagarExcelMetadatosOnly(Request $request)
   {
+     ini_set('max_execution_time', 300);
      $id = $request->id;
      $fuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
                          ->where('remi_fuente_datos.id',$request->id)
@@ -82,15 +83,15 @@ class ExportReportController extends Controller
                   $identificacion['Serie_Disponible']              = $f->serie_datos;
                   $identificacion['Periodicidad']                  = $f->periodicidad;
                   $identificacion['Variable_campo_clave']          = $f->variable;
-          
-          //MODO RECOLECCION DATOS OTRO  
-          
+
+          //MODO RECOLECCION DATOS OTRO
+
 
           if(isset($f->modo_recoleccion_datos)){
             $otroModo = explode(',',$f->modo_recoleccion_datos);
-            
-            
-            for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+
+
+            for ($i=0; $i < sizeof($otroModo) ; $i++) {
               if($otroModo[$i] == 'Otro'){
 
                 $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
@@ -103,10 +104,10 @@ class ExportReportController extends Controller
             //dd($cadenaOtroModo);
             $cadenaOtroModo = trim($cadenaOtroModo,',');
             $identificacion['recoleccion_datos']  = $cadenaOtroModo;
-            
+
             //dd($filaFuente);
           }else{
-            
+
             $identificacion['recoleccion_datos']  = "";
           }
 
@@ -122,85 +123,85 @@ class ExportReportController extends Controller
 
           $otroEstadisticaSocial = explode(',',$f->demografia_estadistica_social);
 
-          for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+          for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) {
             if($otroEstadisticaSocial[$i] == 'Otro'){
-                
+
               $cadenaOtroEstadisticaSocial = 'Otro:'.$f->demografia_estadistica_social_otro.',';
-              
+
 
             }else{
               $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
             }
           }
-          
+
           $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
           $categoriaTematica['demografia_estadistica_social'] = $cadenaOtroEstadisticaSocial;
 
           //estadistica_economica
 
           $otroEstadisticaEconomica = explode(',',$f->estadistica_economica);
-          
 
 
-          for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+
+          for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) {
             if($otroEstadisticaEconomica[$i] == 'Otro'){
-                
+
               $cadenaOtroEstadisticaEconomica = 'Otro:'.$f->demografia_estadistica_economica_otro.',';
-              
+
 
             }else{
               $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
             }
           }
-          
+
           $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
           $categoriaTematica['estadistica_economica']         = $cadenaOtroEstadisticaEconomica ;
-          
-          
+
+
 
           //estadistica_ambiental
 
           $otroEstadisticaAmbiental = explode(',',$f->estadistica_medioambiental);
-          
 
 
-          for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+
+          for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) {
             if($otroEstadisticaAmbiental[$i] == 'Otro'){
-                
+
               $cadenaOtroEstadisticaAmbiental = 'Otro:'.$f->estadistica_medioambiental_otro.',';
-              
+
 
             }else{
               $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
             }
           }
-          
+
           $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
           $categoriaTematica['estadistica_medioambiental']    = $cadenaOtroEstadisticaAmbiental;
-          
-          
+
+
 
           //informacion georeferencial
 
           $otroInformacionGeoespacial = explode(',',$f->informacion_geoespacial);
 
 
-          for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+          for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) {
             if($otroInformacionGeoespacial[$i] == 'Otro'){
-                
+
               $cadenaOtroInformacionGeoespacial = 'Otro:'.$fuenteDatos->informacion_geoespacial_otro.',';
-              
+
 
             }else{
               $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
             }
           }
-          
-          $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
-          
-          
 
-                  
+          $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
+
+
+
+
           $categoriaTematica['informacion_geoespacial']       = $cadenaOtroInformacionGeoespacial;
 
           array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
@@ -214,7 +215,7 @@ class ExportReportController extends Controller
 
                   array_push($formularios,$f->numero_total_formulario);
 
-                  
+
 
                   array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
 
@@ -230,9 +231,9 @@ class ExportReportController extends Controller
                       array_push($cabeceraFormularios, $key);
                       $varFor++;
                     }
-                    
+
                   }
-                  
+
 
                   array_push($cabeceraTitulos, 'FORMULARIOS');
 
@@ -345,13 +346,13 @@ class ExportReportController extends Controller
               $identificacion['Serie_Disponible'] = $f->serie_datos;
               $identificacion['Periodicidad'] = $f->periodicidad;
               $identificacion['Variable_campo_clave'] = $f->variable;
-              //MODO RECOLECCION DATOS OTRO  
+              //MODO RECOLECCION DATOS OTRO
               //dd($fuenteDatos->modo_recoleccion_datos);                 "Otro"
               if(isset($f->modo_recoleccion_datos)){
                 $otroModo = explode(',',$f->modo_recoleccion_datos);
-                
-                
-                for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+
+
+                for ($i=0; $i < sizeof($otroModo) ; $i++) {
                   if($otroModo[$i] == 'Otro'){
 
                     $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
@@ -364,10 +365,10 @@ class ExportReportController extends Controller
                 //dd($cadenaOtroModo);
                 $cadenaOtroModo = trim($cadenaOtroModo,',');
                 $identificacion['recoleccion_datos']  = $cadenaOtroModo;
-                
+
                 //dd($filaFuente);
               }else{
-                
+
                 $identificacion['recoleccion_datos']  = "";
               }
 
@@ -382,82 +383,82 @@ class ExportReportController extends Controller
               //ESTADISTICA SOCIAL
               $otroEstadisticaSocial = explode(',',$f->demografia_estadistica_social);
 
-              for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+              for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) {
                 if($otroEstadisticaSocial[$i] == 'Otro'){
-                    
+
                   $cadenaOtroEstadisticaSocial = 'Otro:'.$f->demografia_estadistica_social_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
                 }
               }
-              
+
               $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
               $categoriaTematica['demografia_estadistica_social'] = $cadenaOtroEstadisticaSocial;
 
               //estadistica_economica
 
               $otroEstadisticaEconomica = explode(',',$f->estadistica_economica);
-              
 
 
-              for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+
+              for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) {
                 if($otroEstadisticaEconomica[$i] == 'Otro'){
-                    
+
                   $cadenaOtroEstadisticaEconomica = 'Otro:'.$f->demografia_estadistica_economica_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
                 }
               }
-              
+
               $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
               $categoriaTematica['estadistica_economica']         = $cadenaOtroEstadisticaEconomica ;
-              
-              
+
+
 
               //estadistica_ambiental
 
               $otroEstadisticaAmbiental = explode(',',$f->estadistica_medioambiental);
-              
 
 
-              for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+
+              for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) {
                 if($otroEstadisticaAmbiental[$i] == 'Otro'){
-                    
+
                   $cadenaOtroEstadisticaAmbiental = 'Otro:'.$f->estadistica_medioambiental_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
                 }
               }
-              
+
               $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
               $categoriaTematica['estadistica_medioambiental']    = $cadenaOtroEstadisticaAmbiental;
-              
-              
+
+
 
               //informacion georeferencial
 
               $otroInformacionGeoespacial = explode(',',$f->informacion_geoespacial);
 
 
-              for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+              for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) {
                 if($otroInformacionGeoespacial[$i] == 'Otro'){
-                    
+
                   $cadenaOtroInformacionGeoespacial = 'Otro:'.$f->informacion_geoespacial_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
                 }
               }
-              
+
               $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
-                      
+
               $categoriaTematica['informacion_geoespacial']       = $cadenaOtroInformacionGeoespacial;
 
               array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
@@ -478,7 +479,7 @@ class ExportReportController extends Controller
                   array_push($cabeceraFormularios, $key);
                   $varFor++;
                 }
-                
+
               }
 
 
@@ -589,12 +590,12 @@ class ExportReportController extends Controller
               $identificacion['Serie_Disponible'] = $f->serie_datos;
               $identificacion['Periodicidad'] = $f->periodicidad;
               $identificacion['Variable_campo_clave'] = $f->variable;
-              //MODO RECOLECCION DATOS OTRO  
+              //MODO RECOLECCION DATOS OTRO
               if(isset($f->modo_recoleccion_datos)){
                 $otroModo = explode(',',$f->modo_recoleccion_datos);
-                
-                
-                for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+
+
+                for ($i=0; $i < sizeof($otroModo) ; $i++) {
                   if($otroModo[$i] == 'Otro'){
 
                     $cadenaOtroModo = 'Otro:'.$f->modo_recoleccion_datos_otro.',';
@@ -607,10 +608,10 @@ class ExportReportController extends Controller
                 //dd($cadenaOtroModo);
                 $cadenaOtroModo = trim($cadenaOtroModo,',');
                 $identificacion['recoleccion_datos']  = $cadenaOtroModo;
-                
+
                 //dd($filaFuente);
               }else{
-                
+
                 $identificacion['recoleccion_datos']  = "";
               }
 
@@ -624,89 +625,89 @@ class ExportReportController extends Controller
               //ESTADISTICA SOCIAL
               $otroEstadisticaSocial = explode(',',$f->demografia_estadistica_social);
 
-              for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+              for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) {
                 if($otroEstadisticaSocial[$i] == 'Otro'){
-                    
+
                   $cadenaOtroEstadisticaSocial = 'Otro:'.$f->demografia_estadistica_social_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
                 }
               }
-              
+
               $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
               $categoriaTematica['demografia_estadistica_social'] = $cadenaOtroEstadisticaSocial;
 
               //estadistica_economica
 
               $otroEstadisticaEconomica = explode(',',$f->estadistica_economica);
-              
 
 
-              for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+
+              for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) {
                 if($otroEstadisticaEconomica[$i] == 'Otro'){
-                    
+
                   $cadenaOtroEstadisticaEconomica = 'Otro:'.$f->demografia_estadistica_economica_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
                 }
               }
-              
+
               $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
               $categoriaTematica['estadistica_economica']         = $cadenaOtroEstadisticaEconomica ;
-              
-              
+
+
 
               //estadistica_ambiental
 
               $otroEstadisticaAmbiental = explode(',',$f->estadistica_medioambiental);
-              
 
 
-              for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+
+              for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) {
                 if($otroEstadisticaAmbiental[$i] == 'Otro'){
-                    
+
                   $cadenaOtroEstadisticaAmbiental = 'Otro:'.$f->estadistica_medioambiental_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
                 }
               }
-              
+
               $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
               $categoriaTematica['estadistica_medioambiental']    = $cadenaOtroEstadisticaAmbiental;
-              
-              
+
+
 
               //informacion georeferencial
 
               $otroInformacionGeoespacial = explode(',',$f->informacion_geoespacial);
 
 
-              for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+              for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) {
                 if($otroInformacionGeoespacial[$i] == 'Otro'){
-                    
+
                   $cadenaOtroInformacionGeoespacial = 'Otro:'.$f->informacion_geoespacial_otro.',';
-                  
+
 
                 }else{
                   $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
                 }
               }
-              
+
               $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
-                      
+
               $categoriaTematica['informacion_geoespacial']       = $cadenaOtroInformacionGeoespacial;
 
               array_push($cabeceraTitulos, 'CATEGORIA TEMATICA');
 
 
 
-              //formularios  
+              //formularios
               array_push($formularios,$f->numero_total_formulario);
               array_push($cabeceraFormularios,'CANTIDAD FORMULARIOS');
               if (isset($f->numero_total_formulario)) {
@@ -720,7 +721,7 @@ class ExportReportController extends Controller
                   $varFor++;
                 }
               }
-                  
+
 
               array_push($cabeceraTitulos, 'FORMULARIOS');
 
@@ -930,22 +931,22 @@ class ExportReportController extends Controller
               }
 
               $hoja->row( ++$fila, $filaContenido );
-             
+
 
               //centreando los valores
 
-              $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');  
-            
+              $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');
+
               $hoja->getStyle('A1:'.$uTamano.$fila , $hoja->getHighestRow())->getAlignment()->setWrapText(true);
               $tamanoColumnas = [];
 
-             
-              for ($i=0; $i < $rf ; $i++) { 
+
+              for ($i=0; $i < $rf ; $i++) {
                 $clave = $cabeceraExcel[$i];
                 $tamanoColumnas[$clave] = 20;
-                
-                
-               
+
+
+
               }
               $hoja->setWidth($tamanoColumnas);
 
@@ -961,27 +962,27 @@ class ExportReportController extends Controller
 
   }
 
-  ///  ************       ******************  
+  ///  ************       ******************
   public function descagarExcelAdminFuente(Request $request){
 
     //controlar tamaño de campos de formulario 10,77
     $tamanoTitulos = [];
     $ids = explode(",", trim($request->ids,','));
-   // dd("ID :",$ids);                                                
+   // dd("ID :",$ids);
     $mayorCantidadFormularios = FuenteDatos::whereIn('remi_fuente_datos.id',$ids)
                                                 ->max('numero_total_formulario');
 
-    //dd('Total Form :'.$mayorCantidadFormularios);                                            
-    //controlar tamaño de campos Responsable mandar string  
+    //dd('Total Form :'.$mayorCantidadFormularios);
+    //controlar tamaño de campos Responsable mandar string
     $registros = implode(',', $ids);
     //dd($registros);
 
-    $registros = '('.$registros.')'; 
+    $registros = '('.$registros.')';
     //dd($registros);
-                                           
-    $mayorCantidadResponsable = \DB::select("SELECT MAX(count_num) FROM 
+
+    $mayorCantidadResponsable = \DB::select("SELECT MAX(count_num) FROM
                           (SELECT id_fuente, count(*) as count_num
-                          FROM remi_fuente_datos_responsable 
+                          FROM remi_fuente_datos_responsable
                           where id_fuente IN ".$registros."
                           and activo = true
                           GROUP BY id_fuente) x");
@@ -990,8 +991,8 @@ class ExportReportController extends Controller
                         'CATEGORIA TEMATICA',
                         'FORMULARIOS',
                         'COBERTURA' ];
-    
-                        
+
+
     $r = intval($mayorCantidadResponsable[0]->max);
     $numeroMayorResponsables = $r;
 
@@ -1032,18 +1033,18 @@ class ExportReportController extends Controller
     array_push($cabeceraDatos,'CANTIDAD FORMULARIOS');
     $form = 'FORM_';
     $cFor = 0;
-    for ($i=1; $i <= $mayorCantidadFormularios; $i++) { 
+    for ($i=1; $i <= $mayorCantidadFormularios; $i++) {
       array_push($cabeceraDatos,$form.$i );
       $cFor++;
     }
-    
+
     array_push($tamanoTitulos,$cFor+1);
 
     array_push($cabeceraDatos,'COBERTURA DEL RRAA(Aplica Registro Administrativo)','DESCRIPCION DEL RRAA(Aplica Registro Administrativo)','COBERTURA GEOGRAFICA','NIVEL DE DESAGREGACION');
 
     array_push($tamanoTitulos,4);
-    //CALCULAR  
-    for ($i=1; $i <= $r ; $i++) { 
+    //CALCULAR
+    for ($i=1; $i <= $r ; $i++) {
       array_push($cabeceraDatos,'INSTITUCION PROPIETARIA/CUSTODIA',
                           'DEPENDENCIA EJECUTIVA',
                           'DEPENDENCIA TECNICA',
@@ -1052,25 +1053,25 @@ class ExportReportController extends Controller
       array_push($tamanoTitulos,5);
 
     }
-    
+
 
     array_push($cabeceraDatos,'CONFIDENCIALIDAD','NOTAS LEGALES');
     array_push($tamanoTitulos,2);
     $sql = FuenteDatos::whereIn('remi_fuente_datos.id',$ids)
                         ->orderBy('id', 'asc')
                         ->get();
-    
+
     //dd($sql);
    //dd($tamanoTitulos);
-    //creando las filas para el excel 
-    $tamanoColumnas = []; 
-    $j=0;  
-    $arrayContenido = [];               
+    //creando las filas para el excel
+    $tamanoColumnas = [];
+    $j=0;
+    $arrayContenido = [];
     foreach ($sql as $key => $fuenteDatos){
      // dd($fuenteDatos);
       $tipo = $fuenteDatos->tipo;
       $filaFuente = [];
-      //llenando fila fuente  
+      //llenando fila fuente
           $filaFuente = array($fuenteDatos->nombre,
                               $fuenteDatos->acronimo,
                               $fuenteDatos->tipo,
@@ -1078,14 +1079,14 @@ class ExportReportController extends Controller
                               $fuenteDatos->serie_datos,
                               $fuenteDatos->periodicidad,
                               $fuenteDatos->variable);
-          //MODO RECOLECCION DATOS OTRO  
-          
+          //MODO RECOLECCION DATOS OTRO
+
            //dd($fuenteDatos->modo_recoleccion_datos);//hasta aqui muestra e valor modo recoleccion datos
           if(isset($fuenteDatos->modo_recoleccion_datos)){
             $otroModo = explode(',',$fuenteDatos->modo_recoleccion_datos);
-            
-           // dd("REC DAT :",$otroModo);  
-            for ($i=0; $i < sizeof($otroModo) ; $i++) { 
+
+           // dd("REC DAT :",$otroModo);
+            for ($i=0; $i < sizeof($otroModo) ; $i++) {
               if($otroModo[$i] == 'Otro'){
 
                 $cadenaOtroModo = 'Otro:'.$fuenteDatos->modo_recoleccion_datos_otro.',';
@@ -1097,7 +1098,7 @@ class ExportReportController extends Controller
             }
             //dd($cadenaOtroModo);
             $cadenaOtroModo = trim($cadenaOtroModo,',');
-            
+
             array_push($filaFuente,$cadenaOtroModo);
             //dd($filaFuente);
           }else{
@@ -1112,64 +1113,64 @@ class ExportReportController extends Controller
 
           //Demografia estadistica social OTRO
           $otroEstadisticaSocial = explode(',',$fuenteDatos->demografia_estadistica_social);
-          
-          
 
-          for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) { 
+
+
+          for ($i=0; $i < sizeof($otroEstadisticaSocial) ; $i++) {
             if($otroEstadisticaSocial[$i] == 'Otro'){
-                
+
               $cadenaOtroEstadisticaSocial = 'Otro:'.$fuenteDatos->demografia_estadistica_social_otro.',';
-              
+
 
             }else{
               $cadenaOtroEstadisticaSocial = $otroEstadisticaSocial[$i].',';
             }
           }
-          
+
           $cadenaOtroEstadisticaSocial = trim($cadenaOtroEstadisticaSocial,',');
-          
+
           array_push($filaFuente,$cadenaOtroEstadisticaSocial);
 
           //estadistica_economica
 
           $otroEstadisticaEconomica = explode(',',$fuenteDatos->estadistica_economica);
-          
 
 
-          for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) { 
+
+          for ($i=0; $i < sizeof($otroEstadisticaEconomica) ; $i++) {
             if($otroEstadisticaEconomica[$i] == 'Otro'){
-                
+
               $cadenaOtroEstadisticaEconomica = 'Otro:'.$fuenteDatos->estadistica_economica_otro.',';
-              
+
 
             }else{
               $cadenaOtroEstadisticaEconomica = $otroEstadisticaEconomica[$i].',';
             }
           }
-          
+
           $cadenaOtroEstadisticaEconomica = trim($cadenaOtroEstadisticaEconomica,',');
-          
+
           array_push($filaFuente,$cadenaOtroEstadisticaEconomica);
 
           //estadistica_ambiental
 
           $otroEstadisticaAmbiental = explode(',',$fuenteDatos->estadistica_medioambiental);
-          
 
 
-          for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) { 
+
+          for ($i=0; $i < sizeof($otroEstadisticaAmbiental) ; $i++) {
             if($otroEstadisticaAmbiental[$i] == 'Otro'){
-                
+
               $cadenaOtroEstadisticaAmbiental = 'Otro:'.$fuenteDatos->estadistica_medioambiental_otro.',';
-              
+
 
             }else{
               $cadenaOtroEstadisticaAmbiental = $otroEstadisticaAmbiental[$i].',';
             }
           }
-          
+
           $cadenaOtroEstadisticaAmbiental = trim($cadenaOtroEstadisticaAmbiental,',');
-          
+
           array_push($filaFuente,$cadenaOtroEstadisticaAmbiental);
 
           //informacion georeferencial
@@ -1177,22 +1178,22 @@ class ExportReportController extends Controller
           $otroInformacionGeoespacial = explode(',',$fuenteDatos->informacion_geoespacial);
 
 
-          for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) { 
+          for ($i=0; $i < sizeof($otroInformacionGeoespacial) ; $i++) {
             if($otroInformacionGeoespacial[$i] == 'Otro'){
-                
+
               $cadenaOtroInformacionGeoespacial = 'Otro:'.$fuenteDatos->informacion_geoespacial_otro.',';
-              
+
 
             }else{
               $cadenaOtroInformacionGeoespacial = $otroInformacionGeoespacial[$i].',';
             }
           }
-          
+
           $cadenaOtroInformacionGeoespacial = trim($cadenaOtroInformacionGeoespacial,',');
-          
+
           array_push($filaFuente,$cadenaOtroInformacionGeoespacial);
 
-          
+
           //calculo de los FORMULARIOS
 
           array_push($filaFuente,$fuenteDatos->numero_total_formulario);
@@ -1204,61 +1205,61 @@ class ExportReportController extends Controller
             $varFor = 0;
 
             //verificar si es mayor o igual que el maximo de los formularios
-            
+
             //dd($fuenteDatos->numero_total_formulario);
-            
+
             if($numFor==$mayorCantidadFormularios){
 
-                for ($i=0; $i < $numFor ; $i++) { 
-                    
+                for ($i=0; $i < $numFor ; $i++) {
+
                   array_push($filaFuente,$nombreformularios[$i]);
-                } 
+                }
             }else{
 
                 $aumentarFormulario = 0;
-                
 
-                for ($i=0; $i < $numFor ; $i++) { 
+
+                for ($i=0; $i < $numFor ; $i++) {
                   array_push($filaFuente,$nombreformularios[$i]);
                   $aumentarFormulario++;
                 }
-                for ($i=$aumentarFormulario; $i < $mayorCantidadFormularios ; $i++) { 
+                for ($i=$aumentarFormulario; $i < $mayorCantidadFormularios ; $i++) {
                   array_push($filaFuente,"");
                 }
 
             }
 
           }else{
-             for ($i=0; $i < $mayorCantidadFormularios ; $i++) { 
+             for ($i=0; $i < $mayorCantidadFormularios ; $i++) {
 
                 array_push($filaFuente, "");
             }
 
           }
-         
+
           //dd($filaFuente);
-          
-          //COBERTURA        
+
+          //COBERTURA
           array_push($filaFuente,$fuenteDatos->cobertura_rraa);
           array_push($filaFuente,$fuenteDatos->cobertura_rraa_descripcion);
-          
+
 
           $cober = explode(",", $fuenteDatos->cobertura_geografica);
 
           if(count($cober)>1){
             $co = FuenteTiposCobertura::whereIn('id', $cober)->get();
-          
+
             $cadenaCobertura = "";
             foreach ($co as $c) {
                 $cadenaCobertura = $cadenaCobertura.$c->nombre.',';
             }
-            
+
             array_push($filaFuente,trim($cadenaCobertura,','));//llenando...coberura
 
           }else{
             if($fuenteDatos->cobertura_geografica){
                $co = FuenteTiposCobertura::where('id', $fuenteDatos->cobertura_geografica)->get();
-          
+
               $cadenaCobertura = "";
               foreach ($co as $c) {
                   $cadenaCobertura = $cadenaCobertura.$c->nombre.',';
@@ -1269,13 +1270,13 @@ class ExportReportController extends Controller
             }else{
               array_push($filaFuente,"");
             }
-           
+
 
           }
-         
-          
 
-          
+
+
+
           //dd($fuenteDatos->nivel_representatividad_datos);
            //trabajando  nivel de representatividad/nivel de desagregacion
           if(isset($fuenteDatos->nivel_representatividad_datos)){
@@ -1307,15 +1308,15 @@ class ExportReportController extends Controller
             array_push($filaFuente,"");
           }
 
-          
-          
+
+
 
           //trabajando responsable
           $nResponsables = FuenteDatosResponsable::where('id_fuente',$fuenteDatos->id)
                                                     ->where('activo',true)->get();
-         // dd($nResponsables);                                                    
-          $responsableFila = sizeof($nResponsables); 
-          
+         // dd($nResponsables);
+          $responsableFila = sizeof($nResponsables);
+
           if($responsableFila == $mayorCantidadResponsable){
             foreach ($nResponsables as $varRes) {
               array_push($filaFuente,$varRes->responsable_nivel_1,$varRes->responsable_nivel_2,$varRes->responsable_nivel_3,$varRes->responsable_nivel_4,$varRes->numero_referencia);
@@ -1327,31 +1328,31 @@ class ExportReportController extends Controller
               $cContadorResponsable++;
             }
             //dd($numeroMayorResponsables);
-            
-            for ($i=$cContadorResponsable; $i <$r ; $i++) { 
+
+            for ($i=$cContadorResponsable; $i <$r ; $i++) {
               array_push($filaFuente,"","","","","");
-               
+
             }
             //dd($filaFuente);
-          }                                        
-          
+          }
+
           //Acceso a informacion
           array_push($filaFuente,$fuenteDatos->confidencialidad);
-          array_push($filaFuente,$fuenteDatos->notas_legales);  
-        
-      
+          array_push($filaFuente,$fuenteDatos->notas_legales);
+
+
       $arrayContenido[$j] = $filaFuente;
-     // dd("Contenido",$arrayContenido);    
-      $j++; 
+     // dd("Contenido",$arrayContenido);
+      $j++;
 
          if($j==2){
             dd("VER",$arrayContenido);
          }
 
-    }  // fin del foreach 
+    }  // fin del foreach
     //dd($arrayContenido);
    // dd($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);
-    self::contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);                     
+    self::contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);
 }  // fin de la descarga de BD a Excel  adminfuentes
 
 static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){
@@ -1361,7 +1362,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
       $paletaColor = ['#F1948A', '#C39BD3' , '#7FB3D5', '#AED6F1', '#76D7C4', '#F9E79F', '#F8C471', '#F5CBA7', '#E59866', '#D4E6F1'];
       $excel->sheet('fuente', function($hoja) use ($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido,$paletaColor){
 
-        
+
          $cabeceraExcel = [
            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
            'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ',
@@ -1412,27 +1413,27 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
             foreach ($arrayContenido as $mifuente) {
 
               $hoja->row(++$fila, $mifuente);
-              
+
             }
 
-            $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');  
-            
+            $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');
+
             $hoja->getStyle('A1:'.$uTamano.$fila , $hoja->getHighestRow())->getAlignment()->setWrapText(true);
             $tamanoColumnas = [];
 
-           
-            for ($i=0; $i < $rf ; $i++) { 
+
+            for ($i=0; $i < $rf ; $i++) {
               $clave = $cabeceraExcel[$i];
               $tamanoColumnas[$clave] = 20;
-              
-              
-             
+
+
+
             }
             $hoja->setWidth($tamanoColumnas);
-            
-          
-       
-            
+
+
+
+
 
 
 
@@ -1442,19 +1443,19 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
   }  // fin construir excel adminfuente
 
   public function descagarExcelAdminIndicador(Request $request){
-
+    ini_set('max_execution_time', 300);
     $tamanoTitulos = [];
     $ids = explode(",", trim($request->ids,','));
    // dd("TABLA ID:",$ids);
     //$registros = implode(',', $ids);
     //dd($registros);
 
-    //$registros = '('.$registros.')'; 
+    //$registros = '('.$registros.')';
 
     $cabeceraTitulos = ['ALINEAR AL PDES',
                         'INFORMACION BASICA',
                         'METODO DE CALCULO',
-                        'METAS Y AVANCES','FUENTE DE DATOS'];  
+                        'METAS Y AVANCES','FUENTE DE DATOS'];
 
     array_push($cabeceraTitulos,'');
 
@@ -1463,29 +1464,29 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                       'META',
                       'RESULTADO',
                       'NOMBRE',
-                      'DEFINICION',                      
+                      'DEFINICION',
                       'ETAPA',
                       'TIPO',
                       'UNIDAD DE MEDIDA',
                       'FRECUENCIA DE REPORTE',
                       'SERIE DISPONIBLE',
                       'VARIABLES DE DESAGREGACION',
-                      'FECHA LINEA BASE',                  
+                      'FECHA LINEA BASE',
                       'VALOR LINEA BASE',
 
                       'FORMULA',
                       'NUMERADOR',
                       'FUENTE NUMERADOR',
                       'DENOMINADOR',
-                      'FUENTE DENOMINADOR',                 
+                      'FUENTE DENOMINADOR',
                       'OBSERVACIONES A LA FUENTE DE DATOS',
 
 
                       'GESTION 2016',
                       'Valor',
                       'GESTION 2017',
-                      'Valor',                       
-                      'GESTION 2018',                 
+                      'Valor',
+                      'GESTION 2018',
                       'Valor',
                       'GESTION 2019',
                       'Valor',
@@ -1497,10 +1498,10 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                       'Valor'];
     array_push($tamanoTitulos,5,8,6,18);
 
-    for ($i=1; $i < 3 ; $i++) { 
+    for ($i=1; $i < 3 ; $i++) {
       array_push($cabeceraDatos,'FECHA REPORTADO',
                           'VALOR REPORTADO');
-    }    
+    }
       //array_push($tamanoTitulos,4);
 
     array_push($cabeceraDatos,'FUENTE');
@@ -1510,29 +1511,29 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
     $sql = Indicadores::whereIn('remi_indicadores.id',$ids)
                         ->orderBy('id', 'asc')
                         ->get();
-    //dd($cabeceraDatos);   
-    //dd($sql);                        
-    $tamanoColumnas = []; 
-    $w=0;  
-    $arrayContenido = [];               
+    //dd($cabeceraDatos);
+    //dd($sql);
+    $tamanoColumnas = [];
+    $w=0;
+    $arrayContenido = [];
     foreach ($sql as $key => $IndicadorDatos){
      // $tipo = $IndicadorDatos->tipo;
       //dd("INDD",$IndicadorDatos);
       $filaIndicador = [];
-      //llenando fila fuente 
-      $pdes = []; 
+      //llenando fila fuente
+      $pdes = [];
      // dd("BIEN",$IndicadorDatos->id);
       $pdes = \DB::select("SELECT c.*,ir.id
                            FROM remi_indicador_pdes_resultado ir
                            INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                           WHERE ir.id_indicador = ".$IndicadorDatos->id);                        
+                           WHERE ir.id_indicador = ".$IndicadorDatos->id);
 
           //dd($pdes[0]->cod_p);
 
        /*   $filaIndicador = array($pdes[0]->cod_p,
                               $pdes[0]->cod_m,
                               $pdes[0]->cod_r); */
-          //dd("PEDES1",$pdes[0]->cod_p);               
+          //dd("PEDES1",$pdes[0]->cod_p);
 
           foreach ($pdes as $key => $value)
           {
@@ -1556,7 +1557,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           array_push($filaIndicador, $IndicadorDatos->serie_disponible);
           array_push($filaIndicador, $IndicadorDatos->variables_desagregacion);
           array_push($filaIndicador, $IndicadorDatos->linea_base_fecha);
-          array_push($filaIndicador, $IndicadorDatos->linea_base_valor);                                                  
+          array_push($filaIndicador, $IndicadorDatos->linea_base_valor);
           array_push($filaIndicador, $IndicadorDatos->formula);
           array_push($filaIndicador, $IndicadorDatos->numerador_detalle);
           array_push($filaIndicador, $IndicadorDatos->numerador_fuente);
@@ -1594,18 +1595,18 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           for($k=0; $k < $Tamfuente; $k++){
 
             //  $fd =  explode(',',$IndicadorDatos->fuente_datos);
-              $fd_val = (int)$fd[0]; 
+              $fd_val = (int)$fd[0];
 /*             if($w==91){
-                  dd("Conversion",$fd_val); 
+                  dd("Conversion",$fd_val);
                }*/
 
            /*   if($w==91){
                 dd("VER",$fd_val);
-              }   */ 
+              }   */
 
               //$fd_val = intval($fd[$k]);
               //dd($fd_val);
-              //$nombrefuente= \DB::select("SELECT nombre FROM remi_fuente_datos where id=".$fd_val); 
+              //$nombrefuente= \DB::select("SELECT nombre FROM remi_fuente_datos where id=".$fd_val);
               //$nombrefuente=FuenteDatos::find($fd_val)->orderBy('id', 'asc')->first();
 
               //$nombrefuente=FuenteDatos::find($fd_val)->first();
@@ -1630,25 +1631,25 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           }
 
           //dd($nombrefuente);
-          //dd($filaIndicador);          
+          //dd($filaIndicador);
          $arrayContenido[$w] = $filaIndicador;
          //dd("Contenido",$arrayContenido);
-         $w++; 
-         
+         $w++;
+
 
     }  //fin del foreach
          // dd($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);
-         self::contruirExcelAdminIndicador($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido); 
+         self::contruirExcelAdminIndicador($cabeceraTitulos,$tamanoTitulos,$cabeceraDatos,$arrayContenido);
   } // fin descarga indicador
 
-  static function contruirExcelAdminIndicador($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){  
+  static function contruirExcelAdminIndicador($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){
 
  \Excel::create('Admin Indicadores', function ($excel) use ($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido){
 
       $paletaColor = ['#F1948A', '#C39BD3' , '#7FB3D5', '#AED6F1', '#76D7C4', '#F9E79F', '#F8C471', '#F5CBA7', '#E59866', '#D4E6F1'];
       $excel->sheet('Indicadores', function($hoja) use ($cabeceraTitulos,$tamanoTitulos, $cabeceraDatos,$arrayContenido,$paletaColor){
 
-        
+
          $cabeceraExcel = [
            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
            'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ',
@@ -1699,27 +1700,27 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
             foreach ($arrayContenido as $mifuente) {
 
               $hoja->row(++$fila, $mifuente);
-              
+
             }
 
-            $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');  
-            
+            $hoja->setBorder('A1:' .$uTamano . $fila, 'thin');
+
             $hoja->getStyle('A1:'.$uTamano.$fila , $hoja->getHighestRow())->getAlignment()->setWrapText(true);
             $tamanoColumnas = [];
 
-           
-            for ($i=0; $i < $rf ; $i++) { 
+
+            for ($i=0; $i < $rf ; $i++) {
               $clave = $cabeceraExcel[$i];
               $tamanoColumnas[$clave] = 20;
-              
-                          
+
+
             }
             $hoja->setWidth($tamanoColumnas);
-                                  
+
       });
 
     })->export('xlsx');
-      
+
   }  // fin de construir excel
 
 }
