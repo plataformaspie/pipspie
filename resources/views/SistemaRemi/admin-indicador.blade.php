@@ -124,42 +124,124 @@ input[type=checkbox]:checked:disabled + label:before {
             <p class="text-muted m-b-30">Indicadores registrados por su usuario<button id ="btn-new" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i>Agregar Nuevo</button></p>
 
             <div class="row">
-              <div id="FilterAdvanced" class="col-lg-3 hidden">
-                  <div style="margin-top: 30px;">
-                      <div>Filtrado por:</div>
-                      <div id="columnchooser"></div>
-                      <div style="float: left;  margin-top: 10px;" id="filterbox"></div>
-                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
-                          <input type="button" id="applyFilter" value="Aplicar filtro" />
-                          <input type="button" id="clearfilter" style="margin-top:20px;" value="Limpiar"/>
+              <div id="jqxDataTable" class="col-lg-12">
+                <p class="m-b-5">
+                  <button onclick="showFilterAdvanced();" type="button" class="btn btn-outline btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
+                  <button onclick="showExportarData();" type="button" class="btn btn-outline btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
+                </p>
+              </div>
+              <form id="filtroForm" name="filtroForm" action="javascript:filtrar();" data-toggle="validator">
+                {{-- {{ csrf_field() }} --}}
+                <div id="FilterAdvanced" class="col-lg-12 hidden">
+                  <div class="white-box p-10" style="background-color: #fcf8e3;color: #8a6d3b;">
+                      <div class="row">
+                          <div class="col-lg-12 col-sm-3">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>Estado:</label>
+                            <select id="fil_estados" name="fil_estados" class="form-control">
+                              <option value="0">Todos</option>
+                              @foreach ($estados as  $item)
+                                    <option value="{{ $item->id }}">{{$item->nombre}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-lg-3 col-sm-6 hidden">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>Compartidos:</label>
+                            <select id="fil_compartidos" name="fil_compartidos" class="form-control">
+                                 <option value="0">Todos</option>
+                                 <option value="Si">Si</option>
+                                 <option value="No">No</option>
+                            </select>
+                          </div>
+                          <div class="col-lg-3 col-sm-3 hidden">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>Tipo:</label>
+                            <select id="fil_tipos" name="fil_tipos" class="form-control">
+                              <option value="0">Todos</option>
+                              @foreach ($tipos as  $item)
+                                    <option value="{{ $item->id }}">{{$item->nombre}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-lg-12 col-sm-12 hidden">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>Sector relacionado:</label>
+                            <select id="fil_sectores" name="fil_sectores[]" placeholder="Todos..."  multiple="multiple" class="select2 multiple">
+                                @foreach ($instituciones as  $item)
+                                      <option value="{{ $item->id }}">{{$item->codigo}}: {{$item->denominacion}}</option>
+                                @endforeach
+                            </select>
+                          </div>
+
+
+                          <div class="col-lg-4 col-sm-4 m-t-10 hidden">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>PDES:</label><br/>
+                            Pilar:<select id="fil_pdes_pilar" name="fil_pdes_pilar[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
+                                @foreach ($setPP as  $item)
+                                      <option value="{{ $item->cod_p }}"> {{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                            Meta:<select id="fil_pdes_meta" name="fil_pdes_meta[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
+                                @foreach ($setPM as  $item)
+                                      <option value="{{ $item->cod_m }}"> {{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                            Resultado:<select id="fil_pdes_resultado" name="fil_pdes_resultado[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
+                                @foreach ($setPR as  $item)
+                                      <option value="{{ $item->cod_r }}"> {{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                          </div>
+
+                          <div class="col-lg-4 col-sm-4 m-t-10 hidden">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>ODS:</label><br/>
+                            Objetivo:<select id="fil_ods_objetivo" name="fil_ods_objetivo[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
+                                @foreach ($setOO as  $item)
+                                      <option value="{{ $item->cod_o }}"> {{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                            Meta:<select id="fil_ods_meta" name="fil_ods_meta[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
+                                @foreach ($setOM as  $item)
+                                      <option value="{{ $item->cod_m }}"> {{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                            Indicador:<select id="fil_ods_indicador" name="fil_ods_indicador[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
+                                @foreach ($setOI as  $item)
+                                      <option value="{{ $item->cod_i }}"> {{$item->nombre}}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                      </div>
+                      <hr style="margin-top: 8px; margin-bottom: 8px;"/>
+                      <div class="row">
+                          <div class="col-lg-12">
+                              <button type="submit" class="btn btn-block btn-warning btn-outline"><i class="fa fa-filter m-l-5"></i> Aplicar Filtro </button>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </form>
+              <div id="exportarData" class="col-lg-12 hidden">
+                  <div class="row white-box" style="background-color: #fcf8e3;color: #8a6d3b;">
+                      <div class="col-sm-3">
+                        <label>Exportar a:</label>
+                        <select class="form-control ">
+                            <option value="excel">Excel</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-2 col-sm-5">
+                        <label>Seleccione opcion:</label>
+                        <br/>
+                        <input name="option_data" value="1" type="radio"/> Contenido de tabla
+                        <br/>
+                        <input name="option_data" value="2" type="radio"/> Registro seleccionado
+
+                      </div>
+                      <div class="col-sm-3 ">
+                        <div style="float: left; margin-top: 20px;">
+                          <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
+                        </div>
                       </div>
                   </div>
               </div>
-              <div id="exportarData" class="col-lg-3 hidden">
-
-                  <div style="margin-top: 30px;">
-                      <div>Exportar a:</div>
-                      Función desactivada temporalmente.
-                      {{-- <select class="form-control">
-                          <option value="excel">Excel</option>
-                      </select>
-                      <label>
-                        <input name="option_data" value="1" type="radio"> Contenido de tabla
-                      </label>
-                      <label>
-                        <input name="option_data" value="2" type="radio"> Registro seleccionado
-                      </label>
-                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
-                        <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
-                      </div> --}}
-                  </div>
-
-              </div>
-              <div id="jqxDataTable" class="col-lg-12">
-                <p class="m-b-5">
-                  <button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
-                  <button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
-                </p>
+              <div class="col-lg-12">
                 <div id="dataTable"></div>
               </div>
             </div>
@@ -179,7 +261,15 @@ input[type=checkbox]:checked:disabled + label:before {
                   <div class="white-box">
                       <h3 class="box-title m-b-0">Información del Indicador</h3>
                       <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left">Atras</i></button></p>
-                      <div style="font-size:10px;">
+                      <div style="font-size:15px;">
+                        <div class="form-group row m-b-10">
+                          <div class="col-md-1 p-l-0 p-r-0">
+                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Indicador</label>
+                          </div>
+                          <div class="col-md-11 p-l-0">
+                             <label id="nombreDesc" name="dosCaja" for="label" class="" style="width: 100%;padding: 7px 95px 7px 3px;background-color: #fcf8e3;color: #8a6d3b;"></label>
+                          </div>
+                        </div>
                         <div class="form-group row m-b-10">
                           <div class="col-md-1 p-l-0 p-r-0">
                             <label for="label" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 20px 7px 3px;">Estado </label>
@@ -198,14 +288,7 @@ input[type=checkbox]:checked:disabled + label:before {
                             <label id="etapaDesc" name="unaCaja" for="label" class="" style="width: 100%;padding: 7px 95px 7px 3px;"></label>
                           </div>
                         </div>
-                        <div class="form-group row m-b-10">
-                          <div class="col-md-1 p-l-0 p-r-0">
-                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Indicador</label>
-                          </div>
-                          <div class="col-md-11 p-l-0">
-                             <label id="nombreDesc" name="dosCaja" for="label" class="" style="width: 100%;padding: 7px 95px 7px 3px;"></label>
-                          </div>
-                        </div>
+
                       </div>
 <!-- <form>
   <input type="checkbox" id="fruit1" name="fruit-1" value="Apple">
@@ -1790,7 +1873,7 @@ input[type=checkbox]:checked:disabled + label:before {
       var theme = 'ui-lightness';
       else
       var theme = 'darkblue';
-
+      $("#FilterAdvanced .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $("#formAddFuente .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $(".input").inputmask();
@@ -1806,24 +1889,6 @@ input[type=checkbox]:checked:disabled + label:before {
                       locale: 'es'
                   });
       });
-
-      // $('#chkCodeudor3').click(function()
-      //       {
-      //           if ($('#chkCodeudor3').is(":checked")) {
-      //               $('#responsive-modal').modal('show');
-      //           }else {
-      //               $('#responsive-modal').modal('hide');
-      //           }
-      //       });
-
-      // $('#chkCodeudor').click(function()
-      //       {
-      //           if ($('#chkCodeudor').is(":checked")) {
-      //               $('#myModal').modal('show');
-      //           }else {
-      //               $('#myModal').modal('hide');
-      //           }
-      //       });
 
       $('#chkCodeudor2').click(function()
             {
@@ -2763,10 +2828,15 @@ $('#customSwitch2').click(function(){
         dataType: "json",
         dataFields: [
             { name: 'id', type: 'int' },
+            { name: 'codigo_id', type: 'string' },
+            { name: 'tipo', type: 'string' },
             { name: 'estado_desc', type: 'string' },
             { name: 'etapa', type: 'string' },
             { name: 'nombre', type: 'string' },
-            { name: 'codigo', type: 'string' }
+            { name: 'sectores', type: 'string' },
+            { name: 'compartido', type: 'string' },
+            { name: 'pdes', type: 'string' },
+            { name: 'ods', type: 'string' }
         ],
         id: 'id',
         data:{'filter':'{{$filtData}}'},
@@ -2779,6 +2849,7 @@ $('#customSwitch2').click(function(){
         source: dataAdapter,
         width:"100%",
         height:"400px",
+        sortable: true,
         //width:"100%",
         theme:theme,
         columnsResize: true,
@@ -2789,32 +2860,12 @@ $('#customSwitch2').click(function(){
         localization: getLocalization('es'),
         //pageSize: 5,
         columns: [
-          // { text: 'Logo', dataField: 'logo', width: 100,
-          //       cellsRenderer: function (row, column, value, rowData) {
-          //           if(rowData.logo){
-          //               var image = "<div style='margin: 5px; margin-bottom: 3px;'>";
-          //               var imgurl = rowData.logo ;
-          //               var img = '<img width="60" height="60" style="display: block;" src="/img/icono_indicadores/' + imgurl + '"/>';
-          //               image += img;
-          //               image += "</div>";
-          //               return image;
-          //           }else{
-          //             return "";
-          //           }
-
-          //       }
-          // },
-          { text: 'Estado', dataField: 'estado_desc', width: 100, cellsAlign: 'center' },
-          { text: 'Nombre del indicador', minWidth: 250,dataField: 'nombre' },
-          { text: 'Etapa', width: 150,dataField: 'etapa' },
-          { text: 'Codigo', width: 150, dataField: 'codigo',cellsAlign: 'center' },
           { text: 'Opciones', width: 120,
                 cellsRenderer: function (row, column, value, rowData) {
-                     // if({%%})
                         var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                        var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Editar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                        var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger  m-t-5"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
-                        var inputShow = '<button onclick="btn_mostrar('+rowData.id+')" class="btn btn-sm btn-info m-t-5"><span>Ficha</span> <i class="fa fa-eye m-l-5"></i></button>';
+                        var inputEdit = '<a onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="fa fa-pencil m-l-5"></i></a>';
+                        var inputDelete = '<a onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="fa fa-trash-o m-l-5"></i></a>';
+                        var inputShow = '<a onclick="btn_mostrar('+rowData.id+')" class="btn btn-sm btn-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;"><i class="fa fa-eye m-l-5"></i></a>';
                         abm += inputEdit;
                         abm += inputDelete;
                         abm += inputShow;
@@ -2823,179 +2874,18 @@ $('#customSwitch2').click(function(){
 
                 }
           },
+          { text: 'ID', dataField: 'codigo_id', width: 50, cellsAlign: 'left' },
+          { text: 'Estado', dataField: 'estado_desc', width: 100, cellsAlign: 'center' },
+          { text: 'Nombre del indicador', width: 330,dataField: 'nombre' },
+          { text: 'Tipo', width: 80,dataField: 'tipo' },
+          { text: 'Etapa', width: 100,dataField: 'etapa' },
+          { text: 'Compartido', width: 100, dataField: 'compartido',cellsAlign: 'center' },
+          { text: 'Sectores', width: 330, dataField: 'sectores',cellsAlign: 'left' },
+          { text: 'PDES', width: 100, dataField: 'pdes',cellsAlign: 'left' },
+          { text: 'ODS', width: 100, dataField: 'ods',cellsAlign: 'left' }
+
       ]
     });
-
-
-
-
-    // $("#dataTable").jqxDataTable(
-    // {
-    //     source: dataAdapter,
-    //       width:"100%",
-    //       height:"400px",
-    //     //width:"100%",
-    //     theme:theme,
-    //     columnsResize: true,
-    //     filterable: true,
-    //     filterMode: 'simple',
-    //     //pageable: true,
-    //     //pagerButtonsCount: 10,
-    //     localization: getLocalization('es'),
-    //     //pageSize: 5,
-    //     columns: [
-    //       { text: 'Logo', dataField: 'logo', width: 100,
-    //             cellsRenderer: function (row, column, value, rowData) {
-    //                 if(rowData.logo){
-    //                     var image = "<div style='margin: 5px; margin-bottom: 3px;'>";
-    //                     var imgurl = rowData.logo ;
-    //                     var img = '<img width="60" height="60" style="display: block;" src="/img/icono_indicadores/' + imgurl + '"/>';
-    //                     image += img;
-    //                     image += "</div>";
-    //                     return image;
-    //                 }else{
-    //                   return "";
-    //                 }
-
-    //             }
-    //       },
-    //       { text: 'Nombre del indicador', minWidth: 300,dataField: 'nombre' },
-    //       { text: 'Codigo', dataField: 'codigo', width: 200,cellsAlign: 'center' },
-    //       { text: 'Opciones', width: 120,
-    //             cellsRenderer: function (row, column, value, rowData) {
-    //                  // if({%%})
-    //                     var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-    //                     var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Editar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-    //                     var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
-    //                     abm += inputEdit;
-    //                     abm += inputDelete;
-    //                     abm += "</div>";
-    //                     return abm;
-
-    //             }
-    //       },
-    //   ]
-    // });
-
-
-      // create buttons, listbox and the columns chooser dropdownlist.
-            $("#applyFilter").jqxButton();
-            $("#clearfilter").jqxButton();
-            $("#filterbox").jqxListBox({
-              checkboxes: true,
-              filterable: false,
-              //searchMode: 'containsignorecase',
-              width: "100%",
-              height: 150
-            });
-            $("#columnchooser").jqxDropDownList({
-                autoDropDownHeight: true, selectedIndex: 0, width: 160, height: 25,
-                source: [
-                  { label: 'Nombre', value: 'nombre' },
-                  { label: 'Codigo', value: 'codigo' },
-                  { label: 'Estado', value: 'estado_desc' },
-
-                ]
-            });
-
-         // updates the listbox with unique records depending on the selected column.
-            var updateFilterBox = function (dataField) {
-
-                $("#dataTable").jqxDataTable('clearFilters');
-                var filterBoxAdapter = new $.jqx.dataAdapter(source,
-                {
-                    uniqueDataFields: [dataField],
-                    autoBind: true,
-                    async:false
-                });
-                var uniqueRecords = filterBoxAdapter.records;
-                uniqueRecords.splice(0, 0, '(Todo)');
-                $("#filterbox").jqxListBox({ source: uniqueRecords, displayMember: dataField });
-                $("#filterbox").jqxListBox('checkAll');
-            }
-            updateFilterBox('nombre');
-            // handle select all item.
-            var handleCheckChange = true;
-            $("#filterbox").on('checkChange', function (event) {
-                if (!handleCheckChange)
-                    return;
-
-                if (event.args.label != '(Todo)') {
-                    // update the state of the "Select All" listbox item.
-                    handleCheckChange = false;
-                    $("#filterbox").jqxListBox('checkIndex', 0);
-                    var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
-                    var items = $("#filterbox").jqxListBox('getItems');
-                    if (checkedItems.length == 1) {
-                        $("#filterbox").jqxListBox('uncheckIndex', 0);
-                    }
-                    else if (items.length != checkedItems.length) {
-                        $("#filterbox").jqxListBox('indeterminateIndex', 0);
-                    }
-                    handleCheckChange = true;
-                }
-                else {
-                    // check/uncheck all items if "Select All" is clicked.
-                    handleCheckChange = false;
-                    if (event.args.checked) {
-                        $("#filterbox").jqxListBox('checkAll');
-                    }
-                    else {
-                        $("#filterbox").jqxListBox('uncheckAll');
-                    }
-                    handleCheckChange = true;
-                }
-            });
-            // handle columns selection.
-            $("#columnchooser").on('select', function (event) {
-                updateFilterBox(event.args.item.value);
-            });
-            // builds and applies the filter.
-            var applyFilter = function (dataField) {
-                $("#dataTable").jqxDataTable('clearFilters');
-                var filtertype = 'stringfilter';
-                if (dataField == 'date') filtertype = 'datefilter';
-                if (dataField == 'price' || dataField == 'quantity') filtertype = 'numericfilter';
-                // create a new group of filters.
-                var filtergroup = new $.jqx.filter();
-                // get listbox's checked items.
-                var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
-                if (checkedItems.length == 0) {
-                    var filter_or_operator = 1;
-                    var filtervalue = "Empty";
-                    var filtercondition = 'equal';
-                    var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
-                    filtergroup.addfilter(filter_or_operator, filter);
-                }
-                else {
-                    for (var i = 0; i < checkedItems.length; i++) {
-                        var filter_or_operator = 1;
-                        // set filter's value.
-                        var filtervalue = checkedItems[i].label;
-                        // set filter's condition.
-                        var filtercondition = 'equal';
-                        // create new filter.
-                        var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
-                        // add the filter to the filter group.
-                        filtergroup.addfilter(filter_or_operator, filter);
-                    }
-                }
-                // add the filters.
-                $("#dataTable").jqxDataTable('addFilter', dataField, filtergroup);
-                // apply the filters.
-                $("#dataTable").jqxDataTable('applyFilters');
-            }
-            // clears the filter.
-            $("#clearfilter").click(function () {
-                $("#dataTable").jqxDataTable('clearFilters');
-            });
-            // applies the filter.
-            $("#applyFilter").click(function () {
-                var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
-                applyFilter(dataField);
-            });
-
-
 
     $(".ctrl-btn").click(function () {
       var activo = $(this).attr('href');
@@ -4119,143 +4009,28 @@ $('#customSwitch2').click(function(){
         });
     }
 
-     // create buttons, listbox and the columns chooser dropdownlist.
-            $("#applyFilter").jqxButton();
-            $("#clearfilter").jqxButton();
-            $("#filterbox").jqxListBox({
-              checkboxes: true,
-              filterable: false,
-              //searchMode: 'containsignorecase',
-              width: "100%",
-              height: 150
-            });
-            $("#columnchooser").jqxDropDownList({
-                autoDropDownHeight: true, selectedIndex: 0, width: 160, height: 25,
-                source: [
-                  { label: 'Responsable', value: 'responsable' },
-                  { label: 'Estado', value: 'estado' },
-                  { label: 'Nombre', value: 'nombre' },
-                  { label: 'Tipo', value: 'tipo' }
 
-                ]
-            });
-            // updates the listbox with unique records depending on the selected column.
-            var updateFilterBox = function (dataField) {
-
-                $("#dataTable").jqxDataTable('clearFilters');
-                var filterBoxAdapter = new $.jqx.dataAdapter(source,
-                {
-                    uniqueDataFields: [dataField],
-                    autoBind: true,
-                    async:false
-                });
-                var uniqueRecords = filterBoxAdapter.records;
-                uniqueRecords.splice(0, 0, '(Todo)');
-                $("#filterbox").jqxListBox({ source: uniqueRecords, displayMember: dataField });
-                $("#filterbox").jqxListBox('checkAll');
-            }
-            updateFilterBox('responsable');
-            // handle select all item.
-            var handleCheckChange = true;
-            $("#filterbox").on('checkChange', function (event) {
-                if (!handleCheckChange)
-                    return;
-
-                if (event.args.label != '(Todo)') {
-                    // update the state of the "Select All" listbox item.
-                    handleCheckChange = false;
-                    $("#filterbox").jqxListBox('checkIndex', 0);
-                    var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
-                    var items = $("#filterbox").jqxListBox('getItems');
-                    if (checkedItems.length == 1) {
-                        $("#filterbox").jqxListBox('uncheckIndex', 0);
-                    }
-                    else if (items.length != checkedItems.length) {
-                        $("#filterbox").jqxListBox('indeterminateIndex', 0);
-                    }
-                    handleCheckChange = true;
-                }
-                else {
-                    // check/uncheck all items if "Select All" is clicked.
-                    handleCheckChange = false;
-                    if (event.args.checked) {
-                        $("#filterbox").jqxListBox('checkAll');
-                    }
-                    else {
-                        $("#filterbox").jqxListBox('uncheckAll');
-                    }
-                    handleCheckChange = true;
-                }
-            });
-            // handle columns selection.
-            $("#columnchooser").on('select', function (event) {
-                updateFilterBox(event.args.item.value);
-            });
-            // builds and applies the filter.
-            var applyFilter = function (dataField) {
-                $("#dataTable").jqxDataTable('clearFilters');
-                var filtertype = 'stringfilter';
-                if (dataField == 'date') filtertype = 'datefilter';
-                if (dataField == 'price' || dataField == 'quantity') filtertype = 'numericfilter';
-                // create a new group of filters.
-                var filtergroup = new $.jqx.filter();
-                // get listbox's checked items.
-                var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
-                if (checkedItems.length == 0) {
-                    var filter_or_operator = 1;
-                    var filtervalue = "Empty";
-                    var filtercondition = 'equal';
-                    var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
-                    filtergroup.addfilter(filter_or_operator, filter);
-                }
-                else {
-                    for (var i = 0; i < checkedItems.length; i++) {
-                        var filter_or_operator = 1;
-                        // set filter's value.
-                        var filtervalue = checkedItems[i].label;
-                        // set filter's condition.
-                        var filtercondition = 'equal';
-                        // create new filter.
-                        var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
-                        // add the filter to the filter group.
-                        filtergroup.addfilter(filter_or_operator, filter);
-                    }
-                }
-                // add the filters.
-                $("#dataTable").jqxDataTable('addFilter', dataField, filtergroup);
-                // apply the filters.
-                $("#dataTable").jqxDataTable('applyFilters');
-            }
-            // clears the filter.
-            $("#clearfilter").click(function () {
-                $("#dataTable").jqxDataTable('clearFilters');
-            });
-            // applies the filter.
-            $("#applyFilter").click(function () {
-                var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
-                applyFilter(dataField);
-            });
 
     function showFilterAdvanced() {
 
       if ($('#FilterAdvanced').hasClass('hidden')){
             $('#exportarData').removeClass('hidden')
             $('#exportarData').addClass('hidden')
-            $("#dataTable").jqxDataTable({filterable: false});
+            // $("#dataTable").jqxDataTable({filterable: false});
             $('#FilterAdvanced').removeClass('hidden')
             $('#jqxDataTable').removeClass('col-lg-12');
             $('#jqxDataTable').fadeIn(500).addClass('col-lg-9');
       }else{
-        $("#dataTable").jqxDataTable({filterable: true});
-          $('#FilterAdvanced').addClass('hidden')
-          $('#jqxDataTable').removeClass('col-lg-9');
-          $('#jqxDataTable').fadeIn(500).addClass('col-lg-12');
+            // $("#dataTable").jqxDataTable({filterable: true});
+            $('#FilterAdvanced').addClass('hidden')
+            $('#jqxDataTable').removeClass('col-lg-9');
+            $('#jqxDataTable').fadeIn(500).addClass('col-lg-12');
         }
     }
     function showExportarData() {
 
       if ($('#exportarData').hasClass('hidden')){
-            $("#dataTable").jqxDataTable({filterable: true});
+            // $("#dataTable").jqxDataTable({filterable: true});
             $('#FilterAdvanced').removeClass('hidden')
             $('#FilterAdvanced').addClass('hidden')
 
@@ -4288,6 +4063,103 @@ $('#customSwitch2').click(function(){
    }
 //------------------aqui fin
 
+function filtrar(){
+   // var sectores = $("#fil_sectores").val();
+   // var estado = $("#fil_estados").val();
+   // var compartidos = $("#fil_compartidos").val();
+   // var pp = $("#fil_pdes_pilar").val();
+   // var pm = $("#fil_pdes_meta").val();
+   // var pr = $("#fil_pdes_resultado").val();
+   // var oo = $("#fil_ods_objetivo").val();
+   // var om = $("#fil_ods_meta").val();
+   // var oi = $("#fil_ods_indicador").val();
+
+   //var dataFelds = $.parseJSON($("#filtroForm").serialize()+'&filter={{$filtData}}');
+   var url = '{{ url('/api/sistemarime/apiFiltroGrid') }}';
+   var source2 =
+   {
+       dataType: "json",
+       dataFields: [
+           { name: 'id', type: 'int' },
+           { name: 'codigo_id', type: 'string' },
+           { name: 'tipo', type: 'string' },
+           { name: 'estado_desc', type: 'string' },
+           { name: 'etapa', type: 'string' },
+           { name: 'nombre', type: 'string' },
+           { name: 'sectores', type: 'string' },
+           { name: 'compartido', type: 'string' },
+           { name: 'pdes', type: 'string' },
+           { name: 'ods', type: 'string' }
+       ],
+       id: 'id',
+       data:{
+             'fil_estados': $("#fil_estados").val(),
+             'fil_compartidos':$("#fil_compartidos").val(),
+             'fil_tipos':$("#fil_tipos").val(),
+             'fil_sectores':$("#fil_sectores").val(),
+             'fil_pdes_pilar':$("#fil_pdes_pilar").val(),
+             'fil_pdes_meta':$("#fil_pdes_meta").val(),
+             'fil_pdes_resultado':$("#fil_pdes_resultado").val(),
+             'fil_ods_objetivo':$("#fil_ods_objetivo").val(),
+             'fil_ods_meta':$("#fil_ods_meta").val(),
+             'fil_ods_indicador':$("#fil_ods_indicador").val(),
+             'filter':{{$filtData}},
+            },
+       url: url
+   };
+   var dataAdapter2 = new $.jqx.dataAdapter(source2);
+   $("#dataTable").jqxDataTable({source: dataAdapter2});
+
+
+
+    // $.ajax({
+    //       type: "POST",
+    //       url: "{{ url('/api/sistemarime/apiFiltroGrid') }}",
+    //       dataType: 'json',
+    //       data: $("#filtroForm").serialize()+'&filter={{$filtData}}' , // Adjuntar los campos del formulario enviado.
+    //       success: function(data){
+    //         if(data.error == false){
+    //
+    //
+    //
+    //             //------------------aqui
+    //             // limpiarBasico();
+    //             // $('input[name="id_indicador"]').attr("value",data.id_indicador);
+    //             // var tap_next=0;
+    //             // // $("#btn-back" ).trigger( "click" );
+    //             // $("#dataTable").jqxDataTable("updateBoundData");
+    //             // btn_update(data.id_indicador);
+    //             // swal("Guardado!", "Se ha guardado correctamente.", "success");
+    //             //------------------aqui fin
+    //         }else{
+    //             $.toast({
+    //              heading: data.title,
+    //              text: data.msg,
+    //              position: 'top-right',
+    //              loaderBg:'#ff6849',
+    //              icon: 'warning',
+    //              hideAfter: 3500
+    //            });
+    //         }
+    //       },
+    //       error:function(data){
+    //         if(data.status != 401){
+    //           $.toast({
+    //             heading: 'Error:',
+    //             text: 'Error al recuperar los datos.',
+    //             position: 'top-right',
+    //             loaderBg:'#ff6849',
+    //             icon: 'error',
+    //             hideAfter: 3500
+    //
+    //           });
+    //         }else{
+    //           window.location = '/login';
+    //         }
+    //
+    //       }
+    // });
+}
 
 
   </script>

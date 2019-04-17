@@ -503,15 +503,15 @@ Route::group(['middleware' => 'auth'],function(){
 
             Route::get('asignarRoles', 'SistemaRemi\IndicadorController@asignarRoles')->name('asignarRoles');
             Route::post('actualizarUserRol', 'SistemaRemi\IndicadorController@actualizarUserRol')->name('actualizarUserRol');
-            
-            Route::get('CrudUsers', 'SistemaRemi\AdmiUserController@CrudUsers')->name('CrudUsers');                 
+
+            Route::get('CrudUsers', 'SistemaRemi\AdmiUserController@CrudUsers')->name('CrudUsers');
               Route::get('mostrarReg', 'SistemaRemi\AdmiUserController@mostrarReg')->name('mostrarReg');
-              Route::get('registrarUser', 'SistemaRemi\AdmiUserController@registrarUser')->name('registrarUser');     
-              Route::post('guardarUser', 'SistemaRemi\AdmiUserController@guardarUser')->name('guardarUser'); 
-              Route::get('editarUser/{id}', 'SistemaRemi\AdmiUserController@editarUser')->name('SistemaRemi.registrar.editarUser');    
-              Route::post('actualizarUser/{id}', 'SistemaRemi\AdmiUserController@actualizarUser')->name('SistemaRemi.registrar.actualizarUser');  
-            Route::get('eliminarUser/{id}', 'SistemaRemi\AdmiUserController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser'); 
-            Route::get('asignarRoles', 'SistemaRemi\AdmiUserController@asignarRoles')->name('asignarRoles'); 
+              Route::get('registrarUser', 'SistemaRemi\AdmiUserController@registrarUser')->name('registrarUser');
+              Route::post('guardarUser', 'SistemaRemi\AdmiUserController@guardarUser')->name('guardarUser');
+              Route::get('editarUser/{id}', 'SistemaRemi\AdmiUserController@editarUser')->name('SistemaRemi.registrar.editarUser');
+              Route::post('actualizarUser/{id}', 'SistemaRemi\AdmiUserController@actualizarUser')->name('SistemaRemi.registrar.actualizarUser');
+            Route::get('eliminarUser/{id}', 'SistemaRemi\AdmiUserController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser');
+            Route::get('asignarRoles', 'SistemaRemi\AdmiUserController@asignarRoles')->name('asignarRoles');
             Route::post('actualizarUserRol', 'SistemaRemi\AdmiUserController@actualizarUserRol')->name('actualizarUserRol');
 
           });
@@ -590,6 +590,10 @@ Route::group(['middleware' => 'auth'],function(){
 
               Route::post('apiRecuperarFuente', 'SistemaRemi\FuenteDatosController@apiRecuperarFuente');
               Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');
+
+              Route::get('apiFiltroGrid', 'SistemaRemi\IndicadorController@apiFiltroGrid');
+
+
 
           }
       );

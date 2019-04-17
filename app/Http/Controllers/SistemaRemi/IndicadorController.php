@@ -467,6 +467,9 @@ class IndicadorController extends Controller
     $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->where('activo', true)->get();
 
 
+
+
+
     $grafica = json_encode($dataMetasAvance);
 
     return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes','avance','grafica','metasAvance','archivos'));
@@ -477,6 +480,7 @@ class IndicadorController extends Controller
 
 
     $relacop = RelacionOdsPdes::where('activo', true)->orderBy('id')->get();
+    $estados = \DB::select("SELECT * FROM remi_estados ORDER BY id ASC");
     $tipos = TiposMedicion::get();
     $estado =  Array('1' => "Preliminar",'2' =>"Enviado a Revision",'3' =>"Modificar",'4' =>"Aprobado",'5' =>"Eliminado");
 
@@ -505,13 +509,25 @@ class IndicadorController extends Controller
     $frecuencia = Frecuencia::get();
     $fuente_datos = FuenteDatos::where('activo', true)->orderBy('nombre', 'ASC ')->get();
     $fuente_tipos = FuenteTipos::get();
-    $instituciones = \DB::select("SELECT *
-                                  FROM pip_instituciones
-                                  ORDER BY codigo ASC");
-     $route = \Request::path();
-     $route=explode("/",$route);
-     if($route[1] == "adminIndicador"){ $filtData = 0; }else{ $filtData = 1;}
-    return view('SistemaRemi.admin-indicador',compact('tipos','unidades','frecuencia','fuente_datos','fuente_tipos','dimensiones','relacop','etapas','estado','brechaDatos','brechaMetodologia','brechaCapacitacion','brechaFinanciamiento','instituciones','filtData'));
+    $instituciones = \DB::select("SELECT * FROM pip_instituciones ORDER BY codigo ASC");
+    $setPP = \DB::select("SELECT * FROM pdes_pilares ORDER BY cod_p ASC");
+    $setPM = \DB::select("SELECT cod_m,nombre FROM pdes_metas GROUP BY cod_m,nombre ORDER BY cod_m ASC");
+    $setPR = \DB::select("SELECT * FROM pdes_resultados ORDER BY cod_r ASC");
+
+    $setOO = \DB::select("SELECT cod_o,nombre  FROM ods_objetivos ORDER BY length(cod_o),cod_o ASC");
+    $setOM = \DB::select("SELECT cod_m,nombre  FROM ods_metas GROUP BY cod_m,nombre ORDER BY length(cod_m),cod_m ASC");
+    $setOI = \DB::select("SELECT cod_i,nombre  FROM ods_indicadores GROUP BY cod_i,nombre ORDER BY length(cod_i),cod_i ASC");
+
+
+    $route = \Request::path();
+    $route=explode("/",$route);
+    if($route[1] == "adminIndicador"){ $filtData = 0; }else{ $filtData = 1;}
+    return view('SistemaRemi.admin-indicador',compact('tipos',
+    'unidades','frecuencia','fuente_datos','fuente_tipos',
+    'dimensiones','relacop','etapas','estado','brechaDatos',
+    'brechaMetodologia','brechaCapacitacion','brechaFinanciamiento',
+    'instituciones','filtData','estados','setPP','setPM','setPR',
+    'setOO','setOM','setOI'));
   }
 
   public function adminIndicadorEntidad()
@@ -606,23 +622,220 @@ class IndicadorController extends Controller
       $id=$user->id;
       $id_rol=$user->id_rol;
       if($request->filter > 0){
-         $indicadores = \DB::select("SELECT i.*,ins.denominacion,es.nombre as estado_desc
-                                    FROM remi_indicadores i
-                                    INNER JOIN remi_indicadores_sectores ise ON (i.id = ise.id_indicador AND ise.activo = true)
-                                    INNER JOIN pip_instituciones ins ON ise.id_institucion = ins.id
-                                    INNER JOIN remi_estados es ON i.estado = es.id
-                                    WHERE i.activo = true
-                                    AND ise.id_institucion = ?
-                                    ORDER BY nombre ASC",[$user->id_institucion]);
+        $indicadores = \DB::select("SELECT *,
+                                     (
+                                       SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>')
+                                       FROM remi_indicadores_sectores s
+                                       INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                                       WHERE id_indicador = fuente.id
+                                       AND activo = TRUE
+                                       GROUP BY id_indicador
+                                       ORDER BY id_indicador ASC
+                                     ) as sectores,
+                                     (
+                                       SELECT
+                                         CASE
+                                           WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si'
+                                           ELSE 'No'
+                                         END
+                                         AS res
+                                       FROM remi_indicadores_sectores s
+                                       INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                                       WHERE id_indicador = fuente.id
+                                       AND activo = TRUE
+                                     ) as compartido,
+                                     (
+                                       SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
+                                       FROM remi_indicador_pdes_resultado pr
+                                       INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado
+                                       WHERE pr.id_indicador = fuente.id
+                                       GROUP BY pr.id_indicador
+                                     ) as pdes,
+                                     (
+                                       SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
+                                       FROM remi_indicador_ods_indicador oi
+                                       INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
+                                       WHERE oi.id_indicador_ods = fuente.id
+                                       GROUP BY oi.id_indicador_ods
+                                     ) as ods
+                                     FROM(
+                                        SELECT i.*,ins.denominacion,es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
+                                        FROM remi_indicadores i
+                                        INNER JOIN remi_indicadores_sectores ise ON (i.id = ise.id_indicador AND ise.activo = true)
+                                        INNER JOIN pip_instituciones ins ON ise.id_institucion = ins.id
+                                        INNER JOIN remi_estados es ON i.estado = es.id
+                                        WHERE i.activo = true
+                                        AND ise.id_institucion = ?
+                                        ORDER BY nombre ASC
+                                     ) as fuente",[$user->id_institucion]);
       } else  {
-         $indicadores = \DB::select("SELECT i.*, es.nombre as estado_desc
-                                      FROM remi_indicadores i
-                                      INNER JOIN remi_estados es ON i.estado = es.id
-                                      WHERE activo = TRUE
-                                      ORDER BY i.id ASC");
+         $indicadores = \DB::select("SELECT *,
+                                      (
+                                      	SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>')
+                                      	FROM remi_indicadores_sectores s
+                                      	INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                                      	WHERE id_indicador = fuente.id
+                                      	AND activo = TRUE
+                                      	GROUP BY id_indicador
+                                      	ORDER BY id_indicador ASC
+                                      ) as sectores,
+                                      (
+                                      	SELECT
+                                      		CASE
+                                      			WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si'
+                                      			ELSE 'No'
+                                      		END
+                                      		AS res
+                                      	FROM remi_indicadores_sectores s
+                                      	INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                                      	WHERE id_indicador = fuente.id
+                                      	AND activo = TRUE
+                                      ) as compartido,
+                                      (
+                                      	SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
+                                      	FROM remi_indicador_pdes_resultado pr
+                                      	INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado
+                                      	WHERE pr.id_indicador = fuente.id
+                                      	GROUP BY pr.id_indicador
+                                      ) as pdes,
+                                      (
+                                      	SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
+                                      	FROM remi_indicador_ods_indicador oi
+                                      	INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
+                                      	WHERE oi.id_indicador_ods = fuente.id
+                                      	GROUP BY oi.id_indicador_ods
+                                      ) as ods
+                                      FROM(
+                                        SELECT i.*, es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
+                                        FROM remi_indicadores i
+                                        INNER JOIN remi_estados es ON i.estado = es.id
+                                        WHERE activo = TRUE
+                                        ORDER BY i.id ASC
+                                      ) as fuente");
       }
+      //'codigo' => str_pad($item->id, 4, "0", STR_PAD_LEFT),
       return \Response::json($indicadores);
   }
+
+
+  public function apiFiltroGrid(Request $request)
+  {
+      $indicadores = "";
+
+      $user = \Auth::user();
+      $id=$user->id;
+      $id_rol=$user->id_rol;
+
+      $estado = "";
+      $compartidos = "";
+      $tipo = "";
+      $sector = "";
+      $pedes_p = "";
+      $pedes_m = "";
+      $pedes_r = "";
+      $where = "";
+
+       if($request->fil_estados!=0){
+          $where .="AND tabla.estado = '".$request->fil_estados."' ";
+       }
+       if($request->fil_compartidos!=0){
+          $where .="AND tabla.compartidos = '".$request->fil_compartidos."' ";
+       }
+       if($request->fil_tipos!=0){
+          $where .="AND tabla.tipo = '".$request->fil_tipos."' ";
+       }
+
+       // tabla.pdes_p like '1'
+       // OR tabla.pdes_p like '%,1,%'
+       // OR tabla.pdes_p like '%,1'
+       // OR tabla.pdes_p like '1,%'
+       //
+       // OR tabla.pdes_p like '6'
+       // OR tabla.pdes_p like '%,6,%'
+       // OR tabla.pdes_p like '%,6'
+       // OR tabla.pdes_p like '6,%'
+
+      if($request->filter > 0){
+        $indicadores = \DB::select("SELECT *,
+                                     (
+                                       SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>')
+                                       FROM remi_indicadores_sectores s
+                                       INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                                       WHERE id_indicador = fuente.id
+                                       AND activo = TRUE
+                                       GROUP BY id_indicador
+                                       ORDER BY id_indicador ASC
+                                     ) as sectores,
+                                     (
+                                       SELECT
+                                         CASE
+                                           WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si'
+                                           ELSE 'No'
+                                         END
+                                         AS res
+                                       FROM remi_indicadores_sectores s
+                                       INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                                       WHERE id_indicador = fuente.id
+                                       AND activo = TRUE
+                                     ) as compartido,
+                                     (
+                                       SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
+                                       FROM remi_indicador_pdes_resultado pr
+                                       INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado
+                                       WHERE pr.id_indicador = fuente.id
+                                       GROUP BY pr.id_indicador
+                                     ) as pdes,
+                                     (
+                                       SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
+                                       FROM remi_indicador_ods_indicador oi
+                                       INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
+                                       WHERE oi.id_indicador_ods = fuente.id
+                                       GROUP BY oi.id_indicador_ods
+                                     ) as ods
+                                     FROM(
+                                        SELECT i.*,ins.denominacion,es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
+                                        FROM remi_indicadores i
+                                        INNER JOIN remi_indicadores_sectores ise ON (i.id = ise.id_indicador AND ise.activo = true)
+                                        INNER JOIN pip_instituciones ins ON ise.id_institucion = ins.id
+                                        INNER JOIN remi_estados es ON i.estado = es.id
+                                        WHERE i.activo = true
+                                        AND ise.id_institucion = ?
+                                        ORDER BY nombre ASC
+                                     ) as fuente",[$user->id_institucion]);
+      } else  {
+         $sql = "SELECT *
+               FROM (
+                   SELECT *,
+                    (
+                    	SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>') FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                    	WHERE id_indicador = fuente.id AND activo = TRUE GROUP BY id_indicador ORDER BY id_indicador ASC
+                    ) as sectores,
+                    (
+                    	SELECT CASE WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si' ELSE 'No' END AS res
+                    	FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id WHERE id_indicador = fuente.id AND activo = TRUE
+                    ) as compartido,
+                    (
+                    	SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ') FROM remi_indicador_pdes_resultado pr
+                    	INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                    ) as pdes,
+                    (
+                    	SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ') FROM remi_indicador_ods_indicador oi
+                    	INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                    ) as ods
+                    FROM(
+                      SELECT i.*, es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id FROM remi_indicadores i
+                      INNER JOIN remi_estados es ON i.estado = es.id WHERE activo = TRUE ORDER BY i.id ASC
+                    ) as fuente
+                  ) as tabla
+                  WHERE 1=1
+                  $where";
+
+         $indicadores = \DB::select($sql);
+      }
+      //'codigo' => str_pad($item->id, 4, "0", STR_PAD_LEFT),
+      return \Response::json($indicadores);
+  }
+
 
   public function apiSaveIndicador(Request $request)
   {
@@ -946,7 +1159,8 @@ class IndicadorController extends Controller
 
 
 
-            \DB::table('remi_indicadores_sectores')->where('id_indicador', $indicador->id)->update(['activo' => false]);
+            // \DB::table('remi_indicadores_sectores')->where('id_indicador', $indicador->id)->update(['activo' => false]);
+            \DB::table('remi_indicadores_sectores')->where('id_indicador', $indicador->id)->delete();
             if(isset($request->sectores)){
 
               foreach ($request->sectores as $k => $v) {
@@ -1801,6 +2015,8 @@ class IndicadorController extends Controller
       );
 
   }
+
+
 
 
 
