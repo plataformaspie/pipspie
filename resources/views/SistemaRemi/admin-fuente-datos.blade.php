@@ -41,7 +41,7 @@
 
     .li{
        list-style:none;
-       }   
+       }
 
     #c2 .ul .li{
        list-style:none;
@@ -75,39 +75,100 @@
               <button id ="btn-new" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i> Agregar Nuevo</button>
             </p>
             <div class="row">
-              <div id="FilterAdvanced" class="col-lg-3 hidden">
-                  <div style="margin-top: 30px;">
-                      <div>Filtrado por:</div>
-                      <div id="columnchooser"></div>
-                      <div style="float: left;  margin-top: 10px;" id="filterbox"></div>
-                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
-                          <input type="button" id="applyFilter" value="Aplicar filtro" />
-                          <input type="button" id="clearfilter" style="margin-top:20px;" value="Limpiar" />
-                      </div>
-                  </div>
-              </div>
-              <div id="exportarData" class="col-lg-3 hidden">
-                  <div style="margin-top: 30px;">
-                      <div>Exportar a:</div>
-                      <select class="form-control">
-                          <option value="excel">Excel</option>
-                      </select>
-                      <label>
-                        <input name="option_data" value="1" type="radio"> Contenido de tabla
-                      </label>
-                      <label>
-                        <input name="option_data" value="2" type="radio"> Registro seleccionado
-                      </label>
-                      <div style="float: left; margin-left: 20px; margin-top: 10px;">
-                        <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
-                      </div>
-                  </div>
-              </div>
-              <div id="jqxDataTable" class="col-lg-12">
+              <div class="col-lg-12">
                 <p class="m-b-5">
                   <button onclick="showFilterAdvanced();" type="button" class="btn btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
                   <button onclick="showExportarData();" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
                 </p>
+              </div>
+
+              <form id="filtroForm" name="filtroForm" action="javascript:filtrar();" data-toggle="validator">
+
+                  <div id="FilterAdvanced" class="col-lg-12 hidden">
+                    <div class="white-box p-10" style="background-color: #fcf8e3;color: #8a6d3b;">
+                        <div class="row">
+                            <div class="col-lg-2 col-sm-3">
+                              <label><i class="fa fa-filter gly-rotate-90"></i>Estado:</label>
+                              <select id="fil_estados" name="fil_estados" class="" style="width:100%">
+                                <option value="0">Todos</option>
+                                @foreach ($estados as  $item)
+                                      <option value="{{ $item->id }}">{{$item->nombre}}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                            <div class="col-lg-3 col-sm-6">
+                              <label><i class="fa fa-filter gly-rotate-90"></i>Compartidos:</label>
+                              <select id="fil_compartidos" name="fil_compartidos" class="" style="width:100%">
+                                   <option value="0">Todos</option>
+                                   <option value="Si">Si</option>
+                                   <option value="No">No</option>
+                              </select>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                              <label><i class="fa fa-filter gly-rotate-90"></i>Tipo:</label>
+                              <select id="fil_tipos" name="fil_tipos" class="" style="width:100%">
+                                <option value="0">Todos</option>
+                                @foreach ($fuente_tipos as  $item)
+                                      <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                              <label><i class="fa fa-filter gly-rotate-90"></i>Entidad Custodia:</label>
+                              <select id="fil_cabeza" name="fil_cabeza[]" placeholder="Todos..."  multiple="multiple" class="select2 multiple">
+                                  @foreach ($cabeza as  $item)
+                                        <option value="{{ $item->cabeza }}">{{$item->cabeza}}</option>
+                                  @endforeach
+                              </select>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                              <label><i class="fa fa-filter gly-rotate-90"></i>Productor de datos:</label>
+                              <select id="fil_productor" name="fil_productor[]" placeholder="Todos..."  multiple="multiple" class="select2 multiple">
+                                  @foreach ($productor as  $item)
+                                        <option value="{{ $item->productor }}">{{$item->productor}}</option>
+                                  @endforeach
+                              </select>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 8px; margin-bottom: 8px;"/>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <button type="submit" class="btn btn-block btn-danger btn-outline"><i class="fa fa-filter m-l-5"></i> Aplicar Filtro </button>
+                            </div>
+                            <div class="col-lg-3">
+                                <button id="limpiarfiltros" type="button" class="btn btn-block btn-info btn-outline"><i class="fa fa-eraser m-l-5"></i> Limpiar Filtro </button>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+              </form>
+              <div id="exportarData" class="col-lg-12 hidden">
+                  <div class="row white-box" style="background-color: #fcf8e3;color: #8a6d3b;">
+                      <div class="col-sm-3">
+                        <label>Exportar a:</label>
+                        <select class="form-control ">
+                            <option value="excel">Excel</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-2 col-sm-5">
+                        <label>Seleccione opcion:</label>
+                        <br/>
+                        <input name="option_data" value="1" type="radio"/> Contenido de tabla
+                        <br/>
+                        <input name="option_data" value="2" type="radio"/> Registro seleccionado
+
+                      </div>
+                      <div class="col-sm-3 ">
+                        <div style="float: left; margin-top: 20px;">
+                          <button id="generarExport" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus-square"></i> Generar Reporte</button>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div id="jqxDataTable" class="col-lg-12">
+                <label style="float: right;margin-top: -27px;">Total registros: <span id="total_registros" style="font-weight:bold;"></span></label>
                 <div id="dataTable"></div>
               </div>
             </div>
@@ -119,7 +180,7 @@
           <form id="formAdd" name="formAdd" action="javascript:save();" data-toggle="validator" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" name="id_fuente" value="">
-            <input type="hidden" name="tap_next" value="">            
+            <input type="hidden" name="tap_next" value="">
             <!-- .row -->
             <div class="row">
               <div class="col-sm-12">
@@ -139,7 +200,7 @@
                         </div>
                         <div class="col-md-10 p-l-0">
                             <label id="estado_view" for="label" class="">Preliminar </label>
-                            <input id="estado" type="hidden" name="estado" value="1">
+                            {{-- <input id="estado" type="hidden" name="estado" value="1"> --}}
                         </div>
 
                       </div>
@@ -513,7 +574,7 @@
                                                 </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
-                                                  <select id="demografia_estadistica_social" name="demografia_estadistica_social[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
+                                                  <select id="demografia_estadistica_social" name="demografia_estadistica_social[]" placeholder="Seleccionar..."  multiple="multiple" class="select2 multiple controlOtroMulti">
                                                       @foreach ($demografia as  $item)
                                                             <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                       @endforeach
@@ -539,7 +600,7 @@
                                                 </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
-                                                  <select id="estadistica_economica" name="estadistica_economica[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
+                                                  <select id="estadistica_economica" name="estadistica_economica[]" placeholder="Seleccionar..."  multiple="multiple" class="select2 multiple controlOtroMulti">
                                                       @foreach ($economicas as  $item)
                                                             <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                       @endforeach
@@ -564,7 +625,7 @@
                                                 </a>
                                               </div>
                                               <div class="col-md-9 p-l-0">
-                                                  <select id="estadistica_medioambiental" name="estadistica_medioambiental[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
+                                                  <select id="estadistica_medioambiental" name="estadistica_medioambiental[]" placeholder="Seleccionar..."  multiple="multiple" class="select2 multiple controlOtroMulti">
                                                       @foreach ($medioambientales as  $item)
                                                             <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                       @endforeach
@@ -589,7 +650,7 @@
                                                     </a>
                                                   </div>
                                                   <div class="col-md-9 p-l-0">
-                                                      <select id="informacion_geoespacial" name="informacion_geoespacial[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple controlOtroMulti">
+                                                      <select id="informacion_geoespacial" name="informacion_geoespacial[]" placeholder="Seleccionar..."  multiple="multiple" class=" select2 multiple controlOtroMulti">
                                                           @foreach ($geoespacial as  $item)
                                                                 <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                                                           @endforeach
@@ -624,7 +685,7 @@
                                                 </div>
                                                 <div class="col-md-7 p-l-0">
                                                     <div class="select2-wrapper">
-                                                      <input id="numero_total_formulario" name="numero_total_formulario" type="text" class="form-control" placeholder="Numero" >
+                                                      <input id="numero_total_formulario" name="numero_total_formulario" type="number" class="form-control" placeholder="Numero" min="0"  >
                                                     </div>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
@@ -961,7 +1022,7 @@
                                                                             <span class="tooltip-content5" style="">
                                                                             <span class="tooltip-text3">
                                                                               <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
-                                                                                  <b class="text-info">Dependencia ejecutiva:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
+                                                                                  <b class="text-info">Dependencia ejecutiva/Productor de datos:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
                                                                               </span>
                                                                             </span>
                                                                           </span>
@@ -1059,7 +1120,7 @@
                                                                                 <span class="tooltip-content5" style="">
                                                                                 <span class="tooltip-text3">
                                                                                   <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
-                                                                                      <b class="text-info">Dependencia ejecutiva:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
+                                                                                      <b class="text-info">Dependencia ejecutiva/Productor de datos:</b> Nombre y Acrónimo de Viceministerio/Dirección a cargo de la fuente de datos.
                                                                                   </span>
                                                                                 </span>
                                                                               </span>
@@ -1209,6 +1270,29 @@
                                                <h4 style="width:100%;">Acceso a la información</h4>
                                            </div>
                                            <div class="col-md-12">
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5">
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <a class="mytooltip" href="javascript:void(0)">
+                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estado<label class="text-success">(r)</label></label>
+                                                    <span class="tooltip-content5" style="">
+                                                    <span class="tooltip-text3">
+                                                      <span class="tooltip-inner2 p-10 text-left" style="font-size:10px;">
+                                                        Cambie el estado de la fuente de datos según la etapa de verificación en la que se encuentre
+                                                      </span>
+                                                    </span>
+                                                  </span>
+                                                </a>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <select id="estado" name="estado" class="custom-select col-12 form-control" >
+                                                       <option value="">Seleccionar...</option>
+                                                       @foreach ($estados as  $item)
+                                                             <option value="{{ $item->id }}">{{$item->nombre}}</option>
+                                                       @endforeach
+                                                   </select>
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                             </div>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5">
                                                  <div class="col-md-3 p-l-0 p-r-0">
                                                    <a class="mytooltip" href="javascript:void(0)">
@@ -1264,9 +1348,9 @@
                     <div class="col-sm-12">
                             <div class="form-group text-center">
                               <button id="bt_guardar" type="submit" class="btn btn-info  tap-btn">Guardar</button>
-                              <button id="bt_enviar" type="submit" class="btn btn-danger  tap-btn">Guardar y Enviar a revisión</button>
+                              {{-- <button id="bt_enviar" type="submit" class="btn btn-danger  tap-btn">Guardar y Enviar a revisión</button> --}}
                               <button id="bt_siguiente" type="button" class="btn btn-info tap-btn">Siguiente</button>
-                              <button type="button" class="btn btn-default btn-back">Cancelar</button>
+                              <button type="button" class="btn btn-default btn-back">Salir</button>
                             </div>
                     </div>
 
@@ -1280,11 +1364,368 @@
       </div>
   </div>
 
+  <div id="option3" class="hidden"><!-- opcion 3-->
+    <!-- .row -->
+    <div class="row">
+      <div class="col-md-3"><!--iNFORMACION IZQUIERDA-->
+          <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
+              <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
+                  <div class="panel-heading panel-heading-c2" style="color: #fff; background-color: #468E9B;border-color: #d6e9c6;"><b> Titulo de la Fuente de Datos:</b></div>
+                  <div class="panel-wrapper collapse in" aria-expanded="true">
+                      <div class="panel-body text-left">
+                          <p><label id="v_nombre" style="color:#000000;font-weight: bold;"></label></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
+              <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
+                  <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Documentos respaldo </div>
+                  <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <table id="v_datosARC" class="table table-hover">
+                       <thead>
+                           <tr>
+                            <th>-</th>
+                          </tr>
+                      </thead>
+                      <tbody >
+
+                      </tbody>
+                    </table>
+
+                  </div>
+              </div>
+          </div>
+          <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
+              <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
+                  <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Obtener fuente </div>
+                  <div class="panel-wrapper collapse in" aria-expanded="true">
+                      <div class="panel-body text-center">
 
 
+                          <a href="javascript:myFunction('You clicked!')"><i class="fa fa-file-excel-o"  style="font-size: 30px;" title="Descargar Metadato"></i> Metadato</a>
 
 
-  </div>
+                          <!--Aqui hay que cambiar AQUI HAY QUE EMPEZAR AQUI EMPEZAR-->
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div><!--FIN iNFORMACION IZQUIERDA-->
+      <div class="col-sm-9 center"><!--iNFORMACION DERECHA-->
+          <div class="white-box">
+              <h3 class="box-title m-b-0">Información de Fuente de Datos</h3>
+              <p class="text-muted m-b-30">
+                <button id ="btn-back" type="button" class="btn btn-info btn-circle btn-lg" style="float: right;margin-top: -26px;">
+                  <i class="fa fa-arrow-left"></i>
+                </button>
+              </p>
+              <div class="col-lg-12 col-sm-12">
+                  <div class="panel panel-success">
+                      <div class="panel-heading" style="background-color: #468E9B;">
+
+                          <div class="pull-left" style="margin-top: -9px;">
+                            <a href="#" data-perform="panel-collapse">
+                              <i class="ti-minus"></i> Identificación
+                            </a>
+                          </div>
+                      </div>
+
+                      <div class="panel-wrapper collapse in" aria-expanded="true">
+                          <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Abreviación</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_acronimo"></span></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Tipo</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_tipo"></span> </p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Objetivo</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_objetivo"></span></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Serie disponible</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_serie_datos"></span></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Periodicidad</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_periodicidad"></span></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Variables/Campos clave</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_variable"></span></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Modo de recolección de Datos</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_modo_recoleccion_datos"></span>
+                                           <br/>
+                                           <span id="v_modo_recoleccion_datos_otro" class="tagHidden hidden"></span>
+                                      </p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Unidad de análisis</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_unidad_analisis"></span></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Universo de estudio</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_universo_estudio"></span></p>
+                                    </div>
+                              </div>
+                              <div class="tagHidden row encuesta hidden">
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Diseño y tamaño de muestra</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: <span id="v_disenio_tamanio_muestra"></span></p>
+                                      </div>
+
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Tasa de respuesta</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: <span id="v_tasa_respuesta"></span></p>
+                                      </div>
+
+                               </div>
+                              <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Observaciones</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_observacion"></span></p>
+                                    </div>
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-sm-12">
+                  <div class="panel panel-success">
+                      <div class="panel-heading" style="background-color: #468E9B;">
+
+                          <div class="pull-left" style="margin-top: -9px;">
+                            <a href="#" data-perform="panel-collapse">
+                              <i class="ti-minus"></i> Categoria Temática
+                            </a>
+                          </div>
+                      </div>
+
+                      <div class="panel-wrapper collapse in" aria-expanded="true">
+                          <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Demografia y estadisticas sociales</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_demografia_estadistica_social"></span>
+                                           <br/>
+                                           <span id="v_demografia_estadistica_social_otro" class="tagHidden hidden"></span>
+                                      </p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Estadisticas Económicas</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_estadistica_economica"></span>
+                                           <br/>
+                                           <span id="v_estadistica_economica_otro" class="tagHidden hidden"></span>
+                                      </p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Estadisticas Medioambientales</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_estadistica_medioambiental"></span>
+                                           <br/>
+                                           <span id="v_estadistica_medioambiental_otro" class="tagHidden hidden"></span>
+                                      </p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Informacion Geoespacial</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_informacion_geoespacial"></span>
+                                           <br/>
+                                           <span id="v_informacion_geoespacial_otro" class="tagHidden hidden"></span>
+                                      </p>
+                                    </div>
+
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-sm-12">
+                  <div class="panel panel-success">
+                      <div class="panel-heading" style="background-color: #468E9B;">
+
+                          <div class="pull-left" style="margin-top: -9px;">
+                            <a href="#" data-perform="panel-collapse">
+                              <i class="ti-minus"></i> Cuestionarios y Formularios
+                            </a>
+                          </div>
+                      </div>
+
+                      <div class="panel-wrapper collapse in" aria-expanded="true">
+                          <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Cantidad de Cuestionarios/Formularios</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_numero_total_formulario"></p>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12">
+                                      <br/>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <h5><b>Detalle de Formularios</b></h5>
+                                        <hr/>
+                                    </div>
+                                    <table id="v_datosForm" class="table table-hover">
+                                       <thead>
+                                           <tr>
+                                            <th style="width:30%">-</th>
+                                            <th>Nombre</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+
+                                      </tbody>
+                                    </table>
+
+
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-sm-12">
+                  <div class="panel panel-success">
+                      <div class="panel-heading" style="background-color: #468E9B;">
+
+                          <div class="pull-left" style="margin-top: -9px;">
+                            <a href="#" data-perform="panel-collapse">
+                              <i class="ti-minus"></i> Cobertura
+                            </a>
+                          </div>
+                      </div>
+
+                      <div class="panel-wrapper collapse in" aria-expanded="true">
+                          <div class="panel-body">
+                                <div class="tagHidden row registro hidden">
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Cobertura del RRAA</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>:<span id="v_cobertura_rraa"></p>
+                                        <p>:<span id="v_cobertura_rraa_descripcion"></p>
+                                      </div>
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Cobertura Geográfica de la Fuente de Datos </b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_cobertura_geografica"></p>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12">
+                                      <br/>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Nivel de Desagregación Geográfica </b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_nivel_representatividad_datos"></p>
+                                    </div>
+
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-sm-12">
+                  <div class="panel panel-success">
+                      <div class="panel-heading" style="background-color: #468E9B;">
+
+                          <div class="pull-left" style="margin-top: -9px;">
+                            <a href="#" data-perform="panel-collapse">
+                              <i class="ti-minus"></i> Responsables
+                            </a>
+                          </div>
+                      </div>
+
+                      <div class="panel-wrapper collapse in" aria-expanded="true">
+                          <div class="panel-body">
+                            <div id="v_set_responsables" class="row">
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-12 col-sm-12">
+                  <div class="panel panel-success">
+                      <div class="panel-heading" style="background-color: #468E9B;">
+
+                          <div class="pull-left" style="margin-top: -9px;">
+                            <a href="#" data-perform="panel-collapse">
+                              <i class="ti-minus"></i> Acceso a la Información
+                            </a>
+                          </div>
+                      </div>
+
+                      <div class="panel-wrapper collapse in" aria-expanded="true">
+                          <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Confidencialidad</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_confidencialidad"></p>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Notas legales</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: <span id="v_notas_legales"></p>
+                                    </div>
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div><!--FIN iNFORMACION IZQUIERDA-->
+
+    </div>
+  </div><!-- fin opcion 3-->
+
+
 
 
 
@@ -1339,6 +1780,7 @@
   var referenciaA = [];
   var idAV = [];
   var total_form = 0;
+  var idSeleccionar = "";
     $(document).ready(function(){
       //$(".select2").select2();
 
@@ -1346,6 +1788,7 @@
       var theme = 'darkblue';
 
       $("#formAdd .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
+      $("#FilterAdvanced .select2").select2().attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);');
       $(".input").inputmask();
 
       $(function () {
@@ -1369,13 +1812,14 @@
           dataType: "json",
           dataFields: [
               { name: 'id', type: 'int' },
-              { name: 'codigo', type: 'string' },
+              { name: 'codigo_id', type: 'string' },
               { name: 'nombre', type: 'string' },
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
-              { name: 'estado', type: 'string' },
+              { name: 'estado_desc', type: 'string' },
               { name: 'id_estado', type: 'int' },
-              { name: 'responsable', type: 'string' }
+              { name: 'responsable', type: 'string' },
+              { name: 'compartido', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -1399,165 +1843,62 @@
           //},
           localization: getLocalization('es'),
           //pageSize: 100,
+          rendered: function () {
+            actualizar();
+          },
           columns: [
-            { text: 'Estado', width: 100, dataField: 'estado' },
-            { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
-            { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable' },
             { text: 'Opciones', width: 120,
                   cellsRenderer: function (row, column, value, rowData) {
-                          if(rowData.id_estado == 1 || rowData.id_estado == 3){
+                          //if(rowData.id_estado == 1 || rowData.id_estado == 3){
                               var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                              var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info "><span>Editar</span> <i class="fa fa-pencil m-l-5"></i></button>';
-                              var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger  m-t-10"><span>Eliminar &nbsp; &nbsp;</span> <i class="fa fa-trash-o m-l-5"></i></button>';
+                              var inputEdit = '<button onclick="btn_update('+rowData.id+')" class="btn btn-sm btn-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;" ><i class="fa fa-pencil m-l-5"></i></button>';
+                              var inputDelete = '<button onclick="btn_delete('+rowData.id+')" class="btn btn-sm btn-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="fa fa-trash-o m-l-5"></i></button>';
+                              var inputShow = '<a onclick="btn_show('+rowData.id+')" class="btn btn-sm btn-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;"><i class="fa fa-eye m-l-5"></i></a>';
                               abm += inputEdit;
                               abm += inputDelete;
+                              abm += inputShow;
                               abm += "</div>";
                               return abm;
-                          }else{
-                              if(rowData.id_estado == 4){
-                                var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                                var inputVer = '-';
-                                abm += inputVer;
-                                abm += "</div>";
-                                return abm;
-                              }
-
-                              if(rowData.id_estado == 2){
-                                var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                                var inputCans = '<button onclick="btn_recuperar('+rowData.id+')" class="btn btn-sm btn-info "><span>Recuperar</span> <i class="fa fa-mail-reply-all m-l-5"></i></button>';
-                                abm += inputCans;
-                                abm += "</div>";
-                                return abm;
-                              }
-
-                          }
+                          // }else{
+                          //     if(rowData.id_estado == 4){
+                          //       var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                          //       var inputVer = '-';
+                          //       abm += inputVer;
+                          //       abm += "</div>";
+                          //       return abm;
+                          //     }
+                          //
+                          //     if(rowData.id_estado == 2){
+                          //       var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
+                          //       var inputCans = '<button onclick="btn_recuperar('+rowData.id+')" class="btn btn-sm btn-info "><i class="fa fa-mail-reply-all m-l-5"></i></button>';
+                          //       abm += inputCans;
+                          //       abm += "</div>";
+                          //       return abm;
+                          //     }
+                          //
+                          // }
 
                   }
             },
+            { text: 'ID_FICHA', dataField: 'codigo_id', width: 80, cellsAlign: 'left' },
+            { text: 'Estado', width: 100, dataField: 'estado_desc' },
+            { text: 'Nombre fuente', width: 350,dataField: 'nombre' },
+            { text: 'Tipo', width: 150,dataField: 'tipo' },
+            { text: 'Compartido', width: 100, dataField: 'compartido' },
+            { text: 'Responsable', width: 400, dataField: 'responsable' },
+
         ]
       });
 
-
-
-      // create buttons, listbox and the columns chooser dropdownlist.
-            $("#applyFilter").jqxButton();
-            $("#clearfilter").jqxButton();
-            $("#filterbox").jqxListBox({
-              checkboxes: true,
-              filterable: false,
-              //searchMode: 'containsignorecase',
-              width: "100%",
-              height: 150
-            });
-            $("#columnchooser").jqxDropDownList({
-                autoDropDownHeight: true, selectedIndex: 0, width: 160, height: 25,
-                source: [
-                  { label: 'Responsable', value: 'responsable' },
-                  { label: 'Estado', value: 'estado' },
-                  { label: 'Nombre', value: 'nombre' },
-                  { label: 'Tipo', value: 'tipo' }
-
-                ]
-            });
-            // updates the listbox with unique records depending on the selected column.
-            var updateFilterBox = function (dataField) {
-
-                $("#dataTable").jqxDataTable('clearFilters');
-                var filterBoxAdapter = new $.jqx.dataAdapter(source,
-                {
-                    uniqueDataFields: [dataField],
-                    autoBind: true,
-                    async:false
-                });
-                var uniqueRecords = filterBoxAdapter.records;
-                uniqueRecords.splice(0, 0, '(Todo)');
-                $("#filterbox").jqxListBox({ source: uniqueRecords, displayMember: dataField });
-                $("#filterbox").jqxListBox('checkAll');
-            }
-            updateFilterBox('responsable');
-            // handle select all item.
-            var handleCheckChange = true;
-            $("#filterbox").on('checkChange', function (event) {
-                if (!handleCheckChange)
-                    return;
-
-                if (event.args.label != '(Todo)') {
-                    // update the state of the "Select All" listbox item.
-                    handleCheckChange = false;
-                    $("#filterbox").jqxListBox('checkIndex', 0);
-                    var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
-                    var items = $("#filterbox").jqxListBox('getItems');
-                    if (checkedItems.length == 1) {
-                        $("#filterbox").jqxListBox('uncheckIndex', 0);
-                    }
-                    else if (items.length != checkedItems.length) {
-                        $("#filterbox").jqxListBox('indeterminateIndex', 0);
-                    }
-                    handleCheckChange = true;
-                }
-                else {
-                    // check/uncheck all items if "Select All" is clicked.
-                    handleCheckChange = false;
-                    if (event.args.checked) {
-                        $("#filterbox").jqxListBox('checkAll');
-                    }
-                    else {
-                        $("#filterbox").jqxListBox('uncheckAll');
-                    }
-                    handleCheckChange = true;
-                }
-            });
-            // handle columns selection.
-            $("#columnchooser").on('select', function (event) {
-                updateFilterBox(event.args.item.value);
-            });
-            // builds and applies the filter.
-            var applyFilter = function (dataField) {
-                $("#dataTable").jqxDataTable('clearFilters');
-                var filtertype = 'stringfilter';
-                if (dataField == 'date') filtertype = 'datefilter';
-                if (dataField == 'price' || dataField == 'quantity') filtertype = 'numericfilter';
-                // create a new group of filters.
-                var filtergroup = new $.jqx.filter();
-                // get listbox's checked items.
-                var checkedItems = $("#filterbox").jqxListBox('getCheckedItems');
-                if (checkedItems.length == 0) {
-                    var filter_or_operator = 1;
-                    var filtervalue = "Empty";
-                    var filtercondition = 'equal';
-                    var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
-                    filtergroup.addfilter(filter_or_operator, filter);
-                }
-                else {
-                    for (var i = 0; i < checkedItems.length; i++) {
-                        var filter_or_operator = 1;
-                        // set filter's value.
-                        var filtervalue = checkedItems[i].label;
-                        // set filter's condition.
-                        var filtercondition = 'equal';
-                        // create new filter.
-                        var filter = filtergroup.createfilter(filtertype, filtervalue, filtercondition);
-                        // add the filter to the filter group.
-                        filtergroup.addfilter(filter_or_operator, filter);
-                    }
-                }
-                // add the filters.
-                $("#dataTable").jqxDataTable('addFilter', dataField, filtergroup);
-                // apply the filters.
-                $("#dataTable").jqxDataTable('applyFilters');
-            }
-            // clears the filter.
-            $("#clearfilter").click(function () {
-                $("#dataTable").jqxDataTable('clearFilters');
-            });
-            // applies the filter.
-            $("#applyFilter").click(function () {
-                var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
-                applyFilter(dataField);
-            });
-
-
+      $("#dataTable").on('filter', function (event) {
+          var args = event.args;
+          var filters = args.filters;
+          if(filters==""){
+            var visibleRows = $("#dataTable").jqxDataTable('getRows');
+            var count = visibleRows.length;
+            $('#total_registros').html(count);
+          }
+      });
 
     $(".ctrl-btn").click(function () {
       validarSession();
@@ -1579,13 +1920,13 @@
 
       var bt_next =  activo.substr(-1,1) ;
       bt_next++;
-      $('input[name="tap_next"]').attr("value",bt_next);        
+      $('input[name="tap_next"]').attr("value",bt_next);
       if(bt_next == 7){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
         $("#bt_enviar").removeClass('hidden');
       }
-      $("#tab-ini"+bt_next).removeClass('disabled');         
+      $("#tab-ini"+bt_next).removeClass('disabled');
       $("#tab-ini"+bt_next ).trigger( "click" );
 
     });
@@ -1604,12 +1945,8 @@
          });
          $('#window').jqxWindow('focus');
      }
-     //createElements();
 
-     $( "#numero_total_formulario" ).keyup(function( event ) {
-      //alert($(this).val());
-
-
+     $( "#numero_total_formulario" ).change(function( event ) {
         var arrayForm = [];
         for(i=1;i<=total_form;i++){
           arrayForm[i] = $('#frm-nom-'+i).val();
@@ -1634,14 +1971,36 @@
                       '</tr>';
            $("#datosForm > tbody").append(html);
          }
-
-
+     });
+     $("#numero_total_formulario" ).keyup(function( event ) {
+        var arrayForm = [];
+        for(i=1;i<=total_form;i++){
+          arrayForm[i] = $('#frm-nom-'+i).val();
+        }
+        $("#datosForm > tbody").html('');
+        total_form = $(this).val();
+        //$("#datosForm > tbody").html("");
+         for(i=1; i<= $(this).val();i++){
+           if(arrayForm[i]){
+             var valorNombre = arrayForm[i];
+           }else{
+             var valorNombre = "";
+           }
+           var html = '<tr id="FRM'+ i +'" class="">'+
+                           '<td>'+
+                             'Nombre formulario <input type="text" name="formulario_correlativo[]" class="text-center" value="'+i+'" style="width:30px;" /> :'+
+                           '</td>'+
+                           '<td>'+
+                             '<input type="text" id="frm-nom-'+i+'" name="nombre_formulario[]" value="'+valorNombre+'" class="form-control"/>'+
+                           '</td>'+
+                           '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarFRM('+i+');"> <i class="fa fa-close text-danger"></i> </a></td>'+
+                      '</tr>';
+           $("#datosForm > tbody").append(html);
+         }
      });
 
      $(".agregarRS").click(function () {
-
        if( $("input[name=responsable_1]").val() != ""){
-
             $(".panelIniRs" ).trigger( "click" );
              responsableIDA.push("");
              responsableEstadoA.push(1);
@@ -1650,16 +2009,12 @@
              responsable3A.push($('input[name=responsable_3]').val());
              responsable4A.push($('input[name=responsable_4]').val());
              referenciaA.push($('input[name=referencia]').val());
-
              actualizarListaResponsable();
-
              $('input[name=responsable_1]').val('');
              $('input[name=responsable_2]').val('');
              $('input[name=responsable_3]').val('');
              $('input[name=responsable_4]').val('');
              $('input[name=referencia]').val('');
-
-
        }else{
          $.toast({
           heading: 'Error:',
@@ -1672,8 +2027,6 @@
 
        }
      });
-
-
 
      $(".controlOtro").change(function () {
        var ele = $(this).attr('name');
@@ -1705,9 +2058,6 @@
            $('#'+ele+'_otro').addClass('hidden');
          }
       });
-
-
-
       $(".agregarARC").click(function () {
         $('#icoLoad').removeClass('hidden');
          var nombre = $('input[name=arc_nombre_input]').val();
@@ -1788,10 +2138,6 @@
         }
 
       });
-
-
-
-
       $('.enabledCampos').change(function() {
           if($(this).val() == 'Encuesta'){
              $('.encuestasShow').removeClass('hidden');
@@ -1805,17 +2151,12 @@
              $('.rraaShow').addClass('hidden');
           }
       });
-
-
       $("#bt_enviar").click(function () {
         $("#estado").val(2);
       });
-      $("#bt_guardar").click(function () {
-        $("#estado").val(1);
-      });
-
-
-
+      // $("#bt_guardar").click(function () {
+      //   $("#estado").val(1);
+      // });
       $("#generarExport").click(function() {
           //cantidad de datos
           var selection = $("#dataTable").jqxDataTable('getSelection');
@@ -1865,31 +2206,20 @@
                 });
               break;
           }
-
-
-
-
-
       });
-
-
-
-
-
     });
     //fin document
 
-
-
-
-
-
     $('#btn-back, .btn-back').click(function() {
        validarSession();
+       updateComboResponsables();
        $('#option1').removeClass('hidden');
        //$('#nivel_1').addClass('show');
        $('#option2').removeClass('show');
        $('#option2').addClass('hidden');
+
+       $('#option3').removeClass('show');
+       $('#option3').addClass('hidden');
 
        $("#formAdd")[0].reset();
        $('.with-errors').html('');
@@ -1929,6 +2259,33 @@
        $(".panelIniRs" ).trigger( "click" );
     });
 
+    function limpiarBasico(){
+       $("#formAdd")[0].reset();
+       $('.with-errors').html('');
+       $('.form-group').removeClass('has-error');
+       $("#cont_resp").html(0);
+
+       fechaAV = [];
+       valorAV = [];
+       estadoAV = [];
+       origenAV = [];
+
+       responsableIDA = [];
+       responsableEstadoA = [];
+       responsable1A = [];
+       responsable2A = [];
+       responsable3A = [];
+       responsable4A = [];
+       referenciaA = [];
+       idAV = [];
+       total_form = 0;
+       $("#datosARC > tbody").html("");
+       $("#datosForm > tbody").html("");
+
+       $("#set_responsables > tbody").html("");
+       $('input[name="id_fuente"]').val(null);
+    }
+
     $('#btn-new, .btn-new ').click(function() {
         validarSession();
        $('#option2').removeClass('hidden');
@@ -1937,7 +2294,7 @@
        $('#tab-ini2').addClass('disabled'); // desactiva boton de formulario
        $('#tab-ini3').addClass('disabled');
        $('#tab-ini4').addClass('disabled');
-       $('#tab-ini5').addClass('disabled');       
+       $('#tab-ini5').addClass('disabled');
        $('#tab-ini6').addClass('disabled');
        $('#tab-ini7').addClass('disabled');
 
@@ -1955,13 +2312,14 @@
              success: function(data){
                if(data.error == false){
                   for(var i=1;i<data.fuente[0].form_activo+1;i++){
-                        $('#tab-ini'+i).removeClass('disabled');                        
+                        $('#tab-ini'+i).removeClass('disabled');
                     }
 
+                   $('input[name="id_fuente"]').val(data.fuente[0].id);
                    //$("#mod_cod_m").val(data.meta).trigger('change');
                    $('#estado_view').html(data.fuente[0].estado);
-                   $('#estado').html(data.fuente[0].id_estado);
-                   $('input[name="id_fuente"]').val(data.fuente[0].id);
+                   $('select[name=estado]').val(data.fuente[0].id_estado);
+
                    $('textarea[name="nombre"]').val(data.fuente[0].nombre);
                    $('input[name="acronimo"]').val(data.fuente[0].acronimo);
                    $('select[name=tipo]').val(data.fuente[0].tipo);
@@ -2101,7 +2459,11 @@
                             responsable4A.push(item.responsable_nivel_4);
                             referenciaA.push(item.numero_referencia);
                   });
-                  actualizarListaResponsable();
+
+                  //setTimeout(function(){
+                      actualizarListaResponsable();
+                  //}, 2000);
+
 
 
 
@@ -2243,10 +2605,16 @@
                   data: $("#formAdd").serialize() , // Adjuntar los campos del formulario enviado.
                   success: function(data){
                     if(data.error == false){
-                        $('input[name="id_fuente"]').attr("value",data.idfuente);                      
-                        var tap_next=0;                      
-                        // $("#btn-back" ).trigger( "click" );
-                        // $("#dataTable").jqxDataTable("updateBoundData");
+                        // $('input[name="id_fuente"]').attr("value",data.idfuente);
+                        // var tap_next=0;
+                        // // $("#btn-back" ).trigger( "click" );
+                        // // $("#dataTable").jqxDataTable("updateBoundData");
+                        // swal("Guardado!", "Se ha guardado correctamente.", "success");
+                        limpiarBasico();
+                        $('input[name="id_fuente"]').attr("value",data.idfuente);
+                        var tap_next=0;
+                        $("#dataTable").jqxDataTable("updateBoundData");
+                        btn_update(data.idfuente);
                         swal("Guardado!", "Se ha guardado correctamente.", "success");
                     }else{
                         $.toast({
@@ -2268,7 +2636,6 @@
                         loaderBg:'#ff6849',
                         icon: 'error',
                         hideAfter: 3500
-
                       });
                     }else{
                       window.location = '/login';
@@ -2325,7 +2692,7 @@
                                                  '<input type="hidden" name="responsable_nivel_4[]" value="'+ responsable4A[data.index] +'" />'+
                                                  '<input type="hidden" name="numero_referencia[]" value="'+ referenciaA[data.index] +'" />'+
                                                  '<b>Institución Propietaria/Custodia:</b> '+responsable1A[data.index]+'<br/>'+
-                                                 '<b>Dependencia Ejecutiva:</b> '+ responsable2A[data.index]+'<br/>'+
+                                                 '<b>Dependencia Ejecutiva/Productor de datos:</b> '+ responsable2A[data.index]+'<br/>'+
                                                  '<b>Dependencia Técnica:</b> '+ responsable3A[data.index] +'<br/>'+
                                                  '<b>Dependencia Informática:</b> '+ responsable4A[data.index] +'<br/>'+
                                                  '<b>Teléfono de referencia:</b> '+ referenciaA[data.index]+
@@ -2454,13 +2821,13 @@
             $('#exportarData').addClass('hidden')
             $("#dataTable").jqxDataTable({filterable: false});
             $('#FilterAdvanced').removeClass('hidden')
-            $('#jqxDataTable').removeClass('col-lg-12');
-            $('#jqxDataTable').fadeIn(500).addClass('col-lg-9');
+            //$('#jqxDataTable').removeClass('col-lg-12');
+            //$('#jqxDataTable').fadeIn(500).addClass('col-lg-9');
       }else{
         $("#dataTable").jqxDataTable({filterable: true});
           $('#FilterAdvanced').addClass('hidden')
-          $('#jqxDataTable').removeClass('col-lg-9');
-          $('#jqxDataTable').fadeIn(500).addClass('col-lg-12');
+          //$('#jqxDataTable').removeClass('col-lg-9');
+          //$('#jqxDataTable').fadeIn(500).addClass('col-lg-12');
         }
     }
     function showExportarData() {
@@ -2471,14 +2838,14 @@
             $('#FilterAdvanced').addClass('hidden')
 
             $('#exportarData').removeClass('hidden')
-            $('#jqxDataTable').removeClass('col-lg-12');
-            $('#jqxDataTable').fadeIn(1000).addClass('col-lg-9');
+            // $('#jqxDataTable').removeClass('col-lg-12');
+            // $('#jqxDataTable').fadeIn(1000).addClass('col-lg-9');
 
       }else{
 
           $('#exportarData').addClass('hidden')
-          $('#jqxDataTable').removeClass('col-lg-9');
-          $('#jqxDataTable').fadeIn(1000).addClass('col-lg-12');
+          // $('#jqxDataTable').removeClass('col-lg-9');
+          // $('#jqxDataTable').fadeIn(1000).addClass('col-lg-12');
         }
     }
 
@@ -2530,8 +2897,315 @@
               return 'fa-file-o';
       }
   }
+  function filtrar(){
+     var url = '{{ url('api/sistemarime/apiFiltroFuenteDatosGrid') }}';
+     // prepare the data
+     var source2 =
+     {
+         dataType: "json",
+         dataFields: [
+             { name: 'id', type: 'int' },
+             { name: 'codigo_id', type: 'string' },
+             { name: 'nombre', type: 'string' },
+             { name: 'acronimo', type: 'string' },
+             { name: 'tipo', type: 'string' },
+             { name: 'estado_desc', type: 'string' },
+             { name: 'id_estado', type: 'int' },
+             { name: 'responsable', type: 'string' },
+             { name: 'compartido', type: 'string' }
+         ],
+         id: 'id',
+         data:{
+               'fil_estados': $("#fil_estados").val(),
+               'fil_compartidos':$("#fil_compartidos").val(),
+               'fil_tipos':$("#fil_tipos").val(),
+               'fil_cabeza':$("#fil_cabeza").val(),
+               'fil_productor':$("#fil_productor").val(),
+               'filter':{{$filtData}},
+         },
+         url: url
+     };
+     var dataAdapter2 = new $.jqx.dataAdapter(source2);
+     $("#dataTable").jqxDataTable({
+         source: dataAdapter2,
+         rendered: function () {
+            actualizar();
+         }
+     });
+     //$('#dataTable').jqxDataTable({});
 
 
+  }
+
+  function actualizar(){
+    var visibleRows = $("#dataTable").jqxDataTable('getView');
+    var count = visibleRows.length;
+    $('#total_registros').html(count);
+  }
+
+  $('#limpiarfiltros').click(function () {
+    $("#filtroForm")[0].reset();
+    $("#fil_cabeza").val('').trigger('change');
+    $("#fil_productor").val('').trigger('change');
+    $("#dataTable").jqxDataTable('clearFilters');
+    filtrar();
+    showFilterAdvanced();
+  });
+
+  function updateComboResponsables(){
+      $("#fil_cabeza").empty();
+      $("#fil_productor").empty();
+      $.ajax({
+            type: "get",
+            url: "{{ url('/api/sistemarime/apiUpdateComboResponsables') }}",
+            dataType: 'json',
+            success: function(data){
+                $.each(data.cabeza, function(i, data) {
+                    $("#fil_cabeza").append('<option value="'+data.cabeza+'">'+data.cabeza+'</option>');
+                });
+                $.each(data.productor, function(i, data) {
+                    $("#fil_productor").append('<option value="'+data.productor+'">'+data.productor+'</option>');
+                });
+
+                //$("#fd_cobertura_geografica").val('').trigger('change');
+            },
+            error:function(data){
+              if(data.status != 401){
+                $.toast({
+                  heading: 'Error:',
+                  text: 'Error al recuperar los datos.',
+                  position: 'top-right',
+                  loaderBg:'#ff6849',
+                  icon: 'error',
+                  hideAfter: 3500
+                });
+              }else{
+                window.location = '/login';
+              }
+
+            }
+      });
+  }
+
+
+
+
+
+  var show_panel = function(){
+     $('#option3').removeClass('hidden');
+     $('#option1').removeClass('show');
+     $('#option1').addClass('hidden');
+     $('#option2').removeClass('show');
+     $('#option2').addClass('hidden');
+  };
+
+
+  var btn_show = function(ele){
+      idSeleccionar = ele;
+     show_panel();//aqui es donde se oculta el otro panel donde estan los datos
+     $.ajax({
+           url: "{{ url('/api/sistemarime/apiDataSetFuente') }}",
+           type: "GET",
+           dataType: 'json',
+           data:{'id':ele},
+           success: function(data){
+             if(data.error == false){
+
+                 //$("#mod_cod_m").val(data.meta).trigger('change');
+                 $('#v_nombre').html(data.fuente[0].nombre);
+                 $('#v_acronimo').html(data.fuente[0].acronimo);
+                 $('#v_tipo').html(data.fuente[0].tipo);
+
+                if(data.fuente[0].tipo == "Encuesta")
+                 $('.encuesta').removeClass('hidden');
+
+                if(data.fuente[0].tipo == "Registro Administrativo")
+                 $('.registro').removeClass('hidden');
+
+                 $('#v_objetivo').html(data.fuente[0].objetivo);
+                 $('#v_serie_datos').html(data.fuente[0].serie_datos);
+                 $('#v_periodicidad').html(data.fuente[0].periodicidad);
+                 $('#v_variable').html(data.fuente[0].variable);
+                 $('#v_modo_recoleccion_datos').html(data.fuente[0].modo_recoleccion_datos);
+                 if(data.fuente[0].modo_recoleccion_datos == 'Otro'){
+                   $('#v_modo_recoleccion_datos_otro').removeClass('hidden');
+                   $('#v_modo_recoleccion_datos_otro').addClass('show');
+                   $('#v_modo_recoleccion_datos_otro').html(data.fuente[0].modo_recoleccion_datos_otro);
+                 }
+                 $('#v_unidad_analisis').html(data.fuente[0].unidad_analisis);
+                 $('#v_universo_estudio').html(data.fuente[0].universo_estudio);
+                 $('#v_disenio_tamanio_muestra').html(data.fuente[0].disenio_tamanio_muestra);
+                 $('#v_tasa_respuesta').html(data.fuente[0].tasa_respuesta);
+                 $('#v_observacion').html(data.fuente[0].observacion);
+
+
+                 if(data.fuente[0].demografia_estadistica_social){
+                   $("#v_demografia_estadistica_social").html(data.fuente[0].demografia_estadistica_social.split(",")).trigger('change');
+                   var str = data.fuente[0].demografia_estadistica_social;
+                   //alert(str.indexOf("Otro"));
+                   if(str){
+                     if(str.indexOf("Otro") >= 0){
+                       $('#v_demografia_estadistica_social_otro').html(data.fuente[0].demografia_estadistica_social_otro);
+                       $('#v_demografia_estadistica_social_otro').removeClass('hidden');
+                       $('#v_demografia_estadistica_social_otro').addClass('show');
+                     }
+                   }
+                 }
+
+                 if(data.fuente[0].estadistica_economica){
+                   $("#v_estadistica_economica").html(data.fuente[0].estadistica_economica.split(",")).trigger('change');
+                   var str = data.fuente[0].estadistica_economica;
+                   //alert(str.indexOf("Otro"));
+                   if(str){
+                     if(str.indexOf("Otro") >= 0){
+                       $('#v_estadistica_economica_otro').html(data.fuente[0].estadistica_economica_otro);
+                       $('#v_estadistica_economica_otro').removeClass('hidden');
+                       $('#v_estadistica_economica_otro').addClass('show');
+                     }
+                   }
+                 }
+
+
+                 if(data.fuente[0].estadistica_medioambiental){
+                   $("#v_estadistica_medioambiental").html(data.fuente[0].estadistica_medioambiental.split(",")).trigger('change');
+                   var str = data.fuente[0].estadistica_medioambiental;
+                   //alert(str.indexOf("Otro"));
+                   if(str){
+                     if(str.indexOf("Otro") >= 0){
+                       $('#v_estadistica_medioambiental_otro').html(data.fuente[0].estadistica_medioambiental_otro);
+                       $('#v_estadistica_medioambiental_otro').removeClass('hidden');
+                       $('#v_estadistica_medioambiental_otro').addClass('show');
+                     }
+                   }
+                 }
+
+
+
+                 if(data.fuente[0].informacion_geoespacial){
+                   $("#v_informacion_geoespacial").html(data.fuente[0].informacion_geoespacial.split(",")).trigger('change');
+                   var str = data.fuente[0].informacion_geoespacial;
+                   //alert(str.indexOf("Otro"));
+                   if(str){
+                     if(str.indexOf("Otro") >= 0){
+                       $('#v_informacion_geoespacial_otro').html(data.fuente[0].informacion_geoespacial_otro);
+                       $('#v_informacion_geoespacial_otro').removeClass('hidden');
+                       $('#v_informacion_geoespacial_otro').addClass('show');
+                     }
+                   }
+                 }
+
+
+                $('#v_numero_total_formulario').html(data.fuente[0].numero_total_formulario);
+
+                total_form = data.fuente[0].numero_total_formulario;
+
+                var form = data.fuente[0].nombre_formulario;
+                if(data.fuente[0].nombre_formulario){
+                  var setForms = form.split('|');
+                  var html ="";
+                  $.each(setForms, function(index, item) {
+                      var i = (index+1);
+                      html += '<tr>'+
+                                         '<td>Nombre formulario '+i+':</td>'+
+                                         '<td>'+item+'</td>'+
+                                    '</tr>';
+                  });
+                  $("#v_datosForm > tbody").html(html);
+                }
+                console.log(data.fuente[0].cobertura_rraa);
+                $('#v_cobertura_rraa').html(data.fuente[0].cobertura_rraa);
+                $('#v_cobertura_rraa_descripcion').html(data.fuente[0].cobertura_rraa_descripcion);
+
+                if(data.fuente[0].cobertura_geografica){
+                  var html ="";
+                  var cobertura = data.fuente[0].cobertura_geografica;
+                  var setCobe = cobertura.split(',');
+                  $.each(setCobe, function(index, item) {
+                        html += data.cobertura[item]+'<br/>';
+                  });
+                  $("#v_cobertura_geografica").html(html);
+                }
+
+                if(data.fuente[0].nivel_representatividad_datos){
+                  var html ="";
+                  var desagregacion = data.fuente[0].nivel_representatividad_datos;
+                  var setCobe = desagregacion.split(',');
+                  $.each(setCobe, function(index, item) {
+                        html += data.cobertura[item]+'<br/>';
+                  });
+                  $("#v_nivel_representatividad_datos").html(html);
+                }
+
+                var html ="";
+                $.each(data.responsables, function(index, item) {
+                          html +='<div class="col-lg-4 col-sm-6">'+
+                                      '<h5><b><u>Responsable '+(index+1)+'</u></b></h5>'+
+                                      '<b>Institución Propietaria/Custodia</b>'+
+                                      '<p>: '+item.responsable_nivel_1+'</p>'+
+                                      '<b>Dependencia Ejecutiva</b>'+
+                                      '<p>: '+item.responsable_nivel_2+' </p>'+
+                                      '<b>Dependencia Técnica</b>'+
+                                      '<p>: '+item.responsable_nivel_3+'</p>'+
+                                      '<b>Dependencia Informática</b>'+
+                                      '<p>: '+item.responsable_nivel_4+'</p>'+
+                                      '<b>Teléfono de referencia</b>'+
+                                      '<p>: '+item.numero_referencia+'</p>'+
+                                    '</div>';
+                });
+                $("#v_set_responsables").html(html);
+
+
+
+
+                $.each(data.archivos, function(i, data) {
+                    var nombre = data.nombre.replace(/\s/g,"_");
+                    var filepath = data.archivo;
+                    var ico = filepath.split(".");
+                    var iconoSel = iconos(ico[1]);
+                    var html = '<tr id="VARC'+ nombre +'" class="">'+
+                                    '<td>'+
+                                      '<a href="/respaldos/'+data.archivo+'" style="cursor: pointer;" title="Descargar Archivos respaldo" target="_blank">'+
+                                      '<p>'+
+                                        '<i class="fa '+iconoSel+'"  style="font-size: 30px;"></i> '+
+                                         data.nombre +
+                                      '</p>'+
+                                      '</a>'+
+                                    '</td>'+
+                                '</tr>';
+                     $("#v_datosARC > tbody").append(html);
+                });
+
+                $('#v_confidencialidad').html(data.fuente[0].confidencialidad);
+                $('#v_notas_legales').html(data.fuente[0].notas_legales);
+
+             }else{
+                 $.toast({
+                  heading: data.title,
+                  text: data.msg,
+                  position: 'top-right',
+                  loaderBg:'#ff6849',
+                  icon: 'warning',
+                  hideAfter: 3500
+                });
+             }
+           },
+           error:function(data){
+             if(data.status != 401){
+               $.toast({
+                 heading: 'Error:',
+                 text: 'Error al recuperar los datos.',
+                 position: 'top-right',
+                 loaderBg:'#ff6849',
+                 icon: 'error',
+                 hideAfter: 3500
+               });
+             }else{
+               window.location = '/login';
+             }
+           }
+     });
+
+  };
 
 
   </script>

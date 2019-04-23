@@ -477,11 +477,11 @@
           dataType: "json",
           dataFields: [
               { name: 'id', type: 'int' },
-              { name: 'codigo', type: 'string' },
+              { name: 'codigo_id', type: 'string' },
               { name: 'nombre', type: 'string' },
               { name: 'acronimo', type: 'string' },
               { name: 'tipo', type: 'string' },
-              { name: 'estado', type: 'string' },
+              { name: 'estado_desc', type: 'string' },
               { name: 'responsable', type: 'string' }
           ],
           id: 'id',
@@ -502,20 +502,21 @@
           localization: getLocalization('es'),
           //pageSize: 50,
           columns: [
-            { text: 'Estado', dataField: 'estado', width: 120, cellsAlign: 'center' },
-            { text: 'Nombre fuente', minWidth: 200,dataField: 'nombre' },
-            { text: 'Tipo', width: 150,dataField: 'tipo' },
-            { text: 'Responsable', width: 200, dataField: 'responsable' },
-            { text: 'Opciones', width: 120,
+            { text: 'Opciones', width: 100,
                   cellsRenderer: function (row, column, value, rowData) {
                           var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
-                          var inputShow = '<button onclick="btn_show('+rowData.id+')" class="btn btn-sm btn-info "><span>Ver</span> <i class="fa fa-eye m-l-5"></i></button>';
+                          var inputShow = '<button onclick="btn_show('+rowData.id+')" class="btn btn-sm btn-info "><span>Ficha</span> <i class="fa fa-eye m-l-5"></i></button>';
                           abm += inputShow;
                           abm += "</div>";
                           return abm;
 
                   }
             },
+            { text: 'ID_FICHA', dataField: 'codigo_id', width: 80, cellsAlign: 'center' },
+            { text: 'Estado', dataField: 'estado_desc', width: 120, cellsAlign: 'center' },
+            { text: 'Nombre fuente', width: 450,dataField: 'nombre' },
+            { text: 'Tipo', width: 150,dataField: 'tipo' },
+            { text: 'Responsable', width: 400, dataField: 'responsable' }
         ]
       });
 
@@ -650,6 +651,11 @@
                     });
                     $("#datosForm > tbody").html(html);
                   }
+
+                  $('#cobertura_rraa').html(data.fuente[0].cobertura_rraa);
+                  $('#cobertura_rraa_descripcion').html(data.fuente[0].cobertura_rraa_descripcion);
+
+
                   if(data.fuente[0].cobertura_geografica){
                     var html ="";
                     var cobertura = data.fuente[0].cobertura_geografica;

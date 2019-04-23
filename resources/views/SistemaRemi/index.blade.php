@@ -211,6 +211,10 @@
                   <img src="/img/PILAR_12.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(12)"/>
                   <div>{{$pdes[12]}}</div>
                 </div>
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 m-b-10 imagensob">
+                  <img src="/img/PILAR_13.jpg" height="150" alt="-"  class="box" onclick="filtrarPdes(13)"/>
+                  <div>{{$pdes[13]}}</div>
+                </div>
             </div>
           </div>
       </div>

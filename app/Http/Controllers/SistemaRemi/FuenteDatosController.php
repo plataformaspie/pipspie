@@ -46,7 +46,7 @@ class FuenteDatosController extends Controller
     foreach ($sql as $mn) {
 
         //$submenu = \DB::select("SELECT * FROM sub_menus WHERE id_menu = ".$mn->id." AND activo = true ORDER BY orden ASC");
-        $submenu = \DB::select("SELECT s.* FROM sub_menus s INNER JOIN roles_sub_menus rs ON s.id = rs.id_sub_menu WHERE rs.id_rol = ".$rol." AND s.id_menu = ".$mn->id." AND s.activo = true  ORDER BY orden ASC");         
+        $submenu = \DB::select("SELECT s.* FROM sub_menus s INNER JOIN roles_sub_menus rs ON s.id = rs.id_sub_menu WHERE rs.id_rol = ".$rol." AND s.id_menu = ".$mn->id." AND s.activo = true  ORDER BY orden ASC");
         array_push($this->menus, array('id' => $mn->id,'titulo' => $mn->titulo,'descripcion' => $mn->descripcion,'url' => $mn->url,'icono' => $mn->icono,'id_html' => $mn->id_html,'tipo_menu'=>$mn->tipo_menu,'class'=>$mn->class,'submenus' => $submenu));
     }
 
@@ -82,22 +82,27 @@ class FuenteDatosController extends Controller
     $economicas = FuenteTiposCategoriaTematica::where('grupo','Estadísticas Económicas')->get();
     $medioambientales = FuenteTiposCategoriaTematica::where('grupo','Estadísticas Medioambientales')->get();
     $geoespacial = FuenteTiposCategoriaTematica::where('grupo','Información Geoespacial')->get();
-    return view('SistemaRemi.admin-fuente-datos',compact('tipos','unidades','frecuencia','fuente_datos','fuente_tipos','dimensiones','recoleccion','demografia','economicas','medioambientales','geoespacial'));
+    $estados = \DB::select("SELECT * FROM remi_estados ORDER BY id ASC");
+    $cabeza = \DB::select("SELECT responsable_nivel_1 as cabeza FROM remi_fuente_datos_responsable WHERE activo = true GROUP BY responsable_nivel_1 ORDER BY responsable_nivel_1 ASC");
+    $productor = \DB::select("SELECT responsable_nivel_2 as productor FROM remi_fuente_datos_responsable WHERE activo = true GROUP BY responsable_nivel_2 ORDER BY responsable_nivel_2 ASC");
+
+    $filtData = 0;
+    return view('SistemaRemi.admin-fuente-datos',compact('tipos','unidades','frecuencia',
+    'fuente_datos','fuente_tipos','dimensiones','recoleccion','demografia','economicas',
+    'medioambientales','geoespacial','estados','cabeza','productor','filtData'));
   }
 
   public function apiSetListFuenteDatos(Request $request)
   {
-      $dataFuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
+      /*$dataFuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
                   ->where('remi_fuente_datos.activo', true)
                   ->orderBy('nombre','ASC')
                   ->select('remi_fuente_datos.*','et.nombre as estado','et.id as id_estado')
                   ->get();
-      /*foreach ($dataFuente as $value) {
-        $data[$value->id] = $value->nombre;
-      }*/
       $this->listFuente = array();
       foreach ($dataFuente as $item) {
-          $responsable = \DB::select("SELECT string_agg(responsable_nivel_1, ',') as responsable FROM remi_fuente_datos_responsable WHERE id_fuente = ".$item->id." AND activo = true");
+          $responsable = \DB::select("SELECT string_agg(responsable_nivel_1, ',') as responsable
+                                      FROM remi_fuente_datos_responsable WHERE id_fuente = ".$item->id." AND activo = true");
           array_push($this->listFuente, array('id' => $item->id,
                                               'codigo' => $item->codigo,
                                               'nombre' => $item->nombre,
@@ -106,8 +111,35 @@ class FuenteDatosController extends Controller
                                               'estado' => $item->estado,
                                               'id_estado'=>$item->id_estado,
                                               'responsable' => $responsable[0]->responsable));
-      }
-      return \Response::json($this->listFuente);
+      }*/
+      $sql="SELECT *,
+            (
+            	SELECT string_agg( DISTINCT ('<b>Cabeza:</b>'||responsable_nivel_1||'<br/>'||'<b>Productor:</b>'||responsable_nivel_2||'<br/>'), '<br/>')
+            	FROM remi_fuente_datos_responsable
+            	WHERE id_fuente = fuente.id
+            	AND activo = true
+            ) as responsable,
+            (
+              SELECT
+              CASE
+              WHEN COUNT(DISTINCT responsable_nivel_1)>1
+              THEN 'Si'
+              ELSE 'No'
+              END
+              AS res
+              FROM remi_fuente_datos_responsable
+              WHERE activo = true
+              AND id_fuente = fuente.id
+            ) as compartido
+            FROM (
+            SELECT f.*, et.nombre as estado_desc, et.id as id_estado,LPAD(f.id::text, 4, '0') as codigo_id
+            FROM remi_fuente_datos f
+            INNER JOIN remi_estados as et on f.estado = et.id
+            WHERE f.activo = TRUE
+            ORDER BY id ASC
+          ) as fuente";
+      $fuente = \DB::select($sql);
+      return \Response::json($fuente);
 
    }
 
@@ -183,13 +215,9 @@ class FuenteDatosController extends Controller
             $fuente->id_user = $this->user->id;
             $fuente->estado = 1;
             $fuente->activo = true;
-            $fuente->save();  
+            $fuente->save();
 
-            $id_reg = $fuente->id;
-
-
-
-            $fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->demografia_estadistica_social):null;
+            /*$fuente->demografia_estadistica_social = ($request->demografia_estadistica_social)?implode(",", $request->demografia_estadistica_social):null;
             $fuente->demografia_estadistica_social_otro = $request->demografia_estadistica_social_otro;
             $fuente->estadistica_economica = ($request->estadistica_economica)?implode(",", $request->estadistica_economica):null;
             $fuente->estadistica_economica_otro = $request->estadistica_economica_otro;
@@ -203,22 +231,16 @@ class FuenteDatosController extends Controller
 
             $fuente->cobertura_geografica = ($request->cobertura)?implode(",", $request->cobertura):null;
             $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
-            $fuente->id_user = $this->user->id;
-            $fuente->estado = 1;
-            $fuente->activo = true;
-            $fuente->save();
-
-
 
             $fuente->numero_total_formulario = $request->numero_total_formulario;
             $fuente->nombre_formulario = ($request->nombre_formulario)?implode("|", $request->nombre_formulario):null;
 
             $fuente->confidencialidad = $request->confidencialidad;
             $fuente->notas_legales = $request->notas_legales;
-            // $fuente->id_user = $this->user->id;
-            // $fuente->estado = 1;
-            // $fuente->activo = true;
-            // $fuente->save();
+            $fuente->id_user = $this->user->id;
+            $fuente->estado = 1;
+            $fuente->activo = true;
+            $fuente->save();
 
 
 
@@ -231,9 +253,9 @@ class FuenteDatosController extends Controller
                     $responsable->responsable_nivel_3 = $request->responsable_nivel_3[$k];
                     $responsable->responsable_nivel_4 = $request->responsable_nivel_4[$k];
                     $responsable->numero_referencia = $request->numero_referencia[$k];
-                    // $responsable->id_user = $this->user->id;
-                    // $responsable->activo = true;
-                    // $responsable->save();
+                    $responsable->id_user = $this->user->id;
+                    $responsable->activo = true;
+                    $responsable->save();
               }
             }
 
@@ -247,11 +269,11 @@ class FuenteDatosController extends Controller
                     $archivos->id_user = $this->user->id;
                     $archivos->save();
               }
-            }
+            }*/
 
             return \Response::json(array(
                 'error' => false,
-                'idfuente'=>$id_reg,                
+                'idfuente'=>$fuente->id,
                 'title' => "Success!",
                 'msg' => "Se guardo con exito.")
             );
@@ -285,16 +307,14 @@ class FuenteDatosController extends Controller
           $fuente->tasa_respuesta = $request->tasa_respuesta;
           $fuente->observacion = $request->observacion;
 
-          if($request->tap_next<$fuente->form_activo){  
-              //$fuente->form_activo = $request->form_activo; 
-              $j=1;         
+          if($request->tap_next > $fuente->form_activo){
+              $fuente->form_activo = $request->tap_next;
           }
-          else {
-              $fuente->form_activo = $request->tap_next;  
-          }          
+
+
           $fuente->id_user_updated = $this->user->id;
           $fuente->estado =  $request->estado;
-          $fuente->save();          
+          $fuente->save();
 
 
           $fuente = FuenteDatos::find($request->id_fuente);
@@ -308,7 +328,7 @@ class FuenteDatosController extends Controller
           $fuente->informacion_geoespacial_otro = $request->informacion_geoespacial_otro;
           $fuente->id_user_updated = $this->user->id;
           $fuente->estado =  $request->estado;
-          $fuente->save();  
+          $fuente->save();
 
           $fuente = FuenteDatos::find($request->id_fuente);
           $fuente->numero_total_formulario = $request->numero_total_formulario;
@@ -325,7 +345,7 @@ class FuenteDatosController extends Controller
           $fuente->nivel_representatividad_datos = ($request->desagregacion)?implode(",", $request->desagregacion):null;
           $fuente->id_user_updated = $this->user->id;
           $fuente->estado =  $request->estado;
-          $fuente->save(); 
+          $fuente->save();
 
 
           $fuente = FuenteDatos::find($request->id_fuente);
@@ -395,6 +415,7 @@ class FuenteDatosController extends Controller
 
             return \Response::json(array(
                 'error' => false,
+                'idfuente'=>$fuente->id,
                 'title' => "Success!",
                 'msg' => "Se guardo con exito.")
             );
@@ -525,9 +546,114 @@ class FuenteDatosController extends Controller
       );
   }
 
+  public function apiFiltroFuenteDatosGrid(Request $request)
+  {
+      $fuentes = [];
+
+      $user = \Auth::user();
+      $id=$user->id;
+      $id_rol=$user->id_rol;
+
+      $estado = "";
+      $compartidos = "";
+      $tipo = "";
+      $cabeza = "";
+      $productor = "";
+      $where = "";
+
+       if($request->fil_estados != 0){
+          $where .="AND tabla.estado = '".$request->fil_estados."' ";
+       }
+       if($request->fil_compartidos != '0'){
+          $where .="AND tabla.compartido = '".$request->fil_compartidos."' ";
+       }
+       if($request->fil_tipos != '0'){
+          $where .="AND tabla.tipo = '".$request->fil_tipos."' ";
+       }
+       if($request->fil_cabeza != ''){
+          $where.="AND(";
+          foreach ($request->fil_cabeza as $key=>$value) {
+            if($key==0)
+            $where .="tabla.cabeza LIKE '".$value."' ";
+            else
+            $where .="OR tabla.cabeza LIKE '".$value."' ";
+
+            $where .="OR tabla.cabeza LIKE '%|".$value."|%' ";
+            $where .="OR tabla.cabeza LIKE '%|".$value."' ";
+            $where .="OR tabla.cabeza LIKE '".$value."|%'";
+          }
+          $where.=")";
+       }
+       if($request->fil_productor != ''){
+          $where.="AND(";
+          foreach ($request->fil_productor as $key=>$value) {
+            if($key==0)
+            $where .="tabla.productor LIKE '".$value."' ";
+            else
+            $where .="OR tabla.productor LIKE '".$value."' ";
+
+            $where .="OR tabla.productor LIKE '%|".$value."|%' ";
+            $where .="OR tabla.productor LIKE '%|".$value."' ";
+            $where .="OR tabla.productor LIKE '".$value."|%'";
+          }
+          $where.=")";
+       }
+
+      if($request->filter > 0){
+        $sql = "";
+      } else  {
+         $sql = "SELECT *
+                 FROM (
+                   SELECT *,
+                   (
+                     SELECT string_agg( DISTINCT ('<b>Cabeza:</b>'||responsable_nivel_1||'<br/>'||'<b>Productor:</b>'||responsable_nivel_2||'<br/>'), '<br/>') FROM remi_fuente_datos_responsable
+                     WHERE id_fuente = fuente.id AND activo = true) as responsable,
+                    (
+                    SELECT CASE WHEN COUNT(DISTINCT responsable_nivel_1)>1 THEN 'Si' ELSE 'No'END AS res
+                    FROM remi_fuente_datos_responsable WHERE activo = true AND id_fuente = fuente.id) as compartido,
+                    (
+                    SELECT string_agg( DISTINCT responsable_nivel_1, '|')
+                    FROM remi_fuente_datos_responsable WHERE id_fuente = fuente.id AND activo = true) as cabeza,
+                    (
+                    SELECT string_agg( DISTINCT responsable_nivel_2, '|')
+                    FROM remi_fuente_datos_responsable WHERE id_fuente = fuente.id AND activo = true) as productor
+
+                    FROM (
+                      SELECT f.*, et.nombre as estado_desc, et.id as id_estado,LPAD(f.id::text, 4, '0') as codigo_id
+                      FROM remi_fuente_datos f
+                      INNER JOIN remi_estados as et on f.estado = et.id
+                      WHERE f.activo = TRUE
+                      ORDER BY id ASC
+                    ) as fuente
+                  ) as tabla
+                  WHERE 1=1
+                  ".$where;
+      }
+      $fuentes = \DB::select($sql);
+      //'codigo' => str_pad($item->id, 4, "0", STR_PAD_LEFT),
+      return \Response::json($fuentes);
+  }
 
 
-   
+
+  public function apiUpdateComboResponsables(Request $request)
+  {
+
+      $cabeza = \DB::select("SELECT responsable_nivel_1 as cabeza FROM remi_fuente_datos_responsable WHERE activo = true GROUP BY responsable_nivel_1 ORDER BY responsable_nivel_1 ASC");
+      $productor = \DB::select("SELECT responsable_nivel_2 as productor FROM remi_fuente_datos_responsable WHERE activo = true GROUP BY responsable_nivel_2 ORDER BY responsable_nivel_2 ASC");
+
+      return \Response::json(array(
+          'error' => false,
+          'cabeza' => $cabeza,
+          'productor'=> $productor,
+          'title' => "Success!",
+          'msg' => "Se guardo con exito.")
+      );
+
+  }
+
+
+
 
 
 }

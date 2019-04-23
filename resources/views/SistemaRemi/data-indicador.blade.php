@@ -38,7 +38,7 @@
       <div class="col-md-12">
           <div class="white-box">
             <div class="row">
-                <div id="HTMLtoPDF" class="col-md-9">
+                <div id="HTMLtoPDF" class="col-md-12">
 
                   <div class="row media" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
                       <div class="col-lg-2 col-xs-12">
@@ -73,7 +73,7 @@
                                 <p class="text-muted card-footer">Meta PDES al 2020</p>
                                 @foreach ($metas as $item)
                                   @if ($item->gestion == 2020)
-                                      <p>{{$item->valor}}</p>
+                                      <p>{{number_format($item->valor,4,',','.')}}</p>
                                   @endif
                                 @endforeach
 
@@ -104,6 +104,39 @@
                                                         <div class="col-12"><b>{{$item->pilar}}:</b> {{$item->desc_p}}</div>
                                                         <div class="col-12"><b>{{$item->meta}}:</b> {{$item->desc_m}}</div>
                                                         <div class="col-12"><b>{{$item->resultado}}:</b> {{$item->desc_r}}</div>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        @endforeach
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-12 col-sm-12">
+                      <div class="panel panel-success">
+                          <div class="panel-heading" style="background-color: #468E9B;">
+
+                              <div class="pull-left" style="margin-top: -9px;">
+                                <a href="#" data-perform="panel-collapse">
+                                  <i class="ti-minus"></i> Articulación ODS
+                                </a>
+                              </div>
+                          </div>
+                          <div class="panel-wrapper collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                                    <div class="row">
+                                        @foreach ($ods as $item)
+                                          <div class="row">
+                                                <div class="media row col-lg-12 ">
+                                                    <div class="col-lg-2 text-center">
+                                                        <img src="/img/{{$item->logo}}" alt="Objetivo" width="100">
+                                                    </div>
+                                                    <div class="row col-lg-10">
+                                                        <div class="col-12"><b>Comparabilidad:</b> {{$item->comparabilidad_ods_pdes}}<hr class="m-t-0 m-b-10"/></div>
+                                                        <div class="col-12"><b>{{$item->objetivo}}:</b> {{$item->desc_o}}</div>
+                                                        <div class="col-12"><b>{{$item->meta}}:</b> {{$item->desc_m}}</div>
+                                                        <div class="col-12"><b>{{$item->indicador}}:</b> {{$item->desc_i}}</div>
                                                     </div>
                                                 </div>
                                           </div>
@@ -162,7 +195,7 @@
                                       <b>Valor actual de linea base</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
-                                      <p>: {{$indicador->linea_base_valor}}</p>
+                                      <p>: {{number_format($indicador->linea_base_valor,4,',','.')}} </p>
                                     </div>
 
                                 </div>
@@ -207,7 +240,9 @@
                                           <b>Fuente del numerador</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
-                                          <p>: {{$indicador->numerador_fuente}}</p>
+                                          @foreach ($descFuenteNumerador as $key => $value)
+                                              <p>: {{$value->nombre}}</p>
+                                          @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
                                           <b>Denominador</b>
@@ -218,8 +253,10 @@
                                         <div class="col-lg-4 col-sm-6">
                                           <b>Fuente del denominador</b>
                                         </div>
-                                        <div class="col-lg-8 col-sm-6">
-                                          <p>: {{$indicador->denominador_fuente}}</p>
+                                        <div class="col-lg-8 col-sm-6"><p>:</p>
+                                          @foreach ($descFuenteDenominador as $key => $value)
+                                              <p>: {{$value->nombre}}</p>
+                                          @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
                                           <b>Observaciones a la fuente de datos</b>
@@ -233,7 +270,81 @@
                       </div>
                   </div>
 
+                  <div class="col-lg-12 col-sm-12">
+                      <div class="panel panel-success">
+                          <div class="panel-heading" style="background-color: #468E9B;">
 
+                              <div class="pull-left" style="margin-top: -9px;">
+                                <a href="#" data-perform="panel-collapse">
+                                  <i class="ti-minus"></i> Viabilidad de Indicador
+                                </a>
+                              </div>
+                          </div>
+                          <div class="panel-wrapper collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                                    <div class="row">
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Estado</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$estado_desc}}</p>
+                                      </div>
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Etapa</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$indicador->etapa}}</p>
+                                      </div>
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Frecuencia de reporte</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$indicador->frecuencia_reporte}}</p>
+                                      </div>
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Sectores Relacionados</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        @foreach ($sectoresRelacionados as $key => $value)
+                                            <p>: {{$value->denominacion}}</p>
+                                        @endforeach
+                                      </div>
+                                      <div class="col-lg-12 col-sm-12">
+                                        <h3>Tipo de Brecha para Reportar el Indicador</h3>
+                                      </div>
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Brecha de Datos</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$dataBrechaDatos}}</p>
+                                      </div>
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Brecha de Metodología</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$dataBrechaMetodologia}}</p>
+                                      </div>
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Brecha de Capacitación</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$dataBrechaCapacitacion}}</p>
+                                      </div>
+
+                                      <div class="col-lg-4 col-sm-6">
+                                        <b>Brecha de Financiamiento</b>
+                                      </div>
+                                      <div class="col-lg-8 col-sm-6">
+                                        <p>: {{$dataBrechaFinanciamiento}}</p>
+                                      </div>
+
+
+
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
                   <div class="col-lg-12 col-sm-12">
                       <div class="panel panel-success">
@@ -260,13 +371,13 @@
                                               <tr>
                                                     <th>Metas</th>
                                                   @foreach ($metasAvance as $item)
-                                                    <td>{{ $item->meta}} </td>
+                                                    <td>{{number_format($item->meta,4,',','.')}}</td>
                                                   @endforeach
                                               </tr>
                                               <tr>
                                                     <th>Avance</th>
                                                   @foreach ($metasAvance as $item)
-                                                    <td>{{ $item->avance}} </td>
+                                                    <td>{{number_format($item->avance,4,',','.')}}</td>
                                                   @endforeach
                                               </tr>
                                             </tbody>
@@ -275,24 +386,22 @@
                           </div>
                       </div>
                   </div>
-
-
-
-                </div>
-                <div class="col-md-3">
-
-
-                    <div class="row media" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
-                          <h5>Gráfica de Avance</h5>
-                          <div id="chartdivAvance"></div>
+                  <div class="row media" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
+                    <div class="col-lg-12 col-sm-12">
+                        <h5>Gráfica de Avance</h5>
+                        <div id="chartdivAvance"></div>
                     </div>
-
+                  </div>
+                </div>
+                <div id="editor"></div>
+                <div class="col-md-3 hidden">
                     <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
                         <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
                             <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Ficha indicador </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body text-center">
-                                    <a onclick="HTMLtoPDF()" style="cursor: pointer;"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
+                                    {{-- <a onclick="HTMLtoPDF()" style="cursor: pointer;"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a> --}}
+                                    <a onclick="generarFicha()" style="cursor: pointer;"><img src="/img/icono_indicadores/pdf.png" title="Descargar ficha indicador "></a>
                                 </div>
                             </div>
                         </div>
@@ -302,7 +411,7 @@
                         <div class="panel panel-success" style="border: 1px solid transparent;border-color: #d6e9c6;width:100%">
                             <div class="panel-heading panel-heading-c2" style="color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;"> Archivos respaldo </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
-                                @if(!$archivos)
+                                @if($archivos)
                                   <div class="panel-body text-center">
                                         <p>
                                           Ningún archivo
@@ -342,9 +451,6 @@
 @push('script-head')
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
-  <script src="{{ asset('js/jspdf.js') }}"></script>
-  <script src="{{ asset('js/pdfFromHTML.js') }}"></script>
-
   <script type="text/javascript">
   var data =  <?php echo $grafica; ?>;
     $(document).ready(function(){
@@ -437,10 +543,10 @@
                         }
             });
       }
+  });
 
-
-
-    });
-
-  </script>
+ function generarFicha(){
+    window.location.href = '/sistemarime/generatePdf/'+{{ $indicador->id }};
+ }
+ </script>
 @endpush

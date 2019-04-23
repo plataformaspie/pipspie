@@ -480,7 +480,8 @@
               { name: 'estado_desc', type: 'string' },
               { name: 'etapa', type: 'string' },
               { name: 'nombre', type: 'string' },
-              { name: 'codigo', type: 'string' }
+              { name: 'codigo_id', type: 'string' },
+              { name: 'sectores', type: 'string' }
           ],
           id: 'id',
           url: url
@@ -497,11 +498,7 @@
           filterMode: 'simple',
           localization: getLocalization('es'),
           columns: [
-            { text: 'Estado', dataField: 'estado_desc', width: 100, cellsAlign: 'center' },
-            { text: 'Nombre Indicador', minWidth: 250,dataField: 'nombre' },
-            { text: 'Etapa', width: 150,dataField: 'etapa' },
-            { text: 'Codigo', width: 150, dataField: 'codigo' },
-            { text: 'Opciones', width: 150,
+            { text: 'Opciones', width: 100,
                   cellsRenderer: function (row, column, value, rowData) {
                           var abm = "<div style='margin: 5px; margin-bottom: 3px;'>";
                           var inputShow = '<button onclick="btn_mostrar('+rowData.id+')" class="btn btn-sm btn-info "><span>Ficha</span> <i class="fa fa-eye m-l-5"></i></button>';
@@ -512,6 +509,12 @@
 
                   }
             },
+            { text: 'ID_FICHA', dataField: 'codigo_id', width: 100, cellsAlign: 'center' },
+            { text: 'Estado', dataField: 'estado_desc', width: 100, cellsAlign: 'center' },
+            { text: 'Nombre Indicador', width: 400,dataField: 'nombre' },
+            { text: 'Etapa', width: 150,dataField: 'etapa' },
+            { text: 'Sectores', width: 400, dataField: 'sectores' }
+
         ]
       });
 

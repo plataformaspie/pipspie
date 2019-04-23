@@ -569,6 +569,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('setFuenteDatos', 'SistemaRemi\FuenteDatosController@setFuenteDatos');
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
               Route::get('setIndicadoresEntidad', 'SistemaRemi\IndicadorController@setIndicadoresEntidad');
+              Route::get('generatePdf/{id}','SistemaRemi\IndicadorController@generatePdf');
           }
       );
       Route::group(
@@ -592,6 +593,10 @@ Route::group(['middleware' => 'auth'],function(){
               Route::delete('apiDeleteFuente', 'SistemaRemi\FuenteDatosController@apiDeleteFuente');
 
               Route::get('apiFiltroGrid', 'SistemaRemi\IndicadorController@apiFiltroGrid');
+              Route::get('apiFiltroFuenteDatosGrid', 'SistemaRemi\FuenteDatosController@apiFiltroFuenteDatosGrid');
+
+              Route::get('apiUpdateComboResponsables', 'SistemaRemi\FuenteDatosController@apiUpdateComboResponsables');
+
 
 
 

@@ -126,18 +126,18 @@ input[type=checkbox]:checked:disabled + label:before {
             <div class="row">
               <div id="jqxDataTable" class="col-lg-12">
                 <p class="m-b-5">
-                  <button onclick="showFilterAdvanced();" type="button" class="btn btn-outline btn-warning btn-sm "><i class="fa fa-filter"></i> Filtrar por</button>
+                  <button onclick="showFilterAdvanced();" type="button" class="btn btn-outline btn-warning btn-sm "><i class="fa fa-filter"></i> Filtro avanzado</button>
                   <button onclick="showExportarData();" type="button" class="btn btn-outline btn-info btn-sm"><i class="fa fa-plus-square"></i> Exportar a</button>
                 </p>
               </div>
-              <form id="filtroForm" name="filtroForm" action="javascript:filtrar();" data-toggle="validator" class="hidden">
+              <form id="filtroForm" name="filtroForm" action="javascript:filtrar();" data-toggle="validator">
                 {{-- {{ csrf_field() }} --}}
                 <div id="FilterAdvanced" class="col-lg-12 hidden">
                   <div class="white-box p-10" style="background-color: #fcf8e3;color: #8a6d3b;">
                       <div class="row">
                           <div class="col-lg-2 col-sm-3">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Estado:</label>
-                            <select id="fil_estados" name="fil_estados" class="form-control">
+                            <select id="fil_estados" name="fil_estados" class="" style="width:100%">
                               <option value="0">Todos</option>
                               @foreach ($estados as  $item)
                                     <option value="{{ $item->id }}">{{$item->nombre}}</option>
@@ -146,7 +146,7 @@ input[type=checkbox]:checked:disabled + label:before {
                           </div>
                           <div class="col-lg-3 col-sm-6">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Compartidos:</label>
-                            <select id="fil_compartidos" name="fil_compartidos" class="form-control">
+                            <select id="fil_compartidos" name="fil_compartidos" class="" style="width:100%">
                                  <option value="0">Todos</option>
                                  <option value="Si">Si</option>
                                  <option value="No">No</option>
@@ -154,10 +154,10 @@ input[type=checkbox]:checked:disabled + label:before {
                           </div>
                           <div class="col-lg-3 col-sm-3">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Tipo:</label>
-                            <select id="fil_tipos" name="fil_tipos" class="form-control">
+                            <select id="fil_tipos" name="fil_tipos" class="" style="width:100%">
                               <option value="0">Todos</option>
                               @foreach ($tipos as  $item)
-                                    <option value="{{ $item->id }}">{{$item->nombre}}</option>
+                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                               @endforeach
                             </select>
                           </div>
@@ -211,8 +211,11 @@ input[type=checkbox]:checked:disabled + label:before {
                       </div>
                       <hr style="margin-top: 8px; margin-bottom: 8px;"/>
                       <div class="row">
-                          <div class="col-lg-12">
-                              <button type="submit" class="btn btn-block btn-warning btn-outline"><i class="fa fa-filter m-l-5"></i> Aplicar Filtro </button>
+                          <div class="col-lg-3">
+                              <button type="submit" class="btn btn-block btn-danger btn-outline"><i class="fa fa-filter m-l-5"></i> Aplicar Filtro </button>
+                          </div>
+                          <div class="col-lg-3">
+                              <button id="limpiarfiltros" type="button" class="btn btn-block btn-info btn-outline"><i class="fa fa-eraser m-l-5"></i> Limpiar Filtro </button>
                           </div>
                       </div>
                   </div>
@@ -242,6 +245,7 @@ input[type=checkbox]:checked:disabled + label:before {
                   </div>
               </div>
               <div class="col-lg-12">
+                <label style="float: right;margin-top: -27px;">Total registros: <span id="total_registros" style="font-weight:bold;"></span></label>
                 <div id="dataTable"></div>
               </div>
             </div>
@@ -385,6 +389,13 @@ input[type=checkbox]:checked:disabled + label:before {
                                           </div>
                                           <p><h5>Ingrese los codigos PDES para agregar la articulación (Ayuda F9)</h5></p>
                                           <div class="col-md-12">
+
+                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                    <div  id="Pilares" class="col-lg-2 p-l-0 text-center">
+                                                          <button type="button" id="activa1" class="btn waves-effect waves-light btn-outline-info"><span class="glyphicon glyphicon-plus"></span></button>
+                                                    </div>
+                                                </div>
+                                              <div id="cod2">
                                                 <div class="row m-b-5 m-l-5 m-t-5" >
                                                     <div class="form-group col-md-2 p-l-0 p-r-0">
                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Pilar</label>
@@ -414,15 +425,22 @@ input[type=checkbox]:checked:disabled + label:before {
                                                         <button type="button" class="btn btn-info btn-sm agregarART m-t-5"><i class="fa fa-plus-square"></i> Agregar PDES</button>
                                                     </div>
                                                 </div>
+                                              </div>
                                                 <h5>Detalle de articulación</h5>
                                                 <div id="datosART">
                                                     <div></div>
-                                                </div>
+                                                </div><br/>
 
                                           <div class="col-md-12 list-group-item-success" style="margin-top: -9px;">
                                               <h4 style="width:100%;">Alinear al ODS</h4>
                                           </div>
                                           <p><h5>Cargue los códigos en cada campo</h5></p>
+                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                    <div  id="Pilares" class="col-lg-2 p-l-0 text-center">
+                                                          <button type="button" id="activa" class="btn waves-effect waves-light btn-outline-info"><span class="glyphicon glyphicon-plus"></span></button>
+                                                    </div>
+                                                </div>
+                                              <div id="cod">
                                                 <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                    <div class="col-md-3 p-l-0 p-r-0 m-b-0">
                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Comparabilidad ODS/PDES</label>
@@ -438,7 +456,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                                           <div class="help-block with-errors"></div>
                                                     </div>
                                                 </div>
-                                                <div id="cod">
+                                                <div id="cod1">
                                                   <div class="row m-b-5 m-l-5 m-t-5" >
                                                       <div class="form-group col-md-2 p-l-0 p-r-0">
                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Objetivo</label>
@@ -466,10 +484,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                                       <div class="col-md-2 p-l-0 text-left">
                                                           <button type="button" class="btn btn-info btn-sm agregarART1 m-t-5"><i class="fa fa-plus-square"></i> Agregar ODS</button>
                                                       </div>
-
-
                                                   </div>
                                                 </div>
+                                              </div>
 
 
                                                 <h5>Detalle de articulación</h5>
@@ -572,339 +589,50 @@ input[type=checkbox]:checked:disabled + label:before {
                                                 <div class="col-md-3 p-l-0 p-r-0">
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Selecione variable y cargue su respaldo</label>
                                                 </div>
-                                                MSG 30003:Desactivado temporalmente...
-                                                <div class="col-md-9 p-l-0 hidden">
+                                                <div class="col-md-9 p-l-0">
+
+                                                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                       <div class="col-md-3 p-l-0">
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" name="desagregacion_sexo" value="1" id="desagregacion_sexo">
+                                                            <label class="custom-control-label" for="desagregacion_sexo">Sexo</label>
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                       <div class="col-md-3 p-l-0">
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" name="desagregacion_edad" value="1" id="desagregacion_edad">
+                                                            <label class="custom-control-label" for="desagregacion_edad">Edad</label>
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                       <div class="col-md-3 p-l-0">
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" name="desagregacion_nac" value="1" id="desagregacion_nac">
+                                                            <label class="custom-control-label" for="desagregacion_nac">Nacional</label>
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                       <div class="col-md-3 p-l-0">
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" name="desagregacion_deptal" value="1" id="desagregacion_deptal">
+                                                            <label class="custom-control-label" for="desagregacion_deptal">Deptal</label>
+                                                        </div>
+                                                      </div>
+                                                   </div>
+                                                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                       <div class="col-md-3 p-l-0">
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" name="desagregacion_munic" value="1" id="desagregacion_munic">
+                                                            <label class="custom-control-label" for="desagregacion_munic">Municipal</label>
+                                                        </div>
+                                                      </div>
+                                                   </div>
 
 
-
-                                                                <div id="myModal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" style="display: none;">
-                                                                  <div class="modal-dialog1">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel2">Archivo de Respaldo Sexo</h5></div>
-                                                                              <div class="modal-body">
-                                                                                     <form>
-                                                                                          <div class="form-group" >
-                                                                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                               </div>
-                                                                                               <div class="col-md-9 p-l-0">
-                                                                                                   <div class="select2-wrapper">
-                                                                                                     <input id="arc_nombre_sexo" name="arc_nombre_sexo" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                                   </div>
-                                                                                                   <div class="help-block with-errors"></div>
-                                                                                               </div>
-                                                                                             </div>
-                                                                                             <div class="form-group" >
-                                                                                               <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                               </div>
-                                                                                               <div class="col-md-9 p-l-0">
-                                                                                                   <div class="select2-wrapper">
-                                                                                                     <input type="file" id ="arc_archivo_sexo" name="arc_archivo_sexo" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                                   </div>
-                                                                                                   <div class="help-block with-errors"></div>
-                                                                                               </div>
-                                                                                               <div class="col-md-12 p-l-0 text-center">
-                                                                                                   <button type="button" class="btn btn-info btn-sm agregarARCS m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                               </div>
-                                                                                             </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                                </div>
-                                                                        </div>
-                                                                      </div>
-                                                                  </div>
-
-
-                                                                    <div class="row form-group row m-b-5 m-l-5 m-t-5" >
-                                                                         <div class="col-md-3 p-l-0">
-                                                                          <div class="custom-control custom-switch">
-                                                                              <input type="checkbox" class="custom-control-input" id="chkCodeudor2">
-                                                                              <label class="custom-control-label" for="chkCodeudor2">SEXO</label>
-                                                                          </div>
-                                                                        </div>
-                                                                         <div class="col-md-9 p-l-0">
-                                                                              <!-- <h5>Archivos subidos</h5> -->
-                                                                                 <table id="datosARCS" class="table table-hover">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                       </tr>
-                                                                                   </thead>
-                                                                                   <tbody >
-
-                                                                                   </tbody>
-                                                                                 </table>
-                                                                          </div>
-                                                                        </div>
-
-
-                                                              <div id="myModal3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="display: none;">
-                                                                <div class="modal-dialog1">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel3">Archivo de Respaldo Edad</h5></div>
-                                                                              <div class="modal-body">
-                                                                                     <form id="formMod" name="formMod">
-                                                                                          {{ csrf_field() }}
-                                                                                      <div class="form-group" >
-                                                                                           <div class="col-md-3 p-l-0 p-r-0">
-                                                                                             <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                           </div>
-                                                                                           <div class="col-md-9 p-l-0">
-                                                                                               <div class="select2-wrapper">
-                                                                                                 <input id="arc_nombre_ing2" name="arc_nombre_ing2" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                               </div>
-                                                                                               <div class="help-block with-errors"></div>
-                                                                                           </div>
-                                                                                         </div>
-                                                                                         <div class="form-group" >
-                                                                                           <div class="col-md-3 p-l-0 p-r-0">
-                                                                                             <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                           </div>
-                                                                                           <div class="col-md-9 p-l-0">
-                                                                                               <div class="select2-wrapper">
-                                                                                                 <input type="file" id ="arc_archivo_ing2" name="arc_archivo_ing2" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                               </div>
-                                                                                               <div class="help-block with-errors"></div>
-                                                                                           </div>
-                                                                                           <div class="col-md-12 p-l-0 text-center">
-                                                                                               <button type="button" class="btn btn-info btn-sm agregarARCED m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                           </div>
-                                                                                         </div>
-                                                                                        </form>
-                                                                                  </div>
-                                                                              <div class="modal-footer">
-                                                                                  <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                  </div>
-
-                                                                    <div class="row form-group row m-b-5 m-l-5 m-t-5" >
-                                                                         <div class="col-md-3 p-l-0">
-                                                                          <div class="custom-control custom-switch">
-                                                                              <input type="checkbox" class="custom-control-input" id="chkCodeudor3">
-                                                                              <label class="custom-control-label" for="chkCodeudor3">EDAD</label>
-                                                                          </div>
-                                                                        </div>
-                                                                         <div class="col-md-9 p-l-0">
-                                                                              <!-- <h5>Archivos subidos</h5> -->
-                                                                                 <table id="datosARCED" class="table table-hover">
-                                                                                    <thead>
-                                                                                        <tr>
-                                    <!--                                                      <th>Descripcion de archivos</th>
-                                                                                         <th>-</th> -->
-                                                                                       </tr>
-                                                                                   </thead>
-                                                                                   <tbody >
-
-                                                                                   </tbody>
-                                                                                 </table>
-                                                                          </div>
-
-                                                                        </div>
-
-                                                              <div id="myModal4" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true" style="display: none;">
-                                                                                      <div class="modal-dialog1">
-                                                                                          <div class="modal-content">
-                                                                                              <div class="modal-header">
-                                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel4">Archivo de Respaldo Nacional</h5></div>
-                                                                              <div class="modal-body">
-                                                                                     <form id="formNac" name="formNac">
-                                                                                                  {{ csrf_field() }}
-                                                                                              <div class="form-group" >
-                                                                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                                   </div>
-                                                                                                   <div class="col-md-9 p-l-0">
-                                                                                                       <div class="select2-wrapper">
-                                                                                                         <input id="arc_nombre_ing_n" name="arc_nombre_ing_n" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                                       </div>
-                                                                                                       <div class="help-block with-errors"></div>
-                                                                                                   </div>
-                                                                                                 </div>
-                                                                                                 <div class="form-group" >
-                                                                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                                   </div>
-                                                                                                   <div class="col-md-9 p-l-0">
-                                                                                                       <div class="select2-wrapper">
-                                                                                                         <input type="file" id ="arc_archivo_ing_n" name="arc_archivo_ing_n" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                                       </div>
-                                                                                                       <div class="help-block with-errors"></div>
-                                                                                                   </div>
-                                                                                                   <div class="col-md-12 p-l-0 text-center">
-                                                                                                       <button type="button" class="btn btn-info btn-sm agregarARCN m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                                   </div>
-                                                                                                 </div>
-                                                                                        </form>
-                                                                                  </div>
-                                                                                      <div class="modal-footer">
-                                                                                          <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                                            </div>
-                                                                                          </div>
-                                                                                      </div>
-                                                                                  </div>
-
-                                                                    <div class="row form-group row m-b-5 m-l-5 m-t-5" >
-                                                                        <div class="col-md-3 p-l-0">
-                                                                          <div class="custom-control custom-switch">
-                                                                              <input type="checkbox" class="custom-control-input" id="chkCodeudor4">
-                                                                              <label class="custom-control-label" for="chkCodeudor4">Nacional</label>
-                                                                          </div>
-                                                                        </div>
-                                                                         <div class="col-md-9 p-l-0">
-                                                                              <!-- <h5>Archivos subidos</h5> -->
-                                                                                 <table id="datosARCN" class="table table-hover">
-                                                                                    <thead>
-                                                                                        <tr>
-                                    <!--                                                      <th>Descripcion de archivos</th>
-                                                                                         <th>-</th> -->
-                                                                                       </tr>
-                                                                                   </thead>
-                                                                                   <tbody >
-
-                                                                                   </tbody>
-                                                                                 </table>
-                                                                          </div>
-
-                                                                        </div>
-
-                                                              <div id="myModal5" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true" style="display: none;">
-                                                                                      <div class="modal-dialog1">
-                                                                                          <div class="modal-content">
-                                                                                              <div class="modal-header">
-                                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel5">Archivo de Respaldo Departamental</h5></div>
-                                                                                                    <div class="modal-body">
-                                                                                                           <form id="formDptal" name="formDptal">
-                                                                                                                        {{ csrf_field() }}
-                                                                                                                    <div class="form-group" >
-                                                                                                                         <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                                                         </div>
-                                                                                                                         <div class="col-md-9 p-l-0">
-                                                                                                                             <div class="select2-wrapper">
-                                                                                                                               <input id="arc_nombre_ing_d" name="arc_nombre_ing_d" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                                                             </div>
-                                                                                                                             <div class="help-block with-errors"></div>
-                                                                                                                         </div>
-                                                                                                                       </div>
-                                                                                                                       <div class="form-group" >
-                                                                                                                         <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                                                         </div>
-                                                                                                                         <div class="col-md-9 p-l-0">
-                                                                                                                             <div class="select2-wrapper">
-                                                                                                                               <input type="file" id ="arc_archivo_ing_d" name="arc_archivo_ing_d" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                                                             </div>
-                                                                                                                             <div class="help-block with-errors"></div>
-                                                                                                                         </div>
-                                                                                                                         <div class="col-md-12 p-l-0 text-center">
-                                                                                                                             <button type="button" class="btn btn-info btn-sm agregarARCD m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                                                         </div>
-                                                                                                                       </div>
-                                                                                                              </form>
-                                                                                                        </div>
-                                                                                              <div class="modal-footer">
-                                                                                                <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                                            </div>
-                                                                                          </div>
-                                                                                      </div>
-                                                                                  </div>
-
-                                                                <div class="row form-group row m-b-5 m-l-5 m-t-5" >
-                                                                     <div class="col-md-3 p-l-0">
-                                                                      <div class="custom-control custom-switch">
-                                                                          <input type="checkbox" class="custom-control-input" id="chkCodeudor5">
-                                                                          <label class="custom-control-label" for="chkCodeudor5">Deptal</label>
-                                                                      </div>
-                                                                    </div>
-                                                                     <div class="col-md-9 p-l-0">
-                                                                          <!-- <h5>Archivos subidos</h5> -->
-                                                                             <table id="datosARCD" class="table table-hover">
-                                                                                <thead>
-                                                                                    <tr>
-                                                  <!--                                                      <th>Descripcion de archivos</th>
-                                                                                     <th>-</th> -->
-                                                                                   </tr>
-                                                                               </thead>
-                                                                               <tbody >
-
-                                                                               </tbody>
-                                                                             </table>
-                                                                      </div>
-
-                                                                    </div>
-
-
-                                                                  <div id="myModal6" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true" style="display: none;">
-                                                                        <div class="modal-dialog1">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel6">Archivo de Respaldo Municipal</h5></div>
-                                                                                  <div class="modal-body">
-                                                                                         <form id="formMunic" name="formMunic">
-                                                                                                      {{ csrf_field() }}
-                                                                                                  <div class="form-group" >
-                                                                                                       <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
-                                                                                                       </div>
-                                                                                                       <div class="col-md-9 p-l-0">
-                                                                                                           <div class="select2-wrapper">
-                                                                                                             <input id="arc_nombre_ing_m" name="arc_nombre_ing_m" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
-                                                                                                           </div>
-                                                                                                           <div class="help-block with-errors"></div>
-                                                                                                       </div>
-                                                                                                     </div>
-                                                                                                     <div class="form-group" >
-                                                                                                       <div class="col-md-3 p-l-0 p-r-0">
-                                                                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
-                                                                                                       </div>
-                                                                                                       <div class="col-md-9 p-l-0">
-                                                                                                           <div class="select2-wrapper">
-                                                                                                             <input type="file" id ="arc_archivo_ing_m" name="arc_archivo_ing_m" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                                                                           </div>
-                                                                                                           <div class="help-block with-errors"></div>
-                                                                                                       </div>
-                                                                                                       <div class="col-md-12 p-l-0 text-center">
-                                                                                                           <button type="button" class="btn btn-info btn-sm agregarARCM m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                                                                       </div>
-                                                                                                     </div>
-                                                                                            </form>
-                                                                                      </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
-                                                                              </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row form-group row m-b-5 m-l-5 m-t-5" >
-                                                                         <div class="col-md-3 p-l-0">
-                                                                          <div class="custom-control custom-switch">
-                                                                              <input type="checkbox" class="custom-control-input" id="chkCodeudor6">
-                                                                              <label class="custom-control-label" for="chkCodeudor6">Municipal</label>
-                                                                          </div>
-                                                                        </div>
-                                                                         <div class="col-md-9 p-l-0">
-                                                                              <!-- <h5>Archivos subidos</h5> -->
-                                                                                 <table id="datosARCM" class="table table-hover">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                  <!--                                                      <th>Descripcion de archivos</th>
-                                                                                         <th>-</th> -->
-                                                                                       </tr>
-                                                                                   </thead>
-                                                                                   <tbody >
-
-                                                                                   </tbody>
-                                                                                 </table>
-                                                                          </div>
-
-                                                                      </div>
 
 
 
@@ -1156,19 +884,51 @@ input[type=checkbox]:checked:disabled + label:before {
                                               <h5>Linea base del indicador</h5>
                                         <!--       <hr> -->
                                               <div class=" form-group row m-b-5 m-l-5 m-t-5" >
-                                                  <div class="form-group col-md-3 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Fecha linea base</label>
-                                                  </div>
-                                                  <div class="form-group col-md-3 p-l-0">
-                                                    <div class='input-group date' id='dateLB'>
-                                                      <input name="linea_base_fecha" type='text' class="form-control" placeholder="dd/mm/yyyy"/>
-                                                      <span class="input-group-addon">
-                                                          <span class="glyphicon glyphicon-calendar">
+                                                  <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                      <div class="col-md-2 p-l-0 p-r-0">
+                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Dia linea base</label>
+                                                      </div>
+                                                      <div class="col-md-2 p-l-0">
+                                                        <div class='input-group date' id='diaLB'>
+                                                          <input name="base_linea_dia" type='text' class="form-control" placeholder="dia"/>
+                                                          <span class="input-group-addon">
+                                                              <span class="glyphicon glyphicon-calendar">
+                                                              </span>
                                                           </span>
-                                                      </span>
-                                                    </div>
-                                                    <div class="help-block with-errors"></div>
+                                                        </div>
+                                                        <div class="help-block with-errors"></div>
+                                                      </div>
+
+                                                      <div class="col-md-2 p-l-0 p-r-0">
+                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Mes linea base</label>
+                                                      </div>
+                                                      <div class="col-md-2 p-l-0">
+                                                        <div class='input-group date' id='mesLB'>
+                                                          <input name="base_linea_mes" type='text' class="form-control" placeholder="mes"/>
+                                                          <span class="input-group-addon">
+                                                              <span class="glyphicon glyphicon-calendar">
+                                                              </span>
+                                                          </span>
+                                                        </div>
+                                                        <div class="help-block with-errors"></div>
+                                                      </div>
+
+
+                                                      <div class="col-md-2 p-l-0 p-r-0">
+                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Año linea base</label>
+                                                      </div>
+                                                      <div class="col-md-2 p-l-0">
+                                                        <div class='input-group date' id='anioLBA'>
+                                                          <input name="base_linea_anio" type='text' class="form-control" placeholder="año"/>
+                                                          <span class="input-group-addon">
+                                                              <span class="glyphicon glyphicon-calendar">
+                                                              </span>
+                                                          </span>
+                                                        </div>
+                                                        <div class="help-block with-errors"></div>
+                                                      </div>
                                                   </div>
+
                                                   <div class="form-group col-md-3 p-l-0 p-r-0">
                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor linea base</label>
                                                   </div>
@@ -1177,6 +937,8 @@ input[type=checkbox]:checked:disabled + label:before {
                                                       <div class="help-block with-errors"></div>
                                                   </div>
                                               </div>
+
+
                                             </div>
                                            <div class="col-md-12">
                                                <h5>Metas macro</h5>
@@ -1284,45 +1046,90 @@ input[type=checkbox]:checked:disabled + label:before {
                                                 </div>
                                            </div>
 
-                                             <div class="col-md-12">
-                                               <h4>Reportar avances</h4>
-                                               <div class="row m-b-5 m-l-5 m-t-5" >
-                                                  <div class="col-lg-6">
-                                                     <div class="form-group col-md-5 p-l-0 p-r-0 m-b-0">
-                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Fecha reporte</label>
-                                                     </div>
-                                                     <div class="form-group col-md-7 p-l-0 m-b-0">
-                                                       <div class='input-group date' id='dateAV'>
-                                                         <input name="avance_fecha_input" type='text' class="form-control" placeholder="mes/Año"/>
-                                                         <span class="input-group-addon">
-                                                             <span class="glyphicon glyphicon-calendar">
-                                                             </span>
-                                                         </span>
+                                           <div class="col-md-12">
+                                            <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-lg-2 p-l-0 p-r-0">
+                                                     <label  style="width: 100%;padding: 9px 0px 4px 3px;"><font color="#FF8000"> REPORTAR AVANCES</font></label>
+                                                 </div>
+                                                 <div class="col-md-2 p-l-0">
+                                                   <div class=" form-group row m-b-5 m-l-5 m-t-5" >
+                                                       <div  id="Avances" class="col-lg-2 p-l-0 text-center">
+                                                             <button type="button" id="activa4" class="btn waves-effect waves-light btn-outline-info"><span class="glyphicon glyphicon-plus"></span></button>
                                                        </div>
-                                                       <div class="help-block with-errors"></div>
-                                                     </div>
-                                                     <div class="form-group col-md-5 p-l-0 p-r-0 m-b-0">
-                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor a reportar</label>
-                                                     </div>
-                                                     <div class="form-group col-md-7 p-l-0 m-b-0">
-                                                         <input name="avance_valor_input" type="text" class="form-control input" placeholder="Valor"  value="0" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" >
-                                                         <div class="help-block with-errors"></div>
-                                                     </div>
                                                    </div>
-                                                   <div class="col-lg-6">
-                                                     Detallar avance:
-                                                    <textarea id="detalle_avance" name="detalle_avance" class="form-control" placeholder="Detallar avance"></textarea>
+                                                 </div>
+                                            </div>
+
+                                            <div id="cod5">
+                                              <div class="row m-b-5 m-l-5 m-t-5" >
+
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                  <div class="col-md-2 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Reporte Dia</label>
+                                                  </div>
+                                                  <div class="col-md-2 p-l-0">
+                                                   <div class='input-group date' id='diaAV'>
+                                                     <input name="avance_fecha_dia" type='text' class="form-control" placeholder="dia"/>
+                                                     <span class="input-group-addon">
+                                                         <span class="glyphicon glyphicon-calendar">
+                                                         </span>
+                                                     </span>
+                                                   </div>
+                                                   <div class="help-block with-errors"></div>
+                                                  </div>
+
+                                                  <div class="col-md-2 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Reporte Mes</label>
+                                                  </div>
+                                                  <div class="col-md-2 p-l-0">
+                                                   <div class='input-group date' id='mesAV'>
+                                                     <input name="avance_fecha_mes" type='text' class="form-control" placeholder="mes"/>
+                                                     <span class="input-group-addon">
+                                                         <span class="glyphicon glyphicon-calendar">
+                                                         </span>
+                                                     </span>
+                                                   </div>
+                                                   <div class="help-block with-errors"></div>
+                                                  </div>
+
+
+                                                  <div class="col-md-2 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Reporte Año</label>
+                                                  </div>
+                                                  <div class="col-md-2 p-l-0">
+                                                   <div class='input-group date' id='anioAV'>
+                                                     <input name="avance_fecha_anio" type='text' class="form-control" placeholder="año"/>
+                                                     <span class="input-group-addon">
+                                                         <span class="glyphicon glyphicon-calendar">
+                                                         </span>
+                                                     </span>
+                                                   </div>
+                                                   <div class="help-block with-errors"></div>
+                                                  </div>
+                                              </div>
+
+                                                    <div class="form-group col-md-5 p-l-0 p-r-0 m-b-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor a reportar</label>
+                                                    </div>
+                                                    <div class="form-group col-md-7 p-l-0 m-b-0">
+                                                        <input name="avance_valor_input" type="text" class="form-control input" placeholder="Valor"  value="0" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" >
+                                                        <div class="help-block with-errors"></div>
                                                     </div>
 
+
+                                              </div>
+                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                    Detallar Avance:
+                                                   <textarea id="detalle_avance" name="detalle_avance" class="form-control" placeholder="Explique los avances"></textarea>
+                                                   </div>
+
+                                               <div class="row m-b-5 m-l-5 m-t-5" >
+                                                  <div class="col-md-12 p-l-0 text-center">
+                                                      <button type="button" class="btn btn-info btn-sm agregarAV m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                  </div>
                                                </div>
 
-
-                                                <div class="row m-b-5 m-l-5 m-t-5" >
-                                                   <div class="col-md-12 p-l-0 text-center">
-                                                       <button type="button" class="btn btn-info btn-sm agregarAV m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
-                                                   </div>
-                                                </div>
-
+                                             </div>
                                            </div>
                                            <div class="col-md-10">
                                              <h5>Listado de avances reportados</h5>
@@ -1343,6 +1150,356 @@ input[type=checkbox]:checked:disabled + label:before {
                                                  </table>
                                               </div>
                                            </div>
+
+                                           <div class="col-md-12">
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Cargue archivo respaldo</label>
+                                                 </div>
+                                                 <div class="col-md-9 p-l-0">
+                                                  <div  id="cod_sexo">
+                                                      <div id="myModal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" style="display: none;">
+                                                        <div class="modal-dialog1">
+                                                          <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel2">Archivo de Respaldo Sexo</h5></div>
+                                                                    <div class="modal-body">
+                                                                           <form>
+                                                                                <div class="form-group" >
+                                                                                     <div class="col-md-3 p-l-0 p-r-0">
+                                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                     </div>
+                                                                                     <div class="col-md-9 p-l-0">
+                                                                                         <div class="select2-wrapper">
+                                                                                           <input id="arc_nombre_sexo" name="arc_nombre_sexo" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                         </div>
+                                                                                         <div class="help-block with-errors"></div>
+                                                                                     </div>
+                                                                                   </div>
+                                                                                   <div class="form-group" >
+                                                                                     <div class="col-md-3 p-l-0 p-r-0">
+                                                                                       <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                     </div>
+                                                                                     <div class="col-md-9 p-l-0">
+                                                                                         <div class="select2-wrapper">
+                                                                                           <input type="file" id ="arc_archivo_sexo" name="arc_archivo_sexo" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                         </div>
+                                                                                         <div class="help-block with-errors"></div>
+                                                                                     </div>
+                                                                                     <div class="col-md-12 p-l-0 text-center">
+                                                                                         <button type="button" class="btn btn-info btn-sm agregarARCS m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                     </div>
+                                                                                   </div>
+                                                                          </form>
+                                                                      </div>
+                                                                      <div class="modal-footer">
+                                                                          <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                      </div>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+
+                                                          <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                               <div class="col-md-3 p-l-0">
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input" id="chkCodeudor2">
+                                                                    <label class="custom-control-label" for="chkCodeudor2">Sexo</label>
+                                                                </div>
+                                                              </div>
+                                                               <div class="col-md-9 p-l-0">
+                                                                    <!-- <h5>Archivos subidos</h5> -->
+                                                                       <table id="datosARCS" class="table table-hover">
+                                                                          <thead>
+                                                                              <tr>
+                                                                             </tr>
+                                                                         </thead>
+                                                                         <tbody >
+
+                                                                         </tbody>
+                                                                       </table>
+                                                                </div>
+                                                              </div>
+                                                    </div>
+
+                                                  <div  id="cod_edad">
+                                                    <div id="myModal3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="display: none;">
+                                                      <div class="modal-dialog1">
+                                                          <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel3">Archivo de Respaldo Edad</h5></div>
+                                                                    <div class="modal-body">
+                                                                           <form id="formMod" name="formMod">
+                                                                                {{ csrf_field() }}
+                                                                            <div class="form-group" >
+                                                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                 </div>
+                                                                                 <div class="col-md-9 p-l-0">
+                                                                                     <div class="select2-wrapper">
+                                                                                       <input id="arc_nombre_ing2" name="arc_nombre_ing2" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                     </div>
+                                                                                     <div class="help-block with-errors"></div>
+                                                                                 </div>
+                                                                               </div>
+                                                                               <div class="form-group" >
+                                                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                 </div>
+                                                                                 <div class="col-md-9 p-l-0">
+                                                                                     <div class="select2-wrapper">
+                                                                                       <input type="file" id ="arc_archivo_ing2" name="arc_archivo_ing2" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                     </div>
+                                                                                     <div class="help-block with-errors"></div>
+                                                                                 </div>
+                                                                                 <div class="col-md-12 p-l-0 text-center">
+                                                                                     <button type="button" class="btn btn-info btn-sm agregarARCED m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                 </div>
+                                                                               </div>
+                                                                              </form>
+                                                                        </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                          <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                               <div class="col-md-3 p-l-0">
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input" id="chkCodeudor3">
+                                                                    <label class="custom-control-label" for="chkCodeudor3">Edad</label>
+                                                                </div>
+                                                              </div>
+                                                               <div class="col-md-9 p-l-0">
+                                                                    <!-- <h5>Archivos subidos</h5> -->
+                                                                       <table id="datosARCED" class="table table-hover">
+                                                                          <thead>
+                                                                              <tr>
+                                          <!--                                                      <th>Descripcion de archivos</th>
+                                                                               <th>-</th> -->
+                                                                             </tr>
+                                                                         </thead>
+                                                                         <tbody >
+
+                                                                         </tbody>
+                                                                       </table>
+                                                                </div>
+
+                                                              </div>
+                                                    </div>
+
+                                                  <div  id="cod_nac">
+                                                    <div id="myModal4" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true" style="display: none;">
+                                                                            <div class="modal-dialog1">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel4">Archivo de Respaldo Nacional</h5></div>
+                                                                    <div class="modal-body">
+                                                                           <form id="formNac" name="formNac">
+                                                                                        {{ csrf_field() }}
+                                                                                    <div class="form-group" >
+                                                                                         <div class="col-md-3 p-l-0 p-r-0">
+                                                                                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                         </div>
+                                                                                         <div class="col-md-9 p-l-0">
+                                                                                             <div class="select2-wrapper">
+                                                                                               <input id="arc_nombre_ing_n" name="arc_nombre_ing_n" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                             </div>
+                                                                                             <div class="help-block with-errors"></div>
+                                                                                         </div>
+                                                                                       </div>
+                                                                                       <div class="form-group" >
+                                                                                         <div class="col-md-3 p-l-0 p-r-0">
+                                                                                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                         </div>
+                                                                                         <div class="col-md-9 p-l-0">
+                                                                                             <div class="select2-wrapper">
+                                                                                               <input type="file" id ="arc_archivo_ing_n" name="arc_archivo_ing_n" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                             </div>
+                                                                                             <div class="help-block with-errors"></div>
+                                                                                         </div>
+                                                                                         <div class="col-md-12 p-l-0 text-center">
+                                                                                             <button type="button" class="btn btn-info btn-sm agregarARCN m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                         </div>
+                                                                                       </div>
+                                                                              </form>
+                                                                        </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                                  </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                          <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                              <div class="col-md-3 p-l-0">
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input" id="chkCodeudor4">
+                                                                    <label class="custom-control-label" for="chkCodeudor4">Nacional</label>
+                                                                </div>
+                                                              </div>
+                                                               <div class="col-md-9 p-l-0">
+                                                                    <!-- <h5>Archivos subidos</h5> -->
+                                                                       <table id="datosARCN" class="table table-hover">
+                                                                          <thead>
+                                                                              <tr>
+                                          <!--                                                      <th>Descripcion de archivos</th>
+                                                                               <th>-</th> -->
+                                                                             </tr>
+                                                                         </thead>
+                                                                         <tbody >
+
+                                                                         </tbody>
+                                                                       </table>
+                                                                </div>
+
+                                                              </div>
+                                                   </div>
+
+                                                  <div  id="cod_deptal">
+                                                    <div id="myModal5" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true" style="display: none;">
+                                                                            <div class="modal-dialog1">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel5">Archivo de Respaldo Departamental</h5></div>
+                                                                                          <div class="modal-body">
+                                                                                                 <form id="formDptal" name="formDptal">
+                                                                                                              {{ csrf_field() }}
+                                                                                                          <div class="form-group" >
+                                                                                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                                                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                                               </div>
+                                                                                                               <div class="col-md-9 p-l-0">
+                                                                                                                   <div class="select2-wrapper">
+                                                                                                                     <input id="arc_nombre_ing_d" name="arc_nombre_ing_d" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                                                   </div>
+                                                                                                                   <div class="help-block with-errors"></div>
+                                                                                                               </div>
+                                                                                                             </div>
+                                                                                                             <div class="form-group" >
+                                                                                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                                                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                                               </div>
+                                                                                                               <div class="col-md-9 p-l-0">
+                                                                                                                   <div class="select2-wrapper">
+                                                                                                                     <input type="file" id ="arc_archivo_ing_d" name="arc_archivo_ing_d" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                                                   </div>
+                                                                                                                   <div class="help-block with-errors"></div>
+                                                                                                               </div>
+                                                                                                               <div class="col-md-12 p-l-0 text-center">
+                                                                                                                   <button type="button" class="btn btn-info btn-sm agregarARCD m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                                               </div>
+                                                                                                             </div>
+                                                                                                    </form>
+                                                                                              </div>
+                                                                                    <div class="modal-footer">
+                                                                                      <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                                  </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                      <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                           <div class="col-md-3 p-l-0">
+                                                            <div class="custom-control custom-switch">
+                                                                <input type="checkbox" class="custom-control-input" id="chkCodeudor5">
+                                                                <label class="custom-control-label" for="chkCodeudor5">Deptal</label>
+                                                            </div>
+                                                          </div>
+                                                           <div class="col-md-9 p-l-0">
+                                                                <!-- <h5>Archivos subidos</h5> -->
+                                                                   <table id="datosARCD" class="table table-hover">
+                                                                      <thead>
+                                                                          <tr>
+                                          <!--                                                      <th>Descripcion de archivos</th>
+                                                                           <th>-</th> -->
+                                                                         </tr>
+                                                                     </thead>
+                                                                     <tbody >
+
+                                                                     </tbody>
+                                                                   </table>
+                                                            </div>
+
+                                                          </div>
+                                                  </div>
+
+                                                  <div  id="cod_munic">
+                                                        <div id="myModal6" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true" style="display: none;">
+                                                              <div class="modal-dialog1">
+                                                                  <div class="modal-content">
+                                                                      <div class="modal-header">
+                                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button><h5 class="modal-title" id="myModalLabel6">Archivo de Respaldo Municipal</h5></div>
+                                                                        <div class="modal-body">
+                                                                               <form id="formMunic" name="formMunic">
+                                                                                            {{ csrf_field() }}
+                                                                                        <div class="form-group" >
+                                                                                             <div class="col-md-3 p-l-0 p-r-0">
+                                                                                               <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre :</label>
+                                                                                             </div>
+                                                                                             <div class="col-md-9 p-l-0">
+                                                                                                 <div class="select2-wrapper">
+                                                                                                   <input id="arc_nombre_ing_m" name="arc_nombre_ing_m" type="text" class="form-control" placeholder="Nombre del Archivo de Respaldo" >
+                                                                                                 </div>
+                                                                                                 <div class="help-block with-errors"></div>
+                                                                                             </div>
+                                                                                           </div>
+                                                                                           <div class="form-group" >
+                                                                                             <div class="col-md-3 p-l-0 p-r-0">
+                                                                                               <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Adjuntar :</label>
+                                                                                             </div>
+                                                                                             <div class="col-md-9 p-l-0">
+                                                                                                 <div class="select2-wrapper">
+                                                                                                   <input type="file" id ="arc_archivo_ing_m" name="arc_archivo_ing_m" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
+                                                                                                 </div>
+                                                                                                 <div class="help-block with-errors"></div>
+                                                                                             </div>
+                                                                                             <div class="col-md-12 p-l-0 text-center">
+                                                                                                 <button type="button" class="btn btn-info btn-sm agregarARCM m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                                                             </div>
+                                                                                           </div>
+                                                                                  </form>
+                                                                            </div>
+                                                              <div class="modal-footer">
+                                                                  <button type="button" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cerrar</button>
+                                                                    </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                               <div class="col-md-3 p-l-0">
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input" id="chkCodeudor6">
+                                                                    <label class="custom-control-label" for="chkCodeudor6">Municipal</label>
+                                                                </div>
+                                                              </div>
+                                                               <div class="col-md-9 p-l-0">
+                                                                    <!-- <h5>Archivos subidos</h5> -->
+                                                                       <table id="datosARCM" class="table table-hover">
+                                                                          <thead>
+                                                                              <tr>
+                                          <!--                                                      <th>Descripcion de archivos</th>
+                                                                               <th>-</th> -->
+                                                                             </tr>
+                                                                         </thead>
+                                                                         <tbody >
+
+                                                                         </tbody>
+                                                                       </table>
+                                                                </div>
+
+                                                            </div>
+                                                     </div>
+
+                                            </div> <!--  COL-MD-9 -->
+                                              </div>
+                                           </div>
+
+
+
+
 
                                            <div class="col-md-12">
                                                <br/>
@@ -1558,13 +1715,38 @@ input[type=checkbox]:checked:disabled + label:before {
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Sectores Relacionados </label>
                                                </div>
                                                <div class="col-md-9 p-l-0">
-                                                   <select id="sectores" name="sectores[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                                                   <select id="sectores" name="sectores[]" placeholder="Seleccionar..."  multiple="multiple" class=" select2 multiple">
                                                        @foreach ($instituciones as  $item)
                                                              <option value="{{ $item->id }}">{{$item->codigo}}: {{$item->denominacion}}</option>
                                                        @endforeach
                                                    </select>
                                                    <div class="help-block with-errors"></div>
                                                </div>
+                                             </div>
+
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                 <div class="col-md-3 p-l-0 p-r-0">
+                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Asistencia Tecnica</label>
+                                                 </div>
+                                                 <div class="col-md-1 p-l-0 p-r-0">
+                                                    <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" name="checkbox10" value="1" id="customSwitch10">
+                                                            <label class="custom-control-label" for="customSwitch10" style="width:100px;">Si</label>
+                                                        </div>
+
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" id="customSwitch9" class="custom-control-input" name="checkbox20">
+                                                            <label class="custom-control-label" for="customSwitch9" style="width:200px;">No</label>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                   <div class="col-lg-12 p-l-0">
+                                                     <div id="datosTEC">
+                                                     </div>
+                                                   </div>
+                                                  </div>
                                              </div>
 
 
@@ -1609,40 +1791,58 @@ input[type=checkbox]:checked:disabled + label:before {
             <div class="col-sm-12">
                 <div class="white-box p-t-0 p-b-0 m-b-0">
 
-                    <h3 class="box-title m-b-0">Registro de fuente de datos</h3>
-                    <p class="text-muted m-b-10">Completar los datos minimos de la Fuente de Datos. <button id ="btn-new-fuente" type="submit" class="btn btn-info btn-sm" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i>Guardar</button></p>
-                    <p class="text-warning m-t-0">Debe completar la informacion en Administracion de Fuente de Datos</p>
-                    <div class="form-group row m-b-10">
-                      <div class="col-md-2 p-l-0 p-r-0">
-                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Nombre</label>
-                      </div>
-                      <div class="col-md-10 p-l-0">
-                          <!--input id="fd_nombre" name="fd_nombre" type="text" class="form-control"  placeholder="Nombre de la fuente" !-->
-                          <textarea id="fd_nombre" name="fd_nombre" class="form-control" placeholder="Nombre de la fuente" required></textarea>
-                          <div class="help-block with-errors"></div>
-                      </div>
+                  <h3 class="box-title m-b-0">Registro de fuente de datos</h3>
+                  <p class="text-muted m-b-10">Completar los datos minimos de la Fuente de Datos. <button id ="btn-new-fuente" type="submit" class="btn btn-info btn-sm" style="float: right;margin-top: -26px;"><i class="fa fa-plus"></i> Guardar</button></p>
+                  <p class="text-warning m-t-0">Debe completar la informacion en Administracion de Fuente de Datos</p>
+                  <div class="form-group row m-b-10">
+                    <div class="col-md-2 p-l-0 p-r-0">
+                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Nombre</label>
                     </div>
-                    <div class=" row m-b-10">
-                      <div class="col-md-2 p-l-0 p-r-0">
-                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Abreviación</label>
-                      </div>
-                      <div class="form-group col-md-4 p-l-0">
-                          <input id="fd_acronimo" name="fd_acronimo" type="text" class="form-control"  placeholder="Abreviación" required>
-                          <div class="help-block with-errors"></div>
-                      </div>
-                      <div class="col-md-2 p-l-0 p-r-0">
-                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Tipo</label>
-                      </div>
-                      <div class="form-group col-md-4 p-l-0">
-                          <select id="fd_tipo" name="fd_tipo" class="custom-select col-12 form-control" required>
-                              <option value="">Seleccionar...</option>
-                              @foreach ($fuente_tipos as  $item)
-                                    <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
-                              @endforeach
-                          </select>
-                          <div class="help-block with-errors"></div>
-                      </div>
+                    <div class="col-md-10 p-l-0">
+                        <!--input id="fd_nombre" name="fd_nombre" type="text" class="form-control"  placeholder="Nombre de la fuente" !-->
+                        <textarea id="fd_nombre" name="fd_nombre" class="form-control" placeholder="Nombre de la fuente" required></textarea>
+                        <div class="help-block with-errors"></div>
                     </div>
+                  </div>
+                  <div class=" row m-b-10">
+                    <div class="col-md-2 p-l-0 p-r-0">
+                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Serie</label>
+                    </div>
+                    <div class="form-group col-md-4 p-l-0">
+                        <input id="fd_serie" name="fd_serie" type="text" class="form-control"  placeholder="Serie de Datos" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-md-2 p-l-0 p-r-0">
+                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Tipo</label>
+                    </div>
+                    <div class="form-group col-md-4 p-l-0">
+                        <select id="fd_tipo" name="fd_tipo" class="custom-select col-12 form-control" required>
+                            <option value="">Seleccionar...</option>
+                            @foreach ($fuente_tipos as  $item)
+                                  <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                            @endforeach
+                        </select>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                  </div>
+                  <div class="form-group row m-b-10">
+                    <div class="col-md-2 p-l-0 p-r-0">
+                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Sectorial</label>
+                    </div>
+                    <div class="col-md-10 p-l-0">
+                        <textarea id="sectorial" name="sectorial" class="form-control" placeholder="Nombre del Sector" required></textarea>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                  </div>
+                  <div class="form-group row m-b-10">
+                    <div class="col-md-2 p-l-0 p-r-0">
+                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 15px 130px 7px 3px;">Productor</label>
+                    </div>
+                    <div class="col-md-10 p-l-0">
+                        <textarea id="fd_resp_2" name="fd_resp_2" class="form-control" placeholder="Nombre de la fuente" required></textarea>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                  </div>
 
 
                     <?php /*
@@ -1859,6 +2059,13 @@ input[type=checkbox]:checked:disabled + label:before {
       //$(".select2").select2();
       $("#cod").hide();
 
+      $("#cod_sexo").hide();
+      $("#cod_edad").hide();
+      $("#cod_nac").hide();
+      $("#cod_deptal").hide();
+      $("#cod_munic").hide();
+      $('#customSwitch9').prop("checked",true);
+
      $('#relac').on('change',function(){
          var SelectValor=$(this).val();
          console.log("sdsdgf",SelectValor);
@@ -1867,6 +2074,80 @@ input[type=checkbox]:checked:disabled + label:before {
          }else{
            $('#cod').show();
          }
+     });
+     $("#cod2").hide();
+   $('#activa1').click(function(){
+         $('#cod2').toggle();
+   });
+
+   $("#cod").hide();
+   $('#activa').click(function(){
+         $('#cod').toggle();
+   });
+
+    $("#cod1").hide();
+   $('#relac').on('change',function(){
+       var SelectValor=$(this).val();
+       if(SelectValor === "No Disponible"){
+         $('#cod1').hide();
+       }else{
+         $('#cod1').show();
+       }
+   });
+
+     $("#cod4").hide();
+    $('#activa3').click(function(){
+          $('#cod4').toggle();
+    });
+
+    $("#cod5").hide();
+    $('#activa4').click(function(){
+          $('#cod5').toggle();
+    });
+
+
+   $('#diaLB').datetimepicker({
+          format: 'DD',
+         locale: 'es'
+     });
+
+     $('#mesLB').datetimepicker({
+         //viewMode: 'month',
+          format: 'MM',
+         locale: 'es'
+     });
+
+     $('#anioLBA').datetimepicker({
+         format: 'YYYY',
+         locale: 'es'
+     });
+
+     $('#dateLB').datetimepicker({
+         viewMode: 'years',
+         format: 'DD/MM/YYYY',
+         locale: 'es'
+     });
+
+     $('#diaAV').datetimepicker({
+          format: 'DD',
+         locale: 'es'
+     });
+
+     $('#mesAV').datetimepicker({
+         //viewMode: 'month',
+          format: 'MM',
+         locale: 'es'
+     });
+
+     $('#anioAV').datetimepicker({
+         format: 'YYYY',
+         locale: 'es'
+     });
+
+     $('#dateAV').datetimepicker({
+         viewMode: 'years',
+         format: 'MM/YYYY',
+         locale: 'es'
      });
 
       var filterData = {{$filtData}};
@@ -1891,51 +2172,71 @@ input[type=checkbox]:checked:disabled + label:before {
                   });
       });
 
-      $('#chkCodeudor2').click(function()
-            {
-                if ($('#chkCodeudor2').is(":checked")) {
-                    $('#myModal2').modal('show');
-                }else {
-                    $('#myModal2').modal('hide');
-                }
-            });
+$('#chkCodeudor2').click(function()
+      {
+          if ($('#chkCodeudor2').is(":checked")) {
+              $('#myModal2').modal('show');
+          }else {
+              $('#myModal2').modal('hide');
+          }
+      });
 
-        $('#chkCodeudor3').click(function()
-            {
-                if ($('#chkCodeudor3').is(":checked")) {
-                    $('#myModal3').modal('show');
-                }else {
-                    $('#myModal3').modal('hide');
-                }
-            });
+  $('#chkCodeudor3').click(function()
+      {
+          if ($('#chkCodeudor3').is(":checked")) {
+              $('#myModal3').modal('show');
+          }else {
+              $('#myModal3').modal('hide');
+          }
+      });
 
-        $('#chkCodeudor4').click(function()
-            {
-                if ($('#chkCodeudor4').is(":checked")) {
-                    $('#myModal4').modal('show');
-                }else {
-                    $('#myModal4').modal('hide');
-                }
-            });
+  $('#chkCodeudor4').click(function()
+      {
+          if ($('#chkCodeudor4').is(":checked")) {
+              $('#myModal4').modal('show');
+          }else {
+              $('#myModal4').modal('hide');
+          }
+      });
 
-        $('#chkCodeudor5').click(function()
-            {
-                if ($('#chkCodeudor5').is(":checked")) {
-                    $('#myModal5').modal('show');
-                }else {
-                    $('#myModal5').modal('hide');
-                }
-            });
+  $('#chkCodeudor5').click(function()
+      {
+          if ($('#chkCodeudor5').is(":checked")) {
+              $('#myModal5').modal('show');
+          }else {
+              $('#myModal5').modal('hide');
+          }
+      });
 
-        $('#chkCodeudor6').click(function()
-            {
-                if ($('#chkCodeudor6').is(":checked")) {
-                    $('#myModal6').modal('show');
-                }else {
-                    $('#myModal6').modal('hide');
-                }
-            });
+  $('#chkCodeudor6').click(function()
+      {
+          if ($('#chkCodeudor6').is(":checked")) {
+              $('#myModal6').modal('show');
+          }else {
+              $('#myModal6').modal('hide');
+          }
+      });
+  $('#customSwitch10').click(function(){
+    var result = $('input[name="checkbox10"]:checked');
+    $('#customSwitch9').prop("checked",false);
+    if(result.length>0){
+      var html =  '<textarea id="asistencia" name="asistencia" required class="form-control"'+
+                  'placeholder="Describa la Asistencia Técnica" rows="7" style="width:100%;"></textarea>'+
+                  '<div class="help-block with-errors"></div>';
+      $("#datosTEC").html(html);
+    }
+    else{
+      $("#datosTEC").html("");
+    }
+  });
 
+  $('#customSwitch9').click(function(){
+    var result = $('input[name="checkbox20"]:checked');
+    $('#customSwitch10').prop("checked",false);
+    if(result.length>0){
+          $("#datosTEC").html("");
+    }
+  });
 $('#customSwitch1').click(function(){
   var result = $('input[name="checkbox1"]:checked');
   if(result.length>0){
@@ -2755,18 +3056,63 @@ $('#customSwitch2').click(function(){
 
       var ip_id = -1000;
 
+      // $(".agregarAV").click(function () {
+      //
+      //   if( $("input[name=avance_fecha_input]").val() != ""){
+      //
+      //      var idAV = $('input[name=avance_fecha_input]').val().replace('/', '');
+      //      var valor = ( $("input[name=avance_valor_input]").val() ? $("input[name=avance_valor_input]").val():0);
+      //      //var explica = $("input[name=explica_avance]").val();
+      //      if(!$('#set_avance').find("#AV"+idAV).length){
+      //
+      //         fechaAV.push($('input[name=avance_fecha_input]').val());
+      //         valorAV.push(valor);
+      //         //datosAV.push(explica);
+      //         estadoAV.push(1);
+      //         origenAV.push(1);
+      //         detalleAV.push($('textarea[name="detalle_avance"]').val());
+      //         actualizarListaAvance();
+      //
+      //     }else{
+      //         $.toast({
+      //          heading: 'Alerta:',
+      //          text: 'Ya existe valor en la fecha reportada.',
+      //          position: 'top-right',
+      //          loaderBg:'#ff6849',
+      //          icon: 'warning',
+      //          hideAfter: 3500
+      //        });
+      //       }
+      //   }else{
+      //     $.toast({
+      //      heading: 'Error:',
+      //      text: 'Llene los campos para agregar avance.',
+      //      position: 'top-right',
+      //      loaderBg:'#ff6849',
+      //      icon: 'error',
+      //      hideAfter: 3500
+      //    });
+      //
+      //   }
+      // });
+
       $(".agregarAV").click(function () {
 
-        if( $("input[name=avance_fecha_input]").val() != ""){
+        if( $("input[name=avance_fecha_dia]").val() != ""){
+            var idAV = $("input[name=avance_fecha_dia]").val().concat($("input[name=avance_fecha_mes]").val()).concat($("input[name=avance_fecha_anio]").val());
+            var fecAV = $("input[name=avance_fecha_dia]").val().concat("/").concat($("input[name=avance_fecha_mes]").val()).concat("/").concat($("input[name=avance_fecha_anio]").val());
+         }else {
+            var idAV = $("input[name=avance_fecha_mes]").val().concat($("input[name=avance_fecha_anio]").val());
+            var fecAV = $("input[name=avance_fecha_mes]").val().concat("/").concat($("input[name=avance_fecha_anio]").val());
+         }
 
-           var idAV = $('input[name=avance_fecha_input]').val().replace('/', '');
+        if( idAV != ""){
+
            var valor = ( $("input[name=avance_valor_input]").val() ? $("input[name=avance_valor_input]").val():0);
-           //var explica = $("input[name=explica_avance]").val();
            if(!$('#set_avance').find("#AV"+idAV).length){
 
-              fechaAV.push($('input[name=avance_fecha_input]').val());
+              fechaAV.push(fecAV);
               valorAV.push(valor);
-              //datosAV.push(explica);
               estadoAV.push(1);
               origenAV.push(1);
               detalleAV.push($('textarea[name="detalle_avance"]').val());
@@ -2859,7 +3205,9 @@ $('#customSwitch2').click(function(){
         //pageable: true,
         //pagerButtonsCount: 10,
         localization: getLocalization('es'),
-        //pageSize: 5,
+        rendered: function () {
+          actualizar();
+        },
         columns: [
           { text: 'Opciones', width: 120,
                 cellsRenderer: function (row, column, value, rowData) {
@@ -2875,7 +3223,7 @@ $('#customSwitch2').click(function(){
 
                 }
           },
-          { text: 'ID', dataField: 'codigo_id', width: 50, cellsAlign: 'left' },
+          { text: 'ID_FICHA', dataField: 'codigo_id', width: 60, cellsAlign: 'left' },
           { text: 'Estado', dataField: 'estado_desc', width: 100, cellsAlign: 'center' },
           { text: 'Nombre del indicador', width: 330,dataField: 'nombre' },
           { text: 'Tipo', width: 80,dataField: 'tipo' },
@@ -2884,9 +3232,20 @@ $('#customSwitch2').click(function(){
           { text: 'Sectores', width: 330, dataField: 'sectores',cellsAlign: 'left' },
           { text: 'PDES', width: 100, dataField: 'pdes',cellsAlign: 'left' },
           { text: 'ODS', width: 100, dataField: 'ods',cellsAlign: 'left' }
-
       ]
     });
+
+    $("#dataTable").on('filter', function (event) {
+        var args = event.args;
+        var filters = args.filters;
+        if(filters==""){
+          var visibleRows = $("#dataTable").jqxDataTable('getRows');
+          var count = visibleRows.length;
+          $('#total_registros').html(count);
+        }
+    });
+
+
 
     $(".ctrl-btn").click(function () {
       var activo = $(this).attr('href');
@@ -3409,6 +3768,7 @@ $('#customSwitch2').click(function(){
        $("#cont_resp").html(0);
        $("#datosFDN").html("");
        $("#datosFDD").html("");
+       $("#datosTEC").html("");
        fechaAV = [];
        valorAV = [];
        estadoAV = [];
@@ -3429,12 +3789,23 @@ $('#customSwitch2').click(function(){
        $("#set_responsables > tbody").html("");
        $('input[name="id_indicador"]').val(null);
        $("#tab-ini1" ).trigger( "click" );
+
+       $("#cod2").hide();
+       $("#cod").hide();
+       $("#cod5").hide();
+       $("#cod_sexo").hide();
+       $("#cod_edad").hide();
+       $("#cod_nac").hide();
+       $("#cod_deptal").hide();
+       $("#cod_munic").hide();
+       $('#customSwitch9').prop("checked",true);
     });
 //------------------aqui
     function limpiarBasico(){
       $("#formAdd")[0].reset();
        $("#datosART").html("");
        $("#datosART1").html("");
+       $("#datosTEC").html("");
        //$("#fuente_datos").val('').trigger('change');
        //$("#fuente_datos_d").val('').trigger('change');
        //$("#fd_cobertura_geografica").val('').trigger('change');
@@ -3461,6 +3832,17 @@ $('#customSwitch2').click(function(){
        $("#datosARCD > tbody").html("");
        $("#datosARCM > tbody").html("");
        $("#set_responsables > tbody").html("");
+
+       $("#cod2").hide();
+       $("#cod").hide();
+       $("#cod5").hide();
+       $("#cod_sexo").hide();
+       $("#cod_edad").hide();
+       $("#cod_nac").hide();
+       $("#cod_deptal").hide();
+       $("#cod_munic").hide();
+       $('#customSwitch9').prop("checked",true);
+
 
     }//------------------aqui fin
 
@@ -3523,6 +3905,54 @@ $('#customSwitch2').click(function(){
                    $('select[name=unidad_medida]').val(data.indicador[0].unidad_medida);
                    $('select[name=frecuencia]').val(data.indicador[0].frecuencia);
 
+                   if(data.indicador[0].desagregacion_sexo==true){
+                     $('#desagregacion_sexo').prop("checked",true);
+                     $('#chkCodeudor2').prop("checked",false);
+                     $("#cod_sexo").show();
+                  }else {
+                     $('#chkCodeudor2').prop("checked",false);
+                     $("#cod_sexo").hide();
+                  }
+
+                  if(data.indicador[0].desagregacion_edad==true){
+                     $('#desagregacion_edad').prop("checked",true);
+                      $('#chkCodeudor3').prop("checked",false);
+                      $("#cod_edad").show();
+                  }else {
+                     $('#chkCodeudor3').prop("checked",false);
+                     $("#cod_edad").hide();
+                  }
+
+                  if(data.indicador[0].desagregacion_nac==true){
+                     $('#desagregacion_nac').prop("checked",true);
+                     $('#chkCodeudor4').prop("checked",false);
+                     $("#cod_nac").show();
+                  }else{
+                     $('#chkCodeudor4').prop("checked",false);
+                     $("#cod_nac").hide();
+                  }
+
+                  if(data.indicador[0].desagregacion_deptal==true){
+                     $('#desagregacion_deptal').prop("checked",true);
+                     $('#chkCodeudor5').prop("checked",false);
+                     $("#cod_deptal").show();
+                  }else{
+                     $('#chkCodeudor5').prop("checked",false);
+                     $("#cod_deptal").hide();
+                  }
+
+                  if(data.indicador[0].desagregacion_munic==true){
+                     $('#desagregacion_munic').prop("checked",true);
+                     $('#chkCodeudor6').prop("checked",false);
+                     $("#cod_munic").show();
+                  }else {
+                     $('#chkCodeudor6').prop("checked",false);
+                     $("#cod_munic").hide();
+                  }
+
+
+
+
 
                    $('select[name=brecha_datos]').val(data.indicador[0].brecha_datos);
                    $('select[name=brecha_metodologia]').val(data.indicador[0].brecha_metodologia);
@@ -3532,10 +3962,20 @@ $('#customSwitch2').click(function(){
                      $("#variables_desagregacion").val(data.indicador[0].variables_desagregacion.split(",")).trigger('change');
                    }*/
                    $('textarea[name="variables_desagregacion"]').val(data.indicador[0].variables_desagregacion);
+                   if(data.indicador[0].linea_base_dia>0 || data.indicador[0].linea_base_dia==null){
+                      $('input[name="base_linea_dia"]').val(data.indicador[0].linea_base_dia);
+                    }
+                    if(data.indicador[0].linea_base_mes>0 || data.indicador[0].linea_base_mes==null){
+                        $('input[name="base_linea_mes"]').val(data.indicador[0].linea_base_mes);
+                    }
+                    if(data.indicador[0].linea_base_anio>0 || data.indicador[0].linea_base_anio==null){
+                        $('input[name="base_linea_anio"]').val(data.indicador[0].linea_base_anio);
+                    }
+                   // if(data.indicador[0].linea_base_mes){
+                   //   $('input[name="linea_base_fecha"]').val(data.indicador[0].linea_base_dia+'/'+data.indicador[0].linea_base_mes+'/'+data.indicador[0].linea_base_anio);
+                   // }
 
-                   if(data.indicador[0].linea_base_mes){
-                     $('input[name="linea_base_fecha"]').val(data.indicador[0].linea_base_dia+'/'+data.indicador[0].linea_base_mes+'/'+data.indicador[0].linea_base_anio);
-                   }
+
                    $('input[name="linea_base_valor"]').val(data.indicador[0].linea_base_valor);
                    $('textarea[name="formula"]').val(data.indicador[0].formula);
                    $('textarea[name="numerador_detalle"]').val(data.indicador[0].numerador_detalle);
@@ -3614,15 +4054,32 @@ $('#customSwitch2').click(function(){
                   });
 
 
+                  // $.each(data.avances, function(i, data) {
+                  //     fechaAV.push(data.fecha_generado_mes+'/'+data.fecha_generado_anio);
+                  //     valorAV.push(data.valor);
+                  //     estadoAV.push(1);
+                  //     origenAV.push(2);
+                  //     detalleAV.push((data.detalle_avance)?data.detalle_avance:'');
+                  //     idAV.push(data.id);
+                  // });
+
                   $.each(data.avances, function(i, data) {
+                    if(data.avance_fecha_tam==7){
                       fechaAV.push(data.fecha_generado_mes+'/'+data.fecha_generado_anio);
                       valorAV.push(data.valor);
                       estadoAV.push(1);
                       origenAV.push(2);
                       detalleAV.push((data.detalle_avance)?data.detalle_avance:'');
                       idAV.push(data.id);
+                    }else{
+                      fechaAV.push(data.fecha_generado_dia+'/'+data.fecha_generado_mes+'/'+data.fecha_generado_anio);
+                      valorAV.push(data.valor);
+                      estadoAV.push(1);
+                      origenAV.push(2);
+                      detalleAV.push((data.detalle_avance)?data.detalle_avance:'');
+                      idAV.push(data.id);
+                    }
                   });
-
                   setTimeout(function(){
                       actualizarListaAvance();
                   }, 2000);
@@ -3775,6 +4232,20 @@ $('#customSwitch2').click(function(){
                      }
 
                   });
+                  if(data.indicador[0].asistencia_tec!==null){
+                      $('#customSwitch10').prop("checked",true);
+                      var html =  '<textarea id="asistencia" name="asistencia" required class="form-control"'+
+                                  'placeholder="Describa la Asistencia Técnica" rows="7" style="width:100%;">'+data.indicador[0].asistencia_tec+'</textarea>'+
+                                  '<div class="help-block with-errors"></div>';
+                      // $('textarea[name="asistencia"]').val();
+                      $("#datosTEC").html(html);
+                      $('#customSwitch9').prop("checked",false);
+                   }else{
+                      $('#customSwitch10').prop("checked",false);
+                      $('#customSwitch9').prop("checked",true);
+                   }
+
+
 
                }else{
                    $.toast({
@@ -4015,6 +4486,7 @@ $('#customSwitch2').click(function(){
     function showFilterAdvanced() {
 
       if ($('#FilterAdvanced').hasClass('hidden')){
+            $("#dataTable").jqxDataTable('clearFilters');
             $('#exportarData').removeClass('hidden')
             $('#exportarData').addClass('hidden')
             // $("#dataTable").jqxDataTable({filterable: false});
@@ -4065,17 +4537,6 @@ $('#customSwitch2').click(function(){
 //------------------aqui fin
 
 function filtrar(){
-   // var sectores = $("#fil_sectores").val();
-   // var estado = $("#fil_estados").val();
-   // var compartidos = $("#fil_compartidos").val();
-   // var pp = $("#fil_pdes_pilar").val();
-   // var pm = $("#fil_pdes_meta").val();
-   // var pr = $("#fil_pdes_resultado").val();
-   // var oo = $("#fil_ods_objetivo").val();
-   // var om = $("#fil_ods_meta").val();
-   // var oi = $("#fil_ods_indicador").val();
-
-   //var dataFelds = $.parseJSON($("#filtroForm").serialize()+'&filter={{$filtData}}');
    var url = '{{ url('/api/sistemarime/apiFiltroGrid') }}';
    var source2 =
    {
@@ -4109,58 +4570,37 @@ function filtrar(){
        url: url
    };
    var dataAdapter2 = new $.jqx.dataAdapter(source2);
-   $("#dataTable").jqxDataTable({source: dataAdapter2});
+   $("#dataTable").jqxDataTable({
+       source: dataAdapter2,
+       rendered: function () {
+          actualizar();
+       }
+  });
+   //$('#dataTable').jqxDataTable({});
 
 
-
-    // $.ajax({
-    //       type: "POST",
-    //       url: "{{ url('/api/sistemarime/apiFiltroGrid') }}",
-    //       dataType: 'json',
-    //       data: $("#filtroForm").serialize()+'&filter={{$filtData}}' , // Adjuntar los campos del formulario enviado.
-    //       success: function(data){
-    //         if(data.error == false){
-    //
-    //
-    //
-    //             //------------------aqui
-    //             // limpiarBasico();
-    //             // $('input[name="id_indicador"]').attr("value",data.id_indicador);
-    //             // var tap_next=0;
-    //             // // $("#btn-back" ).trigger( "click" );
-    //             // $("#dataTable").jqxDataTable("updateBoundData");
-    //             // btn_update(data.id_indicador);
-    //             // swal("Guardado!", "Se ha guardado correctamente.", "success");
-    //             //------------------aqui fin
-    //         }else{
-    //             $.toast({
-    //              heading: data.title,
-    //              text: data.msg,
-    //              position: 'top-right',
-    //              loaderBg:'#ff6849',
-    //              icon: 'warning',
-    //              hideAfter: 3500
-    //            });
-    //         }
-    //       },
-    //       error:function(data){
-    //         if(data.status != 401){
-    //           $.toast({
-    //             heading: 'Error:',
-    //             text: 'Error al recuperar los datos.',
-    //             position: 'top-right',
-    //             loaderBg:'#ff6849',
-    //             icon: 'error',
-    //             hideAfter: 3500
-    //
-    //           });
-    //         }else{
-    //           window.location = '/login';
-    //         }
-    //
-    //       }
-    // });
 }
+function actualizar(){
+  var visibleRows = $("#dataTable").jqxDataTable('getView');
+  var count = visibleRows.length;
+  $('#total_registros').html(count);
+}
+
+$('#limpiarfiltros').click(function () {
+  $("#filtroForm")[0].reset();
+  $("#fil_sectores").val('').trigger('change');
+  $("#fil_pdes_pilar").val('').trigger('change');
+  $("#fil_pdes_meta").val('').trigger('change');
+  $("#fil_pdes_resultado").val('').trigger('change');
+  $("#fil_ods_objetivo").val('').trigger('change');
+  $("#fil_ods_meta").val('').trigger('change');
+  $("#fil_ods_indicador").val('').trigger('change');
+  $("#dataTable").jqxDataTable('clearFilters');
+  filtrar();
+  showFilterAdvanced();
+});
+
+
 
 
   </script>

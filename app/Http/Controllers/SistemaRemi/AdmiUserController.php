@@ -124,7 +124,7 @@ class AdmiUserController extends Controller
         $user->activo=true;
         $user->password=bcrypt($request['password']);
         $user->save();
-        flash('Creo Usuario exitosamente !!')->success();
+        //flash('Creo Usuario exitosamente !!')->success();
         return  redirect()->route('mostrarReg');
         //return response()->json($user);
         // return 'Usuario registrado exitosamente';

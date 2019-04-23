@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SistemaRemi;
 
 use Illuminate\Http\Request;
+use PDF;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Http\Controllers\Controller;
 
@@ -287,7 +288,7 @@ class IndicadorController extends Controller
     }
 
 
-  public function setIndicadores(Request $request)
+  /*public function setIndicadores(Request $request)
   {
     //dd("VALORES",$request);
     //$indicadores = Indicadores::paginate();
@@ -302,6 +303,8 @@ class IndicadorController extends Controller
     $pdes = 1;
     $where = array();
     $orwhere = array();
+    $fil_sector = "";
+    $fil_sector_desc = "";
     //$filindent = "1";
 
     if($request->has('buscar')){
@@ -332,11 +335,14 @@ class IndicadorController extends Controller
       // dd("codigo entidad:",$pent);
     }
 
+
+      if(isset())
       $filnoment = \DB::select("SELECT nombre_entidad
                                 FROM remi_entidad
                                 where  codigo_entidad=".$pent." AND activo = true");
-      $nom_ent=$filnoment[0]->nombre_entidad;
-     // dd("nombre:",$uno);
+      $fil_sector_desc = $filnoment[0]->nombre_entidad;
+
+
     if($sw > 0){
 
           $indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->paginate(5)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar);
@@ -345,19 +351,8 @@ class IndicadorController extends Controller
           $indicadores = Indicadores::where('activo',true)->paginate(5);
     }
 
-   /* $filindpil = \DB::select("SELECT distinct responsable_nivel_1, activo
-                              FROM public.remi_fuente_datos_responsable
-                               where activo = true");*/
-/*
-    $filindent = \DB::select("SELECT distinct c.cod_p
-                                FROM remi_indicador_pdes_resultado ir
-                                INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                                WHERE ir.id_indicador IN (SELECT id_fuente
-                                  FROM public.remi_fuente_datos_responsable
-                                where cod_entidad IN ( select id from remi_indicadores r
-                                where r.fuente_datos IN (SELECT cast(id_fuente as varchar)
-                                  FROM public.remi_fuente_datos_responsable
-                                where cod_entidad=".$pent.")))");  */
+
+
 
     $filindent = \DB::select("SELECT distinct c.cod_p
                               FROM remi_indicador_pdes_resultado ir
@@ -379,9 +374,13 @@ class IndicadorController extends Controller
                               FROM pip_instituciones
                                order by codigo");
 
-    $filindpil = \DB::select("SELECT  id,codigo_entidad,sigla_entidad,nombre_entidad, activo
-                              FROM remi_entidad
-                               where activo = true order by id");
+
+
+    $filindpil = \DB::select("SELECT DISTINCT sec.id,sec.denominacion as sector,sec.sigla
+                              FROM remi_indicadores i
+                              INNER JOIN remi_indicadores_sectores s ON i.id = s.id_indicador
+                              INNER JOIN pip_instituciones sec ON s.id_institucion = sec.id
+                              ORDER BY sec.denominacion ASC");
 
 
     $filtropdes = \DB::select("SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
@@ -408,8 +407,8 @@ class IndicadorController extends Controller
                               ORDER BY cod_p,cod_m,cod_r ASC) a");
     $totalPilar = $totalPilar[0];
 
-  $totalResPilar = \DB::select("SELECT (b.totalp-c.total) as totalgral
-          FROM
+   $totalResPilar = \DB::select("SELECT (b.totalp-c.total) as totalgral
+                              FROM
                               (
                               select count(*) as totalp
                               From (SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre
@@ -431,9 +430,120 @@ class IndicadorController extends Controller
     $tiposMedicion = TiposMedicion::get();
     $unidadesMedidas = UnidadesMedidas::get();
    // dd("Los Pilares",$request->cod_ent1);
-    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad','nom_ent','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar','totalPilar','totalResPilar','filindpil','filindent','swe','pent'));
-  }
+    return view('SistemaRemi.set-indicadores',compact('indicadores','tipo','unidad',
+    'nom_ent','tiposMedicion','unidadesMedidas','buscar','filtropdes','countPilar',
+    'totalPilar','totalResPilar','filindpil','filindent','swe','pent'));
+  }*/
 
+
+
+
+  public function setIndicadores(Request $request)
+    {
+      //$indicadores = Indicadores::paginate();
+      $sw=0;
+      $sb=0;
+      $tipo = "";
+      $unidad = "";
+      $buscar = "";
+      $countSinIndicador='';
+      $fil_sector = 0;
+      $fil_pilares = \DB::select("SELECT * FROM pdes_pilares ORDER BY cod_p ASC ");
+      $fil_pilar_sector = 0;
+      $pdes = 1;
+      $where = array();
+      $orwhere = array();
+
+
+
+      if($request->has('fil_sector')){
+          $fil_sector = $request->fil_sector;
+          $fil_pilares = \DB::select("SELECT DISTINCT c.cod_p,c.logo
+                                            FROM remi_indicadores i
+                                            INNER JOIN remi_indicadores_sectores s ON (i.id = s.id_indicador AND s.activo = true)
+                                            INNER JOIN remi_indicador_pdes_resultado pdes ON i.id = pdes.id_indicador
+                                            INNER JOIN pdes_vista_catalogo_pmr c ON pdes.id_resultado = c.id_resultado
+                                            WHERE i.activo = true
+                                            AND s.id_institucion = ?
+                                            ORDER BY c.cod_p ASC",[$fil_sector]);
+          if($fil_pilares){
+            $fil_pilar_sector =  $fil_pilares[0]->cod_p;
+          }else{
+            $fil_pilar_sector =  0;
+          }
+          $pdes = $fil_pilar_sector;
+      }
+
+      if($request->has('pdes')){
+          $pdes = $request->pdes;
+      }
+
+
+
+
+      // if($sw > 0){
+      //
+      //       $indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->paginate(5)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar);
+      //
+      // }else{
+      //       $indicadores = Indicadores::where('activo',true)->paginate(5);
+      // }
+      if($request->has('fil_sector')){
+          $filtropdes = \DB::select("SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre,LPAD(i.id::text, 4, '0') as codigo_id
+                                      FROM pdes_vista_catalogo_pmr c
+                                      LEFT JOIN remi_indicador_pdes_resultado ir ON (c.id_resultado = ir.id_resultado AND ir.activo = true)
+                                      LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
+                                      LEFT JOIN remi_indicadores_sectores s ON (i.id = s.id_indicador AND s.activo = true)
+                                      WHERE cod_p = ?
+                                      AND s.id_institucion = ?
+                                      ORDER BY cod_p,cod_m,cod_r ASC",[$pdes,$request->fil_sector]);
+
+          $countPilar = \DB::select("SELECT COUNT(i.id ) as total
+                                    FROM pdes_vista_catalogo_pmr c
+                                    INNER JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
+                                    INNER JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
+                                    INNER JOIN remi_indicadores_sectores s ON (i.id = s.id_indicador AND s.activo = true)
+                                    WHERE cod_p = ?
+                                    AND s.id_institucion = ?",[$pdes,$request->fil_sector]);
+          $countPilar =$countPilar[0];
+      }else{
+        $filtropdes = \DB::select("SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre,LPAD(i.id::text, 4, '0') as codigo_id
+                                   FROM pdes_vista_catalogo_pmr c
+                                   LEFT JOIN remi_indicador_pdes_resultado ir ON (c.id_resultado = ir.id_resultado AND ir.activo = true)
+                                   LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
+                                   WHERE cod_p = ".$pdes."
+                                   ORDER BY cod_p,cod_m,cod_r ASC");
+
+        $countPilar = \DB::select("SELECT count(i.id) as total
+                              FROM pdes_vista_catalogo_pmr c
+                              INNER JOIN remi_indicador_pdes_resultado ir ON c.id_resultado = ir.id_resultado
+                              INNER JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
+                              WHERE cod_p = ".$pdes);
+         $countPilar =$countPilar[0];
+          $countSinIndicador = \DB::select("SELECT count(*) as total
+                                          FROM (
+                                            SELECT c.logo,pilar,meta,desc_m,resultado,desc_r,i.id as id_indicador,i.nombre,LPAD(i.id::text, 4, '0') as codigo_id
+                                            FROM pdes_vista_catalogo_pmr c
+                                            LEFT JOIN remi_indicador_pdes_resultado ir ON (c.id_resultado = ir.id_resultado AND ir.activo = true)
+                                            LEFT JOIN remi_indicadores i ON (ir.id_indicador = i.id AND i.activo = true)
+                                            WHERE cod_p = ".$pdes."
+                                            ORDER BY cod_p,cod_m,cod_r ASC
+                                          ) as fuente
+                                          WHERE id_indicador is NULL");
+          $countSinIndicador =$countSinIndicador[0]->total;
+
+      }
+
+
+      $sectores = \DB::select("SELECT DISTINCT sec.id,sec.denominacion as sector,sec.sigla
+                                  FROM remi_indicadores i
+                                  INNER JOIN remi_indicadores_sectores s ON i.id = s.id_indicador
+                                  INNER JOIN pip_instituciones sec ON s.id_institucion = sec.id
+                                  ORDER BY sec.denominacion ASC");
+
+      return view('SistemaRemi.set-indicadores',compact('filtropdes','countPilar','sectores','fil_sector','fil_pilares',
+      'fil_pilar_inicial','countSinIndicador'));
+    }
 
   public function filtraPdesEntidad(Request $request){
      dd("valors ent",77);
@@ -449,6 +559,10 @@ class IndicadorController extends Controller
                          FROM remi_indicador_pdes_resultado ir
                          INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
                          WHERE ir.id_indicador = ".$id);
+    $ods = \DB::select("SELECT c.*,ir.id,ir.comparabilidad_ods_pdes
+                        FROM remi_indicador_ods_indicador ir
+                        INNER JOIN ods_vista_catalogo_omi c ON ir.id_resultado_ods = c.id_indicador
+                        WHERE ir.id_indicador_ods = ".$id);
     $metas = Metas::where('id_indicador',$id)->orderBy('gestion', 'asc')->get();
     $avance = IndicadorAvance::where('id_indicador',$id)->orderBy('fecha_generado', 'DESC')->first();
 
@@ -467,12 +581,61 @@ class IndicadorController extends Controller
     $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->where('activo', true)->get();
 
 
+    //$idFuenteNumerador = explode(",", $indicador->fuente_datos);
+    if($indicador->fuente_datos)
+    $descFuenteNumerador = \DB::select("SELECT * FROM remi_fuente_datos WHERE id IN (".$indicador->fuente_datos.")");
+    else
+    $descFuenteNumerador=[];
 
+    if($indicador->fuente_datos_d)
+    $descFuenteDenominador = \DB::select("SELECT * FROM remi_fuente_datos WHERE id IN (".$indicador->fuente_datos_d.")");
+    else
+    $descFuenteDenominador=[];
 
 
     $grafica = json_encode($dataMetasAvance);
+    $estado_desc = \DB::select("SELECT * FROM remi_estados WHERE id = ".$indicador->estado);
+    $estado_desc = $estado_desc[0]->nombre;
 
-    return view('SistemaRemi.data-indicador',compact('indicador','metas','pdes','avance','grafica','metasAvance','archivos'));
+    $brechaDatos =  Array('9' =>'',
+                          '0' => "Existen Fuentes de Datos con la frecuencia requerida y las variables de desagregación necesarias para reportar el indicador",
+                          '1' => "No existen datos para reportar el indicador",
+                          '2' => "Existen datos pero no se recopilan con la frecuencia requerida",
+                          '3' => "Existen datos pero no se recopilan con las variables de desagregación requeridas",
+                          '4' => "Existen datos pero no se recopilan con la frecuencia requerida ni con las variables de desagregación necesarias");
+    $brechaMetodologia =  Array('9' =>'',
+                          '0' => "Existe metodología nacional adaptada a recomendaciones internacionales",
+                          '1' => "No existe Metodología Nacional",
+                          '2' => "No Existe Metodología bajo Recomendaciones Internacionales",
+                          '3' => "No existe metodología nacional ni bajo recomentaciones internacionales");
+    $brechaCapacitacion =  Array('9' =>'',
+                          '0' => "Existe personal capacitado",
+                          '1' => "No existe Personal permanente para la generación de estadísticas",
+                          '2' => "No exite personal capacitado para generar estadísticas",
+                          '3' => "No existe personal permanente ni capacitado para generar estadísticas");
+    $brechaFinanciamiento = Array('9' =>'',
+                            '0' => "Existe financiamiento",
+                            '1' => "No se cuenta con financiamiento nacional",
+                            '2' => "Sólo se cuenta con financiamiento temporal de la cooperación",
+                            '3' => "No se cuenta con financiamiento nacio nal ni internacional ");
+
+    $dataBrechaDatos = $brechaDatos[$indicador->brecha_datos];
+    $dataBrechaMetodologia = $brechaMetodologia[$indicador->brecha_metodologia];
+    $dataBrechaCapacitacion = $brechaCapacitacion[$indicador->brecha_capacitacion];
+    $dataBrechaFinanciamiento = $brechaFinanciamiento[$indicador->brecha_financiamiento];
+
+    $sectores = IndicadorSector::where('id_indicador',$id)->where('activo', true)->get();
+    $agrupSectores ='';
+    foreach ($sectores as $value) {
+      $agrupSectores .= $value->id_institucion."," ;
+    }
+    $agrupSectores = trim($agrupSectores, ',');
+    $sectoresRelacionados = \DB::select("SELECT * FROM pip_instituciones WHERE id IN (".$agrupSectores.")");
+
+    return view('SistemaRemi.data-indicador',compact('indicador',
+    'metas','pdes','avance','grafica','metasAvance','archivos','ods','descFuenteNumerador',
+    'descFuenteDenominador','estado_desc','dataBrechaDatos','dataBrechaMetodologia',
+    'dataBrechaCapacitacion','dataBrechaFinanciamiento','sectoresRelacionados'));
   }
 
   public function adminIndicador()
@@ -735,81 +898,190 @@ class IndicadorController extends Controller
       $pedes_r = "";
       $where = "";
 
-       if($request->fil_estados!=0){
+       if($request->fil_estados != 0){
           $where .="AND tabla.estado = '".$request->fil_estados."' ";
        }
-       if($request->fil_compartidos!=0){
-          $where .="AND tabla.compartidos = '".$request->fil_compartidos."' ";
+       if($request->fil_compartidos != '0'){
+          $where .="AND tabla.compartido = '".$request->fil_compartidos."' ";
        }
-       if($request->fil_tipos!=0){
+       if($request->fil_tipos != '0'){
           $where .="AND tabla.tipo = '".$request->fil_tipos."' ";
        }
+       if($request->fil_sectores != ''){
+          $where.="AND(";
+          foreach ($request->fil_sectores as $key=>$value) {
+            if($key==0)
+            $where .="tabla.sectores_id LIKE '".$value."' ";
+            else
+            $where .="OR tabla.sectores_id LIKE '".$value."' ";
 
-       // tabla.pdes_p like '1'
-       // OR tabla.pdes_p like '%,1,%'
-       // OR tabla.pdes_p like '%,1'
-       // OR tabla.pdes_p like '1,%'
-       //
-       // OR tabla.pdes_p like '6'
-       // OR tabla.pdes_p like '%,6,%'
-       // OR tabla.pdes_p like '%,6'
-       // OR tabla.pdes_p like '6,%'
+            $where .="OR tabla.sectores_id LIKE '%,".$value.",%' ";
+            $where .="OR tabla.sectores_id LIKE '%,".$value."' ";
+            $where .="OR tabla.sectores_id LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
+       if($request->fil_pdes_pilar != ''){
+          $where.="AND(";
+          foreach ($request->fil_pdes_pilar as $key=>$value) {
+            if($key==0)
+            $where .="tabla.pdes_p LIKE '".$value."' ";
+            else
+            $where .="OR tabla.pdes_p LIKE '".$value."' ";
+
+            $where .="OR tabla.pdes_p LIKE '%,".$value.",%' ";
+            $where .="OR tabla.pdes_p LIKE '%,".$value."' ";
+            $where .="OR tabla.pdes_p LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
+       if($request->fil_pdes_meta != ''){
+          $where.="AND(";
+          foreach ($request->fil_pdes_meta as $key=>$value) {
+            if($key==0)
+            $where .="tabla.pdes_m LIKE '".$value."' ";
+            else
+            $where .="OR tabla.pdes_m LIKE '".$value."' ";
+
+            $where .="OR tabla.pdes_m LIKE '%,".$value.",%' ";
+            $where .="OR tabla.pdes_m LIKE '%,".$value."' ";
+            $where .="OR tabla.pdes_m LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
+       if($request->fil_pdes_resultado != ''){
+          $where.="AND(";
+          foreach ($request->fil_pdes_resultado as $key=>$value) {
+            if($key==0)
+            $where .="tabla.pdes_r LIKE '".$value."' ";
+            else
+            $where .="OR tabla.pdes_r LIKE '".$value."' ";
+
+            $where .="OR tabla.pdes_r LIKE '%,".$value.",%' ";
+            $where .="OR tabla.pdes_r LIKE '%,".$value."' ";
+            $where .="OR tabla.pdes_r LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
+
+       if($request->fil_ods_objetivo != ''){
+          $where.="AND(";
+          foreach ($request->fil_ods_objetivo as $key=>$value) {
+            if($key==0)
+            $where .="tabla.ods_o LIKE '".$value."' ";
+            else
+            $where .="OR tabla.ods_o LIKE '".$value."' ";
+
+            $where .="OR tabla.ods_o LIKE '%,".$value.",%' ";
+            $where .="OR tabla.ods_o LIKE '%,".$value."' ";
+            $where .="OR tabla.ods_o LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
+
+       if($request->fil_ods_meta != ''){
+          $where.="AND(";
+          foreach ($request->fil_ods_meta as $key=>$value) {
+            if($key==0)
+            $where .="tabla.ods_m LIKE '".$value."' ";
+            else
+            $where .="OR tabla.ods_m LIKE '".$value."' ";
+
+            $where .="OR tabla.ods_m LIKE '%,".$value.",%' ";
+            $where .="OR tabla.ods_m LIKE '%,".$value."' ";
+            $where .="OR tabla.ods_m LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
+
+       if($request->fil_ods_indicador != ''){
+          $where.="AND(";
+          foreach ($request->fil_ods_indicador as $key=>$value) {
+            if($key==0)
+            $where .="tabla.ods_i LIKE '".$value."' ";
+            else
+            $where .="OR tabla.ods_i LIKE '".$value."' ";
+
+            $where .="OR tabla.ods_i LIKE '%,".$value.",%' ";
+            $where .="OR tabla.ods_i LIKE '%,".$value."' ";
+            $where .="OR tabla.ods_i LIKE '".$value.",%'";
+          }
+          $where.=")";
+       }
 
       if($request->filter > 0){
-        $indicadores = \DB::select("SELECT *,
-                                     (
-                                       SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>')
-                                       FROM remi_indicadores_sectores s
-                                       INNER JOIN pip_instituciones i ON s.id_institucion = i.id
-                                       WHERE id_indicador = fuente.id
-                                       AND activo = TRUE
-                                       GROUP BY id_indicador
-                                       ORDER BY id_indicador ASC
-                                     ) as sectores,
-                                     (
-                                       SELECT
-                                         CASE
-                                           WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si'
-                                           ELSE 'No'
-                                         END
-                                         AS res
-                                       FROM remi_indicadores_sectores s
-                                       INNER JOIN pip_instituciones i ON s.id_institucion = i.id
-                                       WHERE id_indicador = fuente.id
-                                       AND activo = TRUE
-                                     ) as compartido,
-                                     (
-                                       SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
-                                       FROM remi_indicador_pdes_resultado pr
-                                       INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado
-                                       WHERE pr.id_indicador = fuente.id
-                                       GROUP BY pr.id_indicador
-                                     ) as pdes,
-                                     (
-                                       SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ')
-                                       FROM remi_indicador_ods_indicador oi
-                                       INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
-                                       WHERE oi.id_indicador_ods = fuente.id
-                                       GROUP BY oi.id_indicador_ods
-                                     ) as ods
-                                     FROM(
-                                        SELECT i.*,ins.denominacion,es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
-                                        FROM remi_indicadores i
-                                        INNER JOIN remi_indicadores_sectores ise ON (i.id = ise.id_indicador AND ise.activo = true)
-                                        INNER JOIN pip_instituciones ins ON ise.id_institucion = ins.id
-                                        INNER JOIN remi_estados es ON i.estado = es.id
-                                        WHERE i.activo = true
-                                        AND ise.id_institucion = ?
-                                        ORDER BY nombre ASC
-                                     ) as fuente",[$user->id_institucion]);
+        $sql = "SELECT *
+                FROM (
+                  SELECT *,
+                   (
+                     SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>') FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                     WHERE id_indicador = fuente.id AND activo = TRUE GROUP BY id_indicador ORDER BY id_indicador ASC
+                   ) as sectores,
+                   (
+                     SELECT string_agg(DISTINCT i.id::text,',') FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                     WHERE id_indicador = fuente.id AND activo = TRUE GROUP BY id_indicador ORDER BY id_indicador ASC
+                   ) as sectores_id,
+                   (
+                     SELECT CASE WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si' ELSE 'No' END AS res
+                     FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id WHERE id_indicador = fuente.id AND activo = TRUE
+                   ) as compartido,
+                   (
+                     SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ') FROM remi_indicador_pdes_resultado pr
+                     INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                   ) as pdes,
+                   (
+                   SELECT string_agg(DISTINCT c.cod_p::text,',') FROM remi_indicador_pdes_resultado pr
+                   INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                   ) as pdes_p,
+                   (
+                   SELECT string_agg(DISTINCT c.cod_m::text,',') FROM remi_indicador_pdes_resultado pr
+                   INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                   ) as pdes_m,
+                   (
+                   SELECT string_agg(DISTINCT c.cod_r::text,',') FROM remi_indicador_pdes_resultado pr
+                   INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                   ) as pdes_r,
+                   (
+                     SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ') FROM remi_indicador_ods_indicador oi
+                     INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                   ) as ods,
+                   (
+                			SELECT string_agg(DISTINCT c.cod_o,',') FROM remi_indicador_ods_indicador oi
+                			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                		) as ods_o,
+                		(
+                			SELECT string_agg(DISTINCT c.cod_m,',') FROM remi_indicador_ods_indicador oi
+                			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                		) as ods_m,
+                		(
+                			SELECT string_agg(DISTINCT c.cod_i,',') FROM remi_indicador_ods_indicador oi
+                			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                		) as ods_i
+                   FROM(
+                      SELECT i.*,ins.denominacion,es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
+                      FROM remi_indicadores i
+                      INNER JOIN remi_indicadores_sectores ise ON (i.id = ise.id_indicador AND ise.activo = true)
+                      INNER JOIN pip_instituciones ins ON ise.id_institucion = ins.id
+                      INNER JOIN remi_estados es ON i.estado = es.id
+                      WHERE i.activo = true
+                      AND ise.id_institucion = ".$user->id_institucion."
+                      ORDER BY nombre ASC
+                   ) as fuente
+                 ) as tabla
+                 WHERE 1=1
+                 ".$where;
       } else  {
          $sql = "SELECT *
-               FROM (
+                 FROM (
                    SELECT *,
                     (
                     	SELECT string_agg(DISTINCT ('- '||denominacion),'<br/>') FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id
                     	WHERE id_indicador = fuente.id AND activo = TRUE GROUP BY id_indicador ORDER BY id_indicador ASC
                     ) as sectores,
+                    (
+                			SELECT string_agg(DISTINCT i.id::text,',') FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id
+                			WHERE id_indicador = fuente.id AND activo = TRUE GROUP BY id_indicador ORDER BY id_indicador ASC
+                		) as sectores_id,
                     (
                     	SELECT CASE WHEN COUNT(DISTINCT s.id_institucion)>1 THEN 'Si' ELSE 'No' END AS res
                     	FROM remi_indicadores_sectores s INNER JOIN pip_instituciones i ON s.id_institucion = i.id WHERE id_indicador = fuente.id AND activo = TRUE
@@ -819,19 +1091,42 @@ class IndicadorController extends Controller
                     	INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
                     ) as pdes,
                     (
+                		SELECT string_agg(DISTINCT c.cod_p::text,',') FROM remi_indicador_pdes_resultado pr
+                		INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                		) as pdes_p,
+                		(
+                		SELECT string_agg(DISTINCT c.cod_m::text,',') FROM remi_indicador_pdes_resultado pr
+                		INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                		) as pdes_m,
+                		(
+                		SELECT string_agg(DISTINCT c.cod_r::text,',') FROM remi_indicador_pdes_resultado pr
+                		INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                		) as pdes_r,
+                    (
                     	SELECT string_agg(DISTINCT ('- '||c.codigo),' <br/> ') FROM remi_indicador_ods_indicador oi
                     	INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
-                    ) as ods
+                    ) as ods,
+                    (
+                			SELECT string_agg(DISTINCT c.cod_o,',') FROM remi_indicador_ods_indicador oi
+                			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                		) as ods_o,
+                		(
+                			SELECT string_agg(DISTINCT c.cod_m,',') FROM remi_indicador_ods_indicador oi
+                			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                		) as ods_m,
+                		(
+                			SELECT string_agg(DISTINCT c.cod_i,',') FROM remi_indicador_ods_indicador oi
+                			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
+                		) as ods_i
                     FROM(
                       SELECT i.*, es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id FROM remi_indicadores i
                       INNER JOIN remi_estados es ON i.estado = es.id WHERE activo = TRUE ORDER BY i.id ASC
                     ) as fuente
                   ) as tabla
                   WHERE 1=1
-                  $where";
-
-         $indicadores = \DB::select($sql);
+                  ".$where;
       }
+      $indicadores = \DB::select($sql);
       //'codigo' => str_pad($item->id, 4, "0", STR_PAD_LEFT),
       return \Response::json($indicadores);
   }
@@ -869,6 +1164,14 @@ class IndicadorController extends Controller
             $indicador->tipo = $request->tipo;  //3
             //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
             $indicador->variables_desagregacion = $request->variables_desagregacion;  //8
+            $indicador->desagregacion_sexo = $request->has('desagregacion_sexo');
+            $indicador->desagregacion_edad = $request->has('desagregacion_edad');
+            $indicador->desagregacion_nac = $request->has('desagregacion_nac');
+            $indicador->desagregacion_deptal = $request->has('desagregacion_deptal');
+            $indicador->desagregacion_munic = $request->has('desagregacion_munic');
+
+
+
             $indicador->unidad_medida = $request->unidad_medida; //4
             $indicador->frecuencia = $request->frecuencia;  //5
             $indicador->definicion = $request->definicion;  //6
@@ -881,6 +1184,7 @@ class IndicadorController extends Controller
 
             $indicador->serie_disponible = $request->serie_disponible;   //7
             $indicador->observacion = $request->observacion;
+            $indicador->asistencia_tec = $request->asistencia;
             $indicador->form_activo = $request->tap_next;
             $indicador->estado = 1;
             $indicador->logo = "default.png";
@@ -889,15 +1193,29 @@ class IndicadorController extends Controller
             $mes = null;  //
             $anio = null;
             $fechaLB =null;
-            if($request->linea_base_fecha){  //
-              list ($dia ,$mes, $anio ) = explode ( "/", $request->linea_base_fecha );  ///
-              //$dia = date('t', mktime(0,0,0, $mes, 1, $anio));   ///
-      		    $fechaLB = $anio . "-" . $mes . "-" . $dia;    ///
+            $fechaLBF =null;
+
+            // if($request->linea_base_fecha){  //
+            //   list ($dia ,$mes, $anio ) = explode ( "/", $request->linea_base_fecha );  ///
+            //   //$dia = date('t', mktime(0,0,0, $mes, 1, $anio));   ///
+      		  //   $fechaLB = $anio . "-" . $mes . "-" . $dia;    ///
+            // }
+            //
+            // $indicador->linea_base_fecha = $fechaLB;  // 9
+            // $indicador->linea_base_anio = $anio;  // 10
+            // $indicador->linea_base_mes = $mes;  //11
+            // $indicador->linea_base_dia = $dia;  //12
+
+            $indicador->linea_base_dia = $request->base_linea_dia;
+            $indicador->linea_base_mes = $request->base_linea_mes;
+            $indicador->linea_base_anio = $request->base_linea_anio;
+            if((int)$request->base_linea_dia!=0){
+                $fechaLBF = $request->base_linea_anio . "-" . $request->base_linea_mes . "-" . $request->base_linea_dia;
+                //dd("concatfecj",$fechaLBF);
+                $indicador->linea_base_fecha = date("Y-m-d", strtotime($fechaLBF));
+            }else{
+                $indicador->linea_base_fecha = null;
             }
-            $indicador->linea_base_fecha = $fechaLB;  // 9
-            $indicador->linea_base_anio = $anio;  // 10
-            $indicador->linea_base_mes = $mes;  //11
-            $indicador->linea_base_dia = $dia;  //12
             $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;  //13
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
             $indicador->fuente_datos_d = ($request->fuente_datos_d)?implode(",", $request->fuente_datos_d):null;
@@ -927,6 +1245,7 @@ class IndicadorController extends Controller
                     $indicadorPdes->id_indicador = $indicador->id;
                     $indicadorPdes->id_resultado = $request->resultado_articulado[$k];
                     $indicadorPdes->id_user = $this->user->id;
+                    $indicadorPdes->activo = true;
                     $indicadorPdes->save();
               }
             }
@@ -938,6 +1257,7 @@ class IndicadorController extends Controller
                     $indicadorOds->comparabilidad_ods_pdes = $request->relac;
                     $indicadorOds->id_resultado_ods = $request->resultado_articuladods[$k];
                     $indicadorOds->id_user = $this->user->id;
+                    $indicadorOds->activo = true;
                     $indicadorOds->save();
               }
             }
@@ -957,11 +1277,27 @@ class IndicadorController extends Controller
                     $avance = new IndicadorAvance();
                     $avance->id_indicador = $indicador->id;
                     $fechaAV="";
+
+
+                    // if($request->avance_fecha[$k]){
+                    //   list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                    //   $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+              		  //   $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                    // }
                     if($request->avance_fecha[$k]){
-                      list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
-                      $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
-              		    $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                        if(strlen($request->avance_fecha[$k])==7){
+                            list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                            $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+                            $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                            $avance->avance_fecha_tam = 7;
+                        }else{
+                            list ($dia, $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                            $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                            $avance->avance_fecha_tam = 10;
+                        }
                     }
+
+
                     $avance->fecha_generado = $fechaAV;
                     $avance->fecha_generado_dia = $dia;
                     $avance->fecha_generado_mes = $mes;
@@ -1038,6 +1374,12 @@ class IndicadorController extends Controller
             $indicador->tipo = $request->tipo;
             //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
             $indicador->variables_desagregacion = $request->variables_desagregacion;
+            $indicador->desagregacion_sexo = $request->has('desagregacion_sexo');
+            $indicador->desagregacion_edad = $request->has('desagregacion_edad');
+            $indicador->desagregacion_nac = $request->has('desagregacion_nac');
+            $indicador->desagregacion_deptal = $request->has('desagregacion_deptal');
+            $indicador->desagregacion_munic = $request->has('desagregacion_munic');
+
             $indicador->unidad_medida = $request->unidad_medida;
             $indicador->frecuencia = $request->frecuencia;
             $indicador->definicion = $request->definicion;
@@ -1050,6 +1392,7 @@ class IndicadorController extends Controller
 
             $indicador->serie_disponible = $request->serie_disponible;
             $indicador->observacion = $request->observacion;
+            $indicador->asistencia_tec = $request->asistencia;
 
             if($request->tap_next<$indicador->form_activo){
               //$fuente->form_activo = $request->form_activo;
@@ -1065,16 +1408,35 @@ class IndicadorController extends Controller
             $mes = null;
             $anio = null;
             $fechaLB =null;
-            if($request->linea_base_fecha){
-              list ($dia, $mes, $anio ) = explode ( "/", $request->linea_base_fecha );
-              //$dia = date('t', mktime(0,0,0, $mes, 1, $anio));
-              $fechaLB = $anio . "-" . $mes . "-" . $dia;
+            $fechaLBF =null;
+
+
+            // if($request->linea_base_fecha){
+            //   list ($dia, $mes, $anio ) = explode ( "/", $request->linea_base_fecha );
+            //   //$dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+            //   $fechaLB = $anio . "-" . $mes . "-" . $dia;
+            // }
+            // $indicador->linea_base_fecha = $fechaLB;
+            // $indicador->linea_base_anio = $anio;
+            // $indicador->linea_base_mes = $mes;
+            // $indicador->linea_base_dia = $dia;
+
+            $indicador->linea_base_dia = $request->base_linea_dia;
+            $indicador->linea_base_mes = $request->base_linea_mes;
+            $indicador->linea_base_anio = $request->base_linea_anio;
+            if((int)$request->base_linea_dia!=0){
+                $fechaLBF = $request->base_linea_anio . "-" . $request->base_linea_mes . "-" . $request->base_linea_dia;
+                //dd("concatfecj",$fechaLBF);
+                $indicador->linea_base_fecha = date("Y-m-d", strtotime($fechaLBF));
+            }else{
+                $indicador->linea_base_fecha = null;
             }
-            $indicador->linea_base_fecha = $fechaLB;
-            $indicador->linea_base_anio = $anio;
-            $indicador->linea_base_mes = $mes;
-            $indicador->linea_base_dia = $dia;
             $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
+
+
+
+
+
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
             $indicador->fuente_datos_d = ($request->fuente_datos_d)?implode(",", $request->fuente_datos_d):null;
             $indicador->brecha_datos = $request->brecha_datos;
@@ -1092,6 +1454,7 @@ class IndicadorController extends Controller
                         $indicadorPdes->id_indicador = $indicador->id;
                         $indicadorPdes->id_resultado = $request->resultado_articulado[$k];
                         $indicadorPdes->id_user = $this->user->id;
+                        $indicadorPdes->activo = true;
                         $indicadorPdes->save();
                     }else{
                       //dd("esta:".$request->estado_resultado_articulado[$k]."resultado:".$request->resultado_articulado[$k]."id:".$request->id_resultado_articulado[$k]);
@@ -1113,6 +1476,7 @@ class IndicadorController extends Controller
                         $indicadorOds->comparabilidad_ods_pdes = $request->relac;
                         $indicadorOds->id_resultado_ods = $request->resultado_articuladods[$k];
                         $indicadorOds->id_user = $this->user->id;
+                        $indicadorOds->activo = true;
                         $indicadorOds->save();
                     }else{
                         if($request->estado_resultado_articuladods[$k]==0){
@@ -1132,10 +1496,22 @@ class IndicadorController extends Controller
                         $avance = new IndicadorAvance();
                         $avance->id_indicador = $indicador->id;
                         $fechaAV="";
+                        // if($request->avance_fecha[$k]){
+                        //   list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                        //   $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+                  		  //   $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                        // }
                         if($request->avance_fecha[$k]){
-                          list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
-                          $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
-                  		    $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                            if(strlen($request->avance_fecha[$k])==7){
+                                list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                                $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+                                $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                                $avance->avance_fecha_tam = 7;
+                            }else{
+                                list ($dia, $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                                $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                                $avance->avance_fecha_tam = 10;
+                            }
                         }
                         $avance->fecha_generado = $fechaAV;
                         $avance->fecha_generado_dia = $dia;
@@ -1425,6 +1801,9 @@ class IndicadorController extends Controller
       $indicador->activo = false;
       $indicador->id_user_updated = $this->user->id;
       $indicador->save();
+
+      \DB::table('remi_indicador_pdes_resultado')->where('id_indicador', $indicador->id)->update(['activo' => false]);
+      \DB::table('remi_indicador_ods_indicador')->where('id_indicador_ods', $indicador->id)->update(['activo' => false]);
       return \Response::json(array(
           'error' => false,
           'title' => "Success!",
@@ -1558,20 +1937,20 @@ class IndicadorController extends Controller
 
         try{
             $fuente = new FuenteDatos();
-            $fuente->codigo = "";
-            $fuente->acronimo = $request->fd_acronimo;
-            $fuente->nombre = $request->fd_nombre;
-            $fuente->tipo = $request->fd_tipo;
-            /*$fuente->periodicidad = $request->fd_periodicidad;
-            $fuente->serie_datos = $request->fd_serie_datos;
-            $fuente->cobertura_geografica = ($request->fd_cobertura_geografica)?implode(",", $request->fd_cobertura_geografica):null;
-            $fuente->nivel_representatividad_datos = $request->fd_nivel_representatividad_datos;
-            $fuente->variable = $request->fd_variable;
-            $fuente->observacion = $request->fd_observacion;*/
-            $fuente->activo = true;
-            $fuente->estado = 1;
-            $fuente->id_user = $this->user->id;
-            $fuente->save();
+             $fuente->codigo = "";
+             $fuente->serie_datos = $request->fd_serie;
+             $fuente->nombre = $request->fd_nombre;
+             $fuente->tipo = $request->fd_tipo;
+             $fuente->activo = true;
+             $fuente->estado = 1;
+             $fuente->id_user = $this->user->id;
+             $fuente->save();
+
+             $fdatos = new FuenteDatosResponsable();
+             $fdatos->id_fuente = $fuente->id;  //   $fdato;
+             $fdatos->responsable_nivel_1 = $request->sectorial;
+             $fdatos->responsable_nivel_2 = $request->fd_resp_2;
+             $fdatos->save();
 
 
             /*if(isset($request->responsable_nivel_1)){
@@ -2013,6 +2392,115 @@ class IndicadorController extends Controller
           'title' => "Success!",
           'msg' => "Archivo eliminado")
       );
+
+  }
+
+  public function generatePdf(Request $request)
+  {
+
+    $id = $request->id;
+    $indicador = Indicadores::find($id);
+    $pdes = \DB::select("SELECT c.*,ir.id
+                         FROM remi_indicador_pdes_resultado ir
+                         INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
+                         WHERE ir.id_indicador = ".$id);
+    $ods = \DB::select("SELECT c.*,ir.id,ir.comparabilidad_ods_pdes
+                        FROM remi_indicador_ods_indicador ir
+                        INNER JOIN ods_vista_catalogo_omi c ON ir.id_resultado_ods = c.id_indicador
+                        WHERE ir.id_indicador_ods = ".$id);
+    $metas = Metas::where('id_indicador',$id)->orderBy('gestion', 'asc')->get();
+    $avance = IndicadorAvance::where('id_indicador',$id)->orderBy('fecha_generado', 'DESC')->first();
+
+
+    $dataMetasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
+                            FROM remi_metas m
+                            LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+                            WHERE m.id_indicador = ".$id."
+                            ORDER BY m.gestion ASC
+                            LIMIT 5");
+    $metasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
+                            FROM remi_metas m
+                            LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+                            WHERE m.id_indicador = ".$id."
+                            ORDER BY m.gestion ASC");
+    $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->where('activo', true)->get();
+
+
+    //$idFuenteNumerador = explode(",", $indicador->fuente_datos);
+    if($indicador->fuente_datos)
+    $descFuenteNumerador = \DB::select("SELECT * FROM remi_fuente_datos WHERE id IN (".$indicador->fuente_datos.")");
+    else
+    $descFuenteNumerador=[];
+
+    if($indicador->fuente_datos_d)
+    $descFuenteDenominador = \DB::select("SELECT * FROM remi_fuente_datos WHERE id IN (".$indicador->fuente_datos_d.")");
+    else
+    $descFuenteDenominador=[];
+
+
+    $grafica = json_encode($dataMetasAvance);
+    $estado_desc = \DB::select("SELECT * FROM remi_estados WHERE id = ".$indicador->estado);
+    $estado_desc = $estado_desc[0]->nombre;
+
+    $brechaDatos =  Array('9' =>'',
+                          '0' => "Existen Fuentes de Datos con la frecuencia requerida y las variables de desagregación necesarias para reportar el indicador",
+                          '1' => "No existen datos para reportar el indicador",
+                          '2' => "Existen datos pero no se recopilan con la frecuencia requerida",
+                          '3' => "Existen datos pero no se recopilan con las variables de desagregación requeridas",
+                          '4' => "Existen datos pero no se recopilan con la frecuencia requerida ni con las variables de desagregación necesarias");
+    $brechaMetodologia =  Array('9' =>'',
+                          '0' => "Existe metodología nacional adaptada a recomendaciones internacionales",
+                          '1' => "No existe Metodología Nacional",
+                          '2' => "No Existe Metodología bajo Recomendaciones Internacionales",
+                          '3' => "No existe metodología nacional ni bajo recomentaciones internacionales");
+    $brechaCapacitacion =  Array('9' =>'',
+                          '0' => "Existe personal capacitado",
+                          '1' => "No existe Personal permanente para la generación de estadísticas",
+                          '2' => "No exite personal capacitado para generar estadísticas",
+                          '3' => "No existe personal permanente ni capacitado para generar estadísticas");
+    $brechaFinanciamiento = Array('9' =>'',
+                            '0' => "Existe financiamiento",
+                            '1' => "No se cuenta con financiamiento nacional",
+                            '2' => "Sólo se cuenta con financiamiento temporal de la cooperación",
+                            '3' => "No se cuenta con financiamiento nacio nal ni internacional ");
+
+    $dataBrechaDatos = $brechaDatos[$indicador->brecha_datos];
+    $dataBrechaMetodologia = $brechaMetodologia[$indicador->brecha_metodologia];
+    $dataBrechaCapacitacion = $brechaCapacitacion[$indicador->brecha_capacitacion];
+    $dataBrechaFinanciamiento = $brechaFinanciamiento[$indicador->brecha_financiamiento];
+
+    $sectores = IndicadorSector::where('id_indicador',$id)->where('activo', true)->get();
+    $agrupSectores ='';
+    foreach ($sectores as $value) {
+      $agrupSectores .= $value->id_institucion."," ;
+    }
+    $agrupSectores = trim($agrupSectores, ',');
+    $sectoresRelacionados = \DB::select("SELECT * FROM pip_instituciones WHERE id IN (".$agrupSectores.")");
+
+    // return view('SistemaRemi.ficha-indicador-pdf',compact('indicador',
+    // 'metas','pdes','avance','grafica','metasAvance','archivos','ods','descFuenteNumerador',
+    // 'descFuenteDenominador','estado_desc','dataBrechaDatos','dataBrechaMetodologia',
+    // 'dataBrechaCapacitacion','dataBrechaFinanciamiento','sectoresRelacionados'));
+
+      $data = [
+        'title' => 'Welcome to HDTuto.com',
+        'indicador' => $indicador,
+        'metas' => $metas,
+        'pdes' => $pdes,
+        'avance' => $avance,
+        'metasAvance' => $metasAvance,
+        'ods' => $ods,
+        'descFuenteNumerador' => $descFuenteNumerador,
+        'descFuenteDenominador' => $descFuenteDenominador,
+        'estado_desc' => $estado_desc,
+        'dataBrechaDatos' => $dataBrechaDatos,
+        'dataBrechaMetodologia' => $dataBrechaMetodologia,
+        'dataBrechaCapacitacion' => $dataBrechaCapacitacion,
+        'dataBrechaFinanciamiento' => $dataBrechaFinanciamiento,
+        'sectoresRelacionados' => $sectoresRelacionados
+      ];
+      $pdf = PDF::loadView('SistemaRemi/ficha-indicador-pdf', $data);
+      return $pdf->download('fichaIndicador.pdf');
 
   }
 
