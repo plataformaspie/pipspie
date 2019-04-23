@@ -59,7 +59,17 @@ class IndexController extends Controller
       $pdes[$i]=$countPilar->total;
     }
 
+    $tipoindicadores = \DB::select("SELECT
+                                    	CASE
+                                    		WHEN i.tipo<>'' THEN i.tipo
+                                    		ELSE 'Sin clasificar'
+                                    	END AS titulo,
+                                    	COUNT(i.id) as valor
+                                    FROM remi_indicadores i
+                                    WHERE i.activo = TRUE
+                                    GROUP BY i.tipo");
 
-    return view('SistemaRemi.index',compact('pdes'));
+    $tipoindicadores = json_encode($tipoindicadores);
+    return view('SistemaRemi.index',compact('pdes','tipoindicadores'));
   }
 }

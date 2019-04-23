@@ -340,25 +340,15 @@
           }]
       });
 
+      var dataTipo =  <?php echo $tipoindicadores; ?>;
 
       var chartTipo = AmCharts.makeChart("chartdivTipo", {
             "theme": "light",
             "type": "serial",
-            "dataProvider": [{
-                "tipo": "Impacto",
-                "valor": 80
-            }, {
-                "tipo": "Producto",
-                "valor": 130
-            }, {
-                "tipo": "Proceso",
-                "valor": 25
-            }, {
-                "tipo": "Insumo",
-                "valor": 80
-            }],
+            "dataProvider": dataTipo,
             "valueAxes": [{
-                "title": ""
+                "title": "",
+                "valueField": "valor"
             }],
             "graphs": [{
                 "balloonText": "[[category]]:[[value]]",
@@ -369,7 +359,18 @@
                 "valueField": "valor"
             }],
             "rotate": true,
-            "categoryField": "tipo",
+            "categoryField": "titulo",            
+            "chartCursor": {
+              "fullWidth": true,
+              "cursorAlpha": 0.1,
+              "listeners": [{
+                "event": "changed",
+                "method": function(ev) {
+                  // Log last cursor position
+                  ev.chart.lastCursorPosition = ev.index;
+                }
+              }]
+            },
             "categoryAxis": {
                 "gridPosition": "start",
                 "fillAlpha": 0.05,

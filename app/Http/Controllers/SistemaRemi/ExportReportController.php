@@ -1345,9 +1345,9 @@ class ExportReportController extends Controller
      // dd("Contenido",$arrayContenido);
       $j++;
 
-         if($j==2){
-            dd("VER",$arrayContenido);
-         }
+         // if($j==2){
+         //    dd("VER",$arrayContenido);
+         // }
 
     }  // fin del foreach
     //dd($arrayContenido);
