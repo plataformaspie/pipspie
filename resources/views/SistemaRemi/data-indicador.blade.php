@@ -197,6 +197,12 @@
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: {{number_format($indicador->linea_base_valor,4,',','.')}} </p>
                                     </div>
+                                    <div class="col-lg-4 col-sm-6">
+                                      <b>Plazo en Años</b>
+                                    </div>
+                                    <div class="col-lg-8 col-sm-6">
+                                      <p>: {{$indicador->plazo_anios}} </p>
+                                    </div>
 
                                 </div>
                               </div>

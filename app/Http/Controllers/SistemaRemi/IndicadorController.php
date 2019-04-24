@@ -1217,6 +1217,9 @@ class IndicadorController extends Controller
                 $indicador->linea_base_fecha = null;
             }
             $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;  //13
+
+            $indicador->plazo_anios = $request->plazo_anios;
+
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;
             $indicador->fuente_datos_d = ($request->fuente_datos_d)?implode(",", $request->fuente_datos_d):null;
 
@@ -1434,7 +1437,7 @@ class IndicadorController extends Controller
             $indicador->linea_base_valor = ($request->linea_base_valor)?$this->format_numerica_db($request->linea_base_valor,','):0;
 
 
-
+            $indicador->plazo_anios = $request->plazo_anios;
 
 
             $indicador->fuente_datos = ($request->fuente_datos)?implode(",", $request->fuente_datos):null;

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\SistemaRemi;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\SistemaRemi\Indicadores;
+use App\Models\SistemaRemi\TiposMedicion;
 
 class IndexController extends Controller
 {
@@ -60,16 +62,81 @@ class IndexController extends Controller
     }
 
     $tipoindicadores = \DB::select("SELECT
-                                    	CASE
-                                    		WHEN i.tipo<>'' THEN i.tipo
-                                    		ELSE 'Sin clasificar'
-                                    	END AS titulo,
-                                    	COUNT(i.id) as valor
+                                    CASE
+                                    WHEN i.tipo<>'' THEN i.tipo
+                                    ELSE 'Sin clasificar'
+                                    END AS titulo,
+                                    COUNT(i.id) as valor,
+                                    CASE
+                                    WHEN tm.id > 0 THEN ('/sistemarime/desagregarTipo/'||tm.id)
+                                    ELSE '/sistemarime/desagregarTipo/0'
+                                    END AS url
                                     FROM remi_indicadores i
+                                    LEFT JOIN remi_tipos_medicion tm ON i.tipo = tm.nombre
                                     WHERE i.activo = TRUE
-                                    GROUP BY i.tipo");
+                                    GROUP BY i.tipo,tm.id");
 
     $tipoindicadores = json_encode($tipoindicadores);
     return view('SistemaRemi.index',compact('pdes','tipoindicadores'));
+  }
+
+
+  public function desagregarTipo(Request $request, $dato)
+  {
+    $sw=0;
+    $sb=0;
+    $tipo = "";
+    $where = array();
+    $orwhere = array();
+
+    $tipo = TiposMedicion::where('id',$dato)->get();
+    //$indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar)->paginate(5);
+    if($dato==0){
+       $indicadores = Indicadores::where('activo',true)->whereNull('tipo')->paginate(5);
+    }else{
+       $indicadores = Indicadores::where('activo',true)->where('tipo',$tipo[0]->nombre)->paginate(5);
+    }
+    $datosExtras = \DB::select("SELECT fuente.id,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_codigo,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_codigo
+                              FROM(
+                              SELECT id
+                              FROM remi_indicadores
+                              WHERE activo = true
+                              ORDER BY id ASC
+                              ) as fuente
+                              ");
+  $arrayDatosExtras = Array();
+  foreach ($datosExtras as $key => $value) {
+    $arrayDatosExtras[$value->id]['pdes_logo']=explode(",",$value->pdes_logo);
+    $arrayDatosExtras[$value->id]['pdes_codigo']=explode(",",$value->pdes_codigo);
+    $arrayDatosExtras[$value->id]['ods_logo']=explode(",",$value->ods_logo);
+    $arrayDatosExtras[$value->id]['ods_codigo']=explode(",",$value->ods_codigo);
+  }
+
+
+    return view('SistemaRemi.indicador-desagregar-tipo',compact('indicadores','arrayDatosExtras'));
   }
 }

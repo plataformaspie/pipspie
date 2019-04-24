@@ -936,6 +936,13 @@ input[type=checkbox]:checked:disabled + label:before {
                                                       <input name="linea_base_valor" type="text" class="form-control input" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': true, 'digits': 4, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" value="0.0000">
                                                       <div class="help-block with-errors"></div>
                                                   </div>
+                                                  <div class="form-group col-md-3 p-l-0 p-r-0">
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Plazo en Años</label>
+                                                  </div>
+                                                  <div class="form-group col-md-3 p-l-0">
+                                                      <input name="plazo_anios" type="number" class="form-control input"  style="text-align: right;" value="">
+                                                      <div class="help-block with-errors"></div>
+                                                  </div>
                                               </div>
 
 
@@ -3977,6 +3984,7 @@ $('#customSwitch2').click(function(){
 
 
                    $('input[name="linea_base_valor"]').val(data.indicador[0].linea_base_valor);
+                   $('input[name="plazo_anios"]').val(data.indicador[0].plazo_anios);
                    $('textarea[name="formula"]').val(data.indicador[0].formula);
                    $('textarea[name="numerador_detalle"]').val(data.indicador[0].numerador_detalle);
                    $('input[name="numerador_fuente"]').val(data.indicador[0].numerador_fuente);

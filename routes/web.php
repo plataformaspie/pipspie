@@ -570,6 +570,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('adminFuenteDatos', 'SistemaRemi\FuenteDatosController@adminFuenteDatos');
               Route::get('setIndicadoresEntidad', 'SistemaRemi\IndicadorController@setIndicadoresEntidad');
               Route::get('generatePdf/{id}','SistemaRemi\IndicadorController@generatePdf');
+              Route::get('desagregarTipo/{dato}','SistemaRemi\IndexController@desagregarTipo');
           }
       );
       Route::group(

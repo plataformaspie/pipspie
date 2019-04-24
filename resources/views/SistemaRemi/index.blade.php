@@ -356,10 +356,15 @@
                 "lineAlpha": 0.2,
                 "title": "",
                 "type": "column",
-                "valueField": "valor"
+                "valueField": "valor",
+                "labelText": "[[value]]",
+                "listeners": [{
+                  "event": "clickItem"
+                }],
+                "urlField": "url"
             }],
             "rotate": true,
-            "categoryField": "titulo",            
+            "categoryField": "titulo",
             "chartCursor": {
               "fullWidth": true,
               "cursorAlpha": 0.1,
@@ -374,7 +379,7 @@
             "categoryAxis": {
                 "gridPosition": "start",
                 "fillAlpha": 0.05,
-                "position": "left"
+                "position": "left",                
             },
             "export": {
             	"enabled": false
