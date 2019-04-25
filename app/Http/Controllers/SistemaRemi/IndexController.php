@@ -76,7 +76,15 @@ class IndexController extends Controller
                                     WHERE i.activo = TRUE
                                     GROUP BY i.tipo,tm.id");
 
-    $graficaAvanceMeta20 = \DB::select("SELECT 'Igual a 0' as titulo, COUNT(*) as valor
+    $rangoAvance = Array('r1' =>'ABS(tabla.datos_avance) = 0',
+                         'r2' =>'ABS(tabla.datos_avance) > 0 and ABS(tabla.datos_avance) <= 60',
+                         'r3' =>'ABS(tabla.datos_avance) > 60 and ABS(tabla.datos_avance) <= 90',
+                         'r4' =>'ABS(tabla.datos_avance) > 90 and ABS(tabla.datos_avance) <= 100',
+                         'r5' =>'ABS(tabla.datos_avance) > 100');
+
+    $graficaAvanceMeta20 = \DB::select("SELECT *
+                          FROM(
+                          SELECT 'Igual a 0' as titulo, COUNT(*) as valor,'/sistemarime/desagregarAvance/r1' as url, 1 as orden
                               FROM (
                               		SELECT fuente.id,
                               		fuente.avance,
@@ -117,7 +125,7 @@ class IndexController extends Controller
                               ) as tabla
                               WHERE ABS(tabla.datos_avance) = 0
                               UNION
-                              SELECT 'Entre 1 a 60' as titulo, COUNT(*) as valor
+                              SELECT 'Entre 0 a 60' as titulo, COUNT(*) as valor,'/sistemarime/desagregarAvance/r2' as url, 2 as orden
                               FROM (
                               		SELECT fuente.id,
                               		fuente.avance,
@@ -158,7 +166,7 @@ class IndexController extends Controller
                               ) as tabla
                               WHERE ABS(tabla.datos_avance) > 0 and ABS(tabla.datos_avance) <= 60
                               UNION
-                              SELECT 'Entre 60 al 90 ' as titulo, COUNT(*) as valor
+                              SELECT 'Entre 60 al 90 ' as titulo, COUNT(*) as valor,'/sistemarime/desagregarAvance/r3' as url, 3 as orden
                               FROM (
                               		SELECT fuente.id,
                               		fuente.avance,
@@ -199,7 +207,7 @@ class IndexController extends Controller
                               ) as tabla
                               WHERE ABS(tabla.datos_avance) > 60 and ABS(tabla.datos_avance) <= 90
                               UNION
-                              SELECT 'Entre 90 al 100 ' as titulo, COUNT(*) as valor
+                              SELECT 'Entre 90 al 100 ' as titulo, COUNT(*) as valor,'/sistemarime/desagregarAvance/r4' as url, 4 as orden
                               FROM (
                               		SELECT fuente.id,
                               		fuente.avance,
@@ -240,7 +248,7 @@ class IndexController extends Controller
                               ) as tabla
                               WHERE ABS(tabla.datos_avance) > 90 and ABS(tabla.datos_avance) <= 100
                               UNION
-                              SELECT 'Mas de 100' as titulo, COUNT(*) as valor
+                              SELECT 'Mas de 100' as titulo, COUNT(*) as valor,'/sistemarime/desagregarAvance/r5' as url, 5 as orden
                               FROM (
                               		SELECT fuente.id,
                               		fuente.avance,
@@ -279,7 +287,9 @@ class IndexController extends Controller
                               		FROM remi_vista_avances_totales
                               		) as fuente
                               ) as tabla
-                              WHERE ABS(tabla.datos_avance) > 100");
+                              WHERE ABS(tabla.datos_avance) > 100
+                            ) as consolidado
+                            ORDER BY consolidado.orden ASC");
 
     $tipoindicadores = json_encode($tipoindicadores);
     $graficaAvanceMeta20 = json_encode($graficaAvanceMeta20);
@@ -298,10 +308,15 @@ class IndexController extends Controller
     $tipo = TiposMedicion::where('id',$dato)->get();
     //$indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar)->paginate(5);
     if($dato==0){
-       $indicadores = Indicadores::where('activo',true)->whereNull('tipo')->paginate(5);
+       $indicadores = Indicadores::where('activo',true)->whereNull('tipo')->orderBy('id','ASC')->paginate(5);
     }else{
-       $indicadores = Indicadores::where('activo',true)->where('tipo',$tipo[0]->nombre)->paginate(5);
+       $indicadores = Indicadores::where('activo',true)->where('tipo',$tipo[0]->nombre)->orderBy('id','ASC')->paginate(5);
     }
+    $dataAvanceIds = '';
+    foreach ($indicadores as  $value) {
+        $dataAvanceIds.=$value->id.",";
+    }
+    $dataAvanceIds = trim($dataAvanceIds,',');
     $datosExtras = \DB::select("SELECT fuente.id,
                               (
                               	SELECT string_agg(DISTINCT c.logo,',')
@@ -331,6 +346,7 @@ class IndexController extends Controller
                               SELECT id
                               FROM remi_indicadores
                               WHERE activo = true
+                              AND id IN (".$dataAvanceIds.")
                               ORDER BY id ASC
                               ) as fuente
                               ");
@@ -344,5 +360,191 @@ class IndexController extends Controller
 
 
     return view('SistemaRemi.indicador-desagregar-tipo',compact('indicadores','arrayDatosExtras'));
+  }
+
+
+  public function desagregarAvance(Request $request, $dato)
+  {
+    $sw=0;
+    $sb=0;
+    $where = array();
+    $orwhere = array();
+    $titulo="";
+    $color="";
+
+    $rangoAvance = Array('r1' =>'ABS(tabla.datos_avance) = 0',
+                         'r2' =>'ABS(tabla.datos_avance) > 0 and ABS(tabla.datos_avance) <= 60',
+                         'r3' =>'ABS(tabla.datos_avance) > 60 and ABS(tabla.datos_avance) <= 90',
+                         'r4' =>'ABS(tabla.datos_avance) > 90 and ABS(tabla.datos_avance) <= 100',
+                         'r5' =>'ABS(tabla.datos_avance) > 100');
+   $rangoTitulos = Array('r1' =>'Igual a 0',
+                        'r2' =>'Entre 0 a 60',
+                        'r3' =>'Entre 60 al 90',
+                        'r4' =>'Entre 90 al 100',
+                        'r5' =>'Mas de 100');
+
+    $rangoColores = Array('r1' =>'#505050',
+                         'r2' =>'#EF5A28',
+                         'r3' =>'#F9AE40',
+                         'r4' =>'#009245',
+                         'r5' =>'#40A4F9');
+   $titulo = $rangoTitulos[$dato];
+   $color = $rangoColores[$dato];
+    $listIndicadores = \DB::select("SELECT  string_agg(tabla.id::text,',') as indicadores
+                                    FROM (
+                                    		SELECT fuente.id,
+                                    		fuente.avance,
+                                    		CASE
+                                    			 WHEN fuente.avance_2020 <> 0 THEN
+                                    				CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                                    			 ELSE
+                                    			 CASE
+                                    				WHEN fuente.avance_2019 <> 0
+                                    				THEN
+                                    					CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                                    				ELSE
+                                    				 CASE
+                                    					 WHEN fuente.avance_2018 <> 0
+                                    					 THEN
+                                    							CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                                    					 ELSE
+                                    					 CASE
+                                    						 WHEN fuente.avance_2017 <> 0
+                                    						 THEN
+                                    								CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                                    						 ELSE
+                                    						 CASE
+                                    							 WHEN fuente.avance_2016 <> 0
+                                    							 THEN
+                                    									CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                                    							 ELSE
+                                    								 0
+                                    						 END
+                                    					 END
+                                    				 END
+                                    			 END
+                                    		END as datos_avance
+                                    		FROM(
+                                    		SELECT *
+                                    		FROM remi_vista_avances_totales
+                                    		) as fuente
+                                    ) as tabla
+                                    WHERE ".$rangoAvance[$dato]);
+
+
+    $indicadoresId = explode(",", $listIndicadores[0]->indicadores);
+    $indicadores = Indicadores::whereIn('id',$indicadoresId)->orderBy('id','ASC')->paginate(5);
+    $dataAvanceIds = '';
+    foreach ($indicadores as  $value) {
+        $dataAvanceIds.=$value->id.",";
+    }
+    $dataAvanceIds = trim($dataAvanceIds,',');
+
+    $datosExtras = \DB::select("SELECT fuente.id,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_codigo,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_codigo
+                              FROM(
+                              SELECT id
+                              FROM remi_indicadores
+                              WHERE activo = true
+                              AND id IN (".$dataAvanceIds.")
+                              ORDER BY id ASC
+                              ) as fuente
+                              ");
+
+
+  $datosAvances = \DB::select('SELECT * FROM remi_vista_avances_totales WHERE id IN ('.$dataAvanceIds.')');
+  $arrayDatosExtras = Array();
+  foreach ($datosExtras as $key => $value) {
+    $arrayDatosExtras[$value->id]['pdes_logo']=explode(",",$value->pdes_logo);
+    $arrayDatosExtras[$value->id]['pdes_codigo']=explode(",",$value->pdes_codigo);
+    $arrayDatosExtras[$value->id]['ods_logo']=explode(",",$value->ods_logo);
+    $arrayDatosExtras[$value->id]['ods_codigo']=explode(",",$value->ods_codigo);
+  }
+  $arrayDatosAvances = Array();
+  foreach ($datosAvances as $key => $value) {
+    $arrayDatosAvances[$value->id]['plazo_anios']=$value->plazo_anios;
+    $arrayDatosAvances[$value->id]['meta_2020']=$value->meta_2020;
+    $arrayDatosAvances[$value->id]['gestion_reporte']=$value->gestion_reporte;
+    $arrayDatosAvances[$value->id]['avance_2016']=$value->avance_2016;
+    $arrayDatosAvances[$value->id]['avance_2017']=$value->avance_2017;
+    $arrayDatosAvances[$value->id]['avance_2018']=$value->avance_2018;
+    $arrayDatosAvances[$value->id]['avance_2019']=$value->avance_2019;
+    $arrayDatosAvances[$value->id]['avance_2020']=$value->avance_2020;
+  }
+
+  $ejecutadoIndicadores = \DB::select("SELECT tabla.id,tabla.avance,tabla.datos_avance,ABS(tabla.datos_avance) as ejecutado
+                                      FROM (
+                                          SELECT fuente.id,
+                                          fuente.avance,
+                                          CASE
+                                             WHEN fuente.avance_2020 <> 0 THEN
+                                              CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                                             ELSE
+                                             CASE
+                                              WHEN fuente.avance_2019 <> 0
+                                              THEN
+                                                CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                                              ELSE
+                                               CASE
+                                                 WHEN fuente.avance_2018 <> 0
+                                                 THEN
+                                                    CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                                                 ELSE
+                                                 CASE
+                                                   WHEN fuente.avance_2017 <> 0
+                                                   THEN
+                                                      CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                                                   ELSE
+                                                   CASE
+                                                     WHEN fuente.avance_2016 <> 0
+                                                     THEN
+                                                        CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                                                     ELSE
+                                                       0
+                                                   END
+                                                 END
+                                               END
+                                             END
+                                          END as datos_avance
+                                          FROM(
+                                          SELECT *
+                                          FROM remi_vista_avances_totales
+                                          WHERE id IN (".$dataAvanceIds.")
+                                          ) as fuente
+                                      ) as tabla
+                                      WHERE ".$rangoAvance[$dato]);
+    $arrayEjecutadoIndicadores = Array();
+    foreach ($ejecutadoIndicadores as $key => $value) {
+      $arrayEjecutadoIndicadores[$value->id]['avance']= $value->avance;
+      $arrayEjecutadoIndicadores[$value->id]['datos_avance']= $value->datos_avance;
+      $arrayEjecutadoIndicadores[$value->id]['ejecutado']= $value->ejecutado;
+    }
+
+
+    return view('SistemaRemi.indicador-desagregar-avance',compact('indicadores','arrayDatosExtras',
+    'arrayDatosAvances','arrayEjecutadoIndicadores','titulo','color'));
   }
 }

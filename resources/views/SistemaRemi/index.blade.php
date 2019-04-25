@@ -139,19 +139,19 @@
             <h4 class="font-bold m-t-0">Gráficas</h4>
             <hr>
             <div class="row" >
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 m-b-10 text-center">
                     <h4 class="font-bold m-t-0">Cumplimientos de metas al 2020</h4>
                     <div id="chartdivMetas"></div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 m-b-10 text-center">
                     <h4 class="font-bold m-t-0">Indicadores por tipo</h4>
                     <div id="chartdivTipo"></div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
+                {{-- <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
                   <h4 class="font-bold m-t-0">Últimos indicadores actualizados(DEMO)</h4>
                   <div id="chartdivActui"></div>
                   <h5 class="font-bold m-t-0">Indicadores actualizados en los ùltimos 30 días</h5>
-                </div>
+                </div> --}}
             </div>
           </div>
       </div>
@@ -304,7 +304,7 @@
       var dataMeta =  <?php echo $graficaAvanceMeta20; ?>;
       var chart = AmCharts.makeChart( "chartdivMetas", {
         "type": "pie",
-        "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+        "balloonText": "[[titulo]]<br><span style='font-size:14px'><b>[[valor]]</b> ([[percents]]%)</span>",
         "radius": "26%",
         "innerRadius": "60%",
         "titleField": "titulo",
@@ -312,6 +312,10 @@
         "labelRadius": 5,
         "allLabels": [],
         "balloon": {},
+        "listeners": [{
+          "event": "clickSlice"
+        }],
+        "urlField": "url",
         "legend": {
           "enabled": true,
           "align": "center",
@@ -320,16 +324,17 @@
         "titles": [],
         "colors": [
             "#505050",
-            "#F9AE40",
-            "#40A4F9",
             "#EF5A28",
-            "#009245"
+            "#F9AE40",
+            "#009245",
+            "#40A4F9"
           ],
           "dataProvider": dataMeta
       });
 
-      var dataTipo =  <?php echo $tipoindicadores; ?>;
 
+
+      var dataTipo =  <?php echo $tipoindicadores; ?>;
       var chartTipo = AmCharts.makeChart("chartdivTipo", {
             "theme": "light",
             "type": "serial",
@@ -375,52 +380,55 @@
         });
 
 
-        chartActui = AmCharts.makeChart("chartdivActui", {
-          "theme": "light",
-          "type": "gauge",
-          "axes": [{
-            "topText": 0,
-            "topTextFontSize": 50,
-            "topTextYOffset": 70,
-            "axisColor": "#31d6ea",
-            "axisThickness": 1,
-            "endValue": 100,
-            "gridInside": true,
-            "inside": true,
-            "radius": "80%",
-            "valueInterval": -1,
-            "tickColor": false,
-            "startAngle": -90,
-            "endAngle": 90,
-            "unit": "",
-            "bandOutlineAlpha": 0,
-            "bands": [{
-              "color": "#0080ff",
-              "endValue": 100,
-              "innerRadius": "100%",
-              "radius": "130%",
-              "gradientRatio": [0.5, 0, -0.5],
-              "startValue": 0
-            }, {
-              "color": "#3cd3a3",
-              "endValue": 0,
-              "innerRadius": "100%",
-              "radius": "130%",
-              "gradientRatio": [0.5, 0, -0.5],
-              "startValue": 0
-            }]
-          }],
-          "arrows": [{
-            "alpha": 1,
-            "innerRadius": "35%",
-            "nailRadius": 0,
-            "radius": "120%",
-            "value": 0
-          }]
-        });
+      //   chartActui = AmCharts.makeChart("chartdivActui", {
+      //     "theme": "light",
+      //     "type": "gauge",
+      //     "axes": [{
+      //       "topText": 0,
+      //       "topTextFontSize": 50,
+      //       "topTextYOffset": 70,
+      //       "axisColor": "#31d6ea",
+      //       "axisThickness": 1,
+      //       "endValue": 100,
+      //       "gridInside": true,
+      //       "inside": true,
+      //       "radius": "80%",
+      //       "valueInterval": -1,
+      //       "tickColor": false,
+      //       "startAngle": -90,
+      //       "endAngle": 90,
+      //       "unit": "",
+      //       "bandOutlineAlpha": 0,
+      //       "bands": [{
+      //         "color": "#0080ff",
+      //         "endValue": 100,
+      //         "innerRadius": "100%",
+      //         "radius": "130%",
+      //         "gradientRatio": [0.5, 0, -0.5],
+      //         "startValue": 0
+      //       }, {
+      //         "color": "#3cd3a3",
+      //         "endValue": 0,
+      //         "innerRadius": "100%",
+      //         "radius": "130%",
+      //         "gradientRatio": [0.5, 0, -0.5],
+      //         "startValue": 0
+      //       }]
+      //     }],
+      //     "arrows": [{
+      //       "alpha": 1,
+      //       "innerRadius": "35%",
+      //       "nailRadius": 0,
+      //       "radius": "120%",
+      //       "value": 0
+      //     }]
+      //   });
+      //
+      //
+      // setInterval(updatedValue, 2000);
 
 
-      setInterval(updatedValue, 2000);
+
       //updatedValue();
     });
 
