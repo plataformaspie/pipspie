@@ -140,7 +140,7 @@
             <hr>
             <div class="row" >
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
-                    <h4 class="font-bold m-t-0">Cumplimientos de metas</h4>
+                    <h4 class="font-bold m-t-0">Cumplimientos de metas al 2020</h4>
                     <div id="chartdivMetas"></div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
@@ -301,14 +301,14 @@
       var chartActui;
 
     $(document).ready(function(){
-
+      var dataMeta =  <?php echo $graficaAvanceMeta20; ?>;
       var chart = AmCharts.makeChart( "chartdivMetas", {
         "type": "pie",
         "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
         "radius": "26%",
         "innerRadius": "60%",
-        "titleField": "title",
-        "valueField": "value",
+        "titleField": "titulo",
+        "valueField": "valor",
         "labelRadius": 5,
         "allLabels": [],
         "balloon": {},
@@ -319,25 +319,13 @@
         },
         "titles": [],
         "colors": [
-            "#7E7979",
-            "#EF5A28",
+            "#505050",
             "#F9AE40",
+            "#40A4F9",
+            "#EF5A28",
             "#009245"
           ],
-          "dataProvider": [
-          {
-            "title": "Menos 60%",
-            "value": 80
-          },{
-            "title": "del 60%\nal 79% ",
-            "value": 15
-          },{
-            "title": "del 80%\nal 99%",
-            "value": 5
-          },{
-            "title": "100%\no mas",
-            "value": 2
-          }]
+          "dataProvider": dataMeta
       });
 
       var dataTipo =  <?php echo $tipoindicadores; ?>;
@@ -379,7 +367,7 @@
             "categoryAxis": {
                 "gridPosition": "start",
                 "fillAlpha": 0.05,
-                "position": "left",                
+                "position": "left",
             },
             "export": {
             	"enabled": false

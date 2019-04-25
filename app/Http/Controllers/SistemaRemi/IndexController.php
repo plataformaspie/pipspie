@@ -76,8 +76,214 @@ class IndexController extends Controller
                                     WHERE i.activo = TRUE
                                     GROUP BY i.tipo,tm.id");
 
+    $graficaAvanceMeta20 = \DB::select("SELECT 'Igual a 0' as titulo, COUNT(*) as valor
+                              FROM (
+                              		SELECT fuente.id,
+                              		fuente.avance,
+                              		CASE
+                              			 WHEN fuente.avance_2020 <> 0 THEN
+                              				CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                              			 ELSE
+                              			 CASE
+                              				WHEN fuente.avance_2019 <> 0
+                              				THEN
+                              					CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                              				ELSE
+                              				 CASE
+                              					 WHEN fuente.avance_2018 <> 0
+                              					 THEN
+                              							CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                              					 ELSE
+                              					 CASE
+                              						 WHEN fuente.avance_2017 <> 0
+                              						 THEN
+                              								CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                              						 ELSE
+                              						 CASE
+                              							 WHEN fuente.avance_2016 <> 0
+                              							 THEN
+                              									CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                              							 ELSE
+                              							   0
+                              						 END
+                              					 END
+                              				 END
+                              			 END
+                              		END as datos_avance
+                              		FROM(
+                              		SELECT *
+                              		FROM remi_vista_avances_totales
+                              		) as fuente
+                              ) as tabla
+                              WHERE ABS(tabla.datos_avance) = 0
+                              UNION
+                              SELECT 'Entre 1 a 60' as titulo, COUNT(*) as valor
+                              FROM (
+                              		SELECT fuente.id,
+                              		fuente.avance,
+                              		CASE
+                              			 WHEN fuente.avance_2020 <> 0 THEN
+                              				CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                              			 ELSE
+                              			 CASE
+                              				WHEN fuente.avance_2019 <> 0
+                              				THEN
+                              					CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                              				ELSE
+                              				 CASE
+                              					 WHEN fuente.avance_2018 <> 0
+                              					 THEN
+                              							CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                              					 ELSE
+                              					 CASE
+                              						 WHEN fuente.avance_2017 <> 0
+                              						 THEN
+                              								CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                              						 ELSE
+                              						 CASE
+                              							 WHEN fuente.avance_2016 <> 0
+                              							 THEN
+                              									CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                              							 ELSE
+                              							   0
+                              						 END
+                              					 END
+                              				 END
+                              			 END
+                              		END as datos_avance
+                              		FROM(
+                              		SELECT *
+                              		FROM remi_vista_avances_totales
+                              		) as fuente
+                              ) as tabla
+                              WHERE ABS(tabla.datos_avance) > 0 and ABS(tabla.datos_avance) <= 60
+                              UNION
+                              SELECT 'Entre 60 al 90 ' as titulo, COUNT(*) as valor
+                              FROM (
+                              		SELECT fuente.id,
+                              		fuente.avance,
+                              		CASE
+                              			 WHEN fuente.avance_2020 <> 0 THEN
+                              				CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                              			 ELSE
+                              			 CASE
+                              				WHEN fuente.avance_2019 <> 0
+                              				THEN
+                              					CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                              				ELSE
+                              				 CASE
+                              					 WHEN fuente.avance_2018 <> 0
+                              					 THEN
+                              							CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                              					 ELSE
+                              					 CASE
+                              						 WHEN fuente.avance_2017 <> 0
+                              						 THEN
+                              								CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                              						 ELSE
+                              						 CASE
+                              							 WHEN fuente.avance_2016 <> 0
+                              							 THEN
+                              									CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                              							 ELSE
+                              							   0
+                              						 END
+                              					 END
+                              				 END
+                              			 END
+                              		END as datos_avance
+                              		FROM(
+                              		SELECT *
+                              		FROM remi_vista_avances_totales
+                              		) as fuente
+                              ) as tabla
+                              WHERE ABS(tabla.datos_avance) > 60 and ABS(tabla.datos_avance) <= 90
+                              UNION
+                              SELECT 'Entre 90 al 100 ' as titulo, COUNT(*) as valor
+                              FROM (
+                              		SELECT fuente.id,
+                              		fuente.avance,
+                              		CASE
+                              			 WHEN fuente.avance_2020 <> 0 THEN
+                              				CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                              			 ELSE
+                              			 CASE
+                              				WHEN fuente.avance_2019 <> 0
+                              				THEN
+                              					CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                              				ELSE
+                              				 CASE
+                              					 WHEN fuente.avance_2018 <> 0
+                              					 THEN
+                              							CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                              					 ELSE
+                              					 CASE
+                              						 WHEN fuente.avance_2017 <> 0
+                              						 THEN
+                              								CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                              						 ELSE
+                              						 CASE
+                              							 WHEN fuente.avance_2016 <> 0
+                              							 THEN
+                              									CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                              							 ELSE
+                              							   0
+                              						 END
+                              					 END
+                              				 END
+                              			 END
+                              		END as datos_avance
+                              		FROM(
+                              		SELECT *
+                              		FROM remi_vista_avances_totales
+                              		) as fuente
+                              ) as tabla
+                              WHERE ABS(tabla.datos_avance) > 90 and ABS(tabla.datos_avance) <= 100
+                              UNION
+                              SELECT 'Mas de 100' as titulo, COUNT(*) as valor
+                              FROM (
+                              		SELECT fuente.id,
+                              		fuente.avance,
+                              		CASE
+                              			 WHEN fuente.avance_2020 <> 0 THEN
+                              				CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                              			 ELSE
+                              			 CASE
+                              				WHEN fuente.avance_2019 <> 0
+                              				THEN
+                              					CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                              				ELSE
+                              				 CASE
+                              					 WHEN fuente.avance_2018 <> 0
+                              					 THEN
+                              							CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                              					 ELSE
+                              					 CASE
+                              						 WHEN fuente.avance_2017 <> 0
+                              						 THEN
+                              								CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                              						 ELSE
+                              						 CASE
+                              							 WHEN fuente.avance_2016 <> 0
+                              							 THEN
+                              									CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                              							 ELSE
+                              							   0
+                              						 END
+                              					 END
+                              				 END
+                              			 END
+                              		END as datos_avance
+                              		FROM(
+                              		SELECT *
+                              		FROM remi_vista_avances_totales
+                              		) as fuente
+                              ) as tabla
+                              WHERE ABS(tabla.datos_avance) > 100");
+
     $tipoindicadores = json_encode($tipoindicadores);
-    return view('SistemaRemi.index',compact('pdes','tipoindicadores'));
+    $graficaAvanceMeta20 = json_encode($graficaAvanceMeta20);
+    return view('SistemaRemi.index',compact('pdes','tipoindicadores','graficaAvanceMeta20'));
   }
 
 
