@@ -136,7 +136,7 @@
   <div class="row">
       <div class="col-md-12">
           <div class="white-box">
-            <h4 class="font-bold m-t-0">DEMO</h4>
+            <h4 class="font-bold m-t-0">Gráficas</h4>
             <hr>
             <div class="row" >
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
@@ -148,7 +148,7 @@
                     <div id="chartdivTipo"></div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">
-                  <h4 class="font-bold m-t-0">Últimos indicadores actualizados</h4>
+                  <h4 class="font-bold m-t-0">Últimos indicadores actualizados(DEMO)</h4>
                   <div id="chartdivActui"></div>
                   <h5 class="font-bold m-t-0">Indicadores actualizados en los ùltimos 30 días</h5>
                 </div>
