@@ -218,7 +218,7 @@ text-decoration: underline;
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Total <br/>Ejecutado:</p>
-                                                                  <p style="font-weight:bold;font-size:25px;color:{{$color}};">{{ rtrim(number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4,",","."),',0') }}</p>
+                                                                  <p style="font-weight:bold;font-size:25px;color:{{$color}};">{{ number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4,",",".") }}</p>
                                                               </div>
 
                                                           </div>

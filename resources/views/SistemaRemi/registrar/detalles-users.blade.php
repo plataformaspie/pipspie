@@ -45,7 +45,7 @@
 				<td>{{ $user->carnet }}</td>
 				<td>{{ $user->telefono }}</td>
 				<td>{{ $user->email }}</td>
-				<td>{{ $user->id_rol }}</td>
+				<td>{{ $user->nombre_rol }}</td>
 				<td>{{ $user->username }}</td>
 				<td>
 					<a href="{{ route('SistemaRemi.registrar.editarUser',$user->id) }}" class="btn waves-effect waves-light btn-outline-info" title="Editar">

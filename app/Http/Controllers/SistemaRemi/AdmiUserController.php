@@ -9,6 +9,7 @@ use App\Models\SistemaRemi\Tipos_Roles;
 use App\Models\SistemaRemi\Usuario;
 use App\Http\Requests\UserRequest;
 use Laracasts\flash\flash;
+use Validator;
 
 class AdmiUserController extends Controller
 {
@@ -69,10 +70,12 @@ class AdmiUserController extends Controller
 
   public function actualizarUserRol(Request $request)
   {
-        //dd("SDFGSDFGSD",$request->all());
+        $userSession = \Auth::user();
+
         $user=Usuario::find($request->cod_inst);
         //$user->fill($request->all());
         $user->id_rol=$request['roles'];
+        $user->id_user_updated=$userSession->id;
         $user->save();
         return  redirect()->route('mostrarReg');
         //flash('Genero editado exitosamente')->success();
@@ -103,14 +106,29 @@ class AdmiUserController extends Controller
   public function registrarUser(Request $request)
   {
         $tipo_rol = Tipos_Roles::get();
-        $filinstitucion = \DB::select("SELECT  codigo, denominacion
+        $filinstitucion = \DB::select("SELECT  id,codigo, denominacion
                               FROM pip_instituciones
                                order by codigo");
         return view('SistemaRemi.registrar.crear-users')->with('filinstitucion',$filinstitucion)->with('tipo_rol',$tipo_rol);
   }
 
-  public function guardarUser(UserRequest $request)
+  public function guardarUser(Request $request)
   {
+        $userSession = \Auth::user();
+        $validator = Validator::make($request->all(), [
+             'username'=>'required|unique:users',
+             'email' => 'required|unique:users',
+             'carnet' => 'required|unique:users',
+             'telefono'  => 'required|unique:users'
+        ]);
+
+        if($validator->fails()){
+          return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
         //dd("dsfsf",$request);
         $user=new Usuario($request->all());
         // dd($request['name']);
@@ -119,17 +137,33 @@ class AdmiUserController extends Controller
         //                         where  id=".$request->roles);
 
         // $user->tipo_rol= $rolecito[0]->rol;
+
         $user->id_rol=$request['roles'];
         $user->id_institucion=$request->pcod_ent;
         $user->activo=true;
         $user->password=bcrypt($request['password']);
+        $user->id_user_created = $userSession->id;
         $user->save();
-        //flash('Creo Usuario exitosamente !!')->success();
+       // flash('Creo Usuario exitosamente !!')->success();
         return  redirect()->route('mostrarReg');
         //return response()->json($user);
         // return 'Usuario registrado exitosamente';
         //return 'registrado' //flash('Usuario registrado exitosamente')->success();
         //return redirect()->route('admin.user.index');
+  }
+
+  public function messages()
+  {
+      return [
+          'telefono.required' => ':attribute ya esta en uso',
+      ];
+  }
+
+  public function attributes()
+  {
+      return [
+          'telefono' => ':El Celular',
+      ];
   }
 
   public function editarUser($id)
@@ -157,6 +191,7 @@ class AdmiUserController extends Controller
 
   public function actualizarUser(Request $request,$id)
   {
+       $userSession = \Auth::user();
 
         $user=Usuario::find($id);
         // $cambiorol = \DB::select("SELECT rol
@@ -165,6 +200,7 @@ class AdmiUserController extends Controller
 
         // $user->tipo_rol=$cambiorol[0]->rol;
         $user->id_rol = $request->roles;
+        $user->id_user_updated= $userSession->id;
         $user->fill($request->all());
 
         $user->save();
@@ -175,9 +211,12 @@ class AdmiUserController extends Controller
 
   public function eliminarUser($id)
     {
+      $userSession = \Auth::user();
+
         //dd("sdfsdf",$id);
         $user=Usuario::find($id);
         $user->activo=false;
+        $user->id_user_updated= $userSession->id;
         $user->save();
       //  flash('Genero registrado exitosamente')->success();
         return  redirect()->route('mostrarReg');

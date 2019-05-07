@@ -304,6 +304,7 @@ class IndexController extends Controller
     $tipo = "";
     $where = array();
     $orwhere = array();
+    $color="";
 
     $tipo = TiposMedicion::where('id',$dato)->get();
     //$indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar)->paginate(5);
@@ -357,9 +358,13 @@ class IndexController extends Controller
     $arrayDatosExtras[$value->id]['ods_logo']=explode(",",$value->ods_logo);
     $arrayDatosExtras[$value->id]['ods_codigo']=explode(",",$value->ods_codigo);
   }
+  $arrayDatosAvances = $this->datosAvances($dataAvanceIds);
+  $arrayEjecutadoIndicadores = $this->ejecutadoIndicadores($dataAvanceIds,"");
 
 
-    return view('SistemaRemi.indicador-desagregar-tipo',compact('indicadores','arrayDatosExtras'));
+
+    return view('SistemaRemi.indicador-desagregar-tipo',compact('indicadores','arrayDatosExtras','arrayDatosAvances',
+    'arrayEjecutadoIndicadores','color'));
   }
 
 
@@ -475,7 +480,7 @@ class IndexController extends Controller
                               ");
 
 
-  $datosAvances = \DB::select('SELECT * FROM remi_vista_avances_totales WHERE id IN ('.$dataAvanceIds.')');
+
   $arrayDatosExtras = Array();
   foreach ($datosExtras as $key => $value) {
     $arrayDatosExtras[$value->id]['pdes_logo']=explode(",",$value->pdes_logo);
@@ -483,68 +488,82 @@ class IndexController extends Controller
     $arrayDatosExtras[$value->id]['ods_logo']=explode(",",$value->ods_logo);
     $arrayDatosExtras[$value->id]['ods_codigo']=explode(",",$value->ods_codigo);
   }
-  $arrayDatosAvances = Array();
-  foreach ($datosAvances as $key => $value) {
-    $arrayDatosAvances[$value->id]['plazo_anios']=$value->plazo_anios;
-    $arrayDatosAvances[$value->id]['meta_2020']=$value->meta_2020;
-    $arrayDatosAvances[$value->id]['gestion_reporte']=$value->gestion_reporte;
-    $arrayDatosAvances[$value->id]['avance_2016']=$value->avance_2016;
-    $arrayDatosAvances[$value->id]['avance_2017']=$value->avance_2017;
-    $arrayDatosAvances[$value->id]['avance_2018']=$value->avance_2018;
-    $arrayDatosAvances[$value->id]['avance_2019']=$value->avance_2019;
-    $arrayDatosAvances[$value->id]['avance_2020']=$value->avance_2020;
-  }
-
-  $ejecutadoIndicadores = \DB::select("SELECT tabla.id,tabla.avance,tabla.datos_avance,ABS(tabla.datos_avance) as ejecutado
-                                      FROM (
-                                          SELECT fuente.id,
-                                          fuente.avance,
-                                          CASE
-                                             WHEN fuente.avance_2020 <> 0 THEN
-                                              CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
-                                             ELSE
-                                             CASE
-                                              WHEN fuente.avance_2019 <> 0
-                                              THEN
-                                                CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
-                                              ELSE
-                                               CASE
-                                                 WHEN fuente.avance_2018 <> 0
-                                                 THEN
-                                                    CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
-                                                 ELSE
-                                                 CASE
-                                                   WHEN fuente.avance_2017 <> 0
-                                                   THEN
-                                                      CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
-                                                   ELSE
-                                                   CASE
-                                                     WHEN fuente.avance_2016 <> 0
-                                                     THEN
-                                                        CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
-                                                     ELSE
-                                                       0
-                                                   END
-                                                 END
-                                               END
-                                             END
-                                          END as datos_avance
-                                          FROM(
-                                          SELECT *
-                                          FROM remi_vista_avances_totales
-                                          WHERE id IN (".$dataAvanceIds.")
-                                          ) as fuente
-                                      ) as tabla
-                                      WHERE ".$rangoAvance[$dato]);
-    $arrayEjecutadoIndicadores = Array();
-    foreach ($ejecutadoIndicadores as $key => $value) {
-      $arrayEjecutadoIndicadores[$value->id]['avance']= $value->avance;
-      $arrayEjecutadoIndicadores[$value->id]['datos_avance']= $value->datos_avance;
-      $arrayEjecutadoIndicadores[$value->id]['ejecutado']= $value->ejecutado;
-    }
-
+  $arrayDatosAvances = $this->datosAvances($dataAvanceIds);
+  $arrayEjecutadoIndicadores = $this->ejecutadoIndicadores($dataAvanceIds,$rangoAvance[$dato]);
 
     return view('SistemaRemi.indicador-desagregar-avance',compact('indicadores','arrayDatosExtras',
     'arrayDatosAvances','arrayEjecutadoIndicadores','titulo','color'));
+  }
+
+
+  private function datosAvances($dataAvanceIds){
+    $datosAvances = \DB::select('SELECT * FROM remi_vista_avances_totales WHERE id IN ('.$dataAvanceIds.')');
+    $arrayDatosAvances = Array();
+    foreach ($datosAvances as $key => $value) {
+      $arrayDatosAvances[$value->id]['plazo_anios']=$value->plazo_anios;
+      $arrayDatosAvances[$value->id]['meta_2020']=$value->meta_2020;
+      $arrayDatosAvances[$value->id]['gestion_reporte']=$value->gestion_reporte;
+      $arrayDatosAvances[$value->id]['avance_2016']=$value->avance_2016;
+      $arrayDatosAvances[$value->id]['avance_2017']=$value->avance_2017;
+      $arrayDatosAvances[$value->id]['avance_2018']=$value->avance_2018;
+      $arrayDatosAvances[$value->id]['avance_2019']=$value->avance_2019;
+      $arrayDatosAvances[$value->id]['avance_2020']=$value->avance_2020;
+    }
+    return $arrayDatosAvances;
+  }
+  private function ejecutadoIndicadores($dataAvanceIds,$rango){
+    if($rango!=""){
+      $rango = "WHERE ".$rango;
+    }else{
+      $rango = "";
+    }
+    $ejecutadoIndicadores = \DB::select("SELECT tabla.id,tabla.avance,tabla.datos_avance,ABS(tabla.datos_avance) as ejecutado
+                                        FROM (
+                                            SELECT fuente.id,
+                                            fuente.avance,
+                                            CASE
+                                               WHEN fuente.avance_2020 <> 0 THEN
+                                                CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2020/fuente.brecha_2020)*100,4) ELSE 0 END
+                                               ELSE
+                                               CASE
+                                                WHEN fuente.avance_2019 <> 0
+                                                THEN
+                                                  CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2019/fuente.brecha_2020)*100,4) ELSE 0	END
+                                                ELSE
+                                                 CASE
+                                                   WHEN fuente.avance_2018 <> 0
+                                                   THEN
+                                                      CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2018/fuente.brecha_2020)*100,4) ELSE 0 END
+                                                   ELSE
+                                                   CASE
+                                                     WHEN fuente.avance_2017 <> 0
+                                                     THEN
+                                                        CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2017/fuente.brecha_2020)*100,4) ELSE	0	END
+                                                     ELSE
+                                                     CASE
+                                                       WHEN fuente.avance_2016 <> 0
+                                                       THEN
+                                                          CASE WHEN fuente.brecha_2020 <> 0 THEN ROUND((fuente.variacion_2016/fuente.brecha_2020)*100,4) ELSE	0	END
+                                                       ELSE
+                                                         0
+                                                     END
+                                                   END
+                                                 END
+                                               END
+                                            END as datos_avance
+                                            FROM(
+                                            SELECT *
+                                            FROM remi_vista_avances_totales
+                                            WHERE id IN (".$dataAvanceIds.")
+                                            ) as fuente
+                                        ) as tabla ".$rango);
+      $arrayEjecutadoIndicadores = Array();
+      foreach ($ejecutadoIndicadores as $key => $value) {
+        $arrayEjecutadoIndicadores[$value->id]['avance']= $value->avance;
+        $arrayEjecutadoIndicadores[$value->id]['datos_avance']= $value->datos_avance;
+        $arrayEjecutadoIndicadores[$value->id]['ejecutado']= $value->ejecutado;
+      }
+
+      return $arrayEjecutadoIndicadores;
   }
 }

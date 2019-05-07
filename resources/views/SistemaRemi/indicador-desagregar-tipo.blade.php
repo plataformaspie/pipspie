@@ -140,7 +140,7 @@ text-decoration: underline;
                                                               <div class="col-lg-12 card-footer">
                                                                     <a href="/sistemaremi/dataIndicador/{{ $item->id }}" style="color:#000000;font-weight: bold;">{{ str_pad($item->id, 4, "0", STR_PAD_LEFT) }}: {{ $item->nombre }}</a>
                                                               </div>
-                                                              <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
+                                                              <div class="col-lg-1 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Tipo:</p>
                                                                   <p style="font-weight:bold;"> {{ $item->tipo }} </p>
                                                               </div>
@@ -156,17 +156,19 @@ text-decoration: underline;
                                                                   <p class="text-muted">Linea base:</p>
                                                                   <p style="font-weight:bold;">{{ rtrim(number_format($item->linea_base_valor,4,",","."),',0') }}</p>
                                                               </div>
-                                                              <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Articulacion PDES:</p>
-                                                                  @foreach ($arrayDatosExtras[$item->id]['pdes_codigo'] as $value)
-                                                                    <p style="font-weight:bold;">{{ $value }}</p>
-                                                                  @endforeach
+                                                              <div class="col-lg-1 col-md-1 col-sm-6 col-xs-6 text-center">
+                                                                  <p class="text-muted">Meta 2020:</p>
+                                                                  <p style="font-weight:bold;">{{ rtrim(number_format($arrayDatosAvances[$item->id]['meta_2020'],4,",","."),',0') }}</p>
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Articulacion ODS:</p>
-                                                                  @foreach ($arrayDatosExtras[$item->id]['ods_codigo'] as $value)
-                                                                    <p style="font-weight:bold;">{{ $value }}</p>
-                                                                  @endforeach
+                                                                  <p class="text-muted">Ultimo valor Reportado:</p>
+                                                                  @if($arrayDatosAvances[$item->id]['gestion_reporte'] > 0)
+                                                                    <p style="font-weight:bold;font-size:20px;color:#4F93A0;">{{ rtrim(number_format($arrayDatosAvances[$item->id]['avance_'.$arrayDatosAvances[$item->id]['gestion_reporte']],4,",","."),',0') }}</p>
+                                                                  @endif
+                                                              </div>
+                                                              <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
+                                                                  <p class="text-muted">Total <br/>Ejecutado:</p>
+                                                                  <p style="font-weight:bold;font-size:25px;color:{{$color}};">{{ number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4,",",".") }}</p>
                                                               </div>
 
                                                           </div>

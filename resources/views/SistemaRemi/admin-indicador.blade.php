@@ -144,7 +144,7 @@ input[type=checkbox]:checked:disabled + label:before {
                               @endforeach
                             </select>
                           </div>
-                          <div class="col-lg-3 col-sm-6">
+                          <div class="col-lg-2 col-sm-3">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Compartidos:</label>
                             <select id="fil_compartidos" name="fil_compartidos" class="" style="width:100%">
                                  <option value="0">Todos</option>
@@ -152,13 +152,29 @@ input[type=checkbox]:checked:disabled + label:before {
                                  <option value="No">No</option>
                             </select>
                           </div>
-                          <div class="col-lg-3 col-sm-3">
+                          <div class="col-lg-2 col-sm-3">
                             <label><i class="fa fa-filter gly-rotate-90"></i>Tipo:</label>
                             <select id="fil_tipos" name="fil_tipos" class="" style="width:100%">
                               <option value="0">Todos</option>
                               @foreach ($tipos as  $item)
                                     <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
                               @endforeach
+                            </select>
+                          </div>
+                          <div class="col-lg-3 col-sm-6">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>Dimensiones SPIE:</label>
+                            <select id="fil_dimensiones" name="fil_dimensiones[]" placeholder="Todos..."  multiple="multiple" class="select2 multiple">
+                                @foreach ($dimensionesSpie as  $item)
+                                      <option value="{{ $item }}">{{$item}}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                          <div class="col-lg-3 col-sm-6">
+                            <label><i class="fa fa-filter gly-rotate-90"></i>Subdimensiones SPIE:</label>
+                            <select id="fil_subdimensiones" name="fil_subdimensiones[]" placeholder="Todos..."  multiple="multiple" class="select2 multiple">
+                                @foreach ($subdimensiones as  $item)
+                                      <option value="{{ $item }}">{{$item}}</option>
+                                @endforeach
                             </select>
                           </div>
                           <div class="col-lg-12 col-sm-12">
@@ -3190,7 +3206,9 @@ $('#customSwitch2').click(function(){
             { name: 'sectores', type: 'string' },
             { name: 'compartido', type: 'string' },
             { name: 'pdes', type: 'string' },
-            { name: 'ods', type: 'string' }
+            { name: 'ods', type: 'string' },
+            { name: 'dimension_spie', type: 'string' },
+            { name: 'subdimension', type: 'string' }
         ],
         id: 'id',
         data:{'filter':'{{$filtData}}'},
@@ -3238,7 +3256,9 @@ $('#customSwitch2').click(function(){
           { text: 'Compartido', width: 100, dataField: 'compartido',cellsAlign: 'center' },
           { text: 'Sectores', width: 330, dataField: 'sectores',cellsAlign: 'left' },
           { text: 'PDES', width: 100, dataField: 'pdes',cellsAlign: 'left' },
-          { text: 'ODS', width: 100, dataField: 'ods',cellsAlign: 'left' }
+          { text: 'ODS', width: 100, dataField: 'ods',cellsAlign: 'left' },
+          { text: 'Dimensiones SPIE', width: 250, dataField: 'dimension_spie',cellsAlign: 'left' },
+          { text: 'Subdimension SPIE', width: 300, dataField: 'subdimension',cellsAlign: 'left' }
       ]
     });
 
@@ -4559,7 +4579,9 @@ function filtrar(){
            { name: 'sectores', type: 'string' },
            { name: 'compartido', type: 'string' },
            { name: 'pdes', type: 'string' },
-           { name: 'ods', type: 'string' }
+           { name: 'ods', type: 'string' },
+           { name: 'dimension_spie', type: 'string' },
+           { name: 'subdimension', type: 'string' }
        ],
        id: 'id',
        data:{
@@ -4573,6 +4595,8 @@ function filtrar(){
              'fil_ods_objetivo':$("#fil_ods_objetivo").val(),
              'fil_ods_meta':$("#fil_ods_meta").val(),
              'fil_ods_indicador':$("#fil_ods_indicador").val(),
+             'fil_dimensiones':$("#fil_dimensiones").val(),
+             'fil_subdimensiones':$("#fil_subdimensiones").val(),
              'filter':{{$filtData}},
             },
        url: url

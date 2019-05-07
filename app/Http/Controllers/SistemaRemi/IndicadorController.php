@@ -665,6 +665,48 @@ class IndicadorController extends Controller
                             '2' => "Sólo se cuenta con financiamiento temporal de la cooperación",
                             '3' => "No se cuenta con financiamiento nacio nal ni internacional ");
 
+    $dimensionesSpie = Array('Sin clasificar' => "Sin clasificar",
+                         'Económica' => "Económica",
+                         'Social' => "Social",
+                         'Política e Institucional' => "Política e Institucional",
+                         'Ecológica' => "Ecológica",
+                         'Cultural y Afectiva' => "Cultural y Afectiva");
+    $subdimensiones = Array('Sin clasificar' => "Sin clasificar",
+                            'Acuerdos Internacionales' => "Acuerdos Internacionales",
+                            'Agropecuaria' => "Agropecuaria",
+                            'Autonomías' => "Autonomías",
+                            'Ciencia y Tecnología' => "Ciencia y Tecnología",
+                            'Complejos Productivos' => "Complejos Productivos",
+                            'Culturas' => "Culturas",
+                            'Deporte' => "Deporte",
+                            'Educación' => "Educación",
+                            'Empleo (Complejos Prod)' => "Empleo (Complejos Prod)",
+                            'Empresas Públicas Estratégicas' => "Empresas Públicas Estratégicas",
+                            'Energía' => "Energía",
+                            'Estado' => "Estado",
+                            'Felicidad' => "Felicidad",
+                            'Forestal' => "Forestal",
+                            'Gestión Ambiental' => "Gestión Ambiental",
+                            'Gestión de Riesgos' => "Gestión de Riesgos",
+                            'Hidrocarburos' => "Hidrocarburos",
+                            'IED' => "IED",
+                            'Inclusión' => "Inclusión",
+                            'Institucional' => "Institucional",
+                            'Justicia' => "Justicia",
+                            'Madre Tierra' => "Madre Tierra",
+                            'Mercados Justos' => "Mercados Justos",
+                            'Minería y Metalurgia' => "Minería y Metalurgia",
+                            'Nutrición' => "Nutrición",
+                            'Pobreza' => "Pobreza",
+                            'Política Pública' => "Política Pública",
+                            'Producción Sustentable' => "Producción Sustentable",
+                            'Recursos Hídricos ' => "Recursos Hídricos ",
+                            'REFI' => "REFI",
+                            'Salud' => "Salud",
+                            'Servicios Básicos' => "Servicios Básicos",
+                            'Transporte' => "Transporte",
+                            'Vivienda' => "Vivienda");
+
     $etapas = Etapas::get();
     $unidades = UnidadesMedidas::where('activo',true)->get();
     $dimensiones = Dimensiones::where('id_variable',4)->get();
@@ -690,7 +732,7 @@ class IndicadorController extends Controller
     'dimensiones','relacop','etapas','estado','brechaDatos',
     'brechaMetodologia','brechaCapacitacion','brechaFinanciamiento',
     'instituciones','filtData','estados','setPP','setPM','setPR',
-    'setOO','setOM','setOI'));
+    'setOO','setOM','setOI','dimensionesSpie','subdimensiones'));
   }
 
   public function adminIndicadorEntidad()
@@ -820,7 +862,17 @@ class IndicadorController extends Controller
                                        INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
                                        WHERE oi.id_indicador_ods = fuente.id
                                        GROUP BY oi.id_indicador_ods
-                                     ) as ods
+                                     ) as ods,
+                                     (
+                                       SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.dimension,'|'),'|')) ),'|') as dato
+                                       FROM remi_indicador_pdes_resultado pr
+                                       INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                                     ) as dimension_spie,
+                                     (
+                                       SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.subdimension,'|'),'|')) ),'|') as dato
+                                       FROM remi_indicador_pdes_resultado pr
+                                       INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                                     ) as subdimension
                                      FROM(
                                         SELECT i.*,ins.denominacion,es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
                                         FROM remi_indicadores i
@@ -867,7 +919,17 @@ class IndicadorController extends Controller
                                       	INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
                                       	WHERE oi.id_indicador_ods = fuente.id
                                       	GROUP BY oi.id_indicador_ods
-                                      ) as ods
+                                      ) as ods,
+                                      (
+                                        SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.dimension,'|'),'|')) ),'|') as dato
+                                        FROM remi_indicador_pdes_resultado pr
+                                        INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                                      ) as dimension_spie,
+                                      (
+                                        SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.subdimension,'|'),'|')) ),'|') as dato
+                                        FROM remi_indicador_pdes_resultado pr
+                                        INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                                      ) as subdimension
                                       FROM(
                                         SELECT i.*, es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
                                         FROM remi_indicadores i
@@ -1009,6 +1071,36 @@ class IndicadorController extends Controller
           $where.=")";
        }
 
+       if($request->fil_dimensiones != ''){
+          $where.="AND(";
+          foreach ($request->fil_dimensiones as $key=>$value) {
+            if($key==0)
+            $where .="tabla.dimension_spie LIKE '".$value."' ";
+            else
+            $where .="OR tabla.dimension_spie LIKE '".$value."' ";
+
+            $where .="OR tabla.dimension_spie LIKE '%|".$value."|%' ";
+            $where .="OR tabla.dimension_spie LIKE '%|".$value."' ";
+            $where .="OR tabla.dimension_spie LIKE '".$value."|%'";
+          }
+          $where.=")";
+       }
+
+       if($request->fil_subdimensiones != ''){
+          $where.="AND(";
+          foreach ($request->fil_subdimensiones as $key=>$value) {
+            if($key==0)
+            $where .="tabla.subdimension LIKE '".$value."' ";
+            else
+            $where .="OR tabla.subdimension LIKE '".$value."' ";
+
+            $where .="OR tabla.subdimension LIKE '%|".$value."|%' ";
+            $where .="OR tabla.subdimension LIKE '%|".$value."' ";
+            $where .="OR tabla.subdimension LIKE '".$value."|%'";
+          }
+          $where.=")";
+       }
+
       if($request->filter > 0){
         $sql = "SELECT *
                 FROM (
@@ -1056,7 +1148,17 @@ class IndicadorController extends Controller
                 		(
                 			SELECT string_agg(DISTINCT c.cod_i,',') FROM remi_indicador_ods_indicador oi
                 			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
-                		) as ods_i
+                		) as ods_i,
+                    (
+                      SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.dimension,'|'),'|')) ),'|') as dato
+                      FROM remi_indicador_pdes_resultado pr
+                      INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                    ) as dimension_spie,
+                    (
+                      SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.subdimension,'|'),'|')) ),'|') as dato
+                      FROM remi_indicador_pdes_resultado pr
+                      INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                    ) as subdimension
                    FROM(
                       SELECT i.*,ins.denominacion,es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id
                       FROM remi_indicadores i
@@ -1117,7 +1219,17 @@ class IndicadorController extends Controller
                 		(
                 			SELECT string_agg(DISTINCT c.cod_i,',') FROM remi_indicador_ods_indicador oi
                 			INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador WHERE oi.id_indicador_ods = fuente.id GROUP BY oi.id_indicador_ods
-                		) as ods_i
+                		) as ods_i,
+                    (
+                      SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.dimension,'|'),'|')) ),'|') as dato
+                      FROM remi_indicador_pdes_resultado pr
+                      INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                    ) as dimension_spie,
+                    (
+                      SELECT array_to_string(ARRAY(SELECT DISTINCT UNNEST(STRING_TO_ARRAY(string_agg(DISTINCT c.subdimension,'|'),'|')) ),'|') as dato
+                      FROM remi_indicador_pdes_resultado pr
+                      INNER JOIN pdes_vista_catalogo_pmr c ON pr.id_resultado = c.id_resultado WHERE pr.id_indicador = fuente.id GROUP BY pr.id_indicador
+                    ) as subdimension
                     FROM(
                       SELECT i.*, es.nombre as estado_desc,LPAD(i.id::text, 4, '0') as codigo_id FROM remi_indicadores i
                       INNER JOIN remi_estados es ON i.estado = es.id WHERE activo = TRUE ORDER BY i.id ASC
