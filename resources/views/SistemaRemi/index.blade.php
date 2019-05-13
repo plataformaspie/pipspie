@@ -95,12 +95,12 @@
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->
-      <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+      {{-- <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
               <li><a href="{{ url('/sistemaremi/index') }}">Inicio</a></li>
               <li class="active">Pagina Principal</li>
           </ol>
-      </div>
+      </div> --}}
       <!-- /.breadcrumb -->
   </div>
   <!-- .row -->

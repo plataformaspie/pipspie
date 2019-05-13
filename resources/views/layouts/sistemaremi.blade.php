@@ -283,9 +283,10 @@
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ url('/home') }}"><i class="fa icon-logout"></i> Cerrar Modulos </a></li>
                                 <li>
-                                  <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Cerrar Sesión </a>
-                                  <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                  {{-- <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"> </a> --}}
+                                  <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="">
                                           {{ csrf_field() }}
+                                     <button type="submit" name="button"><i class="fa fa-power-off"></i> Cerrar Sesións</button>
                                   </form>
                                 </li>
                             </ul>

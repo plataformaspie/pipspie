@@ -58,12 +58,12 @@
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->
-      <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+      {{-- <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
               <li><a href="{{ url('/sistemaremi/index') }}">Fuente Datos</a></li>
               <li class="active">Administrar fuente de datos</li>
           </ol>
-      </div>
+      </div> --}}
       <!-- /.breadcrumb -->
   </div>
 

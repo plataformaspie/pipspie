@@ -108,12 +108,12 @@ input[type=checkbox]:checked:disabled + label:before {
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->
-      <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
+      {{-- <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
           <ol class="breadcrumb">
               <li><a href="{{ url('/sistemaremi/index') }}">Indicadores</a></li>
               <li class="active">Administrar indicadores</li>
           </ol>
-      </div>
+      </div> --}}
       <!-- /.breadcrumb -->
   </div>
 

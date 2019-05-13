@@ -97,7 +97,7 @@ class AdmiUserController extends Controller
 
         $users = Usuario::join('remi_tipo_rol as r','users.id_rol', '=', 'r.id_roles')
                    ->where('users.activo', true)
-                   ->orderBy('users.id','ASC')
+                   ->orderBy('users.name','ASC')
                    ->select('users.*','r.nombre_rol')
                    ->paginate(10);
         return view('SistemaRemi.registrar.detalles-users')->with('users', $users);
