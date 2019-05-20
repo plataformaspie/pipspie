@@ -1273,7 +1273,11 @@ class IndicadorController extends Controller
             $indicador->codigo = $codigo;
           //  $indicador->codig_ods = $codig_ods;
             $indicador->nombre = $request->nombre; // 1
+            if($request->etapa != "")
             $indicador->etapa = $request->etapa; //2
+            else
+            $indicador->etapa = "No completado"; //2
+
             $indicador->tipo = $request->tipo;  //3
             //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
             $indicador->variables_desagregacion = $request->variables_desagregacion;  //8
@@ -1497,7 +1501,11 @@ class IndicadorController extends Controller
 
             $indicador->nombre = $request->nombre;
             $indicador->estado = $request->estado_indicador;
-            $indicador->etapa = $request->etapa;
+            if($request->etapa != "")
+            $indicador->etapa = $request->etapa; //2
+            else
+            $indicador->etapa = "No completado"; //2
+
             $indicador->tipo = $request->tipo;
             //$indicador->variables_desagregacion = ($request->variables_desagregacion)?implode(",", $request->variables_desagregacion):null;
             $indicador->variables_desagregacion = $request->variables_desagregacion;
