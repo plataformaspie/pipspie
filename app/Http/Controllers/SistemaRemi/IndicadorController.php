@@ -30,6 +30,7 @@ use App\Models\SistemaRemi\RelacionOdsPdes;
 use App\Models\SistemaRemi\IndicadoresVariables;
 use App\Models\SistemaRemi\Usuario;
 use App\Models\SistemaRemi\IndicadorSector;
+use App\Models\SistemaRemi\AlertasModificacion;
 use Laracasts\flash\flash;
 
 class IndicadorController extends Controller
@@ -1344,6 +1345,17 @@ class IndicadorController extends Controller
 
             $id_reg = $indicador->id;
 
+
+            $alertas = new AlertasModificacion();
+            $alertas->linea_base = $request->has('linea_base_mod');
+            $alertas->metas = $request->has('metas_mod');
+            $alertas->indicador = $request->has('indicador_mod');
+            $alertas->resultado = $request->has('resultado_mod');
+            $alertas->id_indicador = $indicador->id;
+            $alertas->id_user = $this->user->id;
+            $alertas->activo = true;
+            $alertas->save();
+
             // $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             // for($i=1; $i <= count($metasList); $i++){
             //     $metas = new Metas();
@@ -1480,7 +1492,7 @@ class IndicadorController extends Controller
                   //$resultado->save();
               }
               $indicador->codigo = $codigo;
-              $indicador->codig_ods = $codig_ods;
+              //$indicador->codig_ods = $codig_ods;
             }
 
             $indicador->nombre = $request->nombre;
@@ -1559,6 +1571,34 @@ class IndicadorController extends Controller
             $indicador->brecha_capacitacion = $request->brecha_capacitacion;
             $indicador->brecha_financiamiento = $request->brecha_financiamiento;
             $indicador->save();
+
+            $ver = \DB::select("SELECT *
+                                  FROM remi_alertas_modificacion
+                                  where id_indicador=".$request->id_indicador);
+
+            if($ver){
+                $vid= $ver[0]->id;
+                $alertas1 = AlertasModificacion::find($vid);
+                $alertas1->linea_base = $request->has('linea_base_mod');
+                $alertas1->metas = $request->has('metas_mod');
+                $alertas1->indicador = $request->has('indicador_mod');
+                $alertas1->resultado = $request->has('resultado_mod');
+                $alertas1->id_indicador = $request->id_indicador;
+                $alertas1->activo = true;
+                $alertas1->id_user_updated = $this->user->id;
+                $alertas1->save();
+            }
+            else {
+              $alertas = new AlertasModificacion();
+              $alertas->linea_base = $request->has('linea_base_mod');
+              $alertas->metas = $request->has('metas_mod');
+              $alertas->indicador = $request->has('indicador_mod');
+              $alertas->resultado = $request->has('resultado_mod');
+              $alertas->id_indicador = $request->id_indicador;
+              $alertas->id_user = $this->user->id;
+              $alertas->activo = true;
+              $alertas->save();
+            }
 
 
             if(isset($request->resultado_articulado)){
@@ -1889,6 +1929,8 @@ class IndicadorController extends Controller
       $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$request->id)->where('activo', true)->get();
       $archiv_ods = IndicadoresVariables::where('id_indicador',$request->id)->where('activo', true)->get();
       $sectores = IndicadorSector::where('id_indicador',$request->id)->where('activo', true)->get();
+      $alertas = AlertasModificacion::where('id_indicador',$request->id)->where('activo', true)->get();
+
       $agrupSectores ='';
       foreach ($sectores as $value) {
         $agrupSectores .= $value->id_institucion."," ;
@@ -1902,6 +1944,7 @@ class IndicadorController extends Controller
           'pdes' => $pdes,
           'ods' => $ods,
           'metas' => $metas,
+          'alertas' => $alertas,
           'avances' => $avances,
           'archiv_ods' => $archiv_ods,
           'archivos' => $archivos,
@@ -1935,6 +1978,16 @@ class IndicadorController extends Controller
           $i=0;
           foreach ($array as $key => $value) {
             $orderByAr[$i]['index'] = $key;
+            // list ( $dia, $mes, $anio ) = explode ( "/", $value );
+            // if($dia){
+            //   $fecha = $anio . "-" . $mes . "-" . $dia;
+            // }
+            // if($mes){
+            //   $fecha = $anio . "-" . $mes;
+            // }
+            // if($anio){
+            //   $fecha = $anio;
+            // }
             list ( $mes, $anio ) = explode ( "/", $value );
             $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
             $fecha = $anio . "-" . $mes . "-" . $dia;

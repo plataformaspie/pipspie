@@ -663,7 +663,7 @@
 
 <p><strong>Implementación</strong></p>
 
-<p>Una vez que el plan se convierte en ley, su implementación comienza al articularlo con los otros planes de mediano plazo que forman parte del Sistema de Planificación Integral del Estado. La asignación de recursos está organizada a partir de un Presupuesto Quinquenal que coordina el MPD a través del Viceministro de Inversión Pública y Financiamiento Externo. Este proceso, se enmarca en el Subsistema de Inversión Pública y Financiamiento Externo para el Desarrollo Integral (SIPFE). Las autoridades públicas detalladas en la Ley No.77, art.4 están encargadas también de alinear sus esfuerzos para implementar el PDES. Por último, el MPD, además de coordinar la ejecución en todos los niveles, difunde el plan por el territorio nacional promoviendo el desarrollo de las capacidades institucionales para su implementación.</p>
+<p>Una vez que el plan se convierte en ley, su implementación comienza al articularlo con los otros planes de mediano plazo que forman parte del Sistema de Planificación Integral del Estado. La asignación de recursos está organizada a partir de un Presupuesto Quinquenal que coordina el MPD a través del Viceministro de Inversión Pública y Financiamiento Externo. Este proceso, se enmarca en el Subsistema de Inversión Pública y Financiamiento Externo para el Desarrollo Integral (SIPFE). Las autoridades públicas detalladas en la Ley No.777, art.4 están encargadas también de alinear sus esfuerzos para implementar el PDES. Por último, el MPD, además de coordinar la ejecución en todos los niveles, difunde el plan por el territorio nacional promoviendo el desarrollo de las capacidades institucionales para su implementación.</p>
 
 <p><strong>Seguimiento y Evaluación</strong></p>
 
@@ -731,7 +731,7 @@
               <li><a href="#">Asamblea Legislativa Plurinacional de Bolivia</a></li>
               <li><a href="#">Autoridades Públicas de Bolivia</a></li>
               <li><a href="#">Presidencia de Bolivia</a></li>
-            </ul>
+      </ul>
     </div>
 
   </div><!--row-->

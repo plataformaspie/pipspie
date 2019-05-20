@@ -168,15 +168,14 @@ class AdmiUserController extends Controller
 
   public function editarUser($id)
     {
-        // Mostrar formulario para editar usuario
-        //dd("SDFGSDFGSD",$id);
-        $mis_roles = Tipos_Roles::get();
-        // $nombre_roles = \DB::select("SELECT tipo_rol
-        //                         FROM users
-        //                         where  id=".$id);
+      $mis_roles = Tipos_Roles::get();
 
-        $user=Usuario::find($id);  // realizar la consulta en la tabla con id uy cambia el rol
-        return view('SistemaRemi.registrar.editar-users')->with('user',$user)->with('mis_roles',$mis_roles);
+      $Modifinstitucion = \DB::select("SELECT  id, codigo, denominacion
+                            FROM pip_instituciones
+                             order by denominacion ASC");
+
+      $user=Usuario::find($id);
+      return view('SistemaRemi.registrar.editar-users')->with('user',$user)->with('mis_roles',$mis_roles)->with('Modifinstitucion',$Modifinstitucion);
     }
 
   public function addPost(Request $request)
@@ -191,22 +190,35 @@ class AdmiUserController extends Controller
 
   public function actualizarUser(Request $request,$id)
   {
-       $userSession = \Auth::user();
+      $pass1=$request['password_nuevo_1'];
+      $pass2=$request['password_nuevo_2'];
 
-        $user=Usuario::find($id);
-        // $cambiorol = \DB::select("SELECT rol
-        //                         FROM roles
-        //                         where  id=".$request->roles);
-
-        // $user->tipo_rol=$cambiorol[0]->rol;
-        $user->id_rol = $request->roles;
-        $user->id_user_updated= $userSession->id;
-        $user->fill($request->all());
-
-        $user->save();
-        //flash('Actualizado exitosamente !!')->success();
-        return   redirect()->route('mostrarReg');   //redirect()->route('admin.genero.index');
-        //return //view('SistemaRemi.registrar.crear-users');
+     if($request->has('activarpass')==true && $pass1!="" && $pass2!="" && $pass1==$pass2){
+         $user=Usuario::find($id);
+         $user->name = $request->name;
+         $user->cargo = $request->cargo;
+         $user->carnet = $request->carnet;
+         $user->telefono = $request->telefono;
+         $user->email = $request->email;
+         $user->id_institucion = $request->entidades;
+         $user->username = $request->username;
+         $user->id_rol = $request->roles;
+         $user->password=bcrypt($request['password_nuevo_1']);
+         $user->save();
+         return   redirect()->route('mostrarReg');
+     }else{
+         $user=Usuario::find($id);
+         $user->name = $request->name;
+         $user->cargo = $request->cargo;
+         $user->carnet = $request->carnet;
+         $user->telefono = $request->telefono;
+         $user->email = $request->email;
+         $user->id_institucion = $request->entidades;
+         $user->username = $request->username;
+         $user->id_rol = $request->roles;
+         $user->save();
+         return   redirect()->route('mostrarReg');
+     }
   }
 
   public function eliminarUser($id)

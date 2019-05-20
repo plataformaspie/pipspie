@@ -29,7 +29,7 @@ class ExportReportController extends Controller
 {
   public function descagarExcelMetadatosOnly(Request $request)
   {
-     ini_set('max_execution_time', 300);
+     ini_set('max_execution_time', 800);
      $id = $request->id;
      $fuente = FuenteDatos::join('remi_estados as et', 'remi_fuente_datos.estado', '=', 'et.id')
                          ->where('remi_fuente_datos.id',$request->id)
@@ -1446,7 +1446,6 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     ini_set('max_execution_time', 800);
     $tamanoTitulos = [];
-    $cabeceraDatos = [];
     $tamFD =[];
     $tamFDD =[];
 
@@ -1456,34 +1455,12 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
     $registros = implode(',', $ids);
     $registros = '('.$registros.')';
 
-    $tampdes = \DB::select("SELECT MAX(tam_pds) FROM
-                          (SELECT oi.id_indicador, count(*) as tam_pds
-                          FROM remi_indicador_pdes_resultado oi
-                          INNER JOIN pdes_vista_catalogo_pmr c ON oi.id_resultado = c.id_resultado
-                          WHERE oi.id_indicador IN ".$registros."
-                          GROUP BY oi.id_indicador
-                          order by oi.id_indicador) p");
-
-    $maxpdes = intval($tampdes[0]->max);
-
-   // dd("dsfsf",$maxpdes);
-    $tamods = \DB::select("SELECT MAX(tam_ods) FROM
-                          (SELECT oi.id_indicador_ods, count(*) as tam_ods
-                          FROM remi_indicador_ods_indicador oi
-                          INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
-                          WHERE oi.id_indicador_ods IN ".$registros."
-                          GROUP BY oi.id_indicador_ods
-                          order by oi.id_indicador_ods) d");
-
-    $maxods = intval($tamods[0]->max);
-
     //  nro de reg de fd distinto de vacio
     $fd = \DB::select("SELECT count(*) as tam from
                         (select i.fuente_datos
                         from remi_indicadores i
                         where i.fuente_datos != '' and i.id IN ".$registros.") l");
 
-    //dd("dsfsf",$fd);
     $ctam = (int)$fd[0]->tam;  //convienrte el tam en entero
 
     $fdat = \DB::select("SELECT i.id,i.fuente_datos
@@ -1495,8 +1472,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           $num = explode(',',$fdat[$i]->fuente_datos);  //2,3,6
           array_push($tamFD, count($num));
     }
-   /// dd("fgdfgb",count($num));
-    $tamfdat =  max($tamFD);      //   max : 3 de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
+    $tamfdat = max($tamFD);      //   max : 3 de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
 
     $fdd = \DB::select("SELECT count(*) as tamd from
                         (select i.fuente_datos_d
@@ -1509,13 +1485,10 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                         where i.fuente_datos_d != '' and i.id IN ".$registros."
                         order by id");
 
-    //$nden = 0;
     for ($j=0; $j < $ctamd ; $j++) {
           $den = explode(',',$fdatd[$j]->fuente_datos_d);  //64,65,317
           array_push($tamFDD, count($den));
-          //$nden = $den;
     }
-  //   dd("fgdfgb",$tamFDD);
     $tamfdd = max($tamFDD);    // max : 2   de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
 
     $max_ra = \DB::select("SELECT MAX(reportados) FROM
@@ -1535,54 +1508,23 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     $sec = intval($max_sec[0]->max);    //   max  :: 4
     //dd("xtemfdcxv34345xv",$sec);
-    $cabeceraTitulos = ['ID INDICADOR',
-                        'PDES',
-                        'ODS',
-                        'ALINEAR AL PDES',
+    $cabeceraTitulos = ['ALINEAR AL PDES',
                         'ALINEAR AL ODS',
                         'INFORMACION BASICA',
-                        'LINEA BASE Y METAS',
-                        'REPORTE DE AVANCES',
+                        'METAS Y AVANCES',
                         'VIABILIDAD DEL INDICADOR',
                         'TIPO DE BRECHA PARA REPORTAR EL INDICADOR',
                         'SECRETARIA TECNICA CIMPDES'];
 
-    array_push($cabeceraDatos,'ID INDICADOR');
-    array_push($tamanoTitulos,1);
+        $cabeceraDatos = [
+                      'PILAR',
+                      'META',
+                      'RESULTADO',
+                      'COMPARABILIDAD',
+                      'OBJETIVO',
+                      'META',
+                      'INDICADOR',
 
-    array_push($cabeceraDatos,'PDES');
-    array_push($tamanoTitulos,1);
-
-    array_push($cabeceraDatos,'ODS');
-    array_push($tamanoTitulos,1);
-
-    $pils = 'PILAR_';
-    $metx = 'META_';
-    $reso = 'RESULTADO_'; //
-   // dd("dsfs453",$maxpdes);
-    for ($v=1; $v <= $maxpdes; $v++) {
-    //  dd("dsfs453",$pils.$i);
-      array_push($cabeceraDatos,'PILAR_'.$v);
-      array_push($cabeceraDatos,'META_'.$v);
-      array_push($cabeceraDatos,'RESULTADO_'.$v);
-    }
-
-    array_push($tamanoTitulos,$maxpdes*3);
-
-    $comp = 'COMPARABILIDAD_';
-    $obje = 'OBJETIVO_';
-    $mets = 'META_';
-    $indi = 'INDICADOR_';
-    for ($h=1; $h <= $maxods; $h++) {
-      array_push($cabeceraDatos,'COMPARABILIDAD_'.$h);
-      array_push($cabeceraDatos,'OBJETIVO_'.$h);
-      array_push($cabeceraDatos,'META_'.$h);
-      array_push($cabeceraDatos,'INDICADOR_'.$h);
-    }
-
-    array_push($tamanoTitulos,$maxods*4);
-
-     array_push($cabeceraDatos,
                       'NOMBRE DEL INDICADOR',
                       'DEFINICION',
                       'TIPO',
@@ -1595,24 +1537,23 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                       'DEPARTAMENTAL',
                       'MUNICIPAL',
                       'FORMULA',
-                      'NUMERADOR');
+                      'NUMERADOR'];
     //array_push($tamanoTitulos,7,13);
-    $tfnum = 'FUENTE NUMERADOR_';
-    for ($i=1; $i <= $tamfdat; $i++) {
-      array_push($cabeceraDatos,$tfnum.$i);
+
+    for ($i=0; $i < $tamfdat; $i++) {
+      array_push($cabeceraDatos,'FUENTE NUMERADOR');
     }
     //array_push($tamanoTitulos,$tamfdat);
 
     array_push($cabeceraDatos,'DENOMINADOR');
 
-    $fdnum = 'FUENTE DENOMINADOR_';
     for ($i=1; $i <=$tamfdd; $i++) {
-      array_push($cabeceraDatos,$fdnum.$i);
+      array_push($cabeceraDatos,'FUENTE DENOMINADOR');
     }
     //array_push($tamanoTitulos,$tamfdat);
 
     array_push($cabeceraDatos,'OBSERVACIONES DE LA FUENTE DE DATOS');
-    array_push($tamanoTitulos,15+$tamfdat+$tamfdd);
+    array_push($tamanoTitulos,3,4,15+$tamfdat+$tamfdd);
 
     array_push($cabeceraDatos,'DIA LINEA BASE',
                       'MES LINEA BASE',
@@ -1634,15 +1575,14 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                       'META 2030',
                       'VALOR');
    // dd("dsfdsfsdf",$cabeceraDatos);
-     array_push($tamanoTitulos,19);
-    //$frep =
+
     for ($k=1; $k <= $ra ; $k++) {
-      array_push($cabeceraDatos,'FECHA REPORTADO_'.$k);
-      array_push($cabeceraDatos,'VALOR REPORTADO_'.$k);
-      array_push($cabeceraDatos,'DETALLE DEL AVANCE_'.$k);
+      array_push($cabeceraDatos,'FECHA REPORTADO');
+      array_push($cabeceraDatos,'VALOR REPORTADO');
+      array_push($cabeceraDatos,'DETALLE DEL AVANCE');
        //array_push($tamanoTitulos,$max_ra);
     }
-     array_push($tamanoTitulos,$ra*3);
+     array_push($tamanoTitulos,19+($ra*3));
 
     array_push($cabeceraDatos,'ESTADO','ETAPA');
     array_push($tamanoTitulos,2);
@@ -1654,9 +1594,8 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     array_push($cabeceraDatos,'FRECUENCIA DE REPORTE');
 
-    $secre = 'SECTOR RELACIONADO_';
     for ($w=1; $w <= $sec; $w++) {
-      array_push($cabeceraDatos,$secre.$w);
+      array_push($cabeceraDatos,'SECTOR RELACIONADO');
        //array_push($tamanoTitulos,$max_ra);
     }
     array_push($tamanoTitulos,1+$sec);
@@ -1674,142 +1613,52 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
       //llenando fila fuente
       $pdes = [];
       // dd("BIEN",$IndicadorDatos);
-
-      array_push($filaIndicador, $IndicadorDatos->id);
-
-      $agrupdes = \DB::select("SELECT oi.id_indicador,c.codigo
-                                FROM remi_indicador_pdes_resultado oi
-                                INNER JOIN pdes_vista_catalogo_pmr c ON oi.id_resultado = c.id_resultado
-                                WHERE oi.id_indicador = ".$IndicadorDatos->id."
-                                GROUP BY oi.id_indicador,c.codigo
-                                order by oi.id_indicador");  // ".$IndicadorDatos->id."
-
-      if(!empty($agrupdes)){
-          //dd("dsscsdf77", $agrupdes);
-          $datpdes ='';
-          foreach ($agrupdes as $key => $value) {
-                 $datpdes = $datpdes . ' -' . $value->codigo;
-          }
-        //  dd("dsscsdf", $datpdes);
-          array_push($filaIndicador, $datpdes);
-      }else {
-          array_push($filaIndicador, '');
-      }
-
-   //    dd("dsscsdf", $datpdes);
-
-      $agrupods = \DB::select("SELECT oi.id_indicador_ods,c.codigo
-                                FROM remi_indicador_ods_indicador oi
-                                INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
-                                WHERE oi.id_indicador_ods = ".$IndicadorDatos->id."
-                                GROUP BY oi.id_indicador_ods,c.codigo
-                                order by oi.id_indicador_ods");  // ".$IndicadorDatos->id."
-
-      if(!empty($agrupods)){
-            $datods ='';
-            foreach ($agrupods as $key => $value) {
-                   $datods = $datods . ' -' . $value->codigo;
-            }
-           array_push($filaIndicador, $datods);
-       }else {
-           array_push($filaIndicador, '');
-       }
-
-       //dd("dsscsdf", $datods);
-
-
-      $regpdes = \DB::select("SELECT MAX(tam_pds) FROM
-                            (SELECT oi.id_indicador, count(*) as tam_pds
-                            FROM remi_indicador_pdes_resultado oi
-                            INNER JOIN pdes_vista_catalogo_pmr c ON oi.id_resultado = c.id_resultado
-                            WHERE oi.id_indicador = ".$IndicadorDatos->id."
-                            GROUP BY oi.id_indicador
-                            order by oi.id_indicador) p");
-
-      $xreg_pdes = intval($regpdes[0]->max);
-    //  dd("dsscsdf", $xreg_pdes);
       $pdes = \DB::select("SELECT c.*,ir.id
                            FROM remi_indicador_pdes_resultado ir
                            INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
                            WHERE ir.id_indicador = ".$IndicadorDatos->id);
-     // dd("dsscsdf", $pdes);
 
-          // if(isset($pdes)){dd("si dato", $pdes); }
-          // else{dd("no dato", $pdes); }
-
-          if(isset($pdes)){
-
-               //convierte los numeros $regis fd en el nombre de la FD
-                $pdes = \DB::select("SELECT c.*,ir.id
-                                     FROM remi_indicador_pdes_resultado ir
-                                     INNER JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
-                                     WHERE ir.id_indicador = ".$IndicadorDatos->id);
-
-                foreach ($pdes as $key => $value)
-                {
-                    $pilar_p = $value->cod_p; //dd($pmrp);
-                    $meta_m = $value->cod_m;// dd($pmrm);
-                    $resultado_r = $value->cod_r;   //dd($pmrr);
-                    array_push($filaIndicador, $pilar_p);
-                    array_push($filaIndicador, $meta_m);
-                    array_push($filaIndicador, $resultado_r);
-                }
-
-                for ($i=0; $i<($maxpdes-$xreg_pdes)*3; $i++) {
-                       array_push($filaIndicador,'');
-                }
-
+          if(empty($pdes)){
+                  array_push($filaIndicador, '');
+                  array_push($filaIndicador, '');
+                  array_push($filaIndicador, '');
           }else{
-              for ($i=0; $i<$maxpdes*3; $i++) {
-                     array_push($filaIndicador,'');
+              foreach ($pdes as $key => $value)
+              {
+                  $pilar_p = $value->cod_p; //dd($pmrp);
+                  $meta_m = $value->cod_m;// dd($pmrm);
+                  $resultado_r = $value->cod_r;   //dd($pmrr);
+                  array_push($filaIndicador, $pilar_p);
+                  array_push($filaIndicador, $meta_m);
+                  array_push($filaIndicador, $resultado_r);
               }
           }
 
-      $regods = \DB::select("SELECT MAX(tam_ods) FROM
-                                (SELECT oi.id_indicador_ods, count(*) as tam_ods
-                                FROM remi_indicador_ods_indicador oi
-                                INNER JOIN ods_vista_catalogo_omi c ON oi.id_resultado_ods = c.id_indicador
-                                WHERE oi.id_indicador_ods = ".$IndicadorDatos->id."
-                                GROUP BY oi.id_indicador_ods
-                                order by oi.id_indicador_ods) d");
-
-      $xreg_ods = intval($regods[0]->max);
-
-      $ods = \DB::select("SELECT c.*,ir.id,ir.comparabilidad_ods_pdes
+          $ods = \DB::select("SELECT c.*,ir.id,ir.comparabilidad_ods_pdes
                            FROM remi_indicador_ods_indicador ir
-                           INNER JOIN ods_vista_catalogo_omi c ON ir.id_resultado_ods = c.id_indicador
+                           INNER JOIN ods_vista_catalogo_omi c ON ir.id_indicador_ods = c.id_indicador
                            WHERE ir.id_indicador_ods = ".$IndicadorDatos->id);
 
-          if(isset($ods)){
-
-               //convierte los numeros $regis fd en el nombre de la FD
-                $ods = \DB::select("SELECT c.*,ir.id,ir.comparabilidad_ods_pdes
-                               FROM remi_indicador_ods_indicador ir
-                               INNER JOIN ods_vista_catalogo_omi c ON ir.id_resultado_ods = c.id_indicador
-                               WHERE ir.id_indicador_ods = ".$IndicadorDatos->id);
-
-                  foreach ($ods as $key => $value)
-                  {
-
-                      $comparabilidad = $value->comparabilidad_ods_pdes;
-                      $objetivo_p = $value->cod_o; //dd($pmrp);
-                      $meta_m = $value->cod_m;// dd($pmrm);
-                      $indicador_r = $value->cod_i;   //dd($pmrr);
-
-                      array_push($filaIndicador, $comparabilidad);
-                      array_push($filaIndicador, $objetivo_p);
-                      array_push($filaIndicador, $meta_m);
-                      array_push($filaIndicador, $indicador_r);
-                      //dd($pmr);
-                  }
-
-                  for ($i=0; $i<($maxods-$xreg_ods)*4; $i++) {
-                         array_push($filaIndicador,'');
-                  }
+          if(empty($ods)){
+                  array_push($filaIndicador, '');
+                  array_push($filaIndicador, '');
+                  array_push($filaIndicador, '');
+                  array_push($filaIndicador, '');
 
           }else{
-              for ($i=0; $i<$maxods*4; $i++) {
-                     array_push($filaIndicador,'');
+              foreach ($ods as $key => $value)
+              {
+
+                  $comparabilidad = $value->comparabilidad_ods_pdes;
+                  $objetivo_p = $value->cod_o; //dd($pmrp);
+                  $meta_m = $value->cod_m;// dd($pmrm);
+                  $indicador_r = $value->cod_i;   //dd($pmrr);
+
+                  array_push($filaIndicador, $comparabilidad);
+                  array_push($filaIndicador, $objetivo_p);
+                  array_push($filaIndicador, $meta_m);
+                  array_push($filaIndicador, $indicador_r);
+                  //dd($pmr);
               }
           }
 
@@ -1832,13 +1681,14 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           $numw = explode(',',$IndicadorDatos->fuente_datos);  //2,3,6
           $tfd = count($numw);
 
-          if($indfd){
+          if(isset($indfd)){
                 $fd_ind = '('.$indfd.')';
 
                //convierte los numeros $regis fd en el nombre de la FD
                $fd_nom = \DB::select("SELECT nombre
                                     FROM remi_fuente_datos
                                     where id IN ".$fd_ind."");
+
                foreach ($fd_nom as $nomb){
                     $nomv = $nomb->nombre;
                     array_push($filaIndicador, $nomv);
@@ -1862,7 +1712,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           $tfdd = count($denumw);
 
 
-          if($ind_fdd){
+          if(isset($ind_fdd)){
 
                 $fdd_ind = '('.$ind_fdd.')';
 
@@ -1892,7 +1742,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           array_push($filaIndicador, $IndicadorDatos->linea_base_mes);
           array_push($filaIndicador, $IndicadorDatos->linea_base_anio);
           array_push($filaIndicador, $IndicadorDatos->linea_base_valor);
-          array_push($filaIndicador, $IndicadorDatos->plazo_anios);
+          array_push($filaIndicador, '5');
 
           $tam = Metas::where('id_indicador',$IndicadorDatos->id)->count();
 

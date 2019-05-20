@@ -220,7 +220,7 @@
       </div>
   </div>
 
-  <div class="row">
+  <div class="row hide">
       <div class="col-md-12">
           <div class="white-box">
             <h4 class="font-bold m-t-0">Indicadores por ODS</h4>

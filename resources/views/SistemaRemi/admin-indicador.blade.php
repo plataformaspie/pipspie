@@ -92,6 +92,147 @@ input[type=checkbox]:checked:disabled + label:before {
     top: 130px;
 }
 
+
+
+/*  PARA EL SWICHT */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 53px;
+  height: 25px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+/*input:checked + .slider {
+  background-color: #2196F3;
+}
+*/
+input.info:checked + .slider {
+  background-color: #3de0f5;
+}
+
+input.info + .slider {
+  box-shadow: 0 0 1px #3de0f5;
+}
+
+input.primary:checked + .slider {
+  background-color: #F781BE;  /* #9F81F7;   /* #2E9AFE;*/
+}
+
+input.primary + .slider {
+  box-shadow: 0 0 1px #F781BE;
+}
+
+input.success:checked + .slider {
+  background-color: #00FF80;
+}
+
+input.sucesss + .slider {
+  box-shadow: 0 0 1px #00FF80;  /* #00FFBF; */
+}
+
+input.danger:checked + .slider {
+  background-color: #FFBF00;
+}
+
+input.danger + .slider {
+  box-shadow: 0 0 1px #FFBF00;
+}
+
+/*input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+*/
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/*  FIN DEL SWICHT  */
+
+/*  alertas inicio  */
+
+.alert {
+  padding: 7px;
+  background-color: #91FAFA;  /* info #f44336; */
+  color: #145FB4;
+}
+
+.alert2 {
+  padding: 7px;
+  background-color: #F6CEEC;  /* #F6CECE;   /* #FBC4EF;  /* metas  #00FF80; /* #f44336; */
+  color: #820202;
+}
+
+.alert3 {
+  padding: 7px;
+  background-color: #A9F5D0;  /* #85F9C8; /* indicador #f44336; */
+  color: #2F6110;
+}
+
+.alert4 {
+  padding: 7px;
+  background-color:   #F5F6CE;   /*#FCD858;   /* #FFBF00; /* #f44336; */
+  color:  #A0824B;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: #F7819F;  /* white;*/
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+
+/* fin de alertas */
   </style>
 @endsection
 
@@ -281,35 +422,114 @@ input[type=checkbox]:checked:disabled + label:before {
                   <div class="white-box">
                       <h3 class="box-title m-b-0">Información del Indicador</h3>
                       <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left">Atras</i></button></p>
-                      <div style="font-size:15px;">
-                        <div class="form-group row m-b-10">
-                          <div class="col-md-1 p-l-0 p-r-0">
-                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Indicador</label>
-                          </div>
-                          <div class="col-md-11 p-l-0">
-                             <label id="nombreDesc" name="dosCaja" for="label" class="" style="width: 100%;padding: 7px 95px 7px 3px;background-color: #fcf8e3;color: #8a6d3b;"></label>
-                          </div>
-                        </div>
-                        <div class="form-group row m-b-10">
-                          <div class="col-md-1 p-l-0 p-r-0">
-                            <label for="label" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 20px 7px 3px;">Estado </label>
 
+                      <div class="row">
+                        <div class="col-lg-7">
+                          <div class="form-group row m-b-0">
+                            <div class="col-md-2 p-l-0 p-r-0">
+                              <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 1px 7px 1px;">&nbsp;&nbsp;Indicador</label>
+                            </div>
+                            <div class="col-md-10 p-l-0 p-r-0">
+                               <label id="nombreDesc" name="dosCaja" for="label" class="" style="width: 100%;padding: 7px 1px 7px 5px;background-color: #fcf8e3;color: #8a6d3b;"></label>
+                            </div>
                           </div>
-                          <div class="col-md-10 p-l-0">
-                              <label id="estado_indicadorDesc" for="label" class=""> </label>
-                              <input id="estado" type="hidden" name="estado" value="1">
-                          </div>
-                        </div>
-                        <div class="form-group row m-b-10">
-                          <div class="col-md-1 p-l-0 p-r-0">
-                            <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Etapa</label>
-                          </div>
-                          <div class="col-md-11 p-l-0">
-                            <label id="etapaDesc" name="unaCaja" for="label" class="" style="width: 100%;padding: 7px 95px 7px 3px;"></label>
-                          </div>
-                        </div>
 
+                          <div class="form-group row m-b-0">
+                            <div class="col-md-2 p-l-0 p-r-0">
+                              <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 1px 7px 1px;">&nbsp;&nbsp;Estado</label>
+                            </div>
+                            <div class="col-md-10 p-l-0 p-r-0">
+                                <label id="estado_indicadorDesc" for="label" class="" style="width: 100px;padding: 7px 5px 7px 5px;"> </label>
+                                <input id="estado" type="hidden" name="estado" value="1">
+                            </div>
+                          </div>
+
+                          <div class="form-group row m-b-0">
+                            <div class="col-md-2 p-l-0 p-r-0">
+                              <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 1px 7px 1px;">&nbsp;&nbsp;Etapa</label>
+                            </div>
+                            <div class="col-md-10 p-l-0 p-r-0">
+                              <label id="etapaDesc" name="unaCaja" for="label" class="" style="width: 100%;padding: 7px 95px 7px 5px;"></label>
+                            </div>
+                          </div>
+
+
+                        </div>
+                        <div class="col-lg-5 ">
+                          <div id="msg_lineabase" class="row">
+                            <div class="form-group col-md-12 p-l-0 m-b-10">
+                              <div >
+                                  <div class="alert m-b-0">
+                                    @if(Auth::user()->id_rol==13)
+                                      {{-- <a onclick="aceptar_lineabase()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="rechazar_lineabase()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+
+                                    @else
+                                       <span class="closebtn" onclick=""></span>
+                                    @endif
+                                    <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> de la <strong> Linea Base. </strong>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="msg_metas" class="row">
+
+                            <div class="form-group col-md-12 p-l-0 m-b-10">
+                              <div >
+                                  <div class="alert2">
+                                    @if(Auth::user()->id_rol==13)
+                                      {{-- <a onclick="aceptar_metas()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="rechazar_metas()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                    @else
+                                       <span class="closebtn" onclick=""></span>
+                                    @endif
+                                    <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> de las <strong> Metas.</strong>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="msg_indicador" class="row">
+
+                            <div class="form-group col-md-12 p-l-0 m-b-10">
+                              <div >
+                                  <div class="alert3">
+                                    @if(Auth::user()->id_rol==13)
+                                      {{-- <a onclick="aceptar_indicador()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="rechazar_indicador()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                    @else
+                                       <span class="closebtn" onclick=""></span>
+                                    @endif
+                                    <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> del <strong> Indicador.</strong>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="msg_resultado" class="row">
+
+                            <div class="form-group col-md-12 p-l-0 m-b-0">
+                              <div >
+                                  <div class="alert4">
+                                    @if(Auth::user()->id_rol==13)
+                                      {{-- <a onclick="aceptar_resultado()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="rechazar_resultado()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                    @else
+                                       <span class="closebtn" onclick=""></span>
+                                    @endif
+                                    <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> del <strong> Resultado.</strong>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
+
+
+
+
+
 <!-- <form>
   <input type="checkbox" id="fruit1" name="fruit-1" value="Apple">
   <label for="fruit1">Apple</label>
@@ -322,7 +542,7 @@ input[type=checkbox]:checked:disabled + label:before {
 </form>  -->
 
 
-                    <hr>
+                    <hr class="m-t-0">
                     <div class="row">
                       <div class="col-lg-12 col-sm-12 col-xs-12 p-l-0">
                               <div class="vtabs">
@@ -1709,6 +1929,50 @@ input[type=checkbox]:checked:disabled + label:before {
                                                </div>
                                              </div>
 
+                                             <h3>Solicita el Ajuste para la Evaluacion de Medio Termino</h3>
+                                         <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                              <div class="form-group">
+                                                <label for="linea_base_mod">Linea Base&nbsp;&nbsp;</label>
+                                              </div>
+                                              <div class="form-group col-md-3 p-l-0 m-b-0">
+                                          <label class="switch">
+                                             <input type="checkbox" name="linea_base_mod" value="1" id="linea_base_mod"  class="info">
+                                             <span class="slider round"></span>
+                                           </label>
+                                              </div>
+                                         <div class="form-group">
+                                             <label for="metas_mod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Metas&nbsp;&nbsp;</label>
+                                           </div>
+                                             <div class="form-group col-md-3 p-l-0 m-b-0">
+                                          <label class="switch">
+                                             <input type="checkbox" name="metas_mod" value="1" id="metas_mod"  class="primary">
+                                             <span class="slider round"></span>
+                                           </label>
+                                           </div>
+                                          </div>
+
+
+                                       <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                              <div class="form-group">
+                                                <label for="indicador_mod">&nbsp;&nbsp;Indicador&nbsp;&nbsp;</label>
+                                              </div>
+                                              <div class="form-group col-md-3 p-l-0 m-b-0">
+                                          <label class="switch">
+                                             <input type="checkbox" name="indicador_mod" value="1" id="indicador_mod"  class="success">
+                                             <span class="slider round"></span>
+                                           </label>
+                                              </div>
+                                         <div class="form-group">
+                                             <label for="resultado_mod">&nbsp;&nbsp;Resultado&nbsp;&nbsp;</label>
+                                           </div>
+                                             <div class="form-group col-md-3 p-l-0 m-b-0">
+                                          <label class="switch">
+                                             <input type="checkbox" name="resultado_mod" value="1" id="resultado_mod"  class="danger">
+                                             <span class="slider round"></span>
+                                           </label>
+                                           </div>
+                                       </div>
+
 
 
                                            </div>
@@ -2087,6 +2351,10 @@ input[type=checkbox]:checked:disabled + label:before {
       $("#cod_nac").hide();
       $("#cod_deptal").hide();
       $("#cod_munic").hide();
+      $("#msg_lineabase").hide();
+      $("#msg_metas").hide();
+      $("#msg_indicador").hide();
+      $("#msg_resultado").hide();
       $('#customSwitch9').prop("checked",true);
 
      $('#relac').on('change',function(){
@@ -3825,6 +4093,10 @@ $('#customSwitch2').click(function(){
        $("#cod_nac").hide();
        $("#cod_deptal").hide();
        $("#cod_munic").hide();
+       $("#msg_lineabase").hide();
+      $("#msg_metas").hide();
+      $("#msg_indicador").hide();
+      $("#msg_resultado").hide();
        $('#customSwitch9').prop("checked",true);
     });
 //------------------aqui
@@ -3868,6 +4140,10 @@ $('#customSwitch2').click(function(){
        $("#cod_nac").hide();
        $("#cod_deptal").hide();
        $("#cod_munic").hide();
+       $("#msg_lineabase").hide();
+       $("#msg_metas").hide();
+       $("#msg_indicador").hide();
+       $("#msg_resultado").hide();
        $('#customSwitch9').prop("checked",true);
 
 
@@ -3978,6 +4254,35 @@ $('#customSwitch2').click(function(){
                   }
 
 
+                  if(typeof data.alertas[0] !== 'undefined' ){
+                    if(data.alertas[0].linea_base==true){
+                        $('#linea_base_mod').prop("checked",true);
+                        $("#msg_lineabase").show();
+                     }else {
+                        $("#msg_lineabase").hide();
+                     }
+
+                     if(data.alertas[0].metas==true){
+                        $('#metas_mod').prop("checked",true);
+                        $("#msg_metas").show();
+                     }else {
+                        $("#msg_metas").hide();
+                     }
+
+                     if(data.alertas[0].indicador==true){
+                        $('#indicador_mod').prop("checked",true);
+                        $("#msg_indicador").show();
+                     }else {
+                        $("#msg_indicador").hide();
+                     }
+
+                     if(data.alertas[0].resultado==true){
+                        $('#resultado_mod').prop("checked",true);
+                        $("#msg_resultado").show();
+                     }else {
+                        $("#msg_resultado").hide();
+                     }
+                   }
 
 
 

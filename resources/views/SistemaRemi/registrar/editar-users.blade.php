@@ -11,8 +11,8 @@
       <div class="col-sm-12">
           <div class="white-box">
               <h3 class="box-title m-b-0">Actualizar una Cuenta de Usuario</h3>
-              <p class="text-muted m-b-30 font-13"> Formulario para Actualizar una Cuenta de Usuario </p>      
-                    <a href="{{ route('mostrarReg') }}" class="btn btn-info"><font color="#fff"><i class="fa fa-plus-circle"></i> Detalles de Cuentas de Usuarios</font>    
+              <p class="text-muted m-b-30 font-13"> Formulario para Actualizar una Cuenta de Usuario </p>
+                    <a href="{{ route('mostrarReg') }}" class="btn btn-info"><font color="#fff"><i class="fa fa-plus-circle"></i> Detalles de Cuentas de Usuarios</font>
                     </a>
                   @if(count($errors)>0)
                     <div class="alert alert-danger" role="alert">
@@ -22,8 +22,8 @@
                       @endforeach
                       </ul>
                     </div>
-                  @endif                    
-                  <br/><br/>    
+                  @endif
+                  <br/><br/>
               <form id="formAdd" name="formAdd" method="POST" action="{{ route('SistemaRemi.registrar.actualizarUser',$user->id) }}">
                 {{ csrf_field() }}
 
@@ -58,17 +58,36 @@
                       </div>
                   </div>
                   <div class="form-group row">
+                      <label for="example-email-input" class="col-2 col-form-label">Institución :</label>
+                      <div class="col-10">
+                                <select id="modent" name="modent" class="custom-select col-12 form-control enabledCampos" required>
+                                      <option value="">Selecciona Institución......</option>
+                                      @foreach ($Modifinstitucion as  $entidad)
+                                          @if($entidad->id == $user->id_institucion)
+                                          <option value="{{ $entidad->id }}" selected="">{{ $entidad->denominacion }}</option>
+                                          @else
+                                          <option value="{{ $entidad->id }}">{{ $entidad->denominacion }}</option>
+                                          @endif
+                                      @endforeach
+                                </select>
+                              <div class="help-block with-errors"></div>
+                      </div>
+                  </div>
+
+
+
+                  <div class="form-group row">
                       <label for="example-email-input" class="col-2 col-form-label">Usuario :</label>
                       <div class="col-10">
                           <input type="text" id="username" name="username" class="form-control" value="{{$user->username}}" placeholder="Nombre de Usuario" required>
                       </div>
-                  </div>             
+                  </div>
                   <div class="form-group row">
                       <label for="example-email-input" class="col-2 col-form-label">Tipos de Rol :</label>
                       <div class="col-10">
                <!--        <div class="form-group col-md-4 p-l-0 m-b-0">  --> <!-- class="col-md-9 p-l-0"> -->
                                 <select id="roles" name="roles" class="custom-select col-12 form-control enabledCampos" required>
-                                      <option value="">Selecciona Rol......</option>                                  
+                                      <option value="">Selecciona Rol......</option>
                                       @foreach ($mis_roles as  $rol)
                                           @if($rol->id_roles == $user->id_rol)
                                           <option value="{{ $rol->id_roles }}" selected="">{{ $rol->nombre_rol }}</option>
@@ -77,17 +96,39 @@
                                           @endif
                                       @endforeach
 
-                                </select> 
+                                </select>
 
                               <div class="help-block with-errors"></div>
                        <!--    </div> -->
                       </div>
-                  </div>    
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="example-password-input" class="col-2 col-form-label">Password</label>
+                      <div class="col-10">
+                          <div class="form-check">
+                              <label class="custom-control custom-checkbox">
+                                  <input type="checkbox" id="activarpass" name="activarpass" class="custom-control-input activarcambio">
+                                  <span class="custom-control-indicator"></span>
+                                  <span class="custom-control-description">Cambiar contraseña</span>
+                              </label>
+                          </div>
+                          <div id="form_pass" class="row hidden">
+                                <div class="col-12">
+                                  <h5>Nueva contraseña</h5>
+                                  <input class="form-control" type="password" value="" id="password_nuevo_1" name="password_nuevo_1" required>
+                                  <h5>Confirmar contraseña</h5>
+                                  <input class="form-control" type="password" value="" id="password_nuevo_2" name="password_nuevo_2" required>
+
+                                </div>
+                          </div>
+                      </div>
+                  </div>
 
 <!--                   <div class="form-group row">
                       <label for="example-password-input" class="col-2 col-form-label">Password :</label>
-                      <div class="col-10">                                               
-                      	   <input class="form-control" type="password" value="" id="password" name="password" required>                       
+                      <div class="col-10">
+                      	   <input class="form-control" type="password" value="" id="password" name="password" required>
                       </div>
                   </div> -->
                   <center><button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Actualizar Cuenta de Usuario</button></center>
@@ -98,4 +139,20 @@
 
 
 @endsection
+@push('script-head')
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(".activarcambio").click(function () {
+        if( $(this).is(':checked') ) {
+          $("#form_pass").removeClass('hidden');
+          $("#password_nuevo_1, #password_nuevo_2").val('');
+        }else{
+          $("#form_pass").addClass('hidden');
+          $("#password_nuevo_1, #password_nuevo_2").val('');
+        }
 
+      });
+    });
+
+  </script>
+@endpush  
