@@ -3207,6 +3207,12 @@
 
   };
 
+  function myFunction(){
+    //alert("hola desde el link" + idSeleccionar);
+    location.href = '/api/sistemarime/descagarExcelMetadatosOnly/'+ idSeleccionar;
+
+  }
+
 
   </script>
 @endpush
