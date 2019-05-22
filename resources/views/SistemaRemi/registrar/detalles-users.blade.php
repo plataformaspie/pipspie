@@ -28,6 +28,7 @@
 		  <tr>
 			<th style="text-align: center;">ID</th>
 			<th style="text-align: center;">NOMBRE</th>
+      <th style="text-align: center;">INSTITUCION</th>
 			<th style="text-align: center;">CARGO</th>
 			<th style="text-align: center;">CARNET</th>
 			<th style="text-align: center;">CELULAR</th>
@@ -41,6 +42,7 @@
 			<tr>
 				<td>{{ $user->id }}</td>
 				<td>{{ $user->name }}</td>
+        <td>{{ $user->denominacion }}</td> 
 				<td>{{ $user->cargo }}</td>
 				<td>{{ $user->carnet }}</td>
 				<td>{{ $user->telefono }}</td>

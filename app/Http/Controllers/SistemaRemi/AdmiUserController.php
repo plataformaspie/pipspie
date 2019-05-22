@@ -95,12 +95,13 @@ class AdmiUserController extends Controller
   public function mostrarReg(Request $request)
   {
 
-        $users = Usuario::join('remi_tipo_rol as r','users.id_rol', '=', 'r.id_roles')
-                   ->where('users.activo', true)
-                   ->orderBy('users.name','ASC')
-                   ->select('users.*','r.nombre_rol')
-                   ->paginate(10);
-        return view('SistemaRemi.registrar.detalles-users')->with('users', $users);
+    $users = Usuario::join('remi_tipo_rol as r','users.id_rol', '=', 'r.id_roles')
+               ->join('pip_instituciones as e','users.id_institucion', '=', 'e.id')
+               ->where('users.activo', true)
+               ->orderBy('users.name','ASC')
+               ->select('users.*','r.nombre_rol','e.denominacion')
+               ->paginate(10);
+    return view('SistemaRemi.registrar.detalles-users')->with('users', $users);
   }
 
   public function registrarUser(Request $request)
@@ -200,7 +201,7 @@ class AdmiUserController extends Controller
          $user->carnet = $request->carnet;
          $user->telefono = $request->telefono;
          $user->email = $request->email;
-         $user->id_institucion = $request->entidades;
+         $user->id_institucion = $request->modent;
          $user->username = $request->username;
          $user->id_rol = $request->roles;
          $user->password=bcrypt($request['password_nuevo_1']);
@@ -213,7 +214,7 @@ class AdmiUserController extends Controller
          $user->carnet = $request->carnet;
          $user->telefono = $request->telefono;
          $user->email = $request->email;
-         $user->id_institucion = $request->entidades;
+         $user->id_institucion = $request->modent;
          $user->username = $request->username;
          $user->id_rol = $request->roles;
          $user->save();

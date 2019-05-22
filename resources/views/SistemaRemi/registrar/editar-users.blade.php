@@ -116,9 +116,9 @@
                           <div id="form_pass" class="row hidden">
                                 <div class="col-12">
                                   <h5>Nueva contraseña</h5>
-                                  <input class="form-control" type="password" value="" id="password_nuevo_1" name="password_nuevo_1" required>
+                                  <input class="form-control" type="password" value="" id="password_nuevo_1" name="password_nuevo_1" >
                                   <h5>Confirmar contraseña</h5>
-                                  <input class="form-control" type="password" value="" id="password_nuevo_2" name="password_nuevo_2" required>
+                                  <input class="form-control" type="password" value="" id="password_nuevo_2" name="password_nuevo_2" >
 
                                 </div>
                           </div>
@@ -155,4 +155,4 @@
     });
 
   </script>
-@endpush  
+@endpush

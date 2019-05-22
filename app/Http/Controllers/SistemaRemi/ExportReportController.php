@@ -1675,7 +1675,11 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
       $pdes = [];
       // dd("BIEN",$IndicadorDatos);
 
-      array_push($filaIndicador, $IndicadorDatos->id);
+      $id_indic = \DB::select("SELECT LPAD(i.id::text, 4, '0') as codigo
+                            FROM remi_indicadores i
+                            where i.id = ".$IndicadorDatos->id);
+
+      array_push($filaIndicador, $id_indic[0]->codigo);
 
       $agrupdes = \DB::select("SELECT oi.id_indicador,c.codigo
                                 FROM remi_indicador_pdes_resultado oi
@@ -1685,12 +1689,14 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                                 order by oi.id_indicador");  // ".$IndicadorDatos->id."
 
       if(!empty($agrupdes)){
-          //dd("dsscsdf77", $agrupdes);
           $datpdes ='';
-          foreach ($agrupdes as $key => $value) {
-                 $datpdes = $datpdes . ' -' . $value->codigo;
+          foreach ($agrupdes as $key => $value){
+            if($datpdes==""){
+                 $datpdes = $value->codigo.' ';
+            }else {
+                 $datpdes = $datpdes.'; '.$value->codigo.' ';
+            }
           }
-        //  dd("dsscsdf", $datpdes);
           array_push($filaIndicador, $datpdes);
       }else {
           array_push($filaIndicador, '');
@@ -1708,7 +1714,11 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
       if(!empty($agrupods)){
             $datods ='';
             foreach ($agrupods as $key => $value) {
-                   $datods = $datods . ' -' . $value->codigo;
+              if($datods==""){
+                   $datods = $value->codigo.' ';
+              }else {
+                   $datods = $datods.'; '.$value->codigo.' ';
+              }
             }
            array_push($filaIndicador, $datods);
        }else {
