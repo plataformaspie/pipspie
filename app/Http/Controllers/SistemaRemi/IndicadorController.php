@@ -736,8 +736,16 @@ class IndicadorController extends Controller
     $fuente_tipos = FuenteTipos::get();
     $instituciones = \DB::select("SELECT * FROM pip_instituciones ORDER BY codigo ASC");
     $setPP = \DB::select("SELECT * FROM pdes_pilares ORDER BY cod_p ASC");
-    $setPM = \DB::select("SELECT cod_m,nombre FROM pdes_metas GROUP BY cod_m,nombre ORDER BY cod_m ASC");
-    $setPR = \DB::select("SELECT * FROM pdes_resultados ORDER BY cod_r ASC");
+    //$setPM = \DB::select("SELECT cod_m,nombre FROM pdes_metas GROUP BY cod_m,nombre ORDER BY cod_m ASC");
+    $setPM = \DB::select("SELECT m.id,c.cod_p,c.cod_m,m.descripcion
+                          FROM pdes_metas m
+                          INNER JOIN pdes_vista_catalogo_pm c ON m.id = c.id_meta
+                          ORDER BY c.cod_p,c.cod_m ASC");
+    // $setPR = \DB::select("SELECT * FROM pdes_resultados ORDER BY cod_r ASC");
+    $setPR = \DB::select("SELECT r.id,c.cod_p,c.cod_m,c.cod_r, r.descripcion
+                          FROM pdes_resultados r
+                          INNER JOIN pdes_vista_catalogo_pmr c ON r.id = c.id_resultado
+                          ORDER BY c.cod_p,c.cod_m,c.cod_r ASC");
 
     $setOO = \DB::select("SELECT cod_o,nombre  FROM ods_objetivos ORDER BY length(cod_o),cod_o ASC");
     $setOM = \DB::select("SELECT cod_m,nombre  FROM ods_metas GROUP BY cod_m,nombre ORDER BY length(cod_m),cod_m ASC");

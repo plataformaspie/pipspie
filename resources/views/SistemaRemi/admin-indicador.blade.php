@@ -336,22 +336,22 @@ input:checked + .slider:before {
                             <label><i class="fa fa-filter gly-rotate-90"></i>PDES:</label><br/>
                             Pilar:<select id="fil_pdes_pilar" name="fil_pdes_pilar[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
                                 @foreach ($setPP as  $item)
-                                      <option value="{{ $item->cod_p }}"> {{$item->nombre}}</option>
+                                      <option value="{{ $item->cod_p }}"> {{"P".$item->cod_p}}: {{$item->descripcion}}</option>
                                 @endforeach
                             </select>
                             Meta:<select id="fil_pdes_meta" name="fil_pdes_meta[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
                                 @foreach ($setPM as  $item)
-                                      <option value="{{ $item->cod_m }}"> {{$item->nombre}}</option>
+                                      <option value="{{ $item->cod_m }}"> {{ "P".$item->cod_p }} {{"M".$item->cod_m }} : {{$item->descripcion}}</option>
                                 @endforeach
                             </select>
                             Resultado:<select id="fil_pdes_resultado" name="fil_pdes_resultado[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
                                 @foreach ($setPR as  $item)
-                                      <option value="{{ $item->cod_r }}"> {{$item->nombre}}</option>
+                                      <option value="{{ $item->cod_r }}"> {{ "P".$item->cod_p }} {{"M".$item->cod_m }} {{"R".$item->cod_r }} : {{$item->descripcion}}</option>
                                 @endforeach
                             </select>
                           </div>
 
-                          <div class="col-lg-4 col-sm-4 m-t-10">
+                          <div class="col-lg-4 col-sm-4 m-t-10 hide">
                             <label><i class="fa fa-filter gly-rotate-90"></i>ODS:</label><br/>
                             Objetivo:<select id="fil_ods_objetivo" name="fil_ods_objetivo[]" placeholder="Todos..."  multiple="multiple" class=" select2 multiple">
                                 @foreach ($setOO as  $item)
