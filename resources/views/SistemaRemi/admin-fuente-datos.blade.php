@@ -152,7 +152,7 @@
                         </select>
                       </div>
                       <div class="col-lg-2 col-sm-5">
-                        <label>Seleccione opcion:</label>
+                        <label>Seleccione opción:</label>
                         <br/>
                         <input name="option_data" value="1" type="radio"/> Contenido de tabla
                         <br/>
@@ -190,7 +190,7 @@
                         La documentación de todos los elementos marcados con “<label class="text-danger">(o)</label>” es de carácter obligatorio.<br/>
                         La documentación de todos los elementos marcados con “<label class="text-success">(r)</label>” es de carácter recomendado
                         <button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;">
-                          <i class="fa fa-arrow-left"> Atras</i>
+                          <i class="fa fa-arrow-left"> Atrás</i>
                         </button>
                       </p>
                       <div class="form-group row m-b-10">
@@ -685,7 +685,7 @@
                                                 </div>
                                                 <div class="col-md-7 p-l-0">
                                                     <div class="select2-wrapper">
-                                                      <input id="numero_total_formulario" name="numero_total_formulario" type="number" class="form-control" placeholder="Numero" min="0"  >
+                                                      <input id="numero_total_formulario" name="numero_total_formulario" type="number" class="form-control" placeholder="Número" min="0"  >
                                                     </div>
                                                     <div class="help-block with-errors"></div>
                                                 </div>

@@ -188,7 +188,7 @@
               <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 m-b-10 text-center">
                 <h4 class="font-bold m-t-0"> Indicadores Registrados</h4>
                 <a href="{{ url('sistemarime/listaIndicadores') }}">
-                <div class="white-box p-10 text-center push_buttonA" style="background:#21B2AB;height:223px;z-index: 10 !important;">
+                <div class="white-box p-10 text-center push_buttonA" style="background:#21B2AB;height:223px;z-index: 1 !important;">
 
                     <ul class="list-inline two-part">
                         <li><img src="{{ asset('images/indicadores.png') }}"></li>
@@ -224,7 +224,7 @@
                     <div id="chartdivMetas"></div>
                 </div> --}}
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-b-10 text-center">
-                    <h4 class="font-bold m-t-0">Indicadores por tipo</h4>
+                    <h4 class="font-bold m-t-0">Indicadores por Tipo</h4>
                     <div id="chartdivTipo"></div>
                 </div>
                 {{-- <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-b-10 text-center">

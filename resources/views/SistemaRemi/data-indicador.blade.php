@@ -52,7 +52,7 @@
                                   <label style="color:#000000;font-weight: bold;">{{ mb_strtoupper(strtolower($indicador->nombre)) }}</label>
                             </div>
                             <div class="col-lg-12">
-                                  <label><b><u>Definicion:</u></b> {{$indicador->definicion}}</label>
+                                  <label><b><u>Definición:</u></b> {{$indicador->definicion}}</label>
                             </div>
                         </div>
                       </div>
@@ -238,13 +238,13 @@
                                       <p>: {{$indicador->serie_disponible}}</p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
-                                      <b>Fecha de linea base</b>
+                                      <b>Fecha de línea base</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: {{$indicador->linea_base_mes}}/{{$indicador->linea_base_anio}}</p>
                                     </div>
                                     <div class="col-lg-4 col-sm-6">
-                                      <b>Valor actual de linea base</b>
+                                      <b>Valor actual de línea base</b>
                                     </div>
                                     <div class="col-lg-8 col-sm-6">
                                       <p>: {{number_format($indicador->linea_base_valor,4,',','.')}} </p>
@@ -276,7 +276,7 @@
                               <div class="panel-body">
                                     <div class="row">
                                         <div class="col-lg-4 col-sm-6">
-                                          <b>Formula de cálculo</b>
+                                          <b>Fórmula de cálculo</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
                                           <p><textarea name="name" rows="4" style="width:100%" readonly disabled>{{ $indicador->formula }}</textarea></p>
@@ -285,7 +285,7 @@
                                           <br/>
                                         </div>
                                         <div class="col-lg-12">
-                                            <h5><b>Parámetros de la formula</b></h5>
+                                            <h5><b>Parámetros de la Fórmula</b></h5>
                                             <hr/>
                                         </div>
                                         <div class="col-lg-4 col-sm-6">

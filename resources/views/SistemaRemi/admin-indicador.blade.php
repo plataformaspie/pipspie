@@ -391,7 +391,7 @@ input:checked + .slider:before {
                         </select>
                       </div>
                       <div class="col-lg-2 col-sm-5">
-                        <label>Seleccione opcion:</label>
+                        <label>Seleccione opción:</label>
                         <br/>
                         <input name="option_data" value="1" type="radio"/> Contenido de tabla
                         <br/>
@@ -425,7 +425,7 @@ input:checked + .slider:before {
               <div class="col-sm-12">
                   <div class="white-box">
                       <h3 class="box-title m-b-0">Información del Indicador</h3>
-                      <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left">Atras</i></button></p>
+                      <p class="text-muted m-b-30">Completar todos los datos solicitados<button id ="btn-back" type="button" class="btn btn-info btn-lg" style="float: right;margin-top: -26px;"><i class="fa fa-arrow-left">Atrás</i></button></p>
 
                       <div class="row">
                         <div class="col-lg-7">
@@ -471,7 +471,7 @@ input:checked + .slider:before {
                                     @else
                                        <span class="closebtn" onclick=""></span>
                                     @endif
-                                    <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> de la <strong> Linea Base. </strong>
+                                    <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> de la <strong> Línea Base. </strong>
                                   </div>
                               </div>
                             </div>
@@ -627,7 +627,7 @@ input:checked + .slider:before {
                                           <div class="col-md-12 list-group-item-success" style="margin-top: -9px;">
                                               <h4 style="width:100%;">Alinear al PDES</h4>
                                           </div>
-                                          <p><h5>Ingrese los codigos PDES para agregar la articulación (Ayuda F9)</h5></p>
+                                          <p><h5>Ingrese los códigos PDES para agregar la articulación (Ayuda F9)</h5></p>
                                           <div class="col-md-12">
 
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
@@ -827,7 +827,7 @@ input:checked + .slider:before {
 
                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                 <div class="col-md-3 p-l-0 p-r-0">
-                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Selecione variable y cargue su respaldo</label>
+                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Seleccione variable y cargue su respaldo</label>
                                                 </div>
                                                 <div class="col-md-9 p-l-0">
 
@@ -1121,16 +1121,16 @@ input:checked + .slider:before {
                                                <h4 style="width:100%;">Metas y avances</h4>
                                            </div>
                                             <div class="col-md-12">
-                                              <h5>Linea base del indicador</h5>
+                                              <h5>Línea base del indicador</h5>
                                         <!--       <hr> -->
                                               <div class=" form-group row m-b-5 m-l-5 m-t-5" >
                                                   <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                       <div class="col-md-2 p-l-0 p-r-0">
-                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Dia linea base</label>
+                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Día línea base</label>
                                                       </div>
                                                       <div class="col-md-2 p-l-0">
                                                         <div class='input-group date' id='diaLB'>
-                                                          <input name="base_linea_dia" type='text' class="form-control" placeholder="dia"/>
+                                                          <input name="base_linea_dia" type='text' class="form-control" placeholder="día"/>
                                                           <span class="input-group-addon">
                                                               <span class="glyphicon glyphicon-calendar">
                                                               </span>
@@ -1140,7 +1140,7 @@ input:checked + .slider:before {
                                                       </div>
 
                                                       <div class="col-md-2 p-l-0 p-r-0">
-                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Mes linea base</label>
+                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Mes línea base</label>
                                                       </div>
                                                       <div class="col-md-2 p-l-0">
                                                         <div class='input-group date' id='mesLB'>
@@ -1155,7 +1155,7 @@ input:checked + .slider:before {
 
 
                                                       <div class="col-md-2 p-l-0 p-r-0">
-                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Año linea base</label>
+                                                        <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Año línea base</label>
                                                       </div>
                                                       <div class="col-md-2 p-l-0">
                                                         <div class='input-group date' id='anioLBA'>
@@ -1170,7 +1170,7 @@ input:checked + .slider:before {
                                                   </div>
 
                                                   <div class="form-group col-md-3 p-l-0 p-r-0">
-                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor linea base</label>
+                                                    <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Valor línea base</label>
                                                   </div>
                                                   <div class="form-group col-md-3 p-l-0">
                                                       <input name="linea_base_valor" type="text" class="form-control input" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': true, 'digits': 4, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;" value="0.0000">
@@ -1938,7 +1938,7 @@ input:checked + .slider:before {
                                              <h3>Solicita el Ajuste para la Evaluacion de Medio Termino</h3>
                                          <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="form-group">
-                                                <label for="linea_base_mod">Linea Base&nbsp;&nbsp;</label>
+                                                <label for="linea_base_mod">Línea Base&nbsp;&nbsp;</label>
                                               </div>
                                               <div class="form-group col-md-3 p-l-0 m-b-0">
                                           <label class="switch">
@@ -2019,7 +2019,7 @@ input:checked + .slider:before {
 
                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                  <div class="col-md-3 p-l-0 p-r-0">
-                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Asistencia Tecnica</label>
+                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Asistencia Técnica</label>
                                                  </div>
                                                  <div class="col-md-1 p-l-0 p-r-0">
                                                     <div class="row form-group row m-b-5 m-l-5 m-t-5" >

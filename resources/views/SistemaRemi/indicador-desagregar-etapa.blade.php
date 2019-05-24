@@ -68,7 +68,7 @@ text-decoration: underline;
   <div class="row">
       <div class="col-md-12">
           <div class="panel panel-inverse ">
-              <div class="panel-heading"> <button onclick="window.history.back();" class="btn btn-info btn-sm">Atras</button>
+              <div class="panel-heading"> <button onclick="window.history.back();" class="btn btn-info btn-sm">Atrás</button>
                   <div class="pull-right">
                       <a href="#" data-perform="panel-collapse">
                         <i class="ti-minus"></i>Listado
@@ -157,7 +157,7 @@ text-decoration: underline;
                                                                   <p style="font-weight:bold;">{{ $item->serie_disponible }}</p>
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Linea base:</p>
+                                                                  <p class="text-muted">Línea base:</p>
                                                                   <p style="font-weight:bold;">{{ trim(trim(number_format($item->linea_base_valor,4,",","."),0),',') }}</p>
                                                               </div>
                                                               <div class="col-lg-1 col-md-1 col-sm-6 col-xs-6 text-center">
@@ -165,7 +165,7 @@ text-decoration: underline;
                                                                   <p style="font-weight:bold;">{{ trim(trim(number_format($arrayDatosAvances[$item->id]['meta_2020'],4,",","."),0),',') }}</p>
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Ultimo valor Reportado:</p>
+                                                                  <p class="text-muted">Último valor Reportado:</p>
                                                                   @if($arrayDatosAvances[$item->id]['gestion_reporte'] > 0)
                                                                     <p style="font-weight:bold;font-size:20px;color:#4F93A0;">{{ trim(trim(number_format($arrayDatosAvances[$item->id]['avance_'.$arrayDatosAvances[$item->id]['gestion_reporte']],4,",","."),0),',') }}</p>
                                                                   @endif
