@@ -1466,6 +1466,8 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     $maxpdes = intval($tampdes[0]->max);
 
+    if($maxpdes==0){$maxpdes=1;}
+
    // dd("dsfsf",$maxpdes);
     $tamods = \DB::select("SELECT MAX(tam_ods) FROM
                           (SELECT oi.id_indicador_ods, count(*) as tam_ods
@@ -1477,26 +1479,35 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     $maxods = intval($tamods[0]->max);
 
+    if($maxods==0){$maxods=1;}
+   //dd("dsfsf",$maxods);
     //  nro de reg de fd distinto de vacio
     $fd = \DB::select("SELECT count(*) as tam from
                         (select i.fuente_datos
                         from remi_indicadores i
                         where i.fuente_datos != '' and i.id IN ".$registros.") l");
+    $ctam = (int)$fd[0]->tam;
+  //  dd("dsfsf",$ctam);
+    if($ctam!=0){
 
-    //dd("dsfsf",$fd);
-    $ctam = (int)$fd[0]->tam;  //convienrte el tam en entero
+       // $ctam = (int)$fd[0]->tam;  //convienrte el tam en entero
 
-    $fdat = \DB::select("SELECT i.id,i.fuente_datos
-                        from remi_indicadores i
-                        where i.fuente_datos != '' and i.id IN ".$registros."
-                          order by id");
+        $fdat = \DB::select("SELECT i.id,i.fuente_datos
+                            from remi_indicadores i
+                            where i.fuente_datos != '' and i.id IN ".$registros."
+                              order by id");
 
-    for ($i=0; $i < $ctam ; $i++) {
-          $num = explode(',',$fdat[$i]->fuente_datos);  //2,3,6
-          array_push($tamFD, count($num));
+        for ($i=0; $i < $ctam ; $i++) {
+              $num = explode(',',$fdat[$i]->fuente_datos);  //2,3,6
+              array_push($tamFD, count($num));
+        }
+       /// dd("fgdfgb",count($num));
+        $tamfdat =  max($tamFD);      //   max : 3 de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
+    }else{
+        $tamfdat =  1;
     }
-   /// dd("fgdfgb",count($num));
-    $tamfdat =  max($tamFD);      //   max : 3 de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
+
+
 
     $fdd = \DB::select("SELECT count(*) as tamd from
                         (select i.fuente_datos_d
@@ -1504,19 +1515,27 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                         where i.fuente_datos_d != '' and i.id IN ".$registros.") d");
 
     $ctamd = (int)$fdd[0]->tamd;
-    $fdatd = \DB::select("SELECT i.id,i.fuente_datos_d
-                        from remi_indicadores i
-                        where i.fuente_datos_d != '' and i.id IN ".$registros."
-                        order by id");
+    if($ctamd!=0){
 
-    //$nden = 0;
-    for ($j=0; $j < $ctamd ; $j++) {
-          $den = explode(',',$fdatd[$j]->fuente_datos_d);  //64,65,317
-          array_push($tamFDD, count($den));
-          //$nden = $den;
+       // $ctamd = (int)$fdd[0]->tamd;
+        $fdatd = \DB::select("SELECT i.id,i.fuente_datos_d
+                            from remi_indicadores i
+                            where i.fuente_datos_d != '' and i.id IN ".$registros."
+                            order by id");
+
+        //$nden = 0;
+        for ($j=0; $j < $ctamd ; $j++) {
+              $den = explode(',',$fdatd[$j]->fuente_datos_d);  //64,65,317
+              array_push($tamFDD, count($den));
+              //$nden = $den;
+        }
+      //   dd("fgdfgb",$tamFDD);
+        $tamfdd = max($tamFDD);    // max : 2   de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
+    }else{
+        $tamfdd =  1;
     }
-  //   dd("fgdfgb",$tamFDD);
-    $tamfdd = max($tamFDD);    // max : 2   de los ctam calculados calcula de tamaño mayor de los ctam a lo ancho
+
+
 
     $max_ra = \DB::select("SELECT MAX(reportados) FROM
                            (SELECT id_indicador, count(*) as reportados
@@ -1526,6 +1545,9 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     $ra = intval($max_ra[0]->max);  //  max :: 3
 
+    if($ra==0){$ra=1;}
+
+
     $max_sec = \DB::select("SELECT MAX(tam_sec) from
                             (SELECT s.id_indicador, count(*) as tam_sec
                               FROM remi_indicadores_sectores s
@@ -1534,6 +1556,8 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                               GROUP BY s.id_indicador) s");
 
     $sec = intval($max_sec[0]->max);    //   max  :: 4
+
+    if($sec==0){$sec=1;}
     //dd("xtemfdcxv34345xv",$sec);
     $cabeceraTitulos = ['ID INDICADOR',
                         'PDES',
@@ -1569,18 +1593,21 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
 
     array_push($tamanoTitulos,$maxpdes*3);
 
-    $comp = 'COMPARABILIDAD_';
-    $obje = 'OBJETIVO_';
-    $mets = 'META_';
-    $indi = 'INDICADOR_';
-    for ($h=1; $h <= $maxods; $h++) {
-      array_push($cabeceraDatos,'COMPARABILIDAD_'.$h);
-      array_push($cabeceraDatos,'OBJETIVO_'.$h);
-      array_push($cabeceraDatos,'META_'.$h);
-      array_push($cabeceraDatos,'INDICADOR_'.$h);
-    }
+    if($maxods!=0){
 
-    array_push($tamanoTitulos,$maxods*4);
+        $comp = 'COMPARABILIDAD_';
+        $obje = 'OBJETIVO_';
+        $mets = 'META_';
+        $indi = 'INDICADOR_';
+        for ($h=1; $h <= $maxods; $h++) {
+          array_push($cabeceraDatos,'COMPARABILIDAD_'.$h);
+          array_push($cabeceraDatos,'OBJETIVO_'.$h);
+          array_push($cabeceraDatos,'META_'.$h);
+          array_push($cabeceraDatos,'INDICADOR_'.$h);
+        }
+
+        array_push($tamanoTitulos,$maxods*4);
+    }
 
      array_push($cabeceraDatos,
                       'NOMBRE DEL INDICADOR',
@@ -1660,6 +1687,9 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
        //array_push($tamanoTitulos,$max_ra);
     }
     array_push($tamanoTitulos,1+$sec);
+
+    //******************* COMIENZA A COLOCAR LOS DATOS DESPUES DE LA CABECERA  ******************************
+
     //dd("dsfdsfsdf",$tamanoTitulos);
     $sql = Indicadores::whereIn('remi_indicadores.id',$ids)
                         ->orderBy('id', 'asc')
@@ -1679,7 +1709,10 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
                             FROM remi_indicadores i
                             where i.id = ".$IndicadorDatos->id);
 
+  //    dd("BIEN7",$IndicadorDatos->id);
+      //dd("BIEN",$id_indic[0]->codigo);
       array_push($filaIndicador, $id_indic[0]->codigo);
+      //array_push($filaIndicador, $IndicadorDatos->id);
 
       $agrupdes = \DB::select("SELECT oi.id_indicador,c.codigo
                                 FROM remi_indicador_pdes_resultado oi
@@ -1722,6 +1755,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
             }
            array_push($filaIndicador, $datods);
        }else {
+           // dd(" vacios", $agrupods);
            array_push($filaIndicador, '');
        }
 
@@ -1842,7 +1876,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           $numw = explode(',',$IndicadorDatos->fuente_datos);  //2,3,6
           $tfd = count($numw);
 
-          if($indfd){
+          if(isset($indfd)){
                 $fd_ind = '('.$indfd.')';
 
                //convierte los numeros $regis fd en el nombre de la FD
@@ -1902,7 +1936,7 @@ static function contruirExcelAdminFuente($cabeceraTitulos,$tamanoTitulos, $cabec
           array_push($filaIndicador, $IndicadorDatos->linea_base_mes);
           array_push($filaIndicador, $IndicadorDatos->linea_base_anio);
           array_push($filaIndicador, $IndicadorDatos->linea_base_valor);
-          array_push($filaIndicador, $IndicadorDatos->plazo_anios);
+          array_push($filaIndicador, '5');
 
           $tam = Metas::where('id_indicador',$IndicadorDatos->id)->count();
 
