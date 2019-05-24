@@ -49,7 +49,7 @@
                       <div class="col-lg-10 col-xs-12">
                         <div class="row">
                             <div class="col-lg-12 ">
-                                  <label style="color:#000000;font-weight: bold;">{{ $indicador->nombre }}</label>
+                                  <label style="color:#000000;font-weight: bold;">{{ mb_strtoupper(strtolower($indicador->nombre)) }}</label>
                             </div>
                             <div class="col-lg-12">
                                   <label><b><u>Definicion:</u></b> {{$indicador->definicion}}</label>
@@ -81,6 +81,58 @@
                           </div>
                       </div>
                   </div>
+                  <div class="row media" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
+                    <div class="col-lg-12 col-sm-12">
+                        <h5>Gráfica de Avance</h5>
+                        <div id="chartdivAvance"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 col-sm-12">
+                      <div class="panel panel-success">
+                          <div class="panel-heading" style="background-color: #468E9B;">
+                              <div class="pull-left" style="margin-top: -9px;">
+                                <a href="#" data-perform="panel-collapse">
+                                  <i class="ti-minus"></i> Metas y avance
+                                </a>
+                              </div>
+                          </div>
+                          <div class="panel-wrapper collapse in" aria-expanded="true">
+                              <div class="panel-body table-responsive ">
+
+                                          <table class="table table-hover ">
+                                            <thead>
+                                              <tr>
+                                                    <th>Gestión</th>
+                                                  @foreach ($metasAvance as $item)
+                                                    <th>{{ $item->dimension}} </th>
+                                                  @endforeach
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr>
+                                                    <th>Metas</th>
+                                                  @foreach ($metasAvance as $item)
+                                                    <td>{{number_format($item->meta,4,',','.')}}</td>
+                                                  @endforeach
+                                              </tr>
+                                              <tr>
+                                                    <th>Avance</th>
+                                                  @foreach ($metasAvance as $item)
+                                                    <td>{{number_format($item->avance,4,',','.')}}</td>
+                                                  @endforeach
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+
+
+
+
                   <div class="col-lg-12 col-sm-12">
                       <div class="panel panel-success">
                           <div class="panel-heading" style="background-color: #468E9B;">
@@ -247,7 +299,14 @@
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
                                           @foreach ($descFuenteNumerador as $key => $value)
-                                              <p>: {{$value->nombre}}</p>
+                                            <div class="col-12" style="font-size:20px"><b>Nombre:&nbsp;</b>{{$value->nombre}} ({{$value->acronimo}})</div>
+                                            <div class="col-6"><b>Tipo:&nbsp;</b>{{$value->tipo}}</div>
+                                            <div class="col-6"><b>Periodicidad:&nbsp;</b>{{$value->periodicidad}}</div>
+                                            <div class="col-6"><b>Serie de datos:&nbsp;</b>{{$value->serie_datos}}</div>
+                                            <div class="col-6"><b>Cobertura geográfica:&nbsp;</b>{{$value->cobertura_geografica}}</div>
+                                            <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$value->variable}}</p></div>
+                                            <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$value->nivel_representatividad_datos}}</div>
+                                            <div class="col-12"><b>Observaciones:&nbsp;</b>{{$value->observacion}}</div>
                                           @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
@@ -260,8 +319,15 @@
                                           <b>Fuente del denominador</b>
                                         </div>
                                         <div class="col-lg-8 col-sm-6"><p>:</p>
-                                          @foreach ($descFuenteDenominador as $key => $value)
-                                              <p>: {{$value->nombre}}</p>
+                                          @foreach ($descFuenteDenominador as $key => $values)
+                                            <div class="col-12" style="font-size:20px"><b>Nombre:&nbsp;</b>{{$values->nombre}}  ({{$values->acronimo}})</div>
+                                            <div class="col-6"><b>Tipo:&nbsp;</b>{{$values->tipo}}</div>
+                                            <div class="col-6"><b>Periodicidad:&nbsp;</b>{{$values->periodicidad}}</div>
+                                            <div class="col-6"><b>Serie de datos:&nbsp;</b>{{$values->serie_datos}}</div>
+                                            <div class="col-6"><b>Cobertura geográfica:&nbsp;</b>{{$values->cobertura_geografica}}</div>
+                                            <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$values->variable}}</p></div>
+                                            <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$values->nivel_representatividad_datos}}</div>
+                                            <div class="col-12"><b>Observaciones:&nbsp;</b>{{$values->observacion}}</div>
                                           @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
@@ -352,53 +418,11 @@
                       </div>
                   </div>
 
-                  <div class="col-lg-12 col-sm-12">
-                      <div class="panel panel-success">
-                          <div class="panel-heading" style="background-color: #468E9B;">
-                              <div class="pull-left" style="margin-top: -9px;">
-                                <a href="#" data-perform="panel-collapse">
-                                  <i class="ti-minus"></i> Metas y avance
-                                </a>
-                              </div>
-                          </div>
-                          <div class="panel-wrapper collapse in" aria-expanded="true">
-                              <div class="panel-body table-responsive ">
 
-                                          <table class="table table-hover ">
-                                            <thead>
-                                              <tr>
-                                                    <th>Gestión</th>
-                                                  @foreach ($metasAvance as $item)
-                                                    <th>{{ $item->dimension}} </th>
-                                                  @endforeach
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <tr>
-                                                    <th>Metas</th>
-                                                  @foreach ($metasAvance as $item)
-                                                    <td>{{number_format($item->meta,4,',','.')}}</td>
-                                                  @endforeach
-                                              </tr>
-                                              <tr>
-                                                    <th>Avance</th>
-                                                  @foreach ($metasAvance as $item)
-                                                    <td>{{number_format($item->avance,4,',','.')}}</td>
-                                                  @endforeach
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="row media" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->
-                    <div class="col-lg-12 col-sm-12">
-                        <h5>Gráfica de Avance</h5>
-                        <div id="chartdivAvance"></div>
-                    </div>
-                  </div>
+
                 </div>
+
+
                 <div id="editor"></div>
                 <div class="col-md-3 hidden">
                     <div class="row" style="margin-right:6px;margin-left:6px;" > <!--style="padding-right: 0px;padding-top: 0px;padding-left: 0px;"-->

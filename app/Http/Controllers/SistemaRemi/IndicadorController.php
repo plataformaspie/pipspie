@@ -565,20 +565,35 @@ class IndicadorController extends Controller
                         INNER JOIN ods_vista_catalogo_omi c ON ir.id_resultado_ods = c.id_indicador
                         WHERE ir.id_indicador_ods = ".$id);
     $metas = Metas::where('id_indicador',$id)->orderBy('gestion', 'asc')->get();
-    $avance = IndicadorAvance::where('id_indicador',$id)->orderBy('fecha_generado', 'DESC')->first();
+    $avance = IndicadorAvance::where('id_indicador',$id)->orderBy('fecha_generado_anio', 'DESC')->first();
 
 
-    $dataMetasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
-                            FROM remi_metas m
-                            LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
-                            WHERE m.id_indicador = ".$id."
-                            ORDER BY m.gestion ASC
-                            LIMIT 5");
-    $metasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
-                            FROM remi_metas m
-                            LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
-                            WHERE m.id_indicador = ".$id."
-                            ORDER BY m.gestion ASC");
+    // $dataMetasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
+    //                         FROM remi_metas m
+    //                         LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+    //                         WHERE m.id_indicador = ".$id."
+    //                         ORDER BY m.gestion ASC
+    //                         LIMIT 5");
+    $dataMetasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, SUM(av.valor) as avance
+                                    FROM remi_metas m
+                                    LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+                                    WHERE m.id_indicador = ".$id."
+                                    GROUP BY m.gestion, m.valor
+                                    ORDER BY m.gestion ASC
+                                    LIMIT 5");
+
+    // $metasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta, av.valor as avance
+    //                         FROM remi_metas m
+    //                         LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+    //                         WHERE m.id_indicador = ".$id."
+    //                         ORDER BY m.gestion ASC");
+
+    $metasAvance = \DB::select("SELECT m.gestion as dimension, m.valor  as meta,SUM(av.valor) as avance
+                                FROM remi_metas m
+                                LEFT JOIN remi_indicador_avance av ON m.id_indicador = av.id_indicador AND m.gestion = av.fecha_generado_anio
+                                WHERE m.id_indicador = ".$id."
+                                GROUP BY m.gestion, m.valor
+                                ORDER BY m.gestion ASC");
     $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$id)->where('activo', true)->get();
 
 
@@ -631,6 +646,9 @@ class IndicadorController extends Controller
       $agrupSectores .= $value->id_institucion."," ;
     }
     $agrupSectores = trim($agrupSectores, ',');
+    if($agrupSectores=="")
+    $agrupSectores = 0;
+
     $sectoresRelacionados = \DB::select("SELECT * FROM pip_instituciones WHERE id IN (".$agrupSectores.")");
 
     return view('SistemaRemi.data-indicador',compact('indicador',
@@ -646,7 +664,8 @@ class IndicadorController extends Controller
     $relacop = RelacionOdsPdes::where('activo', true)->orderBy('id')->get();
     $estados = \DB::select("SELECT * FROM remi_estados ORDER BY id ASC");
     $tipos = TiposMedicion::get();
-    $estado =  Array('1' => "Preliminar",'2' =>"Enviado a Revision",'3' =>"Modificar",'4' =>"Aprobado",'5' =>"Eliminado");
+    $estado =  Array('1' => "Preliminar",'2' =>"Enviado a Revision",'3' =>"Aprobado",'4' =>"Eliminar");
+    $estadoCIMPDES =  Array('1' => "Modificar",'2' =>"Verificar",'3' =>"Eliminar",'4' =>"Aprobado");
 
     $brechaDatos =  Array('0' => "Existen Fuentes de Datos con la frecuencia requerida y las variables de desagregación necesarias para reportar el indicador",
                           '1' => "No existen datos para reportar el indicador",
@@ -733,7 +752,7 @@ class IndicadorController extends Controller
     'dimensiones','relacop','etapas','estado','brechaDatos',
     'brechaMetodologia','brechaCapacitacion','brechaFinanciamiento',
     'instituciones','filtData','estados','setPP','setPM','setPR',
-    'setOO','setOM','setOI','dimensionesSpie','subdimensiones'));
+    'setOO','setOM','setOI','dimensionesSpie','subdimensiones','estadoCIMPDES'));
   }
 
   public function adminIndicadorEntidad()
@@ -1578,6 +1597,28 @@ class IndicadorController extends Controller
             $indicador->brecha_metodologia = $request->brecha_metodologia;
             $indicador->brecha_capacitacion = $request->brecha_capacitacion;
             $indicador->brecha_financiamiento = $request->brecha_financiamiento;
+
+            if($this->user->id_institucion == 120 AND $this->user->id_rol==13){
+              $indicador->validacion_ine = $request->validacion_ine;
+              $indicador->fecha_validacion_ine = date('Y-m-d');
+              $indicador->id_user_validacion_ine = $this->user->id;
+            }
+
+            if($this->user->id_institucion == 121 AND $this->user->id_rol==13){
+              $indicador->validacion_udape = $request->validacion_udape;
+              $indicador->fecha_validacion_udape = date('Y-m-d');
+              $indicador->id_user_validacion_udape = $this->user->id;
+            }
+
+            if($this->user->id_institucion == 624 AND $this->user->id_rol==13){
+              $indicador->validacion_vpc = $request->validacion_ine;
+              $indicador->fecha_validacion_vpc = date('Y-m-d');
+              $indicador->id_user_validacion_vpc = $this->user->id;
+            }
+
+
+
+
             $indicador->save();
 
             $ver = \DB::select("SELECT *
@@ -1691,6 +1732,36 @@ class IndicadorController extends Controller
                           $avance->id_user_updated = $this->user->id;
                           //$avance->save();
                           $avance->delete();
+                        }
+
+                        if($request->avance_estado[$k]==2){
+                          $avance = IndicadorAvance::find($request->id_avance[$k]);
+                          $fechaAV="";
+                          // if($request->avance_fecha[$k]){
+                          //   list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                          //   $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+                    		  //   $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                          // }
+                          if($request->avance_fecha[$k]){
+                              if(strlen($request->avance_fecha[$k])<=7){
+                                  list ( $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                                  $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+                                  $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                                  $avance->avance_fecha_tam = 7;
+                              }else{
+                                  list ($dia, $mes, $anio ) = explode ( "/", $request->avance_fecha[$k] );
+                                  $fechaAV = $anio . "-" . $mes . "-" . $dia;
+                                  $avance->avance_fecha_tam = 10;
+                              }
+                          }
+                          $avance->fecha_generado = $fechaAV;
+                          $avance->fecha_generado_dia = $dia;
+                          $avance->fecha_generado_mes = $mes;
+                          $avance->fecha_generado_anio = $anio;
+                          $avance->valor = ($request->avance_valor[$k])?$this->format_numerica_db($request->avance_valor[$k],','):0;
+                          $avance->detalle_avance =  $request->avance_detalle[$k];
+                          $avance->id_user_updated = $this->user->id;
+                          $avance->save();
                         }
                    }
               }
@@ -1996,8 +2067,13 @@ class IndicadorController extends Controller
             // if($anio){
             //   $fecha = $anio;
             // }
-            list ( $mes, $anio ) = explode ( "/", $value );
-            $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+            if(strlen($value) == 10){
+              list ( $dia,$mes, $anio ) = explode ( "/", $value );
+            }else{
+              list ( $mes, $anio ) = explode ( "/", $value );
+              $dia = date('t', mktime(0,0,0, $mes, 1, $anio));
+            }
+
             $fecha = $anio . "-" . $mes . "-" . $dia;
             $orderByAr[$i]['filtro'] = $fecha;
             $orderByAr[$i]['valor'] = $value;

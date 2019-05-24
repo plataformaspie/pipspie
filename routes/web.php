@@ -572,6 +572,8 @@ Route::group(['middleware' => 'auth'],function(){
               Route::get('generatePdf/{id}','SistemaRemi\IndicadorController@generatePdf');
               Route::get('desagregarTipo/{dato}','SistemaRemi\IndexController@desagregarTipo');
               Route::get('desagregarAvance/{dato}','SistemaRemi\IndexController@desagregarAvance');
+              Route::get('desagregarEtapa/{dato}','SistemaRemi\IndexController@desagregarEtapa');
+              Route::get('listaIndicadores', 'SistemaRemi\IndexController@listaIndicadores');
           }
       );
       Route::group(

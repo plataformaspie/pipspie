@@ -52,7 +52,7 @@ text-decoration: underline;
   <div class="row bg-title">
       <!-- .page title -->
       <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Indicador desagregado por Tipo</h4>
+          <h4 class="page-title">Lista de Indicadores registrados.</h4>
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SistemaRemi\Indicadores;
 use App\Models\SistemaRemi\TiposMedicion;
+use App\Models\SistemaRemi\Etapas;
 
 class IndexController extends Controller
 {
@@ -293,8 +294,117 @@ class IndexController extends Controller
 
     $tipoindicadores = json_encode($tipoindicadores);
     $graficaAvanceMeta20 = json_encode($graficaAvanceMeta20);
-    return view('SistemaRemi.index',compact('pdes','tipoindicadores','graficaAvanceMeta20'));
+
+    $indicadoresEtapa = \DB::select("SELECT i.etapa as name, count(i.etapa) as value,('/sistemarime/desagregarEtapa/'||e.id) as url
+                                    FROM remi_indicadores i
+                                    INNER JOIN remi_etapas e ON i.etapa = e.nombre
+                                    WHERE i.activo = true
+                                    GROUP BY i.etapa,e.id
+                                    ORDER BY e.id ASC");
+    $indicadoresEtapa = json_encode($indicadoresEtapa);
+
+     $pdesPilares = \DB::select("SELECT fuente.cod_p,
+                                  CASE
+                                  WHEN fuente.pilar is null
+                                  THEN
+                                  	'No Articulados'
+                                  ELSE
+                                  	fuente.pilar
+                                  END as name,
+                                  COUNT(*) as value,
+                                  CASE
+                                  WHEN fuente.cod_p is null
+                                  THEN
+                                  	'/sistemarime/desagregarEtapa/0'
+                                  ELSE
+                                  	('/sistemarime/desagregarEtapa/'||fuente.cod_p)
+                                  END as url
+                                  FROM (
+                                  SELECT *
+                                  FROM remi_indicadores i
+                                  LEFT JOIN remi_indicador_pdes_resultado ir ON i.id = ir.id_indicador
+                                  LEFT JOIN pdes_vista_catalogo_pmr c ON ir.id_resultado = c.id_resultado
+                                  WHERE i.activo = true
+                                  ORDER BY i.id ASC
+                                  ) fuente
+                                  GROUP BY fuente.pilar,fuente.cod_p
+                                  ORDER BY value DESC");
+    $pdesPilares = json_encode($pdesPilares);
+
+    $totalIndicadores = \DB::select("SELECT COUNT(*) as total
+                                    FROM remi_indicadores
+                                    WHERE activo = true");
+    $totalIndicadores = $totalIndicadores[0]->total;
+
+    return view('SistemaRemi.index',compact('pdes','tipoindicadores','graficaAvanceMeta20','indicadoresEtapa','pdesPilares','totalIndicadores'));
   }
+
+  public function listaIndicadores()
+  {
+    $sw=0;
+    $sb=0;
+    $tipo = "";
+    $where = array();
+    $orwhere = array();
+    $color="";
+
+
+    $indicadores = Indicadores::where('activo',true)->orderBy('id','ASC')->paginate(5);
+
+    $dataAvanceIds = '';
+    foreach ($indicadores as  $value) {
+        $dataAvanceIds.=$value->id.",";
+    }
+    $dataAvanceIds = trim($dataAvanceIds,',');
+    $datosExtras = \DB::select("SELECT fuente.id,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_codigo,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_codigo
+                              FROM(
+                              SELECT id
+                              FROM remi_indicadores
+                              WHERE activo = true
+                              AND id IN (".$dataAvanceIds.")
+                              ORDER BY id ASC
+                              ) as fuente
+                              ");
+  $arrayDatosExtras = Array();
+  foreach ($datosExtras as $key => $value) {
+    $arrayDatosExtras[$value->id]['pdes_logo']=explode(",",$value->pdes_logo);
+    $arrayDatosExtras[$value->id]['pdes_codigo']=explode(",",$value->pdes_codigo);
+    $arrayDatosExtras[$value->id]['ods_logo']=explode(",",$value->ods_logo);
+    $arrayDatosExtras[$value->id]['ods_codigo']=explode(",",$value->ods_codigo);
+  }
+  $arrayDatosAvances = $this->datosAvances($dataAvanceIds);
+  $arrayEjecutadoIndicadores = $this->ejecutadoIndicadores($dataAvanceIds,"");
+
+
+
+  return view('SistemaRemi.indicador-desagregar-lista-indicadores',compact('indicadores','arrayDatosExtras','arrayDatosAvances',
+    'arrayEjecutadoIndicadores','color'));
+  }
+
 
 
   public function desagregarTipo(Request $request, $dato)
@@ -364,6 +474,76 @@ class IndexController extends Controller
 
 
     return view('SistemaRemi.indicador-desagregar-tipo',compact('indicadores','arrayDatosExtras','arrayDatosAvances',
+    'arrayEjecutadoIndicadores','color'));
+  }
+
+
+
+  public function desagregarEtapa(Request $request, $dato)
+  {
+    $sw=0;
+    $sb=0;
+    $etapa = "";
+    $where = array();
+    $orwhere = array();
+    $color="";
+
+    $etapa = Etapas::where('id',$dato)->get();
+    //$indicadores = Indicadores::orwhere($orwhere)->where($where)->where('activo',true)->appends("tipo",$request->tipo)->appends("unidad",$request->unidad)->appends("buscar",$request->buscar)->paginate(5);
+
+    $indicadores = Indicadores::where('activo',true)->where('etapa',$etapa[0]->nombre)->orderBy('id','ASC')->paginate(5);
+
+    $dataAvanceIds = '';
+    foreach ($indicadores as  $value) {
+        $dataAvanceIds.=$value->id.",";
+    }
+    $dataAvanceIds = trim($dataAvanceIds,',');
+    $datosExtras = \DB::select("SELECT fuente.id,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_pdes_resultado ir
+                              	INNER JOIN pdes_vista_catalogo_pmr c ON  ir.id_resultado = c.id_resultado
+                              	WHERE id_indicador = fuente.id
+                              ) as pdes_codigo,
+                              (
+                              	SELECT string_agg(DISTINCT c.logo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_logo,
+                              (
+                              	SELECT string_agg(DISTINCT c.codigo,',')
+                              	FROM remi_indicador_ods_indicador io
+                              	INNER JOIN ods_vista_catalogo_omi c ON  io.id_resultado_ods = c.id_indicador
+                              	WHERE io.id_indicador_ods = fuente.id
+                              ) as ods_codigo
+                              FROM(
+                              SELECT id
+                              FROM remi_indicadores
+                              WHERE activo = true
+                              AND id IN (".$dataAvanceIds.")
+                              ORDER BY id ASC
+                              ) as fuente
+                              ");
+  $arrayDatosExtras = Array();
+  foreach ($datosExtras as $key => $value) {
+    $arrayDatosExtras[$value->id]['pdes_logo']=explode(",",$value->pdes_logo);
+    $arrayDatosExtras[$value->id]['pdes_codigo']=explode(",",$value->pdes_codigo);
+    $arrayDatosExtras[$value->id]['ods_logo']=explode(",",$value->ods_logo);
+    $arrayDatosExtras[$value->id]['ods_codigo']=explode(",",$value->ods_codigo);
+  }
+  $arrayDatosAvances = $this->datosAvances($dataAvanceIds);
+  $arrayEjecutadoIndicadores = $this->ejecutadoIndicadores($dataAvanceIds,"");
+
+
+
+    return view('SistemaRemi.indicador-desagregar-etapa',compact('indicadores','arrayDatosExtras','arrayDatosAvances',
     'arrayEjecutadoIndicadores','color'));
   }
 

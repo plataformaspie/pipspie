@@ -52,7 +52,7 @@ text-decoration: underline;
   <div class="row bg-title">
       <!-- .page title -->
       <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Indicador desagregado por Tipo</h4>
+          <h4 class="page-title">Indicador desagregado por Etapa</h4>
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->
@@ -141,6 +141,10 @@ text-decoration: underline;
                                                                     <a href="/sistemaremi/dataIndicador/{{ $item->id }}" style="color:#000000;font-weight: bold;">{{ str_pad($item->id, 4, "0", STR_PAD_LEFT) }}: {{ mb_strtoupper(strtolower($item->nombre )) }}</a>
                                                               </div>
                                                               <div class="col-lg-1 col-md-2 col-sm-6 col-xs-6 text-center">
+                                                                  <p class="text-muted">Etapa:</p>
+                                                                  <p style="font-weight:bold;"> {{ $item->etapa }} </p>
+                                                              </div>
+                                                              <div class="col-lg-1 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Tipo:</p>
                                                                   <p style="font-weight:bold;"> {{ $item->tipo }} </p>
                                                               </div>
@@ -148,7 +152,7 @@ text-decoration: underline;
                                                                   <p class="text-muted">Unidad de medida:</p>
                                                                   <p style="font-weight:bold;">{{ $item->unidad_medida }}</p>
                                                               </div>
-                                                              <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
+                                                              <div class="col-lg-1 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Serie disponible:</p>
                                                                   <p style="font-weight:bold;">{{ $item->serie_disponible }}</p>
                                                               </div>

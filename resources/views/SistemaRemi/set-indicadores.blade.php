@@ -192,7 +192,7 @@ text-decoration: underline;
                                                                                          @if($itemI->nombre != $indicador and $itemR->resultado == $itemI->resultado)
                                                                                                <?php $indicador =  $itemI->nombre; ?>
                                                                                               <div class="col-lg-12 text-muted">
-                                                                                                  <a href="/sistemaremi/dataIndicador/{{ $itemI->id_indicador }}" style="color:#000000;font-weight: bold;">{{ $itemI->codigo_id }}: {{ $itemI->nombre }}</a>
+                                                                                                  <a href="/sistemaremi/dataIndicador/{{ $itemI->id_indicador }}" style="color:#000000;font-weight: bold;">{{ $itemI->codigo_id }}: {{ mb_strtoupper(strtolower($itemI->nombre)) }}</a>
                                                                                               </div>
                                                                                           @endif
                                                                                         @endforeach

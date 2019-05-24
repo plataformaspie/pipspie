@@ -78,15 +78,15 @@ text-decoration: underline;
   <div class="row bg-title">
       <!-- .page title -->
       <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
-          <h4 class="page-title">Indicador desagregado por Tipo</h4>
+          <h4 class="page-title">Indicador desagregado Rango de Cumplimiento</h4>
       </div>
       <!-- /.page title -->
       <!-- .breadcrumb -->
       <div class="col-lg-7 col-sm-8 col-md-8 col-xs-12">
-          <ol class="breadcrumb">
+          {{-- <ol class="breadcrumb">
               <li><a href="{{ url('/sistemaremi') }}">Inicio</a></li>
               <li class="active">Indicadores por Tipo</li>
-          </ol>
+          </ol> --}}
       </div>
       <!-- /.breadcrumb -->
   </div>
@@ -169,7 +169,7 @@ text-decoration: underline;
                                                         <div class="col-lg-8 col-xs-12">
                                                           <div class="row">
                                                               <div class="col-lg-12 card-footer">
-                                                                    <a href="/sistemaremi/dataIndicador/{{ $item->id }}" style="color:#000000;font-weight: bold;">{{ str_pad($item->id, 4, "0", STR_PAD_LEFT) }}: {{ $item->nombre }}</a>
+                                                                    <a href="/sistemaremi/dataIndicador/{{ $item->id }}" style="color:#000000;font-weight: bold;">{{ str_pad($item->id, 4, "0", STR_PAD_LEFT) }}: {{ mb_strtoupper(strtolower($item->nombre )) }}</a>
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Tipo:</p>
@@ -185,40 +185,40 @@ text-decoration: underline;
                                                               </div>
 
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Articulacion PDES:</p>
+                                                                  <p class="text-muted">Articulación PDES:</p>
                                                                   @foreach ($arrayDatosExtras[$item->id]['pdes_codigo'] as $value)
                                                                     <p style="font-weight:bold;">{{ $value }}</p>
                                                                   @endforeach
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Articulacion ODS:</p>
+                                                                  <p class="text-muted">Articulación ODS:</p>
                                                                   @foreach ($arrayDatosExtras[$item->id]['ods_codigo'] as $value)
                                                                     <p style="font-weight:bold;">{{ $value }}</p>
                                                                   @endforeach
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Linea base:</p>
-                                                                  <p style="font-weight:bold;">{{ rtrim(number_format($item->linea_base_valor,4,",","."),',0') }}</p>
+                                                                  <p style="font-weight:bold;">{{ trim(trim(number_format($item->linea_base_valor,4,",","."),0),',') }}</p>
                                                               </div>
                                                               <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Meta 2020:</p>
-                                                                  <p style="font-weight:bold;">{{ rtrim(number_format($arrayDatosAvances[$item->id]['meta_2020'],4,",","."),',0') }}</p>
+                                                                  <p style="font-weight:bold;">{{  trim(trim(number_format($arrayDatosAvances[$item->id]['meta_2020'],4,",","."),0),',') }}</p>
                                                               </div>
                                                               <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-center">
-                                                                  <p class="text-muted">Ultima gestion Reportada:</p>
+                                                                  <p class="text-muted">Ultima gestión Reportada:</p>
                                                                   @if($arrayDatosAvances[$item->id]['gestion_reporte'] > 0)
-                                                                    <p style="font-weight:bold;">Gestion {{$arrayDatosAvances[$item->id]['gestion_reporte']}}</p>
+                                                                    <p style="font-weight:bold;">Gestión {{$arrayDatosAvances[$item->id]['gestion_reporte']}}</p>
                                                                   @endif
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Ultimo valor Reportado:</p>
                                                                   @if($arrayDatosAvances[$item->id]['gestion_reporte'] > 0)
-                                                                    <p style="font-weight:bold;font-size:20px;color:#4F93A0;">{{ rtrim(number_format($arrayDatosAvances[$item->id]['avance_'.$arrayDatosAvances[$item->id]['gestion_reporte']],4,",","."),',0') }}</p>
+                                                                    <p style="font-weight:bold;font-size:20px;color:#4F93A0;">{{  trim(trim(number_format($arrayDatosAvances[$item->id]['avance_'.$arrayDatosAvances[$item->id]['gestion_reporte']],4,",","."),0),',') }}</p>
                                                                   @endif
                                                               </div>
                                                               <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 text-center">
                                                                   <p class="text-muted">Total <br/>Ejecutado:</p>
-                                                                  <p style="font-weight:bold;font-size:25px;color:{{$color}};">{{ number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4,",",".") }}</p>
+                                                                  <p style="font-weight:bold;font-size:25px;color:{{$color}};">{{ trim(trim(number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4,",","."),0),',') }}</p>
                                                               </div>
 
                                                           </div>
@@ -270,7 +270,7 @@ text-decoration: underline;
         "theme": "light",
         "type": "gauge",
         "axes": [{
-          "topText": {{ rtrim(number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4),'.0') }},
+          "topText": {{ number_format($arrayEjecutadoIndicadores[$item->id]['ejecutado'],4) }},
           "topTextFontSize": 20,
           "topTextYOffset": 70,
           "axisColor": "#31d6ea",

@@ -44,8 +44,8 @@
 
 #chartdivMetas {
 	width		: 100%;
-	height	: 400px;
-	font-size	: 11px;
+	height	: 250px;
+	font-size	: 12px;
 }
 #chartdivTipo {
 	width		: 100%;
@@ -82,11 +82,58 @@
 
 }
 
+
+#chartdivEtapa {
+  width: 190%;
+  height:250px;
+  /* position: relative;*/
+  margin-left: -150px;
 }
+#chartdivPDES {
+  width: 100%;
+  height: 200px;
+}
+
+
+#tspan{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.push_buttonA {
+    position: relative;
+    width: 200px;
+    color: #FFF;
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 5px;
+    border: solid 1px #8DC122;
+    text-align: center;
+    padding: 2px 2px;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;
+    -webkit-box-shadow: 0px 9px 0px #8DC122;
+    -moz-box-shadow: 0px 9px 0px #8DC122;
+    box-shadow: 0px 9px 0px #8DC122;
+}
+.push_buttonA:active{
+    -webkit-box-shadow: 0px 2px 0px #1EA4EE; /*color box-shadow  84261a  /  1565C0   color border  D94E3B  /   2196F3     */
+    -moz-box-shadow: 0px 2px 0px #1EA4EE;
+    box-shadow: 0px 2px 0px #1EA4EE;
+    position:relative;
+    top:7px;
+}
+
 </style>
 @endsection
 
 @section('content')
+
 
   <div class="row bg-title">
       <!-- .page title -->
@@ -126,6 +173,7 @@
                     </div>
                   </div>
 
+
             </div>
 
           </div>
@@ -136,14 +184,46 @@
   <div class="row">
       <div class="col-md-12">
           <div class="white-box">
-            <h4 class="font-bold m-t-0">Gráficas</h4>
-            <hr>
             <div class="row" >
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 m-b-10 text-center">
+              <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 m-b-10 text-center">
+                <h4 class="font-bold m-t-0"> Indicadores Registrados</h4>
+                <a href="{{ url('sistemarime/listaIndicadores') }}">
+                <div class="white-box p-10 text-center push_buttonA" style="background:#21B2AB;height:223px;z-index: 10 !important;">
+
+                    <ul class="list-inline two-part">
+                        <li><img src="{{ asset('images/indicadores.png') }}"></li>
+                    </ul>
+                    <ul class="list-inline two-part">
+                        <li><span class="counter" style="font-weight:bold;color:white;">{{ $totalIndicadores }}</span></li>
+                    </ul>
+
+                </div>
+                </a>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 m-b-10 text-center">
+                  <h4 class="font-bold m-t-0">Total Indicadores por Etapa</h4>
+                  <div id="chartdivEtapa"></div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 m-b-10 text-center">
+                  <h4 class="font-bold m-t-0">Cumplimiento de metas al 2020</h4>
+                  <div id="chartdivMetas"></div>
+              </div>
+
+
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-12">
+          <div class="white-box">
+            <div class="row" >
+                {{-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 m-b-10 text-center">
                     <h4 class="font-bold m-t-0">Cumplimientos de metas al 2020</h4>
                     <div id="chartdivMetas"></div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 m-b-10 text-center">
+                </div> --}}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-b-10 text-center">
                     <h4 class="font-bold m-t-0">Indicadores por tipo</h4>
                     <div id="chartdivTipo"></div>
                 </div>
@@ -287,6 +367,8 @@
 @endsection
 
 @push('script-head')
+
+  <!-- Resources -->
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
   <script type="text/javascript" src="https://www.amcharts.com/lib/3/pie.js"></script>
   <script type="text/javascript" src="http://cdn.amcharts.com/lib/3/serial.js"></script>
@@ -318,6 +400,7 @@
         "urlField": "url",
         "legend": {
           "enabled": true,
+          "position": "right",
           "align": "center",
           "markerType": "circle"
         },
@@ -449,4 +532,107 @@
       $(location).attr('href', '/sistemaremi/setIndicadores/?'+concat);
     }
   </script>
+
+
+
+  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+  <script src="https://www.amcharts.com/lib/4/plugins/forceDirected.js"></script>
+  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
+  <script>
+    $(document).ready(function(){
+            // Themes begin
+          am4core.useTheme(am4themes_animated);
+          // Themes end
+
+          var chart = am4core.create("chartdivEtapa", am4plugins_forceDirected.ForceDirectedTree);
+          var networkSeries = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+
+          var data =  <?php echo $indicadoresEtapa; ?>;
+          chart.data = [
+            {
+              name: "Total\nIndicadores",
+              children: data
+            }
+          ];
+
+          networkSeries.dataFields.value = "value";
+          networkSeries.dataFields.name = "name";
+          networkSeries.maxLevels = 2;
+          networkSeries.dataFields.children = "children";
+          networkSeries.nodes.template.tooltipText = "{name}: {value}";
+          networkSeries.nodes.template.fillOpacity = 2;
+          networkSeries.manyBodyStrength = -50;
+          networkSeries.links.template.strength = 0.8;
+          networkSeries.minRadius = am4core.percent(5);
+
+          networkSeries.links.template.strokeWidth = 20;
+          networkSeries.links.template.strokeOpacity = 0.3;
+          networkSeries.links.template.disatnce = 1;
+
+          networkSeries.nodes.template.label.text = "{name}\n{value}";
+
+          networkSeries.nodes.template.propertyFields.url = "url";
+          //networkSeries.nodes.template.urlTarget = "_blank";
+
+          networkSeries.fontSize = 12;
+
+
+
+          // var chartPDES = am4core.create("chartdivPDES", am4charts.SlicedChart);
+          // chartPDES.hiddenState.properties.opacity = 0; // this makes initial fade in effect
+          // var dataPDES =
+          // chartPDES.data = dataPDES;
+          //
+          // var series = chartPDES.series.push(new am4charts.FunnelSeries());
+          // series.colors.step = 2;
+          // series.dataFields.value = "value";
+          // series.dataFields.category = "name";
+          // series.alignLabels = false;
+          // series.orientation = "vertical";
+          // series.bottomRatio = 1;
+
+
+          // chartPDES.legend = new am4charts.Legend();
+          // chartPDES.legend.position = "top";
+
+
+
+          // var chartPDES = am4core.create("chartdivPDES", am4plugins_forceDirected.ForceDirectedTree);
+          // var networkSeriesPDES = chartPDES.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+          //
+          // var dataPDES =  <?php /*echo $pdesPilares;*/ ?>;
+          // chartPDES.data = [
+          //   {
+          //     name: "Total\nIndicadores",
+          //     children: dataPDES
+          //   }
+          // ];
+          // networkSeriesPDES.colors.list = [
+          //   am4core.color("#67B7DC"),
+          // ];
+          //
+          // networkSeriesPDES.dataFields.value = "value";
+          // networkSeriesPDES.dataFields.name = "name";
+          // networkSeriesPDES.maxLevels = 2;
+          // networkSeriesPDES.dataFields.children = "children";
+          // networkSeriesPDES.nodes.template.tooltipText = "{name}: {value}";
+          // networkSeriesPDES.nodes.template.fillOpacity = 2;
+          // networkSeriesPDES.manyBodyStrength = -30;
+          // networkSeriesPDES.links.template.strength = 0.8;
+          // networkSeriesPDES.minRadius = am4core.percent(7);
+          //
+          // networkSeriesPDES.links.template.strokeWidth = 20;
+          // networkSeriesPDES.links.template.strokeOpacity = 0.3;
+          // networkSeriesPDES.links.template.disatnce = 1;
+          //
+          // networkSeriesPDES.nodes.template.label.text = "{name}\n{value}";
+          //
+          // networkSeriesPDES.nodes.template.propertyFields.url = "url";
+          // networkSeriesPDES.fontSize = 13;
+    });
+  </script>
+
+
 @endpush

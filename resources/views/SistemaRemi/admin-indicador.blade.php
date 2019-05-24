@@ -231,6 +231,10 @@ input:checked + .slider:before {
   color: black;
 }
 
+.fondoEditar{
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
 
 /* fin de alertas */
   </style>
@@ -1364,11 +1368,13 @@ input:checked + .slider:before {
                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                     Detallar Avance:
                                                    <textarea id="detalle_avance" name="detalle_avance" class="form-control" placeholder="Explique los avances"></textarea>
-                                                   </div>
+                                                   <input type="hidden" id="id_edit_av" name="id_edit_av" value="">
+                                              </div>
 
                                                <div class="row m-b-5 m-l-5 m-t-5" >
                                                   <div class="col-md-12 p-l-0 text-center">
-                                                      <button type="button" class="btn btn-info btn-sm agregarAV m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
+                                                      <button type="button" class="btn btn-info btn-sm agregarAV m-t-5"><i class="fa fa-plus-square"></i> <span id="textBtnAV">Agregar</span></button>
+                                                      <button id="cancelarAV" type="button" class="btn btn-default btn-sm  m-t-5"><i class="fa fa-plus-square"></i> Cancelar </button>
                                                   </div>
                                                </div>
 
@@ -2036,6 +2042,53 @@ input:checked + .slider:before {
                                                   </div>
                                              </div>
 
+                                             <h3>Revisión de metadatos de Indicadores.</h3>
+
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if(Auth::user()->id_rol==13 AND Auth::user()->id_institucion==120) @else pointer-events:none; @endif">
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estado revisión INE</label>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <select id="validacion_ine" name="validacion_ine" class="custom-select col-12 form-control">
+                                                       <option value="Ninguna">Ninguna...</option>
+                                                       @foreach ($estadoCIMPDES as  $item)
+                                                             <option value="{{ $item }}">{{$item}}</option>
+                                                       @endforeach
+                                                   </select>
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                             </div>
+
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if(Auth::user()->id_rol==13 AND Auth::user()->id_institucion==121) @else pointer-events:none; @endif">
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estado revisión UDAPE</label>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <select id="validacion_udape" name="validacion_udape" class="custom-select col-12 form-control">
+                                                       <option value="Ninguna">Ninguna...</option>
+                                                       @foreach ($estadoCIMPDES as  $item)
+                                                             <option value="{{ $item }}">{{$item}}</option>
+                                                       @endforeach
+                                                   </select>
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                             </div>
+
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if(Auth::user()->id_rol==13 AND Auth::user()->id_institucion==624) @else pointer-events:none; @endif">
+                                               <div class="col-md-3 p-l-0 p-r-0">
+                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Estado revisión VPC</label>
+                                               </div>
+                                               <div class="col-md-9 p-l-0">
+                                                   <select id="validacion_vpc" name="validacion_vpc" class="custom-select col-12 form-control">
+                                                       <option value="Ninguna">Ninguna...</option>
+                                                       @foreach ($estadoCIMPDES as  $item)
+                                                             <option value="{{ $item }}">{{$item}}</option>
+                                                       @endforeach
+                                                   </select>
+                                                   <div class="help-block with-errors"></div>
+                                               </div>
+                                             </div>
+
 
                                            </div>
                                       </div>
@@ -2393,7 +2446,29 @@ input:checked + .slider:before {
 
     $("#cod5").hide();
     $('#activa4').click(function(){
+      $("input[name=avance_fecha_dia]").val("");
+      $("input[name=avance_fecha_mes]").val("");
+      $("input[name=avance_fecha_anio]").val("");
+      $("input[name=avance_valor_input]").val("");
+      $('textarea[name="detalle_avance"]').val("");
+
+          $('#cod5').removeClass('fondoEditar');
+          $('#textBtnAV').html('Agregar');
+          $('#id_edit_av').val('');
           $('#cod5').toggle();
+    });
+
+    $('#cancelarAV').click(function(){
+      $("input[name=avance_fecha_dia]").val("");
+      $("input[name=avance_fecha_mes]").val("");
+      $("input[name=avance_fecha_anio]").val("");
+      $("input[name=avance_valor_input]").val("");
+      $('textarea[name="detalle_avance"]').val("");
+
+        $('#cod5').toggle();
+        $('#cod5').removeClass('fondoEditar');
+        $('#textBtnAV').html('Agregar');
+        $('#id_edit_av').val('');
     });
 
 
@@ -3389,47 +3464,84 @@ $('#customSwitch2').click(function(){
 
       $(".agregarAV").click(function () {
 
-        if( $("input[name=avance_fecha_dia]").val() != ""){
-            var idAV = $("input[name=avance_fecha_dia]").val().concat($("input[name=avance_fecha_mes]").val()).concat($("input[name=avance_fecha_anio]").val());
-            var fecAV = $("input[name=avance_fecha_dia]").val().concat("/").concat($("input[name=avance_fecha_mes]").val()).concat("/").concat($("input[name=avance_fecha_anio]").val());
-         }else {
-            var idAV = $("input[name=avance_fecha_mes]").val().concat($("input[name=avance_fecha_anio]").val());
-            var fecAV = $("input[name=avance_fecha_mes]").val().concat("/").concat($("input[name=avance_fecha_anio]").val());
-         }
+        if($("input[name=avance_fecha_mes]").val() != "" && parseInt($("input[name=avance_fecha_mes]").val() ) >= 1 && parseInt( $("input[name=avance_fecha_mes]").val() ) <= 12){
+          if($("input[name=avance_fecha_anio]").val() != "" ){
 
-        if( idAV != ""){
 
-           var valor = ( $("input[name=avance_valor_input]").val() ? $("input[name=avance_valor_input]").val():0);
-           if(!$('#set_avance').find("#AV"+idAV).length){
 
-              fechaAV.push(fecAV);
-              valorAV.push(valor);
-              estadoAV.push(1);
-              origenAV.push(1);
-              detalleAV.push($('textarea[name="detalle_avance"]').val());
-              actualizarListaAvance();
+            if( $("input[name=avance_fecha_dia]").val() != ""){
+                var idAV = $("input[name=avance_fecha_dia]").val().concat($("input[name=avance_fecha_mes]").val()).concat($("input[name=avance_fecha_anio]").val());
+                var fecAV = $("input[name=avance_fecha_dia]").val().concat("/").concat($("input[name=avance_fecha_mes]").val()).concat("/").concat($("input[name=avance_fecha_anio]").val());
+             }else {
+                var idAV = $("input[name=avance_fecha_mes]").val().concat($("input[name=avance_fecha_anio]").val());
+                var fecAV = $("input[name=avance_fecha_mes]").val().concat("/").concat($("input[name=avance_fecha_anio]").val());
+             }
 
-          }else{
+            if( idAV != ""){
+
+               var valor = ( $("input[name=avance_valor_input]").val() ? $("input[name=avance_valor_input]").val():0);
+               var indexEdit = $("input[name=id_edit_av]").val();
+               if(indexEdit==""){
+                   if(!$('#set_avance').find("#AV"+idAV).length){
+                        fechaAV.push(fecAV);
+                        valorAV.push(valor);
+                        estadoAV.push(1);
+                        origenAV.push(1);
+                        detalleAV.push($('textarea[name="detalle_avance"]').val());
+
+                  }else{
+                      $.toast({
+                       heading: 'Alerta:',
+                       text: 'Ya existe valor en la fecha reportada.',
+                       position: 'top-right',
+                       loaderBg:'#ff6849',
+                       icon: 'warning',
+                       hideAfter: 3500
+                     });
+                  }
+                }else{
+                  fechaAV[indexEdit] = fecAV;
+                  valorAV[indexEdit] = valor;
+                  estadoAV[indexEdit] = 2;
+                  detalleAV[indexEdit] = $('textarea[name="detalle_avance"]').val();
+                  $("#cancelarAV" ).trigger( "click" );
+                }
+                actualizarListaAvance();
+
+            }else{
               $.toast({
-               heading: 'Alerta:',
-               text: 'Ya existe valor en la fecha reportada.',
+               heading: 'Error:',
+               text: 'Llene los campos para agregar avance.',
                position: 'top-right',
                loaderBg:'#ff6849',
-               icon: 'warning',
+               icon: 'error',
                hideAfter: 3500
              });
+
             }
         }else{
           $.toast({
+             heading: 'Error:',
+             text: 'Debe registrar el año del dato a reportar.',
+             position: 'top-right',
+             loaderBg:'#ff6849',
+             icon: 'error',
+             hideAfter: 3500
+           });
+        }
+      }else{
+        $.toast({
            heading: 'Error:',
-           text: 'Llene los campos para agregar avance.',
+           text: 'Debe registrar el mes del dato a reportar.',
            position: 'top-right',
            loaderBg:'#ff6849',
            icon: 'error',
            hideAfter: 3500
          });
+      }
 
-        }
+
+
       });
 
 
@@ -3684,11 +3796,13 @@ $('#customSwitch2').click(function(){
             data:{'fechas':fechaAV,'valores':valorAV,'estados':estadoAV},
             success: function(date){
                   if(date.error == false){
+                      var slash = /\//g;
                       $.each(date.item, function(i, data) {
-                        if(estadoAV[data.index]==1){
-                            var html = '<tr id="AV'+ data.valor.replace('/', '') +'">'+
+                        if(estadoAV[data.index]==1 || estadoAV[data.index]==2){
+
+                            var html = '<tr id="AV'+ data.valor.replace(slash, '') +'">'+
                                            '<td>'+
-                                               '<input type="hidden" name="id_avance[]" value="'+ (idAV[data.index] ? idAV[data.index] : "") +'" /><input type="hidden" id="AVEST'+data.valor.replace('/', '')+'" name="avance_estado[]" value="1" />'+cav+
+                                               '<input type="hidden" name="id_avance[]" value="'+ (idAV[data.index] ? idAV[data.index] : "") +'" /><input type="hidden" id="AVEST'+data.valor.replace(slash, '')+'" name="avance_estado[]" value="'+estadoAV[data.index]+'" />'+cav+
                                             '</td>'+
                                            '<td>'+
                                               '<input type="hidden" name="avance_fecha[]" value="'+ data.valor +'" />'+
@@ -3706,15 +3820,16 @@ $('#customSwitch2').click(function(){
                                             //   "ddfdsf dfsdf dfs sdfs fasff"+
                                             // '</td>'+
                                             '<td>'+'<center>'+
-                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace('/', '')+'\','+origenAV[data.index]+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a>'+
+                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace(slash, '')+'\','+origenAV[data.index]+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-close text-danger"></i> </a>'+
+                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="editarAV(\''+ data.valor.replace(slash, '')+'\','+origenAV[data.index]+','+data.index+');" style="cursor: pointer;"> <i class="fa fa-pencil text-warning"></i> </a>'+
                                             '</center>'+'</td>'+
                                       '</tr>';
                             $("#set_avance > tbody").append(html);
                             cav++;
                           }else{
-                            var html = '<tr id="0AV'+ data.valor.replace('/', '') +'" class="hidden">'+
+                            var html = '<tr id="0AV'+ data.valor.replace(slash, '') +'" class="hidden">'+
                                             '<td>'+
-                                               '<input type="hidden" name="id_avance[]" value="'+ (idAV[data.index] ? idAV[data.index] : "") +'" /><input type="hidden" id="AVEST'+data.valor.replace('/', '')+'" name="avance_estado[]" value="0" />'+cav+
+                                               '<input type="hidden" name="id_avance[]" value="'+ (idAV[data.index] ? idAV[data.index] : "") +'" /><input type="hidden" id="AVEST'+data.valor.replace(slash, '')+'" name="avance_estado[]" value="0" />'+cav+
                                             '</td>'+
                                              '<td>'+
                                               '<input type="hidden" name="avance_fecha[]" value="'+ data.valor +'" />'+
@@ -3732,7 +3847,7 @@ $('#customSwitch2').click(function(){
                                             //   'ddfdsf dfsdf dfs sdfs fasff'+
                                             // '</td>'+
                                              '<td>'+'<center>'+
-                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace('/', '')+'\','+origenAV[data.index]+','+data.index+');"> <i class="fa fa-close text-danger"></i> </a>'+
+                                              '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace(slash, '')+'\','+origenAV[data.index]+','+data.index+');"> <i class="fa fa-close text-danger"></i> </a>'+
                                             '</center>'+'</td>'+
                                       '</tr>';
                             $("#set_avance > tbody").append(html);
@@ -3821,7 +3936,8 @@ $('#customSwitch2').click(function(){
     }
 
     function quitarAV(ele,tipo,index){
-
+      var res = confirm("Esta seguro de quitar el avance?");
+      if (res == true) {
         if(tipo == 1){
           $('#AV'+ele).remove();
           fechaAV.splice(index, 1);
@@ -3832,8 +3948,52 @@ $('#customSwitch2').click(function(){
         }else{
           estadoAV[index] = 0;
         }
-
         actualizarListaAvance();
+      }
+
+    }
+
+    function editarAV(ele,tipo,index){
+      $("input[name=avance_fecha_dia]").val("");
+      $("input[name=avance_fecha_mes]").val("");
+      $("input[name=avance_fecha_anio]").val("");
+      $("input[name=avance_valor_input]").val("");
+      $('textarea[name="detalle_avance"]').val("");
+
+
+        $("#cod5").css("display", "none");
+        $('#cod5').addClass('fondoEditar');
+        $('#textBtnAV').html('Modificar');
+        $('#id_edit_av').val(index);
+        var date = fechaAV[index].split('/');
+        console.log(fechaAV[index].length+"ssss");
+        if(fechaAV[index].length <= 7){
+          $("input[name=avance_fecha_mes]").val(date[0]);
+          $("input[name=avance_fecha_anio]").val(date[1]);
+        }else{
+          $("input[name=avance_fecha_dia]").val(date[0]);
+          $("input[name=avance_fecha_mes]").val(date[1]);
+          $("input[name=avance_fecha_anio]").val(date[2]);
+        }
+
+        $("input[name=avance_valor_input]").val(valorAV[index]);
+        $('textarea[name="detalle_avance"]').val(detalleAV[index]);
+
+        $("#cod5").css("display", "block");
+
+        console.log(fechaAV[index]);
+        // if(tipo == 1){
+        //   $('#AV'+ele).remove();
+        //   fechaAV.splice(index, 1);
+        //   valorAV.splice(index, 1);
+        //   estadoAV.splice(index, 1);
+        //   origenAV.splice(index, 1);
+        //   detalleAV.splice(index, 1);
+        // }else{
+        //   estadoAV[index] = 0;
+        // }
+        //
+        // actualizarListaAvance();
     }
     function quitarRS(ele,index){
 
@@ -4207,6 +4367,10 @@ $('#customSwitch2').click(function(){
                    $('select[name=tipo]').val(data.indicador[0].tipo);
                    $('select[name=unidad_medida]').val(data.indicador[0].unidad_medida);
                    $('select[name=frecuencia]').val(data.indicador[0].frecuencia);
+
+                   $('select[name=validacion_ine]').val(data.indicador[0].validacion_ine);
+                   $('select[name=validacion_udape]').val(data.indicador[0].validacion_udape);
+                   $('select[name=validacion_vpc]').val(data.indicador[0].validacion_vpc);
 
                    if(data.indicador[0].desagregacion_sexo==true){
                      $('#desagregacion_sexo').prop("checked",true);
