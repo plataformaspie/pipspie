@@ -513,6 +513,7 @@ Route::group(['middleware' => 'auth'],function(){
             Route::get('eliminarUser/{id}', 'SistemaRemi\AdmiUserController@eliminarUser')->name('SistemaRemi.registrar.eliminarUser');
             Route::get('asignarRoles', 'SistemaRemi\AdmiUserController@asignarRoles')->name('asignarRoles');
             Route::post('actualizarUserRol', 'SistemaRemi\AdmiUserController@actualizarUserRol')->name('actualizarUserRol');
+            Route::post('apiAjustesIndicador', 'SistemaRemi\IndicadorController@apiAjustesIndicador');
 
           });
 

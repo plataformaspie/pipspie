@@ -299,14 +299,22 @@
                                         </div>
                                         <div class="col-lg-8 col-sm-6">
                                           @foreach ($descFuenteNumerador as $key => $value)
-                                            <div class="col-12" style="font-size:20px"><b>Nombre:&nbsp;</b>{{$value->nombre}} ({{$value->acronimo}})</div>
-                                            <div class="col-6"><b>Tipo:&nbsp;</b>{{$value->tipo}}</div>
-                                            <div class="col-6"><b>Periodicidad:&nbsp;</b>{{$value->periodicidad}}</div>
-                                            <div class="col-6"><b>Serie de datos:&nbsp;</b>{{$value->serie_datos}}</div>
-                                            <div class="col-6"><b>Cobertura geográfica:&nbsp;</b>{{$value->cobertura_geografica}}</div>
-                                            <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$value->variable}}</p></div>
-                                            <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$value->nivel_representatividad_datos}}</div>
-                                            <div class="col-12"><b>Observaciones:&nbsp;</b>{{$value->observacion}}</div>
+                                            <div class="col-12" style="font-size:20px"><b>Nombre:&nbsp;</b>
+                                                {{$value->nombre}} ({{$value->acronimo}})</div>
+                                             <div class="row">
+                                                <div class="col-6"><b>Tipo:&nbsp;</b>{{$value->tipo}}</div>
+
+                                              <div class="col-6"><b>Periodicidad:&nbsp;</b>{{$value->periodicidad}}</div>
+                                             </div>
+                                             <div class="row">
+                                              <div class="col-6"><b>Serie de datos:&nbsp;</b>{{$value->serie_datos}}</div>
+                                              <div class="col-6"><b>Cobertura geográfica:&nbsp;</b>{{$value->cobertura_geografica}}</div>
+                                             </div>
+                                             <div class="row">
+                                              <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$value->variable}}</p></div>
+                                              <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$value->nivel_representatividad_datos}}</div>
+                                             </div>
+                                              <div class="col-12"><b>Observaciones:&nbsp;</b><p align="justify">{{$value->observacion}}</p></div>
                                           @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
@@ -321,13 +329,19 @@
                                         <div class="col-lg-8 col-sm-6"><p>:</p>
                                           @foreach ($descFuenteDenominador as $key => $values)
                                             <div class="col-12" style="font-size:20px"><b>Nombre:&nbsp;</b>{{$values->nombre}}  ({{$values->acronimo}})</div>
-                                            <div class="col-6"><b>Tipo:&nbsp;</b>{{$values->tipo}}</div>
-                                            <div class="col-6"><b>Periodicidad:&nbsp;</b>{{$values->periodicidad}}</div>
-                                            <div class="col-6"><b>Serie de datos:&nbsp;</b>{{$values->serie_datos}}</div>
-                                            <div class="col-6"><b>Cobertura geográfica:&nbsp;</b>{{$values->cobertura_geografica}}</div>
-                                            <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$values->variable}}</p></div>
-                                            <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$values->nivel_representatividad_datos}}</div>
-                                            <div class="col-12"><b>Observaciones:&nbsp;</b>{{$values->observacion}}</div>
+                                            <div class="row">
+                                             <div class="col-6"><b>Tipo:&nbsp;</b>{{$values->tipo}}</div>
+                                             <div class="col-6"><b>Periodicidad:&nbsp;</b>{{$values->periodicidad}}</div>
+                                            </div>
+                                            <div class="row">
+                                             <div class="col-6"><b>Serie de datos:&nbsp;</b>{{$values->serie_datos}}</div>
+                                             <div class="col-6"><b>Cobertura geográfica:&nbsp;</b>{{$values->cobertura_geografica}}</div>
+                                            </div>
+                                            <div class="row">
+                                             <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$values->variable}}</p></div>
+                                             <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$values->nivel_representatividad_datos}}</div>
+                                            </div>
+                                             <div class="col-12"><b>Observaciones:&nbsp;</b><p align="justify">{{$values->observacion}}</p></div>      
                                           @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">

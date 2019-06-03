@@ -465,8 +465,8 @@ input:checked + .slider:before {
                               <div >
                                   <div class="alert m-b-0">
                                     @if(Auth::user()->id_rol==13)
-                                      {{-- <a onclick="aceptar_lineabase()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
-                                      <a onclick="rechazar_lineabase()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                      <a onclick="alertas_actualizacepta(1,'Aceptado')" data-toggle="tooltip" title="Se Acepta la linea Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="alertas_actualizarechaza(1,'Rechazado')" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a>
 
                                     @else
                                        <span class="closebtn" onclick=""></span>
@@ -483,10 +483,10 @@ input:checked + .slider:before {
                               <div >
                                   <div class="alert2">
                                     @if(Auth::user()->id_rol==13)
-                                      {{-- <a onclick="aceptar_metas()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
-                                      <a onclick="rechazar_metas()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                     <a onclick="alertas_actualizacepta(2,'Aceptado')" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                     <a onclick="alertas_actualizarechaza(2,'Rechazado')" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a>
                                     @else
-                                       <span class="closebtn" onclick=""></span>
+                                      <span class="closebtn" onclick=""></span>
                                     @endif
                                     <strong>Solicitud de Ajuste!:&nbsp;&nbsp;</strong> Se solicita el <strong> ajuste </strong> de las <strong> Metas.</strong>
                                   </div>
@@ -500,8 +500,8 @@ input:checked + .slider:before {
                               <div >
                                   <div class="alert3">
                                     @if(Auth::user()->id_rol==13)
-                                      {{-- <a onclick="aceptar_indicador()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
-                                      <a onclick="rechazar_indicador()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                      <a onclick="alertas_actualizacepta(3,'Aceptado')" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="alertas_actualizarechaza(3,'Rechazado')" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a>
                                     @else
                                        <span class="closebtn" onclick=""></span>
                                     @endif
@@ -514,11 +514,11 @@ input:checked + .slider:before {
                           <div id="msg_resultado" class="row">
 
                             <div class="form-group col-md-12 p-l-0 m-b-0">
-                              <div >
+                              <div>
                                   <div class="alert4">
                                     @if(Auth::user()->id_rol==13)
-                                      {{-- <a onclick="aceptar_resultado()" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
-                                      <a onclick="rechazar_resultado()" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a> --}}
+                                      <a onclick="alertas_actualizacepta(4,'Aceptado')" data-toggle="tooltip" title="Se Acepta la Solicitud" class="btn btn-info waves-effect waves-light btn-outline-info" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-ok m-l-5"></i></a>
+                                      <a onclick="alertas_actualizarechaza(4,'Rechazado')" data-toggle="tooltip" title="Se Rechaza la Solicitud" class="btn btn-danger waves-effect waves-light btn-outline-danger" style="padding-left: 0px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;margin-right: 3px;"><i class="glyphicon glyphicon-remove m-l-5"></i></a>
                                     @else
                                        <span class="closebtn" onclick=""></span>
                                     @endif
@@ -688,7 +688,7 @@ input:checked + .slider:before {
 
                                                     <div class="form-group col-md-4 p-l-0 m-b-0">
                                                           <select id="relac" name="relac" class="custom-select col-12 form-control enabledCampos">
-                                                                <option value="No Disponible">No Disponible</option>
+                                                                <option value="No Disponible">Seleccione...</option>
                                                                 @foreach ($relacop as  $ind_op)
                                                                     <option value="{{ $ind_op->relacion_pdes_ods }}">{{ $ind_op->relacion_pdes_ods }} - {{$ind_op->descripcion}}</option>
                                                                 @endforeach
@@ -967,7 +967,7 @@ input:checked + .slider:before {
                                                </div>
                                                <div class="col-md-9 p-l-0">
                                                    <div class="select2-wrapper">
-                                              <select id="fuente_datos" name="fuente_datos[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                                              <select id="fuente_datos" name="fuente_datos[]" placeholder="Seleccionar..."  multiple="multiple" class="select2 multiple">
                                                          @foreach ($fuente_datos as  $item)
                                                                <option value="{{ $item->id }}">{{$item->nombre}}</option>
                                                          @endforeach
@@ -997,7 +997,7 @@ input:checked + .slider:before {
                                                </div>
                                                <div class="col-md-9 p-l-0">
                                                    <div class="select2-wrapper">
-                                          <select id="fuente_datos_d" name="fuente_datos_d[]" placeholder="Seleccionar..."  multiple="multiple" class="form-control select2 multiple">
+                                          <select id="fuente_datos_d" name="fuente_datos_d[]" placeholder="Seleccionar..."  multiple="multiple" class="select2 multiple">
                                                          @foreach ($fuente_datos as  $item)
                                                                <option value="{{ $item->id }}">{{$item->nombre}}</option>
                                                          @endforeach
@@ -1936,48 +1936,51 @@ input:checked + .slider:before {
                                              </div>
 
                                              <h3>Solicita el Ajuste para la Evaluacion de Medio Termino</h3>
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                <div class="form-group">
+                                                  <label for="linea_base_mod">Linea Base&nbsp;&nbsp;</label>
+                                                </div>
+                                                <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                  <label class="switch">
+                                                     <input type="hidden" name="lin_eva" value="1"/>
+                                                     <input type="checkbox" name="linea_base_mod" value="1" id="linea_base_mod"  class="info">
+                                                     <span class="slider round"></span>
+                                                   </label>
+                                                </div>
+                                               <div class="form-group">
+                                                   <label for="metas_mod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Metas&nbsp;&nbsp;</label>
+                                                 </div>
+                                               <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                <label class="switch">
+                                                   <input type="hidden" name="met_eva" value="2"/>
+                                                   <input type="checkbox" name="metas_mod" value="1" id="metas_mod"  class="primary">
+                                                   <span class="slider round"></span>
+                                                 </label>
+                                                </div>
+                                            </div>
+
                                          <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                              <div class="form-group">
-                                                <label for="linea_base_mod">Línea Base&nbsp;&nbsp;</label>
-                                              </div>
-                                              <div class="form-group col-md-3 p-l-0 m-b-0">
-                                          <label class="switch">
-                                             <input type="checkbox" name="linea_base_mod" value="1" id="linea_base_mod"  class="info">
-                                             <span class="slider round"></span>
-                                           </label>
-                                              </div>
-                                         <div class="form-group">
-                                             <label for="metas_mod">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Metas&nbsp;&nbsp;</label>
-                                           </div>
-                                             <div class="form-group col-md-3 p-l-0 m-b-0">
-                                          <label class="switch">
-                                             <input type="checkbox" name="metas_mod" value="1" id="metas_mod"  class="primary">
-                                             <span class="slider round"></span>
-                                           </label>
-                                           </div>
-                                          </div>
-
-
-                                       <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                              <div class="form-group">
-                                                <label for="indicador_mod">&nbsp;&nbsp;Indicador&nbsp;&nbsp;</label>
-                                              </div>
-                                              <div class="form-group col-md-3 p-l-0 m-b-0">
-                                          <label class="switch">
-                                             <input type="checkbox" name="indicador_mod" value="1" id="indicador_mod"  class="success">
-                                             <span class="slider round"></span>
-                                           </label>
-                                              </div>
-                                         <div class="form-group">
-                                             <label for="resultado_mod">&nbsp;&nbsp;Resultado&nbsp;&nbsp;</label>
-                                           </div>
-                                             <div class="form-group col-md-3 p-l-0 m-b-0">
-                                          <label class="switch">
-                                             <input type="checkbox" name="resultado_mod" value="1" id="resultado_mod"  class="danger">
-                                             <span class="slider round"></span>
-                                           </label>
-                                           </div>
-                                       </div>
+                                                <div class="form-group">
+                                                  <label for="indicador_mod">&nbsp;&nbsp;Indicador&nbsp;&nbsp;</label>
+                                                </div>
+                                                <div class="form-group col-md-3 p-l-0 m-b-0">
+                                            <label class="switch">
+                                               <input type="hidden" name="ind_eva" value="3"/>
+                                               <input type="checkbox" name="indicador_mod" value="1" id="indicador_mod"  class="success">
+                                               <span class="slider round"></span>
+                                             </label>
+                                                </div>
+                                           <div class="form-group">
+                                               <label for="resultado_mod">&nbsp;&nbsp;Resultado&nbsp;&nbsp;</label>
+                                             </div>
+                                               <div class="form-group col-md-3 p-l-0 m-b-0">
+                                            <label class="switch">
+                                               <input type="hidden" name="res_eva" value="4"/>
+                                               <input type="checkbox" name="resultado_mod" value="1" id="resultado_mod"  class="danger">
+                                               <span class="slider round"></span>
+                                             </label>
+                                             </div>
+                                         </div>
 
 
 
@@ -2474,12 +2477,12 @@ input:checked + .slider:before {
 
    $('#diaLB').datetimepicker({
           format: 'DD',
-         locale: 'es'
+          locale: 'es'
      });
 
      $('#mesLB').datetimepicker({
          //viewMode: 'month',
-          format: 'MM',
+         format: 'MM',
          locale: 'es'
      });
 
@@ -2709,6 +2712,8 @@ $('#customSwitch2').click(function(){
                                   '</div>'+
                                 '</div>';
                     $("#datosART").append(html);
+                    $("#activa1").trigger( "click" );
+                    $('#cod2').find('input:text').val('');
 
                   }else{
                       $.toast({
@@ -2791,6 +2796,8 @@ $('#customSwitch2').click(function(){
                                   '</div>'+
                                 '</div>';
                     $("#datosART1").append(html);
+                    $("#activa").trigger( "click" );
+                    $('#cod').find('input:text').val('');
 
                   }else{
                       $.toast({
@@ -3690,9 +3697,9 @@ $('#customSwitch2').click(function(){
              isModal: true,
              autoOpen: false,
              width: '40%',
-             height: '35%',
+             height: 550,
              minWidth: 330,
-             minHeight: '10%',
+             //minHeight: '35%',
              //cancelButton: $("#Cancel"),
              modalOpacity: 0.01,
              draggable: true
@@ -3706,6 +3713,7 @@ $('#customSwitch2').click(function(){
 
      $("#fuente_datos").change(function () {
          $("#datosFDN").html('');
+         if($(this).val()){
          $.ajax({
                url: "{{ url('/api/sistemaremi/apiSetFuenteDatos') }}",
                data: { 'fuente': $(this).val()},
@@ -3713,22 +3721,31 @@ $('#customSwitch2').click(function(){
                dataType: 'json',
                success: function(date){
                  $.each(date.item, function(i, data) {
-                     var html= '<div class="row">'+
-                                     '<div class="media row col-lg-12 ">'+
-                                         '<div class="row col-lg-12">'+
-                                              '<h5>&nbsp;&nbsp;&nbsp;&nbsp;Detalle de la fuente de datos seleccionado(s)</h5>'+
-                                              '<hr/>'+
-                                              '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
-                                              '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
-                                              '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'.</div>'+
-                                              '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'.</div>'+
-                                              '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
-                                              '<div class="col-6"><b>Principales variables:</b> '+data.variable+'.</div>'+
-                                              '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
-                                              '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'.</div>'+
+
+                   var html= '<div class="panel panel-default">'+
+                                    '<div class="panel-heading">'+
+                                        '<b><a href="#" data-perform="panel-collapse"><i class="ti-plus"></i> Fuente: </b> '+data.nombre+' ('+data.acronimo+')</a>'+
+                                    '</div>'+
+                                    '<div class="panel-wrapper collapse" aria-expanded="true" style="">'+
+                                        '<div class="panel-body">'+
+                                            '<div class="row col-lg-12">'+
+                                               '<div class="col-12"><h5>&nbsp;&nbsp;&nbsp;&nbsp;Detalle de la fuente de datos seleccionado(s)</h5></div>'+
+                                               '<hr/>'+
+                                               '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
+                                               '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
+                                               '<div class="col-6"><b>Abreviación:</b> '+data.acronimo+'</div>'+
+                                               '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'</div>'+
+                                               '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'</div>'+
+                                               '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
+                                               '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
+                                               '<div class="col-12"><b>Principales variables:</b> '+data.variable+'</div>'+
+                                               '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'</div>'+
+                                             '</div>'+
                                         '</div>'+
                                     '</div>'+
-                                 '</div>';
+                              '</div>';
+
+
                      $("#datosFDN").append(html);
                  });
 
@@ -3741,11 +3758,13 @@ $('#customSwitch2').click(function(){
                  }
                }
          });
+       }
      });
 
 
      $("#fuente_datos_d").change(function () {
          $("#datosFDD").html('');
+         if($(this).val()){
          $.ajax({
                url: "{{ url('/api/sistemaremi/apiSetFuenteDatos') }}",
                data: { 'fuente': $(this).val()},
@@ -3753,22 +3772,28 @@ $('#customSwitch2').click(function(){
                dataType: 'json',
                success: function(date){
                  $.each(date.item, function(i, data) {
-                     var html= '<div class="row">'+
-                                     '<div class="media row col-lg-12 ">'+
-                                         '<div class="row col-lg-12">'+
-                                              '<h5>&nbsp;&nbsp;&nbsp;&nbsp;Detalle de la fuente de datos seleccionado(s)</h5>'+
-                                              '<hr/>'+
-                                              '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
-                                              '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
-                                              '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'.</div>'+
-                                              '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'.</div>'+
-                                              '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
-                                              '<div class="col-6"><b>Principales variables:</b> '+data.variable+'.</div>'+
-                                              '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
-                                              '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'.</div>'+
+                   var html= '<div class="panel panel-default">'+
+                                    '<div class="panel-heading">'+
+                                        '<b><a href="#" data-perform="panel-collapse"><i class="ti-plus"></i> Fuente: </b> '+data.nombre+' ('+data.acronimo+')</a>'+
+                                    '</div>'+
+                                    '<div class="panel-wrapper collapse" aria-expanded="true" style="">'+
+                                        '<div class="panel-body">'+
+                                            '<div class="row col-lg-12">'+
+                                               '<div class="col-12"><h5>&nbsp;&nbsp;&nbsp;&nbsp;Detalle de la fuente de datos seleccionado(s)</h5></div>'+
+                                               '<hr/>'+
+                                               '<div class="col-12" style="font-size:20px"><b>Nombre:</b> '+data.nombre+' ('+data.acronimo+')</div>'+
+                                               '<div class="col-6"><b>Tipo:</b> '+data.tipo+'</div>'+
+                                               '<div class="col-6"><b>Abreviación:</b> '+data.acronimo+'</div>'+
+                                               '<div class="col-6"><b>Periodicidad:</b> '+data.periodicidad+'</div>'+
+                                               '<div class="col-6"><b>Serie de datos:</b> '+data.serie_datos+'</div>'+
+                                               '<div class="col-6"><b>Cobertura geográfica:</b>'+data.cobertura_geografica+'</div>'+
+                                               '<div class="col-6"><b>Nivel de representatividad de datos:</b> '+data.nivel_representatividad_datos+'</div>'+
+                                               '<div class="col-12"><b>Principales variables:</b> '+data.variable+'</div>'+
+                                               '<div class="col-12"><b>Observaciones:</b> '+data.observacion+'</div>'+
+                                             '</div>'+
                                         '</div>'+
                                     '</div>'+
-                                 '</div>';
+                              '</div>';
                      $("#datosFDD").append(html);
                  });
 
@@ -3781,6 +3806,7 @@ $('#customSwitch2').click(function(){
                  }
                }
          });
+        }
      });
 
 
@@ -4208,7 +4234,7 @@ $('#customSwitch2').click(function(){
        $('#option2').removeClass('show');
        $('#option2').addClass('hidden');
 
-       $("#formAdd")[0].reset();
+       //$("#formAdd")[0].reset();
        $("#formAddFuente")[0].reset();
        $('.with-errors').html('');
        $('.form-group').removeClass('has-error');
@@ -4254,10 +4280,15 @@ $('#customSwitch2').click(function(){
        $("#cod_deptal").hide();
        $("#cod_munic").hide();
        $("#msg_lineabase").hide();
-      $("#msg_metas").hide();
-      $("#msg_indicador").hide();
-      $("#msg_resultado").hide();
+       $("#msg_metas").hide();
+       $("#msg_indicador").hide();
+       $("#msg_resultado").hide();
        $('#customSwitch9').prop("checked",true);
+
+        $('#linea_base_mod').prop("checked",false);
+        $('#metas_mod').prop("checked",false);
+        $('#indicador_mod').prop("checked",false);
+        $('#resultado_mod').prop("checked",false);
     });
 //------------------aqui
     function limpiarBasico(){
@@ -4305,6 +4336,10 @@ $('#customSwitch2').click(function(){
        $("#msg_indicador").hide();
        $("#msg_resultado").hide();
        $('#customSwitch9').prop("checked",true);
+       $('#linea_base_mod').prop("checked",false);
+       $('#metas_mod').prop("checked",false);
+       $('#indicador_mod').prop("checked",false);
+       $('#resultado_mod').prop("checked",false);
 
 
     }//------------------aqui fin
@@ -4418,37 +4453,81 @@ $('#customSwitch2').click(function(){
                   }
 
 
-                  if(typeof data.alertas[0] !== 'undefined' ){
-                    if(data.alertas[0].linea_base==true){
-                        $('#linea_base_mod').prop("checked",true);
-                        $("#msg_lineabase").show();
-                     }else {
-                        $("#msg_lineabase").hide();
+                  // if(typeof data.alertas[0] !== 'undefined' ){
+                  //   if(data.alertas[0].linea_base==true){
+                  //       $('#linea_base_mod').prop("checked",true);
+                  //       $("#msg_lineabase").show();
+                  //    }else {
+                  //       $("#msg_lineabase").hide();
+                  //    }
+                  //
+                  //    if(data.alertas[0].metas==true){
+                  //       $('#metas_mod').prop("checked",true);
+                  //       $("#msg_metas").show();
+                  //    }else {
+                  //       $("#msg_metas").hide();
+                  //    }
+                  //
+                  //    if(data.alertas[0].indicador==true){
+                  //       $('#indicador_mod').prop("checked",true);
+                  //       $("#msg_indicador").show();
+                  //    }else {
+                  //       $("#msg_indicador").hide();
+                  //    }
+                  //
+                  //    if(data.alertas[0].resultado==true){
+                  //       $('#resultado_mod').prop("checked",true);
+                  //       $("#msg_resultado").show();
+                  //    }else {
+                  //       $("#msg_resultado").hide();
+                  //    }
+                  //  }
+                  if(data.alertas.length >0){
+                   for(var i=0;i<4;i++){
+                       for(var j=1;j<=4;j++){
+                           if(data.alertas[i].ajustes==j){
+                              switch (j) {
+                                 case 1:
+                                    if(data.alertas[i].tipo_ajuste==true){
+                                        $('#linea_base_mod').prop("checked",true);
+                                        $("#msg_lineabase").show();
+                                     }else {
+                                        $("#msg_lineabase").hide();
+                                     }
+                                   break;
+                                 case 2:
+                                     if(data.alertas[i].tipo_ajuste==true){
+                                        $('#metas_mod').prop("checked",true);
+                                        $("#msg_metas").show();
+                                     }else {
+                                        $("#msg_metas").hide();
+                                     }
+                                   break;
+                                 case 3:
+                                     if(data.alertas[i].tipo_ajuste==true){
+                                        $('#indicador_mod').prop("checked",true);
+                                        $("#msg_indicador").show();
+                                     }else {
+                                        $("#msg_indicador").hide();
+                                     }
+                                   break;
+                                 case 4:
+                                      if(data.alertas[i].tipo_ajuste==true){
+                                        $('#resultado_mod').prop("checked",true);
+                                        $("#msg_resultado").show();
+                                     }else {
+                                        $("#msg_resultado").hide();
+                                     }
+                                   break;
+                                 default:
+                                   text = "Error en el contador !!";
+                               }
+                           }
+
+                       }
+
                      }
-
-                     if(data.alertas[0].metas==true){
-                        $('#metas_mod').prop("checked",true);
-                        $("#msg_metas").show();
-                     }else {
-                        $("#msg_metas").hide();
-                     }
-
-                     if(data.alertas[0].indicador==true){
-                        $('#indicador_mod').prop("checked",true);
-                        $("#msg_indicador").show();
-                     }else {
-                        $("#msg_indicador").hide();
-                     }
-
-                     if(data.alertas[0].resultado==true){
-                        $('#resultado_mod').prop("checked",true);
-                        $("#msg_resultado").show();
-                     }else {
-                        $("#msg_resultado").hide();
-                     }
-                   }
-
-
+                  }
 
                    $('select[name=brecha_datos]').val(data.indicador[0].brecha_datos);
                    $('select[name=brecha_metodologia]').val(data.indicador[0].brecha_metodologia);
@@ -4524,7 +4603,7 @@ $('#customSwitch2').click(function(){
                                  '<div class="media row col-lg-12 ">'+
                                      '<div class="col-lg-2 text-center">'+
                                          '<img src="/img/'+data.logo+'" alt="ODS" width="100">'+
-                                         '<a class="btn btn-block btn-info btn-sm m-t-10" onclick="quitarART1(\''+data.cod_o+data.cod_m+data.cod_i+'\',2);">sQuitar</a>'+
+                                         '<a class="btn btn-block btn-info btn-sm m-t-10" onclick="quitarART1(\''+data.cod_o+data.cod_m+data.cod_i+'\',2);">Quitar</a>'+
                                      '</div>'+
                                      '<div class="row col-lg-10">'+
                                          '<input type="hidden" name="id_resultado_articuladods[]" value="'+data.id+'" />'+
@@ -4978,6 +5057,100 @@ $('#customSwitch2').click(function(){
         });
     }
 
+
+
+
+    function alertas_actualizacepta(idt,sar) {
+           swal({
+               title: "Acepta la Solicitud?",
+               text: "Se guardara la solicitud !!",
+               type: "warning",
+               showCancelButton: true,
+               confirmButtonColor: "#DD6B55",
+               confirmButtonText: "Si Aceptar!",
+               closeOnConfirm: false
+           },function(){
+                $.ajax({
+                      type: "POST",
+                      url: "{{ url('/sistemaremi/apiAjustesIndicador') }}",
+                      data: { 'idn': idt, 'ars': sar, '_token': $('input[name=_token]').val(),'id_indicador': $('input[name="id_indicador"]').val()},
+                      dataType: 'json',
+                      success: function(data){
+                         if(data.error == false){
+                            if(idt==1){$("#msg_lineabase").hide(); $('#linea_base_mod').prop("checked",false); }
+                            if(idt==2){$("#msg_metas").hide(); $('#metas_mod').prop("checked",false); }
+                            if(idt==3){$("#msg_indicador").hide(); $('#indicador_mod').prop("checked",false); }
+                            if(idt==4){$("#msg_resultado").hide();$('#resultado_mod').prop("checked",false);}
+                            swal("Aceptado!", "Se guardo la solicitud correctamente !!", "success");
+                         }else{
+                             $.toast({
+                              heading: data.title,
+                              text: data.msg,
+                              position: 'top-right',
+                              loaderBg:'#ff6849',
+                              icon: 'warning',
+                              hideAfter: 3500
+                            });
+                         }
+
+                      },
+                      error:function(data){
+                        if(data.status != 401){
+                          alert("Error recuperar los datos. E005");
+                        }else{
+                          window.location = '/login';
+                        }
+
+                      }
+                });
+           });
+       }
+
+       function alertas_actualizarechaza(idt,sar) {
+           swal({
+               title: "Rechaza la Solicitud?",
+               text: "Se guardara la solicitud !!",
+               type: "warning",
+               showCancelButton: true,
+               confirmButtonColor: "#DD6B55",
+               confirmButtonText: "Si Rechazar!",
+               closeOnConfirm: false
+           },function(){
+                $.ajax({
+                      type: "POST",
+                      url: "{{ url('/sistemaremi/apiAjustesIndicador') }}",
+                      data: { 'idn': idt, 'ars': sar, '_token': $('input[name=_token]').val(),'id_indicador': $('input[name="id_indicador"]').val()},
+                      dataType: 'json',
+                      success: function(data){
+                         if(data.error == false){
+                            if(idt==1){$("#msg_lineabase").hide(); $('#linea_base_mod').prop("checked",false); }
+                            if(idt==2){$("#msg_metas").hide(); $('#metas_mod').prop("checked",false); }
+                            if(idt==3){$("#msg_indicador").hide(); $('#indicador_mod').prop("checked",false); }
+                            if(idt==4){$("#msg_resultado").hide();$('#resultado_mod').prop("checked",false);}
+                             swal("Rechazado!", "Se guardo la solicitud correctamente !!", "success");
+                         }else{
+                             $.toast({
+                              heading: data.title,
+                              text: data.msg,
+                              position: 'top-right',
+                              loaderBg:'#ff6849',
+                              icon: 'warning',
+                              hideAfter: 3500
+                            });
+                         }
+
+                      },
+                      error:function(data){
+                        if(data.status != 401){
+                          alert("Error recuperar los datos. E005");
+                        }else{
+                          window.location = '/login';
+                        }
+
+                      }
+                });
+           });
+       }
 
 
     function showFilterAdvanced() {

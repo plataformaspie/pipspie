@@ -30,7 +30,9 @@ use App\Models\SistemaRemi\RelacionOdsPdes;
 use App\Models\SistemaRemi\IndicadoresVariables;
 use App\Models\SistemaRemi\Usuario;
 use App\Models\SistemaRemi\IndicadorSector;
-use App\Models\SistemaRemi\AlertasModificacion;
+use App\Models\SistemaRemi\AjusteModificacion;
+use App\Models\SistemaRemi\AlertasNotificacion;
+
 use Laracasts\flash\flash;
 
 class IndicadorController extends Controller
@@ -1377,15 +1379,38 @@ class IndicadorController extends Controller
             $id_reg = $indicador->id;
 
 
-            $alertas = new AlertasModificacion();
-            $alertas->linea_base = $request->has('linea_base_mod');
-            $alertas->metas = $request->has('metas_mod');
-            $alertas->indicador = $request->has('indicador_mod');
-            $alertas->resultado = $request->has('resultado_mod');
-            $alertas->id_indicador = $indicador->id;
-            $alertas->id_user = $this->user->id;
-            $alertas->activo = true;
-            $alertas->save();
+            $modificar = new AjusteModificacion();
+            $modificar->tipo_ajuste = $request->has('linea_base_mod');
+            $modificar->ajustes = $request->lin_eva;
+            $modificar->id_indicador = $indicador->id;
+            $modificar->id_user = $this->user->id;
+            $modificar->activo = true;
+            $modificar->save();
+
+            $modificar = new AjusteModificacion();
+            $modificar->tipo_ajuste = $request->has('metas_mod');
+            $modificar->ajustes = $request->met_eva;
+            $modificar->id_indicador = $indicador->id;
+            $modificar->id_user = $this->user->id;
+            $modificar->activo = true;
+            $modificar->save();
+
+            $modificar = new AjusteModificacion();
+            $modificar->tipo_ajuste = $request->has('indicador_mod');
+            $modificar->ajustes = $request->ind_eva;
+            $modificar->id_indicador = $indicador->id;
+            $modificar->id_user = $this->user->id;
+            $modificar->activo = true;
+            $modificar->save();
+
+
+            $modificar = new AjusteModificacion();
+            $modificar->tipo_ajuste = $request->has('resultado_mod');
+            $modificar->ajustes = $request->res_eva;
+            $modificar->id_indicador = $indicador->id;
+            $modificar->id_user = $this->user->id;
+            $modificar->activo = true;
+            $modificar->save();
 
             // $metasList = array('1'=>2016,'2'=>2017,'3'=>2018,'4'=>2019,'5'=>2020,'6'=>2025,'7'=>2030);
             // for($i=1; $i <= count($metasList); $i++){
@@ -1630,32 +1655,71 @@ class IndicadorController extends Controller
             $indicador->save();
 
             $ver = \DB::select("SELECT *
-                                  FROM remi_alertas_modificacion
-                                  where id_indicador=".$request->id_indicador);
+                                 FROM remi_ajuste_modificacion
+                                 where id_indicador=".$request->id_indicador);
+           if($ver){
 
-            if($ver){
-                $vid= $ver[0]->id;
-                $alertas1 = AlertasModificacion::find($vid);
-                $alertas1->linea_base = $request->has('linea_base_mod');
-                $alertas1->metas = $request->has('metas_mod');
-                $alertas1->indicador = $request->has('indicador_mod');
-                $alertas1->resultado = $request->has('resultado_mod');
-                $alertas1->id_indicador = $request->id_indicador;
-                $alertas1->activo = true;
-                $alertas1->id_user_updated = $this->user->id;
-                $alertas1->save();
-            }
-            else {
-              $alertas = new AlertasModificacion();
-              $alertas->linea_base = $request->has('linea_base_mod');
-              $alertas->metas = $request->has('metas_mod');
-              $alertas->indicador = $request->has('indicador_mod');
-              $alertas->resultado = $request->has('resultado_mod');
-              $alertas->id_indicador = $request->id_indicador;
-              $alertas->id_user = $this->user->id;
-              $alertas->activo = true;
-              $alertas->save();
-            }
+                for ($i=0; $i < 4 ; $i++) {
+                     $vid= $ver[$i]->id;
+                     $modificar = AjusteModificacion::find($vid);
+                     if($i==0){
+                         $modificar->tipo_ajuste = $request->has('linea_base_mod');
+                         $modificar->ajustes = $request->lin_eva;
+                     }
+                     if($i==1){
+                         $modificar->tipo_ajuste = $request->has('metas_mod');
+                         $modificar->ajustes = $request->met_eva;
+                     }
+                     if($i==2){
+                         $modificar->tipo_ajuste = $request->has('indicador_mod');
+                         $modificar->ajustes = $request->ind_eva;
+                     }
+                     if($i==3){
+                         $modificar->tipo_ajuste = $request->has('resultado_mod');
+                         $modificar->ajustes = $request->res_eva;
+                     }
+                     $modificar->id_indicador = $indicador->id;
+                     $modificar->id_user_updated = $this->user->id;
+                     $modificar->activo = true;
+                     $modificar->save();
+                 }
+
+           }
+           else {
+
+                 $modificar = new AjusteModificacion();
+                 $modificar->tipo_ajuste = $request->has('linea_base_mod');
+                 $modificar->ajustes = $request->lin_eva;
+                 $modificar->id_indicador = $indicador->id;
+                 $modificar->id_user = $this->user->id;
+                 $modificar->activo = true;
+                 $modificar->save();
+
+                 $modificar = new AjusteModificacion();
+                 $modificar->tipo_ajuste = $request->has('metas_mod');
+                 $modificar->ajustes = $request->met_eva;
+                 $modificar->id_indicador = $indicador->id;
+                 $modificar->id_user = $this->user->id;
+                 $modificar->activo = true;
+                 $modificar->save();
+
+                 $modificar = new AjusteModificacion();
+                 $modificar->tipo_ajuste = $request->has('indicador_mod');
+                 $modificar->ajustes = $request->ind_eva;
+                 $modificar->id_indicador = $indicador->id;
+                 $modificar->id_user = $this->user->id;
+                 $modificar->activo = true;
+                 $modificar->save();
+
+
+                 $modificar = new AjusteModificacion();
+                 $modificar->tipo_ajuste = $request->has('resultado_mod');
+                 $modificar->ajustes = $request->res_eva;
+                 $modificar->id_indicador = $indicador->id;
+                 $modificar->id_user = $this->user->id;
+                 $modificar->activo = true;
+                 $modificar->save();
+           }
 
 
             if(isset($request->resultado_articulado)){
@@ -2016,7 +2080,7 @@ class IndicadorController extends Controller
       $archivos = IndicadoresArchivosRespaldos::where('id_indicador',$request->id)->where('activo', true)->get();
       $archiv_ods = IndicadoresVariables::where('id_indicador',$request->id)->where('activo', true)->get();
       $sectores = IndicadorSector::where('id_indicador',$request->id)->where('activo', true)->get();
-      $alertas = AlertasModificacion::where('id_indicador',$request->id)->where('activo', true)->get();
+      $alertas = AjusteModificacion::where('id_indicador',$request->id)->where('activo', true)->get();
 
       $agrupSectores ='';
       foreach ($sectores as $value) {
@@ -2038,6 +2102,75 @@ class IndicadorController extends Controller
           'sectores' => trim($agrupSectores, ','))
       );
   }
+
+
+  public function apiAjustesIndicador(Request $request)
+   {
+       $this->user= \Auth::user();
+       $ajustar = new AlertasNotificacion();
+       $ajustar->tipo_ajuste = $request->idn;
+       $ajustar->valoracion = $request->ars;
+       $ajustar->id_indicador = $request->id_indicador;
+       $ajustar->id_user = $this->user->id;
+       $ajustar->activo = true;
+       $ajustar->save();
+
+       $ver = \DB::select("SELECT *
+                             FROM remi_ajuste_modificacion
+                             where id_indicador=".$request->id_indicador);
+       if($ver){
+            for ($i=0; $i < 4 ; $i++) {
+                 $vid= $ver[$i]->id;
+                 $modificar = AjusteModificacion::find($vid);
+                 if($modificar->ajustes==$request->idn){
+                      switch ($request->idn) {
+                         case 1:
+                           $modificar->tipo_ajuste = $request->has('linea_base_mod');
+                           $modificar->ajustes = $request->idn;
+                           $modificar->id_indicador = $request->id_indicador;
+                           $modificar->id_user_updated = $this->user->id;
+                           $modificar->activo = true;
+                           $modificar->save();
+                           break;
+                         case 2:
+                           $modificar->tipo_ajuste = $request->has('metas_mod');
+                           $modificar->ajustes = $request->idn;
+                           $modificar->id_indicador = $request->id_indicador;
+                           $modificar->id_user_updated = $this->user->id;
+                           $modificar->activo = true;
+                           $modificar->save();
+                           break;
+                         case 3:
+                           $modificar->tipo_ajuste = $request->has('indicador_mod');
+                           $modificar->ajustes = $request->idn;
+                           $modificar->id_indicador = $request->id_indicador;
+                           $modificar->id_user_updated = $this->user->id;
+                           $modificar->activo = true;
+                           $modificar->save();
+                           break;
+                         case 4:
+                           //dd("cvvfdg77",$request->has('resultado_mod'));
+                           $modificar->tipo_ajuste = $request->has('resultado_mod');
+                           $modificar->ajustes = $request->idn;
+                           $modificar->id_indicador = $request->id_indicador;
+                           $modificar->id_user_updated = $this->user->id;
+                           $modificar->activo = true;
+                           $modificar->save();
+                           break;
+                       }
+                 }
+             }
+       }
+
+       return \Response::json(array(
+           'error' => false,
+           'title' => "Success!",
+           'msg' => "Se guardo con exito.")
+       );
+   }
+
+
+
 
   public function apiDeleteIndicador(Request $request)
   {
