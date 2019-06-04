@@ -1121,6 +1121,21 @@
                                                    <h4 style="width:100%;">Metas y avances</h4>
                                                </div>
                                                 <div class="col-md-12">
+                                                  <h5>Frecuencia de información del indicador</h5>
+                                                  <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                    <div class="col-md-3 p-l-0 p-r-0">
+                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Frecuencia de reporte</label>
+                                                    </div>
+                                                    <div class="col-md-9 p-l-0">
+                                                        <select id="frecuencia" name="frecuencia" class="custom-select col-12 form-control">
+                                                            <option value="">Seleccionar...</option>
+                                                            @foreach ($frecuencia as  $item)
+                                                                  <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="help-block with-errors"></div>
+                                                    </div>
+                                                   </div>
                                                   <h5>Línea base del indicador</h5>
                                             <!--       <hr> -->
                                                   <div class=" form-group row m-b-5 m-l-5 m-t-5" >
@@ -1991,21 +2006,6 @@
                                                    <h4 style="width:100%;">Secretaria Técnica CIMPDES</h4>
                                                </div>
                                                <div class="col-md-12">
-                                                 <div class="form-group row m-b-5 m-l-5 m-t-5" >
-                                                   <div class="col-md-3 p-l-0 p-r-0">
-                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Frecuencia de reporte</label>
-                                                   </div>
-                                                   <div class="col-md-9 p-l-0">
-                                                       <select id="frecuencia" name="frecuencia" class="custom-select col-12 form-control">
-                                                           <option value="">Seleccionar...</option>
-                                                           @foreach ($frecuencia as  $item)
-                                                                 <option value="{{ $item->nombre }}">{{$item->nombre}}</option>
-                                                           @endforeach
-                                                       </select>
-                                                       <div class="help-block with-errors"></div>
-                                                   </div>
-                                                 </div>
-
                                                  <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if($filtData>0)pointer-events:none; @endif" >
                                                    <div class="col-md-3 p-l-0 p-r-0">
                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Sectores Relacionados </label>
