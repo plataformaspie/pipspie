@@ -1,7 +1,7 @@
 @extends('layouts.sistemaremi')
 
 @section('header')
-<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ asset('css/export.css') }}" type="text/css" media="all" />
 <style>
 .box {
   position: relative;
@@ -369,12 +369,12 @@
 @push('script-head')
 
   <!-- Resources -->
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/pie.js"></script>
-  <script type="text/javascript" src="http://cdn.amcharts.com/lib/3/serial.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/gauge.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+  <script type="text/javascript" src="{{ asset('js/amcharts.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/pie.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/serial.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/gauge.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/export.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/light.js') }}"></script>
   <!-- EASY PIE CHART JS -->
   <script src="{{ asset('plugins/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js') }}"></script>
   <script src="{{ asset('plugins/bower_components/jquery.easy-pie-chart/easy-pie-chart.init.js') }}"></script>
@@ -535,10 +535,10 @@
 
 
 
-  <script src="https://www.amcharts.com/lib/4/core.js"></script>
-  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
-  <script src="https://www.amcharts.com/lib/4/plugins/forceDirected.js"></script>
-  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+  <script src="{{ asset('js/amcharts4/core.js') }}"></script>
+  <script src="{{ asset('js/amcharts4/charts.js') }}"></script>
+  <script src="{{ asset('js/amcharts4/forceDirected.js') }}"></script>
+  <script src="{{ asset('js/amcharts4/animated.js') }}"></script>
 
   <script>
     $(document).ready(function(){

@@ -252,12 +252,12 @@ text-decoration: underline;
 @endsection
 
 @push('script-head')
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/pie.js"></script>
-  <script type="text/javascript" src="http://cdn.amcharts.com/lib/3/serial.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/gauge.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+  <script type="text/javascript" src="{{ asset('js/amcharts.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/pie.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/serial.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/gauge.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/export.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/light.js') }}"></script>
   <script type="text/javascript">
     var chartTacometro0;
     var chartTacometro1;

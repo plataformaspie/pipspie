@@ -341,7 +341,7 @@
                                              <div class="col-12"><b>Principales variables:&nbsp;</b><p align="justify">{{$values->variable}}</p></div>
                                              <div class="col-6"><b>Nivel de representatividad de datos:&nbsp;</b>{{$values->nivel_representatividad_datos}}</div>
                                             </div>
-                                             <div class="col-12"><b>Observaciones:&nbsp;</b><p align="justify">{{$values->observacion}}</p></div>      
+                                             <div class="col-12"><b>Observaciones:&nbsp;</b><p align="justify">{{$values->observacion}}</p></div>
                                           @endforeach
                                         </div>
                                         <div class="col-lg-4 col-sm-6">
@@ -493,8 +493,8 @@
 @endsection
 
 @push('script-head')
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-  <script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script type="text/javascript" src="{{ asset('js/amcharts.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('js/serial.js') }}"></script>
   <script type="text/javascript">
   var data =  <?php echo $grafica; ?>;
     $(document).ready(function(){

@@ -2,14 +2,14 @@
 
 @section('header')
 
-  <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" />
+  {{-- <link rel="stylesheet" href="{{ asset('plugins/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" /> --}}
   <link rel="stylesheet" href="{{ asset('plugins/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('plugins/bower_components/custom-select/custom-select.css') }}"  type="text/css" />
   <link href="/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
 
 
   <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.base.css') }} " type="text/css" />
-  <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.ui-lightness.css') }} " type="text/css" />  
+  <link rel="stylesheet" href="{{ asset('jqwidgets5.5.0/jqwidgets/styles/jqx.ui-lightness.css') }} " type="text/css" />
 
   <style media="screen">
     .select2-container-multi{
@@ -164,7 +164,7 @@ input[type=checkbox]:checked:disabled + label:before {
           <form id="formAdd" name="formAdd" action="javascript:save();" data-toggle="validator" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" name="id_indicador" value="">
-            <input type="hidden" name="tap_next" value="">            
+            <input type="hidden" name="tap_next" value="">
             <!-- .row -->
             <div class="row">
               <div class="col-sm-12">
@@ -188,7 +188,7 @@ input[type=checkbox]:checked:disabled + label:before {
                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Etapa</label>
                         </div>
                         <div class="col-md-11 p-l-0">
-                          <label id="unaCaja" name="unaCaja" for="label" class="form-control" style="width: 100%;padding: 7px 95px 7px 3px;"></label>                                                
+                          <label id="unaCaja" name="unaCaja" for="label" class="form-control" style="width: 100%;padding: 7px 95px 7px 3px;"></label>
                         </div>
                       </div>
                       <div class="form-group row m-b-10">
@@ -196,7 +196,7 @@ input[type=checkbox]:checked:disabled + label:before {
                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100px;padding: 7px 95px 7px 3px;">Nombre</label>
                         </div>
                         <div class="col-md-11 p-l-0">
-                           <label id="dosCaja" name="dosCaja" for="label" class="form-control" style="width: 100%;padding: 7px 95px 7px 3px;"></label>                          
+                           <label id="dosCaja" name="dosCaja" for="label" class="form-control" style="width: 100%;padding: 7px 95px 7px 3px;"></label>
                         </div>
                       </div>
 
@@ -209,9 +209,9 @@ input[type=checkbox]:checked:disabled + label:before {
   <label for="fruit3">Cherry</label>
   <input type="checkbox" id="fruit4" name="fruit-4" value="Strawberry">
   <label for="fruit4">Strawberry</label>
-</form>  -->                                   
+</form>  -->
 
-                                                   
+
                     <hr>
                     <div class="row">
                       <div class="col-lg-12 col-sm-12 col-xs-12 p-l-0">
@@ -269,7 +269,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                   </ul>
                                   <div class="tab-content media p-t-0 p-l-0 p-r-0" style="width: 80%;">
                                       <div id="info1" class="tab-pane active">
-<!-- 
+<!--
                                           <div class="form-group row m-b-5 m-l-5 m-t-5">
                                               <div class="col-md-3 p-l-0 p-r-0">
                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Nombre</label>
@@ -324,14 +324,14 @@ input[type=checkbox]:checked:disabled + label:before {
                                                         <button type="button" class="btn btn-info btn-sm agregarART m-t-5"><i class="fa fa-plus-square"></i> Agregar</button>
                                                     </div>
                                                 </div>
-<!--                                                 <h5>Detalle de articulación</h5> -->                                     
+<!--                                                 <h5>Detalle de articulación</h5> -->
                                                 <div id="datosART">
                                                     <div></div>
                                                 </div>
 <!--                                           <div class="col-md-12 list-group-item-success" style="margin-top: -9px;">
                                               <h4 style="width:100%;">Alinear al ODS</h4>
-                                          </div>        
-                                          <p><h5>Ingrese los codigos ODS para agregar la articulación (Ayuda F10)</h5></p>        
+                                          </div>
+                                          <p><h5>Ingrese los codigos ODS para agregar la articulación (Ayuda F10)</h5></p>
                                                 <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                    <div class="col-md-3 p-l-0 p-r-0">
                                                         <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Comparabilidad ODS/PDES</label>
@@ -341,12 +341,12 @@ input[type=checkbox]:checked:disabled + label:before {
                                                           <select id="relac" name="relac" class="custom-select col-12 form-control enabledCampos" required>
                                                                 <option value="">Seleccionar Relacion.......</option>
                                                                 @foreach ($relacop as  $ind_op)
-                                                                    <option value="{{ $ind_op->relacion_pdes_ods }}">{{ $ind_op->relacion_pdes_ods }}</option>                                          
+                                                                    <option value="{{ $ind_op->relacion_pdes_ods }}">{{ $ind_op->relacion_pdes_ods }}</option>
                                                                 @endforeach
-                                                          </select> 
+                                                          </select>
                                                           <div class="help-block with-errors"></div>
-                                                    </div>                      
-                                                </div>  
+                                                    </div>
+                                                </div>
 
                                                 <div class="row m-b-5 m-l-5 m-t-5" >
                                                     <div class="form-group col-md-2 p-l-0 p-r-0">
@@ -546,10 +546,10 @@ input[type=checkbox]:checked:disabled + label:before {
                                                   <textarea id="numerador_detalle" name="numerador_detalle" class="form-control" placeholder="Numerador" rows="2" ></textarea>
                                                   <div class="help-block with-errors"></div>
                                               </div>
-                                            </div>                                              
+                                            </div>
 
 
-                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >                                              
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                <div class="col-md-3 p-l-0 p-r-0">
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Fuente Numerador</label>
                                                  <h5>(<b>F8</b> agregar uno nuevo a la lista)</h5>
@@ -579,7 +579,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                                   <div class="help-block with-errors"></div>
                                               </div>
                                             </div>
-                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >                                              
+                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                <div class="col-md-3 p-l-0 p-r-0">
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Fuente Denominador</label>
                                                  <h5>(<b>F8</b> agregar uno nuevo a la lista)</h5>
@@ -639,8 +639,8 @@ input[type=checkbox]:checked:disabled + label:before {
                                               <div class="col-md-9 p-l-0">
                                                   <textarea id="numerador_detalle" name="numerador_detalle" class="form-control" placeholder="Numerador" rows="2" ></textarea>
                                                   <div class="help-block with-errors"></div>
-                                              </div>  
-                                            </div> -->  
+                                              </div>
+                                            </div> -->
 <!--                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                               <div class="col-md-2 p-l-0 p-r-0">
                                                 <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Fuente numerador</label>
@@ -670,7 +670,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                             </div> -->
 
                                    <!--        <div class="col-md-12"> -->
- <!--                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >                                              
+ <!--                                             <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                <div class="col-md-2 p-l-0 p-r-0">
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Fuente</label>
                                                  <h5>(<b>F8</b> agregar uno nuevo a la lista)</h5>
@@ -709,7 +709,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Metas y avances</h4>
                                            </div>
-                                            <div class="col-md-12">                                   
+                                            <div class="col-md-12">
                                               <h5>Linea base del indicador</h5>
                                         <!--       <hr> -->
                                               <div class=" form-group row m-b-5 m-l-5 m-t-5" >
@@ -734,7 +734,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                                       <div class="help-block with-errors"></div>
                                                   </div>
                                               </div>
-                                            </div> 
+                                            </div>
                                            <div class="col-md-12">
                                                <h5>Metas macro</h5>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
@@ -783,8 +783,8 @@ input[type=checkbox]:checked:disabled + label:before {
                                                <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de medida</label>
                                                 </div>
-                                                  <div class="form-group col-md-3 p-l-0 m-b-0">   
-                                                      <label id="medida_2016" name="medida_2016" for="label" class="form-control"></label>  
+                                                  <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                      <label id="medida_2016" name="medida_2016" for="label" class="form-control"></label>
                                                       <div class="help-block with-errors"></div>
                                                 </div>
                                               </div>
@@ -801,9 +801,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de medida</label>
                                                 </div>
                                                   <div class="form-group col-md-3 p-l-0 m-b-0">
-                                                      <label id="medida_2017" name="medida_2017" for="label" class="form-control"></label>  
+                                                      <label id="medida_2017" name="medida_2017" for="label" class="form-control"></label>
                                                       <div class="help-block with-errors"></div>
-                                                </div>                                                   
+                                                </div>
                                               </div>
                                               <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                    <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
@@ -816,11 +816,11 @@ input[type=checkbox]:checked:disabled + label:before {
                                                    </div>
                                               <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de medida</label>
-                                                </div>                                              
+                                                </div>
                                                   <div class="form-group col-md-3 p-l-0 m-b-0">
-                                                      <label id="medida_2018" name="medida_2018" for="label" class="form-control"></label>  
+                                                      <label id="medida_2018" name="medida_2018" for="label" class="form-control"></label>
                                                       <div class="help-block with-errors"></div>
-                                                </div>                                                   
+                                                </div>
                                                </div>
                                                <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                     <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
@@ -835,9 +835,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                                   <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Unidad de medida</label>
                                                 </div>
                                                   <div class="form-group col-md-3 p-l-0 m-b-0">
-                                                      <label id="medida_2019" name="medida_2019" for="label" class="form-control"></label>  
+                                                      <label id="medida_2019" name="medida_2019" for="label" class="form-control"></label>
                                                       <div class="help-block with-errors"></div>
-                                                  </div>                                                    
+                                                  </div>
                                                 </div>
                                            </div>
 
@@ -908,7 +908,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                                              <th class="col-sm-1"><center>#</center></th>
                                                              <th class="col-sm-3"><center>Fecha reportado</center></th>
                                                              <th class="col-sm-3"><center>Valor reportado</center></th>
-                                                             <th class="col-sm-8"><center>Explicaciòn</center></th>      
+                                                             <th class="col-sm-8"><center>Explicaciòn</center></th>
                                                              <th class="col-sm-1"><center> - </center></th>
                                                          </tr>
                                                      </thead>
@@ -926,7 +926,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                        </div>
 
 
-<!--                                        <div id="info4" class="tab-pane">  
+<!--                                        <div id="info4" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Fuente de datos del indicador</h4>
                                            </div>
@@ -1005,7 +1005,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                            </div>
                                        </div>
 
-                                     <div id="info5" class="tab-pane">  
+                                     <div id="info5" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Viabilidad de Indicador</h4>
                                            </div>
@@ -1013,12 +1013,12 @@ input[type=checkbox]:checked:disabled + label:before {
                        <!--                       <div class="form-group row m-b-5 m-l-5 m-t-5" > -->
                                               <h5>FORMULARIO EN CONSTRUCCION 1 !!!</h5>
 
-<!-- 
+<!--
                        <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Viabilidad modelo</h4>
-                         
+
                                 <div id="responsive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -1035,19 +1035,19 @@ input[type=checkbox]:checked:disabled + label:before {
                                                     <div class="form-group">
                                                         <label for="message-text" class="control-label">Message:</label>
                                                         <textarea class="form-control" id="message-text"></textarea>
-                                                    </div>  
+                                                    </div>
 
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                                                 <button type="button" class="btn btn-danger waves-effect waves-light">Save changes</button>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            
-                                <img src="../assets/images/alert/model.png" alt="default" data-toggle="modal" data-target="#responsive-modal" class="model_img img-responsive" />                                
+
+                                <img src="../assets/images/alert/model.png" alt="default" data-toggle="modal" data-target="#responsive-modal" class="model_img img-responsive" />
 
                             </div>
                         </div>
@@ -1080,9 +1080,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                                  <div class="col-md-9 p-l-0">
                                                      <div class="select2-wrapper">
                                                        <input type="file" id ="arc_archivo_ing" name="arc_archivo_ing" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                     </div> 
+                                                     </div>
                                                      <div class="help-block with-errors"></div>
-                                                 </div>  
+                                                 </div>
                                                  <div class="col-md-12 p-l-0 text-center">
                                                      <button type="button" class="btn btn-info btn-sm agregarARCS m-t-5"><i class="fa fa-plus-square"></i> Agregar Sexo</button>
                                                  </div>
@@ -1096,9 +1096,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                     </div>
                                 </div>
 
-              
-                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >   
-                       <div class="col-md-2 p-l-0">        
+
+                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                       <div class="col-md-2 p-l-0">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="chkCodeudor2">
                             <label class="custom-control-label" for="chkCodeudor2">SEXO</label>
@@ -1118,7 +1118,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                                </tbody>
                                              </table>
                                       </div>
-                                      
+
                       </div>
 
 
@@ -1148,9 +1148,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                                  <div class="col-md-9 p-l-0">
                                                      <div class="select2-wrapper">
                                                        <input type="file" id ="arc_archedad" name="arc_archedad" class="form-control p-t-0" accept=".xls,.xlsx,.cvs">
-                                                     </div> 
+                                                     </div>
                                                      <div class="help-block with-errors"></div>
-                                                 </div>  
+                                                 </div>
                                                  <div class="col-md-12 p-l-0 text-center">
                                                      <button type="button" class="btn btn-info btn-sm agregarARCED m-t-5"><i class="fa fa-plus-square"></i> Agregar Edad</button>
                                                  </div>
@@ -1164,9 +1164,9 @@ input[type=checkbox]:checked:disabled + label:before {
                                     </div>
                                 </div>
 
-              
-                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >   
-                       <div class="col-md-2 p-l-0">        
+
+                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                       <div class="col-md-2 p-l-0">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="chkCodeudor3">
                             <label class="custom-control-label" for="chkCodeudor3">EDAD</label>
@@ -1186,11 +1186,11 @@ input[type=checkbox]:checked:disabled + label:before {
                                                </tbody>
                                              </table>
                                       </div>
-                                      
+
                       </div>
 
 
-<!--                                           
+<!--
                                                <div class="col-md-3 p-l-0 p-r-0">
                                                  <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;"> Fuente</label>
                                                  <h5>(<b>F8</b> agregar uno nuevo a la lista)</h5>
@@ -1208,7 +1208,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                     <!--          </div> -->
                                            </div>
                                        </div>
-                                     <div id="info6" class="tab-pane">  
+                                     <div id="info6" class="tab-pane">
                                            <div class="col-md-12 list-group-item-success">
                                                <h4 style="width:100%;">Secretaria Técnica CIMPDES</h4>
                                            </div>
@@ -1221,7 +1221,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                 </div>
                                              <div id="datosAFD">
                                              </div>
-                                                                                 
+
                                              </div>
 
                                              <div class="form-group row m-b-5 m-l-5 m-t-5" >
@@ -1231,7 +1231,7 @@ input[type=checkbox]:checked:disabled + label:before {
                                 </div>
                                              <div id="datosAFD2">
                                              </div>
-                                                                                 
+
                                              </div>
 
 
@@ -1279,9 +1279,9 @@ input[type=checkbox]:checked:disabled + label:before {
         </div>
 
 
-              
-                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >   
-                       <div class="col-md-2 p-l-0">        
+
+                  <div class="row form-group row m-b-5 m-l-5 m-t-5" >
+                       <div class="col-md-2 p-l-0">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" name="checkbox" class="custom-control-input" id="chkCodeudor">
                             <label class="custom-control-label" for="chkCodeudor"> Sexo MOdal</label>
@@ -1301,11 +1301,11 @@ input[type=checkbox]:checked:disabled + label:before {
                                                </tbody>
                                              </table>
                                       </div>
-                                      
+
                       </div>
 
                                            </div>
-                                      </div>                                       
+                                      </div>
 
                                   </div>
                               </div>
@@ -1563,7 +1563,7 @@ input[type=checkbox]:checked:disabled + label:before {
     <script src="{{ asset('plugins/bower_components/custom-select/custom-select.min.js') }}" type="text/javascript"></script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
+    <script src="{{ asset('js/jquery.inputmask.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxcore.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxwindow.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jqwidgets5.5.0/jqwidgets/jqxbuttons.js') }}"></script>
@@ -1653,12 +1653,12 @@ $('#customSwitch1').click(function(){
 
               var html =  '<div class="form-group row m-b-5 m-l-5 m-t-5" >'+
                               '<div class="col-md-2 p-l-0 p-r-0">'+
-                              '<label for="textarea" class="col-form-label control-label list-group-item-info"'+ 
+                              '<label for="textarea" class="col-form-label control-label list-group-item-info"'+
                               'style="width: 100%;padding: 9px 0px 9px 3px;"> Nombre</label>'+
                                 '</div>'+
                                     '<div class="col-md-9 p-l-0">'+
                                         '<div class="select2-wrapper">'+
-                                            '<input id="arc_nombre_input" name="arc_nombre_input" type="text"'+ 
+                                            '<input id="arc_nombre_input" name="arc_nombre_input" type="text"'+
                                             'class="form-control" placeholder="Nombre de respaldo" >'+
                                                 '</div>'+
                                                   '<div class="help-block with-errors"></div>'+
@@ -1670,7 +1670,7 @@ $('#customSwitch1').click(function(){
                           '</div>'+
                             '<div class="col-md-9 p-l-0">'+
                                 '<div class="select2-wrapper">'+
-                                   '<input type="file" id ="arc_archivo_inputs" name="arc_archivo_inputs"'+ 
+                                   '<input type="file" id ="arc_archivo_inputs" name="arc_archivo_inputs"'+
                                     'class="form-control p-t-0" accept=".xls,.xlsx,.cvs">'+
                                 '</div>'+
                                 '<div class="help-block with-errors">'+'</div>'+
@@ -1679,14 +1679,14 @@ $('#customSwitch1').click(function(){
                               '<button type="button" class="btn btn-info btn-sm agregarARCS m-t-5">'+
                                 '<i class="fa fa-plus-square">'+'</i>'+' Agregar Sexo</button>'+
                                 '</div>'+
-                          '</div>';    
-            // $("#datosARC1 > tbody").append(html); 
+                          '</div>';
+            // $("#datosARC1 > tbody").append(html);
 
-            //         var html= '<div class="form-group col-md-3 p-l-0">&nbsp;HHHHHHHH</div>'; 
-                    $("#datosAFD").append(html);  
+            //         var html= '<div class="form-group col-md-3 p-l-0">&nbsp;HHHHHHHH</div>';
+                    $("#datosAFD").append(html);
   }
   else{
-                    $("#datosAFD").html("");                     
+                    $("#datosAFD").html("");
   }
 });
 
@@ -1700,7 +1700,7 @@ $('#customSwitch2').click(function(){
                           '</div>'+
                             '<div class="col-md-9 p-l-0">'+
                                 '<div class="select2-wrapper">'+
-                                   '<input type="file" id ="arc_archivo_input" name="arc_archivo_input"'+ 
+                                   '<input type="file" id ="arc_archivo_input" name="arc_archivo_input"'+
                                     'class="form-control p-t-0" accept=".xls,.xlsx,.cvs">'+
                                 '</div>'+
                                 '<div class="help-block with-errors">'+'</div>'+
@@ -1709,14 +1709,14 @@ $('#customSwitch2').click(function(){
                               '<button type="button" class="btn btn-info btn-sm agregarARC1 m-t-5">'+
                                 '<i class="fa fa-plus-square">'+'</i>'+' Agregar Edad</button>'+
                                 '</div>'+
-                          '</div>';    
-            // $("#datosARC1 > tbody").append(html); 
+                          '</div>';
+            // $("#datosARC1 > tbody").append(html);
 
-            //         var html= '<div class="form-group col-md-3 p-l-0">&nbsp;HHHHHHHH</div>'; 
-                    $("#datosAFD2").append(html);  
+            //         var html= '<div class="form-group col-md-3 p-l-0">&nbsp;HHHHHHHH</div>';
+                    $("#datosAFD2").append(html);
   }
   else{
-                    $("#datosAFD2").html("");                     
+                    $("#datosAFD2").html("");
   }
 });
 
@@ -1733,7 +1733,7 @@ $('#customSwitch2').click(function(){
                     //ip_id--;
                     var html = '<h5>Detalle de Articulación</h5>'+  //'<hr/>'+
                                 '<div id="ART'+codigo+'" class="row">'+
-                                  '<div class="media row col-lg-12 ">'+                                   
+                                  '<div class="media row col-lg-12 ">'+
                                       '<div class="col-lg-2 text-center">'+
                                           '<img src="/img/'+data.set[0].logo+'" alt="Pliar" width="100">'+
                                           '<a class="btn btn-block btn-info btn-sm m-t-10" onclick="quitarART('+codigo+',1);">Quitar</a>'+
@@ -1761,7 +1761,7 @@ $('#customSwitch2').click(function(){
                        loaderBg:'#ff6849',
                        icon: 'warning',
                        hideAfter: 3500
-                   
+
                      });
                   }
                 },
@@ -1811,7 +1811,7 @@ $('#customSwitch2').click(function(){
                     //ip_id--;
                     var html = '<h5>Detalle de Articulación</h5>'+  //'<hr/>'+
                                 '<div id="ART'+codigo+'" class="row">'+
-                                  '<div class="media row col-lg-12 ">'+                                   
+                                  '<div class="media row col-lg-12 ">'+
                                       '<div class="col-lg-2 text-center">'+
                                           '<img src="/img/'+data.set[0].logo+'" alt="Pliar" width="100">'+
                                           '<a class="btn btn-block btn-info btn-sm m-t-10" onclick="quitarART('+codigo+',1);">Quitar</a>'+
@@ -1821,7 +1821,7 @@ $('#customSwitch2').click(function(){
                                           '<input type="hidden" name="resultado_articulado[]" value="'+data.set[0].id_resultado+'" />'+
                                           '<input type="hidden" id="EST'+codigo+'" name="estado_resultado_articulado[]" value="1" />'+
                                           '<div class="col-12"><b>Relacion:</b>'+relacion+
-                                          '</div>'+                                          
+                                          '</div>'+
                                           '<div class="col-12"><b>'+data.set[0].pilar+':</b> '+data.set[0].desc_p+
                                           '</div>'+
                                              '<div class="col-12"><b>'+data.set[0].meta+':</b> '+data.set[0].desc_m+
@@ -1841,7 +1841,7 @@ $('#customSwitch2').click(function(){
                        loaderBg:'#ff6849',
                        icon: 'warning',
                        hideAfter: 3500
-                   
+
                      });
                   }
                 },
@@ -1875,7 +1875,7 @@ $('#customSwitch2').click(function(){
         }
 
       });
-   
+
 
       $(".agregarARCS").click(function () {
          var nombre = $('input[name=arc_nombre_ing]').val();
@@ -2031,7 +2031,7 @@ $('#customSwitch2').click(function(){
          var nombre = $('input[name=arc_nombre_mod]').val();
          nombre = nombre.replace(/\s/g,"_");
          //console.log("WWWW",nombre);
-         var formData = new FormData($("#formAdd")[0]);       
+         var formData = new FormData($("#formAdd")[0]);
          if(!$('#datosARC8').find("#ARC"+nombre).length){
             $.ajax({
                     url: "{{ url('/api/sistemaremi/apiUploadArchivoRespaldoMod') }}",
@@ -2106,7 +2106,7 @@ $('#customSwitch2').click(function(){
          var nombre = $('input[name=arc_nombre_input]').val();
          nombre = nombre.replace(/\s/g,"_");
 
-         var formData = new FormData($("#formAdd")[0]);       
+         var formData = new FormData($("#formAdd")[0]);
          if(!$('#datosARC').find("#ARC"+nombre).length){
             $.ajax({
                     url: "{{ url('/api/sistemaremi/apiUploadArchivoRespaldo') }}",
@@ -2189,16 +2189,16 @@ $('#customSwitch2').click(function(){
               case "1":
                   $('#tabledataTable > tbody > tr').each(function() {
                      ids += $(this).attr("data-key")+",";
-                     
+
                   });
-                   console.log(ids);        
-                  location.href = "{{ url('/api/sistemaremi/apiExportDataindicador') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;            
+                   console.log(ids);
+                  location.href = "{{ url('/api/sistemaremi/apiExportDataindicador') }}?ids=" + ids + "&orden=" + orden + "&dir=" + direccion;
                   break;
               case "2":
                   if(selection.length > 0){
                     if (selection && selection.length > 0) {
                         var rows = $("#dataTable").jqxDataTable('getRows');
-                        for (var i = 0; i < selection.length; i++) {  
+                        for (var i = 0; i < selection.length; i++) {
                             var rowData = selection[i];
                             ids += rowData.id;
                             if (i < selection.length - 1) {
@@ -2479,7 +2479,7 @@ $('#customSwitch2').click(function(){
             $("#applyFilter").click(function () {
                 var dataField = $("#columnchooser").jqxDropDownList('getSelectedItem').value;
                 applyFilter(dataField);
-            });   
+            });
 
 
 
@@ -2488,7 +2488,7 @@ $('#customSwitch2').click(function(){
       var next =  activo.substr(-1,1) ;
     //  if(next == 6){
         //$("#bt_siguiente").addClass('hidden');
-        $("#bt_siguiente").removeClass('hidden');        
+        $("#bt_siguiente").removeClass('hidden');
         $("#bt_guardar").removeClass('hidden');
    /*   }else{
         $("#bt_siguiente").removeClass('hidden');
@@ -2502,12 +2502,12 @@ $('#customSwitch2').click(function(){
 
       var next =  activo.substr(-1,1) ;
       next++;
-      $('input[name="tap_next"]').attr("value",next);        
+      $('input[name="tap_next"]').attr("value",next);
       if(next == 6){
         $("#bt_siguiente").addClass('hidden');
         $("#bt_guardar").removeClass('hidden');
       }
-      $("#tab-ini"+next).removeClass('disabled');         
+      $("#tab-ini"+next).removeClass('disabled');
       $("#tab-ini"+next ).trigger( "click" );
 
     });
@@ -2610,7 +2610,7 @@ $('#customSwitch2').click(function(){
                  }
                }
          });
-     });     
+     });
 
 
     });
@@ -2663,7 +2663,7 @@ $('#customSwitch2').click(function(){
                                             '</td>'+
                                              '<td>'+
                                               'ddfdsf dfsdf dfs sdfs fasff afdfsdfafsdfsfddsffsdfsdfafd sdfsdfasdfasdf asdf'+
-                                            '</td>'+                                            
+                                            '</td>'+
                                              '<td>'+'<center>'+
                                               '<a data-toggle="tooltip" data-original-title="Borrar" onclick="quitarAV(\''+ data.valor.replace('/', '')+'\','+origenAV[data.index]+','+data.index+');"> <i class="fa fa-close text-danger"></i> </a>'+
                                             '</center>'+'</td>'+
@@ -2807,7 +2807,7 @@ $('#customSwitch2').click(function(){
 
     $('#btn-back, .btn-back').click(function() {
        $("#unaCaja").html("");
-       $("#dosCaja").html("");       
+       $("#dosCaja").html("");
        $('#option1').removeClass('hidden');
        //$('#nivel_1').addClass('show');
        $('#option2').removeClass('show');
@@ -2817,7 +2817,7 @@ $('#customSwitch2').click(function(){
        $("#formAddFuente")[0].reset();
        $('.with-errors').html('');
        $('.form-group').removeClass('has-error');
-       //$("#variables_desagregacion").val('').trigger('change');  
+       //$("#variables_desagregacion").val('').trigger('change');
        $("#datosART").html("");
        $("#datosART1").html("");
        $("#fuente_datos").val('').trigger('change');
@@ -2827,7 +2827,7 @@ $('#customSwitch2').click(function(){
        $("#medida_2016").html("");
        $("#medida_2017").html("");
        $("#medida_2018").html("");
-       $("#medida_2019").html("");                     
+       $("#medida_2019").html("");
        $("#cont_resp").html(0);
        $("#datosFDN").html("");
        $("#datosFDD").html("");
@@ -2842,8 +2842,8 @@ $('#customSwitch2').click(function(){
        idAV = [];
        $("#set_avance > tbody").html("");
        $("#datosARC > tbody").html("");
-       $("#datosARCS > tbody").html("");      
-       $("#datosARCED > tbody").html("");  
+       $("#datosARCS > tbody").html("");
+       $("#datosARCED > tbody").html("");
        $("#set_responsables > tbody").html("");
        $('input[name="id_indicador"]').val(null);
        $("#tab-ini1" ).trigger( "click" );
@@ -2855,7 +2855,7 @@ $('#customSwitch2').click(function(){
        $('#tab-ini2').addClass('disabled'); // desactiva boton de formulario
        $('#tab-ini3').addClass('disabled');
        $('#tab-ini4').addClass('disabled');
-       $('#tab-ini5').addClass('disabled');       
+       $('#tab-ini5').addClass('disabled');
        $('#tab-ini6').addClass('disabled');
 
     });
@@ -2875,30 +2875,30 @@ $('#customSwitch2').click(function(){
              success: function(data){
                if(data.error == false){
                     for(var i=1;i<data.indicador[0].form_activo+1;i++){
-                        $('#tab-ini'+i).removeClass('disabled');                        
-                    }                
+                        $('#tab-ini'+i).removeClass('disabled');
+                    }
 
                    //$("#mod_cod_m").val(data.meta).trigger('change');  medida_2016
-                    var html= '<div class="form-group">&nbsp;'+data.indicador[0].etapa+'</div>'; 
-                    $("#unaCaja").append(html);    
+                    var html= '<div class="form-group">&nbsp;'+data.indicador[0].etapa+'</div>';
+                    $("#unaCaja").append(html);
 
-                    var html= '<div class="form-group">&nbsp;'+data.indicador[0].nombre+'</div>'; 
-                    $("#dosCaja").append(html);  
+                    var html= '<div class="form-group">&nbsp;'+data.indicador[0].nombre+'</div>';
+                    $("#dosCaja").append(html);
 
-                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';                      
-                     $("#medida_2016").append(html);    
+                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';
+                     $("#medida_2016").append(html);
 
-                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';                             
-                      $("#medida_2017").append(html);                                                      
+                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';
+                      $("#medida_2017").append(html);
 
-                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';                             
-                      $("#medida_2018").append(html);      
-                     
-                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';                             
-                      $("#medida_2019").append(html);                                      
-                  
+                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';
+                      $("#medida_2018").append(html);
+
+                    var html= '<div>'+data.indicador[0].unidad_medida+'</div>';
+                      $("#medida_2019").append(html);
+
                    $('input[name="id_indicador"]').val(data.indicador[0].id);
-                   $('input[name="nombrev"]').val(data.indicador[0].nombre);                   
+                   $('input[name="nombrev"]').val(data.indicador[0].nombre);
                    $('input[name="nombre"]').val(data.indicador[0].nombre);
                    $('textarea[name="definicion"]').val(data.indicador[0].definicion);
                    $('select[name=etapa]').val(data.indicador[0].etapa);
@@ -3007,7 +3007,7 @@ $('#customSwitch2').click(function(){
                                       '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarARC(\''+nombre+'\',\''+data.archivo+'\',2);"> <i class="fa fa-close text-danger"></i> </a></td>'+
                                   '</tr>';
                        $("#datosARCS > tbody").append(html2);
-                  });                  
+                  });
 
                   $.each(data.archivos, function(i, data) {
                       var nombre = data.nombre.replace(/\s/g,"_");
@@ -3027,7 +3027,7 @@ $('#customSwitch2').click(function(){
                                       '<td><a data-toggle="tooltip" data-original-title="Borrar" style="cursor: pointer;" onclick="quitarARC(\''+nombre+'\',\''+data.archivo+'\',2);"> <i class="fa fa-close text-danger"></i> </a></td>'+
                                   '</tr>';
                        $("#datosARCED > tbody").append(html3);
-                  });  
+                  });
 
                }else{
                    $.toast({
@@ -3107,8 +3107,8 @@ $('#customSwitch2').click(function(){
                   data: $("#formAdd").serialize() , // Adjuntar los campos del formulario enviado.
                   success: function(data){
                     if(data.error == false){
-                        $('input[name="id_indicador"]').attr("value",data.idindicador);                      
-                        var tap_next=0;                      
+                        $('input[name="id_indicador"]').attr("value",data.idindicador);
+                        var tap_next=0;
                         // $("#btn-back" ).trigger( "click" );
                         // $("#dataTable").jqxDataTable("updateBoundData");
                         swal("Guardado!", "Se ha guardado correctamente.", "success");
