@@ -71,7 +71,7 @@
                     <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
                     <!--li>
                         <form method="post" action="/sistemaremi/setIndicadoresSearch" role="search" class="app-search hidden-xs">
-                          {{ csrf_field() }}
+
                             <input type="text" name="buscar" placeholder="Buscar Indicador..." class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>
@@ -284,9 +284,9 @@
                                 <li><a href="{{ url('/home') }}"><i class="fa icon-logout"></i> Cerrar Modulos </a></li>
                                 <li>
                                   {{-- <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"> </a> --}}
-                                  <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="">
+                                  <form action="{{ url('/logout') }}" method="POST" style="">
                                           {{ csrf_field() }}
-                                     <button type="submit" name="button"><i class="fa fa-power-off"></i> Cerrar Sesións</button>
+                                     <button type="submit" name="button"><i class="fa fa-power-off"></i> Cerrar Sesión</button>
                                   </form>
                                 </li>
                             </ul>
