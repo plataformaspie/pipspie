@@ -1238,11 +1238,12 @@
                                                <div class="col-md-12">
                                            <!--       <hr/> -->
                                                    <h5>Metas Parciales</h5>
+                                                   {{-- Asignacion: <input type="radio" id="metav1" name="metas_valores" value="0" checked="true" class="valoresMetas"> Manual <input type="radio" id="metav2" name="metas_valores" value="1"  class="valoresMetas"> Sugerida --}}
                                                    <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                        <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                          <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2016</label>
                                                        </div>
-                                                       <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                       <div class="form-group col-md-3 p-l-0 m-b-0 metas_tipo">
                                                            <input id="id_meta_2016" name="id_meta_2016" type="hidden" class="form-control oculto" required>
                                                            <input id="meta_2016" name="meta_2016" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                            <div class="help-block with-errors"></div>
@@ -1259,7 +1260,7 @@
                                                        <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                          <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2017</label>
                                                        </div>
-                                                       <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                       <div class="form-group col-md-3 p-l-0 m-b-0 metas_tipo">
                                                            <input id="id_meta_2017" name="id_meta_2017" type="hidden" class="form-control oculto" required>
                                                            <input id="meta_2017" name="meta_2017" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                            <div class="help-block with-errors"></div>
@@ -1276,7 +1277,7 @@
                                                        <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                          <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2018</label>
                                                        </div>
-                                                       <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                       <div class="form-group col-md-3 p-l-0 m-b-0 metas_tipo">
                                                            <input id="id_meta_2018" name="id_meta_2018" type="hidden" class="form-control oculto" required>
                                                            <input id="meta_2018" name="meta_2018" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                            <div class="help-block with-errors"></div>
@@ -1293,7 +1294,7 @@
                                                         <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                           <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2019</label>
                                                         </div>
-                                                        <div class="form-group col-md-3 p-l-0 m-b-0">
+                                                        <div class="form-group col-md-3 p-l-0 m-b-0 metas_tipo">
                                                             <input id="id_meta_2019" name="id_meta_2019" type="hidden" class="form-control oculto" required>
                                                             <input id="meta_2019" name="meta_2019" type="text" class="form-control input" placeholder="Valor" data-inputmask="'alias': 'decimal', 'radixPoint': ',', 'groupSeparator': ',', 'autoGroup': false, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" style="text-align: right;">
                                                             <div class="help-block with-errors"></div>
@@ -4226,7 +4227,7 @@
            $('#option2').removeClass('show');
            $('#option2').addClass('hidden');
 
-           //$("#formAdd")[0].reset();
+           $("#formAdd")[0].reset();
            $("#formAddFuente")[0].reset();
            $('.with-errors').html('');
            $('.form-group').removeClass('has-error');
@@ -5264,6 +5265,21 @@
       $("#dataTable").jqxDataTable('clearFilters');
       filtrar();
       showFilterAdvanced();
+    });
+
+    $('.valoresMetas').click(function () {
+      console.log($(this).val());
+      if($(this).val()==0){
+        $(".metas_tipo").css("pointer-events", "");
+      }else{
+        if($('input[name="meta_2020"]').val()!= ""){
+
+        }else{
+
+        }
+        $("#metav1").attr('checked', true);
+        $(".metas_tipo").css("pointer-events", "none");
+      }
     });
 
 
