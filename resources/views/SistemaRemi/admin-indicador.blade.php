@@ -2007,6 +2007,7 @@
                                                    <h4 style="width:100%;">Secretaria Técnica CIMPDES</h4>
                                                </div>
                                                <div class="col-md-12">
+                                                 {{-- <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if($filtData>0)pointer-events:none; @endif" > --}}
                                                  <div class="form-group row m-b-5 m-l-5 m-t-5" style="@if($filtData>0)pointer-events:none; @endif" >
                                                    <div class="col-md-3 p-l-0 p-r-0">
                                                      <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Sectores Relacionados </label>
