@@ -1238,7 +1238,8 @@
                                                <div class="col-md-12">
                                            <!--       <hr/> -->
                                                    <h5>Metas Parciales</h5>
-                                                   {{-- Asignacion: <input type="radio" id="metav1" name="metas_valores" value="0" checked="true" class="valoresMetas"> Manual <input type="radio" id="metav2" name="metas_valores" value="1"  class="valoresMetas"> Sugerida --}}
+                                                   Asignacion: <input type="radio" id="metav1" name="metas_valores" value="0" checked="true" class="valoresMetas"> Manual <input type="radio" id="metav2" name="metas_valores" value="1"  class="valoresMetas"> Sugerida
+                                                   <br/><span style="font-size: 11px;color: #28B8FF;">*Las metas sugeridas toman como valores para su cálculo: Línea Base, Meta 2020 y Plazo en años. Si realiza cambios en estos valores debe generar el cálculo nuevamente. </span>
                                                    <div class="form-group row m-b-5 m-l-5 m-t-5" >
                                                        <div class="form-group col-md-3 p-l-0 p-r-0 m-b-0">
                                                          <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Gestión 2016</label>
@@ -2014,6 +2015,21 @@
                                                    </div>
                                                    <div class="col-md-9 p-l-0">
                                                        <select id="sectores" name="sectores[]" placeholder="Seleccionar..."  multiple="multiple" class=" select2 multiple">
+                                                           @foreach ($instituciones as  $item)
+                                                                 <option value="{{ $item->id }}">{{$item->codigo}}: {{$item->denominacion}}</option>
+                                                           @endforeach
+                                                       </select>
+                                                       <div class="help-block with-errors"></div>
+                                                   </div>
+                                                 </div>
+
+                                                 <div class="form-group row m-b-5 m-l-5 m-t-5" >
+                                                   <div class="col-md-3 p-l-0 p-r-0">
+                                                     <label for="textarea" class="col-form-label control-label list-group-item-info" style="width: 100%;padding: 9px 0px 9px 3px;">Responsable de reportar Indicador </label>
+                                                   </div>
+                                                   <div class="col-md-9 p-l-0">
+                                                       <select id="responsable_reportar_indicador" name="responsable_reportar_indicador" placeholder="Seleccionar..."  class="form-control select2 ">
+                                                          <option value="">Seleccione...</option>
                                                            @foreach ($instituciones as  $item)
                                                                  <option value="{{ $item->id }}">{{$item->codigo}}: {{$item->denominacion}}</option>
                                                            @endforeach
@@ -4283,6 +4299,8 @@
             $('#metas_mod').prop("checked",false);
             $('#indicador_mod').prop("checked",false);
             $('#resultado_mod').prop("checked",false);
+
+            $(".metas_tipo").css("pointer-events", "");
         });
     //------------------aqui
         function limpiarBasico(){
@@ -4334,6 +4352,7 @@
            $('#metas_mod').prop("checked",false);
            $('#indicador_mod').prop("checked",false);
            $('#resultado_mod').prop("checked",false);
+           $(".metas_tipo").css("pointer-events", "");
 
 
         }//------------------aqui fin
@@ -4567,6 +4586,8 @@
                          $("#sectores").val(data.sectores.split(",")).trigger('change');
                        }
 
+                       $("#responsable_reportar_indicador").val(data.indicador[0].responsable_reportar_indicador).trigger('change');
+
                       $.each(data.pdes, function(i, data) {
                        var html = //'<h5>Detalle de Articulación</h5>'+'<hr/>'+
                                    '<div id="ART'+data.cod_p+data.cod_m+data.cod_r+'" class="row">'+
@@ -4616,6 +4637,15 @@
                                    '</div>';
                        $("#datosART1").append(html);
                       });
+
+                      if(data.indicador[0].tipo_metas_parciales==0){
+                        $("#metav1").prop('checked', true);
+                        $("#metav2").prop('checked', false);
+                      }else{
+                        $(".metas_tipo").css("pointer-events", "none");
+                        $("#metav2").prop('checked', true);
+                        $("#metav1").prop('checked', false);
+                      }
 
 
                       $.each(data.metas, function(i, data) {
@@ -5273,13 +5303,32 @@
       if($(this).val()==0){
         $(".metas_tipo").css("pointer-events", "");
       }else{
-        if($('input[name="meta_2020"]').val()!= ""){
 
+        if($('input[name="meta_2020"]').val()!= "" && $('input[name="plazo_anios"]').val()!= ""){
+            $(".metas_tipo").css("pointer-events", "none");
+            var lb = $('input[name="linea_base_valor"]').val().replace(',','.');
+            var mt = $('input[name="meta_2020"]').val().replace(/\./g,"");
+            var plazo = $('input[name="plazo_anios"]').val();
+            mt = mt.replace(',','.');
+            var brecha = mt - lb;
+            var gP = 1;
+            for(var i=2016;i < 2020;i++){
+              var operacion = lb - ((brecha/plazo)* (-gP))
+              $('input[name="meta_'+i+'"]').val(operacion);
+              gP++;
+            }
         }else{
-
+          $("#metav1").prop('checked', true);
+          $("#metav2").prop('checked', false);
+          $.toast({
+           heading: "Alerta",
+           text: "Línea base, Meta 2020 y Plazo en Años deben contener un valor",
+           position: 'top-right',
+           loaderBg:'#ff6849',
+           icon: 'warning',
+           hideAfter: 3500
+          });
         }
-        $("#metav1").attr('checked', true);
-        $(".metas_tipo").css("pointer-events", "none");
       }
     });
 

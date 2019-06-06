@@ -1374,6 +1374,8 @@ class IndicadorController extends Controller
             $indicador->brecha_capacitacion = $request->brecha_capacitacion;
             $indicador->brecha_financiamiento = $request->brecha_financiamiento;
             $indicador->activo = true;
+            $indicador->tipo_metas_parciales = $request->metas_valores;
+            $indicador->responsable_reportar_indicador = $request->responsable_reportar_indicador;
             $indicador->save();
 
             $id_reg = $indicador->id;
@@ -1649,8 +1651,8 @@ class IndicadorController extends Controller
               $indicador->id_user_validacion_vpc = $this->user->id;
             }
 
-
-
+            $indicador->responsable_reportar_indicador = $request->responsable_reportar_indicador;
+            $indicador->tipo_metas_parciales = $request->metas_valores;
 
             $indicador->save();
 
