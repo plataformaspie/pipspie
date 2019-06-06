@@ -4166,7 +4166,7 @@
 
       function quitarARCD(ele,archivo,tipo){
         //dd("cdsdv",ele);
-        alert(ele);
+        // alert(ele);
         var res = confirm("Esta seguro de quitar el archivo?");
             if (res == true) {
               if(tipo == 1){
