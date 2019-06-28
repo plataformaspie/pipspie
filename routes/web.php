@@ -618,6 +618,8 @@ Route::group(['middleware' => 'auth'],function(){
           array('prefix' => 'planesTerritoriales'),
           function() {
               Route::get('index', 'PlanificacionTerritorial\IndexController@index');
+              Route::get('indexseguimiento', 'PlanificacionTerritorial\IndexController@indexseguimiento');
+              Route::get('indexevaluacion', 'PlanificacionTerritorial\IndexController@indexevaluacion');
 
           }
       );
@@ -653,6 +655,58 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('deleteDeuda', 'PlanificacionTerritorial\DeudasController@deleteDeuda');
               Route::post('savePlanificacion', 'PlanificacionTerritorial\PlanificacionController@savePlanificacion');
               Route::post('deleteObjetivo', 'PlanificacionTerritorial\PlanificacionController@deleteObjetivo');
+
+
+              /***************************************** IRENE JUNIO 2019*************************/
+              /*--Recursos*/
+              Route::get('listaRecursosGestion', 'PlanificacionTerritorial\SeguimientoController@listaRecursosGestion');
+              Route::post('saveUpdateRecursoPoa', 'PlanificacionTerritorial\SeguimientoController@saveUpdateRecursoPoa');
+
+              /*--Acciones*/
+              Route::get('listaCategoriaProgramatica', 'PlanificacionTerritorial\SeguimientoAccionesController@listaCategoriaProgramatica');
+              Route::post('saveProyectoPoa', 'PlanificacionTerritorial\SeguimientoAccionesController@saveProyectoPoa');
+              Route::post('deleteProyPoa', 'PlanificacionTerritorial\SeguimientoAccionesController@deleteProyPoa');
+              Route::get('listaObjetivosEta', 'PlanificacionTerritorial\SeguimientoAccionesController@listaObjetivosEta');
+
+
+              /*----Financiera-----*/
+
+              Route::get('listaAvanceObjetivos', 'PlanificacionTerritorial\FinancieroController@listaAvanceObjetivos');
+              Route::post('saveFinancieroPoa', 'PlanificacionTerritorial\FinancieroController@saveFinancieroPoa');
+              /*---- Proyectos de Inversion -----*/
+              Route::get('listaObjetivosProyectosInversion', 'PlanificacionTerritorial\InversionController@listaObjetivosProyectosInversion');
+              Route::post('saveProyectoInversion', 'PlanificacionTerritorial\InversionController@saveProyectoInversion');
+              Route::post('saveEntidadesConcurrencia', 'PlanificacionTerritorial\InversionController@saveEntidadesConcurrencia');
+              Route::post('updateEntidadesConcurrencia', 'PlanificacionTerritorial\InversionController@updateEntidadesConcurrencia');
+
+
+
+
+
+
+              /*--indexSeguimiento*/
+              Route::get('estadoActualModulosSeguimiento', 'PlanificacionTerritorial\IndexSeguimientoController@estadoActualModulosSeguimiento');
+              Route::get('verificarEtapaSeguimiento', 'PlanificacionTerritorial\IndexSeguimientoController@verificarEtapaSeguimiento');
+              Route::post('activarEtapaSeguimiento', 'PlanificacionTerritorial\IndexSeguimientoController@activarEtapaSeguimiento');
+              Route::get('finalizarModuloSeguimiento', 'PlanificacionTerritorial\IndexSeguimientoController@finalizarModuloSeguimiento');
+
+              /*--Evaluacion*/
+              Route::get('evaluacionListaRecursos', 'PlanificacionTerritorial\EvaluacionController@evaluacionListaRecursos');
+              Route::get('evaluacionListaAcciones', 'PlanificacionTerritorial\EvaluacionController@evaluacionListaAcciones');
+              Route::get('evaluacionListaFinanciero', 'PlanificacionTerritorial\EvaluacionController@evaluacionListaFinanciero');
+              Route::get('evaluacionListaInversion', 'PlanificacionTerritorial\EvaluacionController@evaluacionListaInversion');
+              Route::get('evaluacionListaRiesgos', 'PlanificacionTerritorial\EvaluacionController@evaluacionListaRiesgos');
+              /*Guardando Reportes*/
+              Route::post('saveReporteRecursos', 'PlanificacionTerritorial\EvaluacionController@saveReporteRecursos');
+              Route::post('saveReporteFinanciero', 'PlanificacionTerritorial\EvaluacionController@saveReporteFinanciero');
+
+              /*-- Reportes Evaluacion Exportar Excel*/
+              Route::get('reporteRecursos', 'PlanificacionTerritorial\ExportReportController@reporteRecursos');
+              Route::get('reporteAccionesExcel', 'PlanificacionTerritorial\ExportReportController@reporteAccionesExcel');
+              Route::get('reporteFinancieroExcel', 'PlanificacionTerritorial\ExportReportController@reporteFinancieroExcel');
+              Route::get('reporteRiesgosExcel', 'PlanificacionTerritorial\ExportReportController@reporteRiesgosExcel');
+              Route::get('reporteInversionExcel', 'PlanificacionTerritorial\ExportReportController@reporteInversionExcel');
+              /*******************************FIN IRENE JUNIO 2019*************************/
 
 
 

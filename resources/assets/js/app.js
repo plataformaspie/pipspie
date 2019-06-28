@@ -21,6 +21,16 @@ Vue.component('recursos', require('./components/Recursos.vue'));
 Vue.component('deudas', require('./components/Deudas.vue'));
 Vue.component('planificacion-categorias', require('./components/PlanificacionCategorias.vue'));
 Vue.component('planificacion', require('./components/Planificacion.vue'));
+
+Vue.component('indexseguimiento', require('./components/IndexSeguimiento.vue'));
+Vue.component('seguimientorecursos', require('./components/SeguimientoRecursos.vue'));
+Vue.component('seguimientoacciones', require('./components/SeguimientoAcciones.vue'));
+Vue.component('seguimientofisicofinanciera', require('./components/SeguimientoFisicoFinanciera.vue'));
+Vue.component('seguimientoproyectosinversion', require('./components/SeguimientoProyectosInversion.vue'));
+// Vue.component('presentacion', require('./components/Presentacion.vue'));
+Vue.component('evaluacion', require('./components/Evaluacion.vue'));
+
+
 Vue.component('my-currency-input', {
     props: ["value"],
     template: `
@@ -62,6 +72,8 @@ const app = new Vue({
     el: '#app',
     data: {
         view: 0,
+        viewS:5,
+        viewE:11,
         categoria:0,
         categoria_estado:'',
         modulo_estado:''

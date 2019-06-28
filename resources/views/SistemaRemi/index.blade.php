@@ -167,8 +167,7 @@
                     <div class="media-body"> <span class="media-meta pull-right"><i class="fa fa-info-circle" style="font-size: 25px"></i></span>
                       <h4 class="text-danger m-0">Registro de Indicadores Monitoreo  y Evaluación </h4>
                       <p class="text-muted">
-                        El Registro de Indicadores Monitoreo y Evaluación (RIME), es una herramienta que nos permite realizar el seguimiento y monitoreo
-                        para el logro de los resultados y metas del PDES relacionados a los ODS, coherente con las políticas de cada sector involucrado.
+                        El Registro de Indicadores Monitoreo y Evaluación (RIME), Herramienta que nos permite realizar el seguimiento y monitoreo para el logro de los resultados y metas del PDES relacionados a los ODS, coherente con las políticas de cada sector involucrado.
                       </p>
                     </div>
                   </div>

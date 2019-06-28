@@ -16,6 +16,16 @@ class IndexController extends BasecontrollerController
       return view('PlanificacionTerritorial.index');
   }
 
+  public function indexevaluacion()
+  {
+      return view('PlanificacionTerritorial.indexevaluacion');
+  }
+
+  public function indexseguimiento()
+  {
+      return view('PlanificacionTerritorial.indexseguimiento');
+  }
+
   public function datosUsuario(Request $request)
   {
       $user = \Auth::user();
