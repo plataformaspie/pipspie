@@ -119,7 +119,7 @@ class RecursosController extends BasecontrollerController
             $recurso->id_institucion = $user->id_institucion;
             $recurso->id_tipo_recurso = $request->tipo_recurso;
             $recurso->gestion = $periodoActual['gestionesPeriodo'][$k];
-            $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+            $recurso->monto = (trim($v)!='')?$this->format_numerica_db($v,$this->decimal_simbolo($v)):0;
             $recurso->activo = true;
             $recurso->id_user_created = $user->id;
             $recurso->save();
@@ -151,7 +151,7 @@ class RecursosController extends BasecontrollerController
     try{
         foreach ($request->datos as $k => $v) {
             $recurso = Recursos::find($request->id[$k]);
-            $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+            $recurso->monto = (trim($v)!='')?$this->format_numerica_db($v,$this->decimal_simbolo($v)):0;
             $recurso->id_user_updated = $user->id;
             $recurso->save();
         }
@@ -228,7 +228,7 @@ class RecursosController extends BasecontrollerController
                   $recurso->id_institucion = $user->id_institucion;
                   $recurso->id_otro_ingreso = $otro->id;
                   $recurso->gestion = $periodoActual['gestionesPeriodo'][$k];
-                  $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+                  $recurso->monto = (trim($v)!='')?$this->format_numerica_db($v,$this->decimal_simbolo($v)):0;
                   $recurso->activo = true;
                   $recurso->id_user_created = $user->id;
                   $recurso->save();
@@ -265,7 +265,7 @@ class RecursosController extends BasecontrollerController
               foreach ($request->datos as $k => $v) {
                   $recurso = Recursos::find($request->ids[$k]);
                   $recurso->gestion = $periodoActual['gestionesPeriodo'][$k];
-                  $recurso->monto = $this->format_numerica_db($v,$this->decimal_simbolo($v));
+                  $recurso->monto = (trim($v)!='')?$this->format_numerica_db($v,$this->decimal_simbolo($v)):0;
                   $recurso->id_user_updated = $user->id;
                   $recurso->save();
               }

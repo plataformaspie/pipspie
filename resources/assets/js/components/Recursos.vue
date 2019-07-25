@@ -289,7 +289,8 @@ export default {
           auxiliar:false,
           id_auxiliar:0,
           estadoViewComponente:true,
-          montos_auxiliar:''
+          montos_auxiliar:'',
+          disabled:''
         }
     },
     methods: {

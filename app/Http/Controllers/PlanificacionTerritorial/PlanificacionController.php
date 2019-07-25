@@ -27,13 +27,15 @@ class PlanificacionController extends BasecontrollerController
         $listaObjetivos = \DB::select("SELECT o.id,o.nombre_objetivo,o.codigo_sisin, ac.nombre_accion_eta,ac.codigo_pdes, ac.ep_descripcion,ac.codigo_estructura_programatica,ac.desc_a,ac.cod_p,ac.cod_m,ac.cod_r,ac.cod_a,ac.img_p,
                                       cata.id as id_categoria, cata.id_categoria_padre
                                       FROM sp_eta_objetivos_eta o
-                                      LEFT JOIN sp_eta_etapas_plan ep ON (o.id_etapas_plan = ep.id AND ep.id_institucion = ? AND ep.valor_campo_etapa = 'PTDI')
+                                      LEFT JOIN sp_eta_etapas_plan ep ON (o.id_etapas_plan = ep.id AND ep.valor_campo_etapa = 'PTDI')
                                       LEFT JOIN sp_eta_articulacion_objetivo_indicador aoi ON o.id = aoi.id_objetivo_eta
                                       LEFT JOIN sp_eta_indicadores i ON aoi.id_indicador = i.id
                                       LEFT JOIN sp_eta_view_articulacion_catalogos ac ON o.id_accion_eta = ac.id
                                       LEFT JOIN sp_eta_categorias_acciones_eta cata ON o.id_categoria_accion = cata.id
                                       WHERE cata.id_categoria_padre = ?
-                                      AND o.activo = true",[$user->id_institucion,$request->categoria]);
+                                      AND o.activo = true
+                                      AND ep.id_institucion = ?",[$request->categoria,$user->id_institucion]);
+                                      
 
         $totalCategoriaGestiones = \DB::select("SELECT gestion, SUM( monto ) as total
                                           FROM sp_eta_objetivos_eta o
