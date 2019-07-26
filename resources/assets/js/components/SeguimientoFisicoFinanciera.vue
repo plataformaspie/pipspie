@@ -41,7 +41,7 @@
             <div class="card">
               <div class="table-responsive white-box" >
                 <h4 class="m-t-0"></h4>
-                <table id="art" class="table table-bordered color-table info-table">
+                <table id="art" class="table table-bordered color-table info-table miTabla">
                   <thead>
                     <tr>
                       <th  style="background:#0AF3D3; color:#fff" rowspan="3" class="text-center"  ><strong></strong>GESTION RIESGO</th>
@@ -115,7 +115,9 @@
                       <td>{{ eta.monto }}</td>
                       <td>{{ eta.porcentaje_ptdi * 100}} %</td>
                       <td>{{ eta.valor}}</td>
-                      <td>{{ eta.porcentaje_ptdi * 100 }}  %</td>
+                      <td v-if="eta.porcentaje_accion_ptdi == ''"> </td>
+                      <td v-else>{{ eta.porcentaje_accion_ptdi }} % </td>
+                      
                       <td>0,00</td>
                       <td>0,00</td>
                       <td>0,00</td>
@@ -135,7 +137,6 @@
                     </tr>
                   </tbody>
                 </table>
-                
               </div>
             </div>
           </div>
@@ -147,6 +148,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="white-box p-0 m-0 p-t-10 ">
           <div class="form-group text-center p-0 m-0">
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-success" @click="reporteFinancieroGestionExcel">Exportar <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-danger" @click="reporteFinancieroGestionPdf">Exportar <i class="fa fa-file-pdf-o " aria-hidden="true"></i></button>
                 <button v-show="estado_modulo==true" type="submit" class="btn btn-info" @click="finalizarModulo(8)">Salir y Finalizar</button>
                 <button type="submit" class="btn btn-default" @click="salirModulo()">Salir</button>
           </div>
@@ -161,7 +164,7 @@
                <button type="button" class="close" @click="cerrarModal()" aria-hidden="true">×</button>
                <h4 class="modal-title">AVANCE GESTION </h4>
           </div>
-          <form id="formPoa" class="formPoa" @submit.prevent="savePoa()">
+          <form id="formPoa" class="formPoa" @submit.prevent="validarPoa()">
             <div class="modal-body">
             
               <div class="row">
@@ -171,43 +174,75 @@
                         <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#messages2" role="tab" aria-selected="false"><span><i class="fa fa-files-o"></i></span> <span class="hidden-xs-down">POA</span></a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane p-20 show" id="messages2" role="tabpanel">
+                        <div class="tab-pane show" id="messages2" role="tabpanel">
                           <div class="form-group">
                             <div class="row">
                               <div class="col-lg-6" >
-                                <h5 class="m-b-10">FINANCIERA</h5>
-                                <section>
-                                  <label  class="control-label" >Programado POA:</label>
-                                  <input type="text" class="form-control m-b-10" name="fisico" id="fisico" placeholder="Programado"  required="required"  title="Avance Fisico" pattern="^[0-9]+$"  v-model="arrayPoa.monto_poa">
-                                </section>
-                                <section>
-                                  <label  class="control-label" >Ejecutado POA:</label>
-                                  <input type="text" class="form-control m-b-10" name="fisico" id="fisico" placeholder="Ejecutado"  required="required"  title="Ejecutado" pattern="^[0-9]+$" v-model="arrayPoa.ejecutado">
-                                </section>
-                                <section>
-                                    <label  class="control-label" >Causas de Desviacion:</label>
-                                    <input type="text" class="form-control m-b-10" name="fisico" id="fisico" placeholder="Causas de Desviacion"  required="required"  title="Causas de Desviacion"  v-model="arrayPoa.causas_variacion">
-                                </section>
+                                <h5 class="m-b-10 ">FINANCIERA</h5>
+                                <div :class="['form-group',(arrayPoa.monto_poa.clase).trim()?'has-'+arrayPoa.monto_poa.clase:'']">
+                                
+                                  <label  class="form-control-label" >Programado POA:</label>
+                                  <div class="input-group m-b-10">
+                                    <span class="input-group-addon">Bs.</span>
+                                    <input type="text" :class="['form-control',(arrayPoa.monto_poa.clase).trim()?'form-control-' + arrayPoa.monto_poa.clase:'']" name="fisico" id="fisico" placeholder=""  title="Avance Fisico"   v-model="arrayPoa.monto_poa.input"
+                                    @keyup="midecimal(arrayPoa.monto_poa)" >
+                                    <!--div class="form-control-feedback" v-text="arrayPoa.monto_poa.mensaje"></div-->
+                                  </div>
+                                </div>
+                                <div :class="['form-group',(arrayPoa.ejecutado.clase).trim()?'has-'+arrayPoa.ejecutado.clase:'']">
+                                  <label  class="form-control-label" >Ejecutado POA:</label>
+                                  <div class="input-group m-b-10">
+                                    <span class="input-group-addon">Bs.</span>
+                                    <input type="text" :class="['form-control',(arrayPoa.ejecutado.clase).trim()?'form-control-' + arrayPoa.ejecutado.clase:'']" name="fisico" id="fisico" placeholder=""    title="Ejecutado"  v-model="arrayPoa.ejecutado.input"
+                                    @keyup="midecimal(arrayPoa.ejecutado)">
+                                  </div>
+                                </div>
+                                <div :class="['form-group',(arrayPoa.causas_variacion.clase).trim()?'has-'+arrayPoa.causas_variacion.clase:'']">
+                                  <label  class="form-control-label" >Causas de Variacion:</label>
+                                  <input type="text"  id="inputSuccess1" v-model="arrayPoa.causas_variacion.input" 
+                                      :class="['form-control',(arrayPoa.causas_variacion.clase).trim()?'form-control-' + arrayPoa.causas_variacion.clase:'']"
+                                       @keyup="todoTexto(arrayPoa.causas_variacion)"   
+                                  >
+                                  <div class="form-control-feedback" v-text="arrayPoa.causas_variacion.mensaje"></div>
+                                  <!--small class="form-text text-muted">La "," es separador de decimales.</small-->
+                                </div>
+                                
                                </div>
                               <div class="col-lg-6">
-                                <h5 class="m-b-10">ACCION</h5>
+                                <h5 class="m-b-10 ">ACCION</h5>
                                 
-                                  <section>
-                                    <label  class="control-label" >Programado Accion POA:</label>
-                                    <input type="text" class="form-control m-b-10" name="fisico" id="fisico" placeholder="Programado"  required="required"  title="Programado" pattern="^[0-9]+$"  v-model="arrayPoa.programado_accion">
-                                  </section>
-                                  <section>
-                                    <label  class="control-label" >Ejecutado Accion POA:</label>
-                                    <input type="text" class="form-control m-b-10" name="fisico" id="fisico" placeholder="Avance Fisico"  required="required"  title="Ejecutado" pattern="^[0-9]+$" v-model="arrayPoa.ejecutado_accion">
-                                  </section>
-                                  <section class="m-b-15">
+                                  <div :class="['form-group',(arrayPoa.programado_accion.clase).trim()?'has-'+arrayPoa.programado_accion.clase:'']">
+                                    <label  class="form-control-label" >Programado Accion POA:</label>
+                                    <div class="input-group m-b-10">
+                                      <span class="input-group-addon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                                      <input type="text" :class="['form-control',(arrayPoa.programado_accion.clase).trim()?'form-control-' + arrayPoa.programado_accion.clase:'']" name="fisico" id="fisico" placeholder="Programado"    title="Programado"  v-model="arrayPoa.programado_accion.input"
+                                      @keyup="midecimal(arrayPoa.programado_accion)">
+                                    </div>
+                                  </div>
+                                  <div :class="['form-group',(arrayPoa.ejecutado_accion.clase).trim()?'has-'+arrayPoa.ejecutado_accion.clase:'']">
+                                    <label  class="form-control-label" >Ejecutado Accion POA:</label>
+                                    <div class="input-group m-b-10">
+                                      <span class="input-group-addon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
+                                      <input type="text" :class="['form-control',(arrayPoa.ejecutado_accion.clase).trim()?'form-control-' + arrayPoa.ejecutado_accion.clase:'']" name="fisico" id="fisico" placeholder="Avance Fisico"   title="Ejecutado" v-model="arrayPoa.ejecutado_accion.input"
+                                      @keyup="midecimal(arrayPoa.ejecutado_accion)">
+                                    </div>
+                                  </div>
+                                  <!--div :class="['form-group',(arrayPoa.gestion_riesgos.clase).trim()?'has-'+arrayPoa.gestion_riesgos.clase:'']">
                                     <label  class="control-label" >ACCION ETA ES: UNA ACCION DE GESTION DE RIEGOS:</label>
                                     <label class="radio-inline">
-                                    <input type="radio" value="true" name="radioPtdi"  v-model ="arrayPoa.gestion_riesgos" required="required">Si</label>
+                                    <input @change="validateRatio(arrayPoa.gestion_riesgos)"type="radio" value="true" name="radioRiesgos"  v-model ="arrayPoa.gestion_riesgos" required="required">Si</label>
                                     <label class="radio-inline">
-                                    <input type="radio" value="false" name="radioPtdi"  v-model ="arrayPoa.gestion_riesgos" required="required">No</label>
+                                    <input @change="validateRatio(arrayPoa.gestion_riesgos)"type="radio" value="false" name="radioRiesgos"  v-model ="arrayPoa.gestion_riesgos" required="required">No</label>
                                     
-                                  </section>
+                                  </div-->
+                                  <div :class="['form-group',(arrayPoa.gestion_riesgos.clase).trim()?'has-'+arrayPoa.gestion_riesgos.clase:'']">
+                                    <div class=" radio-inline form-check-label">
+                                      <h5  class="form-check control-label" >ACCION ETA ES: UNA ACCION DE GESTION DE RIEGOS:</h5>
+                                      <label class="radio-inline radio-inline"><input type="radio" value="true" name="radioRiesgos"  v-model ="arrayPoa.gestion_riesgos.input" @change="validateRatio(arrayPoa.gestion_riesgos)" >Si</label>
+                                      <label class="radio-inline radio-inline"><input type="radio" value="false" name="radioRiesgos"  v-model ="arrayPoa.gestion_riesgos.input" @change="validateRatio(arrayPoa.gestion_riesgos)" >No</label>  
+                                      <div class="form-control-feedback" v-text="arrayPoa.gestion_riesgos.mensaje"></div>
+                                    </div>
+                                  </div>
                               </div>
                             </div>
                           </div>  
@@ -245,13 +280,45 @@ export default {
           editar:true,
           guardar:false,
           modal:0,
-          arrayPoa:{},
+          arrayPoa:{
+            causas_variacion:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            monto_poa:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecutado:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            programado_accion:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecutado_accion:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            gestion_riesgos:{
+              input:"",
+              clase:"",
+              mensaje:""
+            }
+          },
           idEta:"",
           planActivo:"",
           gestionActiva:"",
           estado_modulo:"",
           plan_activo:"",
-          gestion_activa:""
+          gestion_activa:"",
+          errors:[]
         }
     },
     methods: {
@@ -292,10 +359,46 @@ export default {
 
       savePoa(){
         let me = this;
-
+          var enviarPoa = {};
         console.log(me.arrayPoa);
+        /*arrayPoa.causas_variacion.input
+
+        arrayPoa.monto_poa.input
+        arrayPoa.ejecutado.input
+        arrayPoa.programado_accion.input      
+        arrayPoa.ejecutado_accion.input 
+        arrayPoa.gestion_riesgos.input */   
+        
+
+        enviarPoa.id_accion_eta_objetivo = me.arrayObjetivoEta[me.idEta].id_accion_eta_objetivo;
+        var monto_poa = (me.replaceAll(me.arrayPoa.monto_poa.input,".","")).split(',').join('.');
+        enviarPoa.monto_poa = monto_poa;
+        var ejecutado = (me.replaceAll(me.arrayPoa.ejecutado.input,".","")).split(',').join('.');
+        enviarPoa.ejecutado = ejecutado;
+        enviarPoa.porcentaje_poa_programado = (monto_poa/ejecutado)*100;
+        var programado_accion = (me.replaceAll(me.arrayPoa.programado_accion.input,".","")).split(',').join('.');
+        enviarPoa.programado_accion = programado_accion;
+        var ejecutado_accion = (me.replaceAll(me.arrayPoa.ejecutado_accion.input,".","")).split(',').join('.');
+        enviarPoa.ejecutado_accion = ejecutado_accion;
+        console.log(ejecutado_accion);//20
+        console.log(ejecutado);//40
+        enviarPoa.porcentaje_poa_accion = (ejecutado_accion/programado_accion)*100;
+        enviarPoa.porcentaje_ptdi = (monto_poa/me.arrayObjetivoEta[me.idEta].monto)*100;
+        //aumentadon accion_ptd
+        enviarPoa.porcentaje_accion_ptdi = (ejecutado_accion/me.arrayObjetivoEta[me.idEta].valor)*100;
+        //fin aumentadon accion_ptd
+        enviarPoa.porcentaje_pei = 0;
+        enviarPoa.causas_variacion = me.arrayPoa.causas_variacion.input;
+        enviarPoa.id_financiero_poa = me.arrayObjetivoEta[me.idEta].id_financiero_poa;
+        enviarPoa.gestion_riesgos= me.arrayPoa.gestion_riesgos.input;
+        enviarPoa.id_gestion_riesgos = me.arrayObjetivoEta[me.idEta].id_gestion_riesgos;
+        
+            
+            
+
+
         //*************PTDI*********************//
-        //Ptdi monto programado
+        /*/Ptdi monto programado
         me.arrayPoa.monto_programado = me.arrayObjetivoEta[me.idEta].monto;
          //diferencia Ptdi financiera porcentaje poa/ejecutado*100
         me.arrayPoa.porcentaje_ptdi = (me.arrayPoa.monto_poa/me.arrayObjetivoEta[me.idEta].monto)*100;
@@ -303,10 +406,10 @@ export default {
         me.arrayPoa.accion_programado = me.arrayObjetivoEta[me.idEta].valor; 
          // Ptdi accion porcentaje
         me.arrayPoa.accion_porcentaje = (me.arrayPoa.valor/me.arrayObjetivoEta[me.idEta].valor)*100;
-        //************* FIN PTDI********************
+        //************* FIN PTDI*********************/
 
         //**************ASUMIENDO QUE EL PTDI = PEI *************************//
-        //Ptdi monto programado
+        /*/Ptdi monto programado
         me.arrayPoa.monto_programado_pei = me.arrayObjetivoEta[me.idEta].monto;
          //diferencia Ptdi financiera porcentaje poa/ejecutado*100
         me.arrayPoa.porcentaje_pei = (me.arrayPoa.monto_poa/me.arrayObjetivoEta[me.idEta].monto)*100;
@@ -315,60 +418,74 @@ export default {
          // Ptdi accion porcentaje
         me.arrayPoa.accion_porcentaje_pei = (me.arrayPoa.valor/me.arrayObjetivoEta[me.idEta].valor)*100;
 
-        //**************FIN ASUMIENDO QUE EL PTDI = PEI *************************//
+        //**************FIN ASUMIENDO QUE EL PTDI = PEI *************************/
         
         //**************POA******************************************************// 
-        //POA planificado
-        //me.arrayPOA.monto_poa
-        //POA ejecutado
-        //POA porcentaje
-        
-        //POA accion planificado
-        //POA accion ejecutado
-        //POA accion porcentaje
-        //
-        //porcentaje_poa_programado
+        /*
         me.arrayPoa.porcentaje_poa_programado = (me.arrayPoa.monto_poa/me.arrayPoa.ejecutado)*100;
         //porcentaje_poa_accion
         me.arrayPoa.porcentaje_poa_accion = (me.arrayPoa.monto_poa/me.arrayPoa.ejecutado)*100;
-        me.arrayPoa.id_accion_eta_objetivo = me.arrayObjetivoEta[me.idEta].id_accion_eta_objetivo;//***** id del Objetivo ETA ****//
+        me.arrayPoa.id_accion_eta_objetivo = me.arrayObjetivoEta[me.idEta].id_accion_eta_objetivo;
         me.arrayPoa.id_financiero_poa = me.arrayObjetivoEta[me.idEta].id_financiero_poa;
         //id gestion de riesgos id
-        me.arrayPoa.id_gestion_riesgos = me.arrayObjetivoEta[me.idEta].id_gestion_riesgos;
+        me.arrayPoa.id_gestion_riesgos = me.arrayObjetivoEta[me.idEta].id_gestion_riesgos;*/
 
-        /*if(me.arrayPoa.gestion_riesgos == true){
-          //VERIFICANDO VALOR DE GESTION DE RIESGO
-          //enviando el id de la accion eta para guardar en la tabla 
-          me.arrayPoa.id_gestion_riesgo = me.arrayObjetivoEta[me.idEta].id_financiero_poa;
-
-        }else{
-          me.arrayPoa.id_gestion_riesgo = "NO";
-        }
         
-        console.log(me.arrayPoa,);
-        console.log(me.arrayObjetivoEta);*/
-
-        //
+        
         //**************FIN POA******************************************************//
 
         axios({
           method: 'post',
           url: '/api/planesTerritoriales/saveFinancieroPoa',
           data: {
-            datos:me.arrayPoa,
+            datos:enviarPoa,
             eta_gestion_riegos:me.arrayObjetivoEta
           }
         }).then(function(response){
           swal("Datos guardados", "Los datos se guardaron correctamente", "success");
           me.listaObjetivoEta();
           me.modal = 0;
-          me.arrayPoa.monto_poa = "";
+          enviarPoa = {};
+          me.arrayPoa = {
+            causas_variacion:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            monto_poa:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecutado:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            programado_accion:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecutado_accion:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            gestion_riesgos:{
+              input:"",
+              clase:"",
+              mensaje:""
+            }
+          },
+          me.errors = []
+          /*me.arrayPoa.monto_poa = "";
           me.arrayPoa.ejecutado = "";
           me.arrayPoa.causas_variacion = "";
           me.arrayPoa.programado_accion = "";
-          me.arrayPoa.ejecutado_accion = "";
+          me.arrayPoa.ejecutado_accion = "";*/
         }).catch(function(error){
-
+            console.log(error);
         });
          
          
@@ -390,12 +507,13 @@ export default {
           case 2:
             //recuperar datos par aupdate con axio
             
-            me.arrayPoa.monto_poa = me.arrayObjetivoEta[idEta].monto_poa_planificado;
-            me.arrayPoa.ejecutado = me.arrayObjetivoEta[idEta].monto_poa_ejecutado;
-            me.arrayPoa.causas_variacion = me.arrayObjetivoEta[idEta].causas_variacion;
-            me.arrayPoa.programado_accion = me.arrayObjetivoEta[idEta].accion_poa_programado;
-            me.arrayPoa.ejecutado_accion = me.arrayObjetivoEta[idEta].accion_poa_ejecutado;
-            me.arrayPoa.gestion_riesgos = me.arrayObjetivoEta[idEta].es_gestion_riesgos;
+            
+            me.arrayPoa.monto_poa.input = me.convertirFormato(me.arrayObjetivoEta[idEta].monto_poa_planificado);
+            me.arrayPoa.ejecutado.input = me.convertirFormato(me.arrayObjetivoEta[idEta].monto_poa_ejecutado);
+            me.arrayPoa.causas_variacion.input = me.arrayObjetivoEta[idEta].causas_variacion;
+            me.arrayPoa.programado_accion.input = me.convertirFormato(me.arrayObjetivoEta[idEta].accion_poa_programado);
+            me.arrayPoa.ejecutado_accion.input = me.convertirFormato(me.arrayObjetivoEta[idEta].accion_poa_ejecutado);
+            me.arrayPoa.gestion_riesgos.input = me.arrayObjetivoEta[idEta].es_gestion_riesgos;
             
             this.modal = 1;
             break;
@@ -408,7 +526,9 @@ export default {
         this.modal = 0;
       },
       salirModulo(){
-            window.location = "/planesTerritoriales/index";
+        let me = this;
+        me.$root.$data.views = 5;
+           // window.location = "/planesTerritoriales/index";
       }, 
       finalizarModulo(m){
         let me = this;
@@ -429,6 +549,143 @@ export default {
                console.log(error);
            });
          });
+      },
+      todoTexto(data){
+        let me = this;
+        if(data.input){
+          data.clase = "success";
+          data.mensaje = "";
+        }
+      },
+      midecimal(data){
+        if(data.input){
+          var currentVal = data.input;
+          var testDecimal = this.testDecimals(currentVal);//verifica con un contador si hay una coma o mas
+          if (testDecimal.length > 1) {//si el contador es mayor a uno mensaje
+              //console.log("You cannot enter more than one decimal point");
+              data.clase = "danger";
+              data.mensaje = "No puede introducir mas de punto decimal";
+              //console.log(currentVal);//123.4.
+              currentVal = currentVal.slice(0, -1);//devuelve todo el array menos el ultimo 
+              //console.log(currentVal);//123.4
+
+          }
+          //$(this).val(replaceCommas(currentVal));
+          data.input = this.replaceCommas(currentVal,data);  
+        }else{
+          data.clase = "warning";
+          data.mensaje = "Este campo esta vacio";
+        }
+      },
+      testDecimals(currentVal) {
+        //verifica si hay mas de dos comas
+      var count;
+      //currentVal.match(/\./g) === null ? count = 0 : count = currentVal.match(/\./g);
+      currentVal.match(/\,/g) === null ? count = 0 : count = currentVal.match(/\,/g);
+      return count;
+      //console.log("hola testDecimales");
+      },
+
+      replaceCommas(yourNumber,data) {
+        //console.log(yourNumber);
+        //console.log(data);
+        //console.log("hola replaceCommas");
+
+          //var components = yourNumber.toString().split(".");
+          var components = yourNumber.toString().split(",");
+          //console.log("components"+components);
+
+          if (components.length === 1){
+            //quiere decir que no hay decimales
+            components[0] = yourNumber;
+            components[0] = components[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            //console.log("hola replaceCommas primer if");
+            data.clase = "success";
+            data.mensaje = "formato correcto";
+          } 
+            
+          if (components.length === 2){
+            //si hay decimales
+            components[1] = components[1].replace(/\D/g, "");
+            //console.log("hola replaceCommas segundo if");
+            data.clase = "success";
+            data.mensaje = "formato correcto";
+          }
+              
+          //return components.join(".");
+          return components.join(",");
+      },
+      replaceAll( text, busca, reemplaza ){
+        while (text.toString().indexOf(busca) != -1)
+            text = text.toString().replace(busca,reemplaza);
+        return text;
+      },
+      validateRatio(data){
+        if(!data.input){
+          data.clase = 'warning';
+          data.mensaje = "Debe seleccionar una oopcion";  
+
+        }else{
+          data.clase = 'success';
+          data.mensaje = "";  
+
+        }
+      },
+      validarPoa(){
+        let me = this;
+        me.errors = [];
+          
+          if(!me.arrayPoa.monto_poa.input){
+            me.proyPoa.nombre.clase = "warning";
+            me.proyPoa.nombre.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          if(!me.arrayPoa.ejecutado.input){
+            me.proyPoa.avance_fisico.clase = "warning";
+            me.proyPoa.avance_fisico.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          if(!me.arrayPoa.programado_accion.input){
+            me.proyPoa.monto.clase = "warning";
+            me.proyPoa.monto.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          if(!me.arrayPoa.ejecutado_accion.input){
+            me.proyPoa.monto.clase = "warning";
+            me.proyPoa.monto.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          
+          //////////////////////
+          var checked_gestion_riesgos = $('input:radio[name=radioRiesgos]:checked').val()
+          console.log("es ptdi"+ checked_gestion_riesgos);
+          if(!checked_gestion_riesgos){
+            me.arrayPoa.gestion_riesgos.clase = "warning";
+            me.arrayPoa.gestion_riesgos.mensaje = "Debe elegir un opcion";
+            me.errors.push('Valid email required.');
+          }
+          
+          if (me.errors.length>0) {
+            //console.log("datos Con errores");
+            me.errors=[];
+            return false;
+          }else{
+            //console.log("datos sin errores, ENVIAR AL SERVIDOR");
+            me.savePoa();
+          }
+
+      },
+      convertirFormato(data){
+        var components = data.toString().split(".");
+        var completa = components[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".")+","+components[1];
+        return completa;
+        
+      },
+      reporteFinancieroGestionExcel(){
+        location.href = '/api/planesTerritoriales/reporteFinancieroGestionExcel';
+      },
+      reporteFinancieroGestionPdf(){
+        location.href = '/api/planesTerritoriales/reporteFinancieroGestionPdf';
       }
     },
     mounted() {
@@ -609,6 +866,10 @@ label {
 .modal-body{
     max-height: calc(100vh - 200px);
     overflow-y: auto;
+}
+miTabla{
+  max-width:900px;
+  max-height:560px;
 }
 
 

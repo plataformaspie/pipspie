@@ -10,6 +10,7 @@ use App\Models\PlanificacionTerritorial\RecursosPoa;
 use App\Models\PlanificacionTerritorial\ProyectoPoa;
 use App\Models\PlanificacionTerritorial\ProyectoPoaAjuste;
 use App\Models\PlanificacionTerritorial\SeguimientoGestiones;
+use App\Models\PlanificacionTerritorial\GestionSeleccionada;
 
 
 
@@ -19,17 +20,30 @@ class SeguimientoController extends Controller
 
   public function saveUpdateRecursoPoa(Request $request)
   {
+    $user = \Auth::user();
     //dd("hola desde el controlador save");
     $planActivo = Parametros::where('categoria','periodo_plan')
                                 ->where('activo',true)
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
-                                          ->where('activo',true)
-                                          ->first(); 
+    /*select * from sp_eta_gestiones
+where id_institucion = 560
 
-    $user = \Auth::user();
+and id_periodo_plan = 6
+and gestion_seleccionada = true
+ORDER BY orden*/
+
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+                                          ->where('id_institucion',$user->id_institucion)
+                                          ->where('activo',true)
+                                          ->where('gestion_seleccionada',true)
+                                          ->first(); */
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
+
+    
     $recursopoa = $request->datos;
     //dd($recursopoa);
     $id_recurso = $recursopoa['id_tipo_recurso'];
@@ -58,6 +72,7 @@ class SeguimientoController extends Controller
         $updateRecurso->diferencia_porcentaje_pei_poa = $recursopoa['diferencia_porcentaje_pei_poa'];
         $updateRecurso->color_porcentaje_ptdi_poa = $recursopoa['color_porcentaje_pei_poa'];
         $updateRecurso->color_porcentaje_pei_poa = $recursopoa['color_porcentaje_pei_poa'];
+        $updateRecurso->causas_variacion = $recursopoa['causas_variacion'];
         $updateRecurso->save();
 
         return \Response::json(array(
@@ -89,6 +104,7 @@ class SeguimientoController extends Controller
         $recurso->diferencia_porcentaje_pei_poa = $recursopoa['diferencia_porcentaje_pei_poa'];
         $recurso->color_porcentaje_ptdi_poa = $recursopoa['color_porcentaje_pei_poa'];
         $recurso->color_porcentaje_pei_poa = $recursopoa['color_porcentaje_pei_poa'];
+        $recurso->causas_variacion = $recursopoa['causas_variacion'];
         $recurso->save();
 
         return \Response::json(array(
@@ -110,16 +126,20 @@ class SeguimientoController extends Controller
     }                                  
   }
   public function listaRecursosGestion(){
+    $user = \Auth::user();
     $planActivo = Parametros::where('categoria','periodo_plan')
                                 ->where('activo',true)
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first(); 
+                                          ->first(); */
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                          ->first();
 
-    $user = \Auth::user();
+    
     $estadoModulo = \DB::select("select estado_etapa from sp_eta_estado_etapas_seguimiento
                                                     where id_institucion =  $user->id_institucion
                                                     and valor_campo_etapa = 'sRecursos'
@@ -201,6 +221,7 @@ class SeguimientoController extends Controller
         //dd( $recurso_Poa[0]->diferencia_ptdi_poa);
         $poa = new \stdClass();
         $pei = new \stdClass();
+        $causas_variacion = new \stdClass();
         $total_ptdi = $total_ptdi + $value->monto;
 
         if($recurso_Poa->count()>0){
@@ -218,6 +239,11 @@ class SeguimientoController extends Controller
           $pei->clase = '';
           $pei->mensaje = '';
           $value->monto_pei_gestion = $pei;
+
+          $causas_variacion->input = $recurso_Poa[0]->causas_variacion;
+          $causas_variacion->clase = '';
+          $causas_variacion->mensaje = '';
+          $value->causas_variacion = $causas_variacion;
           
 
           $value->id_recurso_poa = $recurso_Poa[0]->id;
@@ -248,6 +274,11 @@ class SeguimientoController extends Controller
           $pei->clase = '';
           $pei->mensaje = '';
           $value->monto_pei_gestion = $pei;
+
+          $causas_variacion->input = '';
+          $causas_variacion->clase = '';
+          $causas_variacion->mensaje = '';
+          $value->causas_variacion = $causas_variacion;
 
           $value->id_recurso_poa = 0;
           $value->color_porcentaje_ptdi_poa=0;

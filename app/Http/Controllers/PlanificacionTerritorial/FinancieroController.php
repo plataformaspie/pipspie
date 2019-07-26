@@ -12,6 +12,7 @@ use App\Models\PlanificacionTerritorial\FinancieroPoa;
 use App\Models\PlanificacionTerritorial\Parametros;
 use App\Models\PlanificacionTerritorial\SeguimientoGestiones;
 use App\Models\PlanificacionTerritorial\GestionRiesgos;
+use App\Models\PlanificacionTerritorial\GestionSeleccionada;
 
 
 
@@ -25,14 +26,18 @@ class FinancieroController extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first(); 
+                                          ->first(); */
 
 
 
 
     $user = \Auth::user();
+
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
 
     $estadoModulo = \DB::select("select estado_etapa from sp_eta_estado_etapas_seguimiento
                                                     where id_institucion =  $user->id_institucion
@@ -100,6 +105,7 @@ class FinancieroController extends BasecontrollerController
                                         and arti.id = p_recu.id_articulacion_objetivo_indicador
                                         and p_indi.gestion = '$gestionActiva->gestion'
                                         and p_recu.gestion = '$gestionActiva->gestion'");
+    //dd($objetivo_indicador);
 
     foreach ($objetivo_indicador as $riesgo) {
       $is_checked = \DB::select("select id,
@@ -109,13 +115,12 @@ class FinancieroController extends BasecontrollerController
                                       where id_institucion = $user->id_institucion
                                       and gestion = $gestionActiva->gestion
                                       and id_accion_eta = $riesgo->id_accion_eta_objetivo
-                                      and activo = true");
+                                      ");
                                       //dd($is_checked);
       if($is_checked){
         $riesgo->id_gestion_riesgos = $is_checked[0]->id;//enviando id en la tabla gestion_riesgos
         $riesgo->es_gestion_riesgos = $is_checked[0]->activo;//enviando true or false
-      }else{
-        $riesgo->es_gestion_riesgos = false;
+        $riesgo->gestion_riesgos = $is_checked[0]->activo;//enviando true or false
       }
     }
     //buscando si lo planificado ha sido comparado con el POA
@@ -140,6 +145,7 @@ class FinancieroController extends BasecontrollerController
           $r->accion_poa_ejecutado = $v->accion_poa_ejecutado ;
           $r->accion_poa_porcentaje = $v->accion_poa_porcentaje ;
           $r->porcentaje_ptdi = $v->porcentaje_ptdi ;
+          $r->porcentaje_accion_ptdi = $v->porcentaje_accion_ptdi  ;
           $r->porcentaje_pei = $v->porcentaje_pei ;
           $r->causas_variacion     = $v->causas_variacion;
 
@@ -157,6 +163,7 @@ class FinancieroController extends BasecontrollerController
         $r->accion_poa_ejecutado = "";
         $r->accion_poa_porcentaje = "";
         $r->porcentaje_ptdi = "";
+        $r->porcentaje_accion_ptdi = "";
         $r->porcentaje_pei = "";
         $r->causas_variacion = "";
       }
@@ -182,9 +189,12 @@ class FinancieroController extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first(); 
+                                          ->first(); */
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
 
 
 
@@ -214,6 +224,8 @@ class FinancieroController extends BasecontrollerController
         $r->accion_poa_ejecutado = $poa['ejecutado_accion'];
         $r->accion_poa_porcentaje = $poa['porcentaje_poa_accion'];
         $r->porcentaje_ptdi = $poa['porcentaje_ptdi'];
+        $r->porcentaje_accion_ptdi = $poa['porcentaje_accion_ptdi'];
+        //porcentaje_accion_ptdi
         $r->porcentaje_pei = $poa['porcentaje_pei'];
         $r->causas_variacion = $poa['causas_variacion'];
         $r->user = $user->id_institucion;
@@ -226,7 +238,7 @@ class FinancieroController extends BasecontrollerController
         $gestion_riesgo->id_accion_eta = $poa['id_accion_eta_objetivo'];
         $gestion_riesgo->id_institucion = $user->id_institucion;
         $gestion_riesgo->gestion = $gestionActiva->gestion;
-        $gestion_riesgo->activo = true;
+        $gestion_riesgo->activo = $poa['gestion_riesgos']; 
         $gestion_riesgo->save();
 
         
@@ -253,6 +265,7 @@ class FinancieroController extends BasecontrollerController
         $r->accion_poa_ejecutado = $poa['ejecutado_accion'];
         $r->accion_poa_porcentaje = $poa['porcentaje_poa_accion'];
         $r->porcentaje_ptdi = $poa['porcentaje_ptdi'];
+        $r->porcentaje_accion_ptdi = $poa['porcentaje_accion_ptdi'];
         $r->porcentaje_pei = $poa['porcentaje_pei'];
         $r->causas_variacion = $poa['causas_variacion'];
         $r->user = $user->id_institucion;
@@ -261,7 +274,18 @@ class FinancieroController extends BasecontrollerController
         $r->activo = true;
         $r->save();
 
-        if($poa['gestion_riesgos'] == "false"){
+        $id_gestion_riesgo = $poa['id_gestion_riesgos'];
+        $gestion_riesgo = GestionRiesgos::find($id_gestion_riesgo);
+        $gestion_riesgo->id_accion_eta = $poa['id_accion_eta_objetivo'];
+        $gestion_riesgo->id_institucion = $user->id_institucion;
+        $gestion_riesgo->gestion = $gestionActiva->gestion;
+        $gestion_riesgo->activo = $poa['gestion_riesgos'];;
+        $gestion_riesgo->save();
+
+
+        
+        /*if($poa['gestion_riesgos'] == "false"){
+          if()
           $id_gestion_riesgo = $poa['id_gestion_riesgos'];
           //dd($id_gestion_riesgo);
           $gestion_riesgo = GestionRiesgos::find($id_gestion_riesgo);
@@ -271,7 +295,7 @@ class FinancieroController extends BasecontrollerController
           $gestion_riesgo->gestion = $gestionActiva->gestion;
           $gestion_riesgo->activo = false;
           $gestion_riesgo->save();
-        }
+        }*/
         
         return \Response::json(array(
             'error' => false,

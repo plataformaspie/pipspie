@@ -27,6 +27,7 @@ Vue.component('seguimientorecursos', require('./components/SeguimientoRecursos.v
 Vue.component('seguimientoacciones', require('./components/SeguimientoAcciones.vue'));
 Vue.component('seguimientofisicofinanciera', require('./components/SeguimientoFisicoFinanciera.vue'));
 Vue.component('seguimientoproyectosinversion', require('./components/SeguimientoProyectosInversion.vue'));
+Vue.component('selecciongestion', require('./components/seleccionGestion.vue'));
 // Vue.component('presentacion', require('./components/Presentacion.vue'));
 Vue.component('evaluacion', require('./components/Evaluacion.vue'));
 
@@ -72,8 +73,8 @@ const app = new Vue({
     el: '#app',
     data: {
         view: 0,
-        viewS:5,
-        viewE:11,
+        views:12,
+        viewe:11,
         categoria:0,
         categoria_estado:'',
         modulo_estado:''

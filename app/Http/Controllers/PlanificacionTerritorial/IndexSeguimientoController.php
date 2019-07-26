@@ -10,6 +10,7 @@ use App\Models\Plataforma\Regiones;
 use App\Models\PlanificacionTerritorial\EtapasEstadoSeguimiento;
 use App\Models\PlanificacionTerritorial\Parametros;
 use App\Models\PlanificacionTerritorial\SeguimientoGestiones;
+use App\Models\PlanificacionTerritorial\GestionSeleccionada;
 
 
 class IndexSeguimientoController extends BasecontrollerController
@@ -18,7 +19,95 @@ class IndexSeguimientoController extends BasecontrollerController
  
   public function index()
   {
-      return view('PlanificacionTerritorial.index');
+      return view('PlanificacionTerritorial.indexseguimiento');
+      //return view('PlanificacionTerritorial.indexevaluacion');
+  }
+  public function indexevaluacion()
+  {
+      return view('PlanificacionTerritorial.indexevaluacion');
+      //return view('PlanificacionTerritorial.indexevaluacion');
+  }
+  public function cargarGestiones(Request $request){
+    $user = \Auth::user();
+    $planActivo = Parametros::where('categoria','periodo_plan')
+                                ->where('activo',true)
+                                ->first();
+    
+    $arrayGestiones = [2016,2017,2018,2019,2020];
+
+    $verificarExiste = SeguimientoGestiones::where('id_institucion', $user->id_institucion)
+                                          ->where('id_periodo_plan', $planActivo->id)
+                                          ->where('activo',true)
+                                          ->orderBy('orden')
+                                          ->get();
+    
+    if($verificarExiste->count()>0){
+
+      $listaGestiones = SeguimientoGestiones::where('id_institucion', $user->id_institucion)
+                                          ->where('id_periodo_plan', $planActivo->id)
+                                          ->where('activo',true)
+                                          ->orderBy('orden')
+                                          ->get();
+      
+    }else{
+      //dd($arrayGestiones);
+      $i = 0;
+      foreach ($arrayGestiones as $val) {
+        $nuevaGestion = new SeguimientoGestiones();
+        $nuevaGestion->gestion = $val;
+        $nuevaGestion->id_periodo_plan = $planActivo->id;
+        $nuevaGestion->activo = true;
+        $nuevaGestion->orden = $i;
+        $nuevaGestion->estado ="activo";
+        $nuevaGestion->id_institucion = $user->id_institucion;
+        $nuevaGestion->save();
+        $i++;
+      }
+      $listaGestiones = SeguimientoGestiones::where('id_institucion', $user->id_institucion)
+                                          ->where('id_periodo_plan', $planActivo->id)
+                                          ->where('activo',true)
+                                          ->orderBy('orden')
+                                          ->get();
+    }
+    
+
+    /*select * from sp_eta_gestiones
+        where id_institucion = 560
+
+        and id_periodo_plan = 6
+        and activo = true
+        ORDER BY orden*/
+    return \Response::json([
+        'gestiones' => $listaGestiones,
+    ]);
+  }
+  public function cambiarVista(Request $request){
+    $user = \Auth::user();
+    $gestion = $request->gestion;
+    $planActivo = Parametros::where('categoria','periodo_plan')
+                                ->where('activo',true)
+                                ->first();
+    
+    $activarGestion = GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                           ->get();
+    if($activarGestion->count()>0){
+      $gestionInstitucion = GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                           ->update(['gestion'=>$gestion]);
+    }else{
+      $gestionInstitucion = new GestionSeleccionada();
+      $gestionInstitucion->id_institucion = $user->id_institucion;
+      $gestionInstitucion->gestion = $gestion;
+      $gestionInstitucion->activo = true;
+      $gestionInstitucion->save();
+
+    }
+    
+    
+
+    return \Response::json([
+        'error' => false,
+        'gestionActiva'=>$gestionInstitucion
+    ]);
   }
 
   public function datosUsuario(Request $request)
@@ -329,10 +418,11 @@ class IndexSeguimientoController extends BasecontrollerController
                                 ->first();
 
       /*********Verificar Gestion Activa**************/
-      $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+      /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                             ->where('activo',true)
-                                            ->first();                                
-
+                                            ->first();  */ 
+      $gestionActiva = GestionSeleccionada::where('id_institucion',$user->id_institucion)                             
+                                            ->first();            
 
 
 

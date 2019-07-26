@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+  <div class="">
         <div class="row p-t-10">
 
           <div class="col-lg-12  text-center  m-b-5 p-t-20" style="background-color:#fb9678;">
@@ -115,8 +115,8 @@
                         </div>
                         
                     </div>
-                    <h3 class="box-title  p-0 m-0">--</h3>
-                    <div class="row">
+                    <h3 class="box-title  p-0 m-0"></h3>
+                    <!--div class="row">
                         <div class="card col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
@@ -141,12 +141,21 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                 </div>
             </div>
         </div>
-
-    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="white-box p-0 m-0 p-t-10 ">
+          <div class="form-group text-center p-0 m-0">
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-info" @click="finalizarModulo(7)">Salir y Finalizar</button>
+                <button type="submit" class="btn btn-default" @click="salirSeguimiento()">Salir</button>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
 </template>
 
 <script>
@@ -198,7 +207,8 @@ import XYZ from 'ol/source/XYZ.js';
               estado_sRecursos:'Inactivo',
               estado_sAcciones:'Inactivo',
               estado_sFisicaFinanciera:'Inactivo',
-              estado_sProyectosInversion:'Inactivo'
+              estado_sProyectosInversion:'Inactivo',
+              estado_modulo:''
             }
         },
         methods: {
@@ -243,7 +253,7 @@ import XYZ from 'ol/source/XYZ.js';
                                vista: e}
                      }).then(function (response) {
                        swal("Activado!", "Puede cargar los Recursos para este gestion.", "success");
-                       me.$root.$data.viewS = e;
+                       me.$root.$data.views = e;
                      }).catch(function (error) {
                        console.log(error);
                      });
@@ -251,8 +261,8 @@ import XYZ from 'ol/source/XYZ.js';
                   });
                 }
                 if(response.data.accion == 2){
-                  me.$root.$data.viewS = e;
-                  //console.log(me.$root.$data.view);
+                  me.$root.$data.views = e;
+                  console.log(me.$root.$data.views);
                 }
 
                 if(response.data.accion == 3){
@@ -268,7 +278,7 @@ import XYZ from 'ol/source/XYZ.js';
                     closeOnConfirm: true
                   },
                   function(){
-                    me.$root.$data.viewS = e;
+                    me.$root.$data.views = e;
                     /*axios({
                        method: 'post',
                        url: '/api/planesTerritoriales/activarEtapaSeguimiento',
@@ -307,6 +317,9 @@ import XYZ from 'ol/source/XYZ.js';
                 // handle error
                 console.log(error);
               });
+           },
+           salirSeguimiento(){
+              window.location = "/planesTerritoriales/index"
            },
            iniciarMapa(){
             var styles = {

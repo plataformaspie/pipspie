@@ -131,7 +131,8 @@
                         </div>
                       </div>
                       <!--button class="btn btn-primary" @click="ReporteExcel">Reporte Excel</button-->
-                      <button v-show="btnReporteRecursos" @click="ReporteExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar Excel</button>
+                      <button v-show="btnReporteRecursos" @click="ReporteExcel" type="button" class="btn waves-effect waves-light btn-success">Exportar Excel<i class="fa fa-file-excel-o" aria-hidden="true" ></i></button>
+                      <button v-show="btnReporteRecursos" type="submit" class="btn btn-danger" @click="reporteRecursosMedioPdf">Exportar Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                       <button class="btn btn-primary" @click="saveReporte">Guardar Reporte</button>
                     </div>
                 </div>
@@ -199,7 +200,8 @@
                         
                       </div>
                     </div>
-                    <button  @click="reporteAccionesExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar Excel</button>
+                    <button  @click="reporteAccionesExcel" type="button" class="btn waves-effect waves-light btn-success">Exportar Excel<i class="fa fa-file-excel-o" aria-hidden="true" ></i></button>
+                    <button  type="submit" class="btn btn-danger" @click="reporteAccionesMedioPdf">Exportar Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                   </div>
                 </div>
                 <div class="tab-pane p-20" id="concurrenciaentidades" role="tabpanel">
@@ -307,6 +309,7 @@
                     </div>
                   </div>
                   <button v-show="btnReporteFinanciero" @click="reporteFinancieroExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar Excel</button>
+                  <button  v-show="btnReporteFinanciero" type="submit" class="btn btn-danger" @click="reporteFinancieroMedioPdf">Exportar Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                   <button class="btn btn-primary" @click="saveReporteFinanciero">Guardar Reporte</button>
                 </div>
                 <div class="tab-pane p-20" id="entidadejecutora" role="tabpanel">
@@ -407,7 +410,8 @@
                         </div>
                       </div>
                     </div>
-                    <button  @click="reporteInversionExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar Excel</button>
+                    <button  @click="reporteInversionExcel" type="button" class="btn waves-effect waves-light btn-success">Exportar Excel<i class="fa fa-file-excel-o" aria-hidden="true" ></i></button>
+                    <button  @click="reporteInversionMedioPdf" type="button" class="btn waves-effect waves-light btn-danger" >Exportar Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                   </div>
                 </div>
                 <div class="tab-pane p-20" id="gestionriesgos" role="tabpanel">
@@ -499,6 +503,7 @@
                                                 @keyup="validarComentario(f)"
                                                 rows="5" 
                                                 cols="50"
+                                                disabled="disabled"
                                       ></textarea>
                                       <div class="form-control-feedback" v-text="f.mensaje"></div>
                                       <!--small class="form-text text-muted">Example help text that remains unchanged.</small-->
@@ -510,7 +515,8 @@
                         </div>
                       </div>
                     </div>
-                    <button  @click="reporteRiesgosExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar Excel</button>
+                    <button  @click="reporteRiesgosExcel" type="button" class="btn waves-effect waves-light btn-success">Exportar Excel  <i class="fa fa-file-excel-o" aria-hidden="true" ></i></button>
+                    <button  type="button" class="btn btn-danger" @click="reporteRiesgosMedioPdf">Exportar Pdf  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                     <!--button class="btn btn-primary" @click="saveReporte">Guardar Reporte</button-->
                   </div>
                 </div>
@@ -813,6 +819,21 @@ export default {
       reporteInversionExcel(){
         //alert("hola desde ReporteInversionExcel");
         location.href = '/api/planesTerritoriales/reporteInversionExcel'; 
+      },
+      reporteRecursosMedioPdf(){
+        location.href = '/api/planesTerritoriales/reporteRecursosMedioPdf'; 
+      },
+      reporteAccionesMedioPdf(){
+       location.href = '/api/planesTerritoriales/reporteAccionesMedioPdf';  
+      },
+      reporteFinancieroMedioPdf(){
+        location.href = '/api/planesTerritoriales/reporteFinancieroMedioPdf';  
+      },
+      reporteInversionMedioPdf(){
+        location.href = '/api/planesTerritoriales/reporteInversionMedioPdf';  
+      },
+      reporteRiesgosMedioPdf(){
+        location.href = '/api/planesTerritoriales/reporteRiesgosMedioPdf';  
       }
 
     },

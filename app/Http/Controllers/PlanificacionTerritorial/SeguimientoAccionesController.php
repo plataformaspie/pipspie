@@ -11,6 +11,7 @@ use App\Models\PlanificacionTerritorial\ProyectoPoa;
 use App\Models\PlanificacionTerritorial\ProyectoPoaAjuste;
 use App\Models\PlanificacionTerritorial\CategoriaProgramatica;
 use App\Models\PlanificacionTerritorial\SeguimientoGestiones;
+use App\Models\PlanificacionTerritorial\GestionSeleccionada;
 
 
 
@@ -38,10 +39,14 @@ class SeguimientoAccionesController  extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first();
+                                          ->first();*/
     $user = \Auth::user();
+
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
 
     $estadoModulo = \DB::select("select estado_etapa from sp_eta_estado_etapas_seguimiento
                                                     where id_institucion =  $user->id_institucion
@@ -170,13 +175,18 @@ class SeguimientoAccionesController  extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first(); 
+                                          ->first(); */
     $user = \Auth::user();
+
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
     //$gestion=2018;
     $p=$request->datos;
-    if($p['id'] == 0){
+    //dd($p);
+    if($p['id_proyecto_poa'] === 0 ){
       try{
 
         $proyPoa = new ProyectoPoa();
@@ -210,10 +220,10 @@ class SeguimientoAccionesController  extends BasecontrollerController
     }else{
       try{
 
-          $proyPoa =  ProyectoPoa::find($p->id);
+          $proyPoa =  ProyectoPoa::find($p['id_proyecto_poa']);
           $proyPoa->id_accion_eta = $p['id_accion_eta'];
           $proyPoa->nombre = $p['nombre'];
-          $proyPoa->categoria_programatica = $p['categoriaProgramatica'];
+          $proyPoa->categoria_programatica = $p['categoria_programatica'];
           $proyPoa->gestion = $gestionActiva->gestion;
           $proyPoa->id_institucion = $user->id_institucion;
           $proyPoa->activo = true;
@@ -223,7 +233,7 @@ class SeguimientoAccionesController  extends BasecontrollerController
           $proyPoa->inscrito_ptdi = $p['inscrito_ptdi'];
           $proyPoa->inscrito_pei = $p['inscrito_pei'];
           $proyPoa->inscrito_poa = $p['inscrito_poa'];
-          $recurso->id_user_updated = $user->id;
+          
           $proyPoa->save();
           
           

@@ -27,7 +27,7 @@
     <div class="card">
       <div class="table-responsive white-box" >
         <h4 class="m-t-0">SEGUIMIENTO A PROYECTOS DE INVERSION</h4>
-        <table id="art" class="table table-bordered color-table info-table">
+        <table id="art" class="table table-bordered color-table info-table miTabla">
           <thead>
             <tr>
               <th>Accion ETA</th>
@@ -73,9 +73,11 @@
                     </thead>             
                     <tbody> 
                       <tr v-for="(vip, index) in inv.proyectosInversion" :key="index">
-                        <td class="text-nowrap">
-                          <a v-show="estado_modulo" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" @click="abrirModal(1,clave,index)" title="Editar " ><i class="fa fa-edit fa-lg    text-warning "></i></a> 
-                          <!--a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger " @click="abrirModalConcurrencia(1,clave,index)"></i></a-->
+                        <td v-if="vip.verificar_existe_proyectos_inversion =='si hay'" class="text-nowrap">
+                          <a v-show="estado_modulo"  style="display:inline-block;" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar Proyecto Inversion" @click="abrirModal(2,clave,index)"><i class="fa fa-edit fa-lg fa-2x    " style="color:#0973E8"></i></a> 
+                        </td>
+                        <td v-else class="text-nowrap">
+                          <a v-show="estado_modulo"  style="display:inline-block;" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Agregar POA " @click="abrirModal(1,clave,index)"><i class="fa fa-plus fa-lg fa-2x   text-info " style="color:#0973E8"></i></a> 
                         </td>
                         <td v-if="vip.inscrito_ptdi==true">X</td>
                         <td v-else></td>
@@ -90,45 +92,59 @@
                         <td v-else></td>
                         <td v-if="vip.periodo_ejecucion_al" v-text="formatYear(vip.periodo_ejecucion_al)"></td>
                         <td v-else></td>
-                        <td>{{ vip.concurrencia_eta_programado }}</td>
-                        <td>{{ vip.concurrencia_eta_ejecutado }}</td>
-                        <td>{{ vip.concurrencia_porcentaje_ejecutado }}</td>
+
+                        <td>{{ vip.monto_poa_planificado }}</td>
+                        <td>{{ vip.monto_poa_ejecutado }}</td>
+                        <td>{{ vip.monto_poa_porcentaje }}</td>
                         <td>{{ vip.entidad_ejecutora_cod }}</td>
                         <td>{{ vip.entidad_ejecutora_denominacion }}</td>
-                        <td><button v-show="estado_modulo" id="agregarColor" :disabled="vip.verificar_existe_proyectos_inversion == 'no hay'"href="#"  class=" btn btn-info m-l-10 m-r-10 m-t-10 sel_edit" @click="abrirModalConcurrencia(1,clave,index)" title="Entidades" style="border-radius:100%;" ><i class="fa fa-plus fa-xs "></i></button></td>
-                        <!--td><a href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" @click="verEntidades(vip.id)" title="Ver Entidades " ><i class="fa fa-eye fa-lg    text-info "></i></a></td-->
-
-                        <transition name="fade">
-                          <td v-if="vip.verificar_existe_proyectos_inversion == 'si hay'">
-                            <div class="table-responsive">
-                              <table class="table table-bordered">
-                                <thead>
-                                  <tr>
-                                    <td>Accion</td>
-                                    <td>Nombre<br/>Entidad</td>
-                                    <td>Monto<br/>Programado</td>
-                                    <td>Monto <br/>Ejecutado</td>
-                                    <td>% De<br/>Ejecucion</td>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr v-for="(ent, key) in vip.entidadesConcurrencia" :key="key" >
-                                    <td class="text-nowrap">
-                                      <a v-show="estado_modulo" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" @click="abrirModalConcurrencia(2,clave,index,key)" title="Editar " ><i class="fa fa-edit fa-lg    text-warning "></i></a> 
-                                      <!--a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger " @click="abrirModalConcurrencia(1,clave,index)"></i></a-->
-                                    </td>
-                                    <td>{{ ent.nombre_entidad}} </td>
-                                    <td>{{ ent.programacion_entidad}}</td>
-                                    <td>{{ ent.ejecucion_entidad}}</td>
-                                    <td v-text="formatPrice(ent.porcentaje_ejecucion_entidad)"></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
+                        <template v-if="vip.verificar_existe_proyectos_inversion == 'si hay'">
+                            <td>
+                              <button  v-show="estado_modulo" 
+                                      id="agregarColor" 
+                                      class=" btn btn-info m-l-10 m-r-10 m-t-10 sel_edit" 
+                                      @click="abrirModalConcurrencia(1,clave,index,-1)" 
+                                      title="Agregar Entidades Concurrentes" 
+                                      style="border-radius:100%;" ><i class="fa fa-plus fa-xs "></i>
+                              </button>
+                            </td>
+                            <td v-if="vip.verificar_existe_entidades_concurrencia == 'si hay'">
+                              <div class="table-responsive">
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <td>Accion</td>
+                                      <td>Nombre<br/>Entidad</td>
+                                      <td>Monto<br/>Programado</td>
+                                      <td>Monto <br/>Ejecutado</td>
+                                      <td>% De<br/>Ejecucion</td>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr v-for="(ent, key) in vip.entidadesConcurrencia" :key="key" >
+                                      <td class="text-nowrap">
+                                        <a v-show="estado_modulo==true" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" @click="abrirModalConcurrencia(2,clave,index,key)" title="Editar Entidades " ><i class="fa fa-edit fa-lg  text-warning "></i></a> 
+                                        <a v-show="estado_modulo==true" href="#" class="m-l-10 m-r-10 m-t-10 sel_edit"> <i class="fa fa-trash fa-lg text-danger" @click="deleteEntidad(ent.id)" title="Eliminar Entidad"></i> </a>
+                                        <!--a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-danger " @click="abrirModalConcurrencia(1,clave,index)"></i></a-->
+                                      </td>
+                                      <td>{{ ent.nombre_entidad }} </td>
+                                      <td>{{ ent.programacion_entidad }}</td>
+                                      <td>{{ ent.ejecucion_entidad }}</td>
+                                      <td v-text="formatPrice(ent.porcentaje_ejecucion_entidad)"></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                            <td v-else><p>No tiene registrado Entidades</p></td>
+                        </template>
+                        <template v-else>
+                          <td>
+                            <button  v-show="estado_modulo" id="agregarColor" disabled="disabled" class=" btn btn-info m-l-10 m-r-10 m-t-10 sel_edit" @click="abrirModalConcurrencia(1,clave,index)" title="Entidades Sin Proyectos" style="border-radius:100%;" ><i class="fa fa-plus fa-xs "></i>
+                            </button>
                           </td>
-                          <td v-else><p>No tiene registrado Entidades<br/> Debe registrar Datos del proyecto de inversion</p></td>
-                        </transition>
-                        
+                          <td ><p>Debe registrar datos del Proyecto Inversion</p></td>
+                        </template>
                       </tr>
                     </tbody>
                 </table> 
@@ -143,6 +159,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="white-box p-0 m-0 p-t-10 ">
           <div class="form-group text-center p-0 m-0">
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-success" @click="reporteInversionGestionExcel">Exportar <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-danger" @click="reporteInversionGestionPdf">Exportar <i class="fa fa-file-pdf-o " aria-hidden="true"></i></button>
                 <button v-show="estado_modulo==true" type="submit" class="btn btn-info" @click="finalizarModulo(9)">Salir y Finalizar</button>
                 <button type="submit" class="btn btn-default" @click="salirModulo()">Salir</button>
           </div>
@@ -152,58 +170,113 @@
 
     <!--Ventana Modal para los proyectos de Inversiones-->
     <div class="modal fade" :class="{'show':modal}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-         <div class="modal-dialog" style="max-width: 600px;">
-             <div class="modal-content">
-                <form method="post" id="form-otro" name="form-otro" @submit.prevent="">
-                   <div class="modal-header">
-                       <button type="button" class="close" @click="cerrarModal()" aria-hidden="true">×</button>
-                       <h4 class="modal-title">Proyectos de Inversion</h4>
-                   </div>
-                   <div class="modal-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card-body p-b-0">
-                            <div class="col-lg-12">
-                              <form>
+       <div class="modal-dialog" style="max-width: 600px;">
+           <div class="modal-content">
+              <form method="post" id="form-otro" name="form-otro" @submit.prevent="">
+                 <div class="modal-header">
+                     <button type="button" class="close" @click="cerrarModal()" aria-hidden="true">×</button>
+                     <h4 class="modal-title">Proyectos de Inversion</h4>
+                 </div>
+                 <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card-body p-b-0">
+                          <div class="col-lg-12">
+                            <form>
+                              <div class="form-group">
+                                <h4 class="separador">Proyecto inscrito VIPFE</h4>
                                 <div class="form-group">
-                                  <h4 class="separador">Proyecto inscrito VIPFE</h4>
                                   <label for="concepto" class="control-label">Nombre Proyecto</label>
                                   <input type="text" name="concepto" class="form-control" v-model="objProyecto.nombre_proyecto" disabled="disabled">
-                                  <label for="fuente_financiamiento" class="control-label">Costo Total:</label>
-                                  <input type="text" name="fuente_financiamiento"  class="form-control" v-model="objProyecto.costo_total_proyecto" >
-                                  <h6>Periodo de Ejecucion</h6>
-                                  <label for="organismo_financiador" class="control-label">Del:</label>
-                                  <input type="date" name="organismo_financiador" v class="form-control" v-model="objProyecto.periodo_ejecucion_del" required="required">  
-                                  <label for="rubro" class="control-label">Al:</label>
-                                  <input type="date" name="rubro"  class="form-control" v-model="objProyecto.periodo_ejecucion_al" required="required">  
-                                  <h4 class="separador">Concurrencia ETA</h4>
-                                  <label for="fuente_financiamiento" class="control-label">Programacion:</label>
-                                  <input type="text" name="fuente_financiamiento"  class="form-control" v-model="objProyecto.concurrencia_eta_programacion" required="required">
-
-                                  <label for="fuente_financiamiento" class="control-label">Ejecucion:</label>
-                                  <input type="text" name="fuente_financiamiento"  class="form-control" v-model="objProyecto.concurrencia_eta_ejecucion">
-                                  <label for="fuente_financiamiento" class="control-label">% Ejecucion:</label>
-                                  <p v-if="(objProyecto.concurrencia_eta_programacion == '')||(objProyecto.concurrencia_eta_ejecucion == '')">Debe llenar los campos Programacion y Ejecucion para hallar el porcentaje</p>
-                                  <p v-else class="text-danger" style="font-size:16px"  v-text="formatPrice((objProyecto.concurrencia_eta_ejecucion/objProyecto.concurrencia_eta_programacion)*100)+'%'" v-model="objProyecto.concurrencia_porcentaje_ejecutado"></p>
-                                  <h4 class="separador">Entidad Ejecutora</h4>
-                                  <label for="organismo_financiador" class="control-label">Codigo Entidad:</label>
-                                  <input type="text" name="organismo_financiador"  class="form-control" v-model="objProyecto.entidad_ejecutora_cod">
-                                  <label for="rubro" class="control-label">Denominacion Entidad:</label>
-                                  <input type="text" name="rubro"  class="form-control" v-model="objProyecto.entidad_ejecutora_denominacion">
                                 </div>
-                              </form>
-                            </div>
+                                <div :class="['form-group',(objProyecto.costo_total_proyecto.clase).trim()?'has-'+objProyecto.costo_total_proyecto.clase:'']">
+                                  <label for="fuente_financiamiento" class="control-label">Costo Total:</label>
+                                  <input type="text" name="fuente_financiamiento"  
+                                        :class="['form-control',(objProyecto.costo_total_proyecto.clase).trim()?'form-control-' + objProyecto.costo_total_proyecto.clase:'']" 
+                                        v-model="objProyecto.costo_total_proyecto.input"
+                                        @keyup="midecimal(objProyecto.costo_total_proyecto)" >
+                                  <div class="form-control-feedback" v-text="objProyecto.costo_total_proyecto.mensaje"></div>
+                                </div>
+                                
+                                <h6>Periodo de Ejecucion</h6>
+                                <div :class="['form-group',(objProyecto.periodo_ejecucion_del.clase).trim()?'has-'+objProyecto.periodo_ejecucion_del.clase:'']">
+                                  <label for="organismo_financiador" class="form-control-label">Del:</label>
+                                  <input type="date" name="organismo_financiador" 
+                                        :class="['form-control',(objProyecto.periodo_ejecucion_del.clase).trim()?'form-control-' + objProyecto.periodo_ejecucion_del.clase:'']" 
+                                        v-model="objProyecto.periodo_ejecucion_del.input"
+                                        @change="onchange($event,objProyecto.periodo_ejecucion_del)">
+                                  <div class="form-control-feedback" v-text="objProyecto.periodo_ejecucion_del.mensaje"></div> 
+                                </div> 
+                                <div :class="['form-group',(objProyecto.periodo_ejecucion_al.clase).trim()?'has-'+objProyecto.periodo_ejecucion_al.clase:'']">
+                                  <label for="rubro" class="form-control-label">Al:</label>
+                                  <input  type="date" name="rubro"  
+                                          :class="['form-control',(objProyecto.periodo_ejecucion_al.clase).trim()?'form-control-' + objProyecto.periodo_ejecucion_al.clase:'']" 
+                                          v-model="objProyecto.periodo_ejecucion_al.input"
+                                          @change="onFechas($event,objProyecto.periodo_ejecucion_al)">
+                                  <div class="form-control-feedback" v-text="objProyecto.periodo_ejecucion_al.mensaje"></div> 
+                                </div>  
+                                <!--h4 class="separador">Concurrencia ETA</h4>
+                                <label for="fuente_financiamiento" class="control-label">Programacion:</label>
+                                <input type="text" name="fuente_financiamiento"  class="form-control" v-model="objProyecto.concurrencia_eta_programacion" required="required">
+
+                                <label for="fuente_financiamiento" class="control-label">Ejecucion:</label>
+                                <input type="text" name="fuente_financiamiento"  class="form-control" v-model="objProyecto.concurrencia_eta_ejecucion">
+                                <label for="fuente_financiamiento" class="control-label">% Ejecucion:</label>
+                                <p v-if="(objProyecto.concurrencia_eta_programacion == '')||(objProyecto.concurrencia_eta_ejecucion == '')">Debe llenar los campos Programacion y Ejecucion para hallar el porcentaje</p>
+                                <p v-else class="text-danger" style="font-size:16px"  v-text="formatPrice((objProyecto.concurrencia_eta_ejecucion/objProyecto.concurrencia_eta_programacion)*100)+'%'" v-model="objProyecto.concurrencia_porcentaje_ejecutado"></p-->
+
+                                <h4 class="separador">Entidad Ejecutora</h4>
+                                <!--div :class="['form-group',(objProyecto.entidad_ejecutora_cod.clase).trim()?'has-'+objProyecto.entidad_ejecutora_cod.clase:'']">
+                                  <label for="" class="form-control-label">Seleccione Entidad Ejecutora</label>
+                                  <select
+
+                                          :class="['form-control',(objProyecto.entidad_ejecutora_cod.clase).trim()?'form-control-' + objProyecto.entidad_ejecutora_cod.clase:'']"   
+                                          v-model="selected"
+                                          
+                                          >
+                                    <option>Seleccione Entidad Ejecutora</option>
+                                    <option 
+                                            v-for="(ejecutora,index) in listaEntidades"
+                                            
+                                             >{{ ejecutora.id_institucion_ejecutora}}
+                                    </option>
+                                  </select>
+                                  
+                                  <div class="form-control-feedback" v-text="objProyecto.entidad_ejecutora_cod.mensaje"></div> 
+                                </div-->
+                                <div :class="['form-group',(entidad.clase).trim()?'has-'+entidad.clase:'']">
+                                  <select v-model="entidad.valores"
+                                          @change="onchangeEjecutora($event,entidad)"
+                                          :class="['form-control',(entidad.clase).trim()?'form-control-' + entidad.clase:'']"   >
+                                    <option v-for="product in listaEntidades" 
+                                            v-bind:value="{ id: product.id_entidad_ejecutora, denominacion: product.descripcion_entidad_ejecutora }">{{ product.id_entidad_ejecutora }}
+                                   </option>
+                                  </select>
+                                  <div class="form-control-feedback" v-text="entidad.mensaje"></div>
+                                </div>
+                               <!--h1>Value:
+                                 {{selected.id}}
+                                 </h1>
+                                 <h1>Text:
+                                 {{selected.text}}
+                                 </h1-->
+                                <div class="form-group">
+                                  <input type="text" class="form-control" v-model="entidad.valores.denominacion" disabled="disabled">
+                                </div>
+                              </div>
+                            </form>
                           </div>
                         </div>
                       </div>
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-default waves-effect" @click="cerrarModal()">Cancelar</button>
-                       <button type="submit" class="btn btn-info waves-effect waves-light" @click="guardarProyectoInversion()">Guardar Proyecto Inversion</button>
-                   </div>
-                </form>
-             </div>
-         </div>
+                    </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-default waves-effect" @click="cerrarModal()">Cancelar</button>
+                     <button type="submit" class="btn btn-info waves-effect waves-light" @click="validateProyectoInversion()">Guardar Proyecto Inversion</button>
+                 </div>
+              </form>
+           </div>
+       </div>
     </div>
     <!--Fin Ventana Modal para los proyectos de Inversiones-->
     <!--Ventana Modal para los entidades Concurrencia-->
@@ -222,18 +295,75 @@
                         <!--h4 class="separador">Concurrencia Entidades</h4-->
                         <div class="col-lg-12" >
                           <div class="p-20" >
-                            <div class="form-group">
-                              <label for="nombre_entidad" class="control-label" >Nombre Entidad </label>
-                              <input type="text" name="nombre_entidad" class="form-control" v-model="objEntidad.nombre_entidad" autofocus="autofocus">
-                              <label for="programacion" class="control-label">Programacion:</label>
-                              <input type="number" name="programacion"  class="form-control" v-model="objEntidad.programacion_entidad">
-                              <label for="fuente_financiamiento" class="control-label">Ejecucion:</label>
-                              <input type="number" name="fuente_financiamiento"  class="form-control" v-model="objEntidad.ejecucion_entidad">
-                              <label for="fuente_financiamiento" class="control-label">% Ejecucion:</label>
-                              <p v-if="(objEntidad.programacion_entidad == '')||(objEntidad.ejecucion_entidad == '')">Debe llenar los campos Programacion y Ejecucion para hallar el porcentaje</p>
-                              <p v-else class="text-info" style="font-size:16px"  v-text="formatPrice((objEntidad.ejecucion_entidad/objEntidad.programacion_entidad)*100)+'%'" v-model="objEntidad.pocentaje_ejecucion_entidad"></p>
-                               
+                            <div :class="['form-group',(objEntidad.nombre_entidad.clase).trim()?'has-'+ objEntidad.nombre_entidad.clase:'']">
+                              <label for="nombre_entidad" class="form-control-label" >Nombre Entidad </label>
+                              <input type="text" 
+                                      name="nombre_entidad" 
+                                      v-model="objEntidad.nombre_entidad.input"
+                                      :class="['form-control',(objEntidad.nombre_entidad.clase).trim()?'form-control-' + objEntidad.nombre_entidad.clase:'']"
+                                      @keyup="todoTexto(objEntidad.nombre_entidad)"
+                                      >
+                              <div class="form-control-feedback" v-text="objEntidad.nombre_entidad.mensaje"></div>
                             </div>
+                            <!--div :class="['form-group',(objEntidad.programacion_entidad.clase).trim()?'has-'+ objEntidad.programacion_entidad.clase:'']">
+                              <label for="programacion" class="form-control-label">Programacion:</label>
+
+                              <div class="input-group m-b-10">
+                                <span class="input-group-addon">Bs.</span>
+                                <input type="number" 
+                                      name="programacion"   
+                                      :class="['form-control',(objEntidad.programacion_entidad.clase).trim()?'form-control-' + objEntidad.programacion_entidad.clase:'']"
+                                      v-model="objEntidad.programacion_entidad.input"
+                                      @keyup="midecimal(objEntidad.programacion_entidad)">
+                              </div>
+                              <div class="form-control-feedback" v-text="objEntidad.programacion_entidad.mensaje"></div>
+                            </div-->
+                            <div :class="['form-group',(objEntidad.programacion_entidad.clase).trim()?'has-'+objEntidad.programacion_entidad.clase:'']">
+                              <label class="form-control-label" for="inputSuccess1">Programacion</label>
+                              <div class="input-group">
+                                <span class="input-group-addon">Bs.</span>
+                                <input type="text"  id="inputSuccess1" v-model="objEntidad.programacion_entidad.input" 
+                                    :class="['form-control',(objEntidad.programacion_entidad.clase).trim()?'form-control-' + objEntidad.programacion_entidad.clase:'']"
+                                     @keyup="midecimal(objEntidad.programacion_entidad);porcentajeConcurrencia()"   
+                                >
+                              </div>
+                              <div class="form-control-feedback" v-text="objEntidad.programacion_entidad.mensaje"></div>
+                              <small class="form-text text-muted">La "," es separador de decimales.</small>
+                            </div>
+                            <div :class="['form-group',(objEntidad.ejecucion_entidad.clase).trim()?'has-'+objEntidad.ejecucion_entidad.clase:'']">
+                              <label class="form-control-label" for="inputSuccess1">Ejecucion</label>
+                              <div class="input-group">
+                                <span class="input-group-addon">Bs.</span>
+                                <input type="text"  id="inputSuccess1" v-model="objEntidad.ejecucion_entidad.input" 
+                                    :class="['form-control',(objEntidad.ejecucion_entidad.clase).trim()?'form-control-' + objEntidad.ejecucion_entidad.clase:'']"
+                                     @keyup="midecimal(objEntidad.ejecucion_entidad);porcentajeConcurrencia()"   
+                                >
+                              </div>
+                              <div class="form-control-feedback" v-text="objEntidad.ejecucion_entidad.mensaje"></div>
+                              <small class="form-text text-muted">La "," es separador de decimales.</small>
+                            </div>
+                            <!--div :class="['form-group',(objEntidad.ejecucion_entidad.clase).trim()?'has-'+ objEntidad.ejecucion_entidad.clase:'']">
+                              <label for="fuente_financiamiento" class="form-control-label">Ejecucion:</label>
+                              <div class="input-group m-b-10">
+                                <span class="input-group-addon">Bs.</span>
+                                <input  type="text" name="fuente_financiamiento"  class="form-control" 
+                                        v-model="objEntidad.ejecucion_entidad.input"
+                                        :class="['form-control',(objEntidad.ejecucion_entidad.clase).trim()?'form-control-' + objEntidad.ejecucion_entidad.clase:'']"
+                                        @keyup="midecimal(objEntidad.ejecucion_entidad)">
+                              </div>
+                              <div class="form-control-feedback" v-text="objEntidad.ejecucion_entidad.mensaje"></div>
+                            </div-->
+                              <label for="fuente_financiamiento" class="control-label">% Ejecucion:</label>
+                              <p v-if="((!objEntidad.programacion_entidad.input) || (!objEntidad.ejecucion_entidad.input))">Debe llenar los campos Programacion y Ejecucion para hallar el porcentaje
+                              </p>
+                              <p v-else 
+                                class="text-info" 
+                                style="font-size:16px"  
+                                v-model = "objEntidad.porcentaje_ejecucion_entidad"
+                                >
+                                {{ objEntidad.porcentaje_ejecucion_entidad + '%' }}
+                              </p>
+                            
                           </div>
                         </div>
                       </div>
@@ -242,8 +372,8 @@
                </div>
                <div class="modal-footer">
                    <button type="button" class="btn btn-default waves-effect" @click="cerrarModalConcurrencia()">Cancelar</button>
-                   <button type="submit" class="btn btn-info waves-effect waves-light" @click="guardarEntidadesConcurrencia()" v-show="!accionFormEntidad">Guardar Entidad</button>
-                   <button type="button" class="btn btn-warning waves-effect waves-light" @click="actualizarEntidadesConcurrencia(objEntidad.id)" v-show="accionFormEntidad">Actualizar Entidad</button>
+                   <button type="submit" class="btn btn-info waves-effect waves-light" @click="validateEntidadConcurrencia()" v-show="!accionFormEntidad">Guardar Entidad</button>
+                   <button type="button" class="btn btn-warning waves-effect waves-light" @click="validateEntidadConcurrencia()" v-show="accionFormEntidad">Actualizar Entidad</button>
                </div>
             </form>
          </div>
@@ -268,14 +398,47 @@ export default {
           modalConcurrencia:0,
           showEntidad:false,
           objEntidad:{
-            id_objEntidad : "",
-            nombre_entidad:"",
-            programacion_entidad:"",
-            ejecucion_entidad:"",
-            porcentaje_ejecucion_entidad:""
+            id_entidad_concurrencia : "",
+            nombre_entidad:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            programacion_entidad:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecucion_entidad:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            porcentaje_ejecucion_entidad:"",
           },
           arrayEntidades:[],
+          
           objProyecto : {
+            costo_total_proyecto:{
+              input:"",
+              clase:"",
+              mensaje:"",
+            },
+            periodo_ejecucion_del:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            periodo_ejecucion_al:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            entidad_ejecutora_cod:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
             concurrencia_eta_programacion :"",
             concurrencia_eta_ejecucion : ""
           },
@@ -290,7 +453,19 @@ export default {
           id_entidad_concurrencia:"",
           estado_modulo:"",
           plan_activo:"",
-          gestion_activa:""
+          gestion_activa:"",
+          listaEntidades:[],
+          descripcion_entidad_ejecutora:"",
+          entidad: {
+            valores:{
+              id:'',
+              denominacion:''
+            },
+            clase:'',
+            mensaje:''
+          },
+          errorsConcurrencia:[]
+
           
 
         }
@@ -328,7 +503,9 @@ export default {
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
       },
       salirModulo(){
-          window.location = "/planesTerritoriales/index";
+          let me = this;
+          me.$root.$data.views = 5;
+          //window.location = "/planesTerritoriales/index";
       },
       abrirModal(e,key,index){
         //console.log("llegue a abrir Modal");
@@ -339,14 +516,52 @@ export default {
          me.id_accion_eta = index;
           switch (e) {
             case 1:
+              me.objProyecto = {
+            costo_total_proyecto:{
+              input:"",
+              clase:"",
+              mensaje:"",
+            },
+            periodo_ejecucion_del:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            periodo_ejecucion_al:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            entidad_ejecutora_cod:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            concurrencia_eta_programacion :"",
+            concurrencia_eta_ejecucion : ""
+          },
               me.objProyecto.nombre_proyecto = me.arrayListaObjetivosInversion[key].proyectosInversion[index].nombre;
-              console.log(me.objProyecto.nombre_proyecto);
+              me.objProyecto.id_proyecto_inversion = "nuevo";
+              //console.log(me.objProyecto.nombre_proyecto);
 
               this.modal = 1;
               break;
             case 2:
               //recuperar datos par aupdate con axios
               this.modal = 1;
+              me.objProyecto.nombre_proyecto = me.arrayListaObjetivosInversion[key].proyectosInversion[index].nombre;
+              
+              var costo_total_proyecto = me.convertirFormato(me.arrayListaObjetivosInversion[key].proyectosInversion[index].costo_total_proyecto);
+              console.log(costo_total_proyecto);
+              me.objProyecto.costo_total_proyecto.input = costo_total_proyecto;
+              me.objProyecto.periodo_ejecucion_del.input = me.arrayListaObjetivosInversion[key].proyectosInversion[index].periodo_ejecucion_del;
+              me.objProyecto.periodo_ejecucion_al.input = me.arrayListaObjetivosInversion[key].proyectosInversion[index].periodo_ejecucion_al;
+              //console.log(me.arrayListaObjetivosInversion[key].proyectosInversion[index].entidad_ejecutora_cod)
+              
+              me.entidad.valores.id  = me.arrayListaObjetivosInversion[key].proyectosInversion[index].entidad_ejecutora_cod;
+              console.log(me.entidad.valores);
+              me.entidad.valores.denominacion = me.arrayListaObjetivosInversion[key].proyectosInversion[index].entidad_ejecutora_denominacion;
+
               break;
             default:
            }
@@ -354,17 +569,43 @@ export default {
       cerrarModal(){
         this.modal = 0;
       },
-      
-      abrirModalConcurrencia(e,key,index,clave){
+      abrirModalConcurrencia(e,clave,index,id_ent){
         
          let me = this;
-         me.id_proyecto_poa = key;
-         me.id_accion_eta = index;
-         me.id_entidad_concurrencia = clave
+         me.id_accion_eta = clave;
+         me.id_proyecto_poa = index;
+         if(id_ent == -1){
+          console.log("entidad nueva");
+         }else{
+          me.id_entidad_concurrencia = clave;
+         }
+         
+         me.objEntidad = {
+            id_entidad_concurrencia : "",
+            nombre_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            programacion_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecucion_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            porcentaje_ejecucion_entidad:""
+          }
+
           switch (e) {
             case 1:
-              me.arrayEntidades = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia;
+              //me.arrayEntidades = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia;
               //console.log(me.objProyecto.nombre_proyecto);
+              me.objEntidad.id_entidad_concurrencia ="nuevo";
+              
 
               this.modalConcurrencia = 1;
               break;
@@ -373,10 +614,37 @@ export default {
               this.modalConcurrencia = 1;
               //me.objProyecto.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
               //me.objProyecto.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
-              me.objEntidad.nombre_entidad = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].nombre_entidad;
-              me.objEntidad.programacion_entidad = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].programacion_entidad;
-              me.objEntidad.ejecucion_entidad = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].ejecucion_entidad;
-              me.objEntidad.porcentaje_ejecucion_entidad = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].porcentaje_ejecucion_entidad;
+              me.objEntidad = {
+                id_entidad_concurrencia : "",
+                nombre_entidad:{
+                  input:"",
+                  clase:"",
+                  mensaje:""
+                },
+                programacion_entidad:{
+                  input:"",
+                  clase:"",
+                  mensaje:""
+                },
+                ejecucion_entidad:{
+                  input:"",
+                  clase:"",
+                  mensaje:""
+                },
+                porcentaje_ejecucion_entidad:""
+              };
+              me.objEntidad.nombre_entidad.input = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].nombre_entidad;
+
+              var programacion_entidad = me.convertirFormato(me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].programacion_entidad);
+              me.objEntidad.programacion_entidad.input = programacion_entidad;
+
+              var ejecucion_entidad = me.convertirFormato(me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].ejecucion_entidad);
+              me.objEntidad.ejecucion_entidad.input = ejecucion_entidad;
+
+              me.objEntidad.porcentaje_ejecucion_entidad = me.formatPrice(me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].porcentaje_ejecucion_entidad);
+              console.log(me.objEntidad.porcentaje_ejecucion_entidad);
+
+
               me.accionFormEntidad = true;
 
               me.objEntidad.id_entidad_concurrencia = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].entidadesConcurrencia[me.id_entidad_concurrencia].id;
@@ -389,7 +657,6 @@ export default {
       cerrarModalConcurrencia(){
         this.modalConcurrencia = 0;
       },
-      
       mostrarFormEntidad(){
         let me = this;
         
@@ -411,7 +678,6 @@ export default {
         me.objEntidad.ejecucion_entidad = me.arrayEntidades[clave].ejecucion_entidad;
         me.objEntidad.porcentaje_ejecucion_entidad = me.arrayEntidades[clave].porcentaje_ejecucion_entidad;
       },  
-
       finalizarModulo(m){
         let me = this;
         swal({
@@ -435,29 +701,54 @@ export default {
       volverEntidades(){
         let me = this;
         me.showEntidad = false;
-       
-
       },
-
       guardarEntidadesConcurrencia(){
         let me = this;
+        var enviarEntidad = {};
+        enviarEntidad.id_accion_eta = me.arrayListaObjetivosInversion[me.id_accion_eta].id_accion_eta;
+        enviarEntidad.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_accion_eta].proyectosInversion[me.id_proyecto_poa].id;
         
-        me.objEntidad.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
-        me.objEntidad.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
-        me.objEntidad.porcentaje_ejecucion_entidad = (me.objEntidad.ejecucion_entidad/me.objEntidad.programacion_entidad)*100; 
+        enviarEntidad.nombre_entidad = me.objEntidad.nombre_entidad.input;
+        var programacion_entidad = (me.replaceAll(me.objEntidad.programacion_entidad.input,".","")).split(',').join('.');
+        enviarEntidad.programacion_entidad = programacion_entidad;
+        var ejecucion_entidad = (me.replaceAll(me.objEntidad.ejecucion_entidad.input,".","")).split(',').join('.');
+        enviarEntidad.ejecucion_entidad = ejecucion_entidad;
+        enviarEntidad.porcentaje_ejecucion_entidad = (ejecucion_entidad/programacion_entidad)*100;
+        console.log(enviarEntidad);
         axios({
           method:'post',
           url:'/api/planesTerritoriales/saveEntidadesConcurrencia',
           data:{
-            entidadConcurrente : me.objEntidad
+            entidadConcurrente : enviarEntidad
           }
         })
         .then(function(response){
           console.log(response);
+          swal("Datos guardados", "Los datos se guardaron correctamente", "success");
           //me.id_proyecto_poa = key;
           //me.id_accion_eta = index;
+          
           me.listaObjetivosProyectosInversion();
           me.modalConcurrencia = 0;
+          me.objEntidad = {
+            id_entidad_concurrencia : "",
+            nombre_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            programacion_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecucion_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            porcentaje_ejecucion_entidad:""
+          }
         })
         .catch(function(error){
 
@@ -465,34 +756,61 @@ export default {
 
         
         me.showEntidad = false;
-
       },
       actualizarEntidadesConcurrencia(id){
         console.log("estoy en actualizar Concurrencia");
         let me = this;
-        me.objEntidad.porcentaje_ejecucion_entidad = (me.objEntidad.ejecucion_entidad/me.objEntidad.programacion_entidad)*100; 
+
+        var enviarEntidad = {};
+        enviarEntidad.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
+        enviarEntidad.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
+        
+        enviarEntidad.nombre_entidad = me.objEntidad.nombre_entidad.input;
+        var programacion_entidad = (me.replaceAll(me.objEntidad.programacion_entidad.input,".","")).split(',').join('.');
+        enviarEntidad.programacion_entidad = programacion_entidad;
+        var ejecucion_entidad = (me.replaceAll(me.objEntidad.ejecucion_entidad.input,".","")).split(',').join('.');
+        enviarEntidad.ejecucion_entidad = ejecucion_entidad;
+        enviarEntidad.porcentaje_ejecucion_entidad = (ejecucion_entidad/programacion_entidad)*100;
+        console.log(enviarEntidad);
+
+        enviarEntidad.id_entidad_concurrencia = me.objEntidad.id_entidad_concurrencia;
         axios({
           method:'post',
           url:'/api/planesTerritoriales/updateEntidadesConcurrencia',
           data:{
-            updateEntidad : me.objEntidad
+            updateEntidad : enviarEntidad
           }
         })
         .then(function(response){
           console.log(response);
           swal("Datos guardados", "Los datos se guardaron correctamente", "success");
           me.modalConcurrencia = 0;
-          me.objEntidad.nombre_entidad = "";
-          me.objEntidad.programacion_entidad = "";
-          me.objEntidad.ejecucion_entidad = "";
-          me.objEntidad.porcentaje_ejecucion_entidad = "";
+          me.objEntidad = {
+            id_entidad_concurrencia:"",
+            nombre_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            programacion_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            ejecucion_entidad : {
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            porcentaje_ejecucion_entidad:""
+
+          }
 
           me.listaObjetivosProyectosInversion();
         })
         .catch(function(error){
           console.log(error);
         })
-        
       },
       mostrarMensajeEntidades(){
         let me = this;
@@ -502,25 +820,40 @@ export default {
         },2000)
         me.mensajeEntidades = false;*/
         me.showEntidad = false;
-
       },
       guardarProyectoInversion(){
+        
         let me = this;
-        me.objProyecto.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
-        me.objProyecto.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
-        me.objProyecto.concurrencia_porcentaje_ejecutado = (me.objProyecto.concurrencia_eta_ejecucion/me.objProyecto.concurrencia_eta_programacion)*100;
+        var enviarInversion = {};
+        enviarInversion.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
+        enviarInversion.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
+        if(me.objProyecto.id_proyecto_inversion == "nuevo"){
+          enviarInversion.id_proyecto_inversion = "nuevo";
+        }else{
+          enviarInversion.id_proyecto_inversion = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id_proyecto_inversion;
+        }
+        
+        var costo_total_proyecto = (me.replaceAll(me.objProyecto.costo_total_proyecto.input,".","")).split(',').join('.');
+        enviarInversion.costo_total_proyecto = costo_total_proyecto;
+        enviarInversion.periodo_ejecucion_al = me.objProyecto.periodo_ejecucion_al.input;
+        enviarInversion.periodo_ejecucion_del = me.objProyecto.periodo_ejecucion_del.input;
+        enviarInversion.concurrencia_eta_programacion = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].monto_poa_planificado;
+        enviarInversion.concurrencia_eta_ejecucion = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].monto_poa_ejecutado;
+        enviarInversion.concurrencia_porcentaje_ejecutado = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].monto_poa_porcentaje;
+        enviarInversion.entidad_ejecutora_cod = me.entidad.valores.id;
+        enviarInversion.entidad_ejecutora_denominacion = me.entidad.valores.denominacion; 
+        //me.objProyecto.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
+        //me.objProyecto.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
+        //me.objProyecto.concurrencia_porcentaje_ejecutado = (me.objProyecto.concurrencia_eta_ejecucion/me.objProyecto.concurrencia_eta_programacion)*100;
+        
         me.arrayEntidades.id_accion_eta = me.arrayListaObjetivosInversion[me.id_proyecto_poa].id_accion_eta;
         me.arrayEntidades.id_proyecto_poa = me.arrayListaObjetivosInversion[me.id_proyecto_poa].proyectosInversion[me.id_accion_eta].id;
-
-        
-        console.log(me.objProyecto.id_proyecto_poa);
-        
-        
+        console.log(enviarInversion);
         axios({
           method:'post',
           url: '/api/planesTerritoriales/saveProyectoInversion',
           data:{
-            proyecto:me.objProyecto,
+            proyecto:enviarInversion,
             entidades:me.arrayEntidades
 
           }
@@ -529,12 +862,32 @@ export default {
           console.log(response);
           swal("Datos guardados", "Los datos se guardaron correctamente", "success");
           me.listaObjetivosProyectosInversion();
-          me.modal = 0;
-          /*me.arrayPoa.monto_poa = "";
-          me.arrayPoa.ejecutado = "";
-          me.arrayPoa.causas_variacion = "";
-          me.arrayPoa.programado_accion = "";
-          me.arrayPoa.ejecutado_accion = "";*/
+          me.cerrarModal();
+          enviarInversion = {};
+          me.objProyecto = {
+            costo_total_proyecto:{
+              input:"",
+              clase:"",
+              mensaje:"",
+            },
+            periodo_ejecucion_del:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            periodo_ejecucion_al:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            entidad_ejecutora_cod:{
+              input:"",
+              clase:"",
+              mensaje:""
+            },
+            concurrencia_eta_programacion :"",
+            concurrencia_eta_ejecucion : ""
+          };
         })
         .catch(function(error){
           console.log(error)
@@ -548,13 +901,259 @@ export default {
       },
       formatYear(value){
         return moment(String(value)).format("MM/DD/YYYY");
-      }
- 
+      },
+      listaEntidadesEjecutoras(){
+        let me = this;
+
+        axios.get('/api/planesTerritoriales/listaEntidadesEjecutoras').then(function(response){
+
+          console.log(response);
+          me.listaEntidades = response.data.entidadesEjecutoras;
+        })
+        .catch(function(error){
+          console.log(error);
+        })
+      },
+      mostrarEntidad(event){
+        console.log(event.target.value)
+      },
+      validateProyectoInversion(){
+
+        console.log("hola desde validateProyectoInversion");
+        let me = this;
+        me.errors = [];
+          
+          if(!me.objProyecto.costo_total_proyecto.input){
+            me.objProyecto.costo_total_proyecto.clase = "warning";
+            me.objProyecto.costo_total_proyecto.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          if(!me.objProyecto.periodo_ejecucion_del.input){
+            me.objProyecto.periodo_ejecucion_del.clase = "warning";
+            me.objProyecto.periodo_ejecucion_del.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          if(!me.objProyecto.periodo_ejecucion_al.input){
+            me.objProyecto.periodo_ejecucion_al.clase = "warning";
+            me.objProyecto.periodo_ejecucion_al.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          if(!me.entidad.valores){
+            me.entidad.clase = "warning";
+            me.entidad.mensaje = "El campo esta vacio";
+            me.errors.push('Valid email required.');
+          }
+          
+          if (me.errors.length>0) {
+            console.log("datos Con errores");
+            me.errors=[];
+            return false;
+          }else{
+            console.log("datos sin errores, ENVIAR AL SERVIDOR");
+            me.guardarProyectoInversion();
+          }
+      },
+      midecimal(data){
+        if(data.input){
+          var currentVal = data.input;
+          var testDecimal = this.testDecimals(currentVal);//verifica con un contador si hay una coma o mas
+          if (testDecimal.length > 1) {//si el contador es mayor a uno mensaje
+              //console.log("You cannot enter more than one decimal point");
+              data.clase = "danger";
+              data.mensaje = "No puede introducir mas de punto decimal";
+              //console.log(currentVal);//123.4.
+              currentVal = currentVal.slice(0, -1);//devuelve todo el array menos el ultimo 
+              //console.log(currentVal);//123.4
+
+          }
+          //$(this).val(replaceCommas(currentVal));
+          data.input = this.replaceCommas(currentVal,data);  
+        }else{
+          data.clase = "warning";
+          data.mensaje = "Este campo esta vacio";
+        }
+      },
+      testDecimals(currentVal) {
+        //verifica si hay mas de dos comas
+      var count;
+      //currentVal.match(/\./g) === null ? count = 0 : count = currentVal.match(/\./g);
+      currentVal.match(/\,/g) === null ? count = 0 : count = currentVal.match(/\,/g);
+      return count;
+      //console.log("hola testDecimales");
+      },
+      replaceCommas(yourNumber,data) {
+        //console.log(yourNumber);
+        //console.log(data);
+        //console.log("hola replaceCommas");
+
+          //var components = yourNumber.toString().split(".");
+          var components = yourNumber.toString().split(",");
+          //console.log("components"+components);
+
+          if (components.length === 1){
+            //quiere decir que no hay decimales
+            components[0] = yourNumber;
+            components[0] = components[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            //console.log("hola replaceCommas primer if");
+            data.clase = "success";
+            data.mensaje = "formato correcto";
+          } 
+            
+          if (components.length === 2){
+            //si hay decimales
+            components[1] = components[1].replace(/\D/g, "");
+            //console.log("hola replaceCommas segundo if");
+            data.clase = "success";
+            data.mensaje = "formato correcto";
+          }
+              
+          //return components.join(".");
+          return components.join(",");
+      },
+      replaceAll( text, busca, reemplaza ){
+        while (text.toString().indexOf(busca) != -1)
+            text = text.toString().replace(busca,reemplaza);
+        return text;
+      },
+      onchange(event,data){
+        let me = this;
+        
+        data.clase = "success";
+        data.mensaje = "Eligio una opcion";
+      },
+      onchangeEjecutora(event,data){
+        let me = this;
+          console.log(data);
+          
+        me.entidad.clase = "success";
+        me.entidad.mensaje = "Eligio una opcion";
+      },
+      onFechas(event,data){
+        let me = this;
+        var inicio = me.objProyecto.periodo_ejecucion_del.input;
+        var fin = me.objProyecto.periodo_ejecucion_al.input;
+        console.log(me.objProyecto.periodo_ejecucion_del.input);
+        console.log(me.objProyecto.periodo_ejecucion_al.input);
+        if(!inicio){
+          me.objProyecto.periodo_ejecucion_del.clase= "warning";
+          me.objProyecto.periodo_ejecucion_del.input= "Debe escribir una fecha";
+        }else{
+          if(inicio < fin){
+            data.clase = "success";
+            data.mensaje = "Eligio una opcion";
+          }else{
+            data.clase = "danger";
+            data.mensaje = "Esta fecha no puede ser menor al Periodo de Ejecucion Inicial";
+          }
+        }
+      },
+      todoTexto(data){
+        let me = this;
+        if(data.input){
+          data.clase = "success";
+          data.mensaje = "Escribio un nombre de Proyecto";
+        }else{
+          data.clase = "warning";
+          data.mensaje = "Escribio nombre Entidad no puede estar vacio";
+        }
+      },
+      convertirFormato(data){
+        var components = data.toString().split(".");
+        var completa = components[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".")+","+components[1];
+        return completa;
+        
+      },
+      validateEntidadConcurrencia(){
+        console.log("hola desde validateEntidadConcurrencia");
+        let me = this;
+        me.errorsConcurrencia = [];
+          
+          if(!me.objEntidad.nombre_entidad.input){
+            me.objEntidad.nombre_entidad.clase = "warning";
+            me.objEntidad.nombre_entidad.mensaje = "El campo esta vacio";
+            me.errorsConcurrencia.push('Valid email required.');
+          }
+          if(!me.objEntidad.programacion_entidad.input){
+            me.objEntidad.programacion_entidad.clase = "warning";
+            me.objEntidad.programacion_entidad.mensaje = "El campo esta vacio";
+            me.errorsConcurrencia.push('Valid email required.');
+          }
+          if(!me.objEntidad.ejecucion_entidad.input){
+            me.objEntidad.ejecucion_entidad.clase = "warning";
+            me.objEntidad.ejecucion_entidad.mensaje = "El campo esta vacio";
+            me.errorsConcurrencia.push('Valid email required.');
+          }
+          
+          
+          if (me.errorsConcurrencia.length>0) {
+            console.log("datos Con errores");
+            me.errorsConcurrencia=[];
+            return false;
+          }else{
+            console.log("datos sin errores, ENVIAR AL SERVIDOR");
+            if(me.objEntidad.id_entidad_concurrencia == 'nuevo'){
+              me.guardarEntidadesConcurrencia();
+              console.log("crear concurrencia");
+            }else{
+              me.actualizarEntidadesConcurrencia();
+              console.log("actualizar concurrencia");
+            }
+            
+          }
+      },
+      reporteInversionGestionExcel(){
+        location.href = '/api/planesTerritoriales/reporteInversionGestionExcel';
+      },
+      reporteInversionGestionPdf(){
+       location.href = '/api/planesTerritoriales/reporteInversionGestionPdf'; 
+      },
+      porcentajeConcurrencia(){
+        let me = this;
+        if(me.objEntidad.programacion_entidad || me.objEntidad.programacion_entidad){
+          var programacion_entidad = (me.replaceAll(me.objEntidad.programacion_entidad.input,".","")).split(',').join('.');
+          var ejecucion_entidad = (me.replaceAll(me.objEntidad.ejecucion_entidad.input,".","")).split(',').join('.');
+          if(ejecucion_entidad){
+            var por = (ejecucion_entidad/programacion_entidad)*100;
+            me.objEntidad.porcentaje_ejecucion_entidad = me.formatPrice(por);
+            console.log(por);  
+          }
+        }
+      },
+      deleteEntidad(id){
+        //alert("hola desde delete");
+        //console.log(id);
+         let me = this;
+         swal({
+           title: "Está seguro?",
+           text: "No podrá recuperar este registro!",
+           type: "warning",
+           showCancelButton: true,
+           confirmButtonColor: "#DD6B55",
+           confirmButtonText: "Si, eliminar!",
+           closeOnConfirm: false
+         }, function(){
+               axios({
+                  method: 'post',
+                  url: '/api/planesTerritoriales/deleteEntidad',
+                  data: {
+                    id : id
+                  }
+                }).then(function (response) {
+                   me.listaObjetivosProyectosInversion();
+                   console.log(response);
+                   swal("Eliminado!", "Se ha eliminado tu registro.", "success");
+                }).catch(function (error) {
+                  console.log(error);
+                });
+         });
+      },
+      
+     
 
     },
-    
     mounted() {
         this.listaObjetivosProyectosInversion();
+        this.listaEntidadesEjecutoras();
         this.datosUsuario();
 
         $(".panel-left").resizable({
@@ -669,6 +1268,12 @@ input {
 .modal-body{
     max-height: calc(100vh - 200px);
     overflow-y: auto;
+}
+.miTabla{
+  width:90%;
+  max-width:700px;
+  min-width:520px;
+  margin:auto;
 }
 
 

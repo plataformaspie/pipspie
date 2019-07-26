@@ -86,22 +86,22 @@ class ExportReportController extends BasecontrollerController
     
     $arrayTotales=[];
     array_push($arrayTotales,"Totales",
-                            $totales[0]->ptdi_total_2016,
-                            $totales[0]->ptdi_total_2017,
-                           $totales[0]->ptdi_total_2018,
-                           $totales[0]->ptdi_total_2016_2018,
-                           $totales[0]->ptdi_total_dif_a_poa,
-                           $totales[0]->ptdi_total_dif_porcentaje,
-                           $totales[0]->pei_total_2016,
-                           $totales[0]->pei_total_2017,
-                           $totales[0]->pei_total_2018,
-                           $totales[0]->pei_total_2016_2018,
-                           $totales[0]->pei_total_dif_a_poa,
-                           $totales[0]->pei_total_dif_porcentaje,
-                           $totales[0]->poa_total_2016,
-                           $totales[0]->poa_total_2017,
-                           $totales[0]->poa_total_2018,
-                           $totales[0]->poa_total_2016_2018);
+                          number_format($totales[0]->ptdi_total_2016,2,",","."),
+                          number_format($totales[0]->ptdi_total_2017,2,",","."),
+                          number_format($totales[0]->ptdi_total_2018,2,",","."),
+                          number_format($totales[0]->ptdi_total_2016_2018,2,",","."),
+                          number_format($totales[0]->ptdi_total_dif_a_poa,2,",","."),
+                          number_format($totales[0]->ptdi_total_dif_porcentaje,2,",","."),
+                          number_format($totales[0]->pei_total_2016,2,",","."),
+                          number_format($totales[0]->pei_total_2017,2,",","."),
+                          number_format($totales[0]->pei_total_2018,2,",","."),
+                          number_format($totales[0]->pei_total_2016_2018,2,",","."),
+                          number_format($totales[0]->pei_total_dif_a_poa,2,",","."),
+                          number_format($totales[0]->pei_total_dif_porcentaje,2,",","."),
+                          number_format($totales[0]->poa_total_2016,2,",","."),
+                          number_format($totales[0]->poa_total_2017,2,",","."),
+                          number_format($totales[0]->poa_total_2018,2,",","."),
+                          number_format($totales[0]->poa_total_2016_2018),2,",",".");
     //dd($arraytotales);
 
     //dd($arrayContenido);
@@ -251,13 +251,39 @@ class ExportReportController extends BasecontrollerController
         }
         
         $hoja->row(++$fila, $arrayTotales);
+      //fjalsdjflad
+        $hoja->cell('A100', function($cell) {
+            $cell->setValue('Elaborado por:');
+            
+        });
+        $hoja->cell('A101', function($cell) {
+            $cell->setValue('Nombre:');
+            
+        });
+        $hoja->cell('A102', function($cell) {
+            $cell->setValue('Cargo:');
+            
+        });
+        $hoja->cell('A103', function($cell) {
+            $cell->setValue('Firma:');
+            
+        });   
+        $hoja->cell('N100', function($cell) {
+            $cell->setValue('Aprobado MAE:');
+            
+        });
+        $hoja->cell('N101', function($cell) {
+            $cell->setValue('Nombre:');
+            
+        });
+        $hoja->cell('N102', function($cell) {
+            $cell->setValue('Firma:');
+            
+        });
         
-
-
-        
-          
       });
     //FIN CONSTRUYENDO DOCUMENTO EXCEL///  
+    //
     })->download('xlsx');
   }
   public function reporteAccionesExcel(){
@@ -696,6 +722,38 @@ class ExportReportController extends BasecontrollerController
           }
 
         }
+        ///hkjhfkasjdfhkas
+        ///
+        $firma = $inicioFila++;
+        $firma++;
+        $hoja->cell('A'.$inicioFila++, function($cell) {
+            $cell->setValue('Elaborado por:');
+            
+        });
+        $hoja->cell('A'.$inicioFila++, function($cell) {
+            $cell->setValue('Nombre:');
+            
+        });
+        $hoja->cell('A'.$inicioFila++, function($cell) {
+            $cell->setValue('Cargo:');
+            
+        });
+        $hoja->cell('A'.$inicioFila++, function($cell) {
+            $cell->setValue('Firma:');
+            
+        });   
+        $hoja->cell('H'.$firma++, function($cell) {
+            $cell->setValue('Aprobado MAE:');
+            
+        });
+        $hoja->cell('H'.$firma++, function($cell) {
+            $cell->setValue('Nombre:');
+            
+        });
+        $hoja->cell('H'.$firma++, function($cell) {
+            $cell->setValue('Firma:');
+            
+        });
           
       });
     //FIN CONSTRUYENDO DOCUMENTO EXCEL///  

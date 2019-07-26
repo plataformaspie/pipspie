@@ -18,7 +18,7 @@
   <template v-if="view==3">
       <planificacion></planificacion>
   </template>
-
+  
   <template v-if="view==5">
       <indexseguimiento></indexseguimiento>
   </template>
@@ -37,10 +37,12 @@
   <template v-if="view==10">
       <presentacion></presentacion>
   </template-->
- <template v-if="viewE==11">
+ <template v-if="viewe==11">
       <evaluacion></evaluacion>
   </template>
-
+ <!--template v-if="view==12">
+      <evaluacion></evaluacion>
+  </template-->
 @endsection
 
 @push('script-head')

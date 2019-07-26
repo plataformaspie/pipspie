@@ -14,6 +14,8 @@ use App\Models\PlanificacionTerritorial\Parametros;
 use App\Models\PlanificacionTerritorial\SeguimientoGestiones;
 use App\Models\PlanificacionTerritorial\ProyectoInversion;
 use App\Models\PlanificacionTerritorial\EntidadesConcurrencia;
+use App\Models\PlanificacionTerritorial\GestionSeleccionada;
+
 
 
 
@@ -25,11 +27,15 @@ class InversionController extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first();
+                                          ->first();*/
 
     $user = \Auth::user();
+
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
 
     $estadoModulo = \DB::select("select estado_etapa from sp_eta_estado_etapas_seguimiento
                                                     where id_institucion =  $user->id_institucion
@@ -103,11 +109,29 @@ class InversionController extends BasecontrollerController
                                         ->where('gestion',$gestionActiva->gestion)
                                         ->where('activo',true)
                                         ->get();
-            $p->entidadesConcurrencia = $ent;
+            if($ent){
+
+              $p->entidadesConcurrencia = $ent;
+              $p->verificar_existe_entidades_concurrencia ="si hay";
+
+            }else{
+              $p->verificar_existe_entidades_concurrencia ="no hay";              
+            }
           }else{
             $p->verificar_existe_proyectos_inversion = "no hay";
           }
-        
+          $financiero = \DB::select("select * from sp_eta_financiero_poa
+                                      where id_intitucion = $user->id_institucion
+                                      and id_accion_eta = $obj->id_accion_eta
+                                      and gestion = $gestionActiva->gestion");
+          /*FinancieroPoa::where('id_intitucion', $user->id_institucion)
+                                      ->where('id_accion_eta',$obj->id_accion_eta)
+                                      ->where('gestion',$gestionActiva->gestion)
+                                      ->first();*/
+                                      //dd($financiero);
+          $p->monto_poa_ejecutado = $financiero[0]->monto_poa_ejecutado;
+          $p->monto_poa_planificado = $financiero[0]->monto_poa_planificado;
+          $p->monto_poa_porcentaje = $financiero[0]->monto_poa_porcentaje;
       }
 
       $obj->proyectosInversion = $poa;
@@ -128,62 +152,92 @@ class InversionController extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first(); 
+                                          ->first(); */
 
     $user = \Auth::user();
 
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
+
     $p = $request->proyecto;
+    //dd($p);
+    $inversion = $p['id_proyecto_inversion'];
+    //dd($inversion);
     $e = $request->entidades;
-    try{
-      $proyecto = new ProyectoInversion();
-      $proyecto->id_accion_eta =  $p['id_accion_eta'];
-      $proyecto->id_proyecto_poa = $p['id_proyecto_poa'];
-      $proyecto->costo_total_proyecto = $p['costo_total_proyecto'];
-      $proyecto->periodo_ejecucion_al = $p['periodo_ejecucion_al'];
-      $proyecto->periodo_ejecucion_del = $p['periodo_ejecucion_del'];
-      $proyecto->concurrencia_eta_programado = $p['concurrencia_eta_programacion'];
-      $proyecto->concurrencia_eta_ejecutado = $p['concurrencia_eta_ejecucion'];
-      $proyecto->concurrencia_porcentaje_ejecutado = $p['concurrencia_porcentaje_ejecutado'];
-      $proyecto->entidad_ejecutora_cod = $p['entidad_ejecutora_cod'];
-      $proyecto->entidad_ejecutora_denominacion = $p['entidad_ejecutora_denominacion'];
-      $proyecto->gestion = $gestionActiva->gestion;
-      $proyecto->id_institucion = $user->id_institucion;
-      $proyecto->activo = true;
-      $proyecto->save();
+    if($inversion == "nuevo"){
+      try{
+        $proyecto = new ProyectoInversion();
+        $proyecto->id_accion_eta =  $p['id_accion_eta'];
+        $proyecto->id_proyecto_poa = $p['id_proyecto_poa'];
+        $proyecto->costo_total_proyecto = $p['costo_total_proyecto'];
+        $proyecto->periodo_ejecucion_al = $p['periodo_ejecucion_al'];
+        $proyecto->periodo_ejecucion_del = $p['periodo_ejecucion_del'];
+        $proyecto->concurrencia_eta_programado = $p['concurrencia_eta_programacion'];
+        $proyecto->concurrencia_eta_ejecutado = $p['concurrencia_eta_ejecucion'];
+        $proyecto->concurrencia_porcentaje_ejecutado = $p['concurrencia_porcentaje_ejecutado'];
+        $proyecto->entidad_ejecutora_cod = $p['entidad_ejecutora_cod'];
+        $proyecto->entidad_ejecutora_denominacion = $p['entidad_ejecutora_denominacion'];
+        $proyecto->gestion = $gestionActiva->gestion;
+        $proyecto->id_institucion = $user->id_institucion;
+        $proyecto->activo = true;
+        $proyecto->save();
 
-
-      foreach ($e as $entidad) {
-        
-        $ent = new EntidadesConcurrencia();
-        $ent->id_proyecto_inversion = $proyecto->id;
-        $ent->nombre_entidad = $entidad['nombre_entidad'];
-        $ent->programacion_entidad = $entidad['programacion_entidad'];
-        $ent->ejecucion_entidad = $entidad['ejecucion_entidad'];
-        $ent->porcentaje_ejecucion_entidad = $entidad['porcentaje_ejecucion_entidad'];
-        //$ent->gestion = $gestionActiva;
-        $ent->activo = true;
-        $ent->save();
+        return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'msg' => "Se guardo con exito.",
+              
+            )
+          );
+      }catch(Exception $e){
+         return \Response::json(array(
+              'error' => true,
+              'title' => "Error!",
+              'msg' => $e->getMessage())
+            );
       }
 
+    }else{
+      //ACTUALIZAR
+      $id = $p['id_proyecto_inversion'];
+      try{
+        $proyecto = ProyectoInversion::find($id);
+        $proyecto->id_accion_eta =  $p['id_accion_eta'];
+        $proyecto->id_proyecto_poa = $p['id_proyecto_poa'];
+        $proyecto->costo_total_proyecto = $p['costo_total_proyecto'];
+        $proyecto->periodo_ejecucion_al = $p['periodo_ejecucion_al'];
+        $proyecto->periodo_ejecucion_del = $p['periodo_ejecucion_del'];
+        $proyecto->concurrencia_eta_programado = $p['concurrencia_eta_programacion'];
+        $proyecto->concurrencia_eta_ejecutado = $p['concurrencia_eta_ejecucion'];
+        $proyecto->concurrencia_porcentaje_ejecutado = $p['concurrencia_porcentaje_ejecutado'];
+        $proyecto->entidad_ejecutora_cod = $p['entidad_ejecutora_cod'];
+        $proyecto->entidad_ejecutora_denominacion = $p['entidad_ejecutora_denominacion'];
+        $proyecto->gestion = $gestionActiva->gestion;
+        $proyecto->id_institucion = $user->id_institucion;
+        $proyecto->activo = true;
+        $proyecto->save();
 
-
-      return \Response::json(array(
-            'error' => false,
-            'title' => "Success!",
-            'msg' => "Se guardo con exito.",
-            
-          )
-        );
-
-    }catch(Exception $e){
-       return \Response::json(array(
-            'error' => true,
-            'title' => "Error!",
-            'msg' => $e->getMessage())
+        return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'msg' => "Se actualizo correctamente.",
+              
+            )
           );
+      }catch(Exception $e){
+         return \Response::json(array(
+              'error' => true,
+              'title' => "Error!",
+              'msg' => $e->getMessage())
+            );
+      }
+
     }
+
+    
   }
   public function saveEntidadesConcurrencia(Request $request ){
 
@@ -192,11 +246,15 @@ class InversionController extends BasecontrollerController
                                 ->first();
 
     /*********Verificar Gestion Activa**************/
-    $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                           ->where('activo',true)
-                                          ->first();
+                                          ->first();*/
 
     $user = \Auth::user();
+
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
             
     $concurrente = $request->entidadConcurrente;
     
@@ -260,6 +318,42 @@ class InversionController extends BasecontrollerController
           );
     }
 
+  }
+  public function listaEntidadesEjecutoras(){
+    $user = \Auth::user();
+    $entidades = \DB::select("select * from sp_eta_entidades_ejecutoras");
+    return \Response::json(array(
+            'entidadesEjecutoras' => $entidades,
+            ));
+          
+  }
+  public function deleteEntidad(Request $request)
+  {
+
+    $user = \Auth::user();
+    if($request->id){
+      try{
+        
+          $proyPoa = EntidadesConcurrencia::find($request->id);
+          $proyPoa->activo = false;
+          //$proyPoa->id_user_updated = $user->id;
+          $proyPoa->save();
+        
+        return \Response::json(array(
+            'error' => false,
+            'title' => "Success!",
+            'msg' => "Se elimino con exito.")
+        );
+
+      }
+      catch (Exception $e) {
+          return \Response::json(array(
+            'error' => true,
+            'title' => "Error!",
+            'msg' => $e->getMessage())
+          );
+      }
+    }
   }
 
 }

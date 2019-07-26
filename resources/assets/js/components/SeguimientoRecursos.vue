@@ -89,6 +89,7 @@
                                 <th colspan="2" class="text-center"><strong>PTDI ( {{ gestion_activa}} )</strong></th>
                                 <th colspan="2" class="text-center"><strong>PEI ( {{ gestion_activa}} )</strong> </th>
                                 <th class="text-center"><strong>POA ( {{ gestion_activa}} )</strong></th>
+                                <th class="text-center"><strong>Causas Variacion</strong></th>
                                 <th rowspan="2" class="text-center"><strong>ACCION</strong></th>
                               </tr>
                               <tr>
@@ -183,9 +184,24 @@
                                     </div>
                                     
                                   </td>
+                                  <td>
+                                    <div class="row">
+                                      <input 
+                                           type="text"
+                                            :class="'form-control dis'+ tiposRecursos.id"
+                                            :name="'input_poa_'+ tiposRecursos.id"
+                                            v-model="tiposRecursos.causas_variacion.input"
+                                            style="height: 28px;text-align: right;"
+                                            @blur="formatInput"
+                                            pattern="\d(,\d{1,2})?"
+                                            disabled="disabled">
+                                                      
+                                    </div>
+                                    
+                                  </td>
                                   <td class="text-nowrap">
                                     <a v-show="estado_modulo==true" href="#" @click="abrirModal(1,tiposRecursos)"> <i class="fa fa-edit text-inverse m-r-10" style="font-size:20px;"></i> </a>
-                                    <a v-show="estado_modulo==true" href="#" @click="deleteRecurso(tiposRecursos)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                    <!--a v-show="estado_modulo==true" href="#" @click="deleteRecurso(tiposRecursos)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a-->
                                   </td>
 
                               </tr>
@@ -204,6 +220,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="white-box p-0 m-0 p-t-10 ">
           <div class="form-group text-center p-0 m-0">
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-success" @click="reporteRecursosGestionExcel">Exportar <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-danger" @click="reporteRecursosGestionPdf">Exportar <i class="fa fa-file-pdf-o " aria-hidden="true"></i></button>
                 <button v-show="estado_modulo==true" type="submit" class="btn btn-info" @click="finalizarModulo(6)">Salir y Finalizar</button>
                 <button type="submit" class="btn btn-default" @click="salirModulo()">Salir</button>
           </div>
@@ -245,7 +263,17 @@
                             <div class="form-control-feedback" v-text="recurso_pei.mensaje"></div>
                             <small class="form-text text-muted">La "," es separador de decimales.</small>
                           </div>
-                      </div>
+                          <div :class="['form-group',(causas_variacion.clase).trim()?'has-'+ causas_variacion.clase:'']">
+                              <label for="nombre_entidad" class="form-control-label" >Causas de Variacion</label>
+                              <input type="text" 
+                                      name="nombre_entidad" 
+                                      v-model="causas_variacion.input"
+                                      :class="['form-control',(causas_variacion.clase).trim()?'form-control-' + causas_variacion.clase:'']"
+                                      @keyup="todoTexto(causas_variacion)"
+                                      >
+                              <div class="form-control-feedback" v-text="causas_variacion.mensaje"></div>
+                            </div>
+                          </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -288,6 +316,11 @@ export default {
             input:"",
             clase:"",
             mensaje:"" 
+          },
+          causas_variacion:{
+            input:"",
+            clase:"",
+            mensaje:""
           },
           recurso_monto_planificado:"",
           recurso_id_recurso_poa:"",
@@ -421,6 +454,8 @@ export default {
           recurso_enviar.id_recurso_poa = me.recurso_id_recurso_poa;
           recurso_enviar.id_tipo_recurso =  me.recurso_id_tipo_recurso;
 
+          recurso_enviar.causas_variacion = me.causas_variacion.input;
+
           
           
           if(por_ptdi<51){
@@ -454,12 +489,21 @@ export default {
                       swal("Guardado!", "Se ha guardado correctamente.", "success");
                       me.cerrarModal();
                       me.listaRecursosGestion();
-                       
-                      /*me.recurso.monto = '',
-                      me.recurso.monto_pei_gestion = '',
-                      me.recurso.monto_poa_gestion = '',
-                      me.recurso.nombre = '',*/
-                       
+                      me.recurso_pei = {
+                        input:"",
+                        clase:"",
+                        mensaje:""
+                      };
+                      me.recurso_poa = {
+                        input:"",
+                        clase:"",
+                        mensaje:""
+                      };
+                      me.causas_variacion = {
+                        input:"",
+                        clase:"",
+                        mensaje:""
+                      };
                        
                     }).catch(function (error) {
                       console.log(error);
@@ -475,6 +519,8 @@ export default {
                 me.recurso_poa.input = r.monto_poa_gestion.input;//.split('.'),join('');
                 me.recurso_pei.input = r.monto_pei_gestion.input;//.split('.'),join('');
                 me.recurso_monto_planificado = r.monto;//planificador
+                //console.log(r.causas_variacion.input);
+                me.causas_variacion.input = r.causas_variacion.input;
                 me.recurso_id_recurso_poa = r.id_recurso_poa;
                 me.recurso_id_tipo_recurso = r.id_tipo_recurso;
                 
@@ -512,7 +558,9 @@ export default {
           });
         },
         salirModulo(){
-          window.location = "/planesTerritoriales/index";
+          let me = this;
+          me.$root.$data.views = 5;
+          //window.location = "/planesTerritoriales/index";
         },
         midecimal(data){
 
@@ -633,6 +681,20 @@ export default {
           
 
           
+        },
+        todoTexto(data){
+          let me = this;
+          if(data.input){
+            data.clase = "success";
+            data.mensaje = "";
+          }
+        },
+        reporteRecursosGestionExcel(){
+          
+          location.href = '/api/planesTerritoriales/reporteRecursosGestionExcel';
+        },
+        reporteRecursosGestionPdf(){
+          location.href = '/api/planesTerritoriales/reporteRecursosGestionPdf';
         } 
     },
     computed: {

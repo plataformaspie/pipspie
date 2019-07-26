@@ -48,75 +48,73 @@
               <div>
                 <!--button type="button" class="btn btn-info waves-effect waves-light mb-3 btn pull-right" @click="showProyectosPoa()"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>Agregar Otros Proyectos Poa</button-->
                 <div class="table-responsive">
-                  <h4 class="m-t-0"></h4>
-                  <table id="art" class="table table-bordered color-table info-table">
-                    <thead>
-                      <tr>
-                        <th colspan="4" class="text-center" style="align:center"><strong>ARTICULACION PDES</strong></th>
-                        <th rowspan="2" class="text-center"><strong>INSCRITO PTDI/PGTC ACCION ETA</strong></th>
-                        <th  rowspan="2" class="text-center"><strong>INSCRITO PEI</strong></th>
-                        <th rowspan="2" class="text-center"><strong>ACCION</strong></th>
-                        <th rowspan="2" class="text-center"><strong>PROYECTOS POA</strong></th>
-                      </tr>
-                      <tr>
-                        <th class="text-center"><strong>P</strong></th>
-                        <th class="text-center"><strong>M</strong></th>
-                        <th class="text-center"><strong>R</strong></th>
-                        <th class="text-center"><strong>A</strong></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(eta,index) in arrayObjetivoEta"
-                          :key="index">
-                        <td data-toggle="tooltip" title="Default tooltip">  <img :src="eta.logo"  class="img-rounded" alt="Cinque Terre" width="50" height="50"></td>
-                        <td>{{ eta.cod_m}}</td>
-                        <td>{{ eta.cod_r}}</td>
-                        <td>{{ eta.cod_a}}</td>
-                        <td  style="width: 200px; word-wrap: break-word;"> {{ eta.nombre_accion_eta}}</td>
-                        <td style=" width: 200px; word-wrap: break-word;">  {{ eta.nombre_accion_eta}}</td>
-                        
-                        <td >
-                          <div class="text-center">
-                            
-                            <a v-show="estado_modulo==true" href="#" @click="abrirModalProyPoa(index,1)" class="btn btn-dark" style="color:#000;"> <i class="fa fa-plus-circle  fa-2x   "></i> </a>  
-                            
-                          </div>
-                        </td>
-                        <td>
-                          <div class="responsive">
-                            <table class="color-table dark-table" style="width:100%">
-                              <thead >
-                                <tr>
-                                  <th>Proyecto POA</th>
-                                  <th>Categoria Programatica</th>
-                                  <th></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr v-for="(proyPoa,index2) in eta.poa">
-                                  <td style="list-group-item-success !important ">{{ proyPoa.nombre}}</td>
-                                  <td>{{ proyPoa.categoria_programatica}}</td>
-                                  <td class="text-nowrap">
-                                    
-                                      <a v-show="estado_modulo==true" href="#" > <i class="fa fa-edit text-inverse m-r-10" @click="updateProyPoa(index,index2,2)"title="Editar Proyecto" style="font-size:20px;color:#000;"></i> </a>
-                                      <a v-show="estado_modulo==true" href="#" > <i class="fa fa-trash text-inverse m-r-10" @click="deleteProyPoa(proyPoa.id)" title="Eliminar Proyecto"style="font-size:20px;" ></i> </a>
-                                    
-                                  </td>
-                                </tr>
-                                
-                              </tbody>
-                            </table>
-                            
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  
+                  <div class="tableFixHead ">
+                    <table id="art" class="table table-bordered color-table info-table">
+                      <thead>
+                        <tr>
+                          <th colspan="4" class="text-center" style="align:center"><strong>ARTICULACION PDES</strong></th>
+                          <th rowspan="2" class="text-center"><strong>INSCRITO PTDI/PGTC ACCION ETA</strong></th>
+                          <th  rowspan="2" class="text-center"><strong>INSCRITO PEI</strong></th>
+                          <th rowspan="2" class="text-center"><strong>ACCION</strong></th>
+                          <th rowspan="2" class="text-center"><strong>PROYECTOS POA</strong></th>
+                        </tr>
+                        <tr>
+                          <th class="text-center"><strong>P</strong></th>
+                          <th class="text-center"><strong>M</strong></th>
+                          <th class="text-center"><strong>R</strong></th>
+                          <th class="text-center"><strong>A</strong></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(eta,index) in arrayObjetivoEta"
+                            :key="index">
+                          <td data-toggle="tooltip" title="Default tooltip">  <img :src="eta.logo"  class="img-rounded" alt="Cinque Terre" width="50" height="50"></td>
+                          <td>{{ eta.cod_m}}</td>
+                          <td>{{ eta.cod_r}}</td>
+                          <td>{{ eta.cod_a}}</td>
+                          <td  style="width: 200px; word-wrap: break-word;"> {{ eta.nombre_accion_eta}}</td>
+                          <td style=" width: 200px; word-wrap: break-word;">  {{ eta.nombre_accion_eta}}</td>
+                          
+                          <td >
+                            <div class="text-center">
+                              
+                              <a v-show="estado_modulo==true" href="#" @click="abrirModalProyPoa(index,1)" class="btn btn-dark" style="color:#000;"> <i class="fa fa-plus-circle  fa-2x   "></i> </a>  
+                              
+                            </div>
+                          </td>
+                          <td>
+                            <div class="responsive">
+                              <table class="color-table dark-table" style="width:100%">
+                                <thead >
+                                  <tr>
+                                    <th>Proyecto POA</th>
+                                    <th>Avance Fisico</th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr v-for="(proyPoa,index2) in eta.poa">
+                                    <td style="list-group-item-success !important ">{{ proyPoa.nombre}}</td>
+                                    <td>{{ proyPoa.avance_fisico}}</td>
+                                    <td class="text-nowrap">
+                                      
+                                        <a v-show="estado_modulo==true" href="#" > <i class="fa fa-edit text-inverse m-r-10" @click="updateProyPoa(index,index2,2)"title="Editar Proyecto" style="font-size:20px;color:#000;"></i> </a>
+                                        <a v-show="estado_modulo==true" href="#" > <i class="fa fa-trash text-inverse m-r-10" @click="deleteProyPoa(proyPoa.id)" title="Eliminar Proyecto"style="font-size:20px;" ></i> </a>
+                                      
+                                    </td>
+                                  </tr>
+                                  
+                                </tbody>
+                              </table>
+                              
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                
               </div>
-              
             </div>
           </div>
         </div>  
@@ -132,6 +130,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="white-box p-0 m-0 p-t-10 ">
           <div class="form-group text-center p-0 m-0">
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-success" @click="reporteAccionesGestionExcel">Exportar <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+                <button v-show="estado_modulo==true" type="submit" class="btn btn-danger" @click="reporteAccionesGestionPdf">Exportar <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                 <button v-show="estado_modulo==true" type="submit" class="btn btn-info" @click="finalizarModulo(7)">Salir y Finalizar</button>
                 <button type="submit" class="btn btn-default" @click="salirModulo()">Salir</button>
           </div>
@@ -151,21 +151,7 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-lg-6">
-                  <div :class="['form-group',(proyPoa.categoria_programatica.clase).trim()?'has-'+proyPoa.categoria_programatica.clase:'']">
-                    <label  class="control-label" >Seleccione Categoria Programatica:</label>
-                    <select 
-                            v-model="proyPoa.categoria_programatica.input" 
-                            class="form-control" 
-                            @change="onChange($event)"
-                            :class="['form-control',(proyPoa.categoria_programatica.clase).trim()?'form-control-' + proyPoa.categoria_programatica.clase:'']" >
-                      <option value="">Seleccione Categoria Programatica</option>
-                      <option v-for="categoria in listaCategoria" v-bind:value="categoria.id" >
-                        {{ categoria.descripcion}}  
-                      </option>
-                    </select>
-                    <div class="form-control-feedback" v-text="proyPoa.categoria_programatica.mensaje"></div>
-                    <!--small class="form-text text-muted">La "," es separador de decimales.</small-->
-                  </div>
+                  
                   <div :class="['form-group',(proyPoa.nombre.clase).trim()?'has-'+proyPoa.nombre.clase:'']">
                     <label  class="control-label" >Nombre Proyecto Poa:</label>
                     <input type="text"  id="inputSuccess1" v-model="proyPoa.nombre.input" 
@@ -216,7 +202,7 @@
                       <div class=" radio-inline form-check-label">
                         <h5  class="form-check control-label" >Inscrito PTDI:</h5>
                         <label class="radio-inline form-check-label"><input class="form-check-input ptdi " type="radio" value="true" name="radioPtdi"  v-model ="proyPoa.inscrito_ptdi.input"  @change="validateRatio(proyPoa.inscrito_ptdi)" >Si</label>
-                        <label class="radio-inline form-check-label"><input class="form-check-input ptdi " type="radio" value="false" name="radioPtdi"  v-model ="proyPoa.inscrito_ptdi.input" @change="validateRatio(proyPoa.inscrito_ptdi)" >No</label>{{ proyPoa.inscrito_ptdi.input }}
+                        <label class="radio-inline form-check-label"><input class="form-check-input ptdi " type="radio" value="false" name="radioPtdi"  v-model ="proyPoa.inscrito_ptdi.input" @change="validateRatio(proyPoa.inscrito_ptdi)" >No</label>
                         <div class="form-control-feedback" v-text="proyPoa.inscrito_ptdi.mensaje"></div>
                       </div>
                   </div> 
@@ -224,7 +210,7 @@
                     <div class=" radio-inline form-check-label">
                       <h5  class="form-check control-label" >Inscrito PEI:</h5>
                       <label class="radio-inline"><input type="radio" name="radioPei" value="true" v-model ="proyPoa.inscrito_pei.input"  @change="validateRatio(proyPoa.inscrito_pei)">Si</label>
-                      <label class="radio-inline"><input type="radio"  name="radioPei" value="false" v-model ="proyPoa.inscrito_pei.input" @change="validateRatio(proyPoa.inscrito_pei)">No</label>  {{ proyPoa.inscrito_pei.input }}
+                      <label class="radio-inline"><input type="radio"  name="radioPei" value="false" v-model ="proyPoa.inscrito_pei.input" @change="validateRatio(proyPoa.inscrito_pei)">No</label>  
                       <div class="form-control-feedback" v-text="proyPoa.inscrito_pei.mensaje"></div>
                     </div>
                   </div>
@@ -232,7 +218,7 @@
                     <div class=" radio-inline form-check-label">
                       <h5  class="form-check control-label" >Inscrito POA:</h5>
                       <label class="radio-inline radio-inline"><input type="radio" value="true" name="radioPoa"  v-model ="proyPoa.inscrito_poa.input" @change="validateRatio(proyPoa.inscrito_poa)" >Si</label>
-                      <label class="radio-inline radio-inline"><input type="radio" value="false" name="radioPoa"  v-model ="proyPoa.inscrito_poa.input" @change="validateRatio(proyPoa.inscrito_poa)" >No</label>  {{ proyPoa.inscrito_poa.input }}
+                      <label class="radio-inline radio-inline"><input type="radio" value="false" name="radioPoa"  v-model ="proyPoa.inscrito_poa.input" @change="validateRatio(proyPoa.inscrito_poa)" >No</label>  
                       <div class="form-control-feedback" v-text="proyPoa.inscrito_poa.mensaje"></div>
                     </div>
                   </div>
@@ -472,7 +458,7 @@ export default {
         proyPoaEnviar.monto = monto;
         var avance_fisico = (me.replaceAll(me.proyPoa.avance_fisico.input,".","")).split(',').join('.');
         proyPoaEnviar.avance_fisico = avance_fisico
-        if(!me.es_vipfe.input){
+        if(!me.es_vipfe){
           proyPoaEnviar.codigo_sisin = "";
         }else{
           proyPoaEnviar.codigo_sisin = me.proyPoa.codigo_sisin.input;
@@ -596,6 +582,7 @@ export default {
         me.proyPoa.nombre.input = me.arrayObjetivoEta[id1].poa[id2].nombre;
         me.proyPoa.monto.input = me.convertirFormato(me.arrayObjetivoEta[id1].poa[id2].monto);
         me.proyPoa.avance_fisico.input = me.convertirFormato(me.arrayObjetivoEta[id1].poa[id2].avance_fisico);
+
         me.proyPoa.codigo_sisin.input = me.arrayObjetivoEta[id1].poa[id2].codigo_sisin;
         me.proyPoa.inscrito_ptdi.input = me.arrayObjetivoEta[id1].poa[id2].inscrito_ptdi;
         me.proyPoa.inscrito_pei.input = me.arrayObjetivoEta[id1].poa[id2].inscrito_pei;
@@ -729,7 +716,9 @@ export default {
         });
       },
       salirModulo(){
-        window.location = "/planesTerritoriales/index";
+        let me = this;
+        me.$root.$data.views = 5;
+        //window.location = "/planesTerritoriales/indexseguimiento";
       },
       listaCategoriaProgramatica(){
         //console.log('hola estoy en la funcion categoria programatica');
@@ -749,11 +738,11 @@ export default {
         let me = this;
         me.errors = [];
           
-          if(!me.proyPoa.categoria_programatica.input){
+          /*if(!me.proyPoa.categoria_programatica.input){
             me.proyPoa.categoria_programatica.clase = "warning";
             me.proyPoa.categoria_programatica.mensaje = "El campo esta vacio";
             me.errors.push('Valid email required.');
-          }
+          }*/
           if(!me.proyPoa.nombre.input){
             me.proyPoa.nombre.clase = "warning";
             me.proyPoa.nombre.mensaje = "El campo esta vacio";
@@ -981,6 +970,12 @@ export default {
         var completa = components[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".")+","+components[1];
         return completa;
         
+      },
+      reporteAccionesGestionExcel(){
+        location.href = '/api/planesTerritoriales/reporteAccionesGestionExcel';
+      },
+      reporteAccionesGestionPdf(){
+        location.href = '/api/planesTerritoriales/reporteAccionesGestionPdf';
       }
 
     },
@@ -1112,6 +1107,8 @@ button, input, optiongroup,select, textarea{
     max-height: calc(100vh - 200px);
     overflow-y: auto;
 }
+.tableFixHead          { overflow-y: auto; height: 400px; }
+.tableFixHead thead th { position: sticky; top: 0; }
 
 
 

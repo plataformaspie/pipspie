@@ -758,7 +758,7 @@ class EvaluacionController extends BasecontrollerController
         $f->indicador_porcentaje_ejecutado_meta_2020 = ($total_indicador_poa / $meta_indicador_2020[0]->meta_indicador_2020)*100;
         //incluyendo COMENTARIO DE AXION ETA
         $comentario = \DB::select("select * from sp_eta_evaluacion_reporte_financiero
-                                            where id_institucion = 560
+                                            where id_institucion = $user->id_institucion
                                             and id_accion_eta = $f->id_objetivos
                                             and activo = true");
         //dd($comentario);

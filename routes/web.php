@@ -678,11 +678,7 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('saveProyectoInversion', 'PlanificacionTerritorial\InversionController@saveProyectoInversion');
               Route::post('saveEntidadesConcurrencia', 'PlanificacionTerritorial\InversionController@saveEntidadesConcurrencia');
               Route::post('updateEntidadesConcurrencia', 'PlanificacionTerritorial\InversionController@updateEntidadesConcurrencia');
-
-
-
-
-
+              Route::post('deleteEntidad', 'PlanificacionTerritorial\InversionController@deleteEntidad');
 
               /*--indexSeguimiento*/
               Route::get('estadoActualModulosSeguimiento', 'PlanificacionTerritorial\IndexSeguimientoController@estadoActualModulosSeguimiento');
@@ -700,12 +696,38 @@ Route::group(['middleware' => 'auth'],function(){
               Route::post('saveReporteRecursos', 'PlanificacionTerritorial\EvaluacionController@saveReporteRecursos');
               Route::post('saveReporteFinanciero', 'PlanificacionTerritorial\EvaluacionController@saveReporteFinanciero');
 
-              /*-- Reportes Evaluacion Exportar Excel*/
+              /*-- Reportes Evaluacion Medio Termino Exportar Excel*/
               Route::get('reporteRecursos', 'PlanificacionTerritorial\ExportReportController@reporteRecursos');
               Route::get('reporteAccionesExcel', 'PlanificacionTerritorial\ExportReportController@reporteAccionesExcel');
               Route::get('reporteFinancieroExcel', 'PlanificacionTerritorial\ExportReportController@reporteFinancieroExcel');
               Route::get('reporteRiesgosExcel', 'PlanificacionTerritorial\ExportReportController@reporteRiesgosExcel');
               Route::get('reporteInversionExcel', 'PlanificacionTerritorial\ExportReportController@reporteInversionExcel');
+
+              /*-- seleccion Gestiones*/
+              Route::get('cargarGestiones', 'PlanificacionTerritorial\IndexSeguimientoController@cargarGestiones');
+              Route::get('cambiarVista', 'PlanificacionTerritorial\IndexSeguimientoController@cambiarVista');
+
+              /*-- Reportes Evaluacion Gestion Excel*/
+              Route::get('reporteRecursosGestionExcel', 'PlanificacionTerritorial\ExportReportGestionController@reporteRecursosGestionExcel');
+              Route::get('reporteAccionesGestionExcel', 'PlanificacionTerritorial\ExportReportGestionController@reporteAccionesGestionExcel');
+              Route::get('reporteFinancieroGestionExcel', 'PlanificacionTerritorial\ExportReportGestionController@reporteFinancieroGestionExcel');
+              Route::get('reporteInversionGestionExcel', 'PlanificacionTerritorial\ExportReportGestionController@reporteInversionGestionExcel');
+              /*-- Reportes Evaluacion Gestion Pdf*/
+              Route::get('reporteRecursosGestionPdf', 'PlanificacionTerritorial\ExportReportGestionPdfController@reporteRecursosGestionPdf');
+              Route::get('reporteAccionesGestionPdf', 'PlanificacionTerritorial\ExportReportGestionPdfController@reporteAccionesGestionPdf');
+              Route::get('reporteFinancieroGestionPdf', 'PlanificacionTerritorial\ExportReportGestionPdfController@reporteFinancieroGestionPdf');
+              Route::get('reporteInversionGestionPdf', 'PlanificacionTerritorial\ExportReportGestionPdfController@reporteInversionGestionPdf');
+              /*-- Reportes Evaluacion Medio Termino Pdf*/
+              Route::get('reporteRecursosMedioPdf', 'PlanificacionTerritorial\ExportReportMedioPdfController@reporteRecursosMedioPdf');
+              Route::get('reporteAccionesMedioPdf', 'PlanificacionTerritorial\ExportReportMedioPdfController@reporteAccionesMedioPdf');
+              Route::get('reporteFinancieroMedioPdf', 'PlanificacionTerritorial\ExportReportMedioPdfController@reporteFinancieroMedioPdf');
+              Route::get('reporteInversionMedioPdf', 'PlanificacionTerritorial\ExportReportMedioPdfController@reporteInversionMedioPdf');
+              Route::get('reporteRiesgosMedioPdf', 'PlanificacionTerritorial\ExportReportMedioPdfController@reporteRiesgosMedioPdf');
+
+
+              /*-- entidades Ejecutoras*/
+              Route::get('listaEntidadesEjecutoras', 'PlanificacionTerritorial\InversionController@listaEntidadesEjecutoras');
+
               /*******************************FIN IRENE JUNIO 2019*************************/
 
 

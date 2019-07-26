@@ -18,24 +18,27 @@
   <template v-if="view==3">
       <planificacion></planificacion>
   </template-->
-
-  <template v-if="viewS==5">
+  
+  <template v-if="views==5">
       <indexseguimiento></indexseguimiento>
   </template>
-  <template v-if="viewS==6">
+  <template v-if="views==6">
       <seguimientorecursos></seguimientorecursos>
   </template>
-  <template v-if="viewS==7">
+  <template v-if="views==7">
       <seguimientoacciones></seguimientoacciones>
   </template>
-  <template v-if="viewS==8">
+  <template v-if="views==8">
       <seguimientofisicofinanciera></seguimientofisicofinanciera>
   </template>
-  <template v-if="viewS==9">
+  <template v-if="views==9">
       <seguimientoproyectosinversion></seguimientoproyectosinversion>
   </template>
-  <template v-if="viewS==10">
+  <template v-if="views==10">
       <presentacion></presentacion>
+  </template>
+  <template v-if="views==12">
+      <selecciongestion></selecciongestion>
   </template>
  <!--template v-if="view==11">
       <evaluacion></evaluacion>
