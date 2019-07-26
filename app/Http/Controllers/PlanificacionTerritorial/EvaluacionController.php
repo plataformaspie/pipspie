@@ -115,7 +115,7 @@ class EvaluacionController extends BasecontrollerController
               $filas[$i]['poa_2016'] = 0;
             }
             if($poa->gestion == 2017){
-              $filas[$i]['poa_2017'] = $poa->monto;
+              $filas[$i]['poa_2017'] = $poa->monto_poa_gestion;
               $total_poa = $total_poa + $poa->monto_poa_gestion;
               $total_gestion_poa_2017 = $total_gestion_poa_2017 + $poa->monto_poa_gestion;
             }else{
