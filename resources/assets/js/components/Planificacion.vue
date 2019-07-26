@@ -210,14 +210,14 @@
                                        <div role="tabpanel" class="tab-pane fade " id="tab3">
 
 
-                                             <template v-if="this.$root.$data.categoria == 1?tipo_objetivo='Proyecto':''">
+                                             <template v-if="this.$root.$data.categoria == 1">
                                                  <div class="col-md-1 col-sm-12">
                                                    <p class="text-muted m-0">Tipo:</p>
                                                  </div>
                                                  <div class="col-md-4 col-sm-12">
                                                      <select class="form-control" v-model="tipo_objetivo" name="tipo_objetivo">
-                                                         <option value="Programa">Programa</option>
                                                          <option value="Proyecto">Proyecto</option>
+                                                         <option value="Programa">Programa</option>
                                                          <option value="Actividad">Actividad</option>
                                                      </select>
                                                  </div>
@@ -424,7 +424,7 @@ export default {
           linea_base_cantidad:0,
           indicador: '',
           indicador_cantidad:0,
-          tipo_objetivo:'',
+          tipo_objetivo:'Proyecto',
           options:false,
           tab_active:1,
           iconoAg:'fa-plus-square',
