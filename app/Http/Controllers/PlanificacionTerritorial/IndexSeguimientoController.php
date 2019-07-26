@@ -143,15 +143,19 @@ class IndexSeguimientoController extends BasecontrollerController
   {
         //$gestion = 2018;
         //$planActivo->id = 6;
+        $user = \Auth::user();
         $planActivo = Parametros::where('categoria','periodo_plan')
                                 ->where('activo',true)
                                 ->first();
 
         /*********Verificar Gestion Activa**************/
-        $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+        /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                               ->where('activo',true)
-                                              ->first(); 
-              $user = \Auth::user();
+                                              ->first(); */
+         $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
+              
         switch ($request->modulo) {
           case 6:
               $etapasEstado = EtapasEstadoSeguimiento::where('valor_campo_etapa', 'sRecursos')
@@ -292,19 +296,23 @@ class IndexSeguimientoController extends BasecontrollerController
 
   public function activarEtapaSeguimiento(Request $request)
   {
+        $user = \Auth::user();
         $planActivo = Parametros::where('categoria','periodo_plan')
                                 ->where('activo',true)
                                 ->first();
 
         /*********Verificar Gestion Activa**************/
-        $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+        /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                               ->where('activo',true)
-                                              ->first(); 
+                                              ->first(); */
+        $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
         $periodo = Array();
         //$planActivo->id = 6;
         //$gestionActiva->gestion = 2018;
         
-        $user = \Auth::user();
+        
         //Aqui le manda la numero de accione y el numero de vista
         switch ($request->etapa) {
           case 1:{
@@ -421,8 +429,9 @@ class IndexSeguimientoController extends BasecontrollerController
       /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                             ->where('activo',true)
                                             ->first();  */ 
-      $gestionActiva = GestionSeleccionada::where('id_institucion',$user->id_institucion)                             
-                                            ->first();            
+       $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();         
 
 
 
@@ -498,9 +507,12 @@ class IndexSeguimientoController extends BasecontrollerController
                                 ->first();
 
         /*********Verificar Gestion Activa**************/
-        $gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+        /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
                                               ->where('activo',true)
-                                              ->first(); 
+                                              ->first(); */
+        $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
         $user = \Auth::user();
         switch ($request->modulo) {
           case 6:
