@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	
+
 <style>
 	 html {
       margin: 0px;
-    } 
+    }
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -29,8 +29,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm; 
-          left: 1cm; 
+          bottom: 0cm;
+          left: 1cm;
           right: 0cm;
           height: 2cm;
     }
@@ -47,7 +47,7 @@
         background-color: #03a9f3;
     }
     table thead,th{
-        
+
         border:1px solid white;
     }
     table tbody{
@@ -87,7 +87,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-      
+
       float: left;
     }
     .logo_mpd{
@@ -98,18 +98,18 @@
     .page-break {
     page-break-after: always;
 }
-	
+
 
 </style>
 </head>
-	
+
 	<body>
         <header>
           <div>
-            <img class="logo_mpd" src="img/mpd.png" height="40px" width="250px" />  
+            <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
           </div>
           <div class="logo_dgpt">
-             <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
+             <img  src="img/DGPT.jpeg" height="40px" width="250px" />
           </div>
         </header>
 		<div id="main-container">
@@ -191,7 +191,7 @@
       				<td>{{ number_format($f->accion_meta_al_2020,2,",",".") }}</td>
       				<td>{{ number_format($f->accion_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
       				<td>{{ $f->causas_de_variacion }}</td>
-      
+
 		    	</tr>
 		    	@endforeach
         </tbody>
@@ -205,7 +205,7 @@
       <div style="page-break-after: always;">
         <div class="firmas">
           <div class="alinear_izquierda">
-            
+
               <ul >
                 <li class="alinear"><strong>Aprobado MAE:</strong></li>
                 <li class="alinear"><strong>Nombre:.................................................</strong></li>

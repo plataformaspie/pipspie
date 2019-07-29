@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	
+
 	<style>
 	html {
       margin: 0px;
-    } 
+    }
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -29,8 +29,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm; 
-          left: 1cm; 
+          bottom: 0cm;
+          left: 1cm;
           right: 0cm;
           height: 2cm;
     }
@@ -47,7 +47,7 @@
 		background-color: #03a9f3;
 	}
 	table thead,th{
-		
+
 		border:1px solid white;
 	}
 	table tbody{
@@ -91,7 +91,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-      
+
       float: left;
     }
     .logo_mpd{
@@ -102,16 +102,16 @@
     .page-break {
     page-break-after: always;
 }
-	
+
 	</style>
 </head>
 <body>
 	<header>
       <div>
-        <img class="logo_mpd" src="img/mpd.png" height="40px" width="250px" />  
+        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
       </div>
       <div class="logo_dgpt">
-         <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
+         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
       </div>
   	</header>
 	<div id="main-container">
@@ -140,8 +140,8 @@
             </thead>
             <tbody>
             			<?php $i=0; ?>
-            		@foreach ($objetivo_indicador as $mifuente) 
-					     
+            		@foreach ($objetivo_indicador as $mifuente)
+
 	          			@if($mifuente->cantidad_proyectos_poa >0)
 							<tr>
 								<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_p }}</td>
@@ -188,11 +188,11 @@
 								<?php
 
 							    $i++;
-							    if($i % 25 == 0) 
+							    if($i % 25 == 0)
 							        echo "<div style='page-break-after: always;'></div>";
 
 							    ?>
-							@endforeach	
+							@endforeach
 													@else
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_p }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_m }}</td>
@@ -200,12 +200,12 @@
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_a }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">PEI</td>
-						<td colspan="2">NO TIENE PROYECTOS POA</td>			
+						<td colspan="2">NO TIENE PROYECTOS POA</td>
 	          			@endif
-	          			
+
 	        		@endforeach
             </tbody>
-            
+
         </table>
         <br>
 	    <br>
@@ -216,7 +216,7 @@
 	    <div style="page-break-after: always;">
 		    <div class="firmas">
 		    	<div class="alinear_izquierda">
-		    		
+
 			        <ul >
 			          <li class="alinear"><strong>Aprobado MAE:</strong></li>
 			          <li class="alinear"><strong>Nombre:.................................................</strong></li>
@@ -253,6 +253,6 @@
 		    $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
 		}
 	</script>
-	
+
 </body>
 </html>

@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	
+
 <style>
 	html {
       margin: 0px;
-    } 
+    }
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -33,7 +33,7 @@
       margin-bottom: 20px;
       margin-right: 20px;
 
-          
+
     }
 
     table, td{
@@ -48,7 +48,7 @@
         background-color: #03a9f3;
     }
     table thead,th{
-        
+
         border:1px solid white;
     }
     table tbody{
@@ -88,7 +88,7 @@
       	left: 1.25cm;*/
     }
     .logo_dpgt{
-      
+
       float: left;
     }
     .logo_mpd{
@@ -99,19 +99,19 @@
     .page-break {
     page-break-after: always;
 }
-	
-	
+
+
 
 </style>
 </head>
 	<body>
-	
+
 		<header>
 	      <div>
-	        <img class="logo_mpd" src="img/mpd.png" height="40px" width="250px" />  
+	        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
 	      </div>
 	      <div class="logo_dgpt">
-	         <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
+	         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
 	      </div>
 	  </header>
 		<div id="main-container">
@@ -160,9 +160,9 @@
                 </tr>
               </thead>
               <tbody>
-              	
-            	@foreach ($objetivoProyectos as $mifuente) 
-					     
+
+            	@foreach ($objetivoProyectos as $mifuente)
+
           			@if($mifuente->cantidad_proyectos_poa >0)
 						<tr>
 							<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
@@ -172,7 +172,7 @@
 	                          <td>{{ $mifuente->primer_poa->codigo_sisin }}</td>
 	                          <td>{{ $mifuente->primer_poa->nombre }}</td>
 	                          <td>{{ number_format($mifuente->primer_poa->costo_total_proyecto,2,",",".") }}</td>
-	                          <?php 
+	                          <?php
 
 									$date_del = date_create($mifuente->primer_poa->periodo_ejecucion_del);
 									$date_al = date_create($mifuente->primer_poa->periodo_ejecucion_al);
@@ -180,7 +180,7 @@
 								?>
 								<td>{{ date_format($date_del, 'd/m/Y') }}</td>
 								<td>{{ date_format($date_al, 'd/m/Y') }}</td>
-	                         
+
 	                          <td>{{ number_format($mifuente->primer_poa->programado_2016,2,",",".") }}</td>
 	                          <td>{{ number_format($mifuente->primer_poa->ejecutado_2016,2,",",".")  }}</td>
 	                          <td>{{ number_format($mifuente->primer_poa->programado_2017,2,",",".")  }}</td>
@@ -218,7 +218,7 @@
 	                          <td>{{ $p->codigo_sisin }}</td>
 	                          <td>{{ $p->nombre }}</td>
 	                          <td>{{ number_format($p->costo_total_proyecto,2,",",".") }}</td>
-	                          <?php 
+	                          <?php
 
 									$date_del = date_create($p->periodo_ejecucion_del);
 									$date_al = date_create($p->periodo_ejecucion_al);
@@ -226,7 +226,7 @@
 								?>
 								<td>{{ date_format($date_del, 'd/m/Y') }}</td>
 								<td>{{ date_format($date_al, 'd/m/Y') }}</td>
-	                         
+
 	                          <td>{{ number_format($p->programado_2016,2,",",".") }}</td>
 	                          <td>{{ number_format($p->ejecutado_2016,2,",",".") }}</td>
 	                          <td>{{ number_format($p->programado_2017,2,",",".") }}</td>
@@ -256,14 +256,14 @@
 	                          <td ></td>
 	                          @endif
 						</tr>
-						@endforeach	
+						@endforeach
 					@else
 					<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
-					<td colspan="10">NO TIENE PROYECTOS POA</td>			
+					<td colspan="10">NO TIENE PROYECTOS POA</td>
           			@endif
         		@endforeach
               </tbody>
-            </table> 
+            </table>
             <br>
 		    <br>
 		    <br>
@@ -273,7 +273,7 @@
 		    <div style="page-break-after: always;">
 		        <div class="firmas">
 		          <div class="alinear_izquierda">
-		            
+
 		              <ul >
 		                <li class="alinear"><strong>Aprobado MAE:</strong></li>
 		                <li class="alinear"><strong>Nombre:.................................................</strong></li>

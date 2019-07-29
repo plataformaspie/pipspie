@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	
+
 	<style>
 	html {
       margin: 0px;
-    } 
+    }
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,8 +27,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm; 
-          left: 1cm; 
+          bottom: 0cm;
+          left: 1cm;
           right: 0cm;
           height: 2cm;
     }
@@ -45,7 +45,7 @@
 		background-color: #03a9f3;
 	}
 	table thead,th{
-		
+
 		border:1px solid white;
 	}
 	table tbody{
@@ -86,7 +86,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-      
+
       float: left;
     }
     .logo_mpd{
@@ -98,10 +98,10 @@
 <body>
 	<header>
       <div>
-        <img class="logo_mpd" src="img/mpd.png" height="40px" width="250px" />  
+        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
       </div>
       <div class="logo_dgpt">
-         <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
+         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
       </div>
   	</header>
 	<div id="main-container">
@@ -111,7 +111,7 @@
 		<table class="table table-bordered " >
           <thead style="color:#fff; background:rgb(36, 136, 181);">
             <tr style="vertical-align:middle">
-              
+
               <th  style="vertical-align:middle" colspan="" rowspan="2">FUENTE DE INGRESOS</th>
               <th  style="vertical-align:middle; horizontal-align:middle" colspan="6">PTDI/PGTC</th>
               <th  style="vertical-align:middle" colspan="6">PEI</th>
@@ -139,7 +139,7 @@
             </tr>
           </thead>
           <tbody style="color:#000">
-          	
+
           	@foreach($filas as $r)
           	<tr >
               <td class="text-right">{{ $r['recurso'] }}</td>
@@ -184,7 +184,7 @@
 			</tr>
           </tbody>
         </table>
-	
+
 		<br>
 	    <br>
 	    <br>
@@ -192,7 +192,7 @@
 	    <br>
 	    <br>
 	    <div class="firmas">
-	      
+
 	        <ul class="alinear_izquierda">
 	          <li class="alinear"><strong>Elaborado por:</strong></li>
 	          <li class="alinear"><strong>Nombre:.................................................</strong></li>

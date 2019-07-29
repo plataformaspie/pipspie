@@ -115,7 +115,7 @@
 <body>
   <header>
       <div>
-        <!--<img class="logo_mpd" src="img/mpd.png" height="40px" width="250px" />  -->
+        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />
       </div>
       <div class="logo_dgpt">
          <img  src="img/DGPT.jpeg" height="40px" width="250px" />
