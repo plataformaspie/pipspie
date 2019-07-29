@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  
+
   <style>
     html {
       margin: 0px;
-    } 
+    }
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,8 +27,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm; 
-          left: 1cm; 
+          bottom: 0cm;
+          left: 1cm;
           right: 0cm;
           height: 2cm;
     }
@@ -67,8 +67,8 @@
       background-color: #369681;
       color: white;
     }
-    
-    
+
+
     .alinear{
       margin-bottom: 10px;
 
@@ -104,7 +104,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-      
+
       float: left;
     }
     .logo_mpd{
@@ -118,7 +118,7 @@
         <!--<img class="logo_mpd" src="img/mpd.png" height="40px" width="250px" />  -->
       </div>
       <div class="logo_dgpt">
-         <!--<img  src="img/DGPT.jpeg" height="40px" width="250px" />   -->
+         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
       </div>
   </header>
   <div id="main-container">
@@ -164,7 +164,7 @@
           <td>{{ $r->causas_variacion }}</td>
         <?php $a = $a + $r->recurso_programado; ?>
         </tr>
-        @endforeach 
+        @endforeach
         <tr>
           <td>TOTALES</td>
           <td>{{ number_format($a,2,',','.') }}</td>
@@ -176,7 +176,7 @@
           <td>{{ number_format($arrayTotales[0]->poa,2,",",".") }}</td>
           <td></td>
         </tr>
-      </tbody>  
+      </tbody>
     </table>
     <br>
     <br>
@@ -185,7 +185,7 @@
     <br>
     <br>
     <div class="firmas">
-      
+
         <ul class="alinear_izquierda">
           <li class="alinear"><strong>Elaborado por:</strong></li>
           <li class="alinear"><strong>Nombre:.................................................</strong></li>
@@ -202,8 +202,8 @@
     <footer >
       <p class="numero_pagina"><?php echo date("d/m/Y  H:i:s");?></p>
     </footer>
-  </div>  
-  
+  </div>
+
 <script type="text/php">
  if (isset($pdf)) {
     $x = 500;
