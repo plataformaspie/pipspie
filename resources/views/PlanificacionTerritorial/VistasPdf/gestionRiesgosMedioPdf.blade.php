@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	
 <style>
   html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -29,8 +29,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
     }
@@ -47,7 +47,7 @@
         background-color: #03a9f3;
     }
     table thead,th{
-
+        
         border:1px solid white;
     }
     table tbody{
@@ -87,7 +87,7 @@
         left: 1.25cm;*/
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
@@ -98,21 +98,30 @@
     .page-break {
     page-break-after: always;
 }
-
-
+	
+	
 
 </style>
 </head>
-
+	
 	<body>
         <header>
           <div>
-            <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
+            <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" />  
           </div>
           <div class="logo_dgpt">
-             <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+             <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
           </div>
         </header>
+        <br>
+        <br>
+        <h2>DATOS DEL MUNICIPIO:</h2>
+        <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+        <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+        <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+        <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+        <br>
+        <br>
 
 		<div id="main-container">
 			<h1>CUADRO Nº5</h1>
@@ -161,7 +170,7 @@
                     <td style="vertical-align:middle" >E</td>
                     <td style="vertical-align:middle" >P</td>
                     <td style="vertical-align:middle" >E</td>
-
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -194,11 +203,11 @@
 				    <td>{{ $f->accion_meta_al_2020 }}</td>
 				    <td>{{ $f->accion_porcentaje_ejecucion_al_2020 }}</td>
                     <td>{{ $f->causas_de_variacion }}</td>
-
+                    
                   </tr>
                 @endforeach
                 </tbody>
-
+                
       </table>
             <br>
             <br>

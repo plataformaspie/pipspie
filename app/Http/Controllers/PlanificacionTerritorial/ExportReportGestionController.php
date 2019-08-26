@@ -34,68 +34,147 @@ class ExportReportGestionController extends BasecontrollerController
     $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
                                           ->where('activo',true)
                                            ->first();
-    $arrayContenido = RecursosPoa::where('id_institucion',$user->id_institucion)
-                                -> where('gestion',$gestionActiva->gestion)
-                                ->get();
-    //dd($arrayContenido);
-    foreach ($arrayContenido as $row) {
+    //seleccionando Recursos
+    $recursos = \DB::select("select 
+                              p.nombre,
+                              r.monto,
+                              r.id_tipo_recurso,
+                              r.gestion
+                            from sp_eta_recursos_eta as r,
+                                  sp_parametros as p
+                                  
+                            where id_institucion = $user->id_institucion
+                            and gestion = $gestionActiva->gestion
+                            and id_tipo_recurso NOTNULL
+                            and p.categoria = 'tipo_recursos'
+                            and r.id_tipo_recurso = p.id
+                            ");
+    foreach ($recursos as $r) {
+      $recursos_poa = \DB::select("select * from sp_eta_recursos_poa
+                                    where id_institucion = $user->id_institucion
+                                    and id_tipo_recurso = $r->id_tipo_recurso
+                                    and gestion = '$gestionActiva->gestion'");
+      
 
-      $nombre_recurso = Parametros::where('categoria','tipo_recursos')
-                          ->where('id',$row->id_tipo_recurso)
-                          ->get();
-      $row->recurso_nombre = $nombre_recurso[0]->nombre;
-
-      $recurso_programado = \DB::select("select * from sp_eta_recursos_eta
-                                                  where id_institucion = $user->id_institucion
-                                                  and id_tipo_recurso = $row->id_tipo_recurso
-                                                  and gestion = '$gestionActiva->gestion'");
-      $row->recurso_programado = $recurso_programado[0]->monto;
+      if(sizeof($recursos_poa) > 0){
+        $r->recursos_poa = $recursos_poa;
+      }else{
+        $recursos_poa = [];
+        $recursos_poa[0] = (object)array('diferencia_ptdi_poa' => '0',
+                                   
+        'diferencia_porcentaje_ptdi_poa'=>'0',
+        'monto_poa_gestion'=>'0',
+        'causas_variacion'=>""
+         );
+        $r->recursos_poa = $recursos_poa;
+      }
+      //dd($recursos_poa);
+      
     }
-   //dd($arrayContenido);
-    $arrayTotales = \DB::select("select sum(monto_poa_gestion) as poa,
-                                        sum(diferencia_ptdi_poa) as dif_ptdi_poa,
-                                        sum(diferencia_porcentaje_ptdi_poa) as por_dif_ptdi_poa,
-                                        sum(diferencia_pei_poa) as dif_pei_poa,
-                                        sum(monto_pei_gestion) as pei
-                                        
-                                from sp_eta_recursos_poa 
-                                where id_institucion = $user->id_institucion
-                                and gestion = $gestionActiva->gestion");
-      //dd($arrayTotales);
-    /*Excel::load('plantillas_territorial/plantilla_recursos.xlsx', function($excel) use ($arrayContenido,$arrayTotales)
-    {
-        //$excel->getActiveSheet('Recursos')->setCellValue('A7', 'Valor en A7');
-        $excel->sheet('Recursos',function($hoja) use ($arrayContenido,$arrayTotales){
-          $hoja->setCellValue('B4', 'PTDI/PGTC');
-        });
-    }) -> download('xls');*/
-    Excel::load('plantillas_territorial/plantilla_recursos.xlsx', function($file) use($arrayTotales,$arrayContenido,$gestionActiva) {
-       $file->sheet( 'Recursos', function ($sheet) use($arrayTotales,$arrayContenido,$gestionActiva){
+    //dd($recursos);
+    $otros = \DB::select("select 
+                                r.id_tipo_recurso,
+                                r.gestion,
+                                r.monto,
+                                o.id,
+                                o.id_institucion,
+                                o.concepto
+                                
+                        from sp_eta_recursos_eta as r,
+                             sp_eta_otros_ingresos as o
+                        where r.id_institucion = $user->id_institucion
+                        and r.gestion = '$gestionActiva->gestion'
+                        and r.id_tipo_recurso ISNULL
+                        and r.id_otro_ingreso = o.id");
+    
+    foreach ($otros as $o) {
+      /*$otros_poa = \DB::select("select * from sp_eta_recursos_poa
+                                        where id_institucion = $user->id_institucion
+                                        and id_otro_ingreso = $o->id
+                                        and gestion = '$gestionActiva->gestion'");*/
+      $otros_poa = RecursosPoa::where('id_institucion',$user->id_institucion)
+                                ->where('id_otro_ingreso',$o->id)  
+                                ->where('gestion',$gestionActiva->gestion)
+                                ->where('activo',true)
+                                ->first();
+      //dd($otros_poa); //devuelve null   
+                                   
+      if($otros_poa){
+         $o->otros_poa = $otros_poa;
+      }else{
+        $otros_poa = [];
+        $otros_poa[0] = (object) array(
+                                        'diferencia_ptdi_poa' =>'0',
+                                        'diferencia_porcentaje_ptdi_poa' =>'0',
+                                        'monto_poa_gestion' =>'0',
+                                        'causas_variacion' =>"",
+                                        );
+        $o->otros_poa = $otros_poa;
+        
+      }
+     //dd($otros_poa);
+    }
+    
+    $total_recursos_planificado = \DB::select("select 
+                                                   sum(monto) as total_ptdi_monto
+                                              from sp_eta_recursos_eta
+                                              where id_institucion = $user->id_institucion
+                                              and gestion = $gestionActiva->gestion");
+    //dd($total_recursos_planificado);
+
+    
+    $totales_recursos_poa = \DB::select("select 
+                                              sum(diferencia_ptdi_poa) as total_diferencia_ptdi_poa,
+                                              sum(diferencia_porcentaje_ptdi_poa) as total_diferencia_porcentaje_ptdi_poa,
+                                              sum(monto_pei_gestion) as total_monto_pei_gestion,
+                                              sum(diferencia_pei_poa) as total_diferencia_pei_poa,
+                                              sum(diferencia_porcentaje_pei_poa) as total_diferencia_porcentaje_pei_poa,
+                                              sum(monto_poa_gestion) as total_monto_poa_gestion
+                                      from sp_eta_recursos_poa
+                                      where id_institucion = $user->id_institucion
+                                      and gestion = $gestionActiva->gestion");
+    $total_recursos_planificado[0]->totales_poa = $totales_recursos_poa;
+   
+    $institucion = Instituciones::find($user->id_institucion);
+    //                                           
+    Excel::load('plantillas_territorial/plantilla_recursos.xlsx', function($file) use($recursos,$otros,$total_recursos_planificado,$gestionActiva) {
+       $file->sheet( 'Recursos', function ($sheet) use($recursos,$otros,$total_recursos_planificado,$gestionActiva){
         $sheet->setCellValue('C5',$gestionActiva->gestion);//colocando el valor inicial
         $sheet->setCellValue('F5',$gestionActiva->gestion);//colocando el valor inicial
         $sheet->setCellValue('I5',$gestionActiva->gestion);//colocando el valor inicial
         $i=7;
-          $total_programado = 0;
-        foreach ($arrayContenido as $r) {
-          $sheet->setCellValue('B'.$i, $r->recurso_nombre);
-          $sheet->setCellValue('C'.$i, $r->recurso_programado);
-          $sheet->setCellValue('D'.$i, $r->diferencia_ptdi_poa);
-          $sheet->setCellValue('E'.$i, $r->diferencia_porcentaje_ptdi_poa);
-          $sheet->setCellValue('I'.$i, $r->monto_poa_gestion);
-          $sheet->setCellValue('J'.$i, $r->causas_variacion);
-          $total_programado = $total_programado + $r->recurso_programado;
+          
+        foreach ($recursos as $r) {
+          $sheet->setCellValue('B'.$i, $r->nombre);
+          $sheet->setCellValue('C'.$i, number_format($r->monto,2,",","."));
+          $sheet->setCellValue('D'.$i, number_format($r->recursos_poa[0]->diferencia_ptdi_poa,2,",","."));
+          $sheet->setCellValue('E'.$i, number_format($r->recursos_poa[0]->diferencia_porcentaje_ptdi_poa,2,",","."));
+          $sheet->setCellValue('I'.$i, number_format($r->recursos_poa[0]->monto_poa_gestion,2,",","."));
+          $sheet->setCellValue('J'.$i, $r->recursos_poa[0]->causas_variacion);
+          
           $i++;
         }
+        foreach ($otros as $o) {
+          $sheet->setCellValue('B'.$i, $o->concepto);
+          $sheet->setCellValue('C'.$i, number_format($o->monto,2,",","."));
+          $sheet->setCellValue('D'.$i, number_format($o->otros_poa[0]->diferencia_ptdi_poa,2,",","."));
+          $sheet->setCellValue('E'.$i, number_format($o->otros_poa[0]->diferencia_porcentaje_ptdi_poa,2,",","."));
+          $sheet->setCellValue('I'.$i, number_format($o->otros_poa[0]->monto_poa_gestion,2,",","."));
+          $sheet->setCellValue('J'.$i, $o->otros_poa[0]->causas_variacion);
+          $i++;
+        }
+        foreach ($total_recursos_planificado as $t) {
           $sheet->setCellValue('B'.$i, 'TOTAL');
-          $sheet->setCellValue('C'.$i, $total_programado);
-          $sheet->setCellValue('D'.$i, $arrayTotales[0]->dif_ptdi_poa);
-          $sheet->setCellValue('E'.$i, $arrayTotales[0]->por_dif_ptdi_poa);
-          $sheet->setCellValue('I'.$i, $arrayTotales[0]->poa);
+          $sheet->setCellValue('C'.$i, number_format($total_recursos_planificado[0]->total_ptdi_monto,2,",","."));
+          $sheet->setCellValue('D'.$i, number_format($total_recursos_planificado[0]->totales_poa[0]->total_diferencia_ptdi_poa,2,",","."));
+          $sheet->setCellValue('E'.$i, number_format($total_recursos_planificado[0]->totales_poa[0]->total_diferencia_porcentaje_ptdi_poa,2,",","."));
+          $sheet->setCellValue('I'.$i, number_format($total_recursos_planificado[0]->totales_poa[0]->total_monto_poa_gestion,2,",","."));
+        }
+          
             
        });
     })->download('xlsx');
   }
-  
   public function reporteAccionesGestionExcel(){
     $user = \Auth::user();
     /////////////////////////
@@ -469,6 +548,506 @@ class ExportReportGestionController extends BasecontrollerController
     })->download('xlsx');    
   //return \Response::json(['objetivos_eta'=>$objetivos_eta]);
     //self::construirReporteFinanciero($arrayContenido);
+  }
+  public function reporteFinancieroProgramaGestionExcel(){
+    //return "hola dessde el Controlador reporteFinancieroProgramaGestionExcel";
+    $planActivo = Parametros::where('categoria','periodo_plan')
+                                ->where('activo',true)
+                                ->first();
+
+    /*********Verificar Gestion Activa**************/
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+                                          ->where('activo',true)
+                                          ->first(); */
+    $user = \Auth::user();
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
+    $estadoModulo = \DB::select("select estado_etapa from sp_eta_estado_etapas_seguimiento
+                                                    where id_institucion =  $user->id_institucion
+                                                    and valor_campo_etapa = 'sFisicaFinanciera'
+                                                    and gestion = $gestionActiva->gestion");
+    //dd($estadoModulo);
+    if($estadoModulo[0]->estado_etapa == "En Elaboración"){
+      $estado_etapa = true;
+    }else{
+      $estado_etapa = false;
+    }
+    $objetivo_indicador = \DB::select("select 
+                                              catEta.nombre_accion_eta,
+                                              objetivos.id_accion_eta as agregador,
+
+                                              objetivos.id as id_accion_eta_objetivo,
+                                              objetivos.nombre_objetivo  as descripcion,
+                                              
+                                              concat(arti.linea_base_cantidad,' ',arti.linea_base_unidad,' ',arti.linea_base_descripcion) as linea_base,
+                                              indi.nombre_indicador,
+                                              p_indi.valor,
+                                              p_recu.monto
+                                      from sp_eta_etapas_plan as plan,
+                                        sp_eta_objetivos_eta as objetivos,
+                                        sp_eta_articulacion_objetivo_indicador as arti,
+                                        sp_eta_indicadores as indi,
+                                        sp_eta_programacion_indicador as p_indi,
+                                        
+                                        sp_eta_programacion_recursos as p_recu,
+                                        
+                                        sp_eta_catalogo_acciones_eta as catEta,
+
+                                        sp_eta_articulacion_catalogos as artPmra
+                                      where plan.id_institucion = $user->id_institucion
+                                        and objetivos.id_etapas_plan = plan.id
+                                        and objetivos.id = arti.id_objetivo_eta
+                                        and objetivos.id_accion_eta = catEta.id
+                                        and objetivos.id_accion_eta = artPmra.id_accion_eta
+                                        and arti.id_indicador = indi.id
+                                        and arti.id = p_indi.id_articulacion_objetivo_indicador
+                                        and arti.id = p_recu.id_articulacion_objetivo_indicador
+                                        and p_indi.gestion = '$gestionActiva->gestion'
+                                        and p_recu.gestion = '$gestionActiva->gestion'");
+    //dd($objetivo_indicador);
+    foreach ($objetivo_indicador as $riesgo) {
+      $is_checked = \DB::select("select id,
+                                        id_accion_eta,
+                                        activo
+                                    from sp_eta_gestion_riesgos
+                                      where id_institucion = $user->id_institucion
+                                      and gestion = $gestionActiva->gestion
+                                      and id_accion_eta = $riesgo->id_accion_eta_objetivo
+                                      ");
+                                      //dd($is_checked);
+      if($is_checked){
+        $riesgo->id_gestion_riesgos = $is_checked[0]->id;//enviando id en la tabla gestion_riesgos
+        $riesgo->es_gestion_riesgos = $is_checked[0]->activo;//enviando true or false
+        $riesgo->gestion_riesgos = $is_checked[0]->activo;//enviando true or false
+      }
+    }
+    //buscando si lo planificado ha sido comparado con el POA
+    foreach ($objetivo_indicador as $r) {
+      $id_accion_eta = $r->id_accion_eta_objetivo;
+      
+      $verificar = FinancieroPoa::where('id_accion_eta',$id_accion_eta)
+                                  ->where('gestion',$gestionActiva->gestion)
+                                  ->where('activo',true)
+                                  ->where('id_intitucion',$user->id_institucion)
+                                  ->get();
+     
+                                  
+      if($verificar->count()>0){
+
+        foreach ($verificar as $v) {
+          $r->id_financiero_poa = $v->id;
+          $r->monto_poa_planificado = $v->monto_poa_planificado ;
+          $r->monto_poa_ejecutado = $v->monto_poa_ejecutado ;
+          $r->monto_poa_porcentaje = $v->monto_poa_porcentaje ;
+          $r->accion_poa_programado = $v->accion_poa_programado ;
+          $r->accion_poa_ejecutado = $v->accion_poa_ejecutado ;
+          $r->accion_poa_porcentaje = $v->accion_poa_porcentaje ;
+          $r->porcentaje_ptdi = $v->porcentaje_ptdi ;
+          $r->porcentaje_accion_ptdi = $v->porcentaje_accion_ptdi  ;
+          $r->porcentaje_pei = $v->porcentaje_pei ;
+          $r->causas_variacion     = $v->causas_variacion;
+
+          
+
+        }
+
+      }else{
+        //no hay valores
+        $r->id_financiero_poa = "";
+        $r->monto_poa_planificado = 0;
+        $r->monto_poa_ejecutado = 0;
+        $r->monto_poa_porcentaje = 0;
+        $r->accion_poa_programado = 0;
+        $r->accion_poa_ejecutado = 0;
+        $r->accion_poa_porcentaje = 0;
+        $r->porcentaje_ptdi = 0;
+        $r->porcentaje_accion_ptdi = 0;
+        $r->porcentaje_pei = 0;
+        $r->causas_variacion = "";
+      }
+    }
+
+    //SELECCIONANDO PROGRAMAS GLOBALES
+    $distint = \DB::select("select 
+                                    DISTINCT objetivos.id_accion_eta as agregador,
+                                    UPPER(nombre_accion_eta ) as nombre_programa
+                            from sp_eta_etapas_plan as plan,
+                              sp_eta_objetivos_eta as objetivos,
+                              sp_eta_articulacion_objetivo_indicador as arti,
+                              sp_eta_indicadores as indi,
+                              sp_eta_programacion_indicador as p_indi,
+                              sp_eta_programacion_recursos as p_recu,
+                              
+                              sp_eta_catalogo_acciones_eta as catEta,
+                              
+                              sp_eta_articulacion_catalogos as artPmra
+                              where plan.id_institucion = $user->id_institucion
+                              and objetivos.id_etapas_plan = plan.id
+                              and objetivos.id = arti.id_objetivo_eta
+                              
+                              and objetivos.id_accion_eta = catEta.id
+                              
+                              and objetivos.id_accion_eta = artPmra.id_accion_eta
+                              and arti.id_indicador = indi.id
+                              and arti.id = p_indi.id_articulacion_objetivo_indicador
+                              and arti.id = p_recu.id_articulacion_objetivo_indicador
+                              and p_indi.gestion = '$gestionActiva->gestion'
+                              and p_recu.gestion = '$gestionActiva->gestion'
+                              ORDER BY agregador");
+    //ADICIONANDO AL PROGRAMA GLOBAL OBJETIVOS ETA
+    $totales_programa = [];
+    $orden = 1;
+     $j = 0;
+    foreach ($distint as $programa) {
+      $programa->orden = $orden++;
+      $id_programa = $programa->agregador;
+
+      $i = 0;
+     
+      $objetivo_eta = [];
+      $total_ptdi_planificado = 0;
+      $total_ptdi_porcentaje_ejecutado = 0;
+      $total_accion_ptdi_planificado = 0;
+      $total_accion_ptdi_ejecutado = 0;
+      $total_monto_poa_planificado = 0;
+      $total_monto_poa_ejecutado = 0;
+      $total_monto_poa_porcentaje = 0;
+      $total_accion_poa_planificado = 0;
+      $total_accion_poa_ejecutado = 0;
+      $total_accion_poa_porcentaje = 0;
+      $totales = [];
+      $contador_objetivos_eta = 0;
+
+      foreach ($objetivo_indicador as $obj) {
+        if($id_programa == $obj->agregador){
+          $objetivo_eta[$i] = $obj;
+          //TOTALES
+          $total_ptdi_planificado = $total_ptdi_planificado + $obj->monto;
+          $total_ptdi_porcentaje_ejecutado = $total_ptdi_porcentaje_ejecutado + $obj->porcentaje_ptdi;
+          $total_accion_ptdi_planificado = $total_accion_ptdi_planificado + $obj->valor;
+          $total_accion_ptdi_ejecutado = $total_accion_ptdi_ejecutado + $obj->porcentaje_ptdi;
+          $total_monto_poa_planificado = $total_monto_poa_planificado + $obj->monto_poa_planificado;
+          $total_monto_poa_ejecutado = $total_monto_poa_ejecutado + $obj->monto_poa_ejecutado;
+          $total_monto_poa_porcentaje = $total_monto_poa_porcentaje + $obj->monto_poa_porcentaje;
+          $total_accion_poa_planificado = $total_accion_poa_planificado + $obj->accion_poa_programado;
+          $total_accion_poa_ejecutado = $total_accion_poa_ejecutado + $obj->accion_poa_ejecutado;
+          $total_accion_poa_porcentaje = $total_accion_poa_porcentaje + $obj->accion_poa_porcentaje;
+          $contador_objetivos_eta++;
+          //TOTALES
+          $i++;
+        }
+        
+      }
+      
+      $totales['agregador'] = $programa->agregador;
+      $totales['total_ptdi_planificado'] = $total_ptdi_planificado;
+      $totales['total_ptdi_porcentaje_ejecutado'] = $total_ptdi_porcentaje_ejecutado;
+      $totales['total_accion_ptdi_planificado'] = $total_accion_ptdi_planificado;
+      $totales['total_accion_ptdi_ejecutado'] = $total_accion_ptdi_ejecutado;
+      $totales['total_monto_poa_planificado'] = $total_monto_poa_planificado;
+      $totales['total_monto_poa_ejecutado'] = $total_monto_poa_ejecutado;
+      $totales['total_monto_poa_porcentaje'] = $total_monto_poa_porcentaje/$contador_objetivos_eta;
+      $totales['total_accion_poa_planificado'] = $total_accion_poa_planificado;
+      $totales['total_accion_poa_ejecutado'] = $total_accion_poa_ejecutado;
+      $totales['total_accion_poa_porcentaje'] = $total_accion_poa_porcentaje/$contador_objetivos_eta;
+
+      /*$array_resto_Poa = [];
+      $k=0;
+      foreach ($objetivo_eta as $key => $value) {
+        
+        if($key == 0){
+          $programa->primer_objetivo_eta = $value;
+        }else{
+          $array_resto_Poa[$k] = $value;
+
+        }
+        $k++;
+      }
+      
+
+      //aqui sacar de el primer proyecto
+      $programa->resto_objetivo_eta = $array_resto_Poa;*/
+      $programa->objetivos_eta = $objetivo_eta;
+      $programa->contador_objetivos = $contador_objetivos_eta;
+
+      $programa->totales = $totales;////REVISAR DESDE AQUI
+      //dd($programa->totales);
+      $j++;
+      //$programa->ver = false;
+    }
+    //return $distint;
+    
+      $institucion = Instituciones::find($user->id_institucion);
+      /*$region = \DB::select("SELECT *
+                             FROM v_pip_catalogo_regiones_nivel_3
+                             WHERE muni_codigo = ?",[$institucion->codigo_geografico]);
+      me.arrayInstitucion = response.data.institucion;
+              me.arrayUser = response.data.user;
+      return $region;
+      return \Response::json([
+        'user' => $user,
+        'institucion' => $institucion,
+        'periodoActivo' => $periodoActual['gestionesPeriodo'],
+        'gestionInicial' => $periodoActual['gestionInicial'],
+        'gestionFinal' => $periodoActual['gestionFinal'],
+        'region' => $region[0]
+
+      ]);*/
+      
+      //return $arrayInstitucion;
+      //return $distint;
+    Excel::load('plantillas_territorial/plantilla_financiero_gestion.xlsx', function($file) use($distint,$gestionActiva) {
+       $file->sheet( 'Financiero', function ($hoja) use($distint,$gestionActiva){
+        $hoja->setCellValue('A4','GESTION : '.$gestionActiva->gestion);//colocando el valor inicial
+        
+        $paletaColor = ['#F1948A', '#C39BD3' , '#7FB3D5', '#AED6F1', '#76D7C4', '#F9E79F', '#F8C471', '#F5CBA7', '#E59866', '#D4E6F1'];
+        $color=0;
+
+        $hoja->cell('A3', function($cell) use ($gestionActiva) {
+          $cell->setValue($gestionActiva->gestion);
+          //$cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+        }); 
+        $fila = 3;
+        $inicioFila = 7; 
+        $finFila =0;  //$inicioFila+$cantidad_proyectos
+
+
+        foreach ($distint as $mifuente) {
+
+          
+          $contador_objetivos = $mifuente->contador_objetivos;
+         // dd($cantidad_proyectos_poa);
+          if($contador_objetivos > 0){
+
+              $finFila = ($inicioFila + $contador_objetivos)-1;////AQUI AQUI AQUI
+              $filaTotales  = ($inicioFila + $contador_objetivos);
+              //dd($filaTotales);
+              $hoja->cells('A'.$inicioFila.':A'.$finFila, function($cells) {
+                $cells->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                $cells->setValignment('center');
+                $cells->setAlignment('center');//horizontal
+              });
+              //dd($inicioFila, $finFila);
+              $hoja->mergeCells('A'.$inicioFila.':A'.$finFila);//combinanado 
+              $hoja->setCellValue('A'.$inicioFila, $mifuente->nombre_programa);
+
+              ///DIBUJANDO TOTALES de la Accion de Mediano Plazo
+              $hoja->cells('A'.$filaTotales.':D'.$filaTotales, function($cells) {
+                $cells->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                $cells->setValignment('center');
+                $cells->setAlignment('center');//horizontal
+              });
+              //dd($inicioFila, $finFila);
+              $hoja->mergeCells('A'.$filaTotales.':D'.$filaTotales);//combinanado 
+              $hoja->setCellValue('A'.$filaTotales, "TOTALES");
+
+              $hoja->cell('E'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_ptdi_planificado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('F'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_monto_poa_ejecutado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('G'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_ptdi_porcentaje_ejecutado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('H'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_accion_ptdi_planificado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('I'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_accion_poa_ejecutado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('J'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_ptdi_porcentaje_ejecutado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('K'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('L'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('M'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('N'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('O'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('P'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('Q'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_monto_poa_planificado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('R'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_monto_poa_ejecutado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('S'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_monto_poa_porcentaje']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('T'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_accion_poa_planificado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('U'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_accion_poa_ejecutado']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('V'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales['total_accion_poa_porcentaje']);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('W'.$filaTotales, function($cell) use ($mifuente) {
+                $cell->setValue("");
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              
+              
+
+              $accion_eta = $mifuente->objetivos_eta;
+              //dd($proyectos);
+              //dIBUJANDO PROYECTOS POA
+              $i=$inicioFila;
+
+
+              foreach ($accion_eta as $p) {
+
+                $hoja->cell('B'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->nombre_accion_eta);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('C'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->linea_base);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('D'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->nombre_indicador);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('E'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->monto);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('F'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->monto_poa_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('G'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->porcentaje_ptdi);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('H'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->valor);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('I'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->accion_poa_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('J'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->porcentaje_accion_ptdi);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('K'.$i, function($cell) use ($p) {
+                  $cell->setValue("");
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('L'.$i, function($cell) use ($p) {
+                  $cell->setValue("");
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('M'.$i, function($cell) use ($p) {
+                  $cell->setValue("");
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('N'.$i, function($cell) use ($p) {
+                  $cell->setValue("");
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('O'.$i, function($cell) use ($p) {
+                  $cell->setValue("");
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('P'.$i, function($cell) use ($p) {
+                  $cell->setValue("");
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('Q'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->monto_poa_planificado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('R'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->monto_poa_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('S'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->monto_poa_porcentaje);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('T'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->accion_poa_programado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('U'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->accion_poa_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('V'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->accion_poa_porcentaje);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('W'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->causas_variacion);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $i++;
+              }
+              $inicioFila = $filaTotales+1;
+              //**************
+
+          }else{
+              //*********************** DIBUNAJDO LA FILA DE ACCION ETA******************
+              $hoja->cell('A'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->nombre_programa);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                $cell->setValignment('center');
+                $cell->setAlignment('center');//horizontal
+              });
+              $hoja->cells('B'.$inicioFila.':W'.$inicioFila, function($cells) use ($color,$paletaColor) {
+                $cells->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                $cells->setValignment('center');
+                $cells->setAlignment('center');//horizontal
+                $cells->setBackground($paletaColor[$color % count($paletaColor)]);
+              }); 
+             
+              $hoja->mergeCells('B'.$inicioFila.':W'.$inicioFila);//combinanado 
+              $hoja->setCellValue('B'.$inicioFila,"NO TIENE OBJETIVOS ETA");
+              
+              $inicioFila++; 
+
+          }
+        }
+            
+       });
+    })->download('xlsx');
   }
   public function reporteInversionGestionExcel(){
     $planActivo = Parametros::where('categoria','periodo_plan')

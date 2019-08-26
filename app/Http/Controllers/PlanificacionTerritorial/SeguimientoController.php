@@ -11,6 +11,8 @@ use App\Models\PlanificacionTerritorial\ProyectoPoa;
 use App\Models\PlanificacionTerritorial\ProyectoPoaAjuste;
 use App\Models\PlanificacionTerritorial\SeguimientoGestiones;
 use App\Models\PlanificacionTerritorial\GestionSeleccionada;
+use App\Models\PlanificacionTerritorial\OtrosIngresos;
+
 
 
 
@@ -46,19 +48,32 @@ ORDER BY orden*/
     
     $recursopoa = $request->datos;
     //dd($recursopoa);
-    $id_recurso = $recursopoa['id_tipo_recurso'];
+    //$id_recurso = $recursopoa['id_tipo_recurso'];
     
     //$gestion_seguimiento = 2018;
-    
-    $verificarExiste = RecursosPoa::where('id_tipo_recurso',$id_recurso)
+    //dd(is_null($recursopoa['id_tipo_recurso']));
+    if(is_null($recursopoa['id_tipo_recurso'])){
+      $id_recurso = $recursopoa['id_otro_ingreso'];
+      $verificarExiste = RecursosPoa::where('id_otro_ingreso',$id_recurso)
                                   ->where('gestion',$gestionActiva->gestion)
                                   ->where('id_institucion',$user->id_institucion)
                                   ->get();
+    }else{
+      $id_recurso = $recursopoa['id_tipo_recurso'];
+      $verificarExiste = RecursosPoa::where('id_tipo_recurso',$id_recurso)
+                                  ->where('gestion',$gestionActiva->gestion)
+                                  ->where('id_institucion',$user->id_institucion)
+                                  ->get();
+    }
+
+    //dd($verificarExiste);
     if($verificarExiste->count()>0){
       try{
         
-        $updateRecurso = RecursosPoa::find(intval($recursopoa['id_recurso_poa']));
-        $updateRecurso->refresh();
+        //$updateRecurso = RecursosPoa::find(intval($recursopoa['id_recurso_poa']));
+        
+        $updateRecurso = RecursosPoa::find($verificarExiste[0]->id);
+        //$updateRecurso->refresh();
         
         $updateRecurso->id_institucion = $user->id_institucion;
         $updateRecurso->id_tipo_recurso = $recursopoa['id_tipo_recurso'];
@@ -91,38 +106,73 @@ ORDER BY orden*/
       }                          
     }  //actualizar
     else{
-      //crear
-      try{
-        $recurso = new RecursosPoa();
-        $recurso->id_institucion = $user->id_institucion;
-        $recurso->id_tipo_recurso = $recursopoa['id_tipo_recurso'];
-        $recurso->gestion = $gestionActiva->gestion;//$recursopoa['gestion'];
-        $recurso->monto_poa_gestion = $recursopoa['monto_poa_gestion'];
-        $recurso->diferencia_ptdi_poa = $recursopoa['diferencia_ptdi_poa'];
-        $recurso->diferencia_porcentaje_ptdi_poa = $recursopoa['diferencia_porcentaje_ptdi_poa'];
-        $recurso->diferencia_pei_poa = $recursopoa['diferencia_pei_poa'];
-        $recurso->diferencia_porcentaje_pei_poa = $recursopoa['diferencia_porcentaje_pei_poa'];
-        $recurso->color_porcentaje_ptdi_poa = $recursopoa['color_porcentaje_pei_poa'];
-        $recurso->color_porcentaje_pei_poa = $recursopoa['color_porcentaje_pei_poa'];
-        $recurso->causas_variacion = $recursopoa['causas_variacion'];
-        $recurso->save();
+      //dd($recursopoa);
+      if(is_null($recursopoa['id_tipo_recurso'])){
+        try{
+          $recurso = new RecursosPoa();
+          $recurso->id_institucion = $user->id_institucion;
+          $recurso->id_tipo_recurso = null;
+          $recurso->gestion = $gestionActiva->gestion;//$recursopoa['gestion'];
+          $recurso->monto_poa_gestion = $recursopoa['monto_poa_gestion'];
+          $recurso->diferencia_ptdi_poa = $recursopoa['diferencia_ptdi_poa'];
+          $recurso->diferencia_porcentaje_ptdi_poa = $recursopoa['diferencia_porcentaje_ptdi_poa'];
+          $recurso->diferencia_pei_poa = $recursopoa['diferencia_pei_poa'];
+          $recurso->diferencia_porcentaje_pei_poa = $recursopoa['diferencia_porcentaje_pei_poa'];
+          $recurso->color_porcentaje_ptdi_poa = $recursopoa['color_porcentaje_pei_poa'];
+          $recurso->color_porcentaje_pei_poa = $recursopoa['color_porcentaje_pei_poa'];
+          $recurso->causas_variacion = $recursopoa['causas_variacion'];
+          $recurso->id_otro_ingreso = $recursopoa['id_otro_ingreso'];
 
-        return \Response::json(array(
-            'error' => false,
-            'title' => "Success!",
-            'msg' => "Se guardo con exito.",
-            
-          )
-        );
+          $recurso->save();
 
-      }
-      catch (Exception $e) {
           return \Response::json(array(
-            'error' => true,
-            'title' => "Error!",
-            'msg' => $e->getMessage())
+              'error' => false,
+              'title' => "Success!",
+              'msg' => "Se guardo con exito.",
+              
+            )
           );
+        }
+        catch (Exception $e) {
+            return \Response::json(array(
+              'error' => true,
+              'title' => "Error!",
+              'msg' => $e->getMessage())
+            );
+        }
+      }else{
+        try{
+          $recurso = new RecursosPoa();
+          $recurso->id_institucion = $user->id_institucion;
+          $recurso->id_tipo_recurso = $recursopoa['id_tipo_recurso'];
+          $recurso->gestion = $gestionActiva->gestion;//$recursopoa['gestion'];
+          $recurso->monto_poa_gestion = $recursopoa['monto_poa_gestion'];
+          $recurso->diferencia_ptdi_poa = $recursopoa['diferencia_ptdi_poa'];
+          $recurso->diferencia_porcentaje_ptdi_poa = $recursopoa['diferencia_porcentaje_ptdi_poa'];
+          $recurso->diferencia_pei_poa = $recursopoa['diferencia_pei_poa'];
+          $recurso->diferencia_porcentaje_pei_poa = $recursopoa['diferencia_porcentaje_pei_poa'];
+          $recurso->color_porcentaje_ptdi_poa = $recursopoa['color_porcentaje_pei_poa'];
+          $recurso->color_porcentaje_pei_poa = $recursopoa['color_porcentaje_pei_poa'];
+          $recurso->causas_variacion = $recursopoa['causas_variacion'];
+          $recurso->save();
+
+          return \Response::json(array(
+              'error' => false,
+              'title' => "Success!",
+              'msg' => "Se guardo con exito.",
+              
+            )
+          );
+        }
+        catch (Exception $e) {
+            return \Response::json(array(
+              'error' => true,
+              'title' => "Error!",
+              'msg' => $e->getMessage())
+            );
+        }
       }
+      
     }                                  
   }
   public function listaRecursosGestion(){
@@ -188,8 +238,10 @@ ORDER BY orden*/
       and eta.gestion = $gestionActiva->gestion
       and eta.activo = true
       and eta.id_tipo_recurso = pa.id");
-      //dd($recursos);
 
+    
+    
+      ///SOLO GRUPOS
       $grupos = Array();
       $sw="";
       $i=0;
@@ -203,6 +255,110 @@ ORDER BY orden*/
               $i++;
           }
       }
+      /// FIN GRUPOS
+      
+      $otrosRecursos = OtrosIngresos::where('id_institucion',$user->id_institucion)->where('activo', true)->orderby('id', 'ASC')->get();
+        
+          $diferencia_ptdi_poa_otros = 0;
+          $diferencia_porcentaje_ptdi_otros = 0;
+
+          $total_pei_otros = 0;
+          $diferencia_pei_poa_otros = 0;
+          $diferencia_porcentaje_pei_poa_otros = 0;
+          $total_poa_otros = 0;
+          $total_ptdi_otro_ingreso = 0;
+
+      foreach ($otrosRecursos as $o) {
+
+        $otro_gestion = Recursos::where('id_otro_ingreso',$o->id)
+                                    ->where('gestion',$gestionActiva->gestion)
+                                    ->first(); 
+        $o->id = $otro_gestion->id;
+        $o->id_institucion = $otro_gestion->id_institucion;
+        $o->id_tipo_recurso = $otro_gestion->id_tipo_recurso; 
+        $o->gestion = $otro_gestion->gestion; 
+        $o->id_otro_ingreso = $otro_gestion->id_otro_ingreso;
+        $o->monto= $otro_gestion->monto; 
+
+        $datos_poa = RecursosPoa::where('id_otro_ingreso',$o->id_otro_ingreso)
+                                ->where('gestion',$gestionActiva->gestion)
+                                ->where('id_institucion',$user->id_institucion)
+                                ->get();
+        //dd($datos_poa);
+        $poa = new \stdClass();
+        $pei = new \stdClass();
+        $causas_variacion = new \stdClass();
+        $total_ptdi_otro_ingreso = $total_ptdi_otro_ingreso + $o->monto;
+
+        if($datos_poa->count()>0){
+          $o->diferencia_ptdi_poa = $datos_poa[0]->diferencia_ptdi_poa;
+          $o->diferencia_porcentaje_ptdi_poa=$datos_poa[0]->diferencia_porcentaje_ptdi_poa;
+          $o->diferencia_pei_poa=$datos_poa[0]->diferencia_pei_poa;
+          $o->diferencia_porcentaje_pei_poa=$datos_poa[0]->diferencia_porcentaje_pei_poa;
+
+          $poa->input = $datos_poa[0]->monto_poa_gestion;
+          $poa->clase = '';
+          $poa->mensaje = '';
+          $o->monto_poa_gestion = $poa;
+          
+          $pei->input = $datos_poa[0]->monto_pei_gestion;
+          $pei->clase = '';
+          $pei->mensaje = '';
+          $o->monto_pei_gestion = $pei;
+
+          $causas_variacion->input = $datos_poa[0]->causas_variacion;
+          $causas_variacion->clase = '';
+          $causas_variacion->mensaje = '';
+          $o->causas_variacion = $causas_variacion;
+          
+
+          $o->id_datos_poa = $datos_poa[0]->id;
+          $o->color_porcentaje_ptdi_poa=$datos_poa[0]->color_porcentaje_ptdi_poa;
+          $o->color_porcentaje_pei_poa=$datos_poa[0]->color_porcentaje_pei_poa;
+
+          
+          $diferencia_ptdi_poa_otros = $diferencia_ptdi_poa_otros + $datos_poa[0]->diferencia_porcentaje_ptdi_poa;
+          $diferencia_porcentaje_ptdi_otros = $diferencia_porcentaje_ptdi_otros + $datos_poa[0]->diferencia_porcentaje_ptdi_poa;
+
+          $total_pei_otros = $total_pei_otros + $datos_poa[0]->monto_pei_gestion;
+          $diferencia_pei_poa_otros = $diferencia_pei_poa_otros + $datos_poa[0]->diferencia_pei_poa;
+          $diferencia_porcentaje_pei_poa_otros = $diferencia_porcentaje_pei_poa_otros + $datos_poa[0]->diferencia_porcentaje_pei_poa;
+          $total_poa_otros = $total_poa_otros + $datos_poa[0]->monto_poa_gestion;
+        }else{
+          
+          $o->diferencia_ptdi_poa = 0;
+          $o->diferencia_porcentaje_ptdi_poa=0;
+          $o->diferencia_pei_poa=0;
+          $o->diferencia_porcentaje_pei_poa=0;
+
+          $poa->input = 0;
+          $poa->clase = '';
+          $poa->mensaje = '';
+          $o->monto_poa_gestion = $poa;
+          
+          $pei->input = 0;
+          $pei->clase = '';
+          $pei->mensaje = '';
+          $o->monto_pei_gestion = $pei;
+
+          $causas_variacion->input = '';
+          $causas_variacion->clase = '';
+          $causas_variacion->mensaje = '';
+          $o->causas_variacion = $causas_variacion;
+
+          $o->id_recurso_poa = 0;
+          $o->color_porcentaje_ptdi_poa=0;
+          $o->color_porcentaje_pei_poa=0;
+        }                          
+      }
+      $i++;
+      if($otrosRecursos){
+        $grupos[$i]['id'] = 232;
+        $grupos[$i]['valor'] = 'Otros Ingresos';
+        $grupos[$i]['orden'] = 13;
+        $grupos[$i]['codigo'] = 'OI';
+      }
+
       //$gestion = 2018;
       $total_ptdi = 0;
       $diferencia_ptdi_poa = 0;
@@ -212,7 +368,7 @@ ORDER BY orden*/
       $diferencia_porcentaje_pei_poa = 0;
       $total_poa = 0;
 
-
+      //añadiendo valores del POA
       foreach ($recursos as $value) {
         $recurso_Poa = RecursosPoa::where('id_tipo_recurso',$value->id_tipo_recurso)
                                 ->where('gestion',$gestionActiva->gestion)
@@ -292,13 +448,14 @@ ORDER BY orden*/
         'estado_modulo' => $estado_etapa,
         'plan_activo' => $planActivo->descripcion,
         'gestion_activa' => $gestionActiva->gestion,
-        'total_ptdi'=>$total_ptdi,
+        'total_ptdi'=>$total_ptdi + $total_ptdi_otro_ingreso,
         'diferencia_ptdi_poa'=>$diferencia_ptdi_poa,
         'diferencia_porcentaje_ptdi'=>$diferencia_porcentaje_ptdi,
-        'total_pei'=>$total_pei,
+        'total_pei'=>0,
         'diferencia_pei_poa'=>$diferencia_pei_poa,
         'diferencia_porcentaje_pei_poa'=>$diferencia_porcentaje_pei_poa,
-        'total_poa'=>$total_poa,
+        'total_poa'=>$total_poa + $total_poa_otros,
+        'otrosIngresos'=>$otrosRecursos
 
       ]);
   }

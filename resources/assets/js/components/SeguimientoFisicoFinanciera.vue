@@ -25,126 +25,141 @@
         </div>
         </div>
     </div> 
-    <!--div class="row">
-      <div class="col-lg-12 " style="background-color:#FB9678;">
-        <div class=" p-l-25" >
-        <h2 style="color:#FFF"class="p-l-20 p-t-10 m-0">SEGUIMIENTO FISICO FINANCIERO</h2> 
-        <h5 style="color:#FFF" class="p-l-20 m-t-5">PLAN :{{ planActivo}}</h5>   
-        <h5 style="color:#FFF" class="p-l-20 m-t-5">GESTION : {{ gestionActiva}}</h5>
-        </div>
-      </div>
-    </div-->
-    <div class="row p-t-10 mipanelx">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="white-box p-0 m-0 p-l-10 p-r-10 p-t-10 p-b-10">
-            <h4 class="m-t-0">SEGUIMIENTO FISICO FINANCIERO</h4>
-            <div class="card">
-              <div class="table-responsive white-box" >
-                <h4 class="m-t-0"></h4>
-                <table id="art" class="table table-bordered color-table info-table miTabla">
-                  <thead>
-                    <tr>
-                      <th  style="background:#0AF3D3; color:#fff" rowspan="3" class="text-center"  ><strong></strong>GESTION RIESGO</th>
-                      <th  style="background:#0AF3D3; color:#fff" rowspan="3" class="text-center"  ><strong></strong></th>
+    <div class="row">
+      <div class="col-lg-12">
+          <h4 class="m-t-0">SEGUIMIENTO FISICO FINANCIERO</h4>
+           <div class="panel-container vtabs">
+                <div class="panel-left">
+                  <ul class="nav tabs-vertical" >
+                      <li v-for="(pro, key) in distinc" :key="pro.agregador" class="tab nav-item" >
+                            <a data-toggle="tab" class="nav-link"  :class="{'active': pro.orden == 1}" :href="'#panel'+pro.agregador" aria-expanded="true">
+                              <i class="hidden-xs fa fa-dot-circle-o"></i> <span class="hidden-xs" v-text="pro.nombre_programa"></span>
+                            </a>
+                      </li>
                       
-                      <th  style="background:#0AF3D3; color:#fff; vertical-align:middle;" rowspan="3"><strong  >ACCION ETA</strong></th>
-                      <th  style="background:#0AF3D3; color:#fff; vertical-align:middle;" rowspan="3"><strong>LINEA BASE</strong></th>
-                      <th  style="background:#0AF3D3; color:#fff; vertical-align:middle;" rowspan="3"><strong>INDICADOR DE PROCESO</strong></th>
-                      <th  style="background:#09D4E8; color:#fff" colspan="4" class="text-center"><strong>PROGRAMACION PTDI</strong></th>
-                      <th  style="background:#03B1FF; color:#fff" colspan="4" class="text-center"><strong>PROGRAMACION PEI</strong></th>
-                      <th  style="background:#0973E8; color:#fff" colspan="6" class="text-center"><strong>PROGRAMACION POA</strong></th>
-                      <th  style="background:#0973E8; color:#fff; vertical-align:middle;" rowspan="3" class="text-center"><strong>CAUSAS DESVIACION</strong></th>
-                      
-                    </tr>
-                    <tr>
-                      
-                      <th style="background:#09D4E8; color:#fff" colspan="2" class="text-center"><strong>FINANCIERA</strong></th>
-                      <th style="background:#09D4E8; color:#fff" colspan="2" class="text-center"><strong>ACCION</strong></th>
-                      <th style="background:#03B1FF; color:#fff" colspan="2" class="text-center"><strong>FINANCIERA</strong></th>
-                      <th style="background:#03B1FF; color:#fff" colspan="2" class="text-center"><strong>ACCION</strong></th>
-                      <th style="background:#0973E8; color:#fff" colspan="3" class="text-center"><strong>FINANCIERA</strong></th>
-                      <th style="background:#0973E8; color:#fff; " colspan="3" class="text-center"><strong>ACCION</strong></th>
+                  </ul>
+                </div>
+                <div class="splitter">
+                </div>
+                <div class="panel-right">
+                  <div class="tab-content white-box p-10 m-b-0" style="min-width:900px">
+                    <div v-for="pro in distinc"  :id="'panel'+ pro.agregador" class="tab-pane" :class="{'active': pro.orden == 1}">
+                      <h4 v-text="pro.nombre_programa" class="m-t-0"></h4> <!--i class="fa fa-info-circle"></i> Para decimales usar <b>","</b> coma.-->
+                      <div class="table-responsive">      
+                        <table class="table"  >
+                          <thead>
+                            <tr>
+                              <th   style="color:#fff" rowspan="3" class="text-center">GESTION RIESGO</th>
+                              <th   style="color:#fff" rowspan="3" class="text-center"></th>
+                              
+                              <th   style="color:#fff" rowspan="3">ACCION ETA</th>
+                              <th   style="color:#fff" rowspan="3">LINEA BASE</th>
+                              <th   style="color:#fff" rowspan="3">INDICADOR DE PROCESO</th>
+                              <th   style="color:#fff" colspan="4" class="text-center">PROGRAMACION PTDI</th>
+                              <th   style="color:#fff" colspan="4" class="text-center">PROGRAMACION PEI</th>
+                              <th   style="color:#fff" colspan="6" class="text-center">PROGRAMACION POA</th>
+                              <th   style="color:#fff; vertical-align:middle;" rowspan="3" class="text-center">CAUSAS DESVIACION</th>
+                              
+                            </tr>
+                            <tr>
+                              
+                              <th  style="color:#fff" colspan="2" class="text-center">FINANCIERA</th>
+                              <th  style="color:#fff" colspan="2" class="text-center">ACCION</th>
+                              <th  style="color:#fff" colspan="2" class="text-center">FINANCIERA</th>
+                              <th  style="color:#fff" colspan="2" class="text-center">ACCION</th>
+                              <th  style="color:#fff" colspan="3" class="text-center">FINANCIERA</th>
+                              <th  style="color:#fff" colspan="3" class="text-center">ACCION</th>
 
-                    </tr>
-                    <tr>
-                      
-                      <th style="background:#09D4E8; color:#fff"   class="text-center"><strong>Pf</strong></th>
-                      <!--th style="background:#09D4E8; color:#fff"   class="text-center"><strong>E</strong></th-->
-                      <th style="background:#09D4E8; color:#fff"   class="text-center"><strong>%Ef</strong></th>
-                      <th style="background:#09D4E8; color:#fff"  class="text-center"><strong>Pa</strong></th>
-                      <!--th style="background:#09D4E8; color:#fff"  class="text-center"><strong>E</strong></th-->
-                      <th style="background:#09D4E8; color:#fff"  class="text-center"><strong>%Ea</strong></th>
-                      <th style="background:#03B1FF; color:#fff" class="text-center"><strong>Pf</strong></th>
-                      <!--th style="background:#03B1FF; color:#fff" class="text-center"><strong>E</strong></th-->
-                      <th style="background:#03B1FF; color:#fff" class="text-center"><strong>%Ef</strong></th>
-                      <th style="background:#03B1FF; color:#fff" class="text-center"><strong>Pf</strong></th>
-                      <!--th style="background:#03B1FF; color:#fff" class="text-center"><strong>E</strong></th-->
-                      <th style="background:#03B1FF; color:#fff" class="text-center"><strong>%Ef</strong></th>
-                      <th style="background:#0973E8; color:#fff"class="text-center"><strong>Pf</strong></th>
-                      <th style="background:#0973E8; color:#fff"class="text-center"><strong>E</strong></th>
-                      <th style="background:#0973E8; color:#fff"class="text-center"><strong>%Ef</strong></th>
-                      <th style="background:#0973E8; color:#fff"class="text-center"><strong>Pf</strong></th>
-                      <th style="background:#0973E8; color:#fff"class="text-center"><strong>E</strong></th>
-                      <th style="background:#0973E8; color:#fff"class="text-center"><strong>%Ef</strong></th>
+                            </tr>
+                            <tr>
+                              <th style="color:#fff" class="text-center">Pf</th>
+                              <th style="color:#fff" class="text-center">%Ef</th>
+                              <th style="color:#fff" class="text-center">Pa</th>
+                              <th style="color:#fff" class="text-center">%Ea</th>
+                              <th style="color:#fff" class="text-center">Pf</th>
+                              <th style="color:#fff" class="text-center">%Ef</th>
+                              <th style="color:#fff" class="text-center">Pf</th>
+                              <th style="color:#fff" class="text-center">%Ef</th>
+                              <th style="color:#fff" class="text-center">Pf</th>
+                              <th style="color:#fff" class="text-center">E</th>
+                              <th style="color:#fff" class="text-center">%Ef</th>
+                              <th style="color:#fff" class="text-center">Pf</th>
+                              <th style="color:#fff" class="text-center">E</th>
+                              <th style="color:#fff" class="text-center">%Ef</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                            <tr v-for="(eta, index) in arrayObjetivoEta" v-if="eta.agregador===pro.agregador " style="">
+                              <td>
+                                
+                                  <input type="checkbox"  v-model="eta.es_gestion_riesgos" value="" name="check'+ eta.id_accion_eta +'" disabled="disabled">
+                                  
+                                  
+                              </td>
+                              <td class="text-nowrap">
+                                <a v-show="estado_modulo" v-if="eta.id_financiero_poa != ''" style="display:inline-block;" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar POA" @click="abrirModal(index,eta.agregador, 2)"><i class="fa fa-edit fa-lg" ></i></a> 
+                                <a v-show="estado_modulo" v-else  style="display:inline-block;" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Agregar POA " @click="abrirModal(index,eta.agregador, 1)"><i class="fa fa-plus fa-lg " ></i></a> 
+                                <!--a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-info "></i></a-->
+                              </td>
+                              
+                              
+                              <td style="width: 200px; word-wrap: break-word;"> {{ eta.descripcion}}</td>
+                              <td style="width: 200px; word-wrap: break-word;">  {{ eta.linea_base }}</td>
+                              
+                              <td>
+                                {{ eta.nombre_indicador}}
 
-                    </tr>
-
-                  </thead>
-                  <tbody>
-                    <tr v-for="(eta, index) in arrayObjetivoEta">
-                      <td>
-                        
-                          <input type="checkbox"  v-model="eta.es_gestion_riesgos" value="" name="check'+ eta.id_accion_eta +'" disabled="disabled">
-                          
-                          
-                      </td>
-                      <td class="text-nowrap">
-                        <a v-show="estado_modulo" v-if="eta.id_financiero_poa != ''" style="display:inline-block;" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Editar POA" @click="abrirModal(index, 2)"><i class="fa fa-edit fa-lg fa-2x    " style="color:#0973E8"></i></a> 
-                        <a v-show="estado_modulo" v-else  style="display:inline-block;" href="#"  class="m-l-10 m-r-10 m-t-10 sel_edit" title="Agregar POA " @click="abrirModal(index, 1)"><i class="fa fa-plus fa-lg fa-2x   text-info " style="color:#0973E8"></i></a> 
-                        <!--a href="#"  class="m-l-10 m-r-10 m-t-10 sel_delete" title="Eliminar" ><i class="fa fa-minus-circle fa-lg text-info "></i></a-->
-                      </td>
-                      
-                      
-                      <td style="width: 200px; word-wrap: break-word;"> {{ eta.descripcion}}</td>
-                      <td style="width: 200px; word-wrap: break-word;">  {{ eta.linea_base }}</td>
-                      
-                      <td>
-                        {{ eta.nombre_indicador}}
-
-                      </td>
-                      <td>{{ eta.monto }}</td>
-                      <td>{{ eta.porcentaje_ptdi * 100}} %</td>
-                      <td>{{ eta.valor}}</td>
-                      <td v-if="eta.porcentaje_accion_ptdi == ''"> </td>
-                      <td v-else>{{ eta.porcentaje_accion_ptdi }} % </td>
-                      
-                      <td>0,00</td>
-                      <td>0,00</td>
-                      <td>0,00</td>
-                      <td>0,00</td>
-                      <td>{{ eta.monto_poa_planificado }}</td>
-                      <td>{{ eta.monto_poa_ejecutado }}</td>
-                      <td v-if="eta.monto_poa_porcentaje == ''"> </td>
-                      <td v-else>{{ eta.monto_poa_porcentaje }} % </td>
-                      <td>{{ eta.accion_poa_programado }}</td>
-                      <td>{{ eta.accion_poa_ejecutado }}</td>
-                      <td v-if="eta.accion_poa_porcentaje == ''"> </td>
-                      <td v-else>{{ eta.accion_poa_porcentaje  }} %</td>
-                      <td>{{ eta.causas_variacion}}</td>
-                     
-                      
-                      
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                              </td>
+                              <td>{{ eta.monto }}</td>
+                              <td>{{ eta.porcentaje_ptdi}} %</td>
+                              <td>{{ eta.valor}}</td>
+                              <td v-if="eta.porcentaje_accion_ptdi == ''"> </td>
+                              <td v-else>{{ eta.porcentaje_accion_ptdi }} % </td>
+                              
+                              <td>0,00</td>
+                              <td>0,00</td>
+                              <td>0,00</td>
+                              <td>0,00</td>
+                              <td>{{ eta.monto_poa_planificado }}</td>
+                              <td>{{ eta.monto_poa_ejecutado }}</td>
+                              <td v-if="eta.monto_poa_porcentaje == ''"> </td>
+                              <td v-else>{{ eta.monto_poa_porcentaje }} % </td>
+                              <td>{{ eta.accion_poa_programado }}</td>
+                              <td>{{ eta.accion_poa_ejecutado }}</td>
+                              <td v-if="eta.accion_poa_porcentaje == ''"> </td>
+                              <td v-else>{{ eta.accion_poa_porcentaje  }} %</td>
+                              <td>{{ eta.causas_variacion}}</td>
+                            </tr>
+                            <tr style="background-color:#B33822; border:2px solid #B33822; color:#fff;"v-for="(totales, key) in totales_programa" v-if="totales.agregador===pro.agregador">
+                              <td colspan="5">TOTALES</td>
+                              <td >{{ formatPrice(totales.total_ptdi_planificado) }}</td>
+                              <td >{{ formatPrice(totales.total_ptdi_porcentaje_ejecutado ) }}</td>
+                              <td >{{ formatPrice(totales.total_accion_ptdi_planificado) }}</td>
+                              <td >{{ formatPrice(totales.total_accion_ptdi_ejecutado) }}</td>
+                              <td ></td>
+                              <td ></td>
+                              <td ></td>
+                              <td ></td>
+                              <td >{{ formatPrice(totales.total_monto_poa_planificado) }}</td>
+                              <td >{{ formatPrice(totales.total_monto_poa_ejecutado) }}</td>
+                              <td >{{ formatPrice(totales.total_monto_poa_porcentaje) }}</td>
+                              <td >{{ formatPrice(totales.total_accion_poa_planificado) }}</td>
+                              <td >{{ formatPrice(totales.total_accion_poa_ejecutado) }}</td>
+                              <td >{{ formatPrice(totales.total_accion_poa_porcentaje) }}</td>
+                             
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
-          </div>
-        </div>  
       </div>
+    </div>
     
     <div class="row">
-      
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="white-box p-0 m-0 p-t-10 ">
           <div class="form-group text-center p-0 m-0">
@@ -261,11 +276,6 @@
         </div>      
       </div>
     </div>
-    
-   
-                
-   
-
   </div>
 </template>
 
@@ -318,8 +328,37 @@ export default {
           estado_modulo:"",
           plan_activo:"",
           gestion_activa:"",
-          errors:[]
-        }
+          errors:[],
+          carpetas:[
+            {
+              id:1,
+              name:"Search",
+              ver:false,
+              orden:1,
+              pages :[
+                { name:"Facebook" },
+                { name:"Google" },
+                { name:"Opera" }
+              ]
+            },
+            {
+              id:2,
+              name:"Email",
+              ver:false,
+              orden:2,
+              pages :[
+                { name:"Gmail" },
+                { name:"Outlook" },
+                { name: "yahooo" }
+              ]
+            }
+          ],
+          distinc:[],
+          programas:[],
+          acciones_eta_programas:[],
+          totales_programa:[]
+        
+      }
     },
     methods: {
       showModal(){
@@ -342,13 +381,18 @@ export default {
         let me = this;
           axios.get('/api/planesTerritoriales/listaAvanceObjetivos').then(function (response) {
             me.arrayObjetivoEta = response.data.objEta;
-            console.log(response);
-            console.log(me.arrayObjetivoEta);
+            //console.log(response);
+            //console.log(response.data.distinc);
+            me.distinc = response.data.distinc;
+            //console.log(me.arrayObjetivoEta);
             me.planActivo = response.data.planActivo;
             me.gestionActiva = response.data.gestionActiva;
             me.estado_modulo = response.data.estado_modulo;
             me.plan_activo = response.data.plan_activo; 
-            me.gestion_activa = response.data.gestion_activa;            
+            me.gestion_activa = response.data.gestion_activa;  
+            me.programas = response.data.programas;
+            me.acciones_eta_programas = response.data.distinc;  
+            me.totales_programa = response.data.totales_programa;        
             
           })
           .catch(function (error) {
@@ -360,7 +404,7 @@ export default {
       savePoa(){
         let me = this;
           var enviarPoa = {};
-        console.log(me.arrayPoa);
+        //console.log(me.arrayPoa);
         /*arrayPoa.causas_variacion.input
 
         arrayPoa.monto_poa.input
@@ -380,8 +424,8 @@ export default {
         enviarPoa.programado_accion = programado_accion;
         var ejecutado_accion = (me.replaceAll(me.arrayPoa.ejecutado_accion.input,".","")).split(',').join('.');
         enviarPoa.ejecutado_accion = ejecutado_accion;
-        console.log(ejecutado_accion);//20
-        console.log(ejecutado);//40
+        //console.log(ejecutado_accion);//20
+        //console.log(ejecutado);//40
         enviarPoa.porcentaje_poa_accion = (ejecutado_accion/programado_accion)*100;
         enviarPoa.porcentaje_ptdi = (monto_poa/me.arrayObjetivoEta[me.idEta].monto)*100;
         //aumentadon accion_ptd
@@ -393,46 +437,6 @@ export default {
         enviarPoa.gestion_riesgos= me.arrayPoa.gestion_riesgos.input;
         enviarPoa.id_gestion_riesgos = me.arrayObjetivoEta[me.idEta].id_gestion_riesgos;
         
-            
-            
-
-
-        //*************PTDI*********************//
-        /*/Ptdi monto programado
-        me.arrayPoa.monto_programado = me.arrayObjetivoEta[me.idEta].monto;
-         //diferencia Ptdi financiera porcentaje poa/ejecutado*100
-        me.arrayPoa.porcentaje_ptdi = (me.arrayPoa.monto_poa/me.arrayObjetivoEta[me.idEta].monto)*100;
-         //accion programado ptdi
-        me.arrayPoa.accion_programado = me.arrayObjetivoEta[me.idEta].valor; 
-         // Ptdi accion porcentaje
-        me.arrayPoa.accion_porcentaje = (me.arrayPoa.valor/me.arrayObjetivoEta[me.idEta].valor)*100;
-        //************* FIN PTDI*********************/
-
-        //**************ASUMIENDO QUE EL PTDI = PEI *************************//
-        /*/Ptdi monto programado
-        me.arrayPoa.monto_programado_pei = me.arrayObjetivoEta[me.idEta].monto;
-         //diferencia Ptdi financiera porcentaje poa/ejecutado*100
-        me.arrayPoa.porcentaje_pei = (me.arrayPoa.monto_poa/me.arrayObjetivoEta[me.idEta].monto)*100;
-         //accion programado ptdi
-        me.arrayPoa.accion_programado_pei = me.arrayObjetivoEta[me.idEta].valor;
-         // Ptdi accion porcentaje
-        me.arrayPoa.accion_porcentaje_pei = (me.arrayPoa.valor/me.arrayObjetivoEta[me.idEta].valor)*100;
-
-        //**************FIN ASUMIENDO QUE EL PTDI = PEI *************************/
-        
-        //**************POA******************************************************// 
-        /*
-        me.arrayPoa.porcentaje_poa_programado = (me.arrayPoa.monto_poa/me.arrayPoa.ejecutado)*100;
-        //porcentaje_poa_accion
-        me.arrayPoa.porcentaje_poa_accion = (me.arrayPoa.monto_poa/me.arrayPoa.ejecutado)*100;
-        me.arrayPoa.id_accion_eta_objetivo = me.arrayObjetivoEta[me.idEta].id_accion_eta_objetivo;
-        me.arrayPoa.id_financiero_poa = me.arrayObjetivoEta[me.idEta].id_financiero_poa;
-        //id gestion de riesgos id
-        me.arrayPoa.id_gestion_riesgos = me.arrayObjetivoEta[me.idEta].id_gestion_riesgos;*/
-
-        
-        
-        //**************FIN POA******************************************************//
 
         axios({
           method: 'post',
@@ -490,13 +494,17 @@ export default {
          
          
 
-        console.log(me.arrayPoa);
+        //console.log(me.arrayPoa);
       },
-      abrirModal(idEta,e){
-        console.log("abri el modal para agregar POA...." + idEta);
+      abrirModal(idEta,idPro,e){
+        //console.log("abri el modal para agregar POA...." + idEta);
         let me = this;
         me.idEta = idEta;//es la index del array en donde esta el campo id_accion_eta_ob
-        console.log("el id "+ me.arrayObjetivoEta[idEta].id_accion_eta_objetivo);
+        //console.log("el id "+ me.arrayObjetivoEta[idEta].id_accion_eta_objetivo);
+        var index = me.distinc.indexOf(idPro);
+        const resultado = me.distinc.indexOf( fruta => fruta.agregador === idPro );
+        //console.log("el id programa index"+ resultado );
+        //folder.nombre_programa
         //me.arrayPoa.monto = me.arrayObjetivoEta[idEta].monto;
         //me.arrayPoa.valor = me.arrayObjetivoEta[idEta].valor;
         
@@ -514,6 +522,13 @@ export default {
             me.arrayPoa.programado_accion.input = me.convertirFormato(me.arrayObjetivoEta[idEta].accion_poa_programado);
             me.arrayPoa.ejecutado_accion.input = me.convertirFormato(me.arrayObjetivoEta[idEta].accion_poa_ejecutado);
             me.arrayPoa.gestion_riesgos.input = me.arrayObjetivoEta[idEta].es_gestion_riesgos;
+
+            /*me.arrayPoa.monto_poa.input = me.convertirFormato(me.distinc[idPro].objetivos_eta_programa[idEta].monto_poa_planificado);
+            me.arrayPoa.ejecutado.input = me.convertirFormato(me.distinc[idPro].objetivos_eta_programa[idEta].monto_poa_ejecutado);
+            me.arrayPoa.causas_variacion.input = me.arrayObjetivoEta[idEta].causas_variacion;
+            me.arrayPoa.programado_accion.input = me.convertirFormato(me.distinc[idPro].objetivos_eta_programa[idEta].accion_poa_programado);
+            me.arrayPoa.ejecutado_accion.input = me.convertirFormato(me.distinc[idPro].objetivos_eta_programa[idEta].accion_poa_ejecutado);
+            me.arrayPoa.gestion_riesgos.input = me.distinc[idPro].objetivos_eta_programa[idEta].es_gestion_riesgos;*/
             
             this.modal = 1;
             break;
@@ -658,7 +673,7 @@ export default {
           
           //////////////////////
           var checked_gestion_riesgos = $('input:radio[name=radioRiesgos]:checked').val()
-          console.log("es ptdi"+ checked_gestion_riesgos);
+          //console.log("es ptdi"+ checked_gestion_riesgos);
           if(!checked_gestion_riesgos){
             me.arrayPoa.gestion_riesgos.clase = "warning";
             me.arrayPoa.gestion_riesgos.mensaje = "Debe elegir un opcion";
@@ -682,11 +697,28 @@ export default {
         
       },
       reporteFinancieroGestionExcel(){
-        location.href = '/api/planesTerritoriales/reporteFinancieroGestionExcel';
+        //location.href = '/api/planesTerritoriales/reporteFinancieroGestionExcel';
+        location.href = '/api/planesTerritoriales/reporteFinancieroProgramaGestionExcel';
       },
       reporteFinancieroGestionPdf(){
-        location.href = '/api/planesTerritoriales/reporteFinancieroGestionPdf';
-      }
+        //location.href = '/api/planesTerritoriales/reporteFinancieroGestionPdf';
+        location.href = '/api/planesTerritoriales/reporteFinancieroProgramaGestionPdf';
+      },
+      toggle(folder){
+        console.log("hola desde toggle");
+        /*
+        console.log(document.getElementById(idname).style.display);
+        if(document.getElementById(idname).style.display == "none"){
+          document.getElementById(idname).style.display = "inline-block";
+        }else{
+          document.getElementById(idname).style.display = "none";
+        }*/
+        folder.ver = !folder.ver;
+      },
+      formatPrice(value) {
+        let val = (value/1).toFixed(2).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      },
     },
     mounted() {
         
@@ -710,12 +742,15 @@ export default {
 .modal-content{
   width: 100% !important;
   position: absolute !important;
+
+  
 }
 .mostrar{
   display: list-item !important;
   opacity: 1 !important;
   position: absolute !important;
   background-color: #3c29297a !important;
+
 }
 
 
@@ -872,7 +907,20 @@ miTabla{
   max-height:560px;
 }
 
-
+.table{
+  font:Poppins,sans-serif;
+  font-size:14px;
+  color:#ffffff;
+}
+.table thead {
+  
+  /*background-color: #fb9678;*/
+  background-color: #FF654A
+  
+}
+.table tbody{
+  text-align: right;
+}
 
 
 </style>

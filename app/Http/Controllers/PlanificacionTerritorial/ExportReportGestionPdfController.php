@@ -33,43 +33,101 @@ class ExportReportGestionPdfController extends BasecontrollerController
     $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
                                           ->where('activo',true)
                                            ->first();
-    $arrayContenido = RecursosPoa::where('id_institucion',$user->id_institucion)
-                                -> where('gestion',$gestionActiva->gestion)
-                                ->get();
-    //dd($arrayContenido);
-    foreach ($arrayContenido as $row) {
 
-      $nombre_recurso = Parametros::where('categoria','tipo_recursos')
-                          ->where('id',$row->id_tipo_recurso)
-                          ->get();
-      $row->recurso_nombre = $nombre_recurso[0]->nombre;
-
-      $recurso_programado = \DB::select("select * from sp_eta_recursos_eta
-                                                  where id_institucion = $user->id_institucion
-                                                  and id_tipo_recurso = $row->id_tipo_recurso
-                                                  and gestion = '$gestionActiva->gestion'");
-      $row->recurso_programado = $recurso_programado[0]->monto;
+    $recursos = \DB::select("select 
+                              p.nombre,
+                              r.monto,
+                              r.id_tipo_recurso,
+                              r.gestion
+                            from sp_eta_recursos_eta as r,
+                                  sp_parametros as p
+                                  
+                            where id_institucion = $user->id_institucion
+                            and gestion = $gestionActiva->gestion
+                            and id_tipo_recurso NOTNULL
+                            and p.categoria = 'tipo_recursos'
+                            and r.id_tipo_recurso = p.id
+                            ");
+    foreach ($recursos as $r) {
+      $recursos_poa = \DB::select("select * from sp_eta_recursos_poa
+                                    where id_institucion = $user->id_institucion
+                                    and id_tipo_recurso = $r->id_tipo_recurso
+                                    and gestion = '$gestionActiva->gestion'");
+      
+      
+      if(sizeof($recursos_poa) > 0){
+        $r->recursos_poa = $recursos_poa;
+      }else{
+        $recursos_poa = [];
+        $recursos_poa[0] = (object)array('diferencia_ptdi_poa' => '0',
+                                   
+        'diferencia_porcentaje_ptdi_poa'=>'0',
+        'monto_poa_gestion'=>'0',
+        'causas_variacion'=>""
+         );
+        $r->recursos_poa = $recursos_poa;
+      }
     }
-   //dd($arrayContenido);
-    $arrayTotales = \DB::select("select sum(monto_poa_gestion) as poa,
-                                        sum(diferencia_ptdi_poa) as dif_ptdi_poa,
-                                        sum(diferencia_porcentaje_ptdi_poa) as por_dif_ptdi_poa,
-                                        sum(diferencia_pei_poa) as dif_pei_poa,
-                                        sum(monto_pei_gestion) as pei
-                                        
-                                from sp_eta_recursos_poa 
-                                where id_institucion = $user->id_institucion
-                                and gestion = $gestionActiva->gestion");
-    //$now = Carbon::now();
-    //$fecha = $now->format('d/m/Y  H:i');
-    //
-    /*$pdf = app('dompdf.wrapper');
-    $pdf->getDomPDF()->set_option("enable_php", true);
-    $data = ['title' => 'Testing Page Number In Body'];
-    $pdf->loadView('welcomeView', $data);*/
+    //dd($recursos);
+    $otros = \DB::select("select 
+                                r.id_tipo_recurso,
+                                r.gestion,
+                                r.monto,
+                                o.id,
+                                o.id_institucion,
+                                o.concepto
+                                
+                        from sp_eta_recursos_eta as r,
+                             sp_eta_otros_ingresos as o
+                        where r.id_institucion = $user->id_institucion
+                        and r.gestion = '$gestionActiva->gestion'
+                        and r.id_tipo_recurso ISNULL
+                        and r.id_otro_ingreso = o.id");
+    
+    foreach ($otros as $o) {
+      $otros_poa = \DB::select("select * from sp_eta_recursos_poa
+                                        where id_institucion = $user->id_institucion
+                                        and id_otro_ingreso = $o->id
+                                        and gestion = '$gestionActiva->gestion'");
+      if($otros_poa){
+         $o->otros_poa = $otros_poa;
+      }else{
+        $otros_poa = [];
+        $otros_poa[0] = (object) array(
+                                        'diferencia_ptdi_poa' =>'0',
+                                        'diferencia_porcentaje_ptdi_poa' =>'0',
+                                        'monto_poa_gestion' =>'0',
+                                        'causas_variacion' =>"",
+                                        );
+        $o->otros_poa = $otros_poa;
+        
+      }
+    }
+    
+    $total_recursos_planificado = \DB::select("select 
+                                                   sum(monto) as total_ptdi_monto
+                                              from sp_eta_recursos_eta
+                                              where id_institucion = $user->id_institucion
+                                              and gestion = $gestionActiva->gestion");
+    //dd($total_recursos_planificado);
+
+    
+    $totales_recursos_poa = \DB::select("select 
+                                              sum(diferencia_ptdi_poa) as total_diferencia_ptdi_poa,
+                                              sum(diferencia_porcentaje_ptdi_poa) as total_diferencia_porcentaje_ptdi_poa,
+                                              sum(monto_pei_gestion) as total_monto_pei_gestion,
+                                              sum(diferencia_pei_poa) as total_diferencia_pei_poa,
+                                              sum(diferencia_porcentaje_pei_poa) as total_diferencia_porcentaje_pei_poa,
+                                              sum(monto_poa_gestion) as total_monto_poa_gestion
+                                      from sp_eta_recursos_poa
+                                      where id_institucion = $user->id_institucion
+                                      and gestion = $gestionActiva->gestion");
+    $total_recursos_planificado[0]->totales_poa = $totales_recursos_poa;
+   
+    $institucion = Instituciones::find($user->id_institucion);
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.recursosGestionPdf',compact('arrayContenido','arrayTotales','gestionActiva'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.recursosGestionPdf',compact('recursos','otros','total_recursos_planificado','institucion','gestionActiva'));
     return $pdf->download('recursosGestion.pdf');
   }
   public function reporteAccionesGestionPdf(){
@@ -172,10 +230,11 @@ class ExportReportGestionPdfController extends BasecontrollerController
       $obj->cantidad_proyectos_poa= $conteo;
       $obj->poa = $array_resto_Poa;
     }
+    $institucion = Instituciones::find($user->id_institucion);
    // dd($objetivo_indicador);
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.accionesGestionPdf',compact('objetivo_indicador','gestionActiva'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.accionesGestionPdf',compact('objetivo_indicador','gestionActiva','institucion'));
     $pdf->setPaper('letter', 'landscape');
     return $pdf->download('accionesGestion_'.$gestionActiva->gestion.'.pdf');
   }
@@ -251,9 +310,8 @@ class ExportReportGestionPdfController extends BasecontrollerController
         }   
 
     }
-  //creando PDF
-   //dd($objetivos_eta);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.financieroGestionPdf',compact('objetivos_eta','gestionActiva'));
+    $institucion = Instituciones::find($user->id_institucion);
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.financieroGestionPdf',compact('objetivos_eta','gestionActiva','institucion'));
     $pdf->setPaper('legal', 'landscape');
     return $pdf->download('financieroGestion_'.$gestionActiva->gestion.'.pdf');
   }
@@ -405,10 +463,262 @@ class ExportReportGestionPdfController extends BasecontrollerController
                                       GROUP BY id_proyecto_inversion) x");
             //dd($maximo);
     $maximo_entidades = $maximo[0]->maximo;
+    $institucion = Instituciones::find($user->id_institucion);
     //return $objetivoProyectos;
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.inversionGestionPdf',compact('objetivoProyectos','gestionActiva','maximo_entidades'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.inversionGestionPdf',compact('objetivoProyectos','gestionActiva','maximo_entidades','institucion'));
     $pdf->setPaper('letter', 'landscape');
     return $pdf->download('inversionoGestion_'.$gestionActiva->gestion.'.pdf');
+  }
+  public function reporteFinancieroProgramaGestionPdf(){
+    
+    $planActivo = Parametros::where('categoria','periodo_plan')
+                                ->where('activo',true)
+                                ->first();
+
+    /*********Verificar Gestion Activa**************/
+    /*$gestionActiva = SeguimientoGestiones::where('id_periodo_plan', $planActivo->id)
+                                          ->where('activo',true)
+                                          ->first(); */
+    $user = \Auth::user();
+    $gestionActiva =  GestionSeleccionada::where('id_institucion', $user->id_institucion)
+                                          ->where('activo',true)
+                                           ->first();
+    $estadoModulo = \DB::select("select estado_etapa from sp_eta_estado_etapas_seguimiento
+                                                    where id_institucion =  $user->id_institucion
+                                                    and valor_campo_etapa = 'sFisicaFinanciera'
+                                                    and gestion = $gestionActiva->gestion");
+    //dd($estadoModulo);
+    if($estadoModulo[0]->estado_etapa == "En Elaboración"){
+      $estado_etapa = true;
+    }else{
+      $estado_etapa = false;
+    }
+    $objetivo_indicador = \DB::select("select 
+                                              catEta.nombre_accion_eta,
+                                              objetivos.id_accion_eta as agregador,
+
+                                              objetivos.id as id_accion_eta_objetivo,
+                                              objetivos.nombre_objetivo  as descripcion,
+                                              
+                                              concat(arti.linea_base_cantidad,' ',arti.linea_base_unidad,' ',arti.linea_base_descripcion) as linea_base,
+                                              indi.nombre_indicador,
+                                              p_indi.valor,
+                                              p_recu.monto
+                                      from sp_eta_etapas_plan as plan,
+                                        sp_eta_objetivos_eta as objetivos,
+                                        sp_eta_articulacion_objetivo_indicador as arti,
+                                        sp_eta_indicadores as indi,
+                                        sp_eta_programacion_indicador as p_indi,
+                                        
+                                        sp_eta_programacion_recursos as p_recu,
+                                        
+                                        sp_eta_catalogo_acciones_eta as catEta,
+
+                                        sp_eta_articulacion_catalogos as artPmra
+                                      where plan.id_institucion = $user->id_institucion
+                                        and objetivos.id_etapas_plan = plan.id
+                                        and objetivos.id = arti.id_objetivo_eta
+                                        and objetivos.id_accion_eta = catEta.id
+                                        and objetivos.id_accion_eta = artPmra.id_accion_eta
+                                        and arti.id_indicador = indi.id
+                                        and arti.id = p_indi.id_articulacion_objetivo_indicador
+                                        and arti.id = p_recu.id_articulacion_objetivo_indicador
+                                        and p_indi.gestion = '$gestionActiva->gestion'
+                                        and p_recu.gestion = '$gestionActiva->gestion'");
+    //dd($objetivo_indicador);
+    foreach ($objetivo_indicador as $riesgo) {
+      $is_checked = \DB::select("select id,
+                                        id_accion_eta,
+                                        activo
+                                    from sp_eta_gestion_riesgos
+                                      where id_institucion = $user->id_institucion
+                                      and gestion = $gestionActiva->gestion
+                                      and id_accion_eta = $riesgo->id_accion_eta_objetivo
+                                      ");
+                                      //dd($is_checked);
+      if($is_checked){
+        $riesgo->id_gestion_riesgos = $is_checked[0]->id;//enviando id en la tabla gestion_riesgos
+        $riesgo->es_gestion_riesgos = $is_checked[0]->activo;//enviando true or false
+        $riesgo->gestion_riesgos = $is_checked[0]->activo;//enviando true or false
+      }
+    }
+    //buscando si lo planificado ha sido comparado con el POA
+    foreach ($objetivo_indicador as $r) {
+      $id_accion_eta = $r->id_accion_eta_objetivo;
+      
+      $verificar = FinancieroPoa::where('id_accion_eta',$id_accion_eta)
+                                  ->where('gestion',$gestionActiva->gestion)
+                                  ->where('activo',true)
+                                  ->where('id_intitucion',$user->id_institucion)
+                                  ->get();
+     
+                                  
+      if($verificar->count()>0){
+
+        foreach ($verificar as $v) {
+          $r->id_financiero_poa = $v->id;
+          $r->monto_poa_planificado = $v->monto_poa_planificado ;
+          $r->monto_poa_ejecutado = $v->monto_poa_ejecutado ;
+          $r->monto_poa_porcentaje = $v->monto_poa_porcentaje ;
+          $r->accion_poa_programado = $v->accion_poa_programado ;
+          $r->accion_poa_ejecutado = $v->accion_poa_ejecutado ;
+          $r->accion_poa_porcentaje = $v->accion_poa_porcentaje ;
+          $r->porcentaje_ptdi = $v->porcentaje_ptdi ;
+          $r->porcentaje_accion_ptdi = $v->porcentaje_accion_ptdi  ;
+          $r->porcentaje_pei = $v->porcentaje_pei ;
+          $r->causas_variacion     = $v->causas_variacion;
+
+          
+
+        }
+
+      }else{
+        //no hay valores
+        $r->id_financiero_poa = "";
+        $r->monto_poa_planificado = 0;
+        $r->monto_poa_ejecutado = 0;
+        $r->monto_poa_porcentaje = 0;
+        $r->accion_poa_programado = 0;
+        $r->accion_poa_ejecutado = 0;
+        $r->accion_poa_porcentaje = 0;
+        $r->porcentaje_ptdi = 0;
+        $r->porcentaje_accion_ptdi = 0;
+        $r->porcentaje_pei = 0;
+        $r->causas_variacion = "";
+      }
+    }
+
+    //SELECCIONANDO PROGRAMAS GLOBALES
+    $distint = \DB::select("select 
+                                    DISTINCT objetivos.id_accion_eta as agregador,
+                                    UPPER(nombre_accion_eta ) as nombre_programa
+                            from sp_eta_etapas_plan as plan,
+                              sp_eta_objetivos_eta as objetivos,
+                              sp_eta_articulacion_objetivo_indicador as arti,
+                              sp_eta_indicadores as indi,
+                              sp_eta_programacion_indicador as p_indi,
+                              sp_eta_programacion_recursos as p_recu,
+                              
+                              sp_eta_catalogo_acciones_eta as catEta,
+                              
+                              sp_eta_articulacion_catalogos as artPmra
+                              where plan.id_institucion = $user->id_institucion
+                              and objetivos.id_etapas_plan = plan.id
+                              and objetivos.id = arti.id_objetivo_eta
+                              
+                              and objetivos.id_accion_eta = catEta.id
+                              
+                              and objetivos.id_accion_eta = artPmra.id_accion_eta
+                              and arti.id_indicador = indi.id
+                              and arti.id = p_indi.id_articulacion_objetivo_indicador
+                              and arti.id = p_recu.id_articulacion_objetivo_indicador
+                              and p_indi.gestion = '$gestionActiva->gestion'
+                              and p_recu.gestion = '$gestionActiva->gestion'
+                              ORDER BY agregador");
+    //ADICIONANDO AL PROGRAMA GLOBAL OBJETIVOS ETA
+    $totales_programa = [];
+    $orden = 1;
+     $j = 0;
+    foreach ($distint as $programa) {
+      $programa->orden = $orden++;
+      $id_programa = $programa->agregador;
+
+      $i = 0;
+     
+      $objetivo_eta = [];
+      $total_ptdi_planificado = 0;
+      $total_ptdi_porcentaje_ejecutado = 0;
+      $total_accion_ptdi_planificado = 0;
+      $total_accion_ptdi_ejecutado = 0;
+      $total_monto_poa_planificado = 0;
+      $total_monto_poa_ejecutado = 0;
+      $total_monto_poa_porcentaje = 0;
+      $total_accion_poa_planificado = 0;
+      $total_accion_poa_ejecutado = 0;
+      $total_accion_poa_porcentaje = 0;
+      $totales = [];
+      $contador_objetivos_eta = 0;
+
+      foreach ($objetivo_indicador as $obj) {
+        if($id_programa == $obj->agregador){
+          $objetivo_eta[$i] = $obj;
+          //TOTALES
+          $total_ptdi_planificado = $total_ptdi_planificado + $obj->monto;
+          $total_ptdi_porcentaje_ejecutado = $total_ptdi_porcentaje_ejecutado + $obj->porcentaje_ptdi;
+          $total_accion_ptdi_planificado = $total_accion_ptdi_planificado + $obj->valor;
+          $total_accion_ptdi_ejecutado = $total_accion_ptdi_ejecutado + $obj->porcentaje_ptdi;
+          $total_monto_poa_planificado = $total_monto_poa_planificado + $obj->monto_poa_planificado;
+          $total_monto_poa_ejecutado = $total_monto_poa_ejecutado + $obj->monto_poa_ejecutado;
+          $total_monto_poa_porcentaje = $total_monto_poa_porcentaje + $obj->monto_poa_porcentaje;
+          $total_accion_poa_planificado = $total_accion_poa_planificado + $obj->accion_poa_programado;
+          $total_accion_poa_ejecutado = $total_accion_poa_ejecutado + $obj->accion_poa_ejecutado;
+          $total_accion_poa_porcentaje = $total_accion_poa_porcentaje + $obj->accion_poa_porcentaje;
+          $contador_objetivos_eta++;
+          //TOTALES
+          $i++;
+        }
+        
+      }
+      
+      $totales['agregador'] = $programa->agregador;
+      $totales['total_ptdi_planificado'] = $total_ptdi_planificado;
+      $totales['total_ptdi_porcentaje_ejecutado'] = $total_ptdi_porcentaje_ejecutado;
+      $totales['total_accion_ptdi_planificado'] = $total_accion_ptdi_planificado;
+      $totales['total_accion_ptdi_ejecutado'] = $total_accion_ptdi_ejecutado;
+      $totales['total_monto_poa_planificado'] = $total_monto_poa_planificado;
+      $totales['total_monto_poa_ejecutado'] = $total_monto_poa_ejecutado;
+      $totales['total_monto_poa_porcentaje'] = $total_monto_poa_porcentaje/$contador_objetivos_eta;
+      $totales['total_accion_poa_planificado'] = $total_accion_poa_planificado;
+      $totales['total_accion_poa_ejecutado'] = $total_accion_poa_ejecutado;
+      $totales['total_accion_poa_porcentaje'] = $total_accion_poa_porcentaje/$contador_objetivos_eta;
+
+      $array_resto_Poa = [];
+      $k=0;
+      foreach ($objetivo_eta as $key => $value) {
+        
+        if($key == 0){
+          $programa->primer_objetivo_eta = $value;
+        }else{
+          $array_resto_Poa[$k] = $value;
+
+        }
+        $k++;
+      }
+      
+
+      //aqui sacar de el primer proyecto
+      $programa->resto_objetivo_eta = $array_resto_Poa;
+      $programa->contador_objetivos = $contador_objetivos_eta;
+
+      $programa->totales = $totales;////REVISAR DESDE AQUI
+      //dd($programa->totales);
+      $j++;
+      //$programa->ver = false;
+    }
+    //return $distint;
+    
+      $institucion = Instituciones::find($user->id_institucion);
+      /*$region = \DB::select("SELECT *
+                             FROM v_pip_catalogo_regiones_nivel_3
+                             WHERE muni_codigo = ?",[$institucion->codigo_geografico]);
+      me.arrayInstitucion = response.data.institucion;
+              me.arrayUser = response.data.user;
+      return $region;
+      return \Response::json([
+        'user' => $user,
+        'institucion' => $institucion,
+        'periodoActivo' => $periodoActual['gestionesPeriodo'],
+        'gestionInicial' => $periodoActual['gestionInicial'],
+        'gestionFinal' => $periodoActual['gestionFinal'],
+        'region' => $region[0]
+
+      ]);*/
+      
+      //return $arrayInstitucion;
+      //return $distint;
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.financieroGestionProgramaPdf',compact('distint','gestionActiva','institucion','user'));
+    $pdf->setPaper('legal', 'landscape');
+    return $pdf->download('financieroGestion_'.$gestionActiva->gestion.'.pdf');
   }
   
 } 

@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	
 	<style>
 	html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,12 +27,12 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
       }
-
+	
 	table, td{
 		border:1px solid black;
 		border-collapse: collapse;
@@ -45,14 +45,14 @@
 		background-color: #03a9f3;
 	}
 	table thead,th{
-
+		
 		border:1px solid white;
 	}
 	table tbody{
 		background-color: #white;
 	}
-
-
+  
+	
 	 .alinear{
       margin-bottom: 10px;
 
@@ -91,7 +91,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
@@ -104,12 +104,21 @@
 		<div id="main-container">
       <header>
         <div>
-          <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
+          <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" />  
         </div>
         <div class="logo_dgpt">
-           <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+           <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
         </div>
       </header>
+      <br>
+      <br>
+      <h2>DATOS DEL MUNICIPIO:</h2>
+      <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+      <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+      <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+      <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+      <br>
+      <br>
 			<h1>CUADRO Nº3</h1>
 			<h2>SEGUIMIENTO FISICO - FINANCIERO</h2>
 			<h3>GESTION : {{ $gestionActiva->gestion }}</h3>
@@ -123,10 +132,10 @@
             <th  colspan="4" class="text-center"><strong>PROGRAMACION PEI</strong></th>
             <th  colspan="6" class="text-center"><strong>PROGRAMACION POA</strong></th>
             <th  rowspan="3" class="text-center"><strong>CAUSAS DESVIACION</strong></th>
-
+            
           </tr>
           <tr>
-
+            
             <th colspan="2" class="text-center"><strong>FINANCIERA</strong></th>
             <th colspan="2" class="text-center"><strong>ACCION</strong></th>
             <th colspan="2" class="text-center"><strong>FINANCIERA</strong></th>
@@ -171,7 +180,7 @@
             <td></td>
             @else
             <td>{{ $eta->porcentaje_accion_ptdi }}  %</td>
-         @endif
+         @endif		
             <td>0,00</td>
             <td>0,00</td>
             <td>0,00</td>
@@ -181,7 +190,7 @@
             @if($eta->monto_poa_porcentaje == '')
             <td></td>
             @else
-
+            
             <td>{{ $eta->monto_poa_porcentaje }} % </td>
             @endif
             <td>{{ $eta->accion_poa_programado }}</td>
@@ -189,7 +198,7 @@
             @if($eta->accion_poa_porcentaje == '')
             <td> </td>
             @else
-
+            
             <td>{{ $eta->accion_poa_porcentaje  }} %</td>
             @endif
             <td>{{ $eta->causas_variacion}}</td>
@@ -205,7 +214,7 @@
         <br>
         <div class="firmas">
           <div class="alinear_izquierda">
-
+            
               <ul >
                 <li class="alinear"><strong>Aprobado MAE:</strong></li>
                 <li class="alinear"><strong>Nombre:.................................................</strong></li>

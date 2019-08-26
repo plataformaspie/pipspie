@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	
 	<style>
 	html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,8 +27,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
     }
@@ -46,7 +46,7 @@
 		background-color: #03a9f3;
 	}
 	table thead,th{
-
+		
 		border:1px solid white;
 	}
 	table tbody{
@@ -91,27 +91,36 @@
       font-size: 8px;
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
       float: right;
     }
-
-
+	
+	
 
 </style>
 </head>
-
+	
 	<body>
 		<header>
 	      <div>
-	        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
+	        <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" />  
 	      </div>
 	      <div class="logo_dgpt">
-	         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+	         <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
 	      </div>
 	  	</header>
+	  	<br>
+	      <br>
+	      <h2>DATOS DEL MUNICIPIO:</h2>
+	      <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+	      <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+	      <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+	      <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+	      <br>
+	      <br>
 		<div id="main-container">
 			<h1>CUADRO Nº4</h1>
 			<h2>SEGUIMIENTO A PROYECTOS DE INVERSION PUBLICA</h2>
@@ -120,8 +129,8 @@
 	            <table class="table table-bordered" >
 	              <thead >
 	                <tr style="color:#fff; background:rgb(36, 136, 181);">
-	                	<th  style="vertical-align:middle; text-align:center;" rowspan="3">ITEM</th>
-	                	<th  style="vertical-align:middle; text-align:center;" rowspan="3">ACCION ETA</th>
+	                	<th  style="vertical-align:middle; text-align:center;" rowspan="3">ITEM</th>		
+	                	<th  style="vertical-align:middle; text-align:center;" rowspan="3">ACCION ETA</th>		
 	                	<th  style="vertical-align:middle; text-align:center;" rowspan="2" colspan="3">PLANIFICACION</th>
 	                  	<th  style="vertical-align:middle; text-align:center;" colspan="5" >INSCRITO EN EL VIPFE</th>
 	                  	<th  style="vertical-align:middle; text-align:center;" colspan="3">CONCURRENCIA ETA</th>
@@ -161,11 +170,13 @@
 	              </thead>
 	              <tbody>
 	              	<?php $i = 0; ?>
-					@foreach ($objetivoProyectos as $mifuente)
-
+					@foreach ($objetivoProyectos as $mifuente) 
+					     
 	          			@if($mifuente->cantidad_proyectos_poa >0)
+	          				<?php $i++; ?>
 							<tr>
-								<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $i++ }}</td>
+
+								<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}"><?php echo $i; ?></td>
 								<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
 								@if($mifuente->primer_poa->inscrito_ptdi == true)
 								<td>X</td>
@@ -185,7 +196,7 @@
 								<td>{{ $mifuente->primer_poa->codigo_sisin }}</td>
 								<td>{{ $mifuente->primer_poa->nombre }}</td>
 								<td>{{ $mifuente->primer_poa->costo_total_proyecto }}</td>
-								<?php
+								<?php 
 
 									$date_del = date_create($mifuente->primer_poa->periodo_ejecucion_del);
 									$date_al = date_create($mifuente->primer_poa->periodo_ejecucion_al);
@@ -196,13 +207,13 @@
 								<td>{{ $mifuente->primer_poa->monto_poa_planificado }}</td>
 								<td>{{ $mifuente->primer_poa->monto_poa_ejecutado }}</td>
 								<td>{{ $mifuente->primer_poa->monto_poa_porcentaje }}</td>
-
+								
 								@foreach($mifuente->primer_poa->entidadesConcurrencia as $ent)
 				                  <td>{{ $ent->nombre_entidad}}</td>
 				                  <td>{{ $ent->programacion_entidad }}</td>
 				                  <td>{{ $ent->ejecucion_entidad }}</td>
 				                  <td>{{ $ent->porcentaje_ejecucion_entidad }}</td>
-				                @endforeach
+				                @endforeach 
 				                <?php $resta = $maximo_entidades - $mifuente->primer_poa->cantidad_entidad; ?>
 				                @if($resta >0)
 				                  @for($j=1;$j<=$resta;$j++)
@@ -235,7 +246,7 @@
 								<td>{{ $p->codigo_sisin }}</td>
 								<td>{{ $p->nombre }}</td>
 								<td>{{ $p->costo_total_proyecto }}</td>
-								<?php
+								<?php 
 
 									$date_del = date_create($p->periodo_ejecucion_del);
 									$date_al = date_create($p->periodo_ejecucion_al);
@@ -253,7 +264,7 @@
 					                  <td>{{ $ent->programacion_entidad }}</td>
 					                  <td>{{ $ent->ejecucion_entidad }}</td>
 					                  <td>{{ $ent->porcentaje_ejecucion_entidad }}</td>
-					                @endforeach
+					                @endforeach 
 				                @endif
 				                <?php $resta = $maximo_entidades - $p->cantidad_entidad; ?>
 				                @if($resta >0)
@@ -267,15 +278,18 @@
 				                <td>{{ $p->entidad_ejecutora_cod }}</td>
 				                <td>{{ $p->entidad_ejecutora_denominacion }}</td>
 							</tr>
-							@endforeach
+							@endforeach	
 						@else
-						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $i++ }}</td>
-						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
-						<td colspan="2">NO TIENE PROYECTOS POA</td>
+						<tr>
+							<?php $i++; ?>
+							<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}"><?php echo $i; ?></td>
+							<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
+						<td colspan="13">NO TIENE PROYECTOS POA</td>			
+						</tr>
 	          			@endif
 	        		@endforeach
 				</tbody>
-	            </table>
+	            </table>  
 	        </div>
 	         <br>
 		    <br>
@@ -285,7 +299,7 @@
 		    <br>
 		    <div class="firmas">
 	          <div class="alinear_izquierda">
-
+	            
 	              <ul >
 	                <li class="alinear"><strong>Aprobado MAE:</strong></li>
 	                <li class="alinear"><strong>Nombre:.................................................</strong></li>
@@ -302,7 +316,7 @@
 	              </ul>
 	          </div>
 	        </div>
-
+		    
 		</div>
 		<footer >
 		      <p class="numero_pagina"><?php echo date("d/m/Y  H:i:s");?></p>

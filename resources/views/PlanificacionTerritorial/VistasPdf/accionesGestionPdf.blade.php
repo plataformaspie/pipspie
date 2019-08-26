@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	
 <style>
 	html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,8 +27,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
       }
@@ -44,14 +44,14 @@
 		background-color: #03a9f3;
 	}
 	table thead,th{
-
+		
 		border:1px solid white;
 	}
 	table tbody,tr,td{
 		background-color: #white;
 		border:1px solid black;
 	}
-
+	
     .alinear{
       margin-bottom: 10px;
 
@@ -89,27 +89,37 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
       float: right;
     }
-
-
+	
+	
 
 </style>
 </head>
-
+	
 	<body>
 		<header>
 	      <div>
-	        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
+	        <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" />  
+	        
 	      </div>
 	      <div class="logo_dgpt">
-	         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+	         <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
 	      </div>
 	  	</header>
+	  	<br>
+	      <br>
+	      <h2>DATOS DEL MUNICIPIO:</h2>
+	      <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+	      <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+	      <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+	      <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+	      <br>
+	      <br>
 		<div id="main-container">
 			<h3>CUADRO Nº2</h3>
 			<h3>SEGUIMIENTO A LAS ACCIONES</h3>
@@ -122,7 +132,7 @@
 						<th rowspan="2">INSCRITO PEI</th>
 						<th rowspan="2">PROYECTOS POA</th>
 						<th rowspan="2">CAT. PROG.</th>
-
+						
 					</tr>
 					<tr>
 						<th>P</th>
@@ -132,8 +142,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($objetivo_indicador as $mifuente)
-
+					@foreach ($objetivo_indicador as $mifuente) 
+					     
 	          			@if($mifuente->cantidad_proyectos_poa >0)
 							<tr>
 								<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_p }}</td>
@@ -151,18 +161,20 @@
 								<td>{{ $p->categoria_programatica }}</td>
 
 							</tr>
-							@endforeach
+							@endforeach	
 						@else
+						<tr>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_p }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_m }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_r }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->cod_a }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">{{ $mifuente->nombre_accion_eta }}</td>
 						<td rowspan="{{ $mifuente->cantidad_proyectos_poa }}">PEI</td>
-						<td colspan="2">NO TIENE PROYECTOS POA</td>
+						<td colspan="2">NO TIENE PROYECTOS POA</td>			
+						</tr>
 	          			@endif
 	        		@endforeach
-				</tbody>
+				</tbody>	
 			</table>
 			<br>
 		    <br>
@@ -172,7 +184,7 @@
 		    <br>
 		    <div class="firmas">
 		    	<div class="alinear_izquierda">
-
+		    		
 			        <ul >
 			          <li class="alinear"><strong>Aprobado MAE:</strong></li>
 			          <li class="alinear"><strong>Nombre:.................................................</strong></li>

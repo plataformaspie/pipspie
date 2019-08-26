@@ -77,10 +77,10 @@
 
             <div class="panel-right">
 
-              <div class="tab-content" style="min-width:900px">
+              <!--div class="tab-content" style="min-width:900px">
                 <div v-for="gruposRecursos in arrayRecursos"  :id="'panel'+gruposRecursos.id" class="tab-pane" :class="{'active': gruposRecursos.orden == 1}">
-                  <div v-if="gruposRecursos.valor !== 'Otros Ingresos'" class="table-responsive">
-                    <h4 v-text="gruposRecursos.valor" class="m-t-0"></h4> <!--i class="fa fa-info-circle"></i> Para decimales usar <b>","</b> coma.-->
+                  <div class="table-responsive">
+                    <h4 v-text="gruposRecursos.valor" class="m-t-0"></h4>
                       <table class="table table-bordered table-warning">
                           <thead>
                               <tr>
@@ -195,18 +195,263 @@
                                             @blur="formatInput"
                                             pattern="\d(,\d{1,2})?"
                                             disabled="disabled">
-                                                      
                                     </div>
-                                    
                                   </td>
                                   <td class="text-nowrap">
                                     <a v-show="estado_modulo==true" href="#" @click="abrirModal(1,tiposRecursos)"> <i class="fa fa-edit text-inverse m-r-10" style="font-size:20px;"></i> </a>
-                                    <!--a v-show="estado_modulo==true" href="#" @click="deleteRecurso(tiposRecursos)"> <i class="fa fa-trash-o text-inverse m-r-10" style="font-size:20px;"></i> </a-->
                                   </td>
-
                               </tr>
                           </tbody>
                       </table>
+                  </div>
+                  
+                </div>
+              </div-->
+              <div class="tab-content" style="min-width:900px">
+                <div v-for="gruposRecursos in arrayGrupos"  :id="'panel'+gruposRecursos.id" class="tab-pane" :class="{'active': gruposRecursos.orden == 1}">
+                  <div v-if="gruposRecursos.valor !== 'Otros Ingresos'" class="table-responsive">
+                    <h4 v-text="gruposRecursos.valor" class="m-t-0"></h4> 
+                    <table class="table table-bordered table-warning">
+                        <thead>
+                            <tr>
+                              <th rowspan="2">#</th>
+                              <th rowspan="2" class="text-middle"><strong>TIPO RECURSO</strong></th>
+                              <th colspan="2" class="text-center"><strong>PTDI ( {{ gestion_activa}} )</strong></th>
+                              <th colspan="2" class="text-center"><strong>PEI ( {{ gestion_activa}} )</strong> </th>
+                              <th class="text-center"><strong>POA ( {{ gestion_activa}} )</strong></th>
+                              <th class="text-center"><strong>Causas Variacion</strong></th>
+                              <th rowspan="2" class="text-center"><strong>ACCION</strong></th>
+                            </tr>
+                            <tr>
+                              
+                              <th class="text-center"><strong>MONTO</strong></th>
+                              <th class="text-center"><strong>(-)POA</strong></th>
+                              <th class="text-center"><strong>MONTO</strong></th>
+                              <th class="text-center"><strong>(-)POA</strong></th>
+                              <th class="text-center"><strong>MONTO</strong></th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="ContactForm" v-for="(tiposRecursos,index) in arrayRecursos" v-if="tiposRecursos.valor===gruposRecursos.valor " :key="index" style="font-size=10px !important" >
+                                <td></td>
+                                <td v-text="tiposRecursos.nombre">
+                                </td>
+                                <td>
+                                  <div class="col-md-12 text-right">
+                                    {{ formatPrice(tiposRecursos.monto) }}
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="row text-right">
+                                        <input   type="text"
+                                          :class="'form-control dis'+tiposRecursos.id"
+                                          :name="'monto_pei_gestion'+tiposRecursos.id"
+                                          
+                                          style="height: 28px;text-align: right;"
+                                          @blur="formatInput"
+                                          v-model="tiposRecursos.diferencia_ptdi_poa"
+                                          disabled="disabled"
+                                          >
+                                  </div>
+                                  <transition name="fade" v-if="tiposRecursos.diferencia_porcentaje_ptdi_poa">
+                                    <div class="progress m-t-20">
+                                      <div class="progress-bar" :style="{ 'width':tiposRecursos.diferencia_porcentaje_ptdi_poa +'%','background':tiposRecursos.color_porcentaje_ptdi_poa+'!important'}" role="progressbar">{{ formatPrice(tiposRecursos.diferencia_porcentaje_ptdi_poa) }}%</div>
+                                    </div>
+                                  </transition>
+                                </td>
+                                <td>
+                                  <div class="row text-right">
+                                        <input 
+                                          
+                                          type="text"
+                                          :class="'form-control dis'+tiposRecursos.id"
+                                          :name="'monto_pei_gestion'+tiposRecursos.id"
+                                          
+                                          style="height: 28px;text-align: right;"
+                                          @blur="formatInput"
+                                          v-model="tiposRecursos.monto_pei_gestion.input"
+                                          pattern="\d(,\d{1,2})?"
+                                          title="tu monto Pei"
+                                          disabled="disabled">
+                                         
+                                        
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="row text-right">
+                                        <input
+                                          
+                                          type="text"
+                                          :class="'form-control dis'+tiposRecursos.id"
+                                          :name="'input_pei_'+tiposRecursos.id"
+                                          
+                                          style="height: 28px;text-align: right;"
+                                          @blur="formatInput"
+                                          v-model="tiposRecursos.diferencia_pei_poa"
+                                          disabled=disabled>
+                                  </div>
+                                  <transition name="fade" v-if="tiposRecursos.diferencia_porcentaje_pei_poa">
+                                    <div class="progress m-t-20">
+                                      <div class="progress-bar" :style="{ 'width': tiposRecursos.diferencia_porcentaje_pei_poa +'%','background':tiposRecursos.color_porcentaje_pei_poa+'!important'}" role="progressbar">{{ formatPrice(tiposRecursos.diferencia_porcentaje_pei_poa) }}%</div>
+                                    </div>
+                                  </transition>
+                                </td>
+                                <td>
+                                  <div class="row">
+                                    <input 
+                                         type="text"
+                                          :class="'form-control dis'+ tiposRecursos.id"
+                                          :name="'input_poa_'+ tiposRecursos.id"
+                                          v-model="tiposRecursos.monto_poa_gestion.input"
+                                          style="height: 28px;text-align: right;"
+                                          @blur="formatInput"
+                                          pattern="\d(,\d{1,2})?"
+                                          disabled="disabled">
+                                                    
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="row">
+                                    <input 
+                                         type="text"
+                                          :class="'form-control dis'+ tiposRecursos.id"
+                                          :name="'input_poa_'+ tiposRecursos.id"
+                                          v-model="tiposRecursos.causas_variacion.input"
+                                          style="height: 28px;text-align: right;"
+                                          @blur="formatInput"
+                                          pattern="\d(,\d{1,2})?"
+                                          disabled="disabled">
+                                                    
+                                  </div>
+                                </td>
+                                <td class="text-nowrap">
+                                  <a v-show="estado_modulo==true" href="#" @click="abrirModal(1,tiposRecursos)"> <i class="fa fa-edit text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                  <div v-else>
+                    <h4 class="m-t-0">Otros Ingresos:</h4>
+                    <table class="table table-bordered table-warning">
+                      <thead>
+                          <tr>
+                            <th rowspan="2">#</th>
+                            <th rowspan="2" class="text-middle"><strong>TIPO RECURSO</strong></th>
+                            <th colspan="2" class="text-center"><strong>PTDI ( {{ gestion_activa}} )</strong></th>
+                            <th colspan="2" class="text-center"><strong>PEI ( {{ gestion_activa}} )</strong> </th>
+                            <th class="text-center"><strong>POA ( {{ gestion_activa}} )</strong></th>
+                            <th class="text-center"><strong>Causas Variacion</strong></th>
+                            <th rowspan="2" class="text-center"><strong>ACCION</strong></th>
+                          </tr>
+                          <tr>
+                            
+                            <th class="text-center"><strong>MONTO</strong></th>
+                            <th class="text-center"><strong>(-)POA</strong></th>
+                            <th class="text-center"><strong>MONTO</strong></th>
+                            <th class="text-center"><strong>(-)POA</strong></th>
+                            <th class="text-center"><strong>MONTO</strong></th>
+                            
+                          </tr>
+                      </thead>
+                      <tbody>
+                          
+                          <tr v-for="(otros,key) in arrayOtrosIngresos" >
+                            <td></td>
+                            <td v-text="otros.concepto">
+                            </td>
+                            <td>
+                              <div class="col-md-12 text-right">
+                                {{ formatPrice(otros.monto) }}
+                              </div>
+                            </td>
+                            <td>
+                              <div class="row text-right">
+                                    <input   type="text"
+                                      class="form-control"
+                                      name="monto_pei_gestion"
+                                      
+                                      style="height: 28px;text-align: right;"
+                                      @blur="formatInput"
+                                      v-model="otros.diferencia_ptdi_poa"
+                                      disabled="disabled"
+                                      >
+                              </div>
+                              <transition name="fade" v-if="otros.diferencia_porcentaje_ptdi_poa">
+                                <div class="progress m-t-20">
+                                  <div class="progress-bar" :style="{ 'width':otros.diferencia_porcentaje_ptdi_poa +'%','background':otros.color_porcentaje_ptdi_poa+'!important'}" role="progressbar">{{ formatPrice(otros.diferencia_porcentaje_ptdi_poa) }}%</div>
+                                </div>
+                              </transition>
+                            </td>
+                            <td>
+                              <div class="row text-right">
+                                <input 
+                                  
+                                  type="text"
+                                  class="form-control"
+                                  name="monto_pei_gestion"
+                                  
+                                  style="height: 28px;text-align: right;"
+                                  @blur="formatInput"
+                                  v-model="otros.monto_pei_gestion.input"
+                                  pattern="\d(,\d{1,2})?"
+                                  title="tu monto Pei"
+                                  disabled="disabled">
+                              </div>
+                            </td>
+                            <td>
+                              <div class="row text-right">
+                                <input
+                                  
+                                  type="text"
+                                  class="form-control"
+                                  name="input_pei"
+                                  
+                                  style="height: 28px;text-align: right;"
+                                  @blur="formatInput"
+                                  v-model="otros.diferencia_pei_poa"
+                                  disabled=disabled>
+                              </div>
+                              <transition name="fade" v-if="otros.diferencia_porcentaje_pei_poa">
+                                <div class="progress m-t-20">
+                                  <div class="progress-bar" :style="{ 'width': otros.diferencia_porcentaje_pei_poa +'%','background':otros.color_porcentaje_pei_poa+'!important'}" role="progressbar">{{ formatPrice(otros.diferencia_porcentaje_pei_poa) }}%</div>
+                                </div>
+                              </transition>
+                            </td>
+                            <td>
+                              <div class="row">
+                                <input 
+                                     type="text"
+                                      class="form-control"
+                                      name='input_poa'
+                                      v-model="otros.monto_poa_gestion.input"
+                                      style="height: 28px;text-align: right;"
+                                      @blur="formatInput"
+                                      pattern="\d(,\d{1,2})?"
+                                      disabled="disabled">
+                              </div>
+                            </td>
+                            <td>
+                              <div class="row">
+                                <input 
+                                     type="text"
+                                      class="form-control"
+                                      name="input_poa"
+                                      v-model="otros.causas_variacion.input"
+                                      style="height: 28px;text-align: right;"
+                                      @blur="formatInput"
+                                      pattern="\d(,\d{1,2})?"
+                                      disabled="disabled">
+                                                
+                              </div>
+                            </td>
+                            <td class="text-nowrap">
+                                <a v-show="estado_modulo==true" href="#" @click="abrirModal(1,otros)"> <i class="fa fa-edit text-inverse m-r-10" style="font-size:20px;"></i> </a>
+                              </td>
+                          </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -296,6 +541,7 @@ export default {
           arrayGrupos: [],
           arrayRecursos:[],
           arrayInstitucion:[],
+          arrayOtrosIngresos:[],
           arrayUser:[],
           width:0,
           semaforo:[
@@ -325,6 +571,7 @@ export default {
           recurso_monto_planificado:"",
           recurso_id_recurso_poa:"",
           recurso_id_tipo_recurso:"",
+          recurso_id_otro_ingreso:"",
           errors : [],
           estado_modulo:"",
           plan_activo:"",
@@ -361,6 +608,7 @@ export default {
             me.estado_modulo = response.data.estado_modulo;
             me.plan_activo = response.data.plan_activo;
             me.gestion_activa = response.data.gestion_activa;
+            me.arrayOtrosIngresos = response.data.otrosIngresos;
 
 
           //CALCULANDO TOTALES
@@ -373,7 +621,7 @@ export default {
             me.diferencia_porcentaje_pei_poa = response.data.diferencia_porcentaje_pei_poa;
             me.total_poa = me.formatPrice(response.data.total_poa);
 
-            console.log(response);
+            //console.log(response);
             
             $.each(me.arrayRecursos,function(index,r){
               if(r.diferencia_ptdi_poa){
@@ -419,29 +667,16 @@ export default {
         },
         saveUpdateRecurso(){
 
-
-          /*me.recurso_poa.input = r.monto_poa_gestion.input;//.split('.'),join('');
-          me.recurso_pei.input = r.monto_pei_gestion.input;//.split('.'),join('');
-          me.recurso_monto_planificado = r.monto;//planificador*/
-
           let me = this;
           
-          //var monto = me.recurso.monto;
           var monto = me.recurso_monto_planificado;
-          //var pei = me.recurso.monto_pei_gestion.split(',').join('.');
-          //var poa = me.recurso.monto_poa_gestion.split(',').join('.');
           var poa = (me.replaceAll(me.recurso_poa.input,".","")).split(',').join('.');
           var pei = (me.replaceAll(me.recurso_pei.input,".","")).split(',').join('.');
-          
-          //console.log(poa);
-          //console.log(pei);
           var d_ptdi_poa = monto - poa;
-          //console.log(d_ptdi_poa);
           var d_pei_poa = pei - poa;
           var por_ptdi = (d_ptdi_poa/monto)*100;
           var por_pei = (d_pei_poa/pei)*100; 
-          
-          
+
           var recurso_enviar = {};
 
           recurso_enviar.monto_pei_gestion = pei
@@ -450,9 +685,11 @@ export default {
           recurso_enviar.diferencia_pei_poa = d_pei_poa;
           recurso_enviar.diferencia_porcentaje_ptdi_poa = por_ptdi
           recurso_enviar.diferencia_porcentaje_pei_poa = por_pei
-          //console.log(me.recurso_id_recurso_poa);
           recurso_enviar.id_recurso_poa = me.recurso_id_recurso_poa;
           recurso_enviar.id_tipo_recurso =  me.recurso_id_tipo_recurso;
+          if(me.recurso_id_tipo_recurso == null){
+            recurso_enviar.id_otro_ingreso = me.recurso_id_otro_ingreso;
+          }
 
           recurso_enviar.causas_variacion = me.causas_variacion.input;
 
@@ -504,6 +741,9 @@ export default {
                         clase:"",
                         mensaje:""
                       };
+                      recurso_id_recurso_poa = "";
+                      recurso_id_tipo_recurso = "";
+                      recurso_id_otro_ingreso = "";
                        
                     }).catch(function (error) {
                       console.log(error);
@@ -523,6 +763,10 @@ export default {
                 me.causas_variacion.input = r.causas_variacion.input;
                 me.recurso_id_recurso_poa = r.id_recurso_poa;
                 me.recurso_id_tipo_recurso = r.id_tipo_recurso;
+                if(r.id_tipo_recurso == null){
+                  me.recurso_id_otro_ingreso = r.id_otro_ingreso;
+                  console.log(me.recurso_id_otro_ingreso);
+                }
                 
                 this.modal = 1;
                break;
@@ -633,7 +877,7 @@ export default {
               
                 data.clase = "success";
                 data.mensaje = "formato correcto" 
-                console.log('Esta introducioendo LETRAS');
+                //console.log('Esta introducioendo LETRAS');
                 break;
               
               case 2:
@@ -674,6 +918,7 @@ export default {
           if (me.errors.length>0) {
             return false;
           }else{
+
             
             me.saveUpdateRecurso();
           }

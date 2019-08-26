@@ -3,11 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	
 	<style>
 	html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,8 +27,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
     }
@@ -45,7 +45,7 @@
 		background-color: #03a9f3;
 	}
 	table thead,th{
-
+		
 		border:1px solid white;
 	}
 	table tbody{
@@ -86,7 +86,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
@@ -98,12 +98,21 @@
 <body>
 	<header>
       <div>
-        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
+        <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" />  
       </div>
       <div class="logo_dgpt">
-         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+         <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
       </div>
   	</header>
+    <br>
+    <br>
+    <h2>DATOS DEL MUNICIPIO:</h2>
+    <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+    <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+    <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+    <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+    <br>
+    <br>
 	<div id="main-container">
 		<h1>CUADRO Nº1</h1>
 		<h2>SEGUIMIENTO A LA PROGRAMACION PRESUPUESTAREA</h2>
@@ -111,7 +120,7 @@
 		<table class="table table-bordered " >
           <thead style="color:#fff; background:rgb(36, 136, 181);">
             <tr style="vertical-align:middle">
-
+              
               <th  style="vertical-align:middle" colspan="" rowspan="2">FUENTE DE INGRESOS</th>
               <th  style="vertical-align:middle; horizontal-align:middle" colspan="6">PTDI/PGTC</th>
               <th  style="vertical-align:middle" colspan="6">PEI</th>
@@ -139,52 +148,74 @@
             </tr>
           </thead>
           <tbody style="color:#000">
-
-          	@foreach($filas as $r)
+          	
+          	@foreach($recursos as $r)
           	<tr >
-              <td class="text-right">{{ $r['recurso'] }}</td>
-              <td class="text-right">{{ number_format($r['planificacion_2016'],2,",",".") }}</td>
-              <td class="text-right">{{ $r['planificacion_2017'] }}</td>
-              <td class="text-right">{{ $r['planificacion_2018'] }}</td>
-              <td class="text-right">{{ $r['total_planificacion'] }}</td>
-              <td class="text-right">{{ $r['diferencia_a_poa'] }}</td>
-              <td class="text-right">{{ number_format($r['diferencia_porcentaje_a_poa'],2,",",".") }}</td>
-              <td class="text-right">datos pei</td>
-              <td class="text-right">datos pei</td>
-              <td class="text-right">datos pei</td>
-              <td class="text-right">datos pei</td>
-              <td class="text-right">datos pei</td>
-              <td class="text-right">datos pei</td>
-              <td class="text-right">{{ number_format($r['poa_2016'],2,",",".")}}</td>
-              <td class="text-right">{{ $r['poa_2017'] }}</td>
-              <td class="text-right">{{ $r['poa_2018'] }}</td>
-              <td class="text-right">{{ $r['total_poa'] }}</td>
-              <td class="text-right">{{ $r['causas_variacion'] }}</td>
+              <td>{{ $r->nombre }}</td>
+              <td class="text-right">{{ number_format($r->ptdi_pro_2016,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->ptdi_pro_2017,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->ptdi_pro_2018,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->ptdi_total_2016_2018,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->ptdi_dif_a_poa,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->ptdi_dif_porcentaje ,2,",",".")}} </td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">{{ number_format($r->poa_pro_2016,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->poa_pro_2017,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->poa_pro_2018,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($r->poa_total_2016_2018,2,",",".") }}</td>
+              <td class="text-right">{{ $r->causas_de_variacion }}</td>
             </tr>
-			@endforeach
-			<tr>
-				<td>TOTALES</td>
-				<td>{{ $totales['total_gestion_2017'] }}</td>
-				<td>{{ $totales['total_gestion_2017'] }}</td>
-				<td>{{ $totales['total_gestion_2018'] }}</td>
-				<td>{{ $totales['totales_planificacion_ptdi'] }}</td>
-				<td>{{ $totales['total_diferencia_a_poa'] }}</td>
-				<td>{{ $totales['total_diferencia_porcentaje_a_poa'] }}</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>{{ $totales['total_gestion_poa_2016'] }}</td>
-				<td>{{ $totales['total_gestion_poa_2017'] }}</td>
-				<td>{{ $totales['total_gestion_poa_2018'] }}</td>
-				<td>{{ $totales['totales_planificacion_poa'] }}</td>
-				<td></td>
-			</tr>
+            @endforeach
+            @foreach($otros as $o)
+            <tr >
+              <td>{{ $o->concepto }}</td>
+              <td class="text-right">{{ number_format($o->ptdi_pro_2016,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->ptdi_pro_2017,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->ptdi_pro_2018,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->ptdi_total_2016_2018,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->ptdi_dif_a_poa,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->ptdi_dif_porcentaje ,2,",",".")}} </td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">0</td>
+              <td class="text-right">{{ number_format($o->poa_pro_2016,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->poa_pro_2017,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->poa_pro_2018,2,",",".") }}</td>
+              <td class="text-right">{{ number_format($o->poa_total_2016_2018,2,",",".") }}</td>
+              <td class="text-right">{{ $o->causas_de_variacion }}</td>
+            </tr>
+            @endforeach
+        			<tr>
+        				<td>TOTALES</td>
+        				<td>{{ $totales[0]->total_ptdi_pro_2016 }}</td>
+        				<td>{{ $totales[0]->total_ptdi_pro_2017 }}</td>
+        				<td>{{ $totales[0]->total_ptdi_pro_2018 }}</td>
+        				<td>{{ $totales[0]->total_ptdi_total_2016_2018 }}</td>
+        				<td>{{ $totales[0]->total_ptdi_dif_a_poa }}</td>
+        				<td>{{ $totales[0]->total_ptdi_dif_porcentaje }}</td>
+        				<td></td>
+        				<td></td>
+        				<td></td>
+        				<td></td>
+        				<td></td>
+        				<td></td>
+        				<td>{{ $totales[0]->total_poa_pro_2016 }}</td>
+        				<td>{{ $totales[0]->total_poa_pro_2017 }}</td>
+        				<td>{{ $totales[0]->total_poa_pro_2018 }}</td>
+        				<td>{{ $totales[0]->total_poa_total_2016_2018 }}</td>
+        				<td></td>
+        			</tr>
           </tbody>
         </table>
-
+	
 		<br>
 	    <br>
 	    <br>
@@ -192,7 +223,7 @@
 	    <br>
 	    <br>
 	    <div class="firmas">
-
+	      
 	        <ul class="alinear_izquierda">
 	          <li class="alinear"><strong>Elaborado por:</strong></li>
 	          <li class="alinear"><strong>Nombre:.................................................</strong></li>

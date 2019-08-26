@@ -15,15 +15,101 @@ use App\Models\PlanificacionTerritorial\ProyectoPoa;
 use App\Models\PlanificacionTerritorial\EvaluacionReporteFinanciero;
 use App\Models\PlanificacionTerritorial\ProyectoInversion;
 
-
-
-
 use Excel;
 
 class ExportReportController extends BasecontrollerController
 {
-  
   public function reporteRecursos(){
+    $user = \Auth::user();
+
+    $recursos = \DB::select("SELECT
+                                    p.nombre,
+                                    e.*
+                              from sp_eta_evaluacion_reporte_recursos as e,
+                                  sp_parametros as p
+                              where e.id_institucion = $user->id_institucion
+                              and e.id_recurso = p.id");
+
+    $otros = \DB::select("SELECT
+                                o.concepto,
+                                e.*
+                            from sp_eta_evaluacion_reporte_recursos as e,
+                                sp_eta_otros_ingresos as o
+                            where e.id_institucion = $user->id_institucion
+                            and e.id_recurso isnull
+                            and e.id_otro_ingreso = o.id");
+    $totales = \DB::select("select   
+                                  sum(ptdi_pro_2016) as total_ptdi_pro_2016,
+                                  sum(ptdi_pro_2017) as total_ptdi_pro_2017,
+                                  sum(ptdi_pro_2018) as total_ptdi_pro_2018,
+                                  sum(ptdi_total_2016_2018) as total_ptdi_total_2016_2018,
+                                  sum(ptdi_dif_a_poa) as total_ptdi_dif_a_poa,
+                                  sum(ptdi_dif_porcentaje) as total_ptdi_dif_porcentaje,
+                                  sum(poa_pro_2016) as total_poa_pro_2016, 
+                                  sum(poa_pro_2017) as total_poa_pro_2017,
+                                  sum(poa_pro_2018) as total_poa_pro_2018,
+                                  sum(poa_total_2016_2018) as total_poa_total_2016_2018
+                                from sp_eta_evaluacion_reporte_recursos
+                                where id_institucion = $user->id_institucion");
+    $institucion = Instituciones::find($user->id_institucion);
+    Excel::load('plantillas_territorial/plantilla_recursos_medio.xlsx', function($file) use($recursos,$otros,$totales,$institucion) {
+       $file->sheet( 'Recursos_Medio', function ($sheet) use($recursos,$otros,$totales,$institucion){
+        
+        $i=6;
+                  
+        foreach ($recursos as $r) {
+          $sheet->setCellValue('A'.$i, $r->nombre);
+          $sheet->setCellValue('B'.$i, number_format($r->ptdi_pro_2016,2,",","."));
+          $sheet->setCellValue('C'.$i, number_format($r->ptdi_pro_2017,2,",","."));
+          $sheet->setCellValue('D'.$i, number_format($r->ptdi_pro_2018,2,",","."));
+          $sheet->setCellValue('E'.$i, number_format($r->ptdi_total_2016_2018,2,",","."));
+          $sheet->setCellValue('F'.$i, number_format($r->ptdi_dif_a_poa,2,",","."));
+          $sheet->setCellValue('G'.$i, number_format($r->ptdi_dif_porcentaje ,2,",","."));
+
+          $sheet->setCellValue('N'.$i, number_format($r->poa_pro_2016,2,",","."));
+          $sheet->setCellValue('O'.$i, number_format($r->poa_pro_2017,2,",","."));
+          $sheet->setCellValue('P'.$i, number_format($r->poa_pro_2018,2,",","."));
+          $sheet->setCellValue('Q'.$i, number_format($r->poa_total_2016_2018,2,",","."));
+          $sheet->setCellValue('R'.$i, $r->causas_de_variacion);
+          $i++;
+        }
+        foreach ($otros as $o) {
+          $sheet->setCellValue('A'.$i, $o->concepto);
+          $sheet->setCellValue('B'.$i, number_format($o->ptdi_pro_2016,2,",","."));
+          $sheet->setCellValue('C'.$i, number_format($o->ptdi_pro_2017,2,",","."));
+          $sheet->setCellValue('D'.$i, number_format($o->ptdi_pro_2018,2,",","."));
+          $sheet->setCellValue('E'.$i, number_format($o->ptdi_total_2016_2018,2,",","."));
+          $sheet->setCellValue('F'.$i, number_format($o->ptdi_dif_a_poa,2,",","."));
+          $sheet->setCellValue('G'.$i, number_format($o->ptdi_dif_porcentaje ,2,",","."));
+
+          $sheet->setCellValue('N'.$i, number_format($o->poa_pro_2016,2,",","."));
+          $sheet->setCellValue('O'.$i, number_format($o->poa_pro_2017,2,",","."));
+          $sheet->setCellValue('P'.$i, number_format($o->poa_pro_2018,2,",","."));
+          $sheet->setCellValue('Q'.$i, number_format($o->poa_total_2016_2018,2,",","."));
+          $sheet->setCellValue('R'.$i, $o->causas_de_variacion);
+          $i++;
+        }
+        //dd($totales);
+        foreach ($totales as $t) {
+          $sheet->setCellValue('A'.$i, 'TOTAL');
+          $sheet->setCellValue('B'.$i, number_format($t->total_ptdi_pro_2016,2,",","."));
+          $sheet->setCellValue('C'.$i, number_format($t->total_ptdi_pro_2017,2,",","."));
+          $sheet->setCellValue('D'.$i, number_format($t->total_ptdi_pro_2018,2,",","."));
+          $sheet->setCellValue('E'.$i, number_format($t->total_ptdi_total_2016_2018,2,",","."));
+          $sheet->setCellValue('F'.$i, number_format($t->total_ptdi_dif_a_poa,2,",","."));
+          $sheet->setCellValue('G'.$i, number_format($t->total_ptdi_dif_porcentaje,2,",","."));
+
+          $sheet->setCellValue('N'.$i, number_format($t->total_poa_pro_2016,2,",","."));
+          $sheet->setCellValue('O'.$i, number_format($t->total_poa_pro_2017,2,",","."));
+          $sheet->setCellValue('P'.$i, number_format($t->total_poa_pro_2018,2,",","."));
+          $sheet->setCellValue('Q'.$i, number_format($t->total_poa_total_2016_2018));
+        }
+       });
+    })->download('xlsx');
+
+  }
+  
+  public function reporteRecursosOtro(){
     
     $user = \Auth::user();
     $datos = EvaluacionReporteRecursos::where('id_institucion',$user->id_institucion)
@@ -759,6 +845,7 @@ class ExportReportController extends BasecontrollerController
     //FIN CONSTRUYENDO DOCUMENTO EXCEL///  
     })->download('xlsx');
   }
+  /*
   public function reporteFinancieroExcel(){
     $user = \Auth::user();
     $datos = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
@@ -1104,6 +1191,522 @@ class ExportReportController extends BasecontrollerController
       });
     //FIN CONSTRUYENDO DOCUMENTO EXCEL///  
     })->download('xlsx');
+  }*/
+  public function reporteFinancieroExcel(){
+    $user = \Auth::user();
+     //PROGRAMAS
+     $programa = \DB::select("select 
+        
+        DISTINCT objetivos.id_accion_eta as agregador,
+        UPPER(nombre_accion_eta ) as nombre_programa
+    
+        from sp_eta_etapas_plan as plan,
+          sp_eta_objetivos_eta as objetivos,
+          sp_eta_catalogo_acciones_eta as catEta
+        where plan.id_institucion = $user->id_institucion
+        and objetivos.id_etapas_plan = plan.id
+        and objetivos.id_accion_eta = catEta.id
+        ORDER BY agregador");
+     $accion_eta = \DB::select("select 
+                                    objetivos.id_accion_eta as agregador, 
+                                    objetivos.id as id_objetivos,
+                                    objetivos.nombre_objetivo as nombre_objetivo
+                                    
+                                from sp_eta_etapas_plan as planes, 
+                                    sp_eta_objetivos_eta as objetivos
+                                    
+                                where planes.id_institucion = $user->id_institucion
+                                and planes.valor_campo_etapa = 'PTDI'
+                                and objetivos.id_etapas_plan = planes.id");
+
+    $datos = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
+                                      ->where('activo',true)
+                                      ->get();
+    $array_obj_eta = [];
+    $i= 0;                                  
+    foreach ($programa as $p) {
+      $contador_obj_eta = 0;
+      $array_obj_eta = [];
+      $i= 0; 
+      foreach ($accion_eta as $a) {
+        if($a->agregador == $p->agregador){
+          $datos = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
+                                      ->where('activo',true)
+                                      ->where('id_accion_eta',$a->id_objetivos)
+                                      ->get();
+          //dd($datos);
+          $a->datos_evaluacion = $datos;
+          $array_obj_eta[$i] = $a;
+          $i++;
+          $contador_obj_eta++;
+        }
+      }
+      $p->cantidad_objetivos = $contador_obj_eta;
+      $p->objetivos_eta = $array_obj_eta;
+      $total_agregador = \DB::select("select 
+                                            sum(recurso_programado_2016) as recurso_programado_2016,
+                                            sum(recurso_ejecutado_2016) as recurso_ejecutado_2016,
+                                            sum(recurso_programado_2017) as recurso_programado_2017,
+                                            sum(recurso_ejecutado_2017) as recurso_ejecutado_2017,
+                                            sum(recurso_programado_2018) as recurso_programado_2018,
+                                            sum(recurso_ejecutado_2018) as recurso_ejecutado_2018,
+                                            sum(recurso_total_programado_2016_2018) as recurso_total_programado_2016_2018,
+                                            sum(recurso_total_ejecutado_2016_2018) as recurso_total_ejecutado_2016_2018,
+                                            sum(recurso_porcentaje_ejecutado) as recurso_porcentaje_ejecutado,
+                                            sum(recurso_meta_programado_al_2020) as recurso_meta_programado_al_2020,
+                                            sum(recurso_porcentaje_ejecucion_al_2020) as recurso_porcentaje_ejecucion_al_2020,
+                                            
+                                            sum(accion_programado_2016) as accion_programado_2016,
+                                            sum(accion_ejecutado_2016) as accion_ejecutado_2016,
+                                            sum(accion_programado_2017) as accion_programado_2017,
+                                            sum(accion_ejecutado_2017) as accion_ejecutado_2017,
+                                            sum(accion_programado_2018) as accion_programado_2018,
+                                            sum(accion_ejecutado_2018) as accion_ejecutado_2018,
+                                            sum(accion_total_programado_2016_2018) as accion_total_programado_2016_2018,
+                                            sum(accion_total_ejecutado_2016_2018) as accion_total_ejecutado_2016_2018,
+                                            sum(accion_porcentaje_ejecutado) as accion_porcentaje_ejecutado,
+                                            sum(accion_meta_al_2020) as accion_meta_al_2020,
+                                            sum(accion_porcentaje_ejecucion_al_2020) as accion_porcentaje_ejecucion_al_2020,
+                                            objetivos.id_accion_eta as agregador
+                                        from sp_eta_etapas_plan as planes, 
+                                            sp_eta_objetivos_eta as objetivos,
+                                            sp_eta_evaluacion_reporte_financiero as fin
+                                            
+                                        where planes.id_institucion = $user->id_institucion
+                                        and planes.valor_campo_etapa = 'PTDI'
+                                        and objetivos.id_etapas_plan = planes.id
+                                        and objetivos.id = fin.id_accion_eta
+                                        and objetivos.id_accion_eta = $p->agregador
+                                        GROUP BY agregador");
+      $p->totales_agregador = $total_agregador;
+      
+    }
+   //dd($programa);
+    Excel::load('plantillas_territorial/plantilla_financiero_evaluacion.xlsx', function($file) use($programa) {
+       $file->sheet( 'Financiero', function ($hoja) use($programa){
+        ///////////**************INICIO PROGRAMA
+        $fila = 3;
+        $inicioFila = 7; 
+        $finFila =0;  //$inicioFila+$cantidad_proyectos
+
+
+        foreach ($programa as $mifuente) {
+
+          
+          $contador_objetivos = $mifuente->cantidad_objetivos;
+         // dd($cantidad_proyectos_poa);
+          if($contador_objetivos > 1){
+
+
+              $finFila = ($inicioFila + $contador_objetivos)-1;////AQUI AQUI AQUI
+              $filaTotales  = ($inicioFila + $contador_objetivos);
+              //dd($filaTotales);
+              $hoja->cells('A'.$inicioFila.':B'.$inicioFila, function($cells) {
+                $cells->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                $cells->setValignment('center');
+                $cells->setAlignment('center');//horizontal
+              });
+              //dd($inicioFila, $finFila);
+              $hoja->mergeCells('A'.$inicioFila.':B'.$inicioFila);//combinanado 
+              $hoja->setCellValue('A'.$inicioFila, $mifuente->nombre_programa);
+
+
+              $hoja->cells('C'.$inicioFila.':D'.$inicioFila, function($cells) {
+                $cells->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                $cells->setValignment('center');
+                $cells->setAlignment('center');//horizontal
+              });
+              //dd($inicioFila, $finFila);
+              $hoja->mergeCells('C'.$inicioFila.':E'.$inicioFila);//combinanado 
+              $hoja->setCellValue('C'.$inicioFila, 'TOTALES');
+
+              $hoja->cell('F'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_programado_2016);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('G'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_ejecutado_2016);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('H'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_programado_2017);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('I'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_ejecutado_2017);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('J'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_programado_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('K'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_ejecutado_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('L'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_total_programado_2016_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('M'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_total_ejecutado_2016_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('N'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_porcentaje_ejecutado);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('O'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_meta_programado_al_2020);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+
+              });
+              
+              $hoja->cell('P'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_porcentaje_ejecucion_al_2020);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+
+              });
+              $hoja->cell('Q'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->recurso_porcentaje_ejecucion_al_2020);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+
+              });
+              $hoja->cell('R'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_programado_2016);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+
+              $hoja->cell('S'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_ejecutado_2016);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('T'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_programado_2017);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('U'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_ejecutado_2017);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('V'.$inicioFila, function($cell) use ($mifuente){ 
+                $cell->setValue($mifuente->totales_agregador[0]->accion_programado_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('W'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_ejecutado_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('X'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_total_programado_2016_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('Y'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_total_ejecutado_2016_2018);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('Z'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_porcentaje_ejecutado);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('W'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_meta_al_2020);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              $hoja->cell('AA'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->totales_agregador[0]->accion_porcentaje_ejecucion_al_2020);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              });
+              
+              $accion_eta = $mifuente->objetivos_eta;
+              //dd($proyectos);
+              //dIBUJANDO PROYECTOS POA
+              $i=$inicioFila + 1;
+
+
+              foreach ($accion_eta as $p) {
+
+                $hoja->cell('B'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->nombre_objetivo);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('C'.$i, function($cell) use ($p) {
+                  if($p->datos_evaluacion[0]->inscrito_ptdi == true){
+                    $cell->setValue("X");
+                  }else{
+                    $cell->setValue("");
+                  }
+                  
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('D'.$i, function($cell) use ($p) {
+                  if($p->datos_evaluacion[0]->inscrito_ptdi == true){
+                    $cell->setValue("X");
+                  }else{
+                    $cell->setValue("");
+                  }
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('E'.$i, function($cell) use ($p) {
+                  if($p->datos_evaluacion[0]->inscrito_ptdi == true){
+                    $cell->setValue("X");
+                  }else{
+                    $cell->setValue("");
+                  }
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('F'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_programado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('G'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_ejecutado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('H'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_programado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('I'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_ejecutado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('J'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_programado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('K'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_ejecutado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('L'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_total_programado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('M'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_total_ejecutado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('N'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_porcentaje_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('O'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_meta_programado_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('P'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->recurso_porcentaje_ejecucion_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                
+                $hoja->cell('Q'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_programado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('R'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_ejecutado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('S'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_programado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('T'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_ejecutado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('U'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_programado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('V'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_ejecutado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+               
+                $hoja->cell('W'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_total_programado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('X'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_total_ejecutado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('Y'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_porcentaje_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+
+                $hoja->cell('Z'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_meta_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('AA'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->accion_porcentaje_ejecucion_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('AB'.$i, function($cell) use ($p) {
+                  $cell->setValue($p->datos_evaluacion[0]->causas_de_variacion);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $i++;
+              }
+              $inicioFila = $i;
+              
+
+          }else{
+              //*********************** DIBUNAJDO LA FILA DE ACCION ETA******************
+              
+              //dd($filaTotales);
+              $hoja->cell('A'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->nombre_programa);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+
+              $hoja->cell('B'.$inicioFila, function($cell) use ($mifuente) {
+                $cell->setValue($mifuente->objetivos_eta[0]->nombre_objetivo);
+                $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+              }); 
+              $hoja->cell('C'.$inicioFila, function($cell) use ($mifuente) {
+                  if($mifuente->objetivos_eta[0]->datos_evaluacion[0]->inscrito_ptdi == true){
+                    $cell->setValue("X");
+                  }else{
+                    $cell->setValue("");
+                  }
+                  
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('D'.$inicioFila, function($cell) use ($mifuente) {
+                  if($mifuente->objetivos_eta[0]->datos_evaluacion[0]->inscrito_pei == true){
+                    $cell->setValue("X");
+                  }else{
+                    $cell->setValue("");
+                  }
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('E'.$inicioFila, function($cell) use ($mifuente) {
+                  if($mifuente->objetivos_eta[0]->datos_evaluacion[0]->inscrito_poa == true){
+                    $cell->setValue("X");
+                  }else{
+                    $cell->setValue("");
+                  }
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('F'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_programado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('G'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_ejecutado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('H'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_programado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('I'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_ejecutado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('J'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_programado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('K'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_ejecutado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('L'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_total_programado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('M'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_total_ejecutado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('N'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_porcentaje_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                
+                $hoja->cell('O'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_meta_programado_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('P'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->recurso_porcentaje_ejecucion_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                
+                $hoja->cell('Q'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_programado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('R'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_ejecutado_2016);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('S'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_programado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('T'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_ejecutado_2017);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('U'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_programado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                }); 
+                $hoja->cell('V'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_ejecutado_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+               
+                $hoja->cell('W'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_total_programado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('X'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_total_ejecutado_2016_2018);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('Y'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_porcentaje_ejecutado);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+
+                $hoja->cell('Z'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_meta_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('AA'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->accion_porcentaje_ejecucion_al_2020);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+                $hoja->cell('AB'.$inicioFila, function($cell) use ($mifuente) {
+                  $cell->setValue($mifuente->objetivos_eta[0]->datos_evaluacion[0]->causas_de_variacion);
+                  $cell->setBorder('thin', 'thin', 'thin', 'thin');//bordes
+                });
+              $inicioFila++; 
+
+          }
+        }
+        ///////////**************FIN PROGRAMA
+        
+  
+            
+       });
+    })->download('xlsx');    
+  //return \Response::json(['objetivos_eta'=>$objetivos_eta]);
+    //self::construirReporteFinanciero($arrayContenido);
   }
   public function reporteRiesgosExcel(){
     //return "Hola desde el reporteRiesgosExcel";
