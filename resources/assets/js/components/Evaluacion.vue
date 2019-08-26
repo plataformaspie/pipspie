@@ -18,11 +18,31 @@
                 <!--h6 class="card-subtitle">Gestion 2016,2017,2018 <code>gestion 2018</code></h6-->
             <!-- Nav tabs -->
             <ul class="nav nav-tabs customtab" role="tablist">
-                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#proyecto" role="tab" aria-selected="true"><span class="hidden-sm-up"><i class="fa fa-home"></i></span> <span class="hidden-xs-down">RECURSOS</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#concurrenciaeta" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-user"></i></span> <span class="hidden-xs-down">ACCIONES</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#concurrenciaentidades" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-email"></i></span> <span class="hidden-xs-down">FISICO - FINANCIERO</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#entidadejecutora" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-email"></i></span> <span class="hidden-xs-down">PROYECTOS DE INVERSION</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#gestionriesgos" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-email"></i></span> <span class="hidden-xs-down">GESTION RIESGOS</span></a> </li>
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#proyecto" role="tab" aria-selected="true">
+                    <span class="hidden-sm-up">
+                      <i class="fa fa-money"></i>
+                    </span>
+                     <span class="hidden-xs-down">RECURSOS</span>
+                  </a>
+                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#concurrenciaeta" role="tab" aria-selected="false">
+                    <span class="hidden-sm-up">
+                      <i class="fa fa-tasks"></i>
+                    </span>
+                    <span class="hidden-xs-down">ACCIONES</span>
+                  </a> </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#concurrenciaentidades" role="tab" aria-selected="false">
+                    <span class="hidden-sm-up">
+                      <i class="fa fa-university"></i>
+                    </span>
+                    <span class="hidden-xs-down">FISICO - FINANCIERO</span>
+                  </a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#entidadejecutora" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-area-chart"></i></span> <span class="hidden-xs-down">PROYECTOS DE INVERSION</span></a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#gestionriesgos" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-bar-chart"></i></span> <span class="hidden-xs-down">GESTION RIESGOS</span></a> </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="proyecto" role="tabpanel">
@@ -64,23 +84,23 @@
                               </thead>
                               <tbody style="color:#000">
                                 <tr v-for="r in recursos">
-                                  <td class="text-right">{{ r.recurso }}</td>
-                                  <td class="text-right">{{ r.planificacion_2016 }}</td>
-                                  <td class="text-right">{{ r.planificacion_2017 }}</td>
-                                  <td class="text-right">{{ r.planificacion_2018 }}</td>
-                                  <td class="text-right">{{ r.total_planificacion }}</td>
-                                  <td class="text-right">{{ formatPrice(r.diferencia_a_poa) }}</td>
-                                  <td class="text-right">{{ formatPrice(r.diferencia_porcentaje_a_poa) }}</td>
-                                  <td class="text-right">datos pei</td>
-                                  <td class="text-right">datos pei</td>
-                                  <td class="text-right">datos pei</td>
-                                  <td class="text-right">datos pei</td>
-                                  <td class="text-right">datos pei</td>
-                                  <td class="text-right">datos pei</td>
-                                  <td class="text-right">{{ r.poa_2016 }}</td>
-                                  <td class="text-right">{{ r.poa_2017 }}</td>
-                                  <td class="text-right">{{ r.poa_2018 }}</td>
-                                  <td class="text-right">{{ r.total_poa }}</td>
+                                  <td>{{ r.nombre }}</td>
+                                  <td class="text-right">{{ formatPrice(r.planificacion_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.planificacion_2017) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.planificacion_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.total_recurso_2016_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.total_diferencia_ptdi_poa) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.total_diferencia_porcentaje_ptdi_poa )}} </td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">{{ formatPrice(r.poa_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.poa_2017) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.poa_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(r.total_recurso_poa_2016_2018) }}</td>
                                   <td >
                                     <div :class="['form-group',(r.clase).trim()?'has-'+r.clase:'']" style="width:200px">
                                       <label class="form-control-label" for="inputSuccess1">POA</label>
@@ -93,36 +113,65 @@
                                                 cols="50"
                                       ></textarea>
                                       <div class="form-control-feedback" v-text="r.mensaje"></div>
-                                      <!--small class="form-text text-muted">Example help text that remains unchanged.</small-->
+                                      
                                     </div>
                                   </td>
-                                  <!--td >
-                                    <div class="text-center">
-                                      
-                                      <a href="#" @click="abrirModalEvaRe(1)" class="btn btn-dark" style="color:#000;"> <i class="fa fa-plus-circle  fa-2x   "></i> </a>  
+                                </tr>
+                                <tr v-for="o in otros">
+                                  <td>{{ o.nombre }}</td>
+                                  <td class="text-right">{{ formatPrice(o.planificacion_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.planificacion_2017) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.planificacion_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.total_recurso_2016_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.total_diferencia_ptdi_poa) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.total_diferencia_porcentaje_ptdi_poa )}} </td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">{{ formatPrice(o.poa_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.poa_2017) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.poa_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(o.total_recurso_poa_2016_2018) }}</td>
+                                  
+                                  <td >
+                                    <div :class="['form-group',(o.clase).trim()?'has-'+o.clase:'']" style="width:200px">
+                                      <label class="form-control-label" for="inputSuccess1">POA</label>
+                                      <textarea type="text"  
+                                                id="inputSuccess1" 
+                                                v-model="o.input" 
+                                                :class="['form-control',(o.clase).trim()?'form-control-' + o.clase:'']"
+                                                @keyup="validarComentario(o)"
+                                                rows="5" 
+                                                cols="50"
+                                      ></textarea>
+                                      <div class="form-control-feedback" v-text="o.mensaje"></div>
                                       
                                     </div>
-                                  </td-->
+                                  </td>
+                                  
                                 </tr>
-                                <tr>
-                                  <td>Total</td>
-                                  <td class="text-right" v-text="formatPrice(totales.total_gestion_2016)"></td>
-                                  <td class="text-right" v-text="formatPrice(totales.total_gestion_2017)"></td>
-                                  <td class="text-right" v-text="formatPrice(totales.total_gestion_2018)"></td>
-                                  <td class="text-right">{{ formatPrice(totales.totales_planificacion_ptdi) }}</td>
-
-                                  <td class="text-right">{{ formatPrice(totales.total_diferencia_a_poa) }}</td>
-                                  <td class="text-right">{{ formatPrice(totales.total_diferencia_porcentaje_a_poa) }}</td>
-                                  <td class="text-right">pei</td>
-                                  <td class="text-right">pei</td>
-                                  <td class="text-right">pei</td>
-                                  <td class="text-right">pei</td>
-                                  <td class="text-right">pei</td>
-                                  <td class="text-right">pei</td>
-                                  <td class="text-right">{{ totales.total_gestion_poa_2016 }}</td>
-                                  <td class="text-right">{{ totales.total_gestion_poa_2017 }}</td>
-                                  <td class="text-right">{{ totales.total_gestion_poa_2018 }}</td>
-                                  <td class="text-right">{{ totales.totales_planificacion_poa }}</td>
+                                <tr v-for="t in totales">
+                                  <td>TOTALES</td>
+                                  <td class="text-right">{{ formatPrice(t.total_gestion_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_gestion_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_gestion_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_gestion_2016_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_diferencia_ptdi_poa_2016_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_diferencia_porcentaje_ptdi_poa_2016_2018) }}</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">0</td>
+                                  <td class="text-right">{{ formatPrice(t.total_poa_2016) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_poa_2017) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_poa_2018) }}</td>
+                                  <td class="text-right">{{ formatPrice(t.total_gestion_poa_2016_2018) }}</td>
+                                  <td></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -133,7 +182,7 @@
                       <!--button class="btn btn-primary" @click="ReporteExcel">Reporte Excel</button-->
                       <button v-show="btnReporteRecursos" @click="ReporteExcel" type="button" class="btn waves-effect waves-light btn-success">Exportar Excel<i class="fa fa-file-excel-o" aria-hidden="true" ></i></button>
                       <button v-show="btnReporteRecursos" type="submit" class="btn btn-danger" @click="reporteRecursosMedioPdf">Exportar Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-                      <button class="btn btn-primary" @click="saveReporte">Guardar Reporte</button>
+                      <button class="btn btn-info" @click="saveReporte">Guardar Reporte</button>
                     </div>
                 </div>
                 <div class="tab-pane p-20" id="concurrenciaeta" role="tabpanel">
@@ -207,29 +256,30 @@
                 <div class="tab-pane p-20" id="concurrenciaentidades" role="tabpanel">
                   <div class="col-lg-12">
                     <div class="p-20">
-                      <div class="table-responsive">
-                        <div class="tableFixHead">
-                          <table class="table table-bordered" >
+                      <div class="table-responsive ">
+                        <div class="tableFixHead financiero">
+                          <table class="table table-bordered " >
                             <thead >
                               <tr style="color:#fff; background:rgb(36, 136, 181);">
-                                <td  style="vertical-align:middle" rowspan="3">ACCION ETA</td>
+                                <td rowspan="3"></td>
+                                <td  style="vertical-align:middle" rowspan="3" colspan="2">ACCION DE MEDIANO PLAZO ETA</td>
                                 <td  style="vertical-align:middle" rowspan="2" colspan="3">PLANIFICACION</td>
                                 <td  style="vertical-align:middle" colspan="11" >EN RELACION A LA PROGRAMACION DE RECURSOS</td>
                                 <td  style="vertical-align:middle" colspan="11" >EN RELACION A LA PROGRAMACION DE ACCIONES</td>
                                 <td style="vertical-align:middle" rowspan="3" >CAUSAS DE VARIACION</td>
                               </tr>
                               <tr style="color:#fff; background:rgb(36, 136, 181);">
-                                <td style="vertical-align:middle" colspan="2" >2016</td>
-                                <td style="vertical-align:middle" colspan="2" >2017</td>
-                                <td style="vertical-align:middle" colspan="2" >2018</td>
+                                <td class="text-center" colspan="2" >2016</td>
+                                <td class="text-center" colspan="2" >2017</td>
+                                <td class="text-center" colspan="2" >2018</td>
                                 <td style="vertical-align:middle" rowspan="2" >TOTAL<br/>PRES. PROGRAMADO<br/>(2016-2018)</td>
                                 <td style="vertical-align:middle" rowspan="2">TOTAL<br/> PRES. EJECUTADO<br/>(2016-2018)</td>
                                 <td style="vertical-align:middle" rowspan="2">% EJEC.</td>
                                 <td style="vertical-align:middle" rowspan="2">META AL<br/> 2020</td>
                                 <td style="vertical-align:middle" rowspan="2">% EJEC. <br/>AL 2020</td>
-                                <td style="vertical-align:middle" colspan="2">2016</td>
-                                <td style="vertical-align:middle" colspan="2">2017</td>
-                                <td style="vertical-align:middle" colspan="2">2018</td>
+                                <td class="text-center" colspan="2">2016</td>
+                                <td class="text-center" colspan="2">2017</td>
+                                <td class="text-center" colspan="2">2018</td>
                                 <td style="vertical-align:middle" rowspan="2" >TOTAL <br/>PROGRAMACION DE ACCIONES<br/>(2016-2018)</td>
                                 <td style="vertical-align:middle" rowspan="2">TOTAL<br/> ACCIONES EJECUTADO<br/>(2016-2018)</td>
                                 <td style="vertical-align:middle" rowspan="2">% EJEC.</td>
@@ -240,67 +290,159 @@
                                 <td>PTDI/<br/>PGTC</td>
                                 <td>PEI</td>
                                 <td>POA</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle">E</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle" >E</td>
-                                <td style="vertical-align:middle" >P</td>
-                                <td style="vertical-align:middle" >E</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle">E</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle" >E</td>
-                                <td style="vertical-align:middle" >P</td>
-                                <td style="vertical-align:middle" >E</td>
+                                <td class="text-center">P</td>
+                                <td class="text-center">E</td>
+                                <td class="text-center">P</td>
+                                <td class="text-center" >E</td>
+                                <td class="text-center" >P</td>
+                                <td class="text-center" >E</td>
+                                <td class="text-center">P</td>
+                                <td class="text-center">E</td>
+                                <td class="text-center">P</td>
+                                <td class="text-center" >E</td>
+                                <td class="text-center" >P</td>
+                                <td class="text-center" >E</td>
                                
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr v-for="f in financiero">
-                                <td>{{ f.catalogo_accion_eta}}</td>
-                                <td>X</td>
-                                <td></td>
-                                <td>X</td>
-                                <td>{{ f.recurso_gestion_2016 }}</td>
-                                <td>{{ f.recurso_poa_2016 }}</td>
-                                <td>{{ f.recurso_gestion_2017}}</td>
-                                <td>{{ f.recurso_poa_2017 }}</td>
-                                <td>{{ f.recurso_gestion_2018 }}</td>
-                                <td>{{ f.recurso_poa_2018 }}</td>
-                                <td>{{ f.total_recurso_programado }}</td>
-                                <td>{{ f.total_recurso_poa}}</td>
-                                <td>{{ formatPrice(f.recurso_porcentaje_ejecutado) }}</td>
-                                <td>{{ f.meta_recurso_2020 }}</td>
-                                <td>{{ formatPrice(f.recurso_porcentaje_ejecutado_meta_2020) }}</td>
-                                <td>{{ f.indicador_gestion_2016 }}</td>
-                                <td>{{ f.indicador_poa_2016 }}</td>
-                                <td>{{ f.indicador_gestion_2017}}</td>
-                                <td>{{ f.indicador_poa_2017 }}</td>
-                                <td>{{ f.indicador_gestion_2018 }}</td>
-                                <td>{{ f.indicador_poa_2018 }}</td>
-                                <td>{{ f.total_indicador_programado }}</td>
-                                <td>{{ f.total_indicador_poa}}</td>
-                                <td>{{ formatPrice(f.indicador_porcentaje_ejecutado) }}</td>
-                                <td>{{ f.meta_indicador_2020 }}</td>
-                                <td>{{ formatPrice(f.indicador_porcentaje_ejecutado_meta_2020) }}</td>
-                                <td>
-                                  <div :class="['form-group',(f.clase).trim()?'has-'+f.clase:'']" style="width:200px">
-                                    <label class="form-control-label" for="inputSuccess1">Causas de Variacion</label>
-                                    <textarea type="text"  
-                                              id="inputSuccess1" 
-                                              v-model="f.input" 
-                                              :class="['form-control',(f.clase).trim()?'form-control-' + f.clase:'']"
-                                              @keyup="validarComentario(f)"
-                                              rows="5" 
-                                              cols="50"
-                                    ></textarea>
-                                    <div class="form-control-feedback" v-text="f.mensaje"></div>
-                                    <!--small class="form-text text-muted">Example help text that remains unchanged.</small-->
-                                  </div>
-                                </td>
+                            <tbody >
+                              <template v-for="(f,key) in financiero" >
+                                <template v-if="f.cantidad_objetivos >1">
+                                  <tr>
+                                    <td>
+                                      <p class="btn btn-info btn-sm" @click="toggle(f)"><i :class="[f.ver ? 'fa fa-plus fa-lg' : 'fa fa-arrow-right fa-lg']" ></i></p>
+                                    </td>
+                                    <td colspan="2" class="text-center"><strong>{{ f.nombre_programa }}</strong></td>
+                                    <td></td> 
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_gestion_2016_recurso']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_poa_2016']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_gestion_2017_recurso']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_poa_2017']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_gestion_2018_recurso'] ) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_poa_2018']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_total_recurso_programado'] ) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_total_recurso_poa']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_porcentaje_ejecutado']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_meta_recurso_2020']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_recurso_porcentaje_ejecutado_meta_2020']) }}</strong></td>
+
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_gestion_2016_indicador']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_poa_2016']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_gestion_2017_indicador']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_poa_2017']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_gestion_2018_indicador'] ) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_poa_2018']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_total_indicador_programado'] ) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_total_indicador_poa']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_porcentaje_ejecutado']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_meta_indicador_2020']) }}</strong></td>
+                                    <td class="text-right"><strong>{{ formatPrice(f.totales_programa['total_programa_indicador_porcentaje_ejecutado_meta_2020']) }}</strong></td>
+                                    
+                                    
+                                    
+                                  </tr>
+                                  <tr v-show="f.ver" v-for="r in f.objetivos_eta">
+                                      <td colspan="2"></td>
+                                      
+                                      <td >{{ r.catalogo_accion_eta}}</td>
+                                      <td class="text-center">X</td>
+                                      <td class="text-center"></td>
+                                      <td class="text-center">X</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_gestion_2016_recurso) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_poa_2016) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_gestion_2017_recurso) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_poa_2017) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_gestion_2018_recurso) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_poa_2018) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.total_recurso_programado) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.total_recurso_poa) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_porcentaje_ejecutado) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.meta_recurso_2020 ) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.recurso_porcentaje_ejecutado_meta_2020) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_gestion_2016_indicador) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_poa_2016) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_gestion_2017_indicador) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_poa_2017) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_gestion_2018_indicador) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_poa_2018) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.total_indicador_programado) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.total_indicador_poa) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_porcentaje_ejecutado) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.meta_indicador_2020) }}</td>
+                                      <td class="text-right">{{ formatPrice(r.indicador_porcentaje_ejecutado_meta_2020) }}</td>
+                                      <td>
+                                        <div :class="['form-group',(r.clase).trim()?'has-'+r.clase:'']" style="width:200px">
+                                          <label class="form-control-label" for="inputSuccess1">Causas de Variacion</label>
+                                          <textarea type="text"  
+                                                    id="inputSuccess1" 
+                                                    v-model="r.input" 
+                                                    :class="['form-control',(r.clase).trim()?'form-control-' + r.clase:'']"
+                                                    class="input-sm"
+                                                    @keyup="validarComentario(r)"
+                                                    rows="5" 
+                                                    cols="50"
+                                          ></textarea>
+                                          <div class="form-control-feedback" v-text="r.mensaje"></div>
+                                          <!--small class="form-text text-muted">Example help text that remains unchanged.</small-->
+                                        </div>
+                                      </td>
+                                  </tr>
+                                  
+                                </template>
+                                <template v-else>
+                                  <tr v-for="r in f.objetivos_eta">
+                                    <td><p class="btn btn-info btn-sm" @click="toggle(f)"><i class='fa fa-minus fa-lg' ></i></p></td>
+                                    <td>{{ f.nombre_programa}}</td>
+                                    <td >{{ r.catalogo_accion_eta}}</td>
+                                    <td class="text-center">X</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center">X</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_gestion_2016_recurso) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_poa_2016) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_gestion_2017_recurso) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_poa_2017) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_gestion_2018_recurso) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_poa_2018) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.total_recurso_programado) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.total_recurso_poa) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_porcentaje_ejecutado) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.meta_recurso_2020 ) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.recurso_porcentaje_ejecutado_meta_2020) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_gestion_2016_indicador) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_poa_2016) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_gestion_2017_indicador) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_poa_2017) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_gestion_2018_indicador) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_poa_2018) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.total_indicador_programado) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.total_indicador_poa) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_porcentaje_ejecutado) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.meta_indicador_2020) }}</td>
+                                    <td class="text-right">{{ formatPrice(r.indicador_porcentaje_ejecutado_meta_2020) }}</td>
+                                    <td>
+                                      <div :class="['form-group',(r.clase).trim()?'has-'+r.clase:'']" style="width:200px">
+                                        <label class="form-control-label" for="inputSuccess1">Causas de Variacion</label>
+                                        <textarea type="text"  
+                                                  id="inputSuccess1" 
+                                                  v-model="r.input" 
+                                                  :class="['form-control',(r.clase).trim()?'form-control-' + r.clase:'']"
+                                                  class="input-sm"
+                                                  @keyup="validarComentario(r)"
+                                                  rows="5" 
+                                                  cols="50"
+                                        ></textarea>
+                                        <div class="form-control-feedback" v-text="r.mensaje"></div>
+                                        <!--small class="form-text text-muted">Example help text that remains unchanged.</small-->
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  
+                                  
+                                </template>
                                 
-                                
-                              </tr>
+                              </template>
                             </tbody>
                           </table>
                         </div>
@@ -308,9 +450,9 @@
                       </div>
                     </div>
                   </div>
-                  <button v-show="btnReporteFinanciero" @click="reporteFinancieroExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar Excel</button>
+                  <button v-show="btnReporteFinanciero" @click="reporteFinancieroExcel" type="button" class="btn waves-effect waves-light btn-success"><i class="fa fa-file-excel-o" aria-hidden="true" ></i>Exportar  Excel</button>
                   <button  v-show="btnReporteFinanciero" type="submit" class="btn btn-danger" @click="reporteFinancieroMedioPdf">Exportar Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-                  <button class="btn btn-primary" @click="saveReporteFinanciero">Guardar Reporte</button>
+                  <button class="btn btn-info" @click="saveReporteFinanciero">Guardar Reporte</button>
                 </div>
                 <div class="tab-pane p-20" id="entidadejecutora" role="tabpanel">
                   <div class="col-lg-12">
@@ -343,9 +485,9 @@
                                           <td style="vertical-align:middle" rowspan="2" >PROYECTO</td>
                                           <td style="vertical-align:middle" rowspan="2" >COSTO TOTAL <br/>PROYECTO</td>
                                           <td style="vertical-align:middle" colspan="2">PERIODO<br/>DE EJECUCION</td>
-                                          <td style="vertical-align:middle; text-align:center" colspan="2">2016</td>
-                                          <td style="vertical-align:middle; text-align:center" colspan="2">2017</td>
-                                          <td style="vertical-align:middle; text-align:center" colspan="2">2018</td>
+                                          <td class="text-center" colspan="2">2016</td>
+                                          <td class="text-center" colspan="2">2017</td>
+                                          <td class="text-center" colspan="2">2018</td>
                                           <td style="vertical-align:middle" colspan="3">TOTALES</td>
                                           <td style="vertical-align:middle" rowspan="2">PROG.</td>
                                           <td style="vertical-align:middle" rowspan="2">EJEC.</td>
@@ -450,49 +592,49 @@
                                 <td>PTDI/<br/>PGTC</td>
                                 <td>PEI</td>
                                 <td>POA</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle">E</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle" >E</td>
-                                <td style="vertical-align:middle" >P</td>
-                                <td style="vertical-align:middle" >E</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle">E</td>
-                                <td style="vertical-align:middle">P</td>
-                                <td style="vertical-align:middle" >E</td>
-                                <td style="vertical-align:middle" >P</td>
-                                <td style="vertical-align:middle" >E</td>
+                                <td class="align-middle">P</td>
+                                <td class="align-middle">E</td>
+                                <td class="align-middle">P</td>
+                                <td class="align-middle" >E</td>
+                                <td class="align-middle" >P</td>
+                                <td class="align-middle" >E</td>
+                                <td class="align-middle">P</td>
+                                <td class="align-middle">E</td>
+                                <td class="align-middle">P</td>
+                                <td class="align-middle" >E</td>
+                                <td class="align-middle" >P</td>
+                                <td class="align-middle" >E</td>
                                
                               </tr>
                             </thead>
                             <tbody>
                               <tr v-for="f in riesgos">
                                 <td>{{ f.catalogo_accion_eta}}</td>
-                                <td>X</td>
-                                <td></td>
-                                <td>X</td>
-                                <td>{{ f.recurso_gestion_2016 }}</td>
-                                <td>{{ f.recurso_poa_2016 }}</td>
-                                <td>{{ f.recurso_gestion_2017}}</td>
-                                <td>{{ f.recurso_poa_2017 }}</td>
-                                <td>{{ f.recurso_gestion_2018 }}</td>
-                                <td>{{ f.recurso_poa_2018 }}</td>
-                                <td>{{ f.total_recurso_programado }}</td>
-                                <td>{{ f.total_recurso_poa}}</td>
-                                <td>{{ formatPrice(f.recurso_porcentaje_ejecutado) }}</td>
-                                <td>{{ f.meta_recurso_2020 }}</td>
-                                <td>{{ formatPrice(f.recurso_porcentaje_ejecutado_meta_2020) }}</td>
-                                <td>{{ f.indicador_gestion_2016 }}</td>
-                                <td>{{ f.indicador_poa_2016 }}</td>
-                                <td>{{ f.indicador_gestion_2017}}</td>
-                                <td>{{ f.indicador_poa_2017 }}</td>
-                                <td>{{ f.indicador_gestion_2018 }}</td>
-                                <td>{{ f.indicador_poa_2018 }}</td>
-                                <td>{{ f.total_indicador_programado }}</td>
-                                <td>{{ f.total_indicador_poa}}</td>
-                                <td>{{ formatPrice(f.indicador_porcentaje_ejecutado) }}</td>
-                                <td>{{ f.meta_indicador_2020 }}</td>
-                                <td>{{ formatPrice(f.indicador_porcentaje_ejecutado_meta_2020) }}</td>
+                                <td class="text-center">X</td>
+                                <td class="text-center"></td>
+                                <td class="text-center">X</td>
+                                <td class="text-center">{{ f.recurso_gestion_2016 }}</td>
+                                <td class="text-center">{{ f.recurso_poa_2016 }}</td>
+                                <td class="text-center">{{ f.recurso_gestion_2017}}</td>
+                                <td class="text-center">{{ f.recurso_poa_2017 }}</td>
+                                <td class="text-center">{{ f.recurso_gestion_2018 }}</td>
+                                <td class="text-center">{{ f.recurso_poa_2018 }}</td>
+                                <td class="text-center">{{ f.total_recurso_programado }}</td>
+                                <td class="text-center">{{ f.total_recurso_poa}}</td>
+                                <td class="text-center">{{ formatPrice(f.recurso_porcentaje_ejecutado) }}</td>
+                                <td class="text-center">{{ f.meta_recurso_2020 }}</td>
+                                <td class="text-center">{{ formatPrice(f.recurso_porcentaje_ejecutado_meta_2020) }}</td>
+                                <td class="text-center">{{ f.indicador_gestion_2016 }}</td>
+                                <td class="text-center">{{ f.indicador_poa_2016 }}</td>
+                                <td class="text-center">{{ f.indicador_gestion_2017}}</td>
+                                <td class="text-center">{{ f.indicador_poa_2017 }}</td>
+                                <td class="text-center">{{ f.indicador_gestion_2018 }}</td>
+                                <td class="text-center">{{ f.indicador_poa_2018 }}</td>
+                                <td class="text-center">{{ f.total_indicador_programado }}</td>
+                                <td class="text-center">{{ f.total_indicador_poa}}</td>
+                                <td class="text-center">{{ formatPrice(f.indicador_porcentaje_ejecutado) }}</td>
+                                <td class="align-middle">{{ f.meta_indicador_2020 }}</td>
+                                <td class="align-middle">{{ formatPrice(f.indicador_porcentaje_ejecutado_meta_2020) }}</td>
                                 <td>
                                   <div :class="['form-group',(f.clase).trim()?'has-'+f.clase:'']" style="width:200px">
                                       <label class="form-control-label" for="inputSuccess1">Causas de Variacion</label>
@@ -562,6 +704,7 @@ export default {
     data(){
         return{
           recursos:[],
+          otros:[],
           totales:{},
           acciones:[],
           financiero:[],
@@ -575,7 +718,9 @@ export default {
               clase:""
           },
           btnReporteRecursos:false,
-          btnReporteFinanciero:false
+          btnReporteFinanciero:false,
+          primer_obj:[],
+          resto_obj:[]
         }
           
     },
@@ -647,9 +792,10 @@ export default {
         let me = this;
         axios.get('/api/planesTerritoriales/evaluacionListaRecursos')
         .then(function(response){
-          
-          me.recursos = response.data.filas;
+          console.log(response);
+          me.recursos = response.data.recursos_medio;
           //console.log(me.recursos);
+          me.otros = response.data.otros_medio;
           me.totales = response.data.totales;
         })
         .catch(function(error){
@@ -660,7 +806,7 @@ export default {
         let me = this;
         axios.get('/api/planesTerritoriales/evaluacionListaAcciones')
         .then(function(response){
-          //console.log(response);
+          console.log(response);
           me.acciones = response.data.objEta;
         })
         .catch(function(error){
@@ -671,8 +817,10 @@ export default {
         let me = this;
         axios.get('/api/planesTerritoriales/evaluacionListaFinanciero')
         .then(function(response){
-          //console.log(response);
+          console.log(response);
           me.financiero = response.data.financiero;
+          me.primer_obj = response.data.primer_obj;
+          me.resto_obj  = response.data.resto_obj;
           //console.log(me.financiero);
         })
         .catch(function(error){
@@ -683,7 +831,7 @@ export default {
         let me = this;
         axios.get('/api/planesTerritoriales/evaluacionListaInversion')
         .then(function(response){
-          //console.log(response);
+          console.log(response);
           me.inversion  = response.data.objetivoInversion;
           //console.log(me.inversion);
         })
@@ -696,7 +844,7 @@ export default {
 
         axios.get('/api/planesTerritoriales/evaluacionListaRiesgos')
         .then(function(response){
-          //console.log(response);
+          console.log(response);
           //riesgos
           me.riesgos = response.data.riesgos;
           //console.log(me.riesgos);
@@ -738,7 +886,7 @@ export default {
       },
       validarComentario:function(data){
         //var comentario = $('[name="textarea_'+ item.recurso_id+'"]').val();
-        console.log(data.input);
+        //fconsole.log(data.input);
         
         /*if(!((data.input).trim())){
           data.mensaje = "El campo se encuentra en blanco";
@@ -766,7 +914,8 @@ export default {
              method: 'post',
              url: '/api/planesTerritoriales/saveReporteRecursos',
              data: {
-              reporte_recursos: me.recursos
+              reporte_recursos: me.recursos,
+              reporte_otros:me.otros
                
              }
            }).then(function (response) {
@@ -834,7 +983,19 @@ export default {
       },
       reporteRiesgosMedioPdf(){
         location.href = '/api/planesTerritoriales/reporteRiesgosMedioPdf';  
-      }
+      },
+      toggle(folder){
+        console.log("hola desde toggle");
+        /*
+        console.log(document.getElementById(idname).style.display);
+        if(document.getElementById(idname).style.display == "none"){
+          document.getElementById(idname).style.display = "inline-block";
+        }else{
+          document.getElementById(idname).style.display = "none";
+        }*/
+        folder.ver = !folder.ver;
+        //console.log(folder.ver );
+      },
 
     },
     mounted() {
@@ -879,7 +1040,7 @@ export default {
     outline: thin solid var(--color-main);
   }
 
-////////***/////
+
 .modal-content{
   width: 100% !important;
   position: absolute !important;
@@ -992,14 +1153,6 @@ textarea {
 
 .tableFixHead          { overflow-y: auto; height: 400px; }
 .tableFixHead thead th { position: sticky; top: 0; }
-
-/* Just common table stuff. Really. */
-/*table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
-th     { background:#eee; }*/
-
-
-
 
 
 
