@@ -3,15 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	
 <style>
 	 html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
-      font-size: 10px;
+      font-size: 8px;
       margin: 0mm 10mm 10mm 10mm;
       padding: 0;
     }
@@ -29,8 +29,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
     }
@@ -47,7 +47,7 @@
         background-color: #03a9f3;
     }
     table thead,th{
-
+        
         border:1px solid white;
     }
     table tbody{
@@ -87,7 +87,7 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
@@ -98,20 +98,29 @@
     .page-break {
     page-break-after: always;
 }
-
+	
 
 </style>
 </head>
-
+	
 	<body>
         <header>
           <div>
-            <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />  
+            <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" />  
           </div>
           <div class="logo_dgpt">
-             <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+             <img  src="img/DGPT.jpeg" height="40px" width="250px" />   
           </div>
         </header>
+        <br>
+        <br>
+        <h2>DATOS DEL MUNICIPIO:</h2>
+        <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+        <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+        <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+        <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+        <br>
+        <br>
 		<div id="main-container">
 			<h1>CUADRO Nº3</h1>
 			<h2>EVALUACION A LA EJECUCION FISICO - FINANCIERO</h2>
@@ -119,13 +128,14 @@
 			<table class="table table-bordered" >
         <thead >
           <tr>
-            <th  style="vertical-align:middle" rowspan="3">ACCION ETA</th>
+            <th  style="vertical-align:middle" rowspan="3" colspan="2">ACCION DE MEDIANO PLAZO ETA</th>
             <th  style="vertical-align:middle" rowspan="2" colspan="3">PLANIFICACION</th>
             <th  style="vertical-align:middle" colspan="11" >EN RELACION A LA PROGRAMACION DE RECURSOS</th>
             <th  style="vertical-align:middle" colspan="11" >EN RELACION A LA PROGRAMACION DE ACCIONES</th>
             <th style="vertical-align:middle" rowspan="3" >CAUSAS DE VARIACION</th>
           </tr>
           <tr>
+            
             <th style="vertical-align:middle" colspan="2" >2016</th>
             <th style="vertical-align:middle" colspan="2" >2017</th>
             <th style="vertical-align:middle" colspan="2" >2018</th>
@@ -144,6 +154,7 @@
             <th style="vertical-align:middle" rowspan="2">% EJEC. <br/>AL 2020</th>
           </tr>
           <tr>
+            
             <th>PthI/<br/>PGTC</th>
             <th>PEI</th>
             <th>POA</th>
@@ -162,38 +173,128 @@
           </tr>
         </thead>
         <tbody>
-		    	@foreach($datos as $f)
-		    	<tr>
-		    		<td>{{ $f->descripcion_accion_eta }}</td>
-                      <td>{{ $f->inscrito_ptdi }}</td>
-                      <td>{{ $f->inscrito_pei }} </td>
-                      <td>{{ $f->inscrito_poa }} </td>
-      				<td>{{ number_format($f->recurso_programado_2016,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_ejecutado_2016,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_programado_2017,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_ejecutado_2017,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_programado_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_ejecutado_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_total_programado_2016_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_total_ejecutado_2016_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_porcentaje_ejecutado,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_meta_programado_al_2020,2,",",".") }}</td>
-      				<td>{{ number_format($f->recurso_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_programado_2016,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_ejecutado_2016,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_programado_2017,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_ejecutado_2017,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_programado_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_ejecutado_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_total_programado_2016_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_total_ejecutado_2016_2018,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_porcentaje_ejecutado,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_meta_al_2020,2,",",".") }}</td>
-      				<td>{{ number_format($f->accion_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
-      				<td>{{ $f->causas_de_variacion }}</td>
-
-		    	</tr>
-		    	@endforeach
+          @foreach($programa as $p)
+            @if($p->cantidad_objetivos > 1)
+            <tr>
+              <td colspan="2">{{ $p->nombre_programa}}</td>
+              <td colspan="3">TOTALES</td>
+              
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_programado_2016,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_ejecutado_2016,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_programado_2017,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_ejecutado_2017,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_programado_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_ejecutado_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_total_programado_2016_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_total_ejecutado_2016_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_porcentaje_ejecutado,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_meta_programado_al_2020,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->recurso_porcentaje_ejecucion_al_2020,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_programado_2016,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_ejecutado_2016,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_programado_2017,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_ejecutado_2017,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_programado_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_ejecutado_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_total_programado_2016_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_total_ejecutado_2016_2018,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_porcentaje_ejecutado,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_meta_al_2020,2,".",",") }}</td>
+              <td style="text-align: right;">{{ number_format($p->totales_agregador[0]->accion_porcentaje_ejecucion_al_2020,2,".",",") }}</td>
+              <td></td>
+            </tr>
+            @foreach($p->objetivos_eta as $o)
+            <tr>
+              <td></td>
+              <td>{{ $o->nombre_objetivo}}</td>
+              @if($o->datos_evaluacion[0]->inscrito_ptdi == true)
+                <td>X</td>
+              @else
+                <td></td>
+              @endif
+              @if($o->datos_evaluacion[0]->inscrito_pei == true)
+                <td>X</td>
+              @else
+                <td></td>
+              @endif
+              @if($o->datos_evaluacion[0]->inscrito_poa == true)
+                <td>X</td>
+              @else
+                <td></td>
+              @endif
+              <td style="text-align: right;">{{ $o->datos_evaluacion[0]->recurso_programado_2016 }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_ejecutado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_programado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_ejecutado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_programado_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_ejecutado_201,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_total_programado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_total_ejecutado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_porcentaje_ejecutado,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_meta_programado_al_2020,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->recurso_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_programado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_ejecutado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_programado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_ejecutado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_programado_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_ejecutado_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_total_programado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_total_ejecutado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_porcentaje_ejecutado,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_meta_al_2020,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($o->datos_evaluacion[0]->accion_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
+              <td>{{  $o->datos_evaluacion[0]->causas_de_variacion}}</td>
+            </tr>
+            @endforeach
+            
+          @else
+            <tr>
+              <td>{{ $p->nombre_programa }}</td>
+              <td>{{ $p->objetivos_eta[0]->nombre_objetivo}}</td>
+              @if($p->objetivos_eta[0]->datos_evaluacion[0]->inscrito_ptdi == true)
+                <td>X</td>
+              @else
+                <td></td>
+              @endif
+              @if($p->objetivos_eta[0]->datos_evaluacion[0]->inscrito_pei == true)
+                <td>X</td>
+              @else
+                <td></td>
+              @endif
+              @if($p->objetivos_eta[0]->datos_evaluacion[0]->inscrito_poa == true)
+                <td>X</td>
+              @else
+                <td></td>
+              @endif
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_programado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_ejecutado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_programado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_ejecutado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_programado_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_ejecutado_201,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_total_programado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_total_ejecutado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_porcentaje_ejecutado,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_meta_programado_al_2020,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->recurso_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_programado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_ejecutado_2016,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_programado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_ejecutado_2017,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_programado_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_ejecutado_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_total_programado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_total_ejecutado_2016_2018,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_porcentaje_ejecutado,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_meta_al_2020,2,",",".") }}</td>
+              <td style="text-align: right;">{{ number_format($p->objetivos_eta[0]->datos_evaluacion[0]->accion_porcentaje_ejecucion_al_2020,2,",",".") }}</td>
+              <td>{{  $p->objetivos_eta[0]->datos_evaluacion[0]->causas_de_variacion}}</td>
+            </tr>
+          @endif
+           
+          @endforeach
+		    	
         </tbody>
       </table>
       <br>
@@ -205,7 +306,7 @@
       <div style="page-break-after: always;">
         <div class="firmas">
           <div class="alinear_izquierda">
-
+            
               <ul >
                 <li class="alinear"><strong>Aprobado MAE:</strong></li>
                 <li class="alinear"><strong>Nombre:.................................................</strong></li>

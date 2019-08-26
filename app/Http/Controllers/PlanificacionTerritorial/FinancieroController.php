@@ -50,34 +50,11 @@ class FinancieroController extends BasecontrollerController
       $estado_etapa = false;
     }
 
-    /*$objetivo_indicador = \DB::select("select 
-                                            objetivos.id as id_accion_eta_objetivo,
-                                            objetivos.descripcion,
-                                            arti.linea_base,
-                                            indi.nombre_indicador,
-                                            p_indi.valor,
-                                            p_recu.monto
-                                    from sp_eta_planes as plan,
-                                      sp_eta_objetivos_eta as objetivos,
-                                      sp_eta_articulacion_objetivo_indicador as arti,
-                                      sp_eta_indicadores as indi,
-                                      sp_eta_programacion_indicador as p_indi,
-                                      
-                                      sp_eta_programacion_recursos as p_recu,
-                                      
-                                      sp_eta_catalogo_acciones_eta as catEta,
-                                      sp_eta_articulacion_catalogos as artPmra
-                        where plan.id_institucion = $user->id_institucion
-                        and objetivos.id_plan = plan.id
-                        and objetivos.id = arti.id_objetivo_eta
-                        and objetivos.id_accion_eta = catEta.id
-                        and objetivos.id_accion_eta = artPmra.id_accion_eta
-                        and arti.id_indicador = indi.id
-                        and arti.id = p_indi.id_articulacion_objetivo_indicador
-                        and arti.id = p_recu.id_articulacion_objetivo_indicador
-                        and p_indi.gestion = '$gestionActiva->gestion'
-                        and p_recu.gestion = '$gestionActiva->gestion'");*/
+
     $objetivo_indicador = \DB::select("select 
+                                              catEta.nombre_accion_eta,
+                                              objetivos.id_accion_eta as agregador,
+
                                               objetivos.id as id_accion_eta_objetivo,
                                               objetivos.nombre_objetivo  as descripcion,
                                               
@@ -94,6 +71,7 @@ class FinancieroController extends BasecontrollerController
                                         sp_eta_programacion_recursos as p_recu,
                                         
                                         sp_eta_catalogo_acciones_eta as catEta,
+
                                         sp_eta_articulacion_catalogos as artPmra
                                       where plan.id_institucion = $user->id_institucion
                                         and objetivos.id_etapas_plan = plan.id
@@ -106,6 +84,8 @@ class FinancieroController extends BasecontrollerController
                                         and p_indi.gestion = '$gestionActiva->gestion'
                                         and p_recu.gestion = '$gestionActiva->gestion'");
     //dd($objetivo_indicador);
+    
+
 
     foreach ($objetivo_indicador as $riesgo) {
       $is_checked = \DB::select("select id,
@@ -156,20 +136,133 @@ class FinancieroController extends BasecontrollerController
       }else{
         //no hay valores
         $r->id_financiero_poa = "";
-        $r->monto_poa_planificado = "";
-        $r->monto_poa_ejecutado = "";
-        $r->monto_poa_porcentaje = "";
-        $r->accion_poa_programado = "";
-        $r->accion_poa_ejecutado = "";
-        $r->accion_poa_porcentaje = "";
-        $r->porcentaje_ptdi = "";
-        $r->porcentaje_accion_ptdi = "";
-        $r->porcentaje_pei = "";
+        $r->monto_poa_planificado = 0;
+        $r->monto_poa_ejecutado = 0;
+        $r->monto_poa_porcentaje = 0;
+        $r->accion_poa_programado = 0;
+        $r->accion_poa_ejecutado = 0;
+        $r->accion_poa_porcentaje = 0;
+        $r->porcentaje_ptdi = 0;
+        $r->porcentaje_accion_ptdi = 0;
+        $r->porcentaje_pei = 0;
         $r->causas_variacion = "";
       }
-   
+    }
 
-      # code...
+    //SELECCIONANDO PROGRAMAS GLOBALES
+    $distint = \DB::select("select 
+                                    DISTINCT objetivos.id_accion_eta as agregador,
+                                    UPPER(nombre_accion_eta ) as nombre_programa
+                            from sp_eta_etapas_plan as plan,
+                              sp_eta_objetivos_eta as objetivos,
+                              sp_eta_articulacion_objetivo_indicador as arti,
+                              sp_eta_indicadores as indi,
+                              sp_eta_programacion_indicador as p_indi,
+                              sp_eta_programacion_recursos as p_recu,
+                              
+                              sp_eta_catalogo_acciones_eta as catEta,
+                              
+                              sp_eta_articulacion_catalogos as artPmra
+                              where plan.id_institucion = $user->id_institucion
+                              and objetivos.id_etapas_plan = plan.id
+                              and objetivos.id = arti.id_objetivo_eta
+                              
+                              and objetivos.id_accion_eta = catEta.id
+                              
+                              and objetivos.id_accion_eta = artPmra.id_accion_eta
+                              and arti.id_indicador = indi.id
+                              and arti.id = p_indi.id_articulacion_objetivo_indicador
+                              and arti.id = p_recu.id_articulacion_objetivo_indicador
+                              and p_indi.gestion = '$gestionActiva->gestion'
+                              and p_recu.gestion = '$gestionActiva->gestion'
+                              ORDER BY agregador");
+    $programas = \DB::select("select 
+                                    DISTINCT objetivos.id_accion_eta as agregador,
+                                    UPPER(nombre_accion_eta ) as nombre_programa
+                            from sp_eta_etapas_plan as plan,
+                              sp_eta_objetivos_eta as objetivos,
+                              sp_eta_articulacion_objetivo_indicador as arti,
+                              sp_eta_indicadores as indi,
+                              sp_eta_programacion_indicador as p_indi,
+                              sp_eta_programacion_recursos as p_recu,
+                              
+                              sp_eta_catalogo_acciones_eta as catEta,
+                              
+                              sp_eta_articulacion_catalogos as artPmra
+                              where plan.id_institucion = $user->id_institucion
+                              and objetivos.id_etapas_plan = plan.id
+                              and objetivos.id = arti.id_objetivo_eta
+                              
+                              and objetivos.id_accion_eta = catEta.id
+                              
+                              and objetivos.id_accion_eta = artPmra.id_accion_eta
+                              and arti.id_indicador = indi.id
+                              and arti.id = p_indi.id_articulacion_objetivo_indicador
+                              and arti.id = p_recu.id_articulacion_objetivo_indicador
+                              and p_indi.gestion = '$gestionActiva->gestion'
+                              and p_recu.gestion = '$gestionActiva->gestion'
+                              ORDER BY agregador");
+    //ADICIONANDO AL PROGRAMA GLOBAL OBJETIVOS ETA
+    $totales_programa = [];
+    $orden = 1;
+     $j = 0;
+    foreach ($distint as $programa) {
+      $programa->orden = $orden++;
+      $id_programa = $programa->agregador;
+
+      $i = 0;
+     
+      $objetivo_eta = [];
+      $total_ptdi_planificado = 0;
+      $total_ptdi_porcentaje_ejecutado = 0;
+      $total_accion_ptdi_planificado = 0;
+      $total_accion_ptdi_ejecutado = 0;
+      $total_monto_poa_planificado = 0;
+      $total_monto_poa_ejecutado = 0;
+      $total_monto_poa_porcentaje = 0;
+      $total_accion_poa_planificado = 0;
+      $total_accion_poa_ejecutado = 0;
+      $total_accion_poa_porcentaje = 0;
+      $totales = [];
+      $contador_objetivos_eta = 0;
+
+      foreach ($objetivo_indicador as $obj) {
+        if($id_programa == $obj->agregador){
+          $objetivo_eta[$i] = $obj;
+          //TOTALES
+          $total_ptdi_planificado = $total_ptdi_planificado + $obj->monto;
+          $total_ptdi_porcentaje_ejecutado = $total_ptdi_porcentaje_ejecutado + $obj->porcentaje_ptdi;
+          $total_accion_ptdi_planificado = $total_accion_ptdi_planificado + $obj->valor;
+          $total_accion_ptdi_ejecutado = $total_accion_ptdi_ejecutado + $obj->porcentaje_ptdi;
+          $total_monto_poa_planificado = $total_monto_poa_planificado + $obj->monto_poa_planificado;
+          $total_monto_poa_ejecutado = $total_monto_poa_ejecutado + $obj->monto_poa_ejecutado;
+          $total_monto_poa_porcentaje = $total_monto_poa_porcentaje + $obj->monto_poa_porcentaje;
+          $total_accion_poa_planificado = $total_accion_poa_planificado + $obj->accion_poa_programado;
+          $total_accion_poa_ejecutado = $total_accion_poa_ejecutado + $obj->accion_poa_ejecutado;
+          $total_accion_poa_porcentaje = $total_accion_poa_porcentaje + $obj->accion_poa_porcentaje;
+          $contador_objetivos_eta++;
+          //TOTALES
+          $i++;
+        }
+        
+      }
+      
+      $totales['agregador'] = $programa->agregador;
+      $totales['total_ptdi_planificado'] = $total_ptdi_planificado;
+      $totales['total_ptdi_porcentaje_ejecutado'] = $total_ptdi_porcentaje_ejecutado;
+      $totales['total_accion_ptdi_planificado'] = $total_accion_ptdi_planificado;
+      $totales['total_accion_ptdi_ejecutado'] = $total_accion_ptdi_ejecutado;
+      $totales['total_monto_poa_planificado'] = $total_monto_poa_planificado;
+      $totales['total_monto_poa_ejecutado'] = $total_monto_poa_ejecutado;
+      $totales['total_monto_poa_porcentaje'] = $total_monto_poa_porcentaje/$contador_objetivos_eta;
+      $totales['total_accion_poa_planificado'] = $total_accion_poa_planificado;
+      $totales['total_accion_poa_ejecutado'] = $total_accion_poa_ejecutado;
+      $totales['total_accion_poa_porcentaje'] = $total_accion_poa_porcentaje/$contador_objetivos_eta;
+      $programa->objetivos_eta_programa = $objetivo_eta;
+      $totales_programa[$j] = $totales;
+      $j++;
+      $programa->ver = false;
+
     }
     
     return \Response::json(['objEta'=>$objetivo_indicador,
@@ -177,7 +270,10 @@ class FinancieroController extends BasecontrollerController
                             'gestionActiva'=>$gestionActiva->gestion,
                             'estado_modulo' =>$estado_etapa,
                             'plan_activo'=>$planActivo->descripcion,
-                            'gestion_activa'=>$gestionActiva->gestion]);
+                            'gestion_activa'=>$gestionActiva->gestion,
+                            'distinc' => $distint,
+                            'programas' => $programas,
+                            'totales_programa' => $totales_programa ]);
   }
 
 

@@ -30,175 +30,44 @@ class ExportReportMedioPdfController extends BasecontrollerController
   }
   public function reporteRecursosMedioPdf(){
     $user = \Auth::user();
-      $parametros = Parametros::where('categoria', 'tipo_recursos')
-      ->where('activo', true)
-      ->orderBy('orden', 'ASC')
-      ->get();
 
-      $filas = [];
-      $total_gestion_2016 = 0;
-      $total_gestion_2017 = 0;
-      $total_gestion_2018 = 0;
-      $total_gestion_poa_2016 = 0;
-      $total_gestion_poa_2017 = 0;
-      $total_gestion_poa_2018 = 0;
-      $total_diferencia_a_poa = 0;
-      $total_diferencia_porcentaje_a_poa = 0;
-      $total_planificacion_ptdi = 0;
-      $total_planificacion_poa = 0;
+    $recursos = \DB::select("SELECT
+                                    p.nombre,
+                                    e.*
+                              from sp_eta_evaluacion_reporte_recursos as e,
+                                  sp_parametros as p
+                              where e.id_institucion = $user->id_institucion
+                              and e.id_recurso = p.id");
 
-      $recurso = \DB::select("select DISTINCT id_tipo_recurso as recurso, nombre  from sp_eta_recursos_eta as r,sp_parametros as p
-          where r.id_institucion =  $user->id_institucion
-          and r.activo = true
-          and r.id_tipo_recurso = p.id 
-          and categoria = 'tipo_recursos'");
+    $otros = \DB::select("SELECT
+                                o.concepto,
+                                e.*
+                            from sp_eta_evaluacion_reporte_recursos as e,
+                                sp_eta_otros_ingresos as o
+                            where e.id_institucion = $user->id_institucion
+                            and e.id_recurso isnull
+                            and e.id_otro_ingreso = o.id");
+    $totales = \DB::select("select   
+                                  sum(ptdi_pro_2016) as total_ptdi_pro_2016,
+                                  sum(ptdi_pro_2017) as total_ptdi_pro_2017,
+                                  sum(ptdi_pro_2018) as total_ptdi_pro_2018,
+                                  sum(ptdi_total_2016_2018) as total_ptdi_total_2016_2018,
+                                  sum(ptdi_dif_a_poa) as total_ptdi_dif_a_poa,
+                                  sum(ptdi_dif_porcentaje) as total_ptdi_dif_porcentaje,
+                                  sum(poa_pro_2016) as total_poa_pro_2016, 
+                                  sum(poa_pro_2017) as total_poa_pro_2017,
+                                  sum(poa_pro_2018) as total_poa_pro_2018,
+                                  sum(poa_total_2016_2018) as total_poa_total_2016_2018
+                                  
+                                from sp_eta_evaluacion_reporte_recursos
+                                where id_institucion = $user->id_institucion");
+    //dd($totales);
 
-      $i=0;
+    $institucion = Instituciones::find($user->id_institucion);
 
-      foreach ($recurso as $r) {
-        $filas[$i]['recurso'] = $r->nombre;
-        $filas[$i]['recurso_id'] = $r->recurso;
-        $planificacion = \DB::select("select 
-          id_institucion,
-          id_tipo_recurso,
-          gestion,
-          monto
-        from sp_eta_recursos_eta
-        where id_institucion = $user->id_institucion
-        and gestion in (2016,2017,2018)
-        and id_tipo_recurso = $r->recurso");
-
-        $total_planificacion = 0;
-
-        foreach ($planificacion as $p) {
-          if($p->gestion == 2016){
-            $filas[$i]['planificacion_2016'] = $p->monto;
-            $total_planificacion = $total_planificacion + $p->monto;
-            $total_gestion_2016 = $total_gestion_2016 + $p->monto;
-          }/*else{
-            $filas[$i]['planificacion_2016'] = "";
-          }*/
-          if($p->gestion == 2017){
-            $filas[$i]['planificacion_2017'] = $p->monto;
-            $total_planificacion = $total_planificacion + $p->monto;
-            $total_gestion_2017 = $total_gestion_2016 + $p->monto;
-          }/*else{
-            $filas[$i]['planificacion_2017'] = "";
-          }*/
-          if($p->gestion == 2018){
-            $filas[$i]['planificacion_2018'] = $p->monto;
-            $total_planificacion = $total_planificacion + $p->monto;
-            $total_gestion_2018 = $total_gestion_2016 + $p->monto;
-          }/*else{
-            $filas[$i]['planificacion_2018'] = "";
-          }*/
-
-        }
-
-        $filas[$i]['total_planificacion'] = $total_planificacion;
-        /************hasta aqui la planificacion*****************/
-        /************EMPIEZA POA*****************/
-        $gestion_poa = \DB::select("select 
-                                  id_institucion,
-                                  id_tipo_recurso,
-                                  gestion,
-                                  monto_poa_gestion
-                            from sp_eta_recursos_poa
-                            where id_institucion =  $user->id_institucion
-                            and gestion in (2016,2017,2018)
-                            and id_tipo_recurso = $r->recurso");
-        $total_poa = 0;
-        if($gestion_poa){
-          foreach ($gestion_poa as $poa) {
-          
-            if($poa->gestion == 2016){
-              $filas[$i]['poa_2016'] = $poa->monto_poa_gestion;
-              $total_poa = $total_poa + $poa->monto_poa_gestion;
-              $total_gestion_poa_2016 = $total_gestion_poa_2016 + $poa->monto_poa_gestion;
-            }else{
-              $filas[$i]['poa_2016'] = 0;
-            }
-            if($poa->gestion == 2017){
-              $filas[$i]['poa_2017'] = $poa->monto;
-              $total_poa = $total_poa + $poa->monto_poa_gestion;
-              $total_gestion_poa_2017 = $total_gestion_poa_2017 + $poa->monto_poa_gestion;
-            }else{
-              $filas[$i]['poa_2017'] = 0;
-            }
-
-            if($poa->gestion == 2018){
-              $filas[$i]['poa_2018'] = $poa->monto_poa_gestion;
-              $total_poa = $total_poa + $poa->monto_poa_gestion;
-              $total_gestion_poa_2018 = $total_gestion_poa_2018 + $poa->monto_poa_gestion;
-            }else{
-              $filas[$i]['poa_2018'] = 0;
-            }
-
-          }
-        }else{
-
-            $filas[$i]['poa_2016'] = 0;
-            $total_poa = $total_poa + 0;
-            $total_gestion_poa_2016 = $total_gestion_poa_2016 + 0;
-            $filas[$i]['poa_2017'] = 0;
-            $total_poa = $total_poa + 0;
-            $total_gestion_poa_2017 = $total_gestion_poa_2017 + 0;
-            $filas[$i]['poa_2018'] = 0;
-            $total_poa = $total_poa + 0;
-            $total_gestion_poa_2018 = $total_gestion_poa_2018 + 0;
-
-        }
-
-        
-
-        $total_planificacion_ptdi = $total_planificacion_ptdi + $total_planificacion;
-        $total_planificacion_poa = $total_planificacion_poa + $total_poa;
-
-        $filas[$i]['total_poa'] = $total_poa;
-        $filas[$i]['diferencia_a_poa'] = $total_planificacion - $total_poa;
-        if($total_poa>0){
-          $filas[$i]['diferencia_porcentaje_a_poa'] = (($total_planificacion - $total_poa)  / $total_planificacion)*100;
-        }else{
-          $filas[$i]['diferencia_porcentaje_a_poa'] = 0;
-        }
-
-        $total_diferencia_a_poa = $total_diferencia_a_poa + $filas[$i]['diferencia_a_poa'];
-        $total_diferencia_porcentaje_a_poa = $total_diferencia_porcentaje_a_poa + $filas[$i]['diferencia_porcentaje_a_poa'] ;
-
-        $recurso_comentario = \DB::select("select causas_de_variacion from sp_eta_evaluacion_reporte_recursos
-                                                                where id_institucion = $user->id_institucion
-                                                                and id_recurso = $r->recurso");
-     
-        //dd($recurso_comentario);
-        if($recurso_comentario){
-          $filas[$i]['causas_variacion']=$recurso_comentario[0]->causas_de_variacion; 
-        }else{
-          $filas[$i]['causas_variacion']=""; 
-        }
-       
-        
-        
-
-        $i++;
-
-      }/*Fin foreach recurso*/
-      $totales = [];
-      $j=0;
-      $totales['total_gestion_2016'] = $total_gestion_2016;
-      $totales['total_gestion_2017'] = $total_gestion_2017;
-      $totales['total_gestion_2018'] = $total_gestion_2018;
-      
-      $totales['total_gestion_poa_2016'] = $total_gestion_poa_2016;
-      $totales['total_gestion_poa_2017'] = $total_gestion_poa_2017;
-      $totales['total_gestion_poa_2018'] = $total_gestion_poa_2018;
-      $totales['total_diferencia_a_poa'] = $total_diferencia_a_poa;
-      $totales['total_diferencia_porcentaje_a_poa'] = $total_diferencia_porcentaje_a_poa;
-      $totales['totales_planificacion_ptdi'] = $total_planificacion_ptdi;
-      $totales['totales_planificacion_poa'] = $total_planificacion_poa;
-      //return $totales;
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.recursosMedioPdf',compact('filas','totales'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.recursosMedioPdf',compact('recursos','otros','totales','institucion'));
     return $pdf->download('recursosMedioTermino.pdf');
   }
   public function reporteAccionesMedioPdf(){
@@ -304,45 +173,109 @@ class ExportReportMedioPdfController extends BasecontrollerController
       $obj->cantidad_proyectos_poa= $conteo;
 
     }
+    $institucion = Instituciones::find($user->id_institucion);
    //dd($objetivo_indicador);
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.accionesMedioPdf',compact('objetivo_indicador','gestionActiva'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.accionesMedioPdf',compact('objetivo_indicador','gestionActiva','institucion'));
     $pdf->setPaper('letter', 'landscape');
     return $pdf->download('accionesMedioTermino.pdf');
   }
   public function reporteFinancieroMedioPdf(){
      $user = \Auth::user();
+     //PROGRAMAS
+     $programa = \DB::select("select 
+        
+        DISTINCT objetivos.id_accion_eta as agregador,
+        UPPER(nombre_accion_eta ) as nombre_programa
+    
+        from sp_eta_etapas_plan as plan,
+          sp_eta_objetivos_eta as objetivos,
+          sp_eta_catalogo_acciones_eta as catEta
+        where plan.id_institucion = $user->id_institucion
+        and objetivos.id_etapas_plan = plan.id
+        and objetivos.id_accion_eta = catEta.id
+        ORDER BY agregador");
+     $accion_eta = \DB::select("select 
+                                    objetivos.id_accion_eta as agregador, 
+                                    objetivos.id as id_objetivos,
+                                    objetivos.nombre_objetivo as nombre_objetivo
+                                    
+                                from sp_eta_etapas_plan as planes, 
+                                    sp_eta_objetivos_eta as objetivos
+                                    
+                                where planes.id_institucion = $user->id_institucion
+                                and planes.valor_campo_etapa = 'PTDI'
+                                and objetivos.id_etapas_plan = planes.id");
+
     $datos = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
                                       ->where('activo',true)
                                       ->get();
-    $arrayContenido = []; 
-    $fila = [];
-    $i =0;
-    foreach ($datos as $financiero) {
-      if($financiero->inscrito_ptdi == true){
-        $financiero->inscrito_ptdi = "X";
-      }else{
-        $financiero->inscrito_ptdi = "";
+    $array_obj_eta = [];
+    $i= 0;                                  
+    foreach ($programa as $p) {
+      $contador_obj_eta = 0;
+      $array_obj_eta = [];
+      $i= 0; 
+      foreach ($accion_eta as $a) {
+        if($a->agregador == $p->agregador){
+          $datos = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
+                                      ->where('activo',true)
+                                      ->where('id_accion_eta',$a->id_objetivos)
+                                      ->get();
+          //dd($datos);
+          $a->datos_evaluacion = $datos;
+          $array_obj_eta[$i] = $a;
+          $i++;
+          $contador_obj_eta++;
+        }
       }
-      if($financiero->inscrito_pei == true){
-        $financiero->inscrito_pei = "X";
-      }else{
-        $financiero->inscrito_pei = "";
-      }
-      if($financiero->inscrito_poa == true){
-        $financiero->inscrito_poa = "X";
-      }else{
-        $financiero->inscrito_poa = "";
-      }
-      $accion_eta = \DB::select("select * from sp_eta_objetivos_eta
-                                            where id = $financiero->id_accion_eta");
-      $financiero->descripcion_accion_eta = $accion_eta[0]->nombre_objetivo;
+      $p->cantidad_objetivos = $contador_obj_eta;
+      $p->objetivos_eta = $array_obj_eta;
+      $total_agregador = \DB::select("select 
+                                            sum(recurso_programado_2016) as recurso_programado_2016,
+                                            sum(recurso_ejecutado_2016) as recurso_ejecutado_2016,
+                                            sum(recurso_programado_2017) as recurso_programado_2017,
+                                            sum(recurso_ejecutado_2017) as recurso_ejecutado_2017,
+                                            sum(recurso_programado_2018) as recurso_programado_2018,
+                                            sum(recurso_ejecutado_2018) as recurso_ejecutado_2018,
+                                            sum(recurso_total_programado_2016_2018) as recurso_total_programado_2016_2018,
+                                            sum(recurso_total_ejecutado_2016_2018) as recurso_total_ejecutado_2016_2018,
+                                            sum(recurso_porcentaje_ejecutado) as recurso_porcentaje_ejecutado,
+                                            sum(recurso_meta_programado_al_2020) as recurso_meta_programado_al_2020,
+                                            sum(recurso_porcentaje_ejecucion_al_2020) as recurso_porcentaje_ejecucion_al_2020,
+                                            
+                                            sum(accion_programado_2016) as accion_programado_2016,
+                                            sum(accion_ejecutado_2016) as accion_ejecutado_2016,
+                                            sum(accion_programado_2017) as accion_programado_2017,
+                                            sum(accion_ejecutado_2017) as accion_ejecutado_2017,
+                                            sum(accion_programado_2018) as accion_programado_2018,
+                                            sum(accion_ejecutado_2018) as accion_ejecutado_2018,
+                                            sum(accion_total_programado_2016_2018) as accion_total_programado_2016_2018,
+                                            sum(accion_total_ejecutado_2016_2018) as accion_total_ejecutado_2016_2018,
+                                            sum(accion_porcentaje_ejecutado) as accion_porcentaje_ejecutado,
+                                            sum(accion_meta_al_2020) as accion_meta_al_2020,
+                                            sum(accion_porcentaje_ejecucion_al_2020) as accion_porcentaje_ejecucion_al_2020,
+                                            objetivos.id_accion_eta as agregador
+                                        from sp_eta_etapas_plan as planes, 
+                                            sp_eta_objetivos_eta as objetivos,
+                                            sp_eta_evaluacion_reporte_financiero as fin
+                                            
+                                        where planes.id_institucion = $user->id_institucion
+                                        and planes.valor_campo_etapa = 'PTDI'
+                                        and objetivos.id_etapas_plan = planes.id
+                                        and objetivos.id = fin.id_accion_eta
+                                        and objetivos.id_accion_eta = $p->agregador
+                                        GROUP BY agregador");
+      $p->totales_agregador = $total_agregador;
+      
     }
+    //dd($programa);
+    $institucion = Instituciones::find($user->id_institucion);
     //dd($datos) ;
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.financieroMedioPdf',compact('datos','gestionActiva'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.financieroMedioPdf',compact('programa','gestionActiva','institucion'));
     $pdf->setPaper('legal', 'landscape');
     return $pdf->download('financieroMedioTermino.pdf');
   }
@@ -488,9 +421,10 @@ class ExportReportMedioPdfController extends BasecontrollerController
     //dd($objetivoProyectos);
     //return \Response::json(['objetivoInversion'=>$objetivoProyectos]);
     //self::construirReporteInversion($objetivoProyectos);
+    $institucion = Instituciones::find($user->id_institucion);
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.inversionMedioPdf',compact('objetivoProyectos','gestionActiva'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.inversionMedioPdf',compact('objetivoProyectos','gestionActiva','institucion'));
     $pdf->setPaper('legal', 'landscape');
     return $pdf->download('inversionMedioTermino.pdf');
   }
@@ -565,9 +499,10 @@ class ExportReportMedioPdfController extends BasecontrollerController
 
     //self::construirReporteGestionRiesgos($arrayContenido);
     //dd($datos) ;
+    $institucion = Instituciones::find($user->id_institucion);
     $pdf = app('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.gestionRiesgosMedioPdf',compact('datos','gestionActiva'));
+    $pdf = PDF::loadView('PlanificacionTerritorial.VistasPdf.gestionRiesgosMedioPdf',compact('datos','gestionActiva','institucion'));
     $pdf->setPaper('legal', 'landscape');
     return $pdf->download('gestionRiesgosMedioTermino.pdf');
   }

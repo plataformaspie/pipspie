@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-
+  
   <style>
     html {
       margin: 0px;
-    }
+    } 
     body{
       /*background-color: #632432;*/
       font-family: Arial;
@@ -27,8 +27,8 @@
     }
     footer {
           position: fixed;
-          bottom: 0cm;
-          left: 1cm;
+          bottom: 0cm; 
+          left: 1cm; 
           right: 0cm;
           height: 2cm;
     }
@@ -67,8 +67,8 @@
       background-color: #369681;
       color: white;
     }
-
-
+    
+    
     .alinear{
       margin-bottom: 10px;
 
@@ -88,6 +88,7 @@
     }
     .firmas{
       background-color: white;
+      overflow: hidden;
     }
     .firmas ul {
       display: inline-block;;
@@ -104,23 +105,33 @@
       left: 1.25cm;
     }
     .logo_dpgt{
-
+      
       float: left;
     }
     .logo_mpd{
       float: right;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
   <header>
       <div>
-        <img class="logo_mpd" src="img/mpd.jpg" height="40px" width="250px" />
+        <img class="logo_mpd" src="img/mpd_jpeg_reportes.jpeg" height="40px" width="250px" /> 
       </div>
       <div class="logo_dgpt">
-         <img  src="img/DGPT.jpeg" height="40px" width="250px" />
+        <img  src="img/DGPT.jpeg" height="40px" width="250px" />  
       </div>
   </header>
+    <br>
+    <br>
+    <h2>DATOS DEL MUNICIPIO:</h2>
+    <div><strong>DENOMINACION:</strong> {{ strtoupper($institucion->denominacion) }}</h3>
+    <div><strong>SIGLA: </strong>{{ $institucion->sigla }}</div>
+    <div><strong>CODIGO:</strong> {{ $institucion->codigo }}</div>
+    <div><strong>GRUPO CLASIFICADOR:</strong> {{ $institucion->clasificador }}</div>
+    <br>
+    <br>
   <div id="main-container">
     <h3>CUADRO Nº1</h3>
     <h3>SEGUIMIENTO A LA PROGRAMACION PRESUPUESTAREA</h3>
@@ -151,32 +162,44 @@
       </thead>
       <tbody>
         <?php $a = 0; ?>
-        @foreach($arrayContenido as $r)
+        @foreach($recursos as $r)
         <tr>
-          <td>{{ $r->recurso_nombre }}</td>
-          <td>{{ number_format($r->recurso_programado,2,",",".") }}</td>
-          <td>{{ number_format($r->diferencia_ptdi_poa,2,",",".") }}</td>
-          <td>{{ number_format($r->diferencia_porcentaje_ptdi_poa,2,",",".") }}</td>
+          <td>{{ $r->nombre }}</td>
+          <td>{{ number_format($r->monto,2,",",".") }}</td>
+          <td>{{ number_format($r->recursos_poa[0]->diferencia_ptdi_poa,2,",",".") }}</td>
+          <td>{{ number_format($r->recursos_poa[0]->diferencia_porcentaje_ptdi_poa,2,",",".") }}</td>
           <td></td>
           <td></td>
           <td></td>
-          <td>{{ number_format($r->monto_poa_gestion,2,",",".") }}</td>
-          <td>{{ $r->causas_variacion }}</td>
-        <?php $a = $a + $r->recurso_programado; ?>
+          <td>{{ number_format($r->recursos_poa[0]->monto_poa_gestion,2,",",".") }}</td>
+          <td>{{ $r->recursos_poa[0]->causas_variacion }}</td>
         </tr>
-        @endforeach
+        @endforeach 
+        @foreach($otros as $o)
+        <tr>
+          <td>{{ $o->concepto }}</td>
+          <td>{{ number_format($o->monto,2,",",".") }}</td>
+          <td>{{ number_format($o->otros_poa[0]->diferencia_ptdi_poa,2,",",".") }}</td>
+          <td>{{ number_format($o->otros_poa[0]->diferencia_porcentaje_ptdi_poa,2,",",".") }}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{ number_format($o->otros_poa[0]->monto_poa_gestion,2,",",".") }}</td>
+          <td>{{ $o->otros_poa[0]->causas_variacion }}</td>
+        </tr>
+        @endforeach 
         <tr>
           <td>TOTALES</td>
-          <td>{{ number_format($a,2,',','.') }}</td>
-          <td>{{ number_format($arrayTotales[0]->dif_ptdi_poa,2,",",".") }}</td>
-          <td>{{ number_format($arrayTotales[0]->por_dif_ptdi_poa,2,",",".") }}</td>
+          <td>{{ number_format($total_recursos_planificado[0]->total_ptdi_monto,2,",",".") }}</td>
+          <td>{{ number_format($total_recursos_planificado[0]->totales_poa[0]->total_diferencia_ptdi_poa,2,",",".") }}</td>
+          <td>{{ number_format($total_recursos_planificado[0]->totales_poa[0]->total_diferencia_porcentaje_ptdi_poa,2,",",".") }}</td>
           <td></td>
           <td></td>
           <td></td>
-          <td>{{ number_format($arrayTotales[0]->poa,2,",",".") }}</td>
-          <td></td>
+          <td>{{ number_format($total_recursos_planificado[0]->totales_poa[0]->total_monto_poa_gestion,2,",",".") }}</td>
         </tr>
-      </tbody>
+        
+      </tbody>  
     </table>
     <br>
     <br>
@@ -185,7 +208,7 @@
     <br>
     <br>
     <div class="firmas">
-
+      
         <ul class="alinear_izquierda">
           <li class="alinear"><strong>Elaborado por:</strong></li>
           <li class="alinear"><strong>Nombre:.................................................</strong></li>
@@ -202,8 +225,8 @@
     <footer >
       <p class="numero_pagina"><?php echo date("d/m/Y  H:i:s");?></p>
     </footer>
-  </div>
-
+  </div>  
+  
 <script type="text/php">
  if (isset($pdf)) {
     $x = 500;

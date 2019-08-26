@@ -26,174 +26,351 @@ class EvaluacionController extends BasecontrollerController
   {
       
       $user = \Auth::user();
-      $parametros = Parametros::where('categoria', 'tipo_recursos')
-      ->where('activo', true)
-      ->orderBy('orden', 'ASC')
-      ->get();
+      $recursos_medio = [];
+      $total_diferencia_2016_2018 = 0;
+      $total_diferencia_porcentaje_2016_2018 = 0;
 
-      $filas = [];
-      $total_gestion_2016 = 0;
-      $total_gestion_2017 = 0;
-      $total_gestion_2018 = 0;
-      $total_gestion_poa_2016 = 0;
-      $total_gestion_poa_2017 = 0;
-      $total_gestion_poa_2018 = 0;
-      $total_diferencia_a_poa = 0;
-      $total_diferencia_porcentaje_a_poa = 0;
-      $total_planificacion_ptdi = 0;
-      $total_planificacion_poa = 0;
-
-      $recurso = \DB::select("select DISTINCT id_tipo_recurso as recurso, nombre  from sp_eta_recursos_eta as r,sp_parametros as p
+    $recursos_unicos = \DB::select("select DISTINCT id_tipo_recurso, nombre  from sp_eta_recursos_eta as r,sp_parametros as p
           where r.id_institucion =  $user->id_institucion
           and r.activo = true
           and r.id_tipo_recurso = p.id 
           and categoria = 'tipo_recursos'");
+    $i = 0;
+    foreach ($recursos_unicos as $r) {
+      $recurso_planificado = \DB::select("select 
+                                              r.monto,
+                                              r.gestion
+                                            from sp_eta_recursos_eta as r
+                                            where r.id_institucion = $user->id_institucion
+                                            and r.gestion in ('2016','2017','2018')
+                                            and r.id_tipo_recurso = $r->id_tipo_recurso
+                                            and r.activo = true");
+      //dd($recurso_planificado);
+      $recursos_medio[$i]['id_tipo_recurso'] = $r->id_tipo_recurso;
+      $recursos_medio[$i]['nombre'] = $r->nombre;
 
-      $i=0;
-
-      foreach ($recurso as $r) {
-        $filas[$i]['recurso'] = $r->nombre;
-        $filas[$i]['recurso_id'] = $r->recurso;
-        $planificacion = \DB::select("select 
-          id_institucion,
-          id_tipo_recurso,
-          gestion,
-          monto
-        from sp_eta_recursos_eta
-        where id_institucion = $user->id_institucion
-        and gestion in (2016,2017,2018)
-        and id_tipo_recurso = $r->recurso");
-
-        $total_planificacion = 0;
-
-        foreach ($planificacion as $p) {
-          if($p->gestion == 2016){
-            $filas[$i]['planificacion_2016'] = $p->monto;
-            $total_planificacion = $total_planificacion + $p->monto;
-            $total_gestion_2016 = $total_gestion_2016 + $p->monto;
-          }/*else{
-            $filas[$i]['planificacion_2016'] = "";
-          }*/
-          if($p->gestion == 2017){
-            $filas[$i]['planificacion_2017'] = $p->monto;
-            $total_planificacion = $total_planificacion + $p->monto;
-            $total_gestion_2017 = $total_gestion_2016 + $p->monto;
-          }/*else{
-            $filas[$i]['planificacion_2017'] = "";
-          }*/
-          if($p->gestion == 2018){
-            $filas[$i]['planificacion_2018'] = $p->monto;
-            $total_planificacion = $total_planificacion + $p->monto;
-            $total_gestion_2018 = $total_gestion_2016 + $p->monto;
-          }/*else{
-            $filas[$i]['planificacion_2018'] = "";
-          }*/
-
+      foreach ($recurso_planificado as $rp ) {
+        if($rp->gestion = '2016'){
+          $recursos_medio[$i]['planificacion_2016'] = $rp->monto;
         }
-
-        $filas[$i]['total_planificacion'] = $total_planificacion;
-        /************hasta aqui la planificacion*****************/
-        /************EMPIEZA POA*****************/
-        $gestion_poa = \DB::select("select 
-                                  id_institucion,
-                                  id_tipo_recurso,
-                                  gestion,
-                                  monto_poa_gestion
-                            from sp_eta_recursos_poa
-                            where id_institucion =  $user->id_institucion
-                            and gestion in (2016,2017,2018)
-                            and id_tipo_recurso = $r->recurso");
-        $total_poa = 0;
-        if($gestion_poa){
-          foreach ($gestion_poa as $poa) {
-          
-            if($poa->gestion == 2016){
-              $filas[$i]['poa_2016'] = $poa->monto_poa_gestion;
-              $total_poa = $total_poa + $poa->monto_poa_gestion;
-              $total_gestion_poa_2016 = $total_gestion_poa_2016 + $poa->monto_poa_gestion;
-            }else{
-              $filas[$i]['poa_2016'] = 0;
-            }
-            if($poa->gestion == 2017){
-              $filas[$i]['poa_2017'] = $poa->monto_poa_gestion;
-              $total_poa = $total_poa + $poa->monto_poa_gestion;
-              $total_gestion_poa_2017 = $total_gestion_poa_2017 + $poa->monto_poa_gestion;
-            }else{
-              $filas[$i]['poa_2017'] = 0;
-            }
-
-            if($poa->gestion == 2018){
-              $filas[$i]['poa_2018'] = $poa->monto_poa_gestion;
-              $total_poa = $total_poa + $poa->monto_poa_gestion;
-              $total_gestion_poa_2018 = $total_gestion_poa_2018 + $poa->monto_poa_gestion;
-            }else{
-              $filas[$i]['poa_2018'] = 0;
-            }
-
-          }
-        }else{
-
-            $filas[$i]['poa_2016'] = 0;
-            $total_poa = $total_poa + 0;
-            $total_gestion_poa_2016 = $total_gestion_poa_2016 + 0;
-            $filas[$i]['poa_2017'] = 0;
-            $total_poa = $total_poa + 0;
-            $total_gestion_poa_2017 = $total_gestion_poa_2017 + 0;
-            $filas[$i]['poa_2018'] = 0;
-            $total_poa = $total_poa + 0;
-            $total_gestion_poa_2018 = $total_gestion_poa_2018 + 0;
-
+        if($rp->gestion = '2017') {
+          $recursos_medio[$i]['planificacion_2017'] = $rp->monto;
         }
-
-        
-
-        $total_planificacion_ptdi = $total_planificacion_ptdi + $total_planificacion;
-        $total_planificacion_poa = $total_planificacion_poa + $total_poa;
-
-        $filas[$i]['total_poa'] = $total_poa;
-        $filas[$i]['diferencia_a_poa'] = $total_planificacion - $total_poa;
-        if($total_poa>0){
-          $filas[$i]['diferencia_porcentaje_a_poa'] = (($total_planificacion - $total_poa)  / $total_planificacion)*100;
-        }else{
-          $filas[$i]['diferencia_porcentaje_a_poa'] = 0;
+        if($rp->gestion = '2018') {
+          $recursos_medio[$i]['planificacion_2018'] = $rp->monto;
         }
+      }
+      $total_recurso_ptdi_2016_2018 = \DB::select("select 
+                                                sum(monto) as total_recurso_ptdi_2016_2018
+                                              from sp_eta_recursos_eta
+                                              where id_institucion = $user->id_institucion
+                                              and id_tipo_recurso = $r->id_tipo_recurso
+                                              and gestion in ('2016','2017','2018')");
 
-        $total_diferencia_a_poa = $total_diferencia_a_poa + $filas[$i]['diferencia_a_poa'];
-        $total_diferencia_porcentaje_a_poa = $total_diferencia_porcentaje_a_poa + $filas[$i]['diferencia_porcentaje_a_poa'] ;
+      $recursos_medio[$i]['total_recurso_2016_2018'] = $total_recurso_ptdi_2016_2018[0]->total_recurso_ptdi_2016_2018;
 
-        $recurso_comentario = \DB::select("select causas_de_variacion from sp_eta_evaluacion_reporte_recursos
-                                                                where id_institucion = $user->id_institucion
-                                                                and id_recurso = $r->recurso");
-     
-        //dd($recurso_comentario);
-        if($recurso_comentario){
-          $filas[$i]['input']=$recurso_comentario[0]->causas_de_variacion; 
-        }else{
-          $filas[$i]['input']=""; 
-        }
-       
-        $filas[$i]['clase']="";
-        $filas[$i]['mensaje']="";
-        
-
-        $i++;
-
-      }/*Fin foreach recurso*/
-      $totales = [];
-      $totales['total_gestion_2016'] = $total_gestion_2016;
-      $totales['total_gestion_2017'] = $total_gestion_2017;
-      $totales['total_gestion_2018'] = $total_gestion_2018;
+      $recurso_poa = \DB::select("select 
+                                        monto_poa_gestion,
+                                        gestion
+                                  from sp_eta_recursos_poa
+                                    where id_institucion = $user->id_institucion
+                                    and gestion in (2016,2017,2018)
+                                    and id_tipo_recurso = $r->id_tipo_recurso");
       
-      $totales['total_gestion_poa_2016'] = $total_gestion_poa_2016;
-      $totales['total_gestion_poa_2017'] = $total_gestion_poa_2017;
-      $totales['total_gestion_poa_2018'] = $total_gestion_poa_2018;
-      $totales['total_diferencia_a_poa'] = $total_diferencia_a_poa;
-      $totales['total_diferencia_porcentaje_a_poa'] = $total_diferencia_porcentaje_a_poa;
-      $totales['totales_planificacion_ptdi'] = $total_planificacion_ptdi;
-      $totales['totales_planificacion_poa'] = $total_planificacion_poa;
+      $gestiones = [
+                    '2016'=>false,
+                    '2017'=>false,
+                    '2018'=>false
+                  ];
+      //dd($recurso_poa);
+      foreach ($recurso_poa as $rpoa) {
+        if($rpoa->gestion == '2016'){
+          $recursos_medio[$i]['poa_2016'] = $rpoa->monto_poa_gestion;
+          $gestiones['2016'] =true;
+        }
+        if($rpoa->gestion == '2017') {
+          $recursos_medio[$i]['poa_2017'] = $rpoa->monto_poa_gestion;
+          $gestiones['2016'] =true;
+        }
+        if($rpoa->gestion == '2018') {
+          $recursos_medio[$i]['poa_2018'] = $rpoa->monto_poa_gestion;
+          $gestiones['2016'] =true;
+        }
+      }
+
+      foreach ($gestiones as $key => $value) {
+        switch ($key) {
+          case 2016:
+            if($value == false){
+              $recursos_medio[$i]['poa_2016'] = 0;
+            }
+            break;
+          case 2017:
+            if($value == false){
+              $recursos_medio[$i]['poa_2017'] = 0;
+            }
+            break;
+          case 2018:
+            if($value == false){
+              $recursos_medio[$i]['poa_2018'] = 0;
+            }
+            break;
+          
+        }
+      }
+      //dd($recursos_medio);
+      $total_recurso_poa_2016_2018 = \DB::select("select 
+                                              sum(monto_poa_gestion) as total_recurso_poa_2016_2018
+                                                
+                                        from sp_eta_recursos_poa
+                                        where id_institucion = $user->id_institucion
+                                        and gestion in (2016,2017,2018)
+                                        and id_tipo_recurso = $r->id_tipo_recurso");
+      
+      if(!$total_recurso_poa_2016_2018){
+         $recursos_medio[$i]['total_recurso_poa_2016_2018'] = 0; 
+      }else{
+        $recursos_medio[$i]['total_recurso_poa_2016_2018'] = $total_recurso_poa_2016_2018[0]->total_recurso_poa_2016_2018; 
+      }
+      
+      $recursos_medio[$i]['total_diferencia_ptdi_poa'] = $total_recurso_ptdi_2016_2018[0]->total_recurso_ptdi_2016_2018 - $total_recurso_poa_2016_2018[0]->total_recurso_poa_2016_2018;
+
+      $recursos_medio[$i]['total_diferencia_porcentaje_ptdi_poa'] = ($recursos_medio[$i]['total_diferencia_ptdi_poa']/$recursos_medio[$i]['total_recurso_2016_2018'])*100;
+
+      $total_diferencia_2016_2018 = $total_diferencia_2016_2018 + $recursos_medio[$i]['total_diferencia_ptdi_poa'];
+      $total_diferencia_porcentaje_2016_2018 = $total_diferencia_porcentaje_2016_2018 + $recursos_medio[$i]['total_diferencia_porcentaje_ptdi_poa'];
+      //COMENTARIOS
+      $recurso_comentario = \DB::select("select causas_de_variacion from sp_eta_evaluacion_reporte_recursos
+                                                                where id_institucion = $user->id_institucion
+                                                                and id_recurso = $r->id_tipo_recurso");
+      if($recurso_comentario){
+        $recursos_medio[$i]['input']=$recurso_comentario[0]->causas_de_variacion; 
+        $recursos_medio[$i]['clase']="";
+      $recursos_medio[$i]['mensaje']="";
+      }else{
+        $recursos_medio[$i]['input']=""; 
+        $recursos_medio[$i]['clase']="";
+      $recursos_medio[$i]['mensaje']="";
+      }
+     
+      
+      
+      $i++; 
+    }
+
+    $otros_unicos = \DB::select("select 
+                                        DISTINCT o.id as id_otro_ingreso,
+                                        o.concepto as nombre
+                                        from sp_eta_recursos_eta as r,
+                                     sp_eta_otros_ingresos as o
+                                where r.id_institucion = $user->id_institucion
+                                and r.gestion in (2016,2017,2018)
+                                and r.id_tipo_recurso ISNULL
+                                and r.id_otro_ingreso = o.id");
+    $otros_medio = [];
+    $j = 0;
+    foreach ($otros_unicos as $o) {
+      $otro_planificado  = \DB::select("select 
+                                              r.monto,
+                                              r.gestion
+                                            from sp_eta_recursos_eta as r
+                                            where r.id_institucion = $user->id_institucion
+                                            and r.gestion in ('2016','2017','2018')
+                                            and r.id_otro_ingreso = $o->id_otro_ingreso
+                                            and r.activo = true");
+      $otros_medio[$j]['id_otro_ingreso'] = $o->id_otro_ingreso;
+      $otros_medio[$j]['nombre'] = $o->nombre;
+
+      foreach ($otro_planificado as $op ) {
+        if($op->gestion = '2016'){
+          $otros_medio[$j]['planificacion_2016'] = $op->monto;
+        }
+        if($op->gestion = '2017') {
+          $otros_medio[$j]['planificacion_2017'] = $op->monto;
+        }
+        if($op->gestion = '2018') {
+          $otros_medio[$j]['planificacion_2018'] = $op->monto;
+        }
+      }
+      $total_recurso_otro_ptdi_2016_2018 = \DB::select("select 
+                                                sum(monto) as total_recurso_ptdi_2016_2018
+                                              from sp_eta_recursos_eta
+                                              where id_institucion = $user->id_institucion
+                                              and id_otro_ingreso = $o->id_otro_ingreso
+                                              and gestion in ('2016','2017','2018')");
+
+      $otros_medio[$j]['total_recurso_2016_2018'] = $total_recurso_otro_ptdi_2016_2018[0]->total_recurso_ptdi_2016_2018;
+
+      //poa
+      $otro_poa = \DB::select("select 
+                                        monto_poa_gestion,
+                                        gestion
+                                  from sp_eta_recursos_poa
+                                    where id_institucion = $user->id_institucion
+                                    and gestion in (2016,2017,2018)
+                                    and id_otro_ingreso = $o->id_otro_ingreso");
+      $gestiones = [
+                    '2016'=>false,
+                    '2017'=>false,
+                    '2018'=>false
+                  ];
+      //dd($recurso_poa);
+      foreach ($otro_poa as $opoa) {
+        if($opoa->gestion = '2016'){
+          $otros_medio[$j]['poa_2016'] = $opoa->monto_poa_gestion;
+          $gestiones['2016'] =true;
+        }
+        if($opoa->gestion = '2017') {
+          $otros_medio[$j]['poa_2017'] = $opoa->monto_poa_gestion;
+          $gestiones['2016'] =true;
+        }
+        if($opoa->gestion = '2018') {
+          $otros_medio[$j]['poa_2018'] = $opoa->monto_poa_gestion;
+          $gestiones['2016'] =true;
+        }
+      }
+      foreach ($gestiones as $key => $value) {
+        if($key == '2016'){
+          $otros_medio[$j]['poa_2016'] = 0;
+          
+        }
+        if($key == '2017'){
+          $otros_medio[$j]['poa_2017'] = 0;
+          
+        }
+        if($key == '2018'){
+          $otros_medio[$j]['poa_2018'] = 0;
+          
+        }
+        
+      }
+      $total_recurso_otro_poa_2016_2018 = \DB::select("select 
+                                              sum(monto_poa_gestion) as total_recurso_poa_2016_2018 
+                                              
+                                        from sp_eta_recursos_poa
+                                        where id_institucion = $user->id_institucion
+                                        and gestion in (2016,2017,2018)
+                                        and activo = true
+                                        and id_otro_ingreso = $o->id_otro_ingreso");
+      
+      if(!$total_recurso_poa_2016_2018){
+        $otros_medio[$j]['total_recurso_poa_2016_2018'] = $total_recurso_otro_poa_2016_2018[0]->total_recurso_poa_2016_2018;  
+      }else{
+        $otros_medio[$j]['total_recurso_poa_2016_2018'] = 0;  
+      }
+
+      $otros_medio[$j]['total_diferencia_ptdi_poa'] = $otros_medio[$j]['total_recurso_2016_2018'] - $otros_medio[$j]['total_recurso_poa_2016_2018'];
+
+      $otros_medio[$j]['total_diferencia_porcentaje_ptdi_poa'] = ($otros_medio[$j]['total_diferencia_ptdi_poa']/$otros_medio[$j]['total_recurso_2016_2018'] )*100;
+
+      $total_diferencia_2016_2018 = $total_diferencia_2016_2018 + $otros_medio[$j]['total_diferencia_ptdi_poa'];
+      $total_diferencia_porcentaje_2016_2018 = $total_diferencia_porcentaje_2016_2018 + $otros_medio[$j]['total_diferencia_porcentaje_ptdi_poa'];
+
+      $otros_comentario = \DB::select("select causas_de_variacion from sp_eta_evaluacion_reporte_recursos
+                                                                where id_institucion = $user->id_institucion
+                                                                and id_otro_ingreso = $o->id_otro_ingreso");
+      if($otros_comentario){
+        $otros_medio[$j]['input']=$otros_comentario[0]->causas_de_variacion; 
+        $otros_medio[$j]['clase']="";
+        $otros_medio[$j]['mensaje']="";
+      }else{
+        $otros_medio[$j]['input']=""; 
+        $otros_medio[$j]['clase']="";
+        $otros_medio[$j]['mensaje']="";
+      }
+     
+      
+      $j++;
+    }
+    ///TOTALES
+    $total_recursos = [];
+    $i = 0;
+    $totales_gestiones_planificado = \DB::select("select sum(monto) as total_monto_gestion,gestion 
+                                    from sp_eta_recursos_eta
+                                    where id_institucion = $user->id_institucion
+                                    and gestion in ('2016','2017','2018')
+                                    GROUP BY gestion
+                                    ORDER BY gestion");
+    foreach ($totales_gestiones_planificado as $tg) {
+      if($tg->gestion == 2016){
+        $total_recursos[0]['total_gestion_2016'] = $tg->total_monto_gestion;  
+      }
+      if($tg->gestion == 2017){
+        $total_recursos[0]['total_gestion_2017'] = $tg->total_monto_gestion;  
+      }
+      if($tg->gestion == 2018){
+        $total_recursos[0]['total_gestion_2018'] = $tg->total_monto_gestion;  
+      }
+    }
+    $total_gestion_2016_2018 = \DB::select("select sum(monto) as total_monto_gestion from sp_eta_recursos_eta
+                                          where id_institucion = $user->id_institucion
+                                          and gestion in ('2016','2017','2018')");
+    $total_recursos[0]['total_gestion_2016_2018'] = $total_gestion_2016_2018[0]->total_monto_gestion;  
+
+    ;
+    $totales_gestiones_poa = \DB::select("select sum(monto_poa_gestion) as total_monto_poa_gestion,
+                                          gestion
+                                          
+                                  from sp_eta_recursos_poa
+                                  where id_institucion = $user->id_institucion
+                                  and gestion in (2016,2017,2018)
+                                  GROUP BY gestion
+                                  ORDER BY gestion");
+    //dd($totales_gestion_poa);
+     $gestiones = [
+                    '2016'=>false,
+                    '2017'=>false,
+                    '2018'=>false
+                  ];
+    foreach ($totales_gestiones_poa as $tgp) {
+      if($tgp->gestion == 2016){
+        $total_recursos[0]['total_poa_2016'] = $tgp->total_monto_poa_gestion;
+        $gestiones['2016'] = true;  
+      }
+      if($tgp->gestion == 2017){
+        $total_recursos[0]['total_poa_2017'] = $tgp->total_monto_poa_gestion;
+        
+        $gestiones['2017'] = true;  
+      }
+      if($tgp->gestion == 2018){
+        $total_recursos[0]['total_poa_2018'] = $tgp->total_monto_poa_gestion;
+        $gestiones['2018'] = true;  
+      }
+    }
+
+    foreach ($gestiones as $key => $value) {
+      switch ($key) {
+        case 2016:
+          if($value == false){
+            $total_recursos[0]['total_poa_2016'] = 0;
+            
+          }
+          break;
+        case 2017:
+          if($value == false){
+            $total_recursos[0]['total_poa_2017'] = 0;
+            
+          }
+          break;
+        case 2018:
+          if($value == false){
+            $total_recursos[0]['total_poa_2018'] = 0;
+           
+          }
+          break;
+      }
+    }
+    $total_gestion_poa_2016_2018  = \DB::select("select sum(monto_poa_gestion) as total_gestion_poa_2016_2018
+                                                                                  from sp_eta_recursos_poa
+                                                                                  where id_institucion = $user->id_institucion
+                                                                                  and gestion in ('2016','2017','2018')");  
+    $total_recursos[0]['total_gestion_poa_2016_2018'] = $total_gestion_poa_2016_2018[0]->total_gestion_poa_2016_2018;
+    $total_recursos[0]['total_diferencia_ptdi_poa_2016_2018'] = $total_diferencia_2016_2018;
+    $total_recursos[0]['total_diferencia_porcentaje_ptdi_poa_2016_2018'] = $total_diferencia_porcentaje_2016_2018;
       return \Response::json([
-        'filas' => $filas,
-        'totales' => $totales
+        'recursos_medio' => $recursos_medio,
+        'otros_medio' => $otros_medio,
+        'totales' => $total_recursos
       ]);
   }
  
@@ -292,7 +469,7 @@ class EvaluacionController extends BasecontrollerController
     $id_institucion= $user->id_institucion;
    
     $accion_eta = \DB::select("select 
-      
+                                    objetivos.id_accion_eta as agregador, 
                                     objetivos.id as id_objetivos,
                                     objetivos.nombre_objetivo as catalogo_accion_eta,
                                     objetivo_indicador.id_indicador ,
@@ -317,34 +494,44 @@ class EvaluacionController extends BasecontrollerController
     $total_recurso_programado = 0;
     $total_indicador_programado = 0;
     foreach($accion_eta as $f) {
-      
+      //PROGRAMACION DE RECURSO
       $programacion_recurso = \DB::select("select pro_recurso.id_articulacion_objetivo_indicador,
                                         pro_recurso.gestion as recurso_gestion,
                                         pro_recurso.monto as recurso_monto
                                 from sp_eta_programacion_recursos as pro_recurso 
                                 where pro_recurso.id_articulacion_objetivo_indicador = $f->id_objetivo_indicador
                                 and pro_recurso.gestion in ('2016','2017','2018') ");
-      //hallando la PROGRAMACION
+      
       foreach ($programacion_recurso as $pro) {
-        if($pro->recurso_gestion == '2016'){
-          $f->recurso_gestion_2016 = $pro->recurso_monto;
-          $total_recurso_programado = $total_recurso_programado + $pro->recurso_monto;
+        if($pro->recurso_monto > 0){
+          if($pro->recurso_gestion == '2016'){
+            $f->recurso_gestion_2016_recurso = $pro->recurso_monto;
+            $total_recurso_programado = $total_recurso_programado + $pro->recurso_monto;
+
+          }elseif($pro->recurso_gestion == '2017'){
+
+            $f->recurso_gestion_2017_recurso= $pro->recurso_monto;
+            $total_recurso_programado = $total_recurso_programado + $pro->recurso_monto;
+
+          }elseif($pro->recurso_gestion == '2018'){
+
+            $f->recurso_gestion_2018_recurso = $pro->recurso_monto;
+            $total_recurso_programado = $total_recurso_programado + $pro->recurso_monto;
+          }
+
         }else{
-          $f->recurso_gestion_2016 = 0;
-        }
-        if($pro->recurso_gestion == '2017'){
-          $f->recurso_gestion_2017 = $pro->recurso_monto;
-          $total_recurso_programado = $total_recurso_programado + $pro->recurso_monto;
-        }else{
-          $f->recurso_gestion_2017 = 0;
-        }
-        if($pro->recurso_gestion == '2018'){
-          $f->recurso_gestion_2018 = $pro->recurso_monto;
-          $total_recurso_programado = $total_recurso_programado + $pro->recurso_monto;
-        }else{
-          $f->recurso_gestion_2018 = 0;
+
+           if($pro->recurso_gestion == '2016'){
+            $f->recurso_gestion_2016_recurso = 0;  
+           }elseif($pro->recurso_gestion == '2017'){
+            $f->recurso_gestion_2017_recurso = 0;
+           }elseif ($pro->recurso_gestion == '2018') {
+            $f->recurso_gestion_2018_recurso = 0;
+           }
+          
         }
       }
+      //PROGRAMACION INDICADOR
       $programacion_indicador = \DB::select("select  pro_indicador.id_articulacion_objetivo_indicador,
                                                   pro_indicador.gestion as indicador_gestion,
                                                   pro_indicador.valor as indicador_valor
@@ -352,29 +539,47 @@ class EvaluacionController extends BasecontrollerController
                                           where pro_indicador.id_articulacion_objetivo_indicador = $f->id_objetivo_indicador
                                           and pro_indicador.gestion in('2016','2017','2018') ");
       foreach ($programacion_indicador as $indi) {
-          
-          if($indi->indicador_gestion == '2016'){
-            $f->indicador_gestion_2016 = $indi->indicador_valor;
-            $total_indicador_programado = $total_indicador_programado + $indi->indicador_valor;
+          if($indi->indicador_valor > 0){
+            switch ($indi->indicador_gestion) {
+              case '2016':
+                $f->indicador_gestion_2016_indicador = $indi->indicador_valor;
+                $total_indicador_programado = $total_indicador_programado + $indi->indicador_valor;
+                break;
+              case '2017':
+                $f->indicador_gestion_2017_indicador = $indi->indicador_valor;
+                $total_indicador_programado = $total_indicador_programado + $indi->indicador_valor;
+                break;
+              case '2018':
+                $f->indicador_gestion_2018_indicador = $indi->indicador_valor;
+                $total_indicador_programado = $total_indicador_programado + $indi->indicador_valor;
+                break;
+              
+            }
+
           }else{
-            $f->indicador_gestion_2016 = 0;
-          }
-          if($indi->indicador_gestion == '2017'){
-            $f->indicador_gestion_2017 = $indi->indicador_valor;
-            $total_indicador_programado = $total_indicador_programado + $indi->indicador_valor;
-          }else{
-            $f->recurso_gestion_2017 = 0;
-          }
-          if($indi->indicador_gestion == '2018'){
-            $f->indicador_gestion_2018 = $indi->indicador_valor;
-            $total_indicador_programado = $total_indicador_programado + $indi->indicador_valor;
-          }else{
-            $f->indicador_gestion_2018 = 0;
+            switch ($indi->indicador_gestion) {
+              case '2016':
+                $f->indicador_gestion_2016_indicador = 0;
+                break;
+              case '2017':
+                $f->indicador_gestion_2017_indicador = 0;
+                break;
+              case '2018':
+                $f->indicador_gestion_2018_indicador = 0;
+                break;
+              
+            }
+
           }
       }
-      //hallando la EJECUCION EN EL POA
+      //RECURSOS E INDICADOR EN EL POA
       $total_recurso_poa = 0;
       $total_indicador_poa = 0;
+      $verificar = [array('gestion'=>2016,'existe'=>false),
+                    array('gestion'=>2017,'existe'=>false),
+                    array('gestion'=>2018, 'existe'=>false)
+                    ];
+      
       $poa = \DB::select("select gestion as poa_gestion,
                                   monto_poa_ejecutado,
                                   accion_poa_ejecutado 
@@ -383,53 +588,103 @@ class EvaluacionController extends BasecontrollerController
                           where id_intitucion = $user->id_institucion
                           and gestion in (2016,2017,2018)
                           and id_accion_eta = $f->id_objetivos");
-      if($poa){
-        foreach ($poa as $eje) {
-          if($eje->poa_gestion == 2016){
-            $f->recurso_poa_2016 = $eje->monto_poa_ejecutado;
-            $total_recurso_poa = $total_recurso_poa + $eje->monto_poa_ejecutado;
-
-            $f->indicador_poa_2016 = $eje->accion_poa_ejecutado;
-            $total_indicador_poa = $total_indicador_poa + $eje->accion_poa_ejecutado;
-          }else{
-            $f->recurso_poa_2016 = 0;
-            $f->indicador_poa_2016 = 0;
+      
+      foreach ($poa as $eje) {
+          switch ($eje->poa_gestion) {
+            case 2016:{
+              if($eje->monto_poa_ejecutado > 0){
+                $f->recurso_poa_2016 = $eje->monto_poa_ejecutado;
+                $total_recurso_poa = $total_recurso_poa + $eje->monto_poa_ejecutado;
+                
+              }else{
+                $f->recurso_poa_2016 = 0;
+                
+              }
+              if($eje->accion_poa_ejecutado > 0){
+                $f->indicador_poa_2016 = $eje->accion_poa_ejecutado;
+                $total_indicador_poa = $total_indicador_poa + $eje->accion_poa_ejecutado;
+                
+              }else{
+                $f->indicador_poa_2016 = 0;
+              }
+              $verificar[0]['existe'] = true;
+              break;
+            }
+            case 2017:{
+              if($eje->monto_poa_ejecutado > 0){
+                $f->recurso_poa_2017 = $eje->monto_poa_ejecutado;
+                $total_recurso_poa = $total_recurso_poa + $eje->monto_poa_ejecutado;
+                
+              }else{
+                $f->recurso_poa_2016 = 0;
+                
+              }
+              if($eje->accion_poa_ejecutado > 0){
+                $f->indicador_poa_2017 = $eje->accion_poa_ejecutado;
+                $total_indicador_poa = $total_indicador_poa + $eje->accion_poa_ejecutado;
+                
+              }else{
+                $f->indicador_poa_2016 = 0;
+              }
+              $verificar[1]['existe'] = true;
+              break;
+            }
+              
+            case 2018:{
+              if($eje->monto_poa_ejecutado > 0){
+                $f->recurso_poa_2018 = $eje->monto_poa_ejecutado;
+                $total_recurso_poa = $total_recurso_poa + $eje->monto_poa_ejecutado;
+                
+              }else{
+                $f->recurso_poa_2018 = 0;
+                
+              }
+              if($eje->accion_poa_ejecutado > 0){
+                $f->indicador_poa_2018 = $eje->accion_poa_ejecutado;
+                $total_indicador_poa = $total_indicador_poa + $eje->accion_poa_ejecutado;
+                
+              }else{
+                $f->indicador_poa_2018 = 0;
+              }
+              $verificar[2]['existe'] = true;
+              break;
+            }
           }
-          if($eje->poa_gestion == 2017){
-            $f->recurso_poa_2017 = $eje->monto_poa_ejecutado;
-            $total_recurso_poa = $total_recurso_poa + $eje->monto_poa_ejecutado;
-            $f->indicador_poa_2016 = $eje->accion_poa_ejecutado;
-            $total_indicador_poa = $total_indicador_poa + $eje->accion_poa_ejecutado;
-          }else{
-            $f->recurso_poa_2017 = 0;
-            $f->indicador_poa_2017 = 0;
-          }
-          if($eje->poa_gestion == 2018){
-            $f->recurso_poa_2018 = $eje->monto_poa_ejecutado;
-            $total_recurso_poa = $total_recurso_poa + $eje->monto_poa_ejecutado;
-            $f->indicador_poa_2016 = $eje->accion_poa_ejecutado;
-            $total_indicador_poa = $total_indicador_poa + $eje->accion_poa_ejecutado;
-          }else{
-            $f->recurso_poa_2018 = 0;
-            $f->indicador_poa_2018 = 0;
-          }
-        }
-      }else{
-        $f->recurso_poa_2016 = 0;
-        $f->indicador_poa_2016 = 0;
-        $f->recurso_poa_2017 = 0;
-        $f->indicador_poa_2017 = 0;
-        $f->recurso_poa_2018 = 0;
-        $f->indicador_poa_2018 = 0;
       }
-      
-      
+      foreach ($verificar as $v) {
+        
+        switch ($v['gestion']) {
+          case 2016:{
+            
+            if($v['existe'] == false){
+              
+              $f->recurso_poa_2016 = 0;
+              $f->indicador_poa_2016 = 0;
+            }
+            break;
+          }
+          case 2017:{
+            if($v['existe'] == false){
+              $f->recurso_poa_2017 = 0;
+              $f->indicador_poa_2017 = 0;
+            }
+            break;
+          }
+          case 2018:{
+            if($v['existe'] == false){
+              $f->recurso_poa_2018 = 0;
+              $f->indicador_poa_2018 = 0;
+            }
+            break;
+          }
+            
+        }
+      }
 
-
-        $f->total_recurso_programado = $total_recurso_programado;
-        $f->total_indicador_programado = $total_indicador_programado;
-        $f->total_recurso_poa = $total_recurso_poa;
-        $f->total_indicador_poa = $total_indicador_poa;
+      $f->total_recurso_programado = $total_recurso_programado;
+      $f->total_indicador_programado = $total_indicador_programado;
+      $f->total_recurso_poa = $total_recurso_poa;
+      $f->total_indicador_poa = $total_indicador_poa;
 
         //Metas al 2020
         $meta_recurso_2020 = \DB::select("select sum(monto) as meta_recurso_2020 
@@ -442,10 +697,30 @@ class EvaluacionController extends BasecontrollerController
         $f->meta_indicador_2020 = $meta_indicador_2020[0]->meta_indicador_2020;
         //calcualdo porcentuales
         //porcentaje ejecutado = ejecutado/sobre programado
-        $f->recurso_porcentaje_ejecutado = ($total_recurso_poa / $total_recurso_programado)*100;
-        $f->recurso_porcentaje_ejecutado_meta_2020 = ($total_recurso_poa / $meta_recurso_2020[0]->meta_recurso_2020)*100;
-        $f->indicador_porcentaje_ejecutado = ($total_indicador_poa / $total_indicador_programado)*100;
-        $f->indicador_porcentaje_ejecutado_meta_2020 = ($total_indicador_poa / $meta_indicador_2020[0]->meta_indicador_2020)*100;
+        if($total_recurso_programado > 0){
+            $f->recurso_porcentaje_ejecutado = ($total_recurso_poa / $total_recurso_programado)*100;
+        }else{
+            $f->recurso_porcentaje_ejecutado = 0;
+        }
+        if($meta_recurso_2020[0]->meta_recurso_2020 > 0){
+          
+          $f->recurso_porcentaje_ejecutado_meta_2020 = ($total_recurso_poa / $meta_recurso_2020[0]->meta_recurso_2020)*100; 
+        }else{
+          $f->recurso_porcentaje_ejecutado_meta_2020 = 0;  
+        }
+        if($total_indicador_programado > 0){
+          $f->indicador_porcentaje_ejecutado = ($total_indicador_poa / $total_indicador_programado)*100;
+        }else{
+          $f->indicador_porcentaje_ejecutado = 0;
+        }
+        
+        
+        if($meta_indicador_2020[0]->meta_indicador_2020 > 0){
+          $f->indicador_porcentaje_ejecutado_meta_2020 = ($total_indicador_poa / $meta_indicador_2020[0]->meta_indicador_2020)*100;
+        }else{
+          $f->indicador_porcentaje_ejecutado_meta_2020 = 0;
+        }
+        
         //incluyendo COMENTARIO DE AXION ETA
         $comentario = \DB::select("select * from sp_eta_evaluacion_reporte_financiero
                                             where id_institucion = $user->id_institucion
@@ -460,9 +735,133 @@ class EvaluacionController extends BasecontrollerController
         }
         $f->clase = "";
         $f->comentario ="";
+        $total_recurso_programado = 0;
+        $total_indicador_programado = 0;
     }
     //dd($accion_eta);
-    return \Response::json(array('financiero'=>$accion_eta));
+    $programa = \DB::select("select 
+        
+        DISTINCT objetivos.id_accion_eta as agregador,
+        UPPER(nombre_accion_eta ) as nombre_programa
+    
+        from sp_eta_etapas_plan as plan,
+          sp_eta_objetivos_eta as objetivos,
+          sp_eta_catalogo_acciones_eta as catEta
+        where plan.id_institucion = $user->id_institucion
+        and objetivos.id_etapas_plan = plan.id
+        and objetivos.id_accion_eta = catEta.id
+        ORDER BY agregador");
+    //BUSCANDO OBJETIVOS QUE PERTENECEN AL PROGRAMA
+    foreach ($programa as $p) {
+      $i = 0;
+      $obj = [];
+      $id_agregador = $p->agregador;
+      $cantidad_objetivo_eta = 0;
+      $totales_programa = [];
+      $total_programa_recurso_gestion_2016_recurso = 0;
+      $total_programa_recurso_gestion_2017_recurso = 0;
+      $total_programa_recurso_gestion_2018_recurso = 0;
+      $total_programa_recurso_poa_2016 = 0;
+      $total_programa_recurso_poa_2017 = 0;
+      $total_programa_recurso_poa_2018 = 0;
+      $total_programa_total_recurso_programado = 0;
+      $total_programa_total_recurso_poa = 0;
+      $total_programa_recurso_porcentaje_ejecutado = 0;
+      $total_programa_meta_recurso_2020 = 0;
+      $total_programa_recurso_porcentaje_ejecutado_meta_2020 = 0;
+
+      //RESPECTO A LA ACCION
+      $total_programa_indicador_poa_2016 = 0;
+      $total_programa_indicador_poa_2017 = 0;
+      $total_programa_indicador_poa_2018 = 0;
+      $total_programa_indicador_gestion_2016_indicador = 0;
+      $total_programa_indicador_gestion_2017_indicador = 0;
+      $total_programa_indicador_gestion_2018_indicador = 0;
+      $total_programa_total_indicador_programado = 0;
+      $total_programa_total_indicador_poa = 0;
+      $total_programa_indicador_porcentaje_ejecutado = 0;
+      $total_programa_meta_indicador_2020 = 0;
+      $total_programa_indicador_porcentaje_ejecutado_meta_2020 = 0;
+      
+
+      foreach ($accion_eta as $a) {
+        $meta_recurso_2020_general = \DB::select("select sum(monto) as meta_recurso_2020 
+                                                  from sp_eta_programacion_recursos
+                                                  where id_articulacion_objetivo_indicador = $a->id_objetivo_indicador");
+        $meta_indicador_2020_general = \DB::select("select sum(valor) as meta_indicador_2020 
+                                                  from sp_eta_programacion_indicador
+                                                  where id_articulacion_objetivo_indicador = $a->id_objetivo_indicador");
+        $meta_recurso_2020_general[0]->meta_recurso_2020;
+        $meta_indicador_2020_general[0]->meta_indicador_2020;
+        if($a->agregador == $id_agregador){
+          $obj[$i] = $a;
+          $i++;
+          $cantidad_objetivo_eta ++;
+          //CALCULANDO TOTALES POR PROGRAMA
+          $total_programa_recurso_gestion_2016_recurso = $total_programa_recurso_gestion_2016_recurso + $a->recurso_gestion_2016_recurso;
+          $total_programa_recurso_gestion_2017_recurso = $total_programa_recurso_gestion_2017_recurso + $a->recurso_gestion_2017_recurso;
+          $total_programa_recurso_gestion_2018_recurso = $total_programa_recurso_gestion_2018_recurso + $a->recurso_gestion_2018_recurso;
+          $total_programa_recurso_poa_2016 = $total_programa_recurso_poa_2016 + $a->recurso_poa_2016;
+          $total_programa_recurso_poa_2017 = $total_programa_recurso_poa_2017 + $a->recurso_poa_2017;
+          $total_programa_recurso_poa_2018 = $total_programa_recurso_poa_2018 + $a->recurso_poa_2018;
+          $total_programa_total_recurso_programado = $total_programa_total_recurso_programado + $a->total_recurso_programado ;
+          $total_programa_total_recurso_poa = $total_programa_total_recurso_poa + $a->total_recurso_poa;
+          $total_programa_recurso_porcentaje_ejecutado = $total_programa_recurso_porcentaje_ejecutado + $a->recurso_porcentaje_ejecutado;
+          $total_programa_meta_recurso_2020 = $total_programa_meta_recurso_2020+$meta_recurso_2020_general[0]->meta_recurso_2020;//$a->meta_recurso_2020;//$total_programa_meta_recurso_2020 + $a->meta_recurso_2020;
+          $total_programa_recurso_porcentaje_ejecutado_meta_2020 = $total_programa_recurso_porcentaje_ejecutado_meta_2020 + $a->recurso_porcentaje_ejecutado_meta_2020;
+
+          //RESPECTO A LA ACCION
+          $total_programa_indicador_poa_2016 = $total_programa_indicador_poa_2016 + $a->indicador_poa_2016;
+          $total_programa_indicador_poa_2017 = $total_programa_indicador_poa_2017 + $a->indicador_poa_2017;
+          $total_programa_indicador_poa_2018 = $total_programa_indicador_poa_2018 + $a->indicador_poa_2018;
+          $total_programa_indicador_gestion_2016_indicador = $total_programa_indicador_gestion_2016_indicador + $a->indicador_gestion_2016_indicador;
+          $total_programa_indicador_gestion_2017_indicador = $total_programa_indicador_gestion_2017_indicador + $a->indicador_gestion_2017_indicador;
+          $total_programa_indicador_gestion_2018_indicador = $total_programa_indicador_gestion_2018_indicador + $a->indicador_gestion_2018_indicador;
+          $total_programa_total_indicador_programado = $total_programa_total_indicador_programado + $a->total_indicador_programado;
+          $total_programa_total_indicador_poa = $total_programa_total_indicador_poa + $a->total_indicador_poa;
+          $total_programa_indicador_porcentaje_ejecutado = $total_programa_indicador_porcentaje_ejecutado + $a->indicador_porcentaje_ejecutado;
+          $total_programa_meta_indicador_2020 = $total_programa_meta_indicador_2020+$meta_indicador_2020_general[0]->meta_indicador_2020;//$a->meta_indicador_2020;//$total_programa_meta_indicador_2020 + $a->meta_indicador_2020;
+          $total_programa_indicador_porcentaje_ejecutado_meta_2020 = $total_programa_indicador_porcentaje_ejecutado_meta_2020 + $a->indicador_porcentaje_ejecutado_meta_2020 ;
+        }
+      }
+
+      
+      $totales_programa['total_programa_recurso_gestion_2016_recurso'] = $total_programa_recurso_gestion_2016_recurso;
+      $totales_programa['total_programa_recurso_gestion_2017_recurso'] = $total_programa_recurso_gestion_2017_recurso;
+      $totales_programa['total_programa_recurso_gestion_2018_recurso'] = $total_programa_recurso_gestion_2018_recurso;
+      $totales_programa['total_programa_recurso_poa_2016'] = $total_programa_recurso_poa_2016;
+      $totales_programa['total_programa_recurso_poa_2017'] = $total_programa_recurso_poa_2017;
+      $totales_programa['total_programa_recurso_poa_2018'] = $total_programa_recurso_poa_2018;
+      $totales_programa['total_programa_total_recurso_programado'] = $total_programa_total_recurso_programado;
+      $totales_programa['total_programa_total_recurso_poa'] = $total_programa_total_recurso_poa;
+      $totales_programa['total_programa_recurso_porcentaje_ejecutado'] = $total_programa_recurso_porcentaje_ejecutado;
+      $totales_programa['total_programa_meta_recurso_2020'] = $total_programa_meta_recurso_2020;
+      $totales_programa['total_programa_recurso_porcentaje_ejecutado_meta_2020'] = $total_programa_recurso_porcentaje_ejecutado_meta_2020;
+
+      //RESPECTO A LA ACCION
+      $totales_programa['total_programa_indicador_poa_2016'] = $total_programa_indicador_poa_2016;
+      $totales_programa['total_programa_indicador_poa_2017'] = $total_programa_indicador_poa_2017;
+      $totales_programa['total_programa_indicador_poa_2018'] = $total_programa_indicador_poa_2018;
+      $totales_programa['total_programa_indicador_gestion_2016_indicador'] = $total_programa_indicador_gestion_2016_indicador;
+      $totales_programa['total_programa_indicador_gestion_2017_indicador'] = $total_programa_indicador_gestion_2017_indicador;
+      $totales_programa['total_programa_indicador_gestion_2018_indicador'] = $total_programa_indicador_gestion_2018_indicador;
+      $totales_programa['total_programa_total_indicador_programado'] = $total_programa_total_indicador_programado;
+      $totales_programa['total_programa_total_indicador_poa'] = $total_programa_total_indicador_poa;
+      $totales_programa['total_programa_indicador_porcentaje_ejecutado'] = $total_programa_indicador_porcentaje_ejecutado;
+      $totales_programa['total_programa_meta_indicador_2020'] = $total_programa_meta_indicador_2020;
+      $totales_programa['total_programa_indicador_porcentaje_ejecutado_meta_2020'] = $total_programa_indicador_porcentaje_ejecutado_meta_2020;
+      
+      $p->totales_programa = $totales_programa; 
+      $p->objetivos_eta = $obj;
+      $p->cantidad_objetivos = $cantidad_objetivo_eta;
+      $p->ver = true;
+
+    }
+    //dd($programa);  
+
+    //return \Response::json(array('financiero'=>$accion_eta));
+    return \Response::json(array('financiero'=>$programa,
+                                  ));
   }
   public function evaluacionListaInversion(){
     $planActivo = Parametros::where('categoria','periodo_plan')
@@ -613,13 +1012,14 @@ class EvaluacionController extends BasecontrollerController
                                       indicadores.unidad as unidad_indicador,
                                       riesgos.id as id_riesgos,
                                       riesgos.es_gestion_riesgos as es_riesgo
-                                  from sp_eta_etapaS_plan as planes, 
+                                  from sp_eta_etapas_plan as planes, 
                                       sp_eta_objetivos_eta as objetivos,
                                       sp_eta_articulacion_objetivo_indicador as objetivo_indicador,
                                       sp_eta_indicadores as indicadores,
                                       sp_eta_gestion_riesgos as riesgos
                                   where planes.id_institucion = $user->id_institucion
                                   and planes.valor_campo_etapa = 'PTDI'
+                                  and planes.id = objetivos.id_etapas_plan
                                   and objetivos.id = objetivo_indicador.id_objetivo_eta
                                   and objetivo_indicador.id_indicador = indicadores.id
                                   and objetivos.id = riesgos.id_accion_eta
@@ -752,10 +1152,28 @@ class EvaluacionController extends BasecontrollerController
         $f->meta_indicador_2020 = $meta_indicador_2020[0]->meta_indicador_2020;
         //calcualdo porcentuales
         //porcentaje ejecutado = ejecutado/sobre programado
-        $f->recurso_porcentaje_ejecutado = ($total_recurso_poa / $total_recurso_programado)*100;
-        $f->recurso_porcentaje_ejecutado_meta_2020 = ($total_recurso_poa / $meta_recurso_2020[0]->meta_recurso_2020)*100;
-        $f->indicador_porcentaje_ejecutado = ($total_indicador_poa / $total_indicador_programado)*100;
-        $f->indicador_porcentaje_ejecutado_meta_2020 = ($total_indicador_poa / $meta_indicador_2020[0]->meta_indicador_2020)*100;
+        if($total_recurso_programado == 0){
+          $f->recurso_porcentaje_ejecutado = 0;
+        }else{
+          $f->recurso_porcentaje_ejecutado = ($total_recurso_poa / $total_recurso_programado)*100;
+        }
+        if($meta_recurso_2020[0]->meta_recurso_2020 == 0){
+          $f->recurso_porcentaje_ejecutado_meta_2020 = 0;
+        }else{
+          $f->recurso_porcentaje_ejecutado_meta_2020 = ($total_recurso_poa / $meta_recurso_2020[0]->meta_recurso_2020)*100;
+        }
+        
+        if($total_indicador_programado == 0){
+          $f->indicador_porcentaje_ejecutado = 0;
+        }else{
+          $f->indicador_porcentaje_ejecutado = ($total_indicador_poa / $total_indicador_programado)*100;
+        }
+        if($meta_indicador_2020[0]->meta_indicador_2020 == 0){
+          $f->indicador_porcentaje_ejecutado_meta_2020 = 0;  
+        }else{
+          $f->indicador_porcentaje_ejecutado_meta_2020 = ($total_indicador_poa / $meta_indicador_2020[0]->meta_indicador_2020)*100;
+        }
+        
         //incluyendo COMENTARIO DE AXION ETA
         $comentario = \DB::select("select * from sp_eta_evaluacion_reporte_financiero
                                             where id_institucion = $user->id_institucion
@@ -776,23 +1194,18 @@ class EvaluacionController extends BasecontrollerController
 
   }
   public function saveReporteRecursos(Request $request){
+
     $user = \Auth::user();
     $recu = $request->reporte_recursos;
-    //return $request->reporte_recursos;
+    $otros = $request->reporte_otros;
+    //dd($recu);
     
     
       try{
 
         foreach ($recu as $rep) {
-          //verificar si recurso exte
-          //si hay actualizar
-          //si no crear
-          $recurso_identificador =  $rep['recurso_id'];
-          /*$verificar = \DB::select("select * from sp_eta_evaluacion_reporte_recursos
-                                    where id_institucion = $user->id_institucion
-                                    and id_recurso = $recurso_identificador");*/
           $verificar = EvaluacionReporteRecursos::where('id_institucion',$user->id_institucion)
-                                                ->where('id_recurso', $rep['recurso_id'])
+                                                ->where('id_recurso', $rep['id_tipo_recurso'])
                                                 ->where('activo', true)
                                                 ->get();
           //dd($verificar);
@@ -800,15 +1213,15 @@ class EvaluacionController extends BasecontrollerController
           if($verificar->count()>0){  
             
             EvaluacionReporteRecursos::where('id_institucion',$user->id_institucion)
-                                                ->where('id_recurso', $rep['recurso_id'])
+                                                ->where('id_recurso', $rep['id_tipo_recurso'])
                                                 ->where('activo', true)
                                                 ->update([
                                                           'ptdi_pro_2016' => $rep['planificacion_2016'],
                                                           'ptdi_pro_2017' => $rep['planificacion_2017'],
                                                           'ptdi_pro_2018' => $rep['planificacion_2018'],
-                                                          'ptdi_total_2016_2018' => $rep['total_planificacion'], 
-                                                          'ptdi_dif_a_poa'=> $rep['diferencia_a_poa'],
-                                                          'ptdi_dif_porcentaje' => $rep['diferencia_porcentaje_a_poa'],
+                                                          'ptdi_total_2016_2018' => $rep['total_recurso_2016_2018'], 
+                                                          'ptdi_dif_a_poa'=> $rep['total_diferencia_ptdi_poa'],
+                                                          'ptdi_dif_porcentaje' => $rep['total_diferencia_porcentaje_ptdi_poa'],
                                                           'pei_pro_2016' => 0,
                                                           'pei_pro_2017' => 0,
                                                           'pei_pro_2018' => 0,
@@ -818,22 +1231,24 @@ class EvaluacionController extends BasecontrollerController
                                                           'poa_pro_2016' => $rep['poa_2016'],
                                                           'poa_pro_2017' => $rep['poa_2017'],
                                                           'poa_pro_2018' => $rep['poa_2018'],
-                                                          'poa_total_2016_2018' => $rep['total_poa'],
+                                                          'poa_total_2016_2018' => $rep['total_recurso_poa_2016_2018'],
                                                           'id_institucion' => $user->id_institucion,
                                                           'activo' => true,
                                                           'causas_de_variacion' => $rep['input']
                                                         ]);
+
+
             
           }else{
               
             $recurso = new EvaluacionReporteRecursos();
-            $recurso->id_recurso  = $rep['recurso_id'];
+            $recurso->id_recurso  = $rep['id_tipo_recurso'];
             $recurso->ptdi_pro_2016 = $rep['planificacion_2016'];
             $recurso->ptdi_pro_2017 = $rep['planificacion_2017'];
             $recurso->ptdi_pro_2018 = $rep['planificacion_2018'];
-            $recurso->ptdi_total_2016_2018  = $rep['total_planificacion'];//$rep[''];
-            $recurso->ptdi_dif_a_poa  = $rep['diferencia_a_poa'];//$rep[''];
-            $recurso->ptdi_dif_porcentaje  = $rep['diferencia_porcentaje_a_poa'];//$rep[''];
+            $recurso->ptdi_total_2016_2018  = $rep['total_recurso_2016_2018'];//$rep[''];
+            $recurso->ptdi_dif_a_poa  = $rep['total_diferencia_ptdi_poa'];//$rep[''];
+            $recurso->ptdi_dif_porcentaje  = $rep['total_diferencia_porcentaje_ptdi_poa'];//$rep[''];
             $recurso->pei_pro_2016  = 0;//$rep[''];
             $recurso->pei_pro_2017  = 0;//$rep[''];
             $recurso->pei_pro_2018 = 0;//$rep[''];
@@ -843,14 +1258,72 @@ class EvaluacionController extends BasecontrollerController
             $recurso->poa_pro_2016  = $rep['poa_2016'];
             $recurso->poa_pro_2017  = $rep['poa_2017'];
             $recurso->poa_pro_2018  = $rep['poa_2018'];
-            $recurso->poa_total_2016_2018  = $rep['total_poa'];//$rep[''];
+            $recurso->poa_total_2016_2018  = $rep['total_recurso_poa_2016_2018'];//$rep[''];
             $recurso->id_institucion  = $user->id_institucion;
             $recurso->activo  = true;
             $recurso->causas_de_variacion = $rep['input'];
             $recurso->save();
           } 
         }
-
+        foreach ($otros as $o) {
+          $verificar_otro = EvaluacionReporteRecursos::where('id_institucion',$user->id_institucion)
+                                                ->where('id_otro_ingreso', $o['id_otro_ingreso'])
+                                                ->where('activo', true)
+                                                ->get();
+          //dd($verificar);
+          //if($verificar->count()>0){
+          if($verificar_otro->count()>0){  
+            
+            EvaluacionReporteRecursos::where('id_institucion',$user->id_institucion)
+                                                ->where('id_otro_ingreso', $o['id_otro_ingreso'])
+                                                ->where('activo', true)
+                                                ->update([
+                                                          'ptdi_pro_2016' => $o['planificacion_2016'],
+                                                          'ptdi_pro_2017' => $o['planificacion_2017'],
+                                                          'ptdi_pro_2018' => $o['planificacion_2018'],
+                                                          'ptdi_total_2016_2018' => $o['total_recurso_2016_2018'], 
+                                                          'ptdi_dif_a_poa'=> $o['total_diferencia_ptdi_poa'],
+                                                          'ptdi_dif_porcentaje' => $o['total_diferencia_porcentaje_ptdi_poa'],
+                                                          'pei_pro_2016' => 0,
+                                                          'pei_pro_2017' => 0,
+                                                          'pei_pro_2018' => 0,
+                                                          'pei_total_2016_2018' => 0,
+                                                          'pei_dif_a_poa' => 0,
+                                                          'pei_dif_porcentaje' => 0,
+                                                          'poa_pro_2016' => $o['poa_2016'],
+                                                          'poa_pro_2017' => $o['poa_2017'],
+                                                          'poa_pro_2018' => $o['poa_2018'],
+                                                          'poa_total_2016_2018' => $o['total_recurso_poa_2016_2018'],
+                                                          'id_institucion' => $user->id_institucion,
+                                                          'activo' => true,
+                                                          'causas_de_variacion' => $o['input']
+                                                        ]);
+          }else{
+              
+            $otro = new EvaluacionReporteRecursos();
+            $otro->id_otro_ingreso = $o['id_otro_ingreso'];
+            $otro->ptdi_pro_2016 = $o['planificacion_2016'];
+            $otro->ptdi_pro_2017 = $o['planificacion_2017'];
+            $otro->ptdi_pro_2018 = $o['planificacion_2018'];
+            $otro->ptdi_total_2016_2018  = $o['total_recurso_2016_2018'];//$rep[''];
+            $otro->ptdi_dif_a_poa  = $rep['total_diferencia_ptdi_poa'];//$rep[''];
+            $otro->ptdi_dif_porcentaje  = $o['total_diferencia_porcentaje_ptdi_poa'];//$rep[''];
+            $otro->pei_pro_2016  = 0;//$rep[''];
+            $otro->pei_pro_2017  = 0;//$rep[''];
+            $otro->pei_pro_2018 = 0;//$rep[''];
+            $otro->pei_total_2016_2018  = 0;//$rep[''];
+            $otro->pei_dif_a_poa  = 0;//$rep[''];
+            $otro->pei_dif_porcentaje  = 0;//$rep[''];
+            $otro->poa_pro_2016  = $o['poa_2016'];
+            $otro->poa_pro_2017  = $o['poa_2017'];
+            $otro->poa_pro_2018  = $o['poa_2018'];
+            $otro->poa_total_2016_2018  = $o['total_recurso_poa_2016_2018'];//$rep[''];
+            $otro->id_institucion  = $user->id_institucion;
+            $otro->activo  = true;
+            $otro->causas_de_variacion = $o['input'];
+            $otro->save();
+          } 
+        }
         return \Response::json(array(
               'error' => true,
               'title' => "Success!",
@@ -869,98 +1342,101 @@ class EvaluacionController extends BasecontrollerController
     $financiero = $request->reporte_financiero;
     //dd($financiero);
     try{
-
-        foreach ($financiero as $f) {
-          //verificar si la accion eta existe
-          //si hay actualizar
-          //si no crear
-          $id_accion_eta =  $f['id_objetivos'];
-          /*$verificar = \DB::select("select * from sp_eta_evaluacion_reporte_recursos
-                                    where id_institucion = $user->id_institucion
-                                    and id_recurso = $recurso_identificador");*/
-          $verificar = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
-                                                ->where('id_accion_eta', $f['id_objetivos'])
-                                                ->where('activo', true)
-                                                ->get();
-          //dd($verificar);
-          //if($verificar->count()>0){
-          if($verificar->count()>0){  
-            
-            EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
-                                                ->where('id_accion_eta', $f['id_objetivos'])
-                                                ->where('activo', true)
-                                                ->update([
-                                                            'id_accion_eta' =>$f['id_objetivos'],
-                                                            'inscrito_ptdi' => true,
-                                                            'inscrito_pei' => false,
-                                                            'inscrito_poa' =>true,
-                                                            'recurso_programado_2016' =>$f['recurso_gestion_2016'],
-                                                            'recurso_ejecutado_2016' =>$f['recurso_poa_2016'],
-                                                            'recurso_programado_2017' =>$f['recurso_gestion_2017'],
-                                                            'recurso_ejecutado_2017' =>$f['recurso_poa_2017'],
-                                                            'recurso_programado_2018' =>$f['recurso_gestion_2018'],
-                                                            'recurso_ejecutado_2018' =>$f['recurso_poa_2018'],
-                                                            'recurso_total_programado_2016_2018' =>$f['total_recurso_programado'],
-                                                            'recurso_total_ejecutado_2016_2018' =>$f['total_recurso_poa'],
-                                                            'recurso_porcentaje_ejecutado' =>$f['recurso_porcentaje_ejecutado'],
-                                                            'recurso_meta_programado_al_2020' =>$f['meta_recurso_2020'],
-                                                            'recurso_porcentaje_ejecucion_al_2020' =>$f['recurso_porcentaje_ejecutado_meta_2020'],
-                                                            'accion_programado_2016' =>$f['indicador_gestion_2016'],
-                                                            'accion_ejecutado_2016' =>$f['indicador_poa_2016'],
-                                                            'accion_programado_2017' =>$f['indicador_gestion_2017'],
-                                                            'accion_ejecutado_2017' =>$f['indicador_poa_2016'],
-                                                            'accion_programado_2018' =>$f['indicador_gestion_2018'],
-                                                            'accion_ejecutado_2018' =>$f['indicador_poa_2016'],
-                                                            'accion_total_programado_2016_2018' =>$f['total_indicador_programado'],
-                                                            'accion_total_ejecutado_2016_2018' =>$f['total_indicador_poa'],
-                                                            'accion_porcentaje_ejecutado' =>$f['indicador_porcentaje_ejecutado'],
-                                                            'accion_meta_al_2020' =>$f['meta_indicador_2020'],
-                                                            'accion_porcentaje_ejecucion_al_2020' =>$f['indicador_porcentaje_ejecutado_meta_2020'],
-                                                            'causas_de_variacion' =>$f['input'],
-                                                            'id_institucion' =>$user->id_institucion,
-                                                            'activo' =>true
-                                                          
-                                                        ]);
-
- 
-  
-            
-          }else{
+        foreach ($financiero as $p) {
+          $objetivos_eta = $p['objetivos_eta'];
+          foreach ($objetivos_eta as $f) {
+            //verificar si la accion eta existe
+            //si hay actualizar
+            //si no crear
+            $id_accion_eta =  $f['id_objetivos'];
+            /*$verificar = \DB::select("select * from sp_eta_evaluacion_reporte_recursos
+                                      where id_institucion = $user->id_institucion
+                                      and id_recurso = $recurso_identificador");*/
+            $verificar = EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
+                                                  ->where('id_accion_eta', $f['id_objetivos'])
+                                                  ->where('activo', true)
+                                                  ->get();
+            //dd($verificar);
+            //if($verificar->count()>0){
+            if($verificar->count()>0){  
               
-            $financiero = new EvaluacionReporteFinanciero();
-           
-            $financiero->id_accion_eta = $f['id_objetivos'];
-            $financiero->inscrito_ptdi = true;//$f[''];
-            $financiero->inscrito_pei = false;//$f[''];
-            $financiero->inscrito_poa = true; //$f[''];
-            $financiero->recurso_programado_2016 = $f['recurso_gestion_2016'];
-            $financiero->recurso_ejecutado_2016 = $f['recurso_poa_2016'];
-            $financiero->recurso_programado_2017 = $f['recurso_gestion_2017'];
-            $financiero->recurso_ejecutado_2017 = $f['recurso_poa_2017'];
-            $financiero->recurso_programado_2018 = $f['recurso_gestion_2018'];
-            $financiero->recurso_ejecutado_2018 = $f['recurso_poa_2018'];
-            $financiero->recurso_total_programado_2016_2018 = $f['total_recurso_programado'];
-            $financiero->recurso_total_ejecutado_2016_2018 = $f['total_recurso_poa'];
-            $financiero->recurso_porcentaje_ejecutado = $f['recurso_porcentaje_ejecutado'];
-            $financiero->recurso_meta_programado_al_2020 = $f['meta_recurso_2020'];
-            $financiero->recurso_porcentaje_ejecucion_al_2020 = $f['recurso_porcentaje_ejecutado_meta_2020'];
-            $financiero->accion_programado_2016 = $f['indicador_gestion_2016'];
-            $financiero->accion_ejecutado_2016 = $f['indicador_poa_2016'];
-            $financiero->accion_programado_2017 = $f['indicador_gestion_2017'];
-            $financiero->accion_ejecutado_2017 = $f['indicador_poa_2016'];
-            $financiero->accion_programado_2018 = $f['indicador_gestion_2018'];
-            $financiero->accion_ejecutado_2018 = $f['indicador_poa_2016'];
-            $financiero->accion_total_programado_2016_2018 = $f['total_indicador_programado'];
-            $financiero->accion_total_ejecutado_2016_2018 = $f['total_indicador_poa'];
-            $financiero->accion_porcentaje_ejecutado = $f['indicador_porcentaje_ejecutado'];
-            $financiero->accion_meta_al_2020 = $f['meta_indicador_2020'];
-            $financiero->accion_porcentaje_ejecucion_al_2020 = $f['indicador_porcentaje_ejecutado_meta_2020'];
-            $financiero->causas_de_variacion = $f['input'];
-            $financiero->id_institucion = $user->id_institucion;
-            $financiero->activo = true;
-            $financiero->save();
-          } 
+              EvaluacionReporteFinanciero::where('id_institucion',$user->id_institucion)
+                                                  ->where('id_accion_eta', $f['id_objetivos'])
+                                                  ->where('activo', true)
+                                                  ->update([
+                                                              'id_accion_eta' =>$f['id_objetivos'],
+                                                              'inscrito_ptdi' => true,
+                                                              'inscrito_pei' => false,
+                                                              'inscrito_poa' =>true,
+                                                              'recurso_programado_2016' =>$f['recurso_gestion_2016_recurso'],
+                                                              'recurso_ejecutado_2016' =>$f['recurso_poa_2016'],
+                                                              'recurso_programado_2017' =>$f['recurso_gestion_2017_recurso'],
+                                                              'recurso_ejecutado_2017' =>$f['recurso_poa_2017'],
+                                                              'recurso_programado_2018' =>$f['recurso_gestion_2018_recurso'],
+                                                              'recurso_ejecutado_2018' =>$f['recurso_poa_2018'],
+                                                              'recurso_total_programado_2016_2018' =>$f['total_recurso_programado'],
+                                                              'recurso_total_ejecutado_2016_2018' =>$f['total_recurso_poa'],
+                                                              'recurso_porcentaje_ejecutado' =>$f['recurso_porcentaje_ejecutado'],
+                                                              'recurso_meta_programado_al_2020' =>$f['meta_recurso_2020'],
+                                                              'recurso_porcentaje_ejecucion_al_2020' =>$f['recurso_porcentaje_ejecutado_meta_2020'],
+                                                              'accion_programado_2016' =>$f['indicador_gestion_2016_indicador'],
+                                                              'accion_ejecutado_2016' =>$f['indicador_poa_2016'],
+                                                              'accion_programado_2017' =>$f['indicador_gestion_2017_indicador'],
+                                                              'accion_ejecutado_2017' =>$f['indicador_poa_2016'],
+                                                              'accion_programado_2018' =>$f['indicador_gestion_2018_indicador'],
+                                                              'accion_ejecutado_2018' =>$f['indicador_poa_2016'],
+                                                              'accion_total_programado_2016_2018' =>$f['total_indicador_programado'],
+                                                              'accion_total_ejecutado_2016_2018' =>$f['total_indicador_poa'],
+                                                              'accion_porcentaje_ejecutado' =>$f['indicador_porcentaje_ejecutado'],
+                                                              'accion_meta_al_2020' =>$f['meta_indicador_2020'],
+                                                              'accion_porcentaje_ejecucion_al_2020' =>$f['indicador_porcentaje_ejecutado_meta_2020'],
+                                                              'causas_de_variacion' =>$f['input'],
+                                                              'id_institucion' =>$user->id_institucion,
+                                                              'activo' =>true
+                                                            
+                                                          ]);
+
+   
+    
+              
+            }else{
+                
+              $financiero = new EvaluacionReporteFinanciero();
+             
+              $financiero->id_accion_eta = $f['id_objetivos'];
+              $financiero->inscrito_ptdi = true;//$f[''];
+              $financiero->inscrito_pei = false;//$f[''];
+              $financiero->inscrito_poa = true; //$f[''];
+              $financiero->recurso_programado_2016 = $f['recurso_gestion_2016_recurso'];
+              $financiero->recurso_ejecutado_2016 = $f['recurso_poa_2016'];
+              $financiero->recurso_programado_2017 = $f['recurso_gestion_2017_recurso'];
+              $financiero->recurso_ejecutado_2017 = $f['recurso_poa_2017'];
+              $financiero->recurso_programado_2018 = $f['recurso_gestion_2018_recurso'];
+              $financiero->recurso_ejecutado_2018 = $f['recurso_poa_2018'];
+              $financiero->recurso_total_programado_2016_2018 = $f['total_recurso_programado'];
+              $financiero->recurso_total_ejecutado_2016_2018 = $f['total_recurso_poa'];
+              $financiero->recurso_porcentaje_ejecutado = $f['recurso_porcentaje_ejecutado'];
+              $financiero->recurso_meta_programado_al_2020 = $f['meta_recurso_2020'];
+              $financiero->recurso_porcentaje_ejecucion_al_2020 = $f['recurso_porcentaje_ejecutado_meta_2020'];
+              $financiero->accion_programado_2016 = $f['indicador_gestion_2016_indicador'];
+              $financiero->accion_ejecutado_2016 = $f['indicador_poa_2016'];
+              $financiero->accion_programado_2017 = $f['indicador_gestion_2017_indicador'];
+              $financiero->accion_ejecutado_2017 = $f['indicador_poa_2016'];
+              $financiero->accion_programado_2018 = $f['indicador_gestion_2018_indicador'];
+              $financiero->accion_ejecutado_2018 = $f['indicador_poa_2016'];
+              $financiero->accion_total_programado_2016_2018 = $f['total_indicador_programado'];
+              $financiero->accion_total_ejecutado_2016_2018 = $f['total_indicador_poa'];
+              $financiero->accion_porcentaje_ejecutado = $f['indicador_porcentaje_ejecutado'];
+              $financiero->accion_meta_al_2020 = $f['meta_indicador_2020'];
+              $financiero->accion_porcentaje_ejecucion_al_2020 = $f['indicador_porcentaje_ejecutado_meta_2020'];
+              $financiero->causas_de_variacion = $f['input'];
+              $financiero->id_institucion = $user->id_institucion;
+              $financiero->activo = true;
+              $financiero->save();
+            } 
+          }
         }
+        
 
         return \Response::json(array(
               'error' => true,
